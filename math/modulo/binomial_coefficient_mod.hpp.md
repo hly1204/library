@@ -1,19 +1,19 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/binary_mul.hpp
     title: math/basic/binary_mul.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/binary_pow.hpp
     title: math/basic/binary_pow.hpp
   - icon: ':heavy_check_mark:'
     path: math/basic/crt.hpp
     title: math/basic/crt.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/exgcd.hpp
     title: math/basic/exgcd.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/base.hpp
     title: traits/base.hpp
   _extendedRequiredBy: []

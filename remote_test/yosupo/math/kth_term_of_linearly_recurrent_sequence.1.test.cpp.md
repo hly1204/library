@@ -1,16 +1,16 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/fps_basic.hpp
     title: "\u5F62\u5F0F\u5E42\u7EA7\u6570\u7684\u57FA\u672C\u64CD\u4F5C"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "\u57FA-2 NTT"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/Montgomery_modint.hpp
     title: Montgomery modint
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/modint.hpp
     title: traits/modint.hpp
   _extendedRequiredBy: []

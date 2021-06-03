@@ -2,13 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/fps_basic.hpp
     title: "\u5F62\u5F0F\u5E42\u7EA7\u6570\u7684\u57FA\u672C\u64CD\u4F5C"
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/linearly_recurrent_sequence.hpp
     title: "\u5E38\u7CFB\u6570\u9F50\u6B21\u7EBF\u6027\u9012\u63A8"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "\u57FA-2 NTT"
   _extendedVerifiedWith:
@@ -30,12 +30,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 1 \"traits/modint.hpp\"\n\n\n\nnamespace lib {\n\ntemplate <typename\
@@ -56,7 +56,7 @@ data:
   - math/formal_power_series/fps_basic.hpp
   - math/formal_power_series/linearly_recurrent_sequence.hpp
   timestamp: '2021-06-03 15:01:19+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp

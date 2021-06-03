@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/binary_mul.hpp
     title: math/basic/binary_mul.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/base.hpp
     title: traits/base.hpp
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: math/modulo/binomial_coefficient_mod.hpp
     title: "\u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/modulo/sqrt_mod.hpp
     title: "\u6A21\u5E73\u65B9\u6839"
   _extendedVerifiedWith:
@@ -21,12 +21,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
     title: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
     title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/basic/binary_pow.hpp\"\n\n\n\n#include <cassert>\n\
@@ -91,7 +91,7 @@ data:
   - math/modulo/sqrt_mod.hpp
   - math/modulo/binomial_coefficient_mod.hpp
   timestamp: '2021-06-03 15:01:19+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp

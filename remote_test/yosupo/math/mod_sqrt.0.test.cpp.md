@@ -1,26 +1,26 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/binary_mul.hpp
     title: math/basic/binary_mul.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/binary_pow.hpp
     title: math/basic/binary_pow.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/exgcd.hpp
     title: math/basic/exgcd.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/modulo/sqrt_mod.hpp
     title: "\u6A21\u5E73\u65B9\u6839"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/base.hpp
     title: traits/base.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/sqrt_mod
@@ -139,7 +139,7 @@ data:
   path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
   requiredBy: []
   timestamp: '2021-06-03 15:01:19+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/mod_sqrt.0.test.cpp
 layout: document

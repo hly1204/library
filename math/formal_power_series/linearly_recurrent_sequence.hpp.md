@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "\u57FA-2 NTT"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/modint.hpp
     title: traits/modint.hpp
   _extendedRequiredBy: []

@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/exgcd.hpp
     title: math/basic/exgcd.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/base.hpp
     title: traits/base.hpp
   _extendedRequiredBy: []

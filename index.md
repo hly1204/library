@@ -19,16 +19,16 @@ data:
       title: datastructure/heap/priority_queue.hpp
   - name: math/basic
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/basic/binary_mul.hpp
       title: math/basic/binary_mul.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/basic/binary_pow.hpp
       title: math/basic/binary_pow.hpp
     - icon: ':heavy_check_mark:'
       path: math/basic/crt.hpp
       title: math/basic/crt.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/basic/exgcd.hpp
       title: math/basic/exgcd.hpp
     - icon: ':heavy_check_mark:'
@@ -36,13 +36,13 @@ data:
       title: math/basic/integer_factorization.hpp
   - name: math/formal_power_series
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/fps_basic.hpp
       title: "\u5F62\u5F0F\u5E42\u7EA7\u6570\u7684\u57FA\u672C\u64CD\u4F5C"
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/linearly_recurrent_sequence.hpp
       title: "\u5E38\u7CFB\u6570\u9F50\u6B21\u7EBF\u6027\u9012\u63A8"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/radix_2_NTT.hpp
       title: "\u57FA-2 NTT"
   - name: math/modulo
@@ -50,7 +50,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: math/modulo/binomial_coefficient_mod.hpp
       title: "\u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: math/modulo/sqrt_mod.hpp
       title: "\u6A21\u5E73\u65B9\u6839"
   - name: misc
@@ -66,7 +66,7 @@ data:
       title: misc/random.hpp
   - name: modint
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint/Montgomery_modint.hpp
       title: Montgomery modint
     - icon: ':warning:'
@@ -77,7 +77,7 @@ data:
       title: modint/runtime_long_Montgomery_modint.hpp
   - name: string
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: string/suffix_array_sais.hpp
       title: "\u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\u5E8F\uFF09"
     - icon: ':warning:'
@@ -85,10 +85,10 @@ data:
       title: string/suffix_array_sais.old.hpp
   - name: traits
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: traits/base.hpp
       title: traits/base.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: traits/modint.hpp
       title: traits/modint.hpp
   verificationCategories:
@@ -144,15 +144,15 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
       title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
       title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
       title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
   - name: remote_test/yosupo/string
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/string/suffix_array.0.test.cpp
       title: remote_test/yosupo/string/suffix_array.0.test.cpp
 layout: toppage

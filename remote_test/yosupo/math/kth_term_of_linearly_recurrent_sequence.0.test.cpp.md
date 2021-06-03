@@ -4,13 +4,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/linearly_recurrent_sequence.hpp
     title: "\u5E38\u7CFB\u6570\u9F50\u6B21\u7EBF\u6027\u9012\u63A8"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "\u57FA-2 NTT"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/Montgomery_modint.hpp
     title: Montgomery modint
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/modint.hpp
     title: traits/modint.hpp
   _extendedRequiredBy: []
