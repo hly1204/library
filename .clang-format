@@ -1,0 +1,10 @@
+BasedOnStyle: LLVM
+Standard: Cpp11
+PointerAlignment: Right
+UseTab: Never
+IndentWidth: 2
+AccessModifierOffset: -2
+AllowShortIfStatementsOnASingleLine: true
+AlwaysBreakTemplateDeclarations: false
+AllowShortLoopsOnASingleLine: true
+ColumnLimit: 100
