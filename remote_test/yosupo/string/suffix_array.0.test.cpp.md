@@ -3,8 +3,7 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: string/suffix_array_sais.hpp
-    title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\u5E8F\
-      \uFF09"
+    title: "\u83B7\u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -18,9 +17,7 @@ data:
   bundledCode: "#line 1 \"remote_test/yosupo/string/suffix_array.0.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/suffixarray\"\n\n#include <iostream>\n\
     #include <string>\n#include <vector>\n\n#line 1 \"string/suffix_array_sais.hpp\"\
-    \n/**\n * @brief suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\
-    \u6392\u5E8F\uFF09\n *\n */\n\n#ifndef SUFFIX_ARRAY_SAIS_HEADER_HPP\n#define SUFFIX_ARRAY_SAIS_HEADER_HPP\n\
-    \n#include <algorithm>\n#line 12 \"string/suffix_array_sais.hpp\"\n\nnamespace\
+    \n\n\n\n#include <algorithm>\n#line 7 \"string/suffix_array_sais.hpp\"\n\nnamespace\
     \ lib {\n\nnamespace internal {\n\nstd::vector<int> SA_IS(const std::vector<int>\
     \ &s, int K) {\n  const int n = s.size();\n  std::vector<bool> t(n);\n  std::vector<int>\
     \ bkt(K, 0), bkt_l(K), bkt_r(K), SA(n), p1;\n#define is_S_type(x) (t[x])\n#define\
@@ -72,8 +69,9 @@ data:
     \ == n - 1) {\n      h = 0;\n      continue;\n    }\n    int j = SA[rk[i] + 1];\n\
     \    while (i + h < n && j + h < n && s[i + h] == s[j + h]) ++h;\n    height[rk[i]]\
     \ = h;\n    if (h != 0) --h;\n  }\n  return height;\n}\n\n} // namespace lib\n\
-    \n#endif\n#line 8 \"remote_test/yosupo/string/suffix_array.0.test.cpp\"\n\nint\
-    \ main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    \n/**\n * @brief suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\
+    \u6392\u5E8F\uFF09\n *\n */\n\n\n#line 8 \"remote_test/yosupo/string/suffix_array.0.test.cpp\"\
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  std::string s;\n  std::cin >> s;\n  for (auto i : lib::get_sa(s)) std::cout\
     \ << i << ' ';\n  return 0;\n}\n"
@@ -88,7 +86,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/string/suffix_array.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-06 20:18:21+08:00'
+  timestamp: '2021-06-06 20:47:15+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/string/suffix_array.0.test.cpp

@@ -17,9 +17,7 @@ data:
   bundledCode: "#line 1 \"remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/persistent_unionfind\"\n\n\
     #include <functional>\n#include <iostream>\n#include <vector>\n\n#line 1 \"datastructure/basic/rollbackable_disjoint_set.hpp\"\
-    \n/**\n * @brief rollbackable disjoint set / \u56DE\u6EDA\u5E76\u67E5\u96C6\n\
-    \ *\n */\n\n#ifndef ROLLBACKABLE_DISJOINT_SET_HEADER_HPP\n#define ROLLBACKABLE_DISJOINT_SET_HEADER_HPP\n\
-    \n#include <stack>\n#line 11 \"datastructure/basic/rollbackable_disjoint_set.hpp\"\
+    \n\n\n\n#include <stack>\n#line 6 \"datastructure/basic/rollbackable_disjoint_set.hpp\"\
     \n\nnamespace lib {\n\n// \u4E3A\u4E86\u65B9\u4FBF\u8FD9\u91CC\u8BBE\u7F6E\u4E3A\
     \ [0,n+1] \u90FD\u662F\u7F16\u53F7\nclass RollbackableDisjointSet {\npublic:\n\
     \  RollbackableDisjointSet() {}\n  RollbackableDisjointSet(int n) : p_(n + 1),\
@@ -40,7 +38,8 @@ data:
     \  // u \u662F\u5C0F\u6811\uFF0C v \u662F\u5927\u6811\uFF0C\u628A\u5C0F\u6811\u63A5\
     \u5230\u5927\u6811\u4E0A\n    sz_[v] += sz_[u];\n    stk_.push(u); // \u5C06\u5C0F\
     \u6811\u653E\u5165\u6808\u4E2D\n    return p_[u] = v;\n  }\n};\n\n} // namespace\
-    \ lib\n\n#endif\n#line 8 \"remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp\"\
+    \ lib\n\n/**\n * @brief rollbackable disjoint set / \u56DE\u6EDA\u5E76\u67E5\u96C6\
+    \n *\n */\n\n\n#line 8 \"remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n, q;\n  std::cin >> n >> q;\n  std::vector<std::tuple<int, int, int>>\
@@ -75,7 +74,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-06 20:18:21+08:00'
+  timestamp: '2021-06-06 20:47:15+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp

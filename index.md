@@ -39,26 +39,29 @@ data:
     pages:
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/fps_basic.hpp
-      title: math/formal_power_series/fps_basic.hpp
+      title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
+        \u7684\u57FA\u672C\u64CD\u4F5C"
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/linearly_recurrent_sequence.hpp
-      title: math/formal_power_series/linearly_recurrent_sequence.hpp
+      title: "linearly recurrent sequence / \u5E38\u7CFB\u6570\u7EBF\u6027\u9012\u63A8\
+        \u5E8F\u5217"
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/radix_2_NTT.hpp
-      title: math/formal_power_series/radix_2_NTT.hpp
+      title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
   - name: math/modulo
     pages:
     - icon: ':heavy_check_mark:'
       path: math/modulo/binomial_coefficient_mod.hpp
-      title: math/modulo/binomial_coefficient_mod.hpp
+      title: "binomial coefficient mod / \u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
     - icon: ':heavy_check_mark:'
       path: math/modulo/sqrt_mod.hpp
-      title: math/modulo/sqrt_mod.hpp
+      title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
   - name: misc
     pages:
     - icon: ':warning:'
       path: misc/bit_operation.hpp
-      title: "bit operations / \u4F4D\u8FD0\u7B97"
+      title: "\u5728\u4E8C\u8FDB\u5236\u6700\u9AD8\u7684 1 \u540E\u9762\u586B\u5145\
+        \u6EE1 1"
     - icon: ':warning:'
       path: misc/deBruijn_sequence.hpp
       title: "de Bruijn sequence / de Bruijn \u5E8F\u5217"
@@ -69,10 +72,10 @@ data:
     pages:
     - icon: ':heavy_check_mark:'
       path: modint/Montgomery_modint.hpp
-      title: modint/Montgomery_modint.hpp
+      title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
     - icon: ':warning:'
       path: modint/long_Montgomery_modint.hpp
-      title: modint/long_Montgomery_modint.hpp
+      title: "long Montgomery modint / \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B"
     - icon: ':heavy_check_mark:'
       path: modint/runtime_long_Montgomery_modint.hpp
       title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
@@ -81,8 +84,7 @@ data:
     pages:
     - icon: ':heavy_check_mark:'
       path: string/suffix_array_sais.hpp
-      title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\
-        \u5E8F\uFF09"
+      title: "\u83B7\u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09"
   - name: traits
     pages:
     - icon: ':heavy_check_mark:'

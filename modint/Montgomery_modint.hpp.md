@@ -31,12 +31,11 @@ data:
     document_title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
     links:
     - https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
-  bundledCode: "#line 1 \"modint/Montgomery_modint.hpp\"\n/**\n * @brief Montgomery\
-    \ modint / Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#ifndef MONTGOMERY_MODINT_HEADER_HPP\n\
-    #define MONTGOMERY_MODINT_HEADER_HPP\n\n#include <cstdint>\n#include <iostream>\n\
-    #include <type_traits>\n\nnamespace lib {\n\n// reference: https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
-    // author: Nyaan\ntemplate <std::uint32_t mod> class MontgomeryModInt {\npublic:\n\
-    \  using i32 = std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
+  bundledCode: "#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n#include <cstdint>\n\
+    #include <iostream>\n#include <type_traits>\n\nnamespace lib {\n\n// reference:\
+    \ https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n// author:\
+    \ Nyaan\ntemplate <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using\
+    \ i32 = std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
     \  using m32 = MontgomeryModInt;\n\n  using value_type = u32;\n\n  static constexpr\
     \ u32 get_mod() { return mod; }\n\n  static constexpr u32 get_primitive_root_prime()\
     \ {\n    u32 tmp[32] = {};\n    int cnt = 0;\n    const u32 phi = mod - 1;\n \
@@ -84,9 +83,9 @@ data:
     \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
     \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
     \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n#endif\n"
-  code: "/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\
-    \n#ifndef MONTGOMERY_MODINT_HEADER_HPP\n#define MONTGOMERY_MODINT_HEADER_HPP\n\
+    \ // namespace lib\n\n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\
+    \u7C7B\n *\n */\n\n\n"
+  code: "#ifndef MONTGOMERY_MODINT_HEADER_HPP\n#define MONTGOMERY_MODINT_HEADER_HPP\n\
     \n#include <cstdint>\n#include <iostream>\n#include <type_traits>\n\nnamespace\
     \ lib {\n\n// reference: https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     // author: Nyaan\ntemplate <std::uint32_t mod> class MontgomeryModInt {\npublic:\n\
@@ -138,12 +137,13 @@ data:
     \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
     \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
     \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n#endif"
+    \ // namespace lib\n\n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\
+    \u7C7B\n *\n */\n\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: modint/Montgomery_modint.hpp
   requiredBy: []
-  timestamp: '2021-06-06 20:18:21+08:00'
+  timestamp: '2021-06-06 20:47:15+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
@@ -155,6 +155,7 @@ data:
   - remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
 documentation_of: modint/Montgomery_modint.hpp
 layout: document
+title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
 ---
 
 ## Montgomery modint
