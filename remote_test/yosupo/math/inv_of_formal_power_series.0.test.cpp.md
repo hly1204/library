@@ -23,25 +23,26 @@ data:
   bundledCode: "#line 1 \"remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
     \n\n#include <iostream>\n#include <vector>\n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n\n\n\n#include <algorithm>\n#include <cassert>\n#include <cstdint>\n#line 8\
-    \ \"math/formal_power_series/radix_2_NTT.hpp\"\n\n#line 1 \"traits/modint.hpp\"\
-    \n\n\n\nnamespace lib {\n\ntemplate <typename mod_t> struct modint_traits {\n\
-    \  using type = typename mod_t::value_type;\n  static constexpr type get_mod()\
-    \ { return mod_t::get_mod(); }\n  static constexpr type get_primitive_root_prime()\
-    \ { return mod_t::get_primitive_root_prime(); }\n};\n\n} // namespace lib\n\n\
-    /**\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\n\n#line\
-    \ 10 \"math/formal_power_series/radix_2_NTT.hpp\"\n\nnamespace lib {\n\n// \u5FC5\
-    \u987B\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\uFF01\uFF01\uFF01\ntemplate <typename\
-    \ mod_t> class NTT {\npublic:\n  NTT() = delete;\n\n  static void set_root(int\
-    \ len) {\n    static int lim = 0;\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n\
-    \    if (lim == 0) {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n\
-    \      rt[0] = irt[0] = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod()\
-    \ >> 21), ig_t = g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n \
-    \     for (int i = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n   \
-    \     rt[1 << i] = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n\
-    \    for (; (lim << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n\
-    \      for (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i\
-    \ - lim] * g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static\
+    \n\n\n\n/**\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\
+    \n#include <algorithm>\n#include <cassert>\n#include <cstdint>\n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\
+    \n\n#line 1 \"traits/modint.hpp\"\n\n\n\nnamespace lib {\n\ntemplate <typename\
+    \ mod_t> struct modint_traits {\n  using type = typename mod_t::value_type;\n\
+    \  static constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr\
+    \ type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
+    \ }\n};\n\n} // namespace lib\n\n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\
+    \u8403\u53D6\n *\n */\n\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
+    \n\nnamespace lib {\n\n// \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\
+    \uFF01\uFF01\uFF01\ntemplate <typename mod_t> class NTT {\npublic:\n  NTT() =\
+    \ delete;\n\n  static void set_root(int len) {\n    static int lim = 0;\n    static\
+    \ constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n    if\
+    \ (lim == 0) {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n      rt[0]\
+    \ = irt[0] = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod() >> 21),\
+    \ ig_t = g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n      for\
+    \ (int i = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n        rt[1\
+    \ << i] = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n    for (;\
+    \ (lim << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n  \
+    \    for (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i -\
+    \ lim] * g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static\
     \ void dft(int n, mod_t *x) {\n    for (int j = 0, l = n >> 1; j != l; ++j) {\n\
     \      mod_t u = x[j], v = x[j + l];\n      x[j] = u + v, x[j + l] = u - v;\n\
     \    }\n    for (int i = n >> 1; i >= 2; i >>= 1) {\n      for (int j = 0, l =\
@@ -76,12 +77,13 @@ data:
     \ <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
     \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
     \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
-    }\n\n} // namespace lib\n\n/**\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\
-    \u6362\n *\n */\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n#line 6 \"\
-    modint/Montgomery_modint.hpp\"\n#include <type_traits>\n\nnamespace lib {\n\n\
-    // reference: https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
-    // author: Nyaan\ntemplate <std::uint32_t mod> class MontgomeryModInt {\npublic:\n\
-    \  using i32 = std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
+    }\n\n} // namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n\
+    /**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n\
+    #line 11 \"modint/Montgomery_modint.hpp\"\n#include <type_traits>\n\nnamespace\
+    \ lib {\n\n/**\n * @brief \u957F Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
+    template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
+    \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
     \  using m32 = MontgomeryModInt;\n\n  using value_type = u32;\n\n  static constexpr\
     \ u32 get_mod() { return mod; }\n\n  static constexpr u32 get_primitive_root_prime()\
     \ {\n    u32 tmp[32] = {};\n    int cnt = 0;\n    const u32 phi = mod - 1;\n \
@@ -129,8 +131,7 @@ data:
     \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
     \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
     \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\
-    \u7C7B\n *\n */\n\n\n#line 8 \"remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp\"\
+    \ // namespace lib\n\n\n#line 8 \"remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp\"\
     \n\ntemplate <typename mod_t> std::vector<mod_t> inv_helper_func(std::vector<mod_t>\
     \ Q) {\n  int n = Q.size();\n  if (n == 1) return {Q[0].inv()};\n  // Q(x)Q(-x)=V(x^2)\n\
     \  // \u9012\u5F52\u6C42 1/V(x) \u7684\u524D n/2 \u9879\uFF0C\u8FD8\u539F\u51FA\
@@ -176,7 +177,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-06 20:47:15+08:00'
+  timestamp: '2021-06-06 21:24:21+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp

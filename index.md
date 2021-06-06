@@ -60,8 +60,7 @@ data:
     pages:
     - icon: ':warning:'
       path: misc/bit_operation.hpp
-      title: "\u5728\u4E8C\u8FDB\u5236\u6700\u9AD8\u7684 1 \u540E\u9762\u586B\u5145\
-        \u6EE1 1"
+      title: "bit operations / \u4F4D\u8FD0\u7B97"
     - icon: ':warning:'
       path: misc/deBruijn_sequence.hpp
       title: "de Bruijn sequence / de Bruijn \u5E8F\u5217"
@@ -84,7 +83,8 @@ data:
     pages:
     - icon: ':heavy_check_mark:'
       path: string/suffix_array_sais.hpp
-      title: "\u83B7\u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09"
+      title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\
+        \u5E8F\uFF09"
   - name: traits
     pages:
     - icon: ':heavy_check_mark:'

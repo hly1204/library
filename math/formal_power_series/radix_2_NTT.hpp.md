@@ -41,14 +41,15 @@ data:
   attributes:
     document_title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
     links: []
-  bundledCode: "#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\n#include\
+  bundledCode: "#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\n/**\n\
+    \ * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\n#include\
     \ <algorithm>\n#include <cassert>\n#include <cstdint>\n#include <vector>\n\n#line\
     \ 1 \"traits/modint.hpp\"\n\n\n\nnamespace lib {\n\ntemplate <typename mod_t>\
     \ struct modint_traits {\n  using type = typename mod_t::value_type;\n  static\
     \ constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr type\
     \ get_primitive_root_prime() { return mod_t::get_primitive_root_prime(); }\n};\n\
     \n} // namespace lib\n\n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\
-    \u53D6\n *\n */\n\n\n#line 10 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\
+    \u53D6\n *\n */\n\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\
     namespace lib {\n\n// \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\uFF01\
     \uFF01\uFF01\ntemplate <typename mod_t> class NTT {\npublic:\n  NTT() = delete;\n\
     \n  static void set_root(int len) {\n    static int lim = 0;\n    static constexpr\
@@ -95,9 +96,9 @@ data:
     \ <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
     \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
     \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
-    }\n\n} // namespace lib\n\n/**\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\
-    \u6362\n *\n */\n\n\n"
-  code: "#ifndef RADIX_2_NTT_HEADER_HPP\n#define RADIX_2_NTT_HEADER_HPP\n\n#include\
+    }\n\n} // namespace lib\n\n\n"
+  code: "#ifndef RADIX_2_NTT_HEADER_HPP\n#define RADIX_2_NTT_HEADER_HPP\n\n/**\n *\
+    \ @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\n#include\
     \ <algorithm>\n#include <cassert>\n#include <cstdint>\n#include <vector>\n\n#include\
     \ \"../../traits/modint.hpp\"\n\nnamespace lib {\n\n// \u5FC5\u987B\u7528 NTT\
     \ \u53CB\u597D\u7684\u6A21\u6570\uFF01\uFF01\uFF01\ntemplate <typename mod_t>\
@@ -145,8 +146,7 @@ data:
     \ <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
     \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
     \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
-    }\n\n} // namespace lib\n\n/**\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\
-    \u6362\n *\n */\n\n#endif"
+    }\n\n} // namespace lib\n\n#endif"
   dependsOn:
   - traits/modint.hpp
   isVerificationFile: false
@@ -154,7 +154,7 @@ data:
   requiredBy:
   - math/formal_power_series/fps_basic.hpp
   - math/formal_power_series/linearly_recurrent_sequence.hpp
-  timestamp: '2021-06-06 20:47:15+08:00'
+  timestamp: '2021-06-06 21:24:21+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
