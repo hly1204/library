@@ -59,21 +59,21 @@ data:
     \ get_sa(const std::string &s) {\n  std::vector<int> s_cpy(s.size() + 1);\n  std::copy(s.begin(),\
     \ s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy,\
     \ 128));\n  SA.erase(SA.begin());\n  return SA;\n}\n\n/**\n * @brief \u8FD4\u56DE\
-    \ LCP \u6570\u7EC4\n *\n * @param s \u5B57\u7B26\u4E32\n * @param SA \u8BA1\u7B97\
-    \u5B8C\u6BD5\u7684 s \u7684\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n *\
-    \ @return std::vector<int> LCP \u6570\u7EC4\n */\nstd::vector<int> get_height(const\
-    \ std::string &s, const std::vector<int> &SA) {\n  // reference: https://cp-algorithms.com/string/suffix-array.html\n\
-    \  int n = s.size();\n  std::vector<int> rk(n), height(n - 1, 0);\n  // height[i]\
-    \ = s[SA[i]..n-1] \u4E0E s[SA[i+1]..n-1] \u7684\u6700\u957F\u516C\u5171\u524D\u7F00\
-    \uFF08 longest common prefix \uFF09\n  // Kasai \u7684\u8BBA\u6587\u4E2D\u79F0\
-    \u5176\u4E3A lcp \u6570\u7EC4\u6216 height \u6570\u7EC4\n  for (int i = 0; i !=\
-    \ n; ++i) rk[SA[i]] = i;\n  for (int i = 0, h = 0; i != n; ++i) {\n    if (rk[i]\
-    \ == n - 1) {\n      h = 0;\n      continue;\n    }\n    int j = SA[rk[i] + 1];\n\
-    \    while (i + h < n && j + h < n && s[i + h] == s[j + h]) ++h;\n    height[rk[i]]\
-    \ = h;\n    if (h != 0) --h;\n  }\n  return height;\n}\n\n} // namespace lib\n\
-    \n\n#line 8 \"remote_test/yosupo/string/suffix_array.0.test.cpp\"\n\nint main()\
-    \ {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\"\
-    , \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
+    \ LCP \u6570\u7EC4\n * @ref https://cp-algorithms.com/string/suffix-array.html\n\
+    \ * @param s \u5B57\u7B26\u4E32\n * @param SA \u8BA1\u7B97\u5B8C\u6BD5\u7684 s\
+    \ \u7684\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n * @return std::vector<int>\
+    \ LCP \u6570\u7EC4\n */\nstd::vector<int> get_height(const std::string &s, const\
+    \ std::vector<int> &SA) {\n  int n = s.size();\n  std::vector<int> rk(n), height(n\
+    \ - 1, 0);\n  // height[i] = s[SA[i]..n-1] \u4E0E s[SA[i+1]..n-1] \u7684\u6700\
+    \u957F\u516C\u5171\u524D\u7F00\uFF08 longest common prefix \uFF09\n  // Kasai\
+    \ \u7684\u8BBA\u6587\u4E2D\u79F0\u5176\u4E3A lcp \u6570\u7EC4\u6216 height \u6570\
+    \u7EC4\n  for (int i = 0; i != n; ++i) rk[SA[i]] = i;\n  for (int i = 0, h = 0;\
+    \ i != n; ++i) {\n    if (rk[i] == n - 1) {\n      h = 0;\n      continue;\n \
+    \   }\n    int j = SA[rk[i] + 1];\n    while (i + h < n && j + h < n && s[i +\
+    \ h] == s[j + h]) ++h;\n    height[rk[i]] = h;\n    if (h != 0) --h;\n  }\n  return\
+    \ height;\n}\n\n} // namespace lib\n\n\n#line 8 \"remote_test/yosupo/string/suffix_array.0.test.cpp\"\
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  std::string s;\n  std::cin >> s;\n  for (auto i : lib::get_sa(s)) std::cout\
     \ << i << ' ';\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/suffixarray\"\n\n#include\
@@ -87,7 +87,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/string/suffix_array.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-06 21:24:21+08:00'
+  timestamp: '2021-06-06 22:50:43+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/string/suffix_array.0.test.cpp
