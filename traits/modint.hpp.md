@@ -4,13 +4,13 @@ data:
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/fps_basic.hpp
-    title: "\u5F62\u5F0F\u5E42\u7EA7\u6570\u7684\u57FA\u672C\u64CD\u4F5C"
+    title: math/formal_power_series/fps_basic.hpp
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/linearly_recurrent_sequence.hpp
-    title: "\u5E38\u7CFB\u6570\u9F50\u6B21\u7EBF\u6027\u9012\u63A8"
+    title: math/formal_power_series/linearly_recurrent_sequence.hpp
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
-    title: "\u57FA-2 NTT"
+    title: math/formal_power_series/radix_2_NTT.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.0.test.cpp

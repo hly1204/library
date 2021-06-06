@@ -101,7 +101,6 @@ data:
   - remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
 documentation_of: math/modulo/binomial_coefficient_mod.hpp
 layout: document
-title: "\u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
 ---
 
 ## 二项式系数取模

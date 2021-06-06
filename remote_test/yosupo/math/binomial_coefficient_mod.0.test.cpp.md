@@ -16,7 +16,7 @@ data:
       \u6CD5"
   - icon: ':heavy_check_mark:'
     path: math/modulo/binomial_coefficient_mod.hpp
-    title: "\u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
+    title: math/modulo/binomial_coefficient_mod.hpp
   - icon: ':heavy_check_mark:'
     path: traits/base.hpp
     title: "type traits / \u7C7B\u578B\u8403\u53D6"

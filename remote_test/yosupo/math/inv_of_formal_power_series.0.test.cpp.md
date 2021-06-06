@@ -3,10 +3,10 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
-    title: "\u57FA-2 NTT"
+    title: math/formal_power_series/radix_2_NTT.hpp
   - icon: ':heavy_check_mark:'
     path: modint/Montgomery_modint.hpp
-    title: Montgomery modint
+    title: modint/Montgomery_modint.hpp
   - icon: ':heavy_check_mark:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"

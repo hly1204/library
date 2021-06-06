@@ -161,7 +161,6 @@ data:
   verifiedWith: []
 documentation_of: modint/long_Montgomery_modint.hpp
 layout: document
-title: long Montgomery modint
 ---
 
 ## long Montgomery modint

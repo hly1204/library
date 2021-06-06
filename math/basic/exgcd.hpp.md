@@ -10,10 +10,10 @@ data:
     title: "Chinese remainder theorem / \u4E2D\u56FD\u5269\u4F59\u5B9A\u7406"
   - icon: ':heavy_check_mark:'
     path: math/modulo/binomial_coefficient_mod.hpp
-    title: "\u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
+    title: math/modulo/binomial_coefficient_mod.hpp
   - icon: ':heavy_check_mark:'
     path: math/modulo/sqrt_mod.hpp
-    title: "\u6A21\u5E73\u65B9\u6839"
+    title: math/modulo/sqrt_mod.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/aizuoj/number_theory/extended_Euclidean_algorithm.0.test.cpp

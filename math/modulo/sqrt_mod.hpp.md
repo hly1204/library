@@ -80,7 +80,6 @@ data:
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp
 documentation_of: math/modulo/sqrt_mod.hpp
 layout: document
-title: "\u6A21\u5E73\u65B9\u6839"
 ---
 
 ## 模平方根

@@ -155,7 +155,6 @@ data:
   - remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
 documentation_of: modint/Montgomery_modint.hpp
 layout: document
-title: Montgomery modint
 ---
 
 ## Montgomery modint

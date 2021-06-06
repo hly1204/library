@@ -13,7 +13,7 @@ data:
       \u6CD5"
   - icon: ':heavy_check_mark:'
     path: math/modulo/sqrt_mod.hpp
-    title: "\u6A21\u5E73\u65B9\u6839"
+    title: math/modulo/sqrt_mod.hpp
   - icon: ':heavy_check_mark:'
     path: traits/base.hpp
     title: "type traits / \u7C7B\u578B\u8403\u53D6"

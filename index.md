@@ -39,21 +39,21 @@ data:
     pages:
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/fps_basic.hpp
-      title: "\u5F62\u5F0F\u5E42\u7EA7\u6570\u7684\u57FA\u672C\u64CD\u4F5C"
+      title: math/formal_power_series/fps_basic.hpp
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/linearly_recurrent_sequence.hpp
-      title: "\u5E38\u7CFB\u6570\u9F50\u6B21\u7EBF\u6027\u9012\u63A8"
+      title: math/formal_power_series/linearly_recurrent_sequence.hpp
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/radix_2_NTT.hpp
-      title: "\u57FA-2 NTT"
+      title: math/formal_power_series/radix_2_NTT.hpp
   - name: math/modulo
     pages:
     - icon: ':heavy_check_mark:'
       path: math/modulo/binomial_coefficient_mod.hpp
-      title: "\u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
+      title: math/modulo/binomial_coefficient_mod.hpp
     - icon: ':heavy_check_mark:'
       path: math/modulo/sqrt_mod.hpp
-      title: "\u6A21\u5E73\u65B9\u6839"
+      title: math/modulo/sqrt_mod.hpp
   - name: misc
     pages:
     - icon: ':warning:'
@@ -69,17 +69,17 @@ data:
     pages:
     - icon: ':heavy_check_mark:'
       path: modint/Montgomery_modint.hpp
-      title: Montgomery modint
+      title: modint/Montgomery_modint.hpp
     - icon: ':warning:'
       path: modint/long_Montgomery_modint.hpp
-      title: long Montgomery modint
+      title: modint/long_Montgomery_modint.hpp
     - icon: ':heavy_check_mark:'
       path: modint/runtime_long_Montgomery_modint.hpp
       title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
         \ Montgomery \u53D6\u6A21\u7C7B"
   - name: string
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: string/suffix_array_sais.hpp
       title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\
         \u5E8F\uFF09"
@@ -152,7 +152,7 @@ data:
       title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
   - name: remote_test/yosupo/string
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/string/suffix_array.0.test.cpp
       title: remote_test/yosupo/string/suffix_array.0.test.cpp
 layout: toppage

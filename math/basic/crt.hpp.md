@@ -14,7 +14,7 @@ data:
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: math/modulo/binomial_coefficient_mod.hpp
-    title: "\u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
+    title: math/modulo/binomial_coefficient_mod.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
