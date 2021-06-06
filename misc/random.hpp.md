@@ -7,10 +7,14 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':warning:'
   attributes:
+    document_title: "pseudo random generator / \u4F2A\u968F\u673A\u6570\u751F\u6210\
+      \u5668"
     links:
     - https://prng.di.unimi.it/splitmix64.c
     - https://prng.di.unimi.it/xoshiro256starstar.c
-  bundledCode: "#line 1 \"misc/random.hpp\"\n\n\n\n#include <cassert>\n#include <cstdint>\n\
+  bundledCode: "#line 1 \"misc/random.hpp\"\n/**\n * @brief pseudo random generator\
+    \ / \u4F2A\u968F\u673A\u6570\u751F\u6210\u5668\n *\n */\n\n#ifndef RANDOM_XOSHIRO256STARSTAR_HEADER_HPP\n\
+    #define RANDOM_XOSHIRO256STARSTAR_HEADER_HPP\n\n#include <cassert>\n#include <cstdint>\n\
     #include <type_traits>\n\nnamespace lib {\n\n// xoshiro256starstar\n// reference:\
     \ https://prng.di.unimi.it/xoshiro256starstar.c\n// \u5468\u671F\u4E3A 2^{256}-1\n\
     // UINT64_C(x) \u7B49\u4EF7\u4E8E\u5728 x \u540E\u9762\u62FC\u63A5 ULL\nclass\
@@ -51,8 +55,9 @@ data:
     \ (x >> (64 - k)); }\n  u64 next() {\n    const u64 result = rotl(s[1] * 5, 7)\
     \ * 9;\n    const u64 t = s[1] << 17;\n    s[2] ^= s[0];\n    s[3] ^= s[1];\n\
     \    s[1] ^= s[2];\n    s[0] ^= s[3];\n    s[2] ^= t;\n    s[3] = rotl(s[3], 45);\n\
-    \    return result;\n  }\n};\n\n} // namespace lib\n\n\n"
-  code: "#ifndef RANDOM_XOSHIRO256STARSTAR_HEADER_HPP\n#define RANDOM_XOSHIRO256STARSTAR_HEADER_HPP\n\
+    \    return result;\n  }\n};\n\n} // namespace lib\n\n#endif\n"
+  code: "/**\n * @brief pseudo random generator / \u4F2A\u968F\u673A\u6570\u751F\u6210\
+    \u5668\n *\n */\n\n#ifndef RANDOM_XOSHIRO256STARSTAR_HEADER_HPP\n#define RANDOM_XOSHIRO256STARSTAR_HEADER_HPP\n\
     \n#include <cassert>\n#include <cstdint>\n#include <type_traits>\n\nnamespace\
     \ lib {\n\n// xoshiro256starstar\n// reference: https://prng.di.unimi.it/xoshiro256starstar.c\n\
     // \u5468\u671F\u4E3A 2^{256}-1\n// UINT64_C(x) \u7B49\u4EF7\u4E8E\u5728 x \u540E\
@@ -98,7 +103,7 @@ data:
   isVerificationFile: false
   path: misc/random.hpp
   requiredBy: []
-  timestamp: '2021-06-03 15:01:19+08:00'
+  timestamp: '2021-06-06 20:18:21+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: misc/random.hpp
@@ -106,5 +111,5 @@ layout: document
 redirect_from:
 - /library/misc/random.hpp
 - /library/misc/random.hpp.html
-title: misc/random.hpp
+title: "pseudo random generator / \u4F2A\u968F\u673A\u6570\u751F\u6210\u5668"
 ---

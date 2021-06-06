@@ -7,36 +7,40 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':warning:'
   attributes:
+    document_title: "long Montgomery modint / \u957F\u6574\u578B Montgomery \u53D6\
+      \u6A21\u7C7B"
     links:
     - https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
-  bundledCode: "#line 1 \"modint/long_Montgomery_modint.hpp\"\n\n\n\n#include <cstdint>\n\
-    #include <iostream>\n#include <tuple>\n#include <type_traits>\n\n#ifdef _MSC_VER\n\
-    #include <intrin.h>\n#endif\n\nnamespace lib {\n\n// reference: https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
-    // author: Nyaan\ntemplate <std::uint64_t mod> class LongMontgomeryModInt {\n\
-    public:\n  using u32 = std::uint32_t;\n  using i64 = std::int64_t;\n  using u64\
-    \ = std::uint64_t;\n  using m64 = LongMontgomeryModInt;\n\n  using value_type\
-    \ = u64;\n\n  static constexpr u64 get_mod() { return mod; }\n\n  static constexpr\
-    \ u64 get_primitive_root_prime() {\n    u64 tmp[64] = {};\n    int cnt = 0;\n\
-    \    const u64 phi = mod - 1;\n    u64 m = phi;\n    for (u64 i = 2; i * i <=\
-    \ m; ++i) {\n      if (m % i == 0) {\n        tmp[cnt++] = i;\n        do {\n\
-    \          m /= i;\n        } while (m % i == 0);\n      }\n    }\n    if (m !=\
-    \ 1) tmp[cnt++] = m;\n    for (m64 res = 2;; res += 1) {\n      bool f = true;\n\
-    \      for (int i = 0; i < cnt && f; ++i) f &= res.pow(phi / tmp[i]) != 1;\n \
-    \     if (f) return u32(res);\n    }\n  }\n\n  constexpr LongMontgomeryModInt()\
-    \ = default;\n  ~LongMontgomeryModInt() = default;\n\n  template <typename T,\
-    \ std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  constexpr LongMontgomeryModInt(T\
-    \ v) : v_(reduce(mul(norm(v % i64(mod)), r2))) {}\n\n  constexpr LongMontgomeryModInt(const\
-    \ m64 &) = default;\n\n  constexpr u64 get() const { return reduce({0, v_}); }\n\
-    \n  template <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n\
-    \  explicit constexpr operator T() const {\n    return T(get());\n  }\n\n  constexpr\
-    \ m64 operator-() const {\n    m64 res;\n    res.v_ = (mod & -(v_ != 0)) - v_;\n\
-    \    return res;\n  }\n\n  constexpr m64 inv() const {\n    i64 x1 = 1, x3 = 0,\
-    \ a = get(), b = mod;\n    while (b != 0) {\n      i64 q = a / b, x1_old = x1,\
-    \ a_old = a;\n      x1 = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;\n\
-    \    }\n    return m64(x1);\n  }\n\n  constexpr m64 &operator+=(const m64 &rhs)\
-    \ {\n    v_ += rhs.v_ - mod;\n    v_ += mod & -(v_ >> 63);\n    return *this;\n\
-    \  }\n  constexpr m64 &operator-=(const m64 &rhs) {\n    v_ -= rhs.v_;\n    v_\
-    \ += mod & -(v_ >> 63);\n    return *this;\n  }\n  constexpr m64 &operator*=(const\
+  bundledCode: "#line 1 \"modint/long_Montgomery_modint.hpp\"\n/**\n * @brief long\
+    \ Montgomery modint / \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\
+    \n#ifndef LONG_MONTGOMERY_MODINT_HEADER_HPP\n#define LONG_MONTGOMERY_MODINT_HEADER_HPP\n\
+    \n#include <cstdint>\n#include <iostream>\n#include <tuple>\n#include <type_traits>\n\
+    \n#ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n// reference:\
+    \ https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n// author:\
+    \ Nyaan\ntemplate <std::uint64_t mod> class LongMontgomeryModInt {\npublic:\n\
+    \  using u32 = std::uint32_t;\n  using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n\
+    \  using m64 = LongMontgomeryModInt;\n\n  using value_type = u64;\n\n  static\
+    \ constexpr u64 get_mod() { return mod; }\n\n  static constexpr u64 get_primitive_root_prime()\
+    \ {\n    u64 tmp[64] = {};\n    int cnt = 0;\n    const u64 phi = mod - 1;\n \
+    \   u64 m = phi;\n    for (u64 i = 2; i * i <= m; ++i) {\n      if (m % i == 0)\
+    \ {\n        tmp[cnt++] = i;\n        do {\n          m /= i;\n        } while\
+    \ (m % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m64\
+    \ res = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt &&\
+    \ f; ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n  \
+    \  }\n  }\n\n  constexpr LongMontgomeryModInt() = default;\n  ~LongMontgomeryModInt()\
+    \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    \ int> = 0>\n  constexpr LongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
+    \ r2))) {}\n\n  constexpr LongMontgomeryModInt(const m64 &) = default;\n\n  constexpr\
+    \ u64 get() const { return reduce({0, v_}); }\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    \ int> = 0>\n  explicit constexpr operator T() const {\n    return T(get());\n\
+    \  }\n\n  constexpr m64 operator-() const {\n    m64 res;\n    res.v_ = (mod &\
+    \ -(v_ != 0)) - v_;\n    return res;\n  }\n\n  constexpr m64 inv() const {\n \
+    \   i64 x1 = 1, x3 = 0, a = get(), b = mod;\n    while (b != 0) {\n      i64 q\
+    \ = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3 = x1_old - x3 * q, a = b,\
+    \ b = a_old - b * q;\n    }\n    return m64(x1);\n  }\n\n  constexpr m64 &operator+=(const\
+    \ m64 &rhs) {\n    v_ += rhs.v_ - mod;\n    v_ += mod & -(v_ >> 63);\n    return\
+    \ *this;\n  }\n  constexpr m64 &operator-=(const m64 &rhs) {\n    v_ -= rhs.v_;\n\
+    \    v_ += mod & -(v_ >> 63);\n    return *this;\n  }\n  constexpr m64 &operator*=(const\
     \ m64 &rhs) {\n    v_ = reduce(mul(v_, rhs.v_));\n    return *this;\n  }\n  constexpr\
     \ m64 &operator/=(const m64 &rhs) { return operator*=(rhs.inv()); }\n  friend\
     \ constexpr m64 operator+(const m64 &lhs, const m64 &rhs) { return m64(lhs) +=\
@@ -77,8 +81,9 @@ data:
     \ * mod == 1, \"???\\n\");\n  static_assert((mod & (1ULL << 63)) == 0, \"mod >=\
     \ (1ULL << 63)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\ntemplate\
     \ <std::uint64_t mod> using LongMontModInt = LongMontgomeryModInt<mod>;\n\n} //\
-    \ namespace lib\n\n\n"
-  code: "#ifndef LONG_MONTGOMERY_MODINT_HEADER_HPP\n#define LONG_MONTGOMERY_MODINT_HEADER_HPP\n\
+    \ namespace lib\n\n#endif\n"
+  code: "/**\n * @brief long Montgomery modint / \u957F\u6574\u578B Montgomery \u53D6\
+    \u6A21\u7C7B\n *\n */\n\n#ifndef LONG_MONTGOMERY_MODINT_HEADER_HPP\n#define LONG_MONTGOMERY_MODINT_HEADER_HPP\n\
     \n#include <cstdint>\n#include <iostream>\n#include <tuple>\n#include <type_traits>\n\
     \n#ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n// reference:\
     \ https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n// author:\
@@ -151,7 +156,7 @@ data:
   isVerificationFile: false
   path: modint/long_Montgomery_modint.hpp
   requiredBy: []
-  timestamp: '2021-06-03 15:01:19+08:00'
+  timestamp: '2021-06-06 20:18:21+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: modint/long_Montgomery_modint.hpp

@@ -37,13 +37,17 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
+    document_title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
     links: []
-  bundledCode: "#line 1 \"traits/modint.hpp\"\n\n\n\nnamespace lib {\n\ntemplate <typename\
-    \ mod_t> struct modint_traits {\n  using type = typename mod_t::value_type;\n\
-    \  static constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr\
-    \ type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
-    \ }\n};\n\n} // namespace lib\n\n\n"
-  code: "#ifndef MODINT_TRAITS_HEADER_HPP\n#define MODINT_TRAITS_HEADER_HPP\n\nnamespace\
+  bundledCode: "#line 1 \"traits/modint.hpp\"\n/**\n * @brief modint traits / \u53D6\
+    \u6A21\u7C7B\u8403\u53D6\n *\n */\n\n#ifndef MODINT_TRAITS_HEADER_HPP\n#define\
+    \ MODINT_TRAITS_HEADER_HPP\n\nnamespace lib {\n\ntemplate <typename mod_t> struct\
+    \ modint_traits {\n  using type = typename mod_t::value_type;\n  static constexpr\
+    \ type get_mod() { return mod_t::get_mod(); }\n  static constexpr type get_primitive_root_prime()\
+    \ { return mod_t::get_primitive_root_prime(); }\n};\n\n} // namespace lib\n\n\
+    #endif\n"
+  code: "/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\n\
+    #ifndef MODINT_TRAITS_HEADER_HPP\n#define MODINT_TRAITS_HEADER_HPP\n\nnamespace\
     \ lib {\n\ntemplate <typename mod_t> struct modint_traits {\n  using type = typename\
     \ mod_t::value_type;\n  static constexpr type get_mod() { return mod_t::get_mod();\
     \ }\n  static constexpr type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
@@ -55,7 +59,7 @@ data:
   - math/formal_power_series/radix_2_NTT.hpp
   - math/formal_power_series/fps_basic.hpp
   - math/formal_power_series/linearly_recurrent_sequence.hpp
-  timestamp: '2021-06-03 15:01:19+08:00'
+  timestamp: '2021-06-06 20:18:21+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
@@ -70,5 +74,5 @@ layout: document
 redirect_from:
 - /library/traits/modint.hpp
 - /library/traits/modint.hpp.html
-title: traits/modint.hpp
+title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
 ---
