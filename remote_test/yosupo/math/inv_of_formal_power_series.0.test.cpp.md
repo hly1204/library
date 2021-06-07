@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -25,12 +25,12 @@ data:
     \n\n#include <iostream>\n#include <vector>\n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\
     \n\n\n\n/**\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\
     \n#include <algorithm>\n#include <cassert>\n#include <cstdint>\n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n\n#line 1 \"traits/modint.hpp\"\n\n\n\nnamespace lib {\n\ntemplate <typename\
-    \ mod_t> struct modint_traits {\n  using type = typename mod_t::value_type;\n\
-    \  static constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr\
-    \ type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
-    \ }\n};\n\n} // namespace lib\n\n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\
-    \u8403\u53D6\n *\n */\n\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
+    \n\n#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits / \u53D6\
+    \u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename mod_t>\
+    \ struct modint_traits {\n  using type = typename mod_t::value_type;\n  static\
+    \ constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr type\
+    \ get_primitive_root_prime() { return mod_t::get_primitive_root_prime(); }\n};\n\
+    \n} // namespace lib\n\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
     \n\nnamespace lib {\n\n// \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\
     \uFF01\uFF01\uFF01\ntemplate <typename mod_t> class NTT {\npublic:\n  NTT() =\
     \ delete;\n\n  static void set_root(int len) {\n    static int lim = 0;\n    static\
@@ -177,7 +177,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-06 21:24:21+08:00'
+  timestamp: '2021-06-07 16:48:59+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp

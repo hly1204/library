@@ -19,16 +19,16 @@ data:
       title: "priority queue / \u4F18\u5148\u961F\u5217"
   - name: math/basic
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: math/basic/binary_mul.hpp
       title: "binary multiplication / \u5FEB\u901F\u4E58"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: math/basic/binary_pow.hpp
       title: "binary power / \u5FEB\u901F\u5E42"
     - icon: ':heavy_check_mark:'
       path: math/basic/crt.hpp
       title: "Chinese remainder theorem / \u4E2D\u56FD\u5269\u4F59\u5B9A\u7406"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: math/basic/exgcd.hpp
       title: "extended Euclidean algorithm / \u6269\u5C55\u6B27\u51E0\u91CC\u5F97\u7B97\
         \u6CD5"
@@ -37,7 +37,7 @@ data:
       title: "integer factorization / \u6574\u6570\u5206\u89E3"
   - name: math/formal_power_series
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: math/formal_power_series/fps_basic.hpp
       title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
         \u7684\u57FA\u672C\u64CD\u4F5C"
@@ -45,7 +45,7 @@ data:
       path: math/formal_power_series/linearly_recurrent_sequence.hpp
       title: "linearly recurrent sequence / \u5E38\u7CFB\u6570\u7EBF\u6027\u9012\u63A8\
         \u5E8F\u5217"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: math/formal_power_series/radix_2_NTT.hpp
       title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
   - name: math/modulo
@@ -53,7 +53,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: math/modulo/binomial_coefficient_mod.hpp
       title: "binomial coefficient mod / \u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: math/modulo/sqrt_mod.hpp
       title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
   - name: misc
@@ -69,7 +69,7 @@ data:
       title: "pseudo random generator / \u4F2A\u968F\u673A\u6570\u751F\u6210\u5668"
   - name: modint
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint/Montgomery_modint.hpp
       title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
     - icon: ':warning:'
@@ -87,10 +87,10 @@ data:
         \u5E8F\uFF09"
   - name: traits
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: traits/base.hpp
       title: "type traits / \u7C7B\u578B\u8403\u53D6"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: traits/modint.hpp
       title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   verificationCategories:
@@ -147,9 +147,12 @@ data:
       path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
       title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
     - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
+      title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
+    - icon: ':x:'
       path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
       title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
       title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
   - name: remote_test/yosupo/string

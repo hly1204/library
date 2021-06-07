@@ -24,7 +24,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence
     links:
     - https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence
-  bundledCode: "#line 1 \"remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp\"\
+  bundledCode: "#line 1 \"remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence\"\
     \n\n#include <algorithm>\n#include <iostream>\n\n#line 1 \"math/formal_power_series/fps_basic.hpp\"\
     \n\n\n\n/**\n * @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\
@@ -350,38 +350,40 @@ data:
     \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
     \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
     \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n\n#line 8 \"remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp\"\
+    \ // namespace lib\n\n\n#line 8 \"remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  using mint = lib::MontModInt<998244353>;\n  int d;\n  long long k;\n  std::cin\
-    \ >> d >> k;\n  lib::FPS<mint> rec(d), init_v(d), res{1}, t{0, 1};\n  for (auto\
-    \ &i : init_v) std::cin >> i;\n  for (auto &i : rec) std::cin >> i, i = -i;\n\
-    \  rec.insert(rec.begin(), 1);\n  std::cout << (init_v * rec).slice(d).div_at(rec,\
-    \ k);\n  return 0;\n}\n"
+    \ >> d >> k;\n  lib::Poly<mint> rec(d), init(d), t{0, 1};\n  for (auto &i : init)\
+    \ std::cin >> i;\n  for (auto &i : rec) std::cin >> i, i = -i;\n  std::reverse(rec.begin(),\
+    \ rec.end());\n  rec.emplace_back(1);\n  auto res = t.pow_mod(k, rec);\n  mint\
+    \ ans = 0;\n  for (int i = 0; i < d; ++i) ans += res[i] * init[i];\n  std::cout\
+    \ << ans;\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence\"\
     \n\n#include <algorithm>\n#include <iostream>\n\n#include \"math/formal_power_series/fps_basic.hpp\"\
     \n#include \"modint/Montgomery_modint.hpp\"\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"\
     in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
     \  std::cin.tie(0);\n  using mint = lib::MontModInt<998244353>;\n  int d;\n  long\
-    \ long k;\n  std::cin >> d >> k;\n  lib::FPS<mint> rec(d), init_v(d), res{1},\
-    \ t{0, 1};\n  for (auto &i : init_v) std::cin >> i;\n  for (auto &i : rec) std::cin\
-    \ >> i, i = -i;\n  rec.insert(rec.begin(), 1);\n  std::cout << (init_v * rec).slice(d).div_at(rec,\
-    \ k);\n  return 0;\n}"
+    \ long k;\n  std::cin >> d >> k;\n  lib::Poly<mint> rec(d), init(d), t{0, 1};\n\
+    \  for (auto &i : init) std::cin >> i;\n  for (auto &i : rec) std::cin >> i, i\
+    \ = -i;\n  std::reverse(rec.begin(), rec.end());\n  rec.emplace_back(1);\n  auto\
+    \ res = t.pow_mod(k, rec);\n  mint ans = 0;\n  for (int i = 0; i < d; ++i) ans\
+    \ += res[i] * init[i];\n  std::cout << ans;\n  return 0;\n}"
   dependsOn:
   - math/formal_power_series/fps_basic.hpp
   - traits/modint.hpp
   - math/formal_power_series/radix_2_NTT.hpp
   - modint/Montgomery_modint.hpp
   isVerificationFile: true
-  path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
+  path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
   requiredBy: []
   timestamp: '2021-06-07 16:48:59+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
+documentation_of: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
 layout: document
 redirect_from:
-- /verify/remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
-- /verify/remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp.html
-title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
+- /verify/remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
+- /verify/remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp.html
+title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
 ---
