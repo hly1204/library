@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/fps_basic.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -351,24 +351,23 @@ data:
     \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
     \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
     \ // namespace lib\n\n\n#line 8 \"remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp\"\
-    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
-    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
-    \  using mint = lib::MontModInt<998244353>;\n  int d;\n  long long k;\n  std::cin\
-    \ >> d >> k;\n  lib::Poly<mint> rec(d), init(d), t{0, 1};\n  for (auto &i : init)\
+    \n\nint main() {\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n  using\
+    \ mint = lib::MontModInt<998244353>;\n  int d;\n  long long k;\n  std::cin >>\
+    \ d >> k;\n  lib::Poly<mint> rec(d), init(d), t{0, 1};\n  for (auto &i : init)\
     \ std::cin >> i;\n  for (auto &i : rec) std::cin >> i, i = -i;\n  std::reverse(rec.begin(),\
-    \ rec.end());\n  rec.emplace_back(1);\n  auto res = t.pow_mod(k, rec);\n  mint\
-    \ ans = 0;\n  for (int i = 0; i < d; ++i) ans += res[i] * init[i];\n  std::cout\
-    \ << ans;\n  return 0;\n}\n"
+    \ rec.end());\n  rec.emplace_back(1);\n  auto res = t.pow_mod(k, rec);\n  res.resize(d,\
+    \ 0);\n  mint ans = 0;\n  for (int i = 0; i < d; ++i) ans += res[i] * init[i];\n\
+    \  std::cout << ans;\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence\"\
     \n\n#include <algorithm>\n#include <iostream>\n\n#include \"math/formal_power_series/fps_basic.hpp\"\
-    \n#include \"modint/Montgomery_modint.hpp\"\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"\
-    in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
+    \n#include \"modint/Montgomery_modint.hpp\"\n\nint main() {\n  std::ios::sync_with_stdio(false);\n\
     \  std::cin.tie(0);\n  using mint = lib::MontModInt<998244353>;\n  int d;\n  long\
     \ long k;\n  std::cin >> d >> k;\n  lib::Poly<mint> rec(d), init(d), t{0, 1};\n\
     \  for (auto &i : init) std::cin >> i;\n  for (auto &i : rec) std::cin >> i, i\
     \ = -i;\n  std::reverse(rec.begin(), rec.end());\n  rec.emplace_back(1);\n  auto\
-    \ res = t.pow_mod(k, rec);\n  mint ans = 0;\n  for (int i = 0; i < d; ++i) ans\
-    \ += res[i] * init[i];\n  std::cout << ans;\n  return 0;\n}"
+    \ res = t.pow_mod(k, rec);\n  res.resize(d, 0);\n  mint ans = 0;\n  for (int i\
+    \ = 0; i < d; ++i) ans += res[i] * init[i];\n  std::cout << ans;\n  return 0;\n\
+    }"
   dependsOn:
   - math/formal_power_series/fps_basic.hpp
   - traits/modint.hpp
@@ -377,7 +376,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
   requiredBy: []
-  timestamp: '2021-06-07 16:48:59+08:00'
+  timestamp: '2021-06-07 17:01:04+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp

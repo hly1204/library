@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/binary_mul.hpp
     title: "binary multiplication / \u5FEB\u901F\u4E58"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/binary_pow.hpp
     title: "binary power / \u5FEB\u901F\u5E42"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/base.hpp
     title: "type traits / \u7C7B\u578B\u8403\u53D6"
   _extendedRequiredBy: []
