@@ -1,23 +1,23 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/basic/binary_mul.hpp
     title: "binary multiplication / \u5FEB\u901F\u4E58"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/basic/binary_pow.hpp
     title: "binary power / \u5FEB\u901F\u5E42"
   - icon: ':heavy_check_mark:'
     path: math/basic/crt.hpp
     title: "Chinese remainder theorem / \u4E2D\u56FD\u5269\u4F59\u5B9A\u7406"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/basic/exgcd.hpp
     title: "extended Euclidean algorithm / \u6269\u5C55\u6B27\u51E0\u91CC\u5F97\u7B97\
       \u6CD5"
   - icon: ':heavy_check_mark:'
     path: math/modulo/binomial_coefficient_mod.hpp
     title: "binomial coefficient mod / \u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/base.hpp
     title: "type traits / \u7C7B\u578B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -38,7 +38,7 @@ data:
     \ 1 \"math/basic/binary_pow.hpp\"\n\n\n\n/**\n * @brief binary power / \u5FEB\u901F\
     \u5E42\n *\n */\n\n#line 10 \"math/basic/binary_pow.hpp\"\n#include <type_traits>\n\
     \n#line 1 \"traits/base.hpp\"\n\n\n\n/**\n * @brief type traits / \u7C7B\u578B\
-    \u8403\u53D6\n *\n */\n\n#line 10 \"traits/base.hpp\"\n\nnamespace lib {\n\ntemplate\
+    \u8403\u53D6\n *\n */\n\n#line 11 \"traits/base.hpp\"\n\nnamespace lib {\n\ntemplate\
     \ <typename Type> struct promote_integral;\ntemplate <> struct promote_integral<std::int32_t>\
     \ { using type = std::int64_t; };\ntemplate <> struct promote_integral<std::uint32_t>\
     \ { using type = std::uint64_t; };\n\n// \u8F85\u52A9\u6A21\u677F\ntemplate <typename\
@@ -189,7 +189,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-07 16:48:59+08:00'
+  timestamp: '2021-06-11 23:09:55+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp

@@ -27,9 +27,9 @@ data:
     \u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#include <cassert>\n#line\
     \ 12 \"modint/runtime_long_Montgomery_modint.hpp\"\n#include <tuple>\n#include\
     \ <type_traits>\n\n#ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib\
-    \ {\n\n/**\n * @brief \u8FD0\u884C\u65F6\u957F Montgomery \u53D6\u6A21\u7C7B\n\
-    \ * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n *\
-    \ @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
+    \ {\n\n/**\n * @brief \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery \u53D6\u6A21\
+    \u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     class RuntimeLongMontgomeryModInt {\npublic:\n  using u32 = std::uint32_t;\n \
     \ using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\
     \n  using value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static\
@@ -95,7 +95,9 @@ data:
     \ true;\n    m64 x = m64(i).pow(u);\n    for (int i = 0; i != t && x != ONE; ++i)\
     \ {\n      m64 y = x * x;\n      if (x != MINUS_ONE && y == ONE) return false;\n\
     \      x = y;\n    }\n    if (x != ONE) return false;\n  }\n  return true;\n}\n\
-    \nstd::uint64_t rho(std::uint64_t n) {\n  using u64 = std::uint64_t;\n  using\
+    \nnamespace internal {\n\n/**\n * @brief Pollard-rho \u7B97\u6CD5\n * \n * @param\
+    \ n \n * @return std::uint64_t \u4E00\u4E2A\uFF08\u7D20\uFF09\u56E0\u6570\uFF1F\
+    \n */\nstd::uint64_t rho(std::uint64_t n) {\n  using u64 = std::uint64_t;\n  using\
     \ m64 = RuntimeLongMontModInt;\n  static std::random_device rd;\n  static std::mt19937\
     \ gen(rd());\n  std::uniform_int_distribution<u64> dis(2, n - 1);\n  if (m64::get_mod()\
     \ != n) m64::set_mod(n);\n  const m64 R(dis(gen));\n  auto f = [=](m64 x) -> m64\
@@ -105,15 +107,15 @@ data:
     \      ys = y;\n      for (int i = 0; i < m && i < r - k; ++i) q *= x - (y = f(y));\n\
     \      g = std::gcd(u64(q), n);\n    }\n  }\n  if (g == n) do\n      g = std::gcd(u64(x\
     \ - (ys = f(ys))), n);\n    while (g == 1);\n  return g == n ? rho(n) : g;\n}\n\
-    \nvoid factorize_odd(std::uint64_t n, std::map<std::uint64_t, int> &mp) {\n  if\
-    \ (n < 2) return;\n  if (is_prime(n)) {\n    ++mp[n];\n    return;\n  }\n  std::uint64_t\
-    \ g = rho(n);\n  factorize_odd(n / g, mp);\n  factorize_odd(g, mp);\n}\n\nstd::map<std::uint64_t,\
-    \ int> factorize(std::uint64_t n) {\n  std::map<std::uint64_t, int> res;\n  if\
-    \ (n < 2) return res;\n  int t = 0;\n  while ((n & 1) == 0) n >>= 1, ++t;\n  if\
-    \ (t) res[2] = t;\n  factorize_odd(n, res);\n  return res;\n}\n\n} // namespace\
-    \ lib\n\n\n#line 6 \"remote_test/yosupo/math/factorize.0.test.cpp\"\n\nint main()\
-    \ {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\"\
-    , \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
+    \n} // namespace internal\n\nvoid factorize_odd(std::uint64_t n, std::map<std::uint64_t,\
+    \ int> &mp) {\n  if (n < 2) return;\n  if (is_prime(n)) {\n    ++mp[n];\n    return;\n\
+    \  }\n  std::uint64_t g = internal::rho(n);\n  factorize_odd(n / g, mp);\n  factorize_odd(g,\
+    \ mp);\n}\n\nstd::map<std::uint64_t, int> factorize(std::uint64_t n) {\n  std::map<std::uint64_t,\
+    \ int> res;\n  if (n < 2) return res;\n  int t = 0;\n  while ((n & 1) == 0) n\
+    \ >>= 1, ++t;\n  if (t) res[2] = t;\n  factorize_odd(n, res);\n  return res;\n\
+    }\n\n} // namespace lib\n\n\n#line 6 \"remote_test/yosupo/math/factorize.0.test.cpp\"\
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int Q;\n  std::cin >> Q;\n  while (Q--) {\n    long long a;\n    std::cin >>\
     \ a;\n    std::vector<long long> factor;\n    auto mp = lib::factorize(a);\n \
     \   for (auto i : mp) {\n      for (int j = i.second; j > 0; --j) factor.push_back(i.first);\n\
@@ -134,7 +136,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/factorize.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-06 21:24:21+08:00'
+  timestamp: '2021-06-11 23:09:55+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/factorize.0.test.cpp

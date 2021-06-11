@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/fps_basic.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -79,8 +79,15 @@ data:
     \    dft(n, x + n);\n  }\n\nprivate:\n  static inline std::vector<mod_t> rt, irt;\n\
     };\n\nstd::uint32_t get_ntt_len(std::uint32_t n) {\n  --n;\n  n |= n >> 1;\n \
     \ n |= n >> 2;\n  n |= n >> 4;\n  n |= n >> 8;\n  return (n | n >> 16) + 1;\n\
-    }\n\ntemplate <typename mod_t> void dft(int n, mod_t *x) {\n  NTT<mod_t>::set_root(n);\n\
-    \  NTT<mod_t>::dft(n, x);\n}\n\ntemplate <typename mod_t> void idft(int n, mod_t\
+    }\n\n/**\n * @brief \u63A5\u6536\u4E00\u4E2A\u591A\u9879\u5F0F\uFF0C\u8FD4\u56DE\
+    \u4E8C\u8FDB\u5236\u7FFB\u8F6C\u540E\u7684 DFT \u5E8F\u5217\uFF0C\u5373 x(1),\
+    \ x(-1) \u7B49\uFF0C\n * \u5BF9\u4E8E\u4E0B\u6807 i \u548C i^1 \u5FC5\u7136\u662F\
+    \u4E24\u4E2A\u4E92\u4E3A\u76F8\u53CD\u6570\u7684\u70B9\u503C\n *\n * @tparam mod_t\n\
+    \ * @param n\n * @param x\n */\ntemplate <typename mod_t> void dft(int n, mod_t\
+    \ *x) {\n  NTT<mod_t>::set_root(n);\n  NTT<mod_t>::dft(n, x);\n}\n\n/**\n * @brief\
+    \ \u63A5\u6536\u4E8C\u8FDB\u5236\u7FFB\u8F6C\u540E\u7684 DFT \u5E8F\u5217\uFF0C\
+    \u8FD4\u56DE\u591A\u9879\u5F0F\u5E8F\u5217 mod (x^n - 1)\n *\n * @tparam mod_t\n\
+    \ * @param n\n * @param x\n */\ntemplate <typename mod_t> void idft(int n, mod_t\
     \ *x) {\n  NTT<mod_t>::set_root(n);\n  NTT<mod_t>::idft(n, x);\n}\n\ntemplate\
     \ <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
     \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
@@ -299,20 +306,20 @@ data:
     \ Poly = Polynomial<mod_t>;\n\n} // namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\
     \n\n\n\n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n *\n\
     \ */\n\n#line 11 \"modint/Montgomery_modint.hpp\"\n#include <type_traits>\n\n\
-    namespace lib {\n\n/**\n * @brief \u957F Montgomery \u53D6\u6A21\u7C7B\n * @ref\
-    \ https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n * @author\
-    \ Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\ntemplate\
-    \ <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 = std::int32_t;\n\
-    \  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n  using m32 = MontgomeryModInt;\n\
-    \n  using value_type = u32;\n\n  static constexpr u32 get_mod() { return mod;\
-    \ }\n\n  static constexpr u32 get_primitive_root_prime() {\n    u32 tmp[32] =\
-    \ {};\n    int cnt = 0;\n    const u32 phi = mod - 1;\n    u32 m = phi;\n    for\
-    \ (u32 i = 2; i * i <= m; ++i) {\n      if (m % i == 0) {\n        tmp[cnt++]\
-    \ = i;\n        do {\n          m /= i;\n        } while (m % i == 0);\n     \
-    \ }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32 res = 2;; res += 1)\
-    \ {\n      bool f = true;\n      for (int i = 0; i < cnt && f; ++i) f &= res.pow(phi\
-    \ / tmp[i]) != 1;\n      if (f) return u32(res);\n    }\n  }\n\n  constexpr MontgomeryModInt()\
-    \ = default;\n  ~MontgomeryModInt() = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    namespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
+    template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
+    \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
+    \  using m32 = MontgomeryModInt;\n\n  using value_type = u32;\n\n  static constexpr\
+    \ u32 get_mod() { return mod; }\n\n  static constexpr u32 get_primitive_root_prime()\
+    \ {\n    u32 tmp[32] = {};\n    int cnt = 0;\n    const u32 phi = mod - 1;\n \
+    \   u32 m = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n      if (m % i == 0)\
+    \ {\n        tmp[cnt++] = i;\n        do {\n          m /= i;\n        } while\
+    \ (m % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32\
+    \ res = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt &&\
+    \ f; ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n  \
+    \  }\n  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()\
+    \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  constexpr MontgomeryModInt(T v) : v_(reduce(u64(v % i32(mod) +\
     \ i32(mod)) * r2)) {}\n\n  constexpr MontgomeryModInt(const m32 &) = default;\n\
     \n  constexpr u32 get() const { return norm(reduce(v_)); }\n\n  template <typename\
@@ -377,7 +384,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-07 16:48:59+08:00'
+  timestamp: '2021-06-11 23:09:55+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/division_of_polynomials.0.test.cpp

@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/basic/binary_mul.hpp
     title: "binary multiplication / \u5FEB\u901F\u4E58"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/base.hpp
     title: "type traits / \u7C7B\u578B\u8403\u53D6"
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: math/modulo/binomial_coefficient_mod.hpp
     title: "binomial coefficient mod / \u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/modulo/sqrt_mod.hpp
     title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
   _extendedVerifiedWith:
@@ -21,31 +21,31 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
     title: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
     title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "binary power / \u5FEB\u901F\u5E42"
     links: []
   bundledCode: "#line 1 \"math/basic/binary_pow.hpp\"\n\n\n\n/**\n * @brief binary\
     \ power / \u5FEB\u901F\u5E42\n *\n */\n\n#include <cassert>\n#include <type_traits>\n\
     \n#line 1 \"traits/base.hpp\"\n\n\n\n/**\n * @brief type traits / \u7C7B\u578B\
-    \u8403\u53D6\n *\n */\n\n#include <cstdint>\n\nnamespace lib {\n\ntemplate <typename\
-    \ Type> struct promote_integral;\ntemplate <> struct promote_integral<std::int32_t>\
-    \ { using type = std::int64_t; };\ntemplate <> struct promote_integral<std::uint32_t>\
-    \ { using type = std::uint64_t; };\n\n// \u8F85\u52A9\u6A21\u677F\ntemplate <typename\
-    \ Type> using promote_integral_t = typename promote_integral<Type>::type;\n\n\
-    template <typename T, typename U,\n          bool = (sizeof(T) > sizeof(U) ||\
-    \ (sizeof(T) == sizeof(U) && std::is_signed_v<T>))>\nstruct longer_integral;\n\
-    template <typename T, typename U> struct longer_integral<T, U, true> { using type\
-    \ = T; };\ntemplate <typename T, typename U> struct longer_integral<T, U, false>\
-    \ { using type = U; };\n\n// \u8F85\u52A9\u6A21\u677F\ntemplate <typename T, typename\
-    \ U> using longer_integral_t = typename longer_integral<T, U>::type;\n\n} // namespace\
-    \ lib\n\n\n#line 1 \"math/basic/binary_mul.hpp\"\n\n\n\n/**\n * @brief binary\
-    \ multiplication / \u5FEB\u901F\u4E58\n *\n */\n\n#line 10 \"math/basic/binary_mul.hpp\"\
+    \u8403\u53D6\n *\n */\n\n#include <cstdint>\n#line 11 \"traits/base.hpp\"\n\n\
+    namespace lib {\n\ntemplate <typename Type> struct promote_integral;\ntemplate\
+    \ <> struct promote_integral<std::int32_t> { using type = std::int64_t; };\ntemplate\
+    \ <> struct promote_integral<std::uint32_t> { using type = std::uint64_t; };\n\
+    \n// \u8F85\u52A9\u6A21\u677F\ntemplate <typename Type> using promote_integral_t\
+    \ = typename promote_integral<Type>::type;\n\ntemplate <typename T, typename U,\n\
+    \          bool = (sizeof(T) > sizeof(U) || (sizeof(T) == sizeof(U) && std::is_signed_v<T>))>\n\
+    struct longer_integral;\ntemplate <typename T, typename U> struct longer_integral<T,\
+    \ U, true> { using type = T; };\ntemplate <typename T, typename U> struct longer_integral<T,\
+    \ U, false> { using type = U; };\n\n// \u8F85\u52A9\u6A21\u677F\ntemplate <typename\
+    \ T, typename U> using longer_integral_t = typename longer_integral<T, U>::type;\n\
+    \n} // namespace lib\n\n\n#line 1 \"math/basic/binary_mul.hpp\"\n\n\n\n/**\n *\
+    \ @brief binary multiplication / \u5FEB\u901F\u4E58\n *\n */\n\n#line 10 \"math/basic/binary_mul.hpp\"\
     \n\n#line 12 \"math/basic/binary_mul.hpp\"\n\nnamespace lib {\n\nnamespace internal\
     \ {\n\ntemplate <typename T> std::enable_if_t<std::is_integral_v<T>, T> mul_mod(T\
     \ x, T y, T mod) {\n  if ((x %= mod) < 0) x += mod;\n  if ((y %= mod) < 0) y +=\
@@ -94,8 +94,8 @@ data:
   requiredBy:
   - math/modulo/sqrt_mod.hpp
   - math/modulo/binomial_coefficient_mod.hpp
-  timestamp: '2021-06-07 16:48:59+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-06-11 23:09:55+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp

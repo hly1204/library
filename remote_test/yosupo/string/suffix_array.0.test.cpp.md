@@ -1,15 +1,15 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: string/suffix_array_sais.hpp
     title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\u5E8F\
       \uFF09"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/suffixarray
@@ -62,7 +62,7 @@ data:
     \ LCP \u6570\u7EC4\n * @ref https://cp-algorithms.com/string/suffix-array.html\n\
     \ * @param s \u5B57\u7B26\u4E32\n * @param SA \u8BA1\u7B97\u5B8C\u6BD5\u7684 s\
     \ \u7684\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n * @return std::vector<int>\
-    \ LCP \u6570\u7EC4\n */\nstd::vector<int> get_height(const std::string &s, const\
+    \ LCP \u6570\u7EC4\n */\nstd::vector<int> get_lcp(const std::string &s, const\
     \ std::vector<int> &SA) {\n  int n = s.size();\n  std::vector<int> rk(n), height(n\
     \ - 1, 0);\n  // height[i] = s[SA[i]..n-1] \u4E0E s[SA[i+1]..n-1] \u7684\u6700\
     \u957F\u516C\u5171\u524D\u7F00\uFF08 longest common prefix \uFF09\n  // Kasai\
@@ -87,8 +87,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/string/suffix_array.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-06 22:50:43+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2021-06-11 23:09:55+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/string/suffix_array.0.test.cpp
 layout: document

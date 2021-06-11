@@ -22,7 +22,7 @@ data:
     \ Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#include <cassert>\n#include <cstdint>\n\
     #include <iostream>\n#include <tuple>\n#include <type_traits>\n\n#ifdef _MSC_VER\n\
     #include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief \u8FD0\u884C\u65F6\
-    \u957F Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     class RuntimeLongMontgomeryModInt {\npublic:\n  using u32 = std::uint32_t;\n \
     \ using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\
@@ -84,14 +84,15 @@ data:
     \u578B Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#include <cassert>\n#include\
     \ <cstdint>\n#include <iostream>\n#include <tuple>\n#include <type_traits>\n\n\
     #ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief\
-    \ \u8FD0\u884C\u65F6\u957F Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
-    \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    class RuntimeLongMontgomeryModInt {\npublic:\n  using u32 = std::uint32_t;\n \
-    \ using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\
-    \n  using value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static\
-    \ bool set_mod(u64 m) {\n    if ((m & 1) == 0 || m == 1 || (m & (1ULL << 63))\
-    \ != 0) return false;\n    mod = m;\n    r = get_r();\n    r2 = get_r2();\n  \
-    \  return true;\n  }\n\n  RuntimeLongMontgomeryModInt() = default;\n  ~RuntimeLongMontgomeryModInt()\
+    \ \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n * @ref\
+    \ https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n * @author\
+    \ Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\nclass RuntimeLongMontgomeryModInt\
+    \ {\npublic:\n  using u32 = std::uint32_t;\n  using i64 = std::int64_t;\n  using\
+    \ u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\n  using\
+    \ value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static bool\
+    \ set_mod(u64 m) {\n    if ((m & 1) == 0 || m == 1 || (m & (1ULL << 63)) != 0)\
+    \ return false;\n    mod = m;\n    r = get_r();\n    r2 = get_r2();\n    return\
+    \ true;\n  }\n\n  RuntimeLongMontgomeryModInt() = default;\n  ~RuntimeLongMontgomeryModInt()\
     \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  RuntimeLongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
     \ r2))) {}\n\n  RuntimeLongMontgomeryModInt(const m64 &) = default;\n\n  u64 get()\
@@ -146,7 +147,7 @@ data:
   path: modint/runtime_long_Montgomery_modint.hpp
   requiredBy:
   - math/basic/integer_factorization.hpp
-  timestamp: '2021-06-06 21:24:21+08:00'
+  timestamp: '2021-06-11 23:09:55+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/factorize.0.test.cpp

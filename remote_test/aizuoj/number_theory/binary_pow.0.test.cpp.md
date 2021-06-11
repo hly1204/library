@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/basic/binary_mul.hpp
     title: "binary multiplication / \u5FEB\u901F\u4E58"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/basic/binary_pow.hpp
     title: "binary power / \u5FEB\u901F\u5E42"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/base.hpp
     title: "type traits / \u7C7B\u578B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -25,11 +25,11 @@ data:
     \n\n#include <iostream>\n\n#line 1 \"math/basic/binary_pow.hpp\"\n\n\n\n/**\n\
     \ * @brief binary power / \u5FEB\u901F\u5E42\n *\n */\n\n#include <cassert>\n\
     #include <type_traits>\n\n#line 1 \"traits/base.hpp\"\n\n\n\n/**\n * @brief type\
-    \ traits / \u7C7B\u578B\u8403\u53D6\n *\n */\n\n#include <cstdint>\n\nnamespace\
-    \ lib {\n\ntemplate <typename Type> struct promote_integral;\ntemplate <> struct\
-    \ promote_integral<std::int32_t> { using type = std::int64_t; };\ntemplate <>\
-    \ struct promote_integral<std::uint32_t> { using type = std::uint64_t; };\n\n\
-    // \u8F85\u52A9\u6A21\u677F\ntemplate <typename Type> using promote_integral_t\
+    \ traits / \u7C7B\u578B\u8403\u53D6\n *\n */\n\n#include <cstdint>\n#line 11 \"\
+    traits/base.hpp\"\n\nnamespace lib {\n\ntemplate <typename Type> struct promote_integral;\n\
+    template <> struct promote_integral<std::int32_t> { using type = std::int64_t;\
+    \ };\ntemplate <> struct promote_integral<std::uint32_t> { using type = std::uint64_t;\
+    \ };\n\n// \u8F85\u52A9\u6A21\u677F\ntemplate <typename Type> using promote_integral_t\
     \ = typename promote_integral<Type>::type;\n\ntemplate <typename T, typename U,\n\
     \          bool = (sizeof(T) > sizeof(U) || (sizeof(T) == sizeof(U) && std::is_signed_v<T>))>\n\
     struct longer_integral;\ntemplate <typename T, typename U> struct longer_integral<T,\
@@ -80,7 +80,7 @@ data:
   isVerificationFile: true
   path: remote_test/aizuoj/number_theory/binary_pow.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-07 16:48:59+08:00'
+  timestamp: '2021-06-11 23:09:55+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/aizuoj/number_theory/binary_pow.0.test.cpp
