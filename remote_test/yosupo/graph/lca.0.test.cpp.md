@@ -41,13 +41,15 @@ data:
     \ != p_[i][y]) x = p_[i][x], y = p_[i][y];\n    return p_[0][x];\n  }\n\nprivate:\n\
     \  const int N_;\n  vec<vec<int>> g_, p_; // graph & 2^i th parent\n  vec<int>\
     \ d_;          // depth\n};\n\n} // namespace lib\n\n\n#line 6 \"remote_test/yosupo/graph/lca.0.test.cpp\"\
-    \n\nint main() {\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n  int\
-    \ n, q;\n  std::cin >> n >> q;\n  lib::StaticTree tree(n);\n  for (int i = 1;\
-    \ i < n; ++i) {\n    int p;\n    std::cin >> p;\n    tree.add_edge(p, i);\n  }\n\
-    \  tree.preprocess(0);\n  while (q--) {\n    int u, v;\n    std::cin >> u >> v;\n\
-    \    std::cout << tree.query_lca(u, v) << '\\n';\n  }\n  return 0;\n}\n"
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
+    \  int n, q;\n  std::cin >> n >> q;\n  lib::StaticTree tree(n);\n  for (int i\
+    \ = 1; i < n; ++i) {\n    int p;\n    std::cin >> p;\n    tree.add_edge(p, i);\n\
+    \  }\n  tree.preprocess(0);\n  while (q--) {\n    int u, v;\n    std::cin >> u\
+    \ >> v;\n    std::cout << tree.query_lca(u, v) << '\\n';\n  }\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/lca\"\n\n#include <iostream>\n\
-    \n#include \"graph/binary_lifting.hpp\"\n\nint main() {\n  std::ios::sync_with_stdio(false);\n\
+    \n#include \"graph/binary_lifting.hpp\"\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"\
+    in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
     \  std::cin.tie(0);\n  int n, q;\n  std::cin >> n >> q;\n  lib::StaticTree tree(n);\n\
     \  for (int i = 1; i < n; ++i) {\n    int p;\n    std::cin >> p;\n    tree.add_edge(p,\
     \ i);\n  }\n  tree.preprocess(0);\n  while (q--) {\n    int u, v;\n    std::cin\
@@ -58,7 +60,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/graph/lca.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-11 23:14:06+08:00'
+  timestamp: '2021-06-12 14:03:29+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/graph/lca.0.test.cpp

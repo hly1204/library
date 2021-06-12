@@ -74,8 +74,9 @@ data:
     \ Type &new_key) { heap_->decrease_key(n, new_key); }\n  void delete_arbitrary(const_node_ptr_type\
     \ n) {\n    --sz_;\n    heap_->delete_arbitrary(n);\n  }\n\nprivate:\n  Container\
     \ *heap_;\n  int sz_;\n};\n\n} // namespace lib\n\n\n#line 8 \"remote_test/yosupo/graph/shortest_path.0.test.cpp\"\
-    \n\nint main() {\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n  int\
-    \ n, m, s, t;\n  std::cin >> n >> m >> s >> t;\n  std::vector<std::vector<std::pair<int,\
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
+    \  int n, m, s, t;\n  std::cin >> n >> m >> s >> t;\n  std::vector<std::vector<std::pair<int,\
     \ int>>> g(n);\n  while (m--) {\n    int a, b, c;\n    std::cin >> a >> b >> c;\n\
     \    g[a].push_back({b, c});\n  }\n  const long long INF = std::numeric_limits<long\
     \ long>::max();\n  std::vector<long long> dist(n, INF);\n  std::vector<int> pred(n,\
@@ -96,8 +97,9 @@ data:
     \ << i.second << '\\n';\n  }\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/shortest_path\"\n\n#include\
     \ <iostream>\n#include <limits>\n#include <vector>\n\n#include \"datastructure/heap/priority_queue.hpp\"\
-    \n\nint main() {\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n  int\
-    \ n, m, s, t;\n  std::cin >> n >> m >> s >> t;\n  std::vector<std::vector<std::pair<int,\
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
+    \  int n, m, s, t;\n  std::cin >> n >> m >> s >> t;\n  std::vector<std::vector<std::pair<int,\
     \ int>>> g(n);\n  while (m--) {\n    int a, b, c;\n    std::cin >> a >> b >> c;\n\
     \    g[a].push_back({b, c});\n  }\n  const long long INF = std::numeric_limits<long\
     \ long>::max();\n  std::vector<long long> dist(n, INF);\n  std::vector<int> pred(n,\
@@ -122,7 +124,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/graph/shortest_path.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-11 23:09:55+08:00'
+  timestamp: '2021-06-12 14:03:29+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/graph/shortest_path.0.test.cpp

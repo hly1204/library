@@ -1,15 +1,15 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: string/suffix_array_sais.hpp
     title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\u5E8F\
       \uFF09"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/suffixarray
@@ -20,17 +20,24 @@ data:
     #include <string>\n#include <vector>\n\n#line 1 \"string/suffix_array_sais.hpp\"\
     \n\n\n\n/**\n * @brief suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\
     \u5BFC\u6392\u5E8F\uFF09\n *\n */\n\n#include <algorithm>\n#line 12 \"string/suffix_array_sais.hpp\"\
-    \n\nnamespace lib {\n\nnamespace internal {\n\nstd::vector<int> SA_IS(const std::vector<int>\
-    \ &s, int K) {\n  const int n = s.size();\n  std::vector<bool> t(n);\n  std::vector<int>\
-    \ bkt(K, 0), bkt_l(K), bkt_r(K), SA(n), p1;\n#define is_S_type(x) (t[x])\n#define\
-    \ is_L_type(x) (!t[x])\n#define is_LMS_type(x) (is_S_type(x) && x != 0 && is_L_type(x\
-    \ - 1))\n#define induced_sort()                                              \
-    \                               \\\n  do {                                   \
-    \                                                          \\\n    std::copy_n(bkt_l.begin(),\
-    \ K, bkt.begin());                                                    \\\n   \
-    \ for (int i = 0, j; i != n; ++i)                                            \
-    \                    \\\n      if ((j = SA[i] - 1) >= 0 && is_L_type(j)) SA[bkt[s[j]]++]\
-    \ = j;                               \\\n    std::copy_n(bkt_r.begin(), K, bkt.begin());\
+    \n\nnamespace lib {\n\nnamespace internal {\n\n/**\n * @brief \u8BF1\u5BFC\u6392\
+    \u5E8F\n *\n * @ref Ge Nong, Sen Zhang and Daricks Wai Hong Chan. Linear Suffix\
+    \ Array Construction by Almost\n * Pure Induced-Sorting\n *\n * @param s \u5B57\
+    \u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\u8BC1\u672B\u5C3E\u4E3A 0 \u4E14\
+    \ 0 \u662F\u6574\u4E2A\u5B57\u7B26\u4E32\u6570\u7EC4\u4E2D\u53EA\u51FA\u73B0\u5728\
+    \u672B\u5C3E\u7684\u6700\u5C0F\u5B57\u7B26\uFF01\n * @param K \u5B57\u7B26\u4E32\
+    \u6570\u7EC4\u7684\u503C\u57DF\uFF0C\u7531 [0, K)\n * @return std::vector<int>\n\
+    \ */\nstd::vector<int> SA_IS(const std::vector<int> &s, int K) {\n  const int\
+    \ n = s.size();\n  std::vector<bool> t(n);\n  std::vector<int> bkt(K, 0), bkt_l(K),\
+    \ bkt_r(K), SA(n), p1;\n#define is_S_type(x) (t[x])\n#define is_L_type(x) (!t[x])\n\
+    #define is_LMS_type(x) (is_S_type(x) && x != 0 && is_L_type(x - 1))\n#define induced_sort()\
+    \                                                                            \
+    \ \\\n  do {                                                                 \
+    \                            \\\n    std::copy_n(bkt_l.begin(), K, bkt.begin());\
+    \                                                    \\\n    for (int i = 0, j;\
+    \ i != n; ++i)                                                               \
+    \ \\\n      if ((j = SA[i] - 1) >= 0 && is_L_type(j)) SA[bkt[s[j]]++] = j;   \
+    \                            \\\n    std::copy_n(bkt_r.begin(), K, bkt.begin());\
     \                                                    \\\n    for (int i = n -\
     \ 1, j; i >= 0; --i)                                                         \
     \   \\\n      if ((j = SA[i] - 1) >= 0 && is_S_type(j)) SA[--bkt[s[j]]] = j; \
@@ -55,23 +62,30 @@ data:
     \  induced_sort();\n#undef is_S_type\n#undef is_L_type\n#undef is_LMS_type\n#undef\
     \ induced_sort\n  return SA;\n}\n\n} // namespace internal\n\n/**\n * @brief \u83B7\
     \u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n *\n * @param s \u5B57\u7B26\
-    \u4E32\n * @return std::vector<int> \u540E\u7F00\u6570\u7EC4\n */\nstd::vector<int>\
-    \ get_sa(const std::string &s) {\n  std::vector<int> s_cpy(s.size() + 1);\n  std::copy(s.begin(),\
+    \u4E32\uFF0C\u4E00\u822C\u4E3A string \u6216 std::vector<int>\n * @return std::vector<int>\
+    \ \u540E\u7F00\u6570\u7EC4\n */\ntemplate <typename Container> std::vector<int>\
+    \ get_sa(const Container &s) {\n  std::vector<int> s_cpy(s.size() + 1);\n  std::copy(s.begin(),\
+    \ s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy,\
+    \ s_cpy.size()));\n  SA.erase(SA.begin());\n  return SA;\n}\n\n/**\n * @brief\
+    \ \u83B7\u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\u7684\u7279\u5316\
+    \n *\n * @tparam \u5BB9\u5668\u4E3A std::string \u65F6\u7279\u5316\uFF01\n * @param\
+    \ s\n * @return std::vector<int>\n */\ntemplate <> std::vector<int> get_sa<std::string>(const\
+    \ std::string &s) {\n  std::vector<int> s_cpy(s.size() + 1);\n  std::copy(s.begin(),\
     \ s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy,\
     \ 128));\n  SA.erase(SA.begin());\n  return SA;\n}\n\n/**\n * @brief \u8FD4\u56DE\
     \ LCP \u6570\u7EC4\n * @ref https://cp-algorithms.com/string/suffix-array.html\n\
     \ * @param s \u5B57\u7B26\u4E32\n * @param SA \u8BA1\u7B97\u5B8C\u6BD5\u7684 s\
     \ \u7684\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n * @return std::vector<int>\
-    \ LCP \u6570\u7EC4\n */\nstd::vector<int> get_lcp(const std::string &s, const\
-    \ std::vector<int> &SA) {\n  int n = s.size();\n  std::vector<int> rk(n), height(n\
-    \ - 1, 0);\n  // height[i] = s[SA[i]..n-1] \u4E0E s[SA[i+1]..n-1] \u7684\u6700\
-    \u957F\u516C\u5171\u524D\u7F00\uFF08 longest common prefix \uFF09\n  // Kasai\
-    \ \u7684\u8BBA\u6587\u4E2D\u79F0\u5176\u4E3A lcp \u6570\u7EC4\u6216 height \u6570\
-    \u7EC4\n  for (int i = 0; i != n; ++i) rk[SA[i]] = i;\n  for (int i = 0, h = 0;\
-    \ i != n; ++i) {\n    if (rk[i] == n - 1) {\n      h = 0;\n      continue;\n \
-    \   }\n    int j = SA[rk[i] + 1];\n    while (i + h < n && j + h < n && s[i +\
-    \ h] == s[j + h]) ++h;\n    height[rk[i]] = h;\n    if (h != 0) --h;\n  }\n  return\
-    \ height;\n}\n\n} // namespace lib\n\n\n#line 8 \"remote_test/yosupo/string/suffix_array.0.test.cpp\"\
+    \ LCP \u6570\u7EC4\n */\ntemplate <typename Container>\nstd::vector<int> get_lcp(const\
+    \ Container &s, const std::vector<int> &SA) {\n  int n = s.size();\n  std::vector<int>\
+    \ rk(n), height(n - 1, 0);\n  // height[i] = s[SA[i]..n-1] \u4E0E s[SA[i+1]..n-1]\
+    \ \u7684\u6700\u957F\u516C\u5171\u524D\u7F00\uFF08 longest common prefix \uFF09\
+    \n  // Kasai \u7684\u8BBA\u6587\u4E2D\u79F0\u5176\u4E3A lcp \u6570\u7EC4\u6216\
+    \ height \u6570\u7EC4\n  for (int i = 0; i != n; ++i) rk[SA[i]] = i;\n  for (int\
+    \ i = 0, h = 0; i != n; ++i) {\n    if (rk[i] == n - 1) {\n      h = 0;\n    \
+    \  continue;\n    }\n    int j = SA[rk[i] + 1];\n    while (i + h < n && j + h\
+    \ < n && s[i + h] == s[j + h]) ++h;\n    height[rk[i]] = h;\n    if (h != 0) --h;\n\
+    \  }\n  return height;\n}\n\n} // namespace lib\n\n\n#line 8 \"remote_test/yosupo/string/suffix_array.0.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  std::string s;\n  std::cin >> s;\n  for (auto i : lib::get_sa(s)) std::cout\
@@ -87,8 +101,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/string/suffix_array.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-11 23:09:55+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2021-06-12 14:03:29+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/string/suffix_array.0.test.cpp
 layout: document
