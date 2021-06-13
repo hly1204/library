@@ -19,9 +19,12 @@ data:
       title: "priority queue / \u4F18\u5148\u961F\u5217"
   - name: graph
     pages:
+    - icon: ':x:'
+      path: graph/maximum_flow_Dinic.hpp
+      title: "maximum flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5"
     - icon: ':heavy_check_mark:'
-      path: graph/binary_lifting.hpp
-      title: "binary lifting / \u500D\u589E\u6CD5"
+      path: graph/static_tree_binary_lifting.hpp
+      title: "static tree binary lifting / \u6811\u4E0A\u500D\u589E\u6CD5"
   - name: math/basic
     pages:
     - icon: ':heavy_check_mark:'
@@ -107,6 +110,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/aizuoj/data_structures/priority_queue.0.test.cpp
       title: remote_test/aizuoj/data_structures/priority_queue.0.test.cpp
+  - name: remote_test/aizuoj/graph
+    pages:
+    - icon: ':x:'
+      path: remote_test/aizuoj/graph/max_flow.0.test.cpp
+      title: remote_test/aizuoj/graph/max_flow.0.test.cpp
   - name: remote_test/aizuoj/number_theory
     pages:
     - icon: ':heavy_check_mark:'
