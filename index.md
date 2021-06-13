@@ -19,7 +19,7 @@ data:
       title: "priority queue / \u4F18\u5148\u961F\u5217"
   - name: graph
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: graph/maximum_flow_Dinic.hpp
       title: "maximum flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5"
     - icon: ':heavy_check_mark:'
@@ -112,7 +112,7 @@ data:
       title: remote_test/aizuoj/data_structures/priority_queue.0.test.cpp
   - name: remote_test/aizuoj/graph
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/aizuoj/graph/max_flow.0.test.cpp
       title: remote_test/aizuoj/graph/max_flow.0.test.cpp
   - name: remote_test/aizuoj/number_theory

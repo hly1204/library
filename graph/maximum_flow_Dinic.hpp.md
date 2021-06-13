@@ -3,12 +3,12 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/aizuoj/graph/max_flow.0.test.cpp
     title: remote_test/aizuoj/graph/max_flow.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "maximum flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5"
     links: []
@@ -95,7 +95,7 @@ data:
   path: graph/maximum_flow_Dinic.hpp
   requiredBy: []
   timestamp: '2021-06-14 00:44:43+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizuoj/graph/max_flow.0.test.cpp
 documentation_of: graph/maximum_flow_Dinic.hpp

@@ -1,14 +1,14 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: graph/maximum_flow_Dinic.hpp
     title: "maximum flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/all/GRL_6_A
@@ -59,21 +59,23 @@ data:
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n, m;\n  std::cin >> n >> m;\n  lib::MaximumFlowGraph<long long> g(n);\n\
     \  while (m--) {\n    int u, v, c;\n    std::cin >> u >> v >> c;\n    g.add_directed_edge(u,\
-    \ v, c);\n  }\n  std::cout << g.get_max_flow(0, n - 1);\n  return 0;\n}\n"
+    \ v, c);\n  }\n  std::cout << g.get_max_flow(0, n - 1) << '\\n';\n  return 0;\n\
+    }\n"
   code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/all/GRL_6_A\"\
     \n\n#include <iostream>\n\n#include \"graph/maximum_flow_Dinic.hpp\"\n\nint main()\
     \ {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\"\
     , \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n, m;\n  std::cin >> n >> m;\n  lib::MaximumFlowGraph<long long> g(n);\n\
     \  while (m--) {\n    int u, v, c;\n    std::cin >> u >> v >> c;\n    g.add_directed_edge(u,\
-    \ v, c);\n  }\n  std::cout << g.get_max_flow(0, n - 1);\n  return 0;\n}"
+    \ v, c);\n  }\n  std::cout << g.get_max_flow(0, n - 1) << '\\n';\n  return 0;\n\
+    }"
   dependsOn:
   - graph/maximum_flow_Dinic.hpp
   isVerificationFile: true
   path: remote_test/aizuoj/graph/max_flow.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-14 00:44:43+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2021-06-14 00:51:30+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/aizuoj/graph/max_flow.0.test.cpp
 layout: document
