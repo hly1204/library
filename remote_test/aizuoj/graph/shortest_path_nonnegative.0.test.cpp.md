@@ -1,21 +1,21 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: datastructure/heap/pairing_heap.hpp
     title: "pairing heap / \u914D\u5BF9\u5806"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: datastructure/heap/priority_queue.hpp
     title: "priority queue / \u4F18\u5148\u961F\u5217"
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: graph/single_source_shortest_path_Dijkstra.hpp
     title: "single source shortest path Dijkstra / \u5355\u6E90\u6700\u77ED\u8DEF\
       \ Dijkstra \u7B97\u6CD5"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/1/GRL_1_A
@@ -95,26 +95,26 @@ data:
     \ 1];\n    idx[0] = 0;\n    const DistType INF = std::numeric_limits<DistType>::max();\n\
     \    std::vector<DistType> dist(n_, INF);\n    std::vector<int> pred(n_, -1);\n\
     \    auto cmp = [&dist](int x, int y) -> bool { return dist[x] < dist[y]; };\n\
-    \    lib::PriorityQueue<int, decltype(cmp)> pq(cmp);\n    std::vector<PriorityQueue<int,\
-    \ decltype(cmp)>::const_node_ptr_type> box(n_);\n    dist[source] = 0;\n    pq.insert(source);\n\
-    \    while (!pq.is_empty()) {\n      auto x = pq.find_min();\n      pq.delete_min();\n\
-    \      auto dx = dist[x];\n      for (int i = idx[x], ie = idx[x + 1]; i < ie;\
-    \ ++i) {\n        int j = edge[i].to;\n        DistType d = edge[i].dist;\n  \
-    \      if (dist[j] > dx + d) {\n          if (dist[j] == INF) {\n            dist[j]\
-    \ = dx + d;\n            box[j] = pq.insert(j);\n          } else {\n        \
-    \    dist[j] = dx + d;\n            pq.decrease_key(box[j], j);\n          }\n\
-    \          pred[j] = x;\n        }\n      }\n    }\n    return {dist, pred};\n\
-    \  }\n\nprivate:\n  const int n_; // \u8282\u70B9\u7F16\u53F7\u5728 [0, n-1] \u4E2D\
-    \uFF01\n  std::vector<InputEdge> input_edge_;\n};\n\n} // namespace lib\n\n\n\
-    #line 6 \"remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp\"\n\n\
-    int main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    \    lib::PriorityQueue<int, decltype(cmp)> pq(cmp);\n    std::vector<typename\
+    \ PriorityQueue<int, decltype(cmp)>::const_node_ptr_type> box(n_);\n    dist[source]\
+    \ = 0;\n    pq.insert(source);\n    while (!pq.is_empty()) {\n      auto x = pq.find_min();\n\
+    \      pq.delete_min();\n      auto dx = dist[x];\n      for (int i = idx[x],\
+    \ ie = idx[x + 1]; i < ie; ++i) {\n        int j = edge[i].to;\n        DistType\
+    \ d = edge[i].dist;\n        if (dist[j] > dx + d) {\n          if (dist[j] ==\
+    \ INF) {\n            dist[j] = dx + d;\n            box[j] = pq.insert(j);\n\
+    \          } else {\n            dist[j] = dx + d;\n            pq.decrease_key(box[j],\
+    \ j);\n          }\n          pred[j] = x;\n        }\n      }\n    }\n    return\
+    \ {dist, pred};\n  }\n\nprivate:\n  const int n_; // \u8282\u70B9\u7F16\u53F7\u5728\
+    \ [0, n-1] \u4E2D\uFF01\n  std::vector<InputEdge> input_edge_;\n};\n\n} // namespace\
+    \ lib\n\n\n#line 6 \"remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp\"\
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n, m, s;\n  std::cin >> n >> m >> s;\n  lib::NonnegativeShortestPathGraph<int>\
     \ g(n);\n  while (m--) {\n    int u, v, w;\n    std::cin >> u >> v >> w;\n   \
     \ g.add_directed_edge(u, v, w);\n  }\n  auto [dist, pred] = g.get_sssp(s);\n \
-    \ for (int i = 0; i < n; ++i) {\n    if (pred[i] == -1) {\n      std::cout <<\
-    \ \"INF\\n\";\n    } else {\n      std::cout << dist[i] << '\\n';\n    }\n  }\n\
-    \  return 0;\n}\n"
+    \ for (int i = 0; i < n; ++i) {\n    if (pred[i] == -1 && i != s) {\n      std::cout\
+    \ << \"INF\\n\";\n    } else {\n      std::cout << dist[i] << '\\n';\n    }\n\
+    \  }\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/1/GRL_1_A\"\
     \n\n#include <iostream>\n\n#include \"graph/single_source_shortest_path_Dijkstra.hpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
@@ -122,9 +122,9 @@ data:
     \  int n, m, s;\n  std::cin >> n >> m >> s;\n  lib::NonnegativeShortestPathGraph<int>\
     \ g(n);\n  while (m--) {\n    int u, v, w;\n    std::cin >> u >> v >> w;\n   \
     \ g.add_directed_edge(u, v, w);\n  }\n  auto [dist, pred] = g.get_sssp(s);\n \
-    \ for (int i = 0; i < n; ++i) {\n    if (pred[i] == -1) {\n      std::cout <<\
-    \ \"INF\\n\";\n    } else {\n      std::cout << dist[i] << '\\n';\n    }\n  }\n\
-    \  return 0;\n}"
+    \ for (int i = 0; i < n; ++i) {\n    if (pred[i] == -1 && i != s) {\n      std::cout\
+    \ << \"INF\\n\";\n    } else {\n      std::cout << dist[i] << '\\n';\n    }\n\
+    \  }\n  return 0;\n}"
   dependsOn:
   - graph/single_source_shortest_path_Dijkstra.hpp
   - datastructure/heap/priority_queue.hpp
@@ -132,8 +132,8 @@ data:
   isVerificationFile: true
   path: remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-15 12:26:38+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2021-06-15 12:32:01+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
 layout: document

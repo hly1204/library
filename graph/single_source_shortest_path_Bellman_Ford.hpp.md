@@ -3,12 +3,12 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/aizuoj/graph/shortest_path_negative.0.test.cpp
     title: remote_test/aizuoj/graph/shortest_path_negative.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "single source shortest path Bellman-Ford / \u5355\u6E90\u6700\
       \u77ED\u8DEF Bellman-Ford \u7B97\u6CD5"
@@ -82,7 +82,7 @@ data:
   path: graph/single_source_shortest_path_Bellman_Ford.hpp
   requiredBy: []
   timestamp: '2021-06-15 12:26:38+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizuoj/graph/shortest_path_negative.0.test.cpp
 documentation_of: graph/single_source_shortest_path_Bellman_Ford.hpp

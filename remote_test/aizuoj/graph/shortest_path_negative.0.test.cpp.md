@@ -1,15 +1,15 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: graph/single_source_shortest_path_Bellman_Ford.hpp
     title: "single source shortest path Bellman-Ford / \u5355\u6E90\u6700\u77ED\u8DEF\
       \ Bellman-Ford \u7B97\u6CD5"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/1/GRL_1_B
@@ -55,9 +55,9 @@ data:
     \  while (m--) {\n    int u, v, w;\n    std::cin >> u >> v >> w;\n    g.add_directed_edge(u,\
     \ v, w);\n  }\n  auto [dist, pred] = g.get_sssp(s);\n  if (dist.empty()) {\n \
     \   std::cout << \"NEGATIVE CYCLE\\n\";\n  } else {\n    for (int i = 0; i < n;\
-    \ ++i) {\n      if (pred[i] == -1) {\n        std::cout << \"INF\\n\";\n     \
-    \ } else {\n        std::cout << dist[i] << '\\n';\n      }\n    }\n  }\n  return\
-    \ 0;\n}\n"
+    \ ++i) {\n      if (pred[i] == -1 && i != s) {\n        std::cout << \"INF\\n\"\
+    ;\n      } else {\n        std::cout << dist[i] << '\\n';\n      }\n    }\n  }\n\
+    \  return 0;\n}\n"
   code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/1/GRL_1_B\"\
     \n\n#include <iostream>\n\n#include \"graph/single_source_shortest_path_Bellman_Ford.hpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
@@ -66,16 +66,16 @@ data:
     \  while (m--) {\n    int u, v, w;\n    std::cin >> u >> v >> w;\n    g.add_directed_edge(u,\
     \ v, w);\n  }\n  auto [dist, pred] = g.get_sssp(s);\n  if (dist.empty()) {\n \
     \   std::cout << \"NEGATIVE CYCLE\\n\";\n  } else {\n    for (int i = 0; i < n;\
-    \ ++i) {\n      if (pred[i] == -1) {\n        std::cout << \"INF\\n\";\n     \
-    \ } else {\n        std::cout << dist[i] << '\\n';\n      }\n    }\n  }\n  return\
-    \ 0;\n}"
+    \ ++i) {\n      if (pred[i] == -1 && i != s) {\n        std::cout << \"INF\\n\"\
+    ;\n      } else {\n        std::cout << dist[i] << '\\n';\n      }\n    }\n  }\n\
+    \  return 0;\n}"
   dependsOn:
   - graph/single_source_shortest_path_Bellman_Ford.hpp
   isVerificationFile: true
   path: remote_test/aizuoj/graph/shortest_path_negative.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-15 12:26:38+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2021-06-15 12:32:01+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/aizuoj/graph/shortest_path_negative.0.test.cpp
 layout: document
