@@ -1,20 +1,27 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: datastructure/heap/pairing_heap.hpp
     title: "pairing heap / \u914D\u5BF9\u5806"
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':x:'
+    path: graph/single_source_shortest_path_Dijkstra.hpp
+    title: "single source shortest path Dijkstra / \u5355\u6E90\u6700\u77ED\u8DEF\
+      \ Dijkstra \u7B97\u6CD5"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/aizuoj/data_structures/priority_queue.0.test.cpp
     title: remote_test/aizuoj/data_structures/priority_queue.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
+    path: remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
+    title: remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
+  - icon: ':x:'
     path: remote_test/yosupo/graph/shortest_path.0.test.cpp
     title: remote_test/yosupo/graph/shortest_path.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "priority queue / \u4F18\u5148\u961F\u5217"
     links: []
@@ -95,11 +102,13 @@ data:
   - datastructure/heap/pairing_heap.hpp
   isVerificationFile: false
   path: datastructure/heap/priority_queue.hpp
-  requiredBy: []
+  requiredBy:
+  - graph/single_source_shortest_path_Dijkstra.hpp
   timestamp: '2021-06-06 21:24:21+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/graph/shortest_path.0.test.cpp
+  - remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
   - remote_test/aizuoj/data_structures/priority_queue.0.test.cpp
 documentation_of: datastructure/heap/priority_queue.hpp
 layout: document

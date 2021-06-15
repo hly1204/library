@@ -7,26 +7,25 @@ data:
   - icon: ':question:'
     path: datastructure/heap/priority_queue.hpp
     title: "priority queue / \u4F18\u5148\u961F\u5217"
-  - icon: ':x:'
-    path: graph/single_source_shortest_path_Dijkstra.hpp
-    title: "single source shortest path Dijkstra / \u5355\u6E90\u6700\u77ED\u8DEF\
-      \ Dijkstra \u7B97\u6CD5"
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':x:'
+    path: remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
+    title: remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
+  - icon: ':x:'
+    path: remote_test/yosupo/graph/shortest_path.0.test.cpp
+    title: remote_test/yosupo/graph/shortest_path.0.test.cpp
   _isVerificationFailed: true
-  _pathExtension: cpp
+  _pathExtension: hpp
   _verificationStatusIcon: ':x:'
   attributes:
-    '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/shortest_path
-    links:
-    - https://judge.yosupo.jp/problem/shortest_path
-  bundledCode: "#line 1 \"remote_test/yosupo/graph/shortest_path.0.test.cpp\"\n#define\
-    \ PROBLEM \"https://judge.yosupo.jp/problem/shortest_path\"\n\n#include <iostream>\n\
-    #include <limits>\n#include <vector>\n\n#line 1 \"graph/single_source_shortest_path_Dijkstra.hpp\"\
-    \n\n\n\n/**\n * @brief single source shortest path Dijkstra / \u5355\u6E90\u6700\
-    \u77ED\u8DEF Dijkstra \u7B97\u6CD5\n *\n */\n\n#line 11 \"graph/single_source_shortest_path_Dijkstra.hpp\"\
-    \n\n#line 1 \"datastructure/heap/priority_queue.hpp\"\n\n\n\n/**\n * @brief priority\
+    document_title: "single source shortest path Dijkstra / \u5355\u6E90\u6700\u77ED\
+      \u8DEF Dijkstra \u7B97\u6CD5"
+    links: []
+  bundledCode: "#line 1 \"graph/single_source_shortest_path_Dijkstra.hpp\"\n\n\n\n\
+    /**\n * @brief single source shortest path Dijkstra / \u5355\u6E90\u6700\u77ED\
+    \u8DEF Dijkstra \u7B97\u6CD5\n *\n */\n\n#include <limits>\n#include <vector>\n\
+    \n#line 1 \"datastructure/heap/priority_queue.hpp\"\n\n\n\n/**\n * @brief priority\
     \ queue / \u4F18\u5148\u961F\u5217\n *\n */\n\n#include <functional>\n\n#line\
     \ 1 \"datastructure/heap/pairing_heap.hpp\"\n\n\n\n/**\n * @brief pairing heap\
     \ / \u914D\u5BF9\u5806\n *\n */\n\n#include <utility>\n\nnamespace lib {\n\ntemplate\
@@ -105,46 +104,53 @@ data:
     \    dist[j] = dx + d;\n            pq.decrease_key(box[j], j);\n          }\n\
     \          pred[j] = x;\n        }\n      }\n    }\n    return {dist, pred};\n\
     \  }\n\nprivate:\n  const int n_; // \u8282\u70B9\u7F16\u53F7\u5728 [0, n-1] \u4E2D\
-    \uFF01\n  std::vector<InputEdge> input_edge_;\n};\n\n} // namespace lib\n\n\n\
-    #line 8 \"remote_test/yosupo/graph/shortest_path.0.test.cpp\"\n\nint main() {\n\
-    #ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\", \"w\"\
-    , stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
-    \  int n, m, s, t;\n  std::cin >> n >> m >> s >> t;\n  lib::NonnegativeShortestPathGraph<long\
-    \ long> g(n);\n  while (m--) {\n    int a, b, c;\n    std::cin >> a >> b >> c;\n\
-    \    g.add_directed_edge(a, b, c);\n  }\n  auto [dist, pred] = g.get_sssp(s);\n\
-    \  if (pred[t] == -1) {\n    std::cout << -1 << '\\n';\n  } else {\n    std::vector<std::pair<int,\
-    \ int>> path;\n    int prev = -1;\n    int end = t;\n    while (prev != s) {\n\
-    \      path.push_back({prev = pred[end], end});\n      end = pred[end];\n    }\n\
-    \    std::reverse(path.begin(), path.end());\n    std::cout << dist[t] << ' '\
-    \ << path.size() << '\\n';\n    for (auto &i : path) std::cout << i.first << '\
-    \ ' << i.second << '\\n';\n  }\n  return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/shortest_path\"\n\n#include\
-    \ <iostream>\n#include <limits>\n#include <vector>\n\n#include \"graph/single_source_shortest_path_Dijkstra.hpp\"\
-    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
-    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
-    \  int n, m, s, t;\n  std::cin >> n >> m >> s >> t;\n  lib::NonnegativeShortestPathGraph<long\
-    \ long> g(n);\n  while (m--) {\n    int a, b, c;\n    std::cin >> a >> b >> c;\n\
-    \    g.add_directed_edge(a, b, c);\n  }\n  auto [dist, pred] = g.get_sssp(s);\n\
-    \  if (pred[t] == -1) {\n    std::cout << -1 << '\\n';\n  } else {\n    std::vector<std::pair<int,\
-    \ int>> path;\n    int prev = -1;\n    int end = t;\n    while (prev != s) {\n\
-    \      path.push_back({prev = pred[end], end});\n      end = pred[end];\n    }\n\
-    \    std::reverse(path.begin(), path.end());\n    std::cout << dist[t] << ' '\
-    \ << path.size() << '\\n';\n    for (auto &i : path) std::cout << i.first << '\
-    \ ' << i.second << '\\n';\n  }\n  return 0;\n}"
+    \uFF01\n  std::vector<InputEdge> input_edge_;\n};\n\n} // namespace lib\n\n\n"
+  code: "#ifndef SINGLE_SOURCE_SHORTEST_PATH_DIJKSTRA_HEADER_HPP\n#define SINGLE_SOURCE_SHORTEST_PATH_DIJKSTRA_HEADER_HPP\n\
+    \n/**\n * @brief single source shortest path Dijkstra / \u5355\u6E90\u6700\u77ED\
+    \u8DEF Dijkstra \u7B97\u6CD5\n *\n */\n\n#include <limits>\n#include <vector>\n\
+    \n#include \"datastructure/heap/priority_queue.hpp\"\n\nnamespace lib {\n\ntemplate\
+    \ <typename DistType> class NonnegativeShortestPathGraph {\npublic:\n  struct\
+    \ InputEdge {\n    int from, to;\n    DistType dist;\n    InputEdge(int from,\
+    \ int to, DistType dist) : from(from), to(to), dist(dist) {}\n    ~InputEdge()\
+    \ = default;\n  };\n\n  struct Edge {\n    int to;\n    DistType dist;\n  };\n\
+    \n  NonnegativeShortestPathGraph(int n) : n_(n) {}\n  ~NonnegativeShortestPathGraph()\
+    \ = default;\n\n  void add_directed_edge(int from, int to, DistType dist) {\n\
+    \    input_edge_.emplace_back(from, to, dist);\n  }\n\n  std::pair<std::vector<DistType>,\
+    \ std::vector<int>> get_sssp(int source) const {\n    std::vector<int> idx(n_\
+    \ + 1, 0);\n    std::vector<Edge> edge(input_edge_.size());\n    for (auto &i\
+    \ : input_edge_) ++idx[i.from];\n    for (int i = 0, sum = 0; i <= n_; ++i) sum\
+    \ += idx[i], idx[i] = sum - idx[i];\n    for (auto &i : input_edge_) edge[idx[i.from]++]\
+    \ = Edge{i.to, i.dist};\n    for (int i = n_ - 1; i > 0; --i) idx[i] = idx[i -\
+    \ 1];\n    idx[0] = 0;\n    const DistType INF = std::numeric_limits<DistType>::max();\n\
+    \    std::vector<DistType> dist(n_, INF);\n    std::vector<int> pred(n_, -1);\n\
+    \    auto cmp = [&dist](int x, int y) -> bool { return dist[x] < dist[y]; };\n\
+    \    lib::PriorityQueue<int, decltype(cmp)> pq(cmp);\n    std::vector<PriorityQueue<int,\
+    \ decltype(cmp)>::const_node_ptr_type> box(n_);\n    dist[source] = 0;\n    pq.insert(source);\n\
+    \    while (!pq.is_empty()) {\n      auto x = pq.find_min();\n      pq.delete_min();\n\
+    \      auto dx = dist[x];\n      for (int i = idx[x], ie = idx[x + 1]; i < ie;\
+    \ ++i) {\n        int j = edge[i].to;\n        DistType d = edge[i].dist;\n  \
+    \      if (dist[j] > dx + d) {\n          if (dist[j] == INF) {\n            dist[j]\
+    \ = dx + d;\n            box[j] = pq.insert(j);\n          } else {\n        \
+    \    dist[j] = dx + d;\n            pq.decrease_key(box[j], j);\n          }\n\
+    \          pred[j] = x;\n        }\n      }\n    }\n    return {dist, pred};\n\
+    \  }\n\nprivate:\n  const int n_; // \u8282\u70B9\u7F16\u53F7\u5728 [0, n-1] \u4E2D\
+    \uFF01\n  std::vector<InputEdge> input_edge_;\n};\n\n} // namespace lib\n\n#endif"
   dependsOn:
-  - graph/single_source_shortest_path_Dijkstra.hpp
   - datastructure/heap/priority_queue.hpp
   - datastructure/heap/pairing_heap.hpp
-  isVerificationFile: true
-  path: remote_test/yosupo/graph/shortest_path.0.test.cpp
+  isVerificationFile: false
+  path: graph/single_source_shortest_path_Dijkstra.hpp
   requiredBy: []
   timestamp: '2021-06-15 12:26:38+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
-  verifiedWith: []
-documentation_of: remote_test/yosupo/graph/shortest_path.0.test.cpp
+  verificationStatus: LIBRARY_ALL_WA
+  verifiedWith:
+  - remote_test/yosupo/graph/shortest_path.0.test.cpp
+  - remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
+documentation_of: graph/single_source_shortest_path_Dijkstra.hpp
 layout: document
 redirect_from:
-- /verify/remote_test/yosupo/graph/shortest_path.0.test.cpp
-- /verify/remote_test/yosupo/graph/shortest_path.0.test.cpp.html
-title: remote_test/yosupo/graph/shortest_path.0.test.cpp
+- /library/graph/single_source_shortest_path_Dijkstra.hpp
+- /library/graph/single_source_shortest_path_Dijkstra.hpp.html
+title: "single source shortest path Dijkstra / \u5355\u6E90\u6700\u77ED\u8DEF Dijkstra\
+  \ \u7B97\u6CD5"
 ---

@@ -18,15 +18,15 @@ data:
   _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/shortest_path
+    PROBLEM: https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/1/GRL_1_A
     links:
-    - https://judge.yosupo.jp/problem/shortest_path
-  bundledCode: "#line 1 \"remote_test/yosupo/graph/shortest_path.0.test.cpp\"\n#define\
-    \ PROBLEM \"https://judge.yosupo.jp/problem/shortest_path\"\n\n#include <iostream>\n\
-    #include <limits>\n#include <vector>\n\n#line 1 \"graph/single_source_shortest_path_Dijkstra.hpp\"\
+    - https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/1/GRL_1_A
+  bundledCode: "#line 1 \"remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp\"\
+    \n#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/1/GRL_1_A\"\
+    \n\n#include <iostream>\n\n#line 1 \"graph/single_source_shortest_path_Dijkstra.hpp\"\
     \n\n\n\n/**\n * @brief single source shortest path Dijkstra / \u5355\u6E90\u6700\
-    \u77ED\u8DEF Dijkstra \u7B97\u6CD5\n *\n */\n\n#line 11 \"graph/single_source_shortest_path_Dijkstra.hpp\"\
-    \n\n#line 1 \"datastructure/heap/priority_queue.hpp\"\n\n\n\n/**\n * @brief priority\
+    \u77ED\u8DEF Dijkstra \u7B97\u6CD5\n *\n */\n\n#include <limits>\n#include <vector>\n\
+    \n#line 1 \"datastructure/heap/priority_queue.hpp\"\n\n\n\n/**\n * @brief priority\
     \ queue / \u4F18\u5148\u961F\u5217\n *\n */\n\n#include <functional>\n\n#line\
     \ 1 \"datastructure/heap/pairing_heap.hpp\"\n\n\n\n/**\n * @brief pairing heap\
     \ / \u914D\u5BF9\u5806\n *\n */\n\n#include <utility>\n\nnamespace lib {\n\ntemplate\
@@ -106,45 +106,39 @@ data:
     \          pred[j] = x;\n        }\n      }\n    }\n    return {dist, pred};\n\
     \  }\n\nprivate:\n  const int n_; // \u8282\u70B9\u7F16\u53F7\u5728 [0, n-1] \u4E2D\
     \uFF01\n  std::vector<InputEdge> input_edge_;\n};\n\n} // namespace lib\n\n\n\
-    #line 8 \"remote_test/yosupo/graph/shortest_path.0.test.cpp\"\n\nint main() {\n\
-    #ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\", \"w\"\
-    , stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
-    \  int n, m, s, t;\n  std::cin >> n >> m >> s >> t;\n  lib::NonnegativeShortestPathGraph<long\
-    \ long> g(n);\n  while (m--) {\n    int a, b, c;\n    std::cin >> a >> b >> c;\n\
-    \    g.add_directed_edge(a, b, c);\n  }\n  auto [dist, pred] = g.get_sssp(s);\n\
-    \  if (pred[t] == -1) {\n    std::cout << -1 << '\\n';\n  } else {\n    std::vector<std::pair<int,\
-    \ int>> path;\n    int prev = -1;\n    int end = t;\n    while (prev != s) {\n\
-    \      path.push_back({prev = pred[end], end});\n      end = pred[end];\n    }\n\
-    \    std::reverse(path.begin(), path.end());\n    std::cout << dist[t] << ' '\
-    \ << path.size() << '\\n';\n    for (auto &i : path) std::cout << i.first << '\
-    \ ' << i.second << '\\n';\n  }\n  return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/shortest_path\"\n\n#include\
-    \ <iostream>\n#include <limits>\n#include <vector>\n\n#include \"graph/single_source_shortest_path_Dijkstra.hpp\"\
+    #line 6 \"remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp\"\n\n\
+    int main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
+    \  int n, m, s;\n  std::cin >> n >> m >> s;\n  lib::NonnegativeShortestPathGraph<int>\
+    \ g(n);\n  while (m--) {\n    int u, v, w;\n    std::cin >> u >> v >> w;\n   \
+    \ g.add_directed_edge(u, v, w);\n  }\n  auto [dist, pred] = g.get_sssp(s);\n \
+    \ for (int i = 0; i < n; ++i) {\n    if (pred[i] == -1) {\n      std::cout <<\
+    \ \"INF\\n\";\n    } else {\n      std::cout << dist[i] << '\\n';\n    }\n  }\n\
+    \  return 0;\n}\n"
+  code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/1/GRL_1_A\"\
+    \n\n#include <iostream>\n\n#include \"graph/single_source_shortest_path_Dijkstra.hpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
-    \  int n, m, s, t;\n  std::cin >> n >> m >> s >> t;\n  lib::NonnegativeShortestPathGraph<long\
-    \ long> g(n);\n  while (m--) {\n    int a, b, c;\n    std::cin >> a >> b >> c;\n\
-    \    g.add_directed_edge(a, b, c);\n  }\n  auto [dist, pred] = g.get_sssp(s);\n\
-    \  if (pred[t] == -1) {\n    std::cout << -1 << '\\n';\n  } else {\n    std::vector<std::pair<int,\
-    \ int>> path;\n    int prev = -1;\n    int end = t;\n    while (prev != s) {\n\
-    \      path.push_back({prev = pred[end], end});\n      end = pred[end];\n    }\n\
-    \    std::reverse(path.begin(), path.end());\n    std::cout << dist[t] << ' '\
-    \ << path.size() << '\\n';\n    for (auto &i : path) std::cout << i.first << '\
-    \ ' << i.second << '\\n';\n  }\n  return 0;\n}"
+    \  int n, m, s;\n  std::cin >> n >> m >> s;\n  lib::NonnegativeShortestPathGraph<int>\
+    \ g(n);\n  while (m--) {\n    int u, v, w;\n    std::cin >> u >> v >> w;\n   \
+    \ g.add_directed_edge(u, v, w);\n  }\n  auto [dist, pred] = g.get_sssp(s);\n \
+    \ for (int i = 0; i < n; ++i) {\n    if (pred[i] == -1) {\n      std::cout <<\
+    \ \"INF\\n\";\n    } else {\n      std::cout << dist[i] << '\\n';\n    }\n  }\n\
+    \  return 0;\n}"
   dependsOn:
   - graph/single_source_shortest_path_Dijkstra.hpp
   - datastructure/heap/priority_queue.hpp
   - datastructure/heap/pairing_heap.hpp
   isVerificationFile: true
-  path: remote_test/yosupo/graph/shortest_path.0.test.cpp
+  path: remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
   requiredBy: []
   timestamp: '2021-06-15 12:26:38+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: remote_test/yosupo/graph/shortest_path.0.test.cpp
+documentation_of: remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
 layout: document
 redirect_from:
-- /verify/remote_test/yosupo/graph/shortest_path.0.test.cpp
-- /verify/remote_test/yosupo/graph/shortest_path.0.test.cpp.html
-title: remote_test/yosupo/graph/shortest_path.0.test.cpp
+- /verify/remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
+- /verify/remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp.html
+title: remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
 ---

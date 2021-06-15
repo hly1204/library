@@ -11,10 +11,10 @@ data:
       title: "rollbackable disjoint set / \u56DE\u6EDA\u5E76\u67E5\u96C6"
   - name: datastructure/heap
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: datastructure/heap/pairing_heap.hpp
       title: "pairing heap / \u914D\u5BF9\u5806"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: datastructure/heap/priority_queue.hpp
       title: "priority queue / \u4F18\u5148\u961F\u5217"
   - name: graph
@@ -22,6 +22,14 @@ data:
     - icon: ':heavy_check_mark:'
       path: graph/maximum_flow_Dinic.hpp
       title: "maximum flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5"
+    - icon: ':x:'
+      path: graph/single_source_shortest_path_Bellman_Ford.hpp
+      title: "single source shortest path Bellman-Ford / \u5355\u6E90\u6700\u77ED\u8DEF\
+        \ Bellman-Ford \u7B97\u6CD5"
+    - icon: ':x:'
+      path: graph/single_source_shortest_path_Dijkstra.hpp
+      title: "single source shortest path Dijkstra / \u5355\u6E90\u6700\u77ED\u8DEF\
+        \ Dijkstra \u7B97\u6CD5"
     - icon: ':heavy_check_mark:'
       path: graph/static_tree_binary_lifting.hpp
       title: "static tree binary lifting / \u6811\u4E0A\u500D\u589E\u6CD5"
@@ -115,6 +123,12 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/aizuoj/graph/max_flow.0.test.cpp
       title: remote_test/aizuoj/graph/max_flow.0.test.cpp
+    - icon: ':x:'
+      path: remote_test/aizuoj/graph/shortest_path_negative.0.test.cpp
+      title: remote_test/aizuoj/graph/shortest_path_negative.0.test.cpp
+    - icon: ':x:'
+      path: remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
+      title: remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
   - name: remote_test/aizuoj/number_theory
     pages:
     - icon: ':heavy_check_mark:'
@@ -136,7 +150,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/graph/lca.0.test.cpp
       title: remote_test/yosupo/graph/lca.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: remote_test/yosupo/graph/shortest_path.0.test.cpp
       title: remote_test/yosupo/graph/shortest_path.0.test.cpp
   - name: remote_test/yosupo/math

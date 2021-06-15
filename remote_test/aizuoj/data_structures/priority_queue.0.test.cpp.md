@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: datastructure/heap/pairing_heap.hpp
     title: "pairing heap / \u914D\u5BF9\u5806"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: datastructure/heap/priority_queue.hpp
     title: "priority queue / \u4F18\u5148\u961F\u5217"
   _extendedRequiredBy: []

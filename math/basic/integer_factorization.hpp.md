@@ -91,8 +91,8 @@ data:
     \ true;\n    m64 x = m64(i).pow(u);\n    for (int i = 0; i != t && x != ONE; ++i)\
     \ {\n      m64 y = x * x;\n      if (x != MINUS_ONE && y == ONE) return false;\n\
     \      x = y;\n    }\n    if (x != ONE) return false;\n  }\n  return true;\n}\n\
-    \nnamespace internal {\n\n/**\n * @brief Pollard-rho \u7B97\u6CD5\n * \n * @param\
-    \ n \n * @return std::uint64_t \u4E00\u4E2A\uFF08\u7D20\uFF09\u56E0\u6570\uFF1F\
+    \nnamespace internal {\n\n/**\n * @brief Pollard-rho \u7B97\u6CD5\n *\n * @param\
+    \ n\n * @return std::uint64_t \u4E00\u4E2A\uFF08\u7D20\uFF09\u56E0\u6570\uFF1F\
     \n */\nstd::uint64_t rho(std::uint64_t n) {\n  using u64 = std::uint64_t;\n  using\
     \ m64 = RuntimeLongMontModInt;\n  static std::random_device rd;\n  static std::mt19937\
     \ gen(rd());\n  std::uniform_int_distribution<u64> dis(2, n - 1);\n  if (m64::get_mod()\
@@ -103,13 +103,13 @@ data:
     \      ys = y;\n      for (int i = 0; i < m && i < r - k; ++i) q *= x - (y = f(y));\n\
     \      g = std::gcd(u64(q), n);\n    }\n  }\n  if (g == n) do\n      g = std::gcd(u64(x\
     \ - (ys = f(ys))), n);\n    while (g == 1);\n  return g == n ? rho(n) : g;\n}\n\
-    \n} // namespace internal\n\nvoid factorize_odd(std::uint64_t n, std::map<std::uint64_t,\
-    \ int> &mp) {\n  if (n < 2) return;\n  if (is_prime(n)) {\n    ++mp[n];\n    return;\n\
-    \  }\n  std::uint64_t g = internal::rho(n);\n  factorize_odd(n / g, mp);\n  factorize_odd(g,\
-    \ mp);\n}\n\nstd::map<std::uint64_t, int> factorize(std::uint64_t n) {\n  std::map<std::uint64_t,\
-    \ int> res;\n  if (n < 2) return res;\n  int t = 0;\n  while ((n & 1) == 0) n\
-    \ >>= 1, ++t;\n  if (t) res[2] = t;\n  factorize_odd(n, res);\n  return res;\n\
-    }\n\n} // namespace lib\n\n\n"
+    \nvoid factorize_odd(std::uint64_t n, std::map<std::uint64_t, int> &mp) {\n  if\
+    \ (n < 2) return;\n  if (is_prime(n)) {\n    ++mp[n];\n    return;\n  }\n  std::uint64_t\
+    \ g = rho(n);\n  factorize_odd(n / g, mp);\n  factorize_odd(g, mp);\n}\n\n} //\
+    \ namespace internal\n\nstd::map<std::uint64_t, int> factorize(std::uint64_t n)\
+    \ {\n  std::map<std::uint64_t, int> res;\n  if (n < 2) return res;\n  int t =\
+    \ 0;\n  while ((n & 1) == 0) n >>= 1, ++t;\n  if (t) res[2] = t;\n  internal::factorize_odd(n,\
+    \ res);\n  return res;\n}\n\n} // namespace lib\n\n\n"
   code: "#ifndef INTEGER_FACTORIZATION_HEADER_HPP\n#define INTEGER_FACTORIZATION_HEADER_HPP\n\
     \n/**\n * @brief integer factorization / \u6574\u6570\u5206\u89E3\n *\n */\n\n\
     #include <cstdint>\n#include <map>\n#include <numeric>\n#include <random>\n\n\
@@ -124,8 +124,8 @@ data:
     \ true;\n    m64 x = m64(i).pow(u);\n    for (int i = 0; i != t && x != ONE; ++i)\
     \ {\n      m64 y = x * x;\n      if (x != MINUS_ONE && y == ONE) return false;\n\
     \      x = y;\n    }\n    if (x != ONE) return false;\n  }\n  return true;\n}\n\
-    \nnamespace internal {\n\n/**\n * @brief Pollard-rho \u7B97\u6CD5\n * \n * @param\
-    \ n \n * @return std::uint64_t \u4E00\u4E2A\uFF08\u7D20\uFF09\u56E0\u6570\uFF1F\
+    \nnamespace internal {\n\n/**\n * @brief Pollard-rho \u7B97\u6CD5\n *\n * @param\
+    \ n\n * @return std::uint64_t \u4E00\u4E2A\uFF08\u7D20\uFF09\u56E0\u6570\uFF1F\
     \n */\nstd::uint64_t rho(std::uint64_t n) {\n  using u64 = std::uint64_t;\n  using\
     \ m64 = RuntimeLongMontModInt;\n  static std::random_device rd;\n  static std::mt19937\
     \ gen(rd());\n  std::uniform_int_distribution<u64> dis(2, n - 1);\n  if (m64::get_mod()\
@@ -136,19 +136,19 @@ data:
     \      ys = y;\n      for (int i = 0; i < m && i < r - k; ++i) q *= x - (y = f(y));\n\
     \      g = std::gcd(u64(q), n);\n    }\n  }\n  if (g == n) do\n      g = std::gcd(u64(x\
     \ - (ys = f(ys))), n);\n    while (g == 1);\n  return g == n ? rho(n) : g;\n}\n\
-    \n} // namespace internal\n\nvoid factorize_odd(std::uint64_t n, std::map<std::uint64_t,\
-    \ int> &mp) {\n  if (n < 2) return;\n  if (is_prime(n)) {\n    ++mp[n];\n    return;\n\
-    \  }\n  std::uint64_t g = internal::rho(n);\n  factorize_odd(n / g, mp);\n  factorize_odd(g,\
-    \ mp);\n}\n\nstd::map<std::uint64_t, int> factorize(std::uint64_t n) {\n  std::map<std::uint64_t,\
-    \ int> res;\n  if (n < 2) return res;\n  int t = 0;\n  while ((n & 1) == 0) n\
-    \ >>= 1, ++t;\n  if (t) res[2] = t;\n  factorize_odd(n, res);\n  return res;\n\
-    }\n\n} // namespace lib\n\n#endif"
+    \nvoid factorize_odd(std::uint64_t n, std::map<std::uint64_t, int> &mp) {\n  if\
+    \ (n < 2) return;\n  if (is_prime(n)) {\n    ++mp[n];\n    return;\n  }\n  std::uint64_t\
+    \ g = rho(n);\n  factorize_odd(n / g, mp);\n  factorize_odd(g, mp);\n}\n\n} //\
+    \ namespace internal\n\nstd::map<std::uint64_t, int> factorize(std::uint64_t n)\
+    \ {\n  std::map<std::uint64_t, int> res;\n  if (n < 2) return res;\n  int t =\
+    \ 0;\n  while ((n & 1) == 0) n >>= 1, ++t;\n  if (t) res[2] = t;\n  internal::factorize_odd(n,\
+    \ res);\n  return res;\n}\n\n} // namespace lib\n\n#endif"
   dependsOn:
   - modint/runtime_long_Montgomery_modint.hpp
   isVerificationFile: false
   path: math/basic/integer_factorization.hpp
   requiredBy: []
-  timestamp: '2021-06-11 23:09:55+08:00'
+  timestamp: '2021-06-15 12:26:38+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/factorize.0.test.cpp
