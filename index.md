@@ -33,6 +33,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: graph/static_tree_binary_lifting.hpp
       title: "static tree binary lifting / \u6811\u4E0A\u500D\u589E\u6CD5"
+    - icon: ':heavy_check_mark:'
+      path: graph/strongly_connected_components_Tarjan.hpp
+      title: "strongly connected components Tarjan / \u5F3A\u8FDE\u901A\u5206\u91CF\
+        \ Tarjan \u7B97\u6CD5"
   - name: math/basic
     pages:
     - icon: ':heavy_check_mark:'
@@ -150,6 +154,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/graph/lca.0.test.cpp
       title: remote_test/yosupo/graph/lca.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/graph/scc.0.test.cpp
+      title: remote_test/yosupo/graph/scc.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/graph/shortest_path.0.test.cpp
       title: remote_test/yosupo/graph/shortest_path.0.test.cpp

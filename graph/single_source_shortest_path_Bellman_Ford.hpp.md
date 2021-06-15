@@ -16,15 +16,15 @@ data:
   bundledCode: "#line 1 \"graph/single_source_shortest_path_Bellman_Ford.hpp\"\n\n\
     \n\n/**\n * @brief single source shortest path Bellman-Ford / \u5355\u6E90\u6700\
     \u77ED\u8DEF Bellman-Ford \u7B97\u6CD5\n *\n */\n\n#include <limits>\n#include\
-    \ <queue>\n#include <vector>\n\nnamespace lib {\n\ntemplate <typename DistType>\
-    \ class ShortestPathGraph {\npublic:\n  struct InputEdge {\n    int from, to;\n\
-    \    DistType dist;\n    InputEdge(int from, int to, DistType dist) : from(from),\
-    \ to(to), dist(dist) {}\n    ~InputEdge() = default;\n  };\n\n  struct Edge {\n\
-    \    int to;\n    DistType dist;\n  };\n\n  ShortestPathGraph(int n) : n_(n) {}\n\
-    \  ~ShortestPathGraph() = default;\n\n  void add_directed_edge(int from, int to,\
-    \ DistType dist) {\n    input_edge_.emplace_back(from, to, dist);\n  }\n\n  /**\n\
-    \   * @brief \u83B7\u53D6\u6700\u77ED\u8DEF\n   * @ref Data Structures and Network\
-    \ Algorithms P93\n   *\n   * @param source\n   * @return std::pair<std::vector<DistType>,\
+    \ <queue>\n#include <utility>\n#include <vector>\n\nnamespace lib {\n\ntemplate\
+    \ <typename DistType> class ShortestPathGraph {\npublic:\n  struct InputEdge {\n\
+    \    int from, to;\n    DistType dist;\n    InputEdge(int from, int to, DistType\
+    \ dist) : from(from), to(to), dist(dist) {}\n    ~InputEdge() = default;\n  };\n\
+    \n  struct Edge {\n    int to;\n    DistType dist;\n  };\n\n  ShortestPathGraph(int\
+    \ n) : n_(n) {}\n  ~ShortestPathGraph() = default;\n\n  void add_directed_edge(int\
+    \ from, int to, DistType dist) {\n    input_edge_.emplace_back(from, to, dist);\n\
+    \  }\n\n  /**\n   * @brief \u83B7\u53D6\u6700\u77ED\u8DEF\n   * @ref Data Structures\
+    \ and Network Algorithms P93\n   *\n   * @param source\n   * @return std::pair<std::vector<DistType>,\
     \ std::vector<int>>\n   */\n  std::pair<std::vector<DistType>, std::vector<int>>\
     \ get_sssp(int source) const {\n    std::vector<int> idx(n_ + 1, 0);\n    std::vector<Edge>\
     \ edge(input_edge_.size());\n    for (auto &i : input_edge_) ++idx[i.from];\n\
@@ -48,15 +48,15 @@ data:
   code: "#ifndef SINGLE_SOURCE_SHORTEST_PATH_BELLMAN_FORD_HEADER_HPP\n#define SINGLE_SOURCE_SHORTEST_PATH_BELLMAN_FORD_HEADER_HPP\n\
     \n/**\n * @brief single source shortest path Bellman-Ford / \u5355\u6E90\u6700\
     \u77ED\u8DEF Bellman-Ford \u7B97\u6CD5\n *\n */\n\n#include <limits>\n#include\
-    \ <queue>\n#include <vector>\n\nnamespace lib {\n\ntemplate <typename DistType>\
-    \ class ShortestPathGraph {\npublic:\n  struct InputEdge {\n    int from, to;\n\
-    \    DistType dist;\n    InputEdge(int from, int to, DistType dist) : from(from),\
-    \ to(to), dist(dist) {}\n    ~InputEdge() = default;\n  };\n\n  struct Edge {\n\
-    \    int to;\n    DistType dist;\n  };\n\n  ShortestPathGraph(int n) : n_(n) {}\n\
-    \  ~ShortestPathGraph() = default;\n\n  void add_directed_edge(int from, int to,\
-    \ DistType dist) {\n    input_edge_.emplace_back(from, to, dist);\n  }\n\n  /**\n\
-    \   * @brief \u83B7\u53D6\u6700\u77ED\u8DEF\n   * @ref Data Structures and Network\
-    \ Algorithms P93\n   *\n   * @param source\n   * @return std::pair<std::vector<DistType>,\
+    \ <queue>\n#include <utility>\n#include <vector>\n\nnamespace lib {\n\ntemplate\
+    \ <typename DistType> class ShortestPathGraph {\npublic:\n  struct InputEdge {\n\
+    \    int from, to;\n    DistType dist;\n    InputEdge(int from, int to, DistType\
+    \ dist) : from(from), to(to), dist(dist) {}\n    ~InputEdge() = default;\n  };\n\
+    \n  struct Edge {\n    int to;\n    DistType dist;\n  };\n\n  ShortestPathGraph(int\
+    \ n) : n_(n) {}\n  ~ShortestPathGraph() = default;\n\n  void add_directed_edge(int\
+    \ from, int to, DistType dist) {\n    input_edge_.emplace_back(from, to, dist);\n\
+    \  }\n\n  /**\n   * @brief \u83B7\u53D6\u6700\u77ED\u8DEF\n   * @ref Data Structures\
+    \ and Network Algorithms P93\n   *\n   * @param source\n   * @return std::pair<std::vector<DistType>,\
     \ std::vector<int>>\n   */\n  std::pair<std::vector<DistType>, std::vector<int>>\
     \ get_sssp(int source) const {\n    std::vector<int> idx(n_ + 1, 0);\n    std::vector<Edge>\
     \ edge(input_edge_.size());\n    for (auto &i : input_edge_) ++idx[i.from];\n\
@@ -81,7 +81,7 @@ data:
   isVerificationFile: false
   path: graph/single_source_shortest_path_Bellman_Ford.hpp
   requiredBy: []
-  timestamp: '2021-06-15 12:26:38+08:00'
+  timestamp: '2021-06-15 18:09:03+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizuoj/graph/shortest_path_negative.0.test.cpp
