@@ -1,23 +1,23 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/binary_mul.hpp
     title: "binary multiplication / \u5FEB\u901F\u4E58"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/binary_pow.hpp
     title: "binary power / \u5FEB\u901F\u5E42"
   - icon: ':heavy_check_mark:'
     path: math/basic/crt.hpp
     title: "Chinese remainder theorem / \u4E2D\u56FD\u5269\u4F59\u5B9A\u7406"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/basic/exgcd.hpp
     title: "extended Euclidean algorithm / \u6269\u5C55\u6B27\u51E0\u91CC\u5F97\u7B97\
       \u6CD5"
   - icon: ':heavy_check_mark:'
     path: math/modulo/binomial_coefficient_mod.hpp
     title: "binomial coefficient mod / \u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/base.hpp
     title: "type traits / \u7C7B\u578B\u8403\u53D6"
   _extendedRequiredBy: []

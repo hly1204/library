@@ -4,32 +4,36 @@ data:
   - icon: ':x:'
     path: datastructure/tree/binary_search_tree_base.hpp
     title: "binary search tree base / \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\u7C7B"
-  _extendedRequiredBy: []
-  _extendedVerifiedWith:
   - icon: ':x:'
-    path: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
-    title: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
+    path: datastructure/tree/treap.hpp
+    title: "Treap / \u6811\u5806"
+  _extendedRequiredBy: []
+  _extendedVerifiedWith: []
   _isVerificationFailed: true
-  _pathExtension: hpp
+  _pathExtension: cpp
   _verificationStatusIcon: ':x:'
   attributes:
-    document_title: "Treap / \u6811\u5806"
-    links: []
-  bundledCode: "#line 1 \"datastructure/tree/treap.hpp\"\n\n\n\n/**\n * @brief Treap\
-    \ / \u6811\u5806\n *\n */\n\n#include <random>\n#include <utility>\n\n#line 1\
-    \ \"datastructure/tree/binary_search_tree_base.hpp\"\n\n\n\n/**\n * @brief binary\
-    \ search tree base / \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\u7C7B\n *\n */\n\n#include\
-    \ <cassert>\n#include <functional>\n#include <optional>\n\nnamespace lib {\n\n\
-    /**\n * @brief \u4E8C\u53C9\u641C\u7D22\u6811\u8282\u70B9\u7C7B\n */\ntemplate\
-    \ <typename DataType, typename Base> struct BSTNodeType1 : public Base {\npublic:\n\
-    \  using node_ptr_type = BSTNodeType1 *;\n  using value_type = DataType;\n\n \
-    \ BSTNodeType1(const value_type &v)\n      : left(nullptr), right(nullptr), parent(nullptr),\
-    \ size(1), data(v) {}\n  ~BSTNodeType1() {\n    delete left;\n    delete right;\n\
-    \  }\n\n  node_ptr_type left, right, parent;\n  int size;\n  value_type data;\n\
-    };\n\n/**\n * @brief \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\u7C7B\n */\ntemplate\
-    \ <typename NodeType, typename Comp = std::less<>> class BSTType1 {\npublic:\n\
-    \  using node_ptr_type = typename NodeType::node_ptr_type;\n  using const_node_ptr_type\
-    \ = const node_ptr_type;\n  using value_type = typename NodeType::value_type;\n\
+    '*NOT_SPECIAL_COMMENTS*': ''
+    PROBLEM: https://judge.yosupo.jp/problem/predecessor_problem
+    links:
+    - https://judge.yosupo.jp/problem/predecessor_problem
+  bundledCode: "#line 1 \"remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/predecessor_problem\"\n\n\
+    #include <iostream>\n#include <string>\n\n#line 1 \"datastructure/tree/treap.hpp\"\
+    \n\n\n\n/**\n * @brief Treap / \u6811\u5806\n *\n */\n\n#include <random>\n#include\
+    \ <utility>\n\n#line 1 \"datastructure/tree/binary_search_tree_base.hpp\"\n\n\n\
+    \n/**\n * @brief binary search tree base / \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\
+    \u7C7B\n *\n */\n\n#include <cassert>\n#include <functional>\n#include <optional>\n\
+    \nnamespace lib {\n\n/**\n * @brief \u4E8C\u53C9\u641C\u7D22\u6811\u8282\u70B9\
+    \u7C7B\n */\ntemplate <typename DataType, typename Base> struct BSTNodeType1 :\
+    \ public Base {\npublic:\n  using node_ptr_type = BSTNodeType1 *;\n  using value_type\
+    \ = DataType;\n\n  BSTNodeType1(const value_type &v)\n      : left(nullptr), right(nullptr),\
+    \ parent(nullptr), size(1), data(v) {}\n  ~BSTNodeType1() {\n    delete left;\n\
+    \    delete right;\n  }\n\n  node_ptr_type left, right, parent;\n  int size;\n\
+    \  value_type data;\n};\n\n/**\n * @brief \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\
+    \u7C7B\n */\ntemplate <typename NodeType, typename Comp = std::less<>> class BSTType1\
+    \ {\npublic:\n  using node_ptr_type = typename NodeType::node_ptr_type;\n  using\
+    \ const_node_ptr_type = const node_ptr_type;\n  using value_type = typename NodeType::value_type;\n\
     \n#ifdef LOCAL\n\n  virtual void test() {\n    dfs(root_);\n    std::cout << \"\
     \\ntest over\\n\";\n  }\n\n  virtual void dfs(const_node_ptr_type x) {\n    if\
     \ (x == nullptr) return;\n    if (x->left != nullptr) dfs(x->left);\n    std::cout\
@@ -168,49 +172,42 @@ data:
     \ y = y->parent) --(y->size);\n    if (x->parent == nullptr) {\n      root_ =\
     \ nullptr;\n    } else {\n      if (x->parent->left == x) {\n        x->parent->left\
     \ = nullptr;\n      } else {\n        x->parent->right = nullptr;\n      }\n \
-    \   }\n    delete x;\n  }\n};\n\n} // namespace lib\n\n\n"
-  code: "#ifndef TREAP_HEADER_HPP\n#define TREAP_HEADER_HPP\n\n/**\n * @brief Treap\
-    \ / \u6811\u5806\n *\n */\n\n#include <random>\n#include <utility>\n\n#include\
-    \ \"binary_search_tree_base.hpp\"\n\nnamespace lib {\n\n/**\n * @brief Treap \u8282\
-    \u70B9\u7C7B\n */\nstruct TreapNode {\npublic:\n  TreapNode() : priority(get_rand())\
-    \ {}\n  ~TreapNode() = default;\n  int priority;\n  static int get_rand() {\n\
-    \    static std::random_device rd;\n    static std::mt19937_64 gen(rd());\n  \
-    \  static std::uniform_int_distribution<int> dis(0, 1919810);\n    return dis(gen);\n\
-    \  }\n};\n\n/**\n * @brief Treap\n */\ntemplate <typename DataType, typename Comp\
-    \ = std::less<>>\nclass Treap : public BSTType1<BSTNodeType1<DataType, TreapNode>,\
-    \ Comp> {\npublic:\n  using base = typename BSTType1<BSTNodeType1<DataType, TreapNode>,\
-    \ Comp>;\n  using base::base;\n  using value_type = typename base::value_type;\n\
-    \  using node_ptr_type = typename base::node_ptr_type;\n  using const_node_ptr_type\
-    \ = typename base::const_node_ptr_type;\n\n  static int get_priority(const_node_ptr_type\
-    \ x) { return x == nullptr ? -1 : x->priority; }\n  const_node_ptr_type insert_at_value(const\
-    \ value_type &v) override {\n    node_ptr_type res = base::insert_at_value(v);\n\
-    \    int resp = res->priority;\n    while (res->parent != nullptr && res->parent->priority\
-    \ < resp)\n      res == res->parent->left ? base::rotate_right(res->parent) :\
-    \ base::rotate_left(res->parent);\n    return res;\n  }\n  const_node_ptr_type\
-    \ insert_at_rank(const value_type &v, int k) override {\n    node_ptr_type res\
-    \ = base::insert_at_rank(v, k);\n    int resp = res->priority;\n    while (res->parent\
-    \ != nullptr && res->parent->priority < resp)\n      res == res->parent->left\
-    \ ? base::rotate_right(res->parent) : base::rotate_left(res->parent);\n    return\
-    \ res;\n  }\n  void delete_at_node(node_ptr_type x) override {\n    while (x->left\
-    \ != x->right)\n      get_priority(x->left) < get_priority(x->right) ? base::rotate_left(x)\
-    \ : base::rotate_right(x);\n    for (node_ptr_type y = x->parent; y != nullptr;\
-    \ y = y->parent) --(y->size);\n    if (x->parent == nullptr) {\n      root_ =\
-    \ nullptr;\n    } else {\n      if (x->parent->left == x) {\n        x->parent->left\
-    \ = nullptr;\n      } else {\n        x->parent->right = nullptr;\n      }\n \
-    \   }\n    delete x;\n  }\n};\n\n} // namespace lib\n\n#endif"
+    \   }\n    delete x;\n  }\n};\n\n} // namespace lib\n\n\n#line 7 \"remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp\"\
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
+    \  lib::Treap<int> a;\n  int n, q;\n  std::string t;\n  std::cin >> n >> q >>\
+    \ t;\n  for (int i = 0; i != n; ++i)\n    if (t[i] == '1') a.insert_at_value(i);\n\
+    \  while (q--) {\n    int c, k;\n    std::cin >> c >> k;\n    if (c == 0) {\n\
+    \      if (!a.is_in_tree(k)) a.insert_at_value(k);\n    } else if (c == 1) {\n\
+    \      a.delete_at_value(k);\n    } else if (c == 2) {\n      std::cout << a.is_in_tree(k)\
+    \ << '\\n';\n    } else if (c == 3) {\n      std::cout << a.greater_equal(k).value_or(-1)\
+    \ << '\\n';\n    } else if (c == 4) {\n      std::cout << a.less_equal(k).value_or(-1)\
+    \ << '\\n';\n    }\n  }\n  return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/predecessor_problem\"\n\
+    \n#include <iostream>\n#include <string>\n\n#include \"datastructure/tree/treap.hpp\"\
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
+    \  lib::Treap<int> a;\n  int n, q;\n  std::string t;\n  std::cin >> n >> q >>\
+    \ t;\n  for (int i = 0; i != n; ++i)\n    if (t[i] == '1') a.insert_at_value(i);\n\
+    \  while (q--) {\n    int c, k;\n    std::cin >> c >> k;\n    if (c == 0) {\n\
+    \      if (!a.is_in_tree(k)) a.insert_at_value(k);\n    } else if (c == 1) {\n\
+    \      a.delete_at_value(k);\n    } else if (c == 2) {\n      std::cout << a.is_in_tree(k)\
+    \ << '\\n';\n    } else if (c == 3) {\n      std::cout << a.greater_equal(k).value_or(-1)\
+    \ << '\\n';\n    } else if (c == 4) {\n      std::cout << a.less_equal(k).value_or(-1)\
+    \ << '\\n';\n    }\n  }\n  return 0;\n}"
   dependsOn:
+  - datastructure/tree/treap.hpp
   - datastructure/tree/binary_search_tree_base.hpp
-  isVerificationFile: false
-  path: datastructure/tree/treap.hpp
+  isVerificationFile: true
+  path: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
   requiredBy: []
   timestamp: '2021-06-18 02:19:04+08:00'
-  verificationStatus: LIBRARY_ALL_WA
-  verifiedWith:
-  - remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
-documentation_of: datastructure/tree/treap.hpp
+  verificationStatus: TEST_WRONG_ANSWER
+  verifiedWith: []
+documentation_of: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
 layout: document
 redirect_from:
-- /library/datastructure/tree/treap.hpp
-- /library/datastructure/tree/treap.hpp.html
-title: "Treap / \u6811\u5806"
+- /verify/remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
+- /verify/remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp.html
+title: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
 ---
