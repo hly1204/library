@@ -19,13 +19,13 @@ data:
       title: "priority queue / \u4F18\u5148\u961F\u5217"
   - name: datastructure/tree
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: datastructure/tree/binary_search_tree_base.hpp
       title: "binary search tree base / \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\u7C7B"
     - icon: ':warning:'
       path: datastructure/tree/splay_tree.hpp
       title: "splay tree / \u4F38\u5C55\u6811"
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: datastructure/tree/treap.hpp
       title: "Treap / \u6811\u5806"
   - name: graph
@@ -158,7 +158,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp
       title: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
       title: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
     - icon: ':heavy_check_mark:'

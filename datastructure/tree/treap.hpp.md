@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: datastructure/tree/binary_search_tree_base.hpp
     title: "binary search tree base / \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
     title: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "Treap / \u6811\u5806"
     links: []
@@ -35,17 +35,17 @@ data:
     \ (x == nullptr) return;\n    if (x->left != nullptr) dfs(x->left);\n    std::cout\
     \ << x->data << ' ';\n    if (x->right != nullptr) dfs(x->right);\n  }\n\n#endif\n\
     \n  BSTType1(const Comp &cmp) : root_(nullptr), cmp_(cmp) {}\n  BSTType1() : BSTType1(Comp())\
-    \ {}\n  ~BSTType1() { delete root_; }\n\n  bool is_empty() const { return root_\
-    \ == nullptr; }\n  int size() const { return get_size(root_); }\n  bool is_in_tree(const\
-    \ value_type &v) const { return find_node(v) != nullptr; }\n\n  /**\n   * @brief\
-    \ \u9009\u62E9\u7B2C k \u4E2A\u5143\u7D20\n   * @note \u7D22\u5F15\u4ECE 0 \u5F00\
-    \u59CB\n   * @param k\n   * @return std::opetional<value_type>\n   */\n  virtual\
-    \ std::optional<value_type> select(int k) const {\n    const_node_ptr_type x =\
-    \ select_node(k);\n    if (x == nullptr) return {};\n    return x->data;\n  }\n\
-    \n  /**\n   * @brief \u6C42\u51FA v \u5728\u6811\u4E2D\u7684\u6392\u540D\n   *\
-    \ @note \u5728\u6811\u4E2D\u6709\u591A\u5C11\u6BD4 v \u5C0F\u7684\u5143\u7D20\uFF0C\
-    \ v \u4E0D\u5FC5\u5728\u6811\u4E2D\n   * @param v\n   * @return int\n   */\n \
-    \ virtual int get_rank(const value_type &v) const {\n    int res = 0;\n    node_ptr_type\
+    \ {}\n  virtual ~BSTType1() { delete root_; }\n\n  bool is_empty() const { return\
+    \ root_ == nullptr; }\n  int size() const { return get_size(root_); }\n  bool\
+    \ is_in_tree(const value_type &v) const { return find_node(v) != nullptr; }\n\n\
+    \  /**\n   * @brief \u9009\u62E9\u7B2C k \u4E2A\u5143\u7D20\n   * @note \u7D22\
+    \u5F15\u4ECE 0 \u5F00\u59CB\n   * @param k\n   * @return std::opetional<value_type>\n\
+    \   */\n  virtual std::optional<value_type> select(int k) const {\n    const_node_ptr_type\
+    \ x = select_node(k);\n    if (x == nullptr) return {};\n    return x->data;\n\
+    \  }\n\n  /**\n   * @brief \u6C42\u51FA v \u5728\u6811\u4E2D\u7684\u6392\u540D\
+    \n   * @note \u5728\u6811\u4E2D\u6709\u591A\u5C11\u6BD4 v \u5C0F\u7684\u5143\u7D20\
+    \uFF0C v \u4E0D\u5FC5\u5728\u6811\u4E2D\n   * @param v\n   * @return int\n   */\n\
+    \  virtual int get_rank(const value_type &v) const {\n    int res = 0;\n    node_ptr_type\
     \ x = root_;\n    while (x != nullptr) {\n      if (cmp_(v, x->data)) {\n    \
     \    x = x->left;\n      } else if (cmp_(x->data, v)) {\n        res += get_size(x->left)\
     \ + 1;\n        x = x->right;\n      } else {\n        x = x->left;\n      }\n\
@@ -149,7 +149,7 @@ data:
     \ gen(rd());\n    static std::uniform_int_distribution<int> dis(0, 1919810);\n\
     \    return dis(gen);\n  }\n};\n\n/**\n * @brief Treap\n */\ntemplate <typename\
     \ DataType, typename Comp = std::less<>>\nclass Treap : public BSTType1<BSTNodeType1<DataType,\
-    \ TreapNode>, Comp> {\npublic:\n  using base = typename BSTType1<BSTNodeType1<DataType,\
+    \ TreapNode>, Comp> {\npublic:\n  using base = BSTType1<BSTNodeType1<DataType,\
     \ TreapNode>, Comp>;\n  using base::base;\n  using value_type = typename base::value_type;\n\
     \  using node_ptr_type = typename base::node_ptr_type;\n  using const_node_ptr_type\
     \ = typename base::const_node_ptr_type;\n\n  static int get_priority(const_node_ptr_type\
@@ -178,7 +178,7 @@ data:
     \  static std::uniform_int_distribution<int> dis(0, 1919810);\n    return dis(gen);\n\
     \  }\n};\n\n/**\n * @brief Treap\n */\ntemplate <typename DataType, typename Comp\
     \ = std::less<>>\nclass Treap : public BSTType1<BSTNodeType1<DataType, TreapNode>,\
-    \ Comp> {\npublic:\n  using base = typename BSTType1<BSTNodeType1<DataType, TreapNode>,\
+    \ Comp> {\npublic:\n  using base = BSTType1<BSTNodeType1<DataType, TreapNode>,\
     \ Comp>;\n  using base::base;\n  using value_type = typename base::value_type;\n\
     \  using node_ptr_type = typename base::node_ptr_type;\n  using const_node_ptr_type\
     \ = typename base::const_node_ptr_type;\n\n  static int get_priority(const_node_ptr_type\
@@ -203,8 +203,8 @@ data:
   isVerificationFile: false
   path: datastructure/tree/treap.hpp
   requiredBy: []
-  timestamp: '2021-06-18 02:23:36+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2021-06-18 02:33:39+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
 documentation_of: datastructure/tree/treap.hpp
