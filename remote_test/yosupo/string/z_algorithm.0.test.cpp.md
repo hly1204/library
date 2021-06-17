@@ -1,14 +1,14 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: string/z_algorithm.hpp
     title: "Z algorithm / Z \u7B97\u6CD5"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/zalgorithm
@@ -18,9 +18,9 @@ data:
     \ PROBLEM \"https://judge.yosupo.jp/problem/zalgorithm\"\n\n#include <iostream>\n\
     #include <string>\n\n#line 1 \"string/z_algorithm.hpp\"\n\n\n\n/**\n * @brief\
     \ Z algorithm / Z \u7B97\u6CD5\n *\n */\n\n#include <algorithm>\n#include <vector>\n\
-    \nnamespace lib {\n\n/**\n * @brief \u83B7\u53D6 z \u6570\u7EC4\uFF0C z[i] \u4E3A\
-    \ s \u4ECE i \u5F00\u59CB\u7684\u540E\u7F00\u4E0E s \u7684\u6700\u957F\u516C\u5171\
-    \u524D\u7F00\u7684\u957F\u5EA6\n *\n * @tparam Container \u5BB9\u5668\n * @param\
+    \nnamespace lib {\n\n/**\n * @brief \u83B7\u53D6 z \u6570\u7EC4\n * @note z[i]\
+    \ \u4E3A s \u4ECE i \u5F00\u59CB\u7684\u540E\u7F00\u4E0E s \u7684\u6700\u957F\u516C\
+    \u5171\u524D\u7F00\u7684\u957F\u5EA6\n * @tparam Container \u5BB9\u5668\n * @param\
     \ s \u5B57\u7B26\u4E32\n * @return std::vector<int>\n */\ntemplate <typename Container>\
     \ std::vector<int> get_z(const Container &s) {\n  int n = s.size();\n  std::vector<int>\
     \ z(n, 0);\n  if (n == 0) return z;\n  z[0] = n;\n  // Z-box \u5373 s[l..r]=s[0..r-l+1]\n\
@@ -49,8 +49,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/string/z_algorithm.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-12 14:03:29+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2021-06-17 19:06:03+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/string/z_algorithm.0.test.cpp
 layout: document

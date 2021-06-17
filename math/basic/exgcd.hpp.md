@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/base.hpp
     title: "type traits / \u7C7B\u578B\u8403\u53D6"
   _extendedRequiredBy:
@@ -11,9 +11,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/modulo/binomial_coefficient_mod.hpp
     title: "binomial coefficient mod / \u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
-  - icon: ':heavy_check_mark:'
-    path: math/modulo/sqrt_mod.hpp
-    title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
+  - icon: ':x:'
+    path: math/modulo/sqrt_mod_Tonelli_Shanks.hpp
+    title: "square root mod Tonelli-Shanks / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839\
+      \ Tonelli-Shanks \u7B97\u6CD5"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/aizuoj/number_theory/extended_Euclidean_algorithm.0.test.cpp
@@ -21,12 +22,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
     title: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
     title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "extended Euclidean algorithm / \u6269\u5C55\u6B27\u51E0\u91CC\
       \u5F97\u7B97\u6CD5"
@@ -101,14 +102,14 @@ data:
   path: math/basic/exgcd.hpp
   requiredBy:
   - math/basic/crt.hpp
-  - math/modulo/sqrt_mod.hpp
+  - math/modulo/sqrt_mod_Tonelli_Shanks.hpp
   - math/modulo/binomial_coefficient_mod.hpp
   timestamp: '2021-06-11 23:09:55+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
-  - remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
-  - remote_test/yosupo/math/mod_sqrt.0.test.cpp
   - remote_test/aizuoj/number_theory/extended_Euclidean_algorithm.0.test.cpp
+  - remote_test/yosupo/math/mod_sqrt.0.test.cpp
+  - remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
 documentation_of: math/basic/exgcd.hpp
 layout: document
 redirect_from:

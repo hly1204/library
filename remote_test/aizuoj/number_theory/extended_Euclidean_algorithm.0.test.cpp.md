@@ -1,11 +1,11 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/basic/exgcd.hpp
     title: "extended Euclidean algorithm / \u6269\u5C55\u6B27\u51E0\u91CC\u5F97\u7B97\
       \u6CD5"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/base.hpp
     title: "type traits / \u7C7B\u578B\u8403\u53D6"
   _extendedRequiredBy: []

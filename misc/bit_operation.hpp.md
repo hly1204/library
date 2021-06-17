@@ -29,29 +29,28 @@ data:
     \ 25, 30, 9,  19, 24, 29, 18, 28, 27};\n  return convert[n * deBruijn >> 27];\n\
     }\n\n} // namespace lib\n\n\n#line 13 \"misc/bit_operation.hpp\"\n\nnamespace\
     \ lib {\n\n/**\n * @brief \u5728\u4E8C\u8FDB\u5236\u6700\u9AD8\u7684 1 \u540E\u9762\
-    \u586B\u5145\u6EE1 1\n *\n * @param x\n * @return std::uint32_t\n */\nstd::uint32_t\
+    \u586B\u5145\u6EE1 1\n * @param x\n * @return std::uint32_t\n */\nstd::uint32_t\
     \ fill_one_after_msb(std::uint32_t x) {\n  x |= x >> 1;\n  x |= x >> 2;\n  x |=\
     \ x >> 4;\n  x |= x >> 8;\n  return x | x >> 16;\n}\n\nstd::uint64_t fill_one_after_msb(std::uint64_t\
     \ x) {\n  x |= x >> 1;\n  x |= x >> 2;\n  x |= x >> 4;\n  x |= x >> 8;\n  x |=\
-    \ x >> 16;\n  return x | x >> 32;\n}\n\n/**\n * @brief \u8BA1\u7B97 `x` \u7684\
-    \u4E8C\u8FDB\u5236\u8868\u793A\u4E2D least significant 1-bit \u7684\u7D22\u5F15\
-    \u52A0\u4E00\uFF0C\u82E5 `x == 0` \u5219\u8FD4\u56DE `0`\n *\n * @param x\n *\
-    \ @return int\n */\nint ffs(std::uint32_t x) { return x == 0 ? 0 : deBruijn_log2(x\
-    \ & ~(x - 1)) + 1; }\n\nint ffs(std::uint64_t x) { return x == 0 ? 0 : deBruijn_log2(x\
-    \ & ~(x - 1)) + 1; }\n\n/**\n * @brief \u8BA1\u7B97 `x` \u7684\u4E8C\u8FDB\u5236\
-    \u8868\u793A\u4E2D\u4ECE most significant bit \u4F4D\u7F6E\u5F00\u59CB\u6709\u591A\
-    \u5C11\u4E2A `0` \uFF0C\u82E5 `x == 0`\n * \u5219\u672A\u5B9A\u4E49\u3002\n *\n\
-    \ * @param x\n * @return int\n */\nint clz(std::uint32_t x) {\n  assert(x != 0);\n\
-    \  return 31 - deBruijn_log2(fill_one_after_msb(x >> 1) + 1);\n}\n\nint clz(std::uint64_t\
-    \ x) {\n  assert(x != 0);\n  return 63 - deBruijn_log2(fill_one_after_msb(x >>\
-    \ 1) + 1);\n}\n\n/**\n * @brief \u8BA1\u7B97 `x` \u7684\u4E8C\u8FDB\u5236\u8868\
-    \u793A\u4E2D\u4ECE least significant bit \u4F4D\u7F6E\u5F00\u59CB\u6709\u591A\u5C11\
-    \u4E2A `0` \uFF0C\u82E5 `x == 0`\n * \u5219\u672A\u5B9A\u4E49\u3002\n *\n * @param\
-    \ x\n * @return int\n */\nint ctz(std::uint32_t x) {\n  assert(x != 0);\n  return\
-    \ deBruijn_log2(x & ~(x - 1));\n}\n\nint ctz(std::uint64_t x) {\n  assert(x !=\
-    \ 0);\n  return deBruijn_log2(x & ~(x - 1));\n}\n\n/**\n * @brief \u8BA1\u7B97\
-    \ `x` \u7684\u4E8C\u8FDB\u5236\u8868\u793A\u4E2D `1` \u7684\u4E2A\u6570\u3002\n\
-    \ *\n * @param x\n * @return int\n */\nint popcount(std::uint32_t x) {\n  int\
+    \ x >> 16;\n  return x | x >> 32;\n}\n\n/**\n * @brief \u8BA1\u7B97 x \u7684\u4E8C\
+    \u8FDB\u5236\u8868\u793A\u4E2D least significant 1-bit \u7684\u7D22\u5F15\u52A0\
+    \u4E00\n * @param x\n * @return int \u82E5 x=0 \u5219\u8FD4\u56DE 0 \u3002\n */\n\
+    int ffs(std::uint32_t x) { return x == 0 ? 0 : deBruijn_log2(x & ~(x - 1)) + 1;\
+    \ }\n\nint ffs(std::uint64_t x) { return x == 0 ? 0 : deBruijn_log2(x & ~(x -\
+    \ 1)) + 1; }\n\n/**\n * @brief \u8BA1\u7B97 x \u7684\u4E8C\u8FDB\u5236\u8868\u793A\
+    \u4E2D\u4ECE most significant bit \u4F4D\u7F6E\u5F00\u59CB\u6709\u591A\u5C11\u4E2A\
+    \ 0\n * @param x\n * @return int \u82E5 x=0 \u5219\u672A\u5B9A\u4E49\u3002\n *\n\
+    \ */\nint clz(std::uint32_t x) {\n  assert(x != 0);\n  return 31 - deBruijn_log2(fill_one_after_msb(x\
+    \ >> 1) + 1);\n}\n\nint clz(std::uint64_t x) {\n  assert(x != 0);\n  return 63\
+    \ - deBruijn_log2(fill_one_after_msb(x >> 1) + 1);\n}\n\n/**\n * @brief \u8BA1\
+    \u7B97 x \u7684\u4E8C\u8FDB\u5236\u8868\u793A\u4E2D\u4ECE least significant bit\
+    \ \u4F4D\u7F6E\u5F00\u59CB\u6709\u591A\u5C11\u4E2A 0\n * @param x\n * @return\
+    \ int \u82E5 x=0 \u5219\u8FD4\u56DE\u672A\u5B9A\u4E49\n */\nint ctz(std::uint32_t\
+    \ x) {\n  assert(x != 0);\n  return deBruijn_log2(x & ~(x - 1));\n}\n\nint ctz(std::uint64_t\
+    \ x) {\n  assert(x != 0);\n  return deBruijn_log2(x & ~(x - 1));\n}\n\n/**\n *\
+    \ @brief \u8BA1\u7B97 x \u7684\u4E8C\u8FDB\u5236\u8868\u793A\u4E2D 1 \u7684\u4E2A\
+    \u6570\n * @param x\n * @return int\n */\nint popcount(std::uint32_t x) {\n  int\
     \ cnt = 0;\n  while (x) ++cnt, x &= x - 1;\n  return cnt;\n}\n\nint popcount(std::uint64_t\
     \ x) {\n  int cnt = 0;\n  while (x) ++cnt, x &= x - 1;\n  return cnt;\n}\n\n}\
     \ // namespace lib\n\n\n"
@@ -59,29 +58,28 @@ data:
     \ * @brief bit operations / \u4F4D\u8FD0\u7B97\n *\n */\n\n#include <cassert>\n\
     #include <cstdint>\n\n#include \"deBruijn_sequence.hpp\"\n\nnamespace lib {\n\n\
     /**\n * @brief \u5728\u4E8C\u8FDB\u5236\u6700\u9AD8\u7684 1 \u540E\u9762\u586B\
-    \u5145\u6EE1 1\n *\n * @param x\n * @return std::uint32_t\n */\nstd::uint32_t\
-    \ fill_one_after_msb(std::uint32_t x) {\n  x |= x >> 1;\n  x |= x >> 2;\n  x |=\
-    \ x >> 4;\n  x |= x >> 8;\n  return x | x >> 16;\n}\n\nstd::uint64_t fill_one_after_msb(std::uint64_t\
-    \ x) {\n  x |= x >> 1;\n  x |= x >> 2;\n  x |= x >> 4;\n  x |= x >> 8;\n  x |=\
-    \ x >> 16;\n  return x | x >> 32;\n}\n\n/**\n * @brief \u8BA1\u7B97 `x` \u7684\
-    \u4E8C\u8FDB\u5236\u8868\u793A\u4E2D least significant 1-bit \u7684\u7D22\u5F15\
-    \u52A0\u4E00\uFF0C\u82E5 `x == 0` \u5219\u8FD4\u56DE `0`\n *\n * @param x\n *\
-    \ @return int\n */\nint ffs(std::uint32_t x) { return x == 0 ? 0 : deBruijn_log2(x\
-    \ & ~(x - 1)) + 1; }\n\nint ffs(std::uint64_t x) { return x == 0 ? 0 : deBruijn_log2(x\
-    \ & ~(x - 1)) + 1; }\n\n/**\n * @brief \u8BA1\u7B97 `x` \u7684\u4E8C\u8FDB\u5236\
-    \u8868\u793A\u4E2D\u4ECE most significant bit \u4F4D\u7F6E\u5F00\u59CB\u6709\u591A\
-    \u5C11\u4E2A `0` \uFF0C\u82E5 `x == 0`\n * \u5219\u672A\u5B9A\u4E49\u3002\n *\n\
-    \ * @param x\n * @return int\n */\nint clz(std::uint32_t x) {\n  assert(x != 0);\n\
-    \  return 31 - deBruijn_log2(fill_one_after_msb(x >> 1) + 1);\n}\n\nint clz(std::uint64_t\
-    \ x) {\n  assert(x != 0);\n  return 63 - deBruijn_log2(fill_one_after_msb(x >>\
-    \ 1) + 1);\n}\n\n/**\n * @brief \u8BA1\u7B97 `x` \u7684\u4E8C\u8FDB\u5236\u8868\
-    \u793A\u4E2D\u4ECE least significant bit \u4F4D\u7F6E\u5F00\u59CB\u6709\u591A\u5C11\
-    \u4E2A `0` \uFF0C\u82E5 `x == 0`\n * \u5219\u672A\u5B9A\u4E49\u3002\n *\n * @param\
-    \ x\n * @return int\n */\nint ctz(std::uint32_t x) {\n  assert(x != 0);\n  return\
-    \ deBruijn_log2(x & ~(x - 1));\n}\n\nint ctz(std::uint64_t x) {\n  assert(x !=\
-    \ 0);\n  return deBruijn_log2(x & ~(x - 1));\n}\n\n/**\n * @brief \u8BA1\u7B97\
-    \ `x` \u7684\u4E8C\u8FDB\u5236\u8868\u793A\u4E2D `1` \u7684\u4E2A\u6570\u3002\n\
-    \ *\n * @param x\n * @return int\n */\nint popcount(std::uint32_t x) {\n  int\
+    \u5145\u6EE1 1\n * @param x\n * @return std::uint32_t\n */\nstd::uint32_t fill_one_after_msb(std::uint32_t\
+    \ x) {\n  x |= x >> 1;\n  x |= x >> 2;\n  x |= x >> 4;\n  x |= x >> 8;\n  return\
+    \ x | x >> 16;\n}\n\nstd::uint64_t fill_one_after_msb(std::uint64_t x) {\n  x\
+    \ |= x >> 1;\n  x |= x >> 2;\n  x |= x >> 4;\n  x |= x >> 8;\n  x |= x >> 16;\n\
+    \  return x | x >> 32;\n}\n\n/**\n * @brief \u8BA1\u7B97 x \u7684\u4E8C\u8FDB\u5236\
+    \u8868\u793A\u4E2D least significant 1-bit \u7684\u7D22\u5F15\u52A0\u4E00\n *\
+    \ @param x\n * @return int \u82E5 x=0 \u5219\u8FD4\u56DE 0 \u3002\n */\nint ffs(std::uint32_t\
+    \ x) { return x == 0 ? 0 : deBruijn_log2(x & ~(x - 1)) + 1; }\n\nint ffs(std::uint64_t\
+    \ x) { return x == 0 ? 0 : deBruijn_log2(x & ~(x - 1)) + 1; }\n\n/**\n * @brief\
+    \ \u8BA1\u7B97 x \u7684\u4E8C\u8FDB\u5236\u8868\u793A\u4E2D\u4ECE most significant\
+    \ bit \u4F4D\u7F6E\u5F00\u59CB\u6709\u591A\u5C11\u4E2A 0\n * @param x\n * @return\
+    \ int \u82E5 x=0 \u5219\u672A\u5B9A\u4E49\u3002\n *\n */\nint clz(std::uint32_t\
+    \ x) {\n  assert(x != 0);\n  return 31 - deBruijn_log2(fill_one_after_msb(x >>\
+    \ 1) + 1);\n}\n\nint clz(std::uint64_t x) {\n  assert(x != 0);\n  return 63 -\
+    \ deBruijn_log2(fill_one_after_msb(x >> 1) + 1);\n}\n\n/**\n * @brief \u8BA1\u7B97\
+    \ x \u7684\u4E8C\u8FDB\u5236\u8868\u793A\u4E2D\u4ECE least significant bit \u4F4D\
+    \u7F6E\u5F00\u59CB\u6709\u591A\u5C11\u4E2A 0\n * @param x\n * @return int \u82E5\
+    \ x=0 \u5219\u8FD4\u56DE\u672A\u5B9A\u4E49\n */\nint ctz(std::uint32_t x) {\n\
+    \  assert(x != 0);\n  return deBruijn_log2(x & ~(x - 1));\n}\n\nint ctz(std::uint64_t\
+    \ x) {\n  assert(x != 0);\n  return deBruijn_log2(x & ~(x - 1));\n}\n\n/**\n *\
+    \ @brief \u8BA1\u7B97 x \u7684\u4E8C\u8FDB\u5236\u8868\u793A\u4E2D 1 \u7684\u4E2A\
+    \u6570\n * @param x\n * @return int\n */\nint popcount(std::uint32_t x) {\n  int\
     \ cnt = 0;\n  while (x) ++cnt, x &= x - 1;\n  return cnt;\n}\n\nint popcount(std::uint64_t\
     \ x) {\n  int cnt = 0;\n  while (x) ++cnt, x &= x - 1;\n  return cnt;\n}\n\n}\
     \ // namespace lib\n\n#endif"
@@ -90,7 +88,7 @@ data:
   isVerificationFile: false
   path: misc/bit_operation.hpp
   requiredBy: []
-  timestamp: '2021-06-06 21:24:21+08:00'
+  timestamp: '2021-06-17 19:06:03+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: misc/bit_operation.hpp

@@ -55,30 +55,29 @@ data:
     \  }\n  friend std::ostream &operator<<(std::ostream &os, const m64 &rhs) { return\
     \ os << rhs.get(); }\n\n  m64 pow(u64 y) const {\n    m64 res(1), x(*this);\n\
     \    for (; y != 0; y >>= 1, x *= x)\n      if (y & 1) res *= x;\n    return res;\n\
-    \  }\n\nprivate:\n  //---\n  static std::pair<u64, u64> mul(u64 x, u64 y) {\n\
-    #ifdef _MSC_VER\n    u64 h, l = _umul128(x, y, &h);\n    return {h, l};\n#elif\
-    \ defined(__GNUC__)\n    unsigned __int128 res = (unsigned __int128)x * y;\n \
-    \   return {u64(res >> 64), u64(res)};\n#else\n    u64 a = x >> 32, b = u32(x),\
-    \ c = y >> 32, d = u32(y), ac = a * c, bd = b * d, ad = a * d,\n        bc = b\
-    \ * c;\n    // low = bd + (ad + bc << 32); \u4F46\u662F\u6CA1\u5FC5\u8981\n  \
-    \  return {ac + (ad >> 32) + (bc >> 32) +\n                (((ad & -UINT32_C(1))\
-    \ + (bc & -UINT32_C(1)) + (bd >> 32)) >> 32),\n            x * y};\n#endif\n \
-    \ }\n\n  static u64 mulh(u64 x, u64 y) {\n#ifdef _MSC_VER\n    return __umulh(x,\
-    \ y);\n#elif defined(__GNUC__)\n    return (unsigned __int128)x * y >> 64;\n#else\n\
-    \    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ac = a * c, bd = b\
-    \ * d, ad = a * d,\n        bc = b * c;\n    return ac + (ad >> 32) + (bc >> 32)\
-    \ +\n           (((ad & -UINT32_C(1)) + (bc & -UINT32_C(1)) + (bd >> 32)) >> 32);\n\
-    #endif\n  }\n  //---\n\n  static u64 get_r() {\n    u64 two = 2, iv = mod * (two\
-    \ - mod * mod);\n    iv *= two - mod * iv;\n    iv *= two - mod * iv;\n    iv\
-    \ *= two - mod * iv;\n    return iv * (two - mod * iv);\n  }\n\n  static u64 get_r2()\
-    \ {\n    u64 iv = -u64(mod) % mod;\n    for (int i = 0; i != 64; ++i)\n      if\
-    \ ((iv <<= 1) >= mod) iv -= mod;\n    return iv;\n  }\n\n  static u64 reduce(const\
-    \ std::pair<u64, u64> &x) {\n    u64 res = x.first - mulh(x.second * r, mod);\n\
-    \    return res + (mod & -(res >> 63));\n  }\n\n  static u64 norm(i64 x) { return\
-    \ x + (mod & -(x < 0)); }\n\n  u64 v_;\n\n  static u64 mod, r, r2;\n};\n\nRuntimeLongMontgomeryModInt::u64\
-    \ RuntimeLongMontgomeryModInt::mod;\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::r;\n\
-    RuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::r2;\n\nusing RuntimeLongMontModInt\
-    \ = RuntimeLongMontgomeryModInt;\n\n} // namespace lib\n\n\n"
+    \  }\n\nprivate:\n  static std::pair<u64, u64> mul(u64 x, u64 y) {\n#ifdef __GNUC__\n\
+    \    unsigned __int128 res = (unsigned __int128)x * y;\n    return {u64(res >>\
+    \ 64), u64(res)};\n#elif defined(_MSC_VER)\n    u64 h, l = _umul128(x, y, &h);\n\
+    \    return {h, l};\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d =\
+    \ u32(y), ad = a * d, bc = b * c;\n    return {a * c + (ad >> 32) + (bc >> 32)\
+    \ +\n                (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32))\
+    \ >> 32),\n            x * y};\n#endif\n  }\n\n  static u64 mulh(u64 x, u64 y)\
+    \ {\n#ifdef __GNUC__\n    return u64((unsigned __int128)x * y >> 64);\n#elif defined(_MSC_VER)\n\
+    \    return __umulh(x, y);\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32,\
+    \ d = u32(y), ad = a * d, bc = b * c;\n    return a * c + (ad >> 32) + (bc >>\
+    \ 32) +\n           (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32))\
+    \ >> 32);\n#endif\n  }\n\n  static u64 get_r() {\n    u64 two = 2, iv = mod *\
+    \ (two - mod * mod);\n    iv *= two - mod * iv;\n    iv *= two - mod * iv;\n \
+    \   iv *= two - mod * iv;\n    return iv * (two - mod * iv);\n  }\n\n  static\
+    \ u64 get_r2() {\n    u64 iv = -u64(mod) % mod;\n    for (int i = 0; i != 64;\
+    \ ++i)\n      if ((iv <<= 1) >= mod) iv -= mod;\n    return iv;\n  }\n\n  static\
+    \ u64 reduce(const std::pair<u64, u64> &x) {\n    u64 res = x.first - mulh(x.second\
+    \ * r, mod);\n    return res + (mod & -(res >> 63));\n  }\n\n  static u64 norm(i64\
+    \ x) { return x + (mod & -(x < 0)); }\n\n  u64 v_;\n\n  static u64 mod, r, r2;\n\
+    };\n\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::mod;\nRuntimeLongMontgomeryModInt::u64\
+    \ RuntimeLongMontgomeryModInt::r;\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::r2;\n\
+    \nusing RuntimeLongMontModInt = RuntimeLongMontgomeryModInt;\n\n} // namespace\
+    \ lib\n\n\n"
   code: "#ifndef RUNTIME_LONG_MONTGOMERY_MODINT_HEADER_HPP\n#define RUNTIME_LONG_MONTGOMERY_MODINT_HEADER_HPP\n\
     \n/**\n * @brief runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\
     \u578B Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#include <cassert>\n#include\
@@ -118,36 +117,35 @@ data:
     \  }\n  friend std::ostream &operator<<(std::ostream &os, const m64 &rhs) { return\
     \ os << rhs.get(); }\n\n  m64 pow(u64 y) const {\n    m64 res(1), x(*this);\n\
     \    for (; y != 0; y >>= 1, x *= x)\n      if (y & 1) res *= x;\n    return res;\n\
-    \  }\n\nprivate:\n  //---\n  static std::pair<u64, u64> mul(u64 x, u64 y) {\n\
-    #ifdef _MSC_VER\n    u64 h, l = _umul128(x, y, &h);\n    return {h, l};\n#elif\
-    \ defined(__GNUC__)\n    unsigned __int128 res = (unsigned __int128)x * y;\n \
-    \   return {u64(res >> 64), u64(res)};\n#else\n    u64 a = x >> 32, b = u32(x),\
-    \ c = y >> 32, d = u32(y), ac = a * c, bd = b * d, ad = a * d,\n        bc = b\
-    \ * c;\n    // low = bd + (ad + bc << 32); \u4F46\u662F\u6CA1\u5FC5\u8981\n  \
-    \  return {ac + (ad >> 32) + (bc >> 32) +\n                (((ad & -UINT32_C(1))\
-    \ + (bc & -UINT32_C(1)) + (bd >> 32)) >> 32),\n            x * y};\n#endif\n \
-    \ }\n\n  static u64 mulh(u64 x, u64 y) {\n#ifdef _MSC_VER\n    return __umulh(x,\
-    \ y);\n#elif defined(__GNUC__)\n    return (unsigned __int128)x * y >> 64;\n#else\n\
-    \    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ac = a * c, bd = b\
-    \ * d, ad = a * d,\n        bc = b * c;\n    return ac + (ad >> 32) + (bc >> 32)\
-    \ +\n           (((ad & -UINT32_C(1)) + (bc & -UINT32_C(1)) + (bd >> 32)) >> 32);\n\
-    #endif\n  }\n  //---\n\n  static u64 get_r() {\n    u64 two = 2, iv = mod * (two\
-    \ - mod * mod);\n    iv *= two - mod * iv;\n    iv *= two - mod * iv;\n    iv\
-    \ *= two - mod * iv;\n    return iv * (two - mod * iv);\n  }\n\n  static u64 get_r2()\
-    \ {\n    u64 iv = -u64(mod) % mod;\n    for (int i = 0; i != 64; ++i)\n      if\
-    \ ((iv <<= 1) >= mod) iv -= mod;\n    return iv;\n  }\n\n  static u64 reduce(const\
-    \ std::pair<u64, u64> &x) {\n    u64 res = x.first - mulh(x.second * r, mod);\n\
-    \    return res + (mod & -(res >> 63));\n  }\n\n  static u64 norm(i64 x) { return\
-    \ x + (mod & -(x < 0)); }\n\n  u64 v_;\n\n  static u64 mod, r, r2;\n};\n\nRuntimeLongMontgomeryModInt::u64\
-    \ RuntimeLongMontgomeryModInt::mod;\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::r;\n\
-    RuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::r2;\n\nusing RuntimeLongMontModInt\
-    \ = RuntimeLongMontgomeryModInt;\n\n} // namespace lib\n\n#endif"
+    \  }\n\nprivate:\n  static std::pair<u64, u64> mul(u64 x, u64 y) {\n#ifdef __GNUC__\n\
+    \    unsigned __int128 res = (unsigned __int128)x * y;\n    return {u64(res >>\
+    \ 64), u64(res)};\n#elif defined(_MSC_VER)\n    u64 h, l = _umul128(x, y, &h);\n\
+    \    return {h, l};\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d =\
+    \ u32(y), ad = a * d, bc = b * c;\n    return {a * c + (ad >> 32) + (bc >> 32)\
+    \ +\n                (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32))\
+    \ >> 32),\n            x * y};\n#endif\n  }\n\n  static u64 mulh(u64 x, u64 y)\
+    \ {\n#ifdef __GNUC__\n    return u64((unsigned __int128)x * y >> 64);\n#elif defined(_MSC_VER)\n\
+    \    return __umulh(x, y);\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32,\
+    \ d = u32(y), ad = a * d, bc = b * c;\n    return a * c + (ad >> 32) + (bc >>\
+    \ 32) +\n           (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32))\
+    \ >> 32);\n#endif\n  }\n\n  static u64 get_r() {\n    u64 two = 2, iv = mod *\
+    \ (two - mod * mod);\n    iv *= two - mod * iv;\n    iv *= two - mod * iv;\n \
+    \   iv *= two - mod * iv;\n    return iv * (two - mod * iv);\n  }\n\n  static\
+    \ u64 get_r2() {\n    u64 iv = -u64(mod) % mod;\n    for (int i = 0; i != 64;\
+    \ ++i)\n      if ((iv <<= 1) >= mod) iv -= mod;\n    return iv;\n  }\n\n  static\
+    \ u64 reduce(const std::pair<u64, u64> &x) {\n    u64 res = x.first - mulh(x.second\
+    \ * r, mod);\n    return res + (mod & -(res >> 63));\n  }\n\n  static u64 norm(i64\
+    \ x) { return x + (mod & -(x < 0)); }\n\n  u64 v_;\n\n  static u64 mod, r, r2;\n\
+    };\n\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::mod;\nRuntimeLongMontgomeryModInt::u64\
+    \ RuntimeLongMontgomeryModInt::r;\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::r2;\n\
+    \nusing RuntimeLongMontModInt = RuntimeLongMontgomeryModInt;\n\n} // namespace\
+    \ lib\n\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: modint/runtime_long_Montgomery_modint.hpp
   requiredBy:
   - math/basic/integer_factorization.hpp
-  timestamp: '2021-06-11 23:09:55+08:00'
+  timestamp: '2021-06-17 19:06:03+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/factorize.0.test.cpp

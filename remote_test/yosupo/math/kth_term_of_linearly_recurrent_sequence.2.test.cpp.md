@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/fps_basic.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -39,18 +39,18 @@ data:
     \n\n\n\n/**\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\
     \n#line 11 \"math/formal_power_series/radix_2_NTT.hpp\"\n#include <cstdint>\n\
     #line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n\nnamespace lib {\n\n// \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\
-    \uFF01\uFF01\uFF01\ntemplate <typename mod_t> class NTT {\npublic:\n  NTT() =\
-    \ delete;\n\n  static void set_root(int len) {\n    static int lim = 0;\n    static\
-    \ constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n    if\
-    \ (lim == 0) {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n      rt[0]\
-    \ = irt[0] = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod() >> 21),\
-    \ ig_t = g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n      for\
-    \ (int i = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n        rt[1\
-    \ << i] = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n    for (;\
-    \ (lim << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n  \
-    \    for (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i -\
-    \ lim] * g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static\
+    \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\
+    \u6A21\u6570\uFF01\uFF01\uFF01\n */\ntemplate <typename mod_t> class NTT {\npublic:\n\
+    \  NTT() = delete;\n\n  static void set_root(int len) {\n    static int lim =\
+    \ 0;\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n\
+    \    if (lim == 0) {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n\
+    \      rt[0] = irt[0] = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod()\
+    \ >> 21), ig_t = g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n \
+    \     for (int i = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n   \
+    \     rt[1 << i] = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n\
+    \    for (; (lim << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n\
+    \      for (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i\
+    \ - lim] * g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static\
     \ void dft(int n, mod_t *x) {\n    for (int j = 0, l = n >> 1; j != l; ++j) {\n\
     \      mod_t u = x[j], v = x[j + l];\n      x[j] = u + v, x[j + l] = u - v;\n\
     \    }\n    for (int i = n >> 1; i >= 2; i >>= 1) {\n      for (int j = 0, l =\
@@ -81,44 +81,45 @@ data:
     \ n |= n >> 2;\n  n |= n >> 4;\n  n |= n >> 8;\n  return (n | n >> 16) + 1;\n\
     }\n\n/**\n * @brief \u63A5\u6536\u4E00\u4E2A\u591A\u9879\u5F0F\uFF0C\u8FD4\u56DE\
     \u4E8C\u8FDB\u5236\u7FFB\u8F6C\u540E\u7684 DFT \u5E8F\u5217\uFF0C\u5373 x(1),\
-    \ x(-1) \u7B49\uFF0C\n * \u5BF9\u4E8E\u4E0B\u6807 i \u548C i^1 \u5FC5\u7136\u662F\
-    \u4E24\u4E2A\u4E92\u4E3A\u76F8\u53CD\u6570\u7684\u70B9\u503C\n *\n * @tparam mod_t\n\
-    \ * @param n\n * @param x\n */\ntemplate <typename mod_t> void dft(int n, mod_t\
-    \ *x) {\n  NTT<mod_t>::set_root(n);\n  NTT<mod_t>::dft(n, x);\n}\n\n/**\n * @brief\
-    \ \u63A5\u6536\u4E8C\u8FDB\u5236\u7FFB\u8F6C\u540E\u7684 DFT \u5E8F\u5217\uFF0C\
-    \u8FD4\u56DE\u591A\u9879\u5F0F\u5E8F\u5217 mod (x^n - 1)\n *\n * @tparam mod_t\n\
-    \ * @param n\n * @param x\n */\ntemplate <typename mod_t> void idft(int n, mod_t\
-    \ *x) {\n  NTT<mod_t>::set_root(n);\n  NTT<mod_t>::idft(n, x);\n}\n\ntemplate\
-    \ <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
+    \ x(-1) \u7B49\uFF0C\n *        \u5BF9\u4E8E\u4E0B\u6807 i \u548C i^1 \u5FC5\u7136\
+    \u662F\u4E24\u4E2A\u4E92\u4E3A\u76F8\u53CD\u6570\u7684\u70B9\u503C\n *\n * @tparam\
+    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t> void dft(int\
+    \ n, mod_t *x) {\n  NTT<mod_t>::set_root(n);\n  NTT<mod_t>::dft(n, x);\n}\n\n\
+    /**\n * @brief \u63A5\u6536\u4E8C\u8FDB\u5236\u7FFB\u8F6C\u540E\u7684 DFT \u5E8F\
+    \u5217\uFF0C\u8FD4\u56DE\u591A\u9879\u5F0F\u5E8F\u5217 mod (x^n - 1)\n *\n * @tparam\
+    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t> void idft(int\
+    \ n, mod_t *x) {\n  NTT<mod_t>::set_root(n);\n  NTT<mod_t>::idft(n, x);\n}\n\n\
+    template <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
     \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
     \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
     }\n\n} // namespace lib\n\n\n#line 19 \"math/formal_power_series/fps_basic.hpp\"\
-    \n\nnamespace lib {\n\n// \u5FC5\u987B\u4F7F\u7528 NTT \u53CB\u597D\u7684\u6A21\
-    \u6570\uFF01\uFF01\uFF01\n// \u5728\u4F7F\u7528\u6A21\u677F\u7C7B\u7EE7\u627F\u65F6\
-    \uFF0C\u5BF9\u4E8E\u7EE7\u627F\u6765\u7684 public \u6210\u5458\u51FD\u6570\uFF0C\
-    \u8981\u4E48\u4F7F\u7528 using \u6765\u58F0\u660E\uFF0C\u8981\u4E48\u4F7F\u7528\
-    \u57DF\u9650\u5B9A\u7B26\n// \u8981\u4E48\u4F7F\u7528 this \u6307\u9488\uFF0C\u8FD9\
-    \u6837\u5728\u7B2C\u4E00\u6B21\u626B\u63CF\u65F6\u4E0D\u4F1A\u5904\u7406\uFF0C\
-    \u7B2C\u4E8C\u6B21\u624D\u4F1A\u5206\u6790\u57FA\u7C7B\u4E2D\u7684\u51FD\u6570\
-    \uFF0C\u5426\u5219\u4E0D\u80FD\u901A\u8FC7\u7F16\u8BD1\n// MSVC \u56E0\u4E3A\u6709\
-    \u6269\u5C55\u7684\u539F\u56E0\u53EF\u4EE5\u901A\u8FC7\u7F16\u8BD1\uFF0C\u4F46\
-    \u6807\u51C6\u89C4\u5B9A\u662F\u8FD9\u6837\u3002\n// \u82E5\u4E0D\u662F\u6A21\u677F\
-    \u7C7B\u7EE7\u627F\u5219\u6CA1\u6709\u8FD9\u6837\u7684\u95EE\u9898\u3002\ntemplate\
-    \ <typename mod_t> class FormalPowerSeries : public std::vector<mod_t> {\nprivate:\n\
-    \  using vec = std::vector<mod_t>;\n  using fps = FormalPowerSeries<mod_t>;\n\n\
-    \  static inline vec INV;\n\n  static void init_inv(int n) { // \u9884\u5904\u7406\
-    \ [1, n) \u7684\u9006\u5143\n    static constexpr auto mod = modint_traits<mod_t>::get_mod();\n\
-    \    static int lim = 0;\n    if (lim < n) {\n      INV.resize(n);\n      if (lim\
-    \ == 0) INV[1] = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i] = mod_t(mod\
-    \ - mod / i) * INV[mod % i];\n      lim = n;\n    }\n  }\n\npublic:\n  using vec::vec;\n\
-    \n  /**\n   * @brief \u83B7\u53D6\u5EA6\u6570\uFF0C\u7279\u4F8B\u4E3A deg(0)=-1\n\
-    \   *\n   * @return int\n   */\n  int deg() const {\n    static constexpr mod_t\
-    \ Z = 0;\n    int n = int(this->size()) - 1;\n    while (n >= 0 && this->operator[](n)\
-    \ == Z) --n;\n    return n;\n  }\n  /**\n   * @brief \u83B7\u53D6\u6700\u9AD8\u6B21\
-    \u9879\u7684\u7CFB\u6570\n   *\n   * @return mod_t\n   */\n  mod_t leading_coeff()\
+    \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u4F7F\u7528 NTT \u53CB\u597D\
+    \u7684\u6A21\u6570\uFF01\uFF01\uFF01\n *       \u5728\u4F7F\u7528\u6A21\u677F\u7C7B\
+    \u7EE7\u627F\u65F6\uFF0C\u5BF9\u4E8E\u7EE7\u627F\u6765\u7684 public \u6210\u5458\
+    \u51FD\u6570\uFF0C\u8981\u4E48\u4F7F\u7528 using \u6765\u58F0\u660E\uFF0C\u8981\
+    \u4E48\u4F7F\u7528\u57DF\u9650\u5B9A\u7B26\n *       \u8981\u4E48\u4F7F\u7528\
+    \ this \u6307\u9488\uFF0C\u8FD9\u6837\u5728\u7B2C\u4E00\u6B21\u626B\u63CF\u65F6\
+    \u4E0D\u4F1A\u5904\u7406\uFF0C\u7B2C\u4E8C\u6B21\u624D\u4F1A\u5206\u6790\u57FA\
+    \u7C7B\u4E2D\u7684\u51FD\u6570\uFF0C\n *       \u5426\u5219\u4E0D\u80FD\u901A\u8FC7\
+    \u7F16\u8BD1\u3002MSVC \u56E0\u4E3A\u6709\u6269\u5C55\u7684\u539F\u56E0\u53EF\u4EE5\
+    \u901A\u8FC7\u7F16\u8BD1\uFF0C\u4F46\u6807\u51C6\u89C4\u5B9A\u662F\u8FD9\u6837\
+    \u3002\n *       \u82E5\u4E0D\u662F\u6A21\u677F\u7C7B\u7EE7\u627F\u5219\u6CA1\u6709\
+    \u8FD9\u6837\u7684\u95EE\u9898\u3002\n *\n */\ntemplate <typename mod_t> class\
+    \ FormalPowerSeries : public std::vector<mod_t> {\nprivate:\n  using vec = std::vector<mod_t>;\n\
+    \  using fps = FormalPowerSeries<mod_t>;\n\n  static inline vec INV;\n\n  static\
+    \ void init_inv(int n) { // \u9884\u5904\u7406 [1, n) \u7684\u9006\u5143\n   \
+    \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    static int\
+    \ lim = 0;\n    if (lim < n) {\n      INV.resize(n);\n      if (lim == 0) INV[1]\
+    \ = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i] = mod_t(mod - mod\
+    \ / i) * INV[mod % i];\n      lim = n;\n    }\n  }\n\npublic:\n  using vec::vec;\n\
+    \n  /**\n   * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n\
+    \   * @return int\n   */\n  int deg() const {\n    static constexpr mod_t Z =\
+    \ 0;\n    int n = int(this->size()) - 1;\n    while (n >= 0 && this->operator[](n)\
+    \ == Z) --n;\n    return n;\n  }\n\n  /**\n   * @brief \u83B7\u53D6\u6700\u9AD8\
+    \u6B21\u9879\u7684\u7CFB\u6570\n   * @return mod_t\n   */\n  mod_t leading_coeff()\
     \ const {\n    int d = deg();\n    return d == -1 ? mod_t(0) : this->operator[](d);\n\
-    \  }\n  /**\n   * @brief \u53BB\u9664\u5C3E 0 \uFF0C\u4F46\u5982\u679C\u53EA\u6709\
-    \u4E00\u4E2A 0 \u5219\u4F1A\u4FDD\u7559\n   *\n   */\n  void shrink() { this->resize(std::max(deg()\
+    \  }\n\n  /**\n   * @brief \u53BB\u9664\u5C3E 0 \uFF0C\u4F46\u5982\u679C\u53EA\
+    \u6709\u4E00\u4E2A 0 \u5219\u4F1A\u4FDD\u7559\n   */\n  void shrink() { this->resize(std::max(deg()\
     \ + 1, 1)); }\n  fps slice() const { return fps(*this); }\n  fps slice(int n)\
     \ const {\n    assert(n >= 0);\n    int sz = this->size();\n    if (sz >= n) return\
     \ fps(this->begin(), this->begin() + n);\n    fps res(*this);\n    res.resize(n,\
@@ -385,7 +386,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
   requiredBy: []
-  timestamp: '2021-06-12 14:03:29+08:00'
+  timestamp: '2021-06-17 19:06:03+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp

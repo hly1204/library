@@ -14,36 +14,35 @@ data:
     - https://prng.di.unimi.it/xoshiro256starstar.c
   bundledCode: "#line 1 \"misc/random.hpp\"\n\n\n\n/**\n * @brief pseudo random generator\
     \ / \u4F2A\u968F\u673A\u6570\u751F\u6210\u5668\n *\n */\n\n#include <cassert>\n\
-    #include <cstdint>\n#include <type_traits>\n\nnamespace lib {\n\n// xoshiro256starstar\n\
-    // reference: https://prng.di.unimi.it/xoshiro256starstar.c\n// \u5468\u671F\u4E3A\
-    \ 2^{256}-1\n// UINT64_C(x) \u7B49\u4EF7\u4E8E\u5728 x \u540E\u9762\u62FC\u63A5\
-    \ ULL\nclass Random {\nprivate:\n  using u64 = std::uint64_t;\n\npublic:\n  /**\n\
+    #include <cstdint>\n#include <type_traits>\n\nnamespace lib {\n\n/**\n * @brief\
+    \ xoshiro256starstar\n * @ref https://prng.di.unimi.it/xoshiro256starstar.c\n\
+    \ */\nclass Random {\nprivate:\n  using u64 = std::uint64_t;\n\npublic:\n  /**\n\
     \   * @brief \u521B\u5EFA\u4E00\u4E2A\u65B0\u7684\u968F\u673A\u6570\u5BF9\u8C61\
-    \uFF0C\u5171\u7528\u540C\u4E00\u4E2A\u79CD\u5B50\n   *\n   * @param x \u4E3A\u79CD\
-    \u5B50\n   */\n  Random(u64 x = 0) {\n    // splitmix64\n    // reference: https://prng.di.unimi.it/splitmix64.c\n\
+    \uFF0C\u5171\u7528\u540C\u4E00\u4E2A\u79CD\u5B50\n   * @param x \u79CD\u5B50\n\
+    \   */\n  Random(u64 x = 0) {\n    // splitmix64\n    // reference: https://prng.di.unimi.it/splitmix64.c\n\
     \    for (int i = 0; i < 4; ++i) {\n      u64 z = (x += 0x9e3779b97f4a7c15);\n\
     \      z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n      z = (z ^ (z >> 27)) *\
     \ 0x94d049bb133111eb;\n      s[i] = z ^ (z >> 31);\n    }\n  }\n  ~Random() =\
     \ default;\n\n  /**\n   * @brief \u8FD4\u56DE [0, upper] \u4E2D\u5747\u5300\u5206\
-    \u5E03\u7684\u4E00\u4E2A\u6574\u6570\n   *\n   * @tparam T\n   * @param upper\n\
-    \   * @return std::enable_if_t<std::is_integral_v<T>, T>\n   */\n  template <typename\
-    \ T> std::enable_if_t<std::is_integral_v<T>, T> uniform_int(T upper) {\n    assert(upper\
-    \ > 0);\n    u64 mask = u64(upper);\n    mask |= mask >> 1;\n    mask |= mask\
-    \ >> 2;\n    mask |= mask >> 4;\n    mask |= mask >> 8;\n    mask |= mask >> 16;\n\
-    \    if constexpr (sizeof(T) > 4) mask |= mask >> 32;\n    for (;;) {\n      u64\
-    \ res = next() & mask;\n      if (res <= upper) return T(res);\n    }\n  }\n\n\
-    \  /**\n   * @brief \u8FD4\u56DE [lower, upper] \u4E2D\u5747\u5300\u5206\u5E03\
-    \u7684\u4E00\u4E2A\u6574\u6570\uFF0C\u4F46\u53EF\u80FD\u4F1A\u8D8A\u754C\n   *\n\
-    \   * @tparam T\n   * @param lower\n   * @param upper\n   * @return std::enable_if_t<std::is_integral_v<T>,\
-    \ T>\n   */\n  template <typename T>\n  std::enable_if_t<std::is_integral_v<T>,\
-    \ T> uniform_int(T lower, T upper) { // [lower, upper]\n    assert(upper > lower);\n\
-    \    // \u5982\u679C\u662F std::numeric_limits<int>::min() \u5230 0 \u8303\u56F4\
-    \u5185\n    // upper - lower \u7684\u884C\u4E3A\u662F\u672A\u5B9A\u4E49\u7684\uFF0C\
-    \u7C7B\u4F3C\u7684\u4E5F\u662F\uFF0C\u4F46\u8FD9\u91CC\u4E0D\u4F5C\u5224\u65AD\
-    \n    return uniform_int(upper - lower) + lower;\n  }\n\n  void jump() { // \u7B49\
-    \u4EF7\u4E8E\u8C03\u7528 2^128 \u6B21 next()\n    static const u64 JUMP[] = {0x180ec6d33cfd0aba,\
-    \ 0xd5a61266f0c9392c, 0xa9582618e03fc9aa,\n                               0x39abdc4529b1661c};\n\
-    \    u64 s0 = 0;\n    u64 s1 = 0;\n    u64 s2 = 0;\n    u64 s3 = 0;\n    for (int\
+    \u5E03\u7684\u4E00\u4E2A\u6574\u6570\n   * @tparam T\n   * @param upper \u4E0A\
+    \u754C\uFF0C\u53EF\u4EE5\u53D6\u5230\n   * @return std::enable_if_t<std::is_integral_v<T>,\
+    \ T>\n   */\n  template <typename T> std::enable_if_t<std::is_integral_v<T>, T>\
+    \ uniform_int(T upper) {\n    assert(upper > 0);\n    u64 mask = u64(upper);\n\
+    \    mask |= mask >> 1;\n    mask |= mask >> 2;\n    mask |= mask >> 4;\n    mask\
+    \ |= mask >> 8;\n    mask |= mask >> 16;\n    if constexpr (sizeof(T) > 4) mask\
+    \ |= mask >> 32;\n    for (;;) {\n      u64 res = next() & mask;\n      if (res\
+    \ <= upper) return T(res);\n    }\n  }\n\n  /**\n   * @brief \u8FD4\u56DE [lower,\
+    \ upper] \u4E2D\u5747\u5300\u5206\u5E03\u7684\u4E00\u4E2A\u6574\u6570\n   * @note\
+    \ \u8F93\u5165\u53EF\u80FD\u4F1A\u8D8A\u754C\uFF0C\u4F46\u8FD9\u91CC\u4E0D\u5904\
+    \u7406\n   * @tparam T\n   * @param lower \u4E0B\u754C\uFF0C\u53EF\u4EE5\u53D6\
+    \u5230\n   * @param upper \u4E0A\u754C\uFF0C\u53EF\u4EE5\u53D6\u5230\n   * @return\
+    \ std::enable_if_t<std::is_integral_v<T>, T>\n   */\n  template <typename T>\n\
+    \  std::enable_if_t<std::is_integral_v<T>, T> uniform_int(T lower, T upper) {\
+    \ // [lower, upper]\n    assert(upper > lower);\n    return uniform_int(upper\
+    \ - lower) + lower;\n  }\n\n  void jump() { // \u7B49\u4EF7\u4E8E\u8C03\u7528\
+    \ 2^128 \u6B21 next()\n    static const u64 JUMP[] = {0x180ec6d33cfd0aba, 0xd5a61266f0c9392c,\
+    \ 0xa9582618e03fc9aa,\n                               0x39abdc4529b1661c};\n \
+    \   u64 s0 = 0;\n    u64 s1 = 0;\n    u64 s2 = 0;\n    u64 s3 = 0;\n    for (int\
     \ i = 0; i < sizeof JUMP / sizeof *JUMP; i++)\n      for (int b = 0; b < 64; b++)\
     \ {\n        if (JUMP[i] & UINT64_C(1) << b) {\n          s0 ^= s[0];\n      \
     \    s1 ^= s[1];\n          s2 ^= s[2];\n          s3 ^= s[3];\n        }\n  \
@@ -66,36 +65,34 @@ data:
   code: "#ifndef RANDOM_XOSHIRO256STARSTAR_HEADER_HPP\n#define RANDOM_XOSHIRO256STARSTAR_HEADER_HPP\n\
     \n/**\n * @brief pseudo random generator / \u4F2A\u968F\u673A\u6570\u751F\u6210\
     \u5668\n *\n */\n\n#include <cassert>\n#include <cstdint>\n#include <type_traits>\n\
-    \nnamespace lib {\n\n// xoshiro256starstar\n// reference: https://prng.di.unimi.it/xoshiro256starstar.c\n\
-    // \u5468\u671F\u4E3A 2^{256}-1\n// UINT64_C(x) \u7B49\u4EF7\u4E8E\u5728 x \u540E\
-    \u9762\u62FC\u63A5 ULL\nclass Random {\nprivate:\n  using u64 = std::uint64_t;\n\
-    \npublic:\n  /**\n   * @brief \u521B\u5EFA\u4E00\u4E2A\u65B0\u7684\u968F\u673A\
-    \u6570\u5BF9\u8C61\uFF0C\u5171\u7528\u540C\u4E00\u4E2A\u79CD\u5B50\n   *\n   *\
-    \ @param x \u4E3A\u79CD\u5B50\n   */\n  Random(u64 x = 0) {\n    // splitmix64\n\
-    \    // reference: https://prng.di.unimi.it/splitmix64.c\n    for (int i = 0;\
-    \ i < 4; ++i) {\n      u64 z = (x += 0x9e3779b97f4a7c15);\n      z = (z ^ (z >>\
-    \ 30)) * 0xbf58476d1ce4e5b9;\n      z = (z ^ (z >> 27)) * 0x94d049bb133111eb;\n\
-    \      s[i] = z ^ (z >> 31);\n    }\n  }\n  ~Random() = default;\n\n  /**\n  \
-    \ * @brief \u8FD4\u56DE [0, upper] \u4E2D\u5747\u5300\u5206\u5E03\u7684\u4E00\u4E2A\
-    \u6574\u6570\n   *\n   * @tparam T\n   * @param upper\n   * @return std::enable_if_t<std::is_integral_v<T>,\
+    \nnamespace lib {\n\n/**\n * @brief xoshiro256starstar\n * @ref https://prng.di.unimi.it/xoshiro256starstar.c\n\
+    \ */\nclass Random {\nprivate:\n  using u64 = std::uint64_t;\n\npublic:\n  /**\n\
+    \   * @brief \u521B\u5EFA\u4E00\u4E2A\u65B0\u7684\u968F\u673A\u6570\u5BF9\u8C61\
+    \uFF0C\u5171\u7528\u540C\u4E00\u4E2A\u79CD\u5B50\n   * @param x \u79CD\u5B50\n\
+    \   */\n  Random(u64 x = 0) {\n    // splitmix64\n    // reference: https://prng.di.unimi.it/splitmix64.c\n\
+    \    for (int i = 0; i < 4; ++i) {\n      u64 z = (x += 0x9e3779b97f4a7c15);\n\
+    \      z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n      z = (z ^ (z >> 27)) *\
+    \ 0x94d049bb133111eb;\n      s[i] = z ^ (z >> 31);\n    }\n  }\n  ~Random() =\
+    \ default;\n\n  /**\n   * @brief \u8FD4\u56DE [0, upper] \u4E2D\u5747\u5300\u5206\
+    \u5E03\u7684\u4E00\u4E2A\u6574\u6570\n   * @tparam T\n   * @param upper \u4E0A\
+    \u754C\uFF0C\u53EF\u4EE5\u53D6\u5230\n   * @return std::enable_if_t<std::is_integral_v<T>,\
     \ T>\n   */\n  template <typename T> std::enable_if_t<std::is_integral_v<T>, T>\
     \ uniform_int(T upper) {\n    assert(upper > 0);\n    u64 mask = u64(upper);\n\
     \    mask |= mask >> 1;\n    mask |= mask >> 2;\n    mask |= mask >> 4;\n    mask\
     \ |= mask >> 8;\n    mask |= mask >> 16;\n    if constexpr (sizeof(T) > 4) mask\
     \ |= mask >> 32;\n    for (;;) {\n      u64 res = next() & mask;\n      if (res\
     \ <= upper) return T(res);\n    }\n  }\n\n  /**\n   * @brief \u8FD4\u56DE [lower,\
-    \ upper] \u4E2D\u5747\u5300\u5206\u5E03\u7684\u4E00\u4E2A\u6574\u6570\uFF0C\u4F46\
-    \u53EF\u80FD\u4F1A\u8D8A\u754C\n   *\n   * @tparam T\n   * @param lower\n   *\
-    \ @param upper\n   * @return std::enable_if_t<std::is_integral_v<T>, T>\n   */\n\
-    \  template <typename T>\n  std::enable_if_t<std::is_integral_v<T>, T> uniform_int(T\
-    \ lower, T upper) { // [lower, upper]\n    assert(upper > lower);\n    // \u5982\
-    \u679C\u662F std::numeric_limits<int>::min() \u5230 0 \u8303\u56F4\u5185\n   \
-    \ // upper - lower \u7684\u884C\u4E3A\u662F\u672A\u5B9A\u4E49\u7684\uFF0C\u7C7B\
-    \u4F3C\u7684\u4E5F\u662F\uFF0C\u4F46\u8FD9\u91CC\u4E0D\u4F5C\u5224\u65AD\n   \
-    \ return uniform_int(upper - lower) + lower;\n  }\n\n  void jump() { // \u7B49\
-    \u4EF7\u4E8E\u8C03\u7528 2^128 \u6B21 next()\n    static const u64 JUMP[] = {0x180ec6d33cfd0aba,\
-    \ 0xd5a61266f0c9392c, 0xa9582618e03fc9aa,\n                               0x39abdc4529b1661c};\n\
-    \    u64 s0 = 0;\n    u64 s1 = 0;\n    u64 s2 = 0;\n    u64 s3 = 0;\n    for (int\
+    \ upper] \u4E2D\u5747\u5300\u5206\u5E03\u7684\u4E00\u4E2A\u6574\u6570\n   * @note\
+    \ \u8F93\u5165\u53EF\u80FD\u4F1A\u8D8A\u754C\uFF0C\u4F46\u8FD9\u91CC\u4E0D\u5904\
+    \u7406\n   * @tparam T\n   * @param lower \u4E0B\u754C\uFF0C\u53EF\u4EE5\u53D6\
+    \u5230\n   * @param upper \u4E0A\u754C\uFF0C\u53EF\u4EE5\u53D6\u5230\n   * @return\
+    \ std::enable_if_t<std::is_integral_v<T>, T>\n   */\n  template <typename T>\n\
+    \  std::enable_if_t<std::is_integral_v<T>, T> uniform_int(T lower, T upper) {\
+    \ // [lower, upper]\n    assert(upper > lower);\n    return uniform_int(upper\
+    \ - lower) + lower;\n  }\n\n  void jump() { // \u7B49\u4EF7\u4E8E\u8C03\u7528\
+    \ 2^128 \u6B21 next()\n    static const u64 JUMP[] = {0x180ec6d33cfd0aba, 0xd5a61266f0c9392c,\
+    \ 0xa9582618e03fc9aa,\n                               0x39abdc4529b1661c};\n \
+    \   u64 s0 = 0;\n    u64 s1 = 0;\n    u64 s2 = 0;\n    u64 s3 = 0;\n    for (int\
     \ i = 0; i < sizeof JUMP / sizeof *JUMP; i++)\n      for (int b = 0; b < 64; b++)\
     \ {\n        if (JUMP[i] & UINT64_C(1) << b) {\n          s0 ^= s[0];\n      \
     \    s1 ^= s[1];\n          s2 ^= s[2];\n          s3 ^= s[3];\n        }\n  \
@@ -119,7 +116,7 @@ data:
   isVerificationFile: false
   path: misc/random.hpp
   requiredBy: []
-  timestamp: '2021-06-06 21:24:21+08:00'
+  timestamp: '2021-06-17 19:06:03+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: misc/random.hpp

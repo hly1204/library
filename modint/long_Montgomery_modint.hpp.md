@@ -55,21 +55,19 @@ data:
     \    is >> x;\n    rhs = m64(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
     \ &os, const m64 &rhs) { return os << rhs.get(); }\n\n  constexpr m64 pow(u64\
     \ y) const {\n    m64 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n\
-    \      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n  //---\n  static\
-    \ constexpr std::pair<u64, u64> mul(u64 x, u64 y) {\n#ifdef _MSC_VER\n    u64\
-    \ h, l = _umul128(x, y, &h);\n    return {h, l};\n#elif defined(__GNUC__)\n  \
-    \  unsigned __int128 res = (unsigned __int128)x * y;\n    return {u64(res >> 64),\
-    \ u64(res)};\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y),\
-    \ ac = a * c, bd = b * d, ad = a * d,\n        bc = b * c;\n    // low = bd +\
-    \ (ad + bc << 32); \u4F46\u662F\u6CA1\u5FC5\u8981\n    return {ac + (ad >> 32)\
-    \ + (bc >> 32) +\n                (((ad & -UINT32_C(1)) + (bc & -UINT32_C(1))\
-    \ + (bd >> 32)) >> 32),\n            x * y};\n#endif\n  }\n\n  static constexpr\
-    \ u64 mulh(u64 x, u64 y) {\n#ifdef _MSC_VER\n    return __umulh(x, y);\n#elif\
-    \ defined(__GNUC__)\n    return (unsigned __int128)x * y >> 64;\n#else\n    u64\
-    \ a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ac = a * c, bd = b * d, ad\
-    \ = a * d,\n        bc = b * c;\n    return ac + (ad >> 32) + (bc >> 32) +\n \
-    \          (((ad & -UINT32_C(1)) + (bc & -UINT32_C(1)) + (bd >> 32)) >> 32);\n\
-    #endif\n  }\n  //---\n\n  static constexpr u64 get_r() {\n    u64 two = 2, iv\
+    \      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static constexpr\
+    \ std::pair<u64, u64> mul(u64 x, u64 y) {\n#ifdef __GNUC__\n    unsigned __int128\
+    \ res = (unsigned __int128)x * y;\n    return {u64(res >> 64), u64(res)};\n#elif\
+    \ defined(_MSC_VER)\n    u64 h, l = _umul128(x, y, &h);\n    return {h, l};\n\
+    #else\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d, bc\
+    \ = b * c;\n    return {a * c + (ad >> 32) + (bc >> 32) +\n                (((ad\
+    \ & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32)) >> 32),\n           \
+    \ x * y};\n#endif\n  }\n\n  static constexpr u64 mulh(u64 x, u64 y) {\n#ifdef\
+    \ __GNUC__\n    return u64((unsigned __int128)x * y >> 64);\n#elif defined(_MSC_VER)\n\
+    \    return __umulh(x, y);\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32,\
+    \ d = u32(y), ad = a * d, bc = b * c;\n    return a * c + (ad >> 32) + (bc >>\
+    \ 32) +\n           (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32))\
+    \ >> 32);\n#endif\n  }\n\n  static constexpr u64 get_r() {\n    u64 two = 2, iv\
     \ = mod * (two - mod * mod);\n    iv *= two - mod * iv;\n    iv *= two - mod *\
     \ iv;\n    iv *= two - mod * iv;\n    return iv * (two - mod * iv);\n  }\n\n \
     \ static constexpr u64 get_r2() {\n    u64 iv = -u64(mod) % mod;\n    for (int\
@@ -127,21 +125,19 @@ data:
     \    is >> x;\n    rhs = m64(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
     \ &os, const m64 &rhs) { return os << rhs.get(); }\n\n  constexpr m64 pow(u64\
     \ y) const {\n    m64 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n\
-    \      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n  //---\n  static\
-    \ constexpr std::pair<u64, u64> mul(u64 x, u64 y) {\n#ifdef _MSC_VER\n    u64\
-    \ h, l = _umul128(x, y, &h);\n    return {h, l};\n#elif defined(__GNUC__)\n  \
-    \  unsigned __int128 res = (unsigned __int128)x * y;\n    return {u64(res >> 64),\
-    \ u64(res)};\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y),\
-    \ ac = a * c, bd = b * d, ad = a * d,\n        bc = b * c;\n    // low = bd +\
-    \ (ad + bc << 32); \u4F46\u662F\u6CA1\u5FC5\u8981\n    return {ac + (ad >> 32)\
-    \ + (bc >> 32) +\n                (((ad & -UINT32_C(1)) + (bc & -UINT32_C(1))\
-    \ + (bd >> 32)) >> 32),\n            x * y};\n#endif\n  }\n\n  static constexpr\
-    \ u64 mulh(u64 x, u64 y) {\n#ifdef _MSC_VER\n    return __umulh(x, y);\n#elif\
-    \ defined(__GNUC__)\n    return (unsigned __int128)x * y >> 64;\n#else\n    u64\
-    \ a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ac = a * c, bd = b * d, ad\
-    \ = a * d,\n        bc = b * c;\n    return ac + (ad >> 32) + (bc >> 32) +\n \
-    \          (((ad & -UINT32_C(1)) + (bc & -UINT32_C(1)) + (bd >> 32)) >> 32);\n\
-    #endif\n  }\n  //---\n\n  static constexpr u64 get_r() {\n    u64 two = 2, iv\
+    \      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static constexpr\
+    \ std::pair<u64, u64> mul(u64 x, u64 y) {\n#ifdef __GNUC__\n    unsigned __int128\
+    \ res = (unsigned __int128)x * y;\n    return {u64(res >> 64), u64(res)};\n#elif\
+    \ defined(_MSC_VER)\n    u64 h, l = _umul128(x, y, &h);\n    return {h, l};\n\
+    #else\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d, bc\
+    \ = b * c;\n    return {a * c + (ad >> 32) + (bc >> 32) +\n                (((ad\
+    \ & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32)) >> 32),\n           \
+    \ x * y};\n#endif\n  }\n\n  static constexpr u64 mulh(u64 x, u64 y) {\n#ifdef\
+    \ __GNUC__\n    return u64((unsigned __int128)x * y >> 64);\n#elif defined(_MSC_VER)\n\
+    \    return __umulh(x, y);\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32,\
+    \ d = u32(y), ad = a * d, bc = b * c;\n    return a * c + (ad >> 32) + (bc >>\
+    \ 32) +\n           (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32))\
+    \ >> 32);\n#endif\n  }\n\n  static constexpr u64 get_r() {\n    u64 two = 2, iv\
     \ = mod * (two - mod * mod);\n    iv *= two - mod * iv;\n    iv *= two - mod *\
     \ iv;\n    iv *= two - mod * iv;\n    return iv * (two - mod * iv);\n  }\n\n \
     \ static constexpr u64 get_r2() {\n    u64 iv = -u64(mod) % mod;\n    for (int\
@@ -159,7 +155,7 @@ data:
   isVerificationFile: false
   path: modint/long_Montgomery_modint.hpp
   requiredBy: []
-  timestamp: '2021-06-11 23:09:55+08:00'
+  timestamp: '2021-06-17 19:06:03+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: modint/long_Montgomery_modint.hpp

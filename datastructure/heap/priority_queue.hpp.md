@@ -107,9 +107,9 @@ data:
   timestamp: '2021-06-06 21:24:21+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/graph/shortest_path.0.test.cpp
   - remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp
   - remote_test/aizuoj/data_structures/priority_queue.0.test.cpp
+  - remote_test/yosupo/graph/shortest_path.0.test.cpp
 documentation_of: datastructure/heap/priority_queue.hpp
 layout: document
 redirect_from:

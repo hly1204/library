@@ -3,12 +3,12 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/string/suffix_array.0.test.cpp
     title: remote_test/yosupo/string/suffix_array.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     document_title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\
       \u6392\u5E8F\uFF09"
@@ -17,60 +17,60 @@ data:
   bundledCode: "#line 1 \"string/suffix_array_sais.hpp\"\n\n\n\n/**\n * @brief suffix\
     \ array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\u5E8F\uFF09\n\
     \ *\n */\n\n#include <algorithm>\n#include <string>\n#include <vector>\n\nnamespace\
-    \ lib {\n\nnamespace internal {\n\n/**\n * @brief \u8BF1\u5BFC\u6392\u5E8F\n *\n\
-    \ * @ref Ge Nong, Sen Zhang and Daricks Wai Hong Chan. Linear Suffix Array Construction\
-    \ by Almost\n * Pure Induced-Sorting\n *\n * @param s \u5B57\u7B26\u4E32\u6570\
-    \u7EC4\uFF0C\u5FC5\u987B\u4FDD\u8BC1\u672B\u5C3E\u4E3A 0 \u4E14 0 \u662F\u6574\
-    \u4E2A\u5B57\u7B26\u4E32\u6570\u7EC4\u4E2D\u53EA\u51FA\u73B0\u5728\u672B\u5C3E\
-    \u7684\u6700\u5C0F\u5B57\u7B26\uFF01\n * @param K \u5B57\u7B26\u4E32\u6570\u7EC4\
-    \u7684\u503C\u57DF\uFF0C\u7531 [0, K)\n * @return std::vector<int>\n */\nstd::vector<int>\
-    \ SA_IS(const std::vector<int> &s, int K) {\n  const int n = s.size();\n  std::vector<bool>\
-    \ t(n);\n  std::vector<int> bkt(K, 0), bkt_l(K), bkt_r(K), SA(n), p1;\n#define\
-    \ is_S_type(x) (t[x])\n#define is_L_type(x) (!t[x])\n#define is_LMS_type(x) (is_S_type(x)\
-    \ && x != 0 && is_L_type(x - 1))\n#define induced_sort()                     \
-    \                                                        \\\n  do {          \
+    \ lib {\n\nnamespace internal {\n\n/**\n * @brief \u8BF1\u5BFC\u6392\u5E8F\n *\
+    \ @ref Ge Nong, Sen Zhang and Daricks Wai Hong Chan.\n *      Linear Suffix Array\
+    \ Construction by Almost Pure Induced-Sorting.\n *\n * @param s \u5B57\u7B26\u4E32\
+    \u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\u8BC1\u672B\u5C3E\u4E3A 0 \u4E14 0 \u662F\
+    \u6574\u4E2A\u5B57\u7B26\u4E32\u6570\u7EC4\u4E2D\u53EA\u51FA\u73B0\u5728\u672B\
+    \u5C3E\u7684\u6700\u5C0F\u5B57\u7B26\uFF01\n * @param K \u5B57\u7B26\u4E32\u6570\
+    \u7EC4\u7684\u503C\u57DF\uFF0C\u7531 [0, K)\n * @return std::vector<int>\n */\n\
+    std::vector<int> SA_IS(const std::vector<int> &s, int K) {\n  const int n = s.size();\n\
+    \  std::vector<bool> t(n);\n  std::vector<int> bkt(K, 0), bkt_l(K), bkt_r(K),\
+    \ SA(n), p1;\n#define is_S_type(x) (t[x])\n#define is_L_type(x) (!t[x])\n#define\
+    \ is_LMS_type(x) (is_S_type(x) && x != 0 && is_L_type(x - 1))\n#define induced_sort()\
     \                                                                            \
-    \       \\\n    std::copy_n(bkt_l.begin(), K, bkt.begin());                  \
-    \                                  \\\n    for (int i = 0, j; i != n; ++i)   \
-    \                                                             \\\n      if ((j\
-    \ = SA[i] - 1) >= 0 && is_L_type(j)) SA[bkt[s[j]]++] = j;                    \
-    \           \\\n    std::copy_n(bkt_r.begin(), K, bkt.begin());              \
-    \                                      \\\n    for (int i = n - 1, j; i >= 0;\
-    \ --i)                                                            \\\n      if\
-    \ ((j = SA[i] - 1) >= 0 && is_S_type(j)) SA[--bkt[s[j]]] = j;                \
-    \               \\\n  } while (0)\n  t.back() = true;\n  for (int i = n - 2; i\
-    \ >= 0; --i) {\n    t[i] = (s[i] < s[i + 1] || (is_S_type(i + 1) && s[i] == s[i\
-    \ + 1]));\n    if (is_LMS_type(i + 1)) p1.push_back(i + 1);\n  }\n  std::reverse(p1.begin(),\
-    \ p1.end());\n  const int n1 = p1.size();\n  for (int i = 0; i != n; ++i) ++bkt[s[i]];\n\
-    \  for (int i = 0, sum = 0; i != K; ++i) sum += bkt[i], bkt_r[i] = sum, bkt_l[i]\
-    \ = sum - bkt[i];\n  std::vector<int> s1(n1), SA1(n1);\n  std::fill_n(SA.begin(),\
-    \ n, -1);\n  std::copy_n(bkt_r.begin(), K, bkt.begin());\n  for (int i = n1 -\
-    \ 1; i >= 0; --i) SA[--bkt[s[p1[i]]]] = p1[i];\n  induced_sort();\n  for (int\
-    \ i = 0, j = 0; i != n; ++i)\n    if (is_LMS_type(SA[i])) SA1[j++] = SA[i];\n\
-    \  int name = 0;\n  for (int i = 0, prev = -1; i != n1; ++i) {\n    int pos =\
-    \ SA1[i];\n    for (int j = 0;; ++j)\n      if (prev == -1 || s[pos + j] != s[prev\
-    \ + j] || is_S_type(pos + j) != is_S_type(prev + j)) {\n        prev = pos, ++name;\n\
-    \        break;\n      } else if (j != 0 && (is_LMS_type(pos + j) || is_LMS_type(prev\
-    \ + j)))\n        break;\n    SA[pos] = name - 1;\n  }\n  for (int i = 0; i !=\
-    \ n1; ++i) s1[i] = SA[p1[i]];\n  if (name != n1)\n    SA1 = SA_IS(s1, name);\n\
-    \  else\n    for (int i = 0; i != n1; ++i) SA1[s1[i]] = i;\n  std::copy_n(bkt_r.begin(),\
-    \ K, bkt.begin());\n  std::fill_n(SA.begin(), n, -1);\n  for (int i = n1 - 1;\
-    \ i >= 0; --i) SA[--bkt[s[p1[SA1[i]]]]] = p1[SA1[i]];\n  induced_sort();\n#undef\
-    \ is_S_type\n#undef is_L_type\n#undef is_LMS_type\n#undef induced_sort\n  return\
-    \ SA;\n}\n\n} // namespace internal\n\n/**\n * @brief \u83B7\u53D6\u540E\u7F00\
-    \u6570\u7EC4\uFF08 0-indexed \uFF09\n *\n * @param s \u5B57\u7B26\u4E32\uFF0C\u4E00\
-    \u822C\u4E3A string \u6216 std::vector<int>\n * @return std::vector<int> \u540E\
-    \u7F00\u6570\u7EC4\n */\ntemplate <typename Container> std::vector<int> get_sa(const\
-    \ Container &s) {\n  std::vector<int> s_cpy(s.size() + 1);\n  std::copy(s.begin(),\
+    \ \\\n  do {                                                                 \
+    \                            \\\n    std::copy_n(bkt_l.begin(), K, bkt.begin());\
+    \                                                    \\\n    for (int i = 0, j;\
+    \ i != n; ++i)                                                               \
+    \ \\\n      if ((j = SA[i] - 1) >= 0 && is_L_type(j)) SA[bkt[s[j]]++] = j;   \
+    \                            \\\n    std::copy_n(bkt_r.begin(), K, bkt.begin());\
+    \                                                    \\\n    for (int i = n -\
+    \ 1, j; i >= 0; --i)                                                         \
+    \   \\\n      if ((j = SA[i] - 1) >= 0 && is_S_type(j)) SA[--bkt[s[j]]] = j; \
+    \                              \\\n  } while (0)\n  t.back() = true;\n  for (int\
+    \ i = n - 2; i >= 0; --i) {\n    t[i] = (s[i] < s[i + 1] || (is_S_type(i + 1)\
+    \ && s[i] == s[i + 1]));\n    if (is_LMS_type(i + 1)) p1.push_back(i + 1);\n \
+    \ }\n  std::reverse(p1.begin(), p1.end());\n  const int n1 = p1.size();\n  for\
+    \ (int i = 0; i != n; ++i) ++bkt[s[i]];\n  for (int i = 0, sum = 0; i != K; ++i)\
+    \ sum += bkt[i], bkt_r[i] = sum, bkt_l[i] = sum - bkt[i];\n  std::vector<int>\
+    \ s1(n1), SA1(n1);\n  std::fill_n(SA.begin(), n, -1);\n  std::copy_n(bkt_r.begin(),\
+    \ K, bkt.begin());\n  for (int i = n1 - 1; i >= 0; --i) SA[--bkt[s[p1[i]]]] =\
+    \ p1[i];\n  induced_sort();\n  for (int i = 0, j = 0; i != n; ++i)\n    if (is_LMS_type(SA[i]))\
+    \ SA1[j++] = SA[i];\n  int name = 0;\n  for (int i = 0, prev = -1; i != n1; ++i)\
+    \ {\n    int pos = SA1[i];\n    for (int j = 0;; ++j)\n      if (prev == -1 ||\
+    \ s[pos + j] != s[prev + j] || is_S_type(pos + j) != is_S_type(prev + j)) {\n\
+    \        prev = pos, ++name;\n        break;\n      } else if (j != 0 && (is_LMS_type(pos\
+    \ + j) || is_LMS_type(prev + j)))\n        break;\n    SA[pos] = name - 1;\n \
+    \ }\n  for (int i = 0; i != n1; ++i) s1[i] = SA[p1[i]];\n  if (name != n1)\n \
+    \   SA1 = SA_IS(s1, name);\n  else\n    for (int i = 0; i != n1; ++i) SA1[s1[i]]\
+    \ = i;\n  std::copy_n(bkt_r.begin(), K, bkt.begin());\n  std::fill_n(SA.begin(),\
+    \ n, -1);\n  for (int i = n1 - 1; i >= 0; --i) SA[--bkt[s[p1[SA1[i]]]]] = p1[SA1[i]];\n\
+    \  induced_sort();\n#undef is_S_type\n#undef is_L_type\n#undef is_LMS_type\n#undef\
+    \ induced_sort\n  return SA;\n}\n\n} // namespace internal\n\n/**\n * @brief \u83B7\
+    \u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n * @param s \u5B57\u7B26\
+    \u4E32\uFF0C\u4E00\u822C\u4E3A string \u6216 std::vector<int>\n * @return std::vector<int>\
+    \ \u540E\u7F00\u6570\u7EC4\n */\ntemplate <typename Container> std::vector<int>\
+    \ get_sa(const Container &s) {\n  std::vector<int> s_cpy(s.size() + 1);\n  std::copy(s.begin(),\
     \ s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy,\
     \ s_cpy.size()));\n  SA.erase(SA.begin());\n  return SA;\n}\n\n/**\n * @brief\
     \ \u83B7\u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\u7684\u7279\u5316\
-    \n *\n * @tparam \u5BB9\u5668\u4E3A std::string \u65F6\u7279\u5316\uFF01\n * @param\
-    \ s\n * @return std::vector<int>\n */\ntemplate <> std::vector<int> get_sa<std::string>(const\
-    \ std::string &s) {\n  std::vector<int> s_cpy(s.size() + 1);\n  std::copy(s.begin(),\
-    \ s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy,\
-    \ 128));\n  SA.erase(SA.begin());\n  return SA;\n}\n\n/**\n * @brief \u8FD4\u56DE\
-    \ LCP \u6570\u7EC4\n * @ref https://cp-algorithms.com/string/suffix-array.html\n\
+    \n * @note \u5BB9\u5668\u4E3A std::string \u65F6\u7279\u5316\uFF01\n * @param\
+    \ s \u5B57\u7B26\u4E32\n * @return std::vector<int>\n */\ntemplate <> std::vector<int>\
+    \ get_sa<std::string>(const std::string &s) {\n  std::vector<int> s_cpy(s.size()\
+    \ + 1);\n  std::copy(s.begin(), s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n\
+    \  std::vector<int> SA(internal::SA_IS(s_cpy, 128));\n  SA.erase(SA.begin());\n\
+    \  return SA;\n}\n\n/**\n * @brief \u83B7\u53D6 LCP \u6570\u7EC4\n * @ref https://cp-algorithms.com/string/suffix-array.html\n\
     \ * @param s \u5B57\u7B26\u4E32\n * @param SA \u8BA1\u7B97\u5B8C\u6BD5\u7684 s\
     \ \u7684\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n * @return std::vector<int>\
     \ LCP \u6570\u7EC4\n */\ntemplate <typename Container>\nstd::vector<int> get_lcp(const\
@@ -87,11 +87,11 @@ data:
     \n/**\n * @brief suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\
     \u6392\u5E8F\uFF09\n *\n */\n\n#include <algorithm>\n#include <string>\n#include\
     \ <vector>\n\nnamespace lib {\n\nnamespace internal {\n\n/**\n * @brief \u8BF1\
-    \u5BFC\u6392\u5E8F\n *\n * @ref Ge Nong, Sen Zhang and Daricks Wai Hong Chan.\
-    \ Linear Suffix Array Construction by Almost\n * Pure Induced-Sorting\n *\n *\
-    \ @param s \u5B57\u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\u8BC1\u672B\u5C3E\
-    \u4E3A 0 \u4E14 0 \u662F\u6574\u4E2A\u5B57\u7B26\u4E32\u6570\u7EC4\u4E2D\u53EA\
-    \u51FA\u73B0\u5728\u672B\u5C3E\u7684\u6700\u5C0F\u5B57\u7B26\uFF01\n * @param\
+    \u5BFC\u6392\u5E8F\n * @ref Ge Nong, Sen Zhang and Daricks Wai Hong Chan.\n *\
+    \      Linear Suffix Array Construction by Almost Pure Induced-Sorting.\n *\n\
+    \ * @param s \u5B57\u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\u8BC1\u672B\
+    \u5C3E\u4E3A 0 \u4E14 0 \u662F\u6574\u4E2A\u5B57\u7B26\u4E32\u6570\u7EC4\u4E2D\
+    \u53EA\u51FA\u73B0\u5728\u672B\u5C3E\u7684\u6700\u5C0F\u5B57\u7B26\uFF01\n * @param\
     \ K \u5B57\u7B26\u4E32\u6570\u7EC4\u7684\u503C\u57DF\uFF0C\u7531 [0, K)\n * @return\
     \ std::vector<int>\n */\nstd::vector<int> SA_IS(const std::vector<int> &s, int\
     \ K) {\n  const int n = s.size();\n  std::vector<bool> t(n);\n  std::vector<int>\
@@ -127,19 +127,19 @@ data:
     \ n, -1);\n  for (int i = n1 - 1; i >= 0; --i) SA[--bkt[s[p1[SA1[i]]]]] = p1[SA1[i]];\n\
     \  induced_sort();\n#undef is_S_type\n#undef is_L_type\n#undef is_LMS_type\n#undef\
     \ induced_sort\n  return SA;\n}\n\n} // namespace internal\n\n/**\n * @brief \u83B7\
-    \u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n *\n * @param s \u5B57\u7B26\
+    \u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n * @param s \u5B57\u7B26\
     \u4E32\uFF0C\u4E00\u822C\u4E3A string \u6216 std::vector<int>\n * @return std::vector<int>\
     \ \u540E\u7F00\u6570\u7EC4\n */\ntemplate <typename Container> std::vector<int>\
     \ get_sa(const Container &s) {\n  std::vector<int> s_cpy(s.size() + 1);\n  std::copy(s.begin(),\
     \ s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy,\
     \ s_cpy.size()));\n  SA.erase(SA.begin());\n  return SA;\n}\n\n/**\n * @brief\
     \ \u83B7\u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\u7684\u7279\u5316\
-    \n *\n * @tparam \u5BB9\u5668\u4E3A std::string \u65F6\u7279\u5316\uFF01\n * @param\
-    \ s\n * @return std::vector<int>\n */\ntemplate <> std::vector<int> get_sa<std::string>(const\
-    \ std::string &s) {\n  std::vector<int> s_cpy(s.size() + 1);\n  std::copy(s.begin(),\
-    \ s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy,\
-    \ 128));\n  SA.erase(SA.begin());\n  return SA;\n}\n\n/**\n * @brief \u8FD4\u56DE\
-    \ LCP \u6570\u7EC4\n * @ref https://cp-algorithms.com/string/suffix-array.html\n\
+    \n * @note \u5BB9\u5668\u4E3A std::string \u65F6\u7279\u5316\uFF01\n * @param\
+    \ s \u5B57\u7B26\u4E32\n * @return std::vector<int>\n */\ntemplate <> std::vector<int>\
+    \ get_sa<std::string>(const std::string &s) {\n  std::vector<int> s_cpy(s.size()\
+    \ + 1);\n  std::copy(s.begin(), s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n\
+    \  std::vector<int> SA(internal::SA_IS(s_cpy, 128));\n  SA.erase(SA.begin());\n\
+    \  return SA;\n}\n\n/**\n * @brief \u83B7\u53D6 LCP \u6570\u7EC4\n * @ref https://cp-algorithms.com/string/suffix-array.html\n\
     \ * @param s \u5B57\u7B26\u4E32\n * @param SA \u8BA1\u7B97\u5B8C\u6BD5\u7684 s\
     \ \u7684\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n * @return std::vector<int>\
     \ LCP \u6570\u7EC4\n */\ntemplate <typename Container>\nstd::vector<int> get_lcp(const\
@@ -156,8 +156,8 @@ data:
   isVerificationFile: false
   path: string/suffix_array_sais.hpp
   requiredBy: []
-  timestamp: '2021-06-12 14:03:29+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-06-17 19:06:03+08:00'
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/string/suffix_array.0.test.cpp
 documentation_of: string/suffix_array_sais.hpp

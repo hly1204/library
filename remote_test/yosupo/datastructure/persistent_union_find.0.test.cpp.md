@@ -20,24 +20,25 @@ data:
     \n\n\n\n/**\n * @brief rollbackable disjoint set / \u56DE\u6EDA\u5E76\u67E5\u96C6\
     \n *\n */\n\n#include <stack>\n#line 11 \"datastructure/basic/rollbackable_disjoint_set.hpp\"\
     \n\nnamespace lib {\n\nclass RollbackableDisjointSet {\npublic:\n  RollbackableDisjointSet()\
-    \ {}\n  RollbackableDisjointSet(int n) : p_(n + 1), sz_(n + 1, 1) {\n    for (int\
-    \ i = 0; i <= n; ++i) p_[i] = i;\n  }\n  ~RollbackableDisjointSet() = default;\n\
-    \n  void make_set(int n) {\n    p_.resize(n + 1);\n    sz_.assign(n + 1, 1);\n\
-    \    while (!stk_.empty()) stk_.pop();\n    for (int i = 0; i <= n; ++i) p_[i]\
-    \ = i;\n  }\n\n  int find(int u) const {\n    while (u != p_[u]) u = p_[u];\n\
-    \    return u;\n  }\n\n  bool same(int u, int v) const { return find(u) == find(v);\
-    \ }\n\n  int unite(int u, int v) {\n    u = find(u), v = find(v);\n    if (u ==\
-    \ v) return u;\n    return link(u, v);\n  }\n\n  int get_component_size(int u)\
-    \ const { return sz_[find(u)]; }\n\n  void undo() {\n    // \u53EA\u80FD undo\
-    \ \u6210\u529F\u7684 unite \u5982\u679C\u4E0D\u6210\u529F\u662F\u4E0D\u80FD undo\
-    \ \u7684\n    // \u53D6\u51FA\u5C0F\u6811\uFF0C\u4FEE\u6539\u5C0F\u6811\u7684\
-    \ parent\n    int u = stk_.top();\n    stk_.pop();\n    sz_[p_[u]] -= sz_[u];\n\
+    \ = default;\n  RollbackableDisjointSet(int n) : p_(n + 1), sz_(n + 1, 1) {\n\
+    \    for (int i = 0; i <= n; ++i) p_[i] = i;\n  }\n  ~RollbackableDisjointSet()\
+    \ = default;\n\n  void make_set(int n) {\n    p_.resize(n + 1);\n    sz_.assign(n\
+    \ + 1, 1);\n    while (!stk_.empty()) stk_.pop();\n    for (int i = 0; i <= n;\
+    \ ++i) p_[i] = i;\n  }\n\n  int find(int u) const {\n    while (u != p_[u]) u\
+    \ = p_[u];\n    return u;\n  }\n\n  bool same(int u, int v) const { return find(u)\
+    \ == find(v); }\n\n  int unite(int u, int v) {\n    u = find(u), v = find(v);\n\
+    \    if (u == v) return u;\n    return link(u, v);\n  }\n\n  int get_component_size(int\
+    \ u) const { return sz_[find(u)]; }\n\n  /**\n   * @brief \u64A4\u9500\u4E0A\u4E00\
+    \u6B21\u6210\u529F\u7684 unite\n   * @note \u53EA\u80FD\u64A4\u9500\u6210\u529F\
+    \u7684 unite \u5982\u679C\u4E0D\u6210\u529F\u662F\u4E0D\u80FD\u64A4\u9500\u7684\
+    \n   */\n  void undo() {\n    int u = stk_.top(); // \u53D6\u51FA\u5C0F\u6811\uFF0C\
+    \u4FEE\u6539\u5C0F\u6811\u7684 parent\n    stk_.pop();\n    sz_[p_[u]] -= sz_[u];\n\
     \    p_[u] = u;\n  }\n\n  void rollback(int k) {\n    while (k--) undo();\n  }\n\
     \nprivate:\n  std::vector<int> p_, sz_;\n  std::stack<int, std::vector<int>> stk_;\n\
     \n  int link(int u, int v) {\n    if (sz_[u] > sz_[v]) return link(v, u);\n  \
-    \  // u \u662F\u5C0F\u6811\uFF0C v \u662F\u5927\u6811\uFF0C\u628A\u5C0F\u6811\u63A5\
-    \u5230\u5927\u6811\u4E0A\n    sz_[v] += sz_[u];\n    stk_.push(u); // \u5C06\u5C0F\
-    \u6811\u653E\u5165\u6808\u4E2D\n    return p_[u] = v;\n  }\n};\n\n} // namespace\
+    \  sz_[v] += sz_[u];\n    stk_.push(u);     // \u5C06\u5C0F\u6811\u653E\u5165\u6808\
+    \u4E2D\n    return p_[u] = v; // u \u662F\u5C0F\u6811\uFF0C v \u662F\u5927\u6811\
+    \uFF0C\u628A\u5C0F\u6811\u63A5\u5230\u5927\u6811\u4E0A\n  }\n};\n\n} // namespace\
     \ lib\n\n\n#line 8 \"remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
@@ -73,7 +74,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-06 21:24:21+08:00'
+  timestamp: '2021-06-17 19:06:03+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp
