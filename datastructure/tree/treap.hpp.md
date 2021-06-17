@@ -35,7 +35,7 @@ data:
     \ (x == nullptr) return;\n    if (x->left != nullptr) dfs(x->left);\n    std::cout\
     \ << x->data << ' ';\n    if (x->right != nullptr) dfs(x->right);\n  }\n\n#endif\n\
     \n  BSTType1(const Comp &cmp) : root_(nullptr), cmp_(cmp) {}\n  BSTType1() : BSTType1(Comp())\
-    \ {}\n  ~BSTType1() { delete root_; }\n\n  bool is_empty() const { return root\
+    \ {}\n  ~BSTType1() { delete root_; }\n\n  bool is_empty() const { return root_\
     \ == nullptr; }\n  int size() const { return get_size(root_); }\n  bool is_in_tree(const\
     \ value_type &v) const { return find_node(v) != nullptr; }\n\n  /**\n   * @brief\
     \ \u9009\u62E9\u7B2C k \u4E2A\u5143\u7D20\n   * @note \u7D22\u5F15\u4ECE 0 \u5F00\
@@ -165,8 +165,8 @@ data:
     \ res;\n  }\n  void delete_at_node(node_ptr_type x) override {\n    while (x->left\
     \ != x->right)\n      get_priority(x->left) < get_priority(x->right) ? base::rotate_left(x)\
     \ : base::rotate_right(x);\n    for (node_ptr_type y = x->parent; y != nullptr;\
-    \ y = y->parent) --(y->size);\n    if (x->parent == nullptr) {\n      root_ =\
-    \ nullptr;\n    } else {\n      if (x->parent->left == x) {\n        x->parent->left\
+    \ y = y->parent) --(y->size);\n    if (x->parent == nullptr) {\n      this->root_\
+    \ = nullptr;\n    } else {\n      if (x->parent->left == x) {\n        x->parent->left\
     \ = nullptr;\n      } else {\n        x->parent->right = nullptr;\n      }\n \
     \   }\n    delete x;\n  }\n};\n\n} // namespace lib\n\n\n"
   code: "#ifndef TREAP_HEADER_HPP\n#define TREAP_HEADER_HPP\n\n/**\n * @brief Treap\
@@ -194,8 +194,8 @@ data:
     \ res;\n  }\n  void delete_at_node(node_ptr_type x) override {\n    while (x->left\
     \ != x->right)\n      get_priority(x->left) < get_priority(x->right) ? base::rotate_left(x)\
     \ : base::rotate_right(x);\n    for (node_ptr_type y = x->parent; y != nullptr;\
-    \ y = y->parent) --(y->size);\n    if (x->parent == nullptr) {\n      root_ =\
-    \ nullptr;\n    } else {\n      if (x->parent->left == x) {\n        x->parent->left\
+    \ y = y->parent) --(y->size);\n    if (x->parent == nullptr) {\n      this->root_\
+    \ = nullptr;\n    } else {\n      if (x->parent->left == x) {\n        x->parent->left\
     \ = nullptr;\n      } else {\n        x->parent->right = nullptr;\n      }\n \
     \   }\n    delete x;\n  }\n};\n\n} // namespace lib\n\n#endif"
   dependsOn:
@@ -203,7 +203,7 @@ data:
   isVerificationFile: false
   path: datastructure/tree/treap.hpp
   requiredBy: []
-  timestamp: '2021-06-18 02:19:04+08:00'
+  timestamp: '2021-06-18 02:23:36+08:00'
   verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp

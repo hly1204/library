@@ -37,7 +37,7 @@ data:
     \ (x == nullptr) return;\n    if (x->left != nullptr) dfs(x->left);\n    std::cout\
     \ << x->data << ' ';\n    if (x->right != nullptr) dfs(x->right);\n  }\n\n#endif\n\
     \n  BSTType1(const Comp &cmp) : root_(nullptr), cmp_(cmp) {}\n  BSTType1() : BSTType1(Comp())\
-    \ {}\n  ~BSTType1() { delete root_; }\n\n  bool is_empty() const { return root\
+    \ {}\n  ~BSTType1() { delete root_; }\n\n  bool is_empty() const { return root_\
     \ == nullptr; }\n  int size() const { return get_size(root_); }\n  bool is_in_tree(const\
     \ value_type &v) const { return find_node(v) != nullptr; }\n\n  /**\n   * @brief\
     \ \u9009\u62E9\u7B2C k \u4E2A\u5143\u7D20\n   * @note \u7D22\u5F15\u4ECE 0 \u5F00\
@@ -163,7 +163,7 @@ data:
     \ (x == nullptr) return;\n    if (x->left != nullptr) dfs(x->left);\n    std::cout\
     \ << x->data << ' ';\n    if (x->right != nullptr) dfs(x->right);\n  }\n\n#endif\n\
     \n  BSTType1(const Comp &cmp) : root_(nullptr), cmp_(cmp) {}\n  BSTType1() : BSTType1(Comp())\
-    \ {}\n  ~BSTType1() { delete root_; }\n\n  bool is_empty() const { return root\
+    \ {}\n  ~BSTType1() { delete root_; }\n\n  bool is_empty() const { return root_\
     \ == nullptr; }\n  int size() const { return get_size(root_); }\n  bool is_in_tree(const\
     \ value_type &v) const { return find_node(v) != nullptr; }\n\n  /**\n   * @brief\
     \ \u9009\u62E9\u7B2C k \u4E2A\u5143\u7D20\n   * @note \u7D22\u5F15\u4ECE 0 \u5F00\
@@ -277,7 +277,7 @@ data:
   requiredBy:
   - datastructure/tree/splay_tree.hpp
   - datastructure/tree/treap.hpp
-  timestamp: '2021-06-18 02:19:04+08:00'
+  timestamp: '2021-06-18 02:23:36+08:00'
   verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
