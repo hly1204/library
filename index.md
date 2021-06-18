@@ -19,15 +19,15 @@ data:
       title: "priority queue / \u4F18\u5148\u961F\u5217"
   - name: datastructure/tree
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
+      path: datastructure/tree/AVL_tree.hpp
+      title: "AVL tree / AVL \u6811"
+    - icon: ':question:'
       path: datastructure/tree/binary_search_tree_base.hpp
       title: "binary search tree base / \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\u7C7B"
-    - icon: ':warning:'
-      path: datastructure/tree/splay_tree.hpp
-      title: "splay tree / \u4F38\u5C55\u6811"
     - icon: ':heavy_check_mark:'
       path: datastructure/tree/treap.hpp
-      title: "Treap / \u6811\u5806"
+      title: "treap / \u6811\u5806"
   - name: graph
     pages:
     - icon: ':heavy_check_mark:'
@@ -161,6 +161,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
       title: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
+    - icon: ':x:'
+      path: remote_test/yosupo/datastructure/predecessor_problem.1.test.cpp
+      title: remote_test/yosupo/datastructure/predecessor_problem.1.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/datastructure/union_find.0.test.cpp
       title: remote_test/yosupo/datastructure/union_find.0.test.cpp
@@ -223,5 +226,7 @@ layout: toppage
 ![Code Lines](https://img.shields.io/tokei/lines/github/hly1204/library)
 ![License](https://img.shields.io/github/license/hly1204/library)
 
-如果可以在 [这里](https://github.com/hly1204/library/issues) 提出代码中的 BUG 及错误的话，非常感谢！
+## Links
 
+- [GitHub issues](https://github.com/hly1204/library/issues)
+- [Markdown 语法注意事项](https://hly1204.github.io/library/Markdown.html)

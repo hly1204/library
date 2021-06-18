@@ -2,19 +2,22 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':warning:'
-    path: datastructure/tree/splay_tree.hpp
-    title: "splay tree / \u4F38\u5C55\u6811"
+  - icon: ':x:'
+    path: datastructure/tree/AVL_tree.hpp
+    title: "AVL tree / AVL \u6811"
   - icon: ':heavy_check_mark:'
     path: datastructure/tree/treap.hpp
-    title: "Treap / \u6811\u5806"
+    title: "treap / \u6811\u5806"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
     title: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: remote_test/yosupo/datastructure/predecessor_problem.1.test.cpp
+    title: remote_test/yosupo/datastructure/predecessor_problem.1.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "binary search tree base / \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\
       \u7C7B"
@@ -104,21 +107,28 @@ data:
     \ {\n          x->parent->left = r;\n        } else {\n          x->parent->right\
     \ = r;\n        }\n      } else {\n        root_ = r;\n      }\n    }\n    x->left\
     \ = x->right = nullptr;\n    delete x;\n  }\n\nprotected:\n  node_ptr_type root_;\n\
-    \  Comp cmp_;\n\n  virtual node_ptr_type find_node(const value_type &v) const\
-    \ {\n    node_ptr_type x = root_;\n    while (x != nullptr) {\n      if (cmp_(x->data,\
-    \ v)) {\n        x = x->right;\n      } else if (cmp_(v, x->data)) {\n       \
-    \ x = x->left;\n      } else {\n        return x;\n      }\n    }\n    return\
-    \ x;\n  }\n\n  virtual node_ptr_type select_node(int k) const {\n    if (k < 0\
-    \ || k >= size()) return {};\n    node_ptr_type x = root_;\n    while (get_size(x->left)\
-    \ != k) {\n      if (get_size(x->left) < k) {\n        k -= get_size(x->left)\
-    \ + 1;\n        x = x->right;\n      } else {\n        x = x->left;\n      }\n\
-    \    }\n    return x;\n  }\n\n  virtual void insert_at_value(node_ptr_type x)\
-    \ {\n    node_ptr_type p = nullptr, y = root_;\n    int dir = -1;\n    while (y\
-    \ != nullptr) {\n      p = y;\n      ++(y->size);\n      if (cmp_(x->data, y->data))\
-    \ {\n        y = y->left;\n        dir = 0;\n      } else {\n        y = y->right;\n\
-    \        dir = 1;\n      }\n    }\n    if (p == nullptr) {\n      root_ = x;\n\
+    \  Comp cmp_;\n\n  /**\n   * @brief \u63D2\u5165\u8282\u70B9\u8F85\u52A9\u51FD\
+    \u6570\n   * @note \u4F7F\u7528\u8BE5\u51FD\u6570\u53EF\u4EE5\u51CF\u5C11\u7EE7\
+    \u627F\u540E override \u7684\u51FD\u6570\n   * @param x \u5F85\u63D2\u5165\u8282\
+    \u70B9\n   * @param p \u5F85\u63D2\u5165\u8282\u70B9\u7684\u53CC\u4EB2\u8282\u70B9\
+    \n   * @param dir \u82E5 dir=0 \u5219 x \u6210\u4E3A p \u7684\u5DE6\u5B69\u5B50\
+    \uFF0C\u5426\u5219\u6210\u4E3A\u53F3\u5B69\u5B50\n   */\n  virtual void insert_at_node(node_ptr_type\
+    \ x, node_ptr_type p, int dir) {\n    if (p == nullptr) {\n      root_ = x;\n\
     \    } else {\n      if (dir == 0) {\n        p->left = x;\n      } else {\n \
-    \       p->right = x;\n      }\n      x->parent = p;\n    }\n  }\n\n  /**\n  \
+    \       p->right = x;\n      }\n      x->parent = p;\n    }\n  }\n\n  virtual\
+    \ node_ptr_type find_node(const value_type &v) const {\n    node_ptr_type x =\
+    \ root_;\n    while (x != nullptr) {\n      if (cmp_(x->data, v)) {\n        x\
+    \ = x->right;\n      } else if (cmp_(v, x->data)) {\n        x = x->left;\n  \
+    \    } else {\n        return x;\n      }\n    }\n    return x;\n  }\n\n  virtual\
+    \ node_ptr_type select_node(int k) const {\n    if (k < 0 || k >= size()) return\
+    \ {};\n    node_ptr_type x = root_;\n    while (get_size(x->left) != k) {\n  \
+    \    if (get_size(x->left) < k) {\n        k -= get_size(x->left) + 1;\n     \
+    \   x = x->right;\n      } else {\n        x = x->left;\n      }\n    }\n    return\
+    \ x;\n  }\n\n  virtual void insert_at_value(node_ptr_type x) {\n    node_ptr_type\
+    \ p = nullptr, y = root_;\n    int dir = -1;\n    while (y != nullptr) {\n   \
+    \   p = y;\n      ++(y->size);\n      if (cmp_(x->data, y->data)) {\n        y\
+    \ = y->left;\n        dir = 0;\n      } else {\n        y = y->right;\n      \
+    \  dir = 1;\n      }\n    }\n    insert_at_node(x, p, dir);\n  }\n\n  /**\n  \
     \ * @brief \u5728\u6392\u540D k \u7684\u5143\u7D20\u524D\u63D2\u5165\u4E00\u4E2A\
     \u5143\u7D20\n   * @note \u6392\u540D\u4ECE 0 \u5F00\u59CB\n   * @param x\n  \
     \ */\n  virtual void insert_at_rank(node_ptr_type x, int k) {\n    assert(k >=\
@@ -126,12 +136,10 @@ data:
     \  int dir = -1;\n    while (y != nullptr) {\n      p = y;\n      ++(y->size);\n\
     \      if (k <= get_size(y->left)) {\n        y = y->left;\n        dir = 0;\n\
     \      } else {\n        y = y->right;\n        k -= get_size(y->left) + 1;\n\
-    \        dir = 1;\n      }\n    }\n    if (p == nullptr) {\n      root_ = x;\n\
-    \    } else {\n      if (dir == 0) {\n        p->left = x;\n      } else {\n \
-    \       p->right = x;\n      }\n      x->parent = p;\n    }\n  }\n\n  static int\
-    \ get_size(const_node_ptr_type x) { return x == nullptr ? 0 : x->size; }\n\n \
-    \ virtual void rotate_left(node_ptr_type x) {\n    assert(x != nullptr);\n   \
-    \ assert(x->right != nullptr);\n    node_ptr_type r = x->right, rl = r->left;\n\
+    \        dir = 1;\n      }\n    }\n    insert_at_node(x, p, dir);\n  }\n\n  static\
+    \ int get_size(const_node_ptr_type x) { return x == nullptr ? 0 : x->size; }\n\
+    \n  virtual void rotate_left(node_ptr_type x) {\n    assert(x != nullptr);\n \
+    \   assert(x->right != nullptr);\n    node_ptr_type r = x->right, rl = r->left;\n\
     \    int rs = r->size;\n    r->size = x->size;\n    x->size -= rs;\n    if ((x->right\
     \ = rl) != nullptr) (rl->parent = x)->size += rl->size;\n    if ((r->parent =\
     \ x->parent) != nullptr) {\n      if (x->parent->left == x) {\n        x->parent->left\
@@ -230,21 +238,28 @@ data:
     \ {\n          x->parent->left = r;\n        } else {\n          x->parent->right\
     \ = r;\n        }\n      } else {\n        root_ = r;\n      }\n    }\n    x->left\
     \ = x->right = nullptr;\n    delete x;\n  }\n\nprotected:\n  node_ptr_type root_;\n\
-    \  Comp cmp_;\n\n  virtual node_ptr_type find_node(const value_type &v) const\
-    \ {\n    node_ptr_type x = root_;\n    while (x != nullptr) {\n      if (cmp_(x->data,\
-    \ v)) {\n        x = x->right;\n      } else if (cmp_(v, x->data)) {\n       \
-    \ x = x->left;\n      } else {\n        return x;\n      }\n    }\n    return\
-    \ x;\n  }\n\n  virtual node_ptr_type select_node(int k) const {\n    if (k < 0\
-    \ || k >= size()) return {};\n    node_ptr_type x = root_;\n    while (get_size(x->left)\
-    \ != k) {\n      if (get_size(x->left) < k) {\n        k -= get_size(x->left)\
-    \ + 1;\n        x = x->right;\n      } else {\n        x = x->left;\n      }\n\
-    \    }\n    return x;\n  }\n\n  virtual void insert_at_value(node_ptr_type x)\
-    \ {\n    node_ptr_type p = nullptr, y = root_;\n    int dir = -1;\n    while (y\
-    \ != nullptr) {\n      p = y;\n      ++(y->size);\n      if (cmp_(x->data, y->data))\
-    \ {\n        y = y->left;\n        dir = 0;\n      } else {\n        y = y->right;\n\
-    \        dir = 1;\n      }\n    }\n    if (p == nullptr) {\n      root_ = x;\n\
+    \  Comp cmp_;\n\n  /**\n   * @brief \u63D2\u5165\u8282\u70B9\u8F85\u52A9\u51FD\
+    \u6570\n   * @note \u4F7F\u7528\u8BE5\u51FD\u6570\u53EF\u4EE5\u51CF\u5C11\u7EE7\
+    \u627F\u540E override \u7684\u51FD\u6570\n   * @param x \u5F85\u63D2\u5165\u8282\
+    \u70B9\n   * @param p \u5F85\u63D2\u5165\u8282\u70B9\u7684\u53CC\u4EB2\u8282\u70B9\
+    \n   * @param dir \u82E5 dir=0 \u5219 x \u6210\u4E3A p \u7684\u5DE6\u5B69\u5B50\
+    \uFF0C\u5426\u5219\u6210\u4E3A\u53F3\u5B69\u5B50\n   */\n  virtual void insert_at_node(node_ptr_type\
+    \ x, node_ptr_type p, int dir) {\n    if (p == nullptr) {\n      root_ = x;\n\
     \    } else {\n      if (dir == 0) {\n        p->left = x;\n      } else {\n \
-    \       p->right = x;\n      }\n      x->parent = p;\n    }\n  }\n\n  /**\n  \
+    \       p->right = x;\n      }\n      x->parent = p;\n    }\n  }\n\n  virtual\
+    \ node_ptr_type find_node(const value_type &v) const {\n    node_ptr_type x =\
+    \ root_;\n    while (x != nullptr) {\n      if (cmp_(x->data, v)) {\n        x\
+    \ = x->right;\n      } else if (cmp_(v, x->data)) {\n        x = x->left;\n  \
+    \    } else {\n        return x;\n      }\n    }\n    return x;\n  }\n\n  virtual\
+    \ node_ptr_type select_node(int k) const {\n    if (k < 0 || k >= size()) return\
+    \ {};\n    node_ptr_type x = root_;\n    while (get_size(x->left) != k) {\n  \
+    \    if (get_size(x->left) < k) {\n        k -= get_size(x->left) + 1;\n     \
+    \   x = x->right;\n      } else {\n        x = x->left;\n      }\n    }\n    return\
+    \ x;\n  }\n\n  virtual void insert_at_value(node_ptr_type x) {\n    node_ptr_type\
+    \ p = nullptr, y = root_;\n    int dir = -1;\n    while (y != nullptr) {\n   \
+    \   p = y;\n      ++(y->size);\n      if (cmp_(x->data, y->data)) {\n        y\
+    \ = y->left;\n        dir = 0;\n      } else {\n        y = y->right;\n      \
+    \  dir = 1;\n      }\n    }\n    insert_at_node(x, p, dir);\n  }\n\n  /**\n  \
     \ * @brief \u5728\u6392\u540D k \u7684\u5143\u7D20\u524D\u63D2\u5165\u4E00\u4E2A\
     \u5143\u7D20\n   * @note \u6392\u540D\u4ECE 0 \u5F00\u59CB\n   * @param x\n  \
     \ */\n  virtual void insert_at_rank(node_ptr_type x, int k) {\n    assert(k >=\
@@ -252,12 +267,10 @@ data:
     \  int dir = -1;\n    while (y != nullptr) {\n      p = y;\n      ++(y->size);\n\
     \      if (k <= get_size(y->left)) {\n        y = y->left;\n        dir = 0;\n\
     \      } else {\n        y = y->right;\n        k -= get_size(y->left) + 1;\n\
-    \        dir = 1;\n      }\n    }\n    if (p == nullptr) {\n      root_ = x;\n\
-    \    } else {\n      if (dir == 0) {\n        p->left = x;\n      } else {\n \
-    \       p->right = x;\n      }\n      x->parent = p;\n    }\n  }\n\n  static int\
-    \ get_size(const_node_ptr_type x) { return x == nullptr ? 0 : x->size; }\n\n \
-    \ virtual void rotate_left(node_ptr_type x) {\n    assert(x != nullptr);\n   \
-    \ assert(x->right != nullptr);\n    node_ptr_type r = x->right, rl = r->left;\n\
+    \        dir = 1;\n      }\n    }\n    insert_at_node(x, p, dir);\n  }\n\n  static\
+    \ int get_size(const_node_ptr_type x) { return x == nullptr ? 0 : x->size; }\n\
+    \n  virtual void rotate_left(node_ptr_type x) {\n    assert(x != nullptr);\n \
+    \   assert(x->right != nullptr);\n    node_ptr_type r = x->right, rl = r->left;\n\
     \    int rs = r->size;\n    r->size = x->size;\n    x->size -= rs;\n    if ((x->right\
     \ = rl) != nullptr) (rl->parent = x)->size += rl->size;\n    if ((r->parent =\
     \ x->parent) != nullptr) {\n      if (x->parent->left == x) {\n        x->parent->left\
@@ -275,11 +288,12 @@ data:
   isVerificationFile: false
   path: datastructure/tree/binary_search_tree_base.hpp
   requiredBy:
-  - datastructure/tree/splay_tree.hpp
+  - datastructure/tree/AVL_tree.hpp
   - datastructure/tree/treap.hpp
-  timestamp: '2021-06-18 02:33:39+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-06-19 02:40:30+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
+  - remote_test/yosupo/datastructure/predecessor_problem.1.test.cpp
   - remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
 documentation_of: datastructure/tree/binary_search_tree_base.hpp
 layout: document

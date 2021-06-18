@@ -6,30 +6,29 @@ data:
     title: "binary search tree base / \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
-    title: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: remote_test/yosupo/datastructure/predecessor_problem.1.test.cpp
+    title: remote_test/yosupo/datastructure/predecessor_problem.1.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
-    document_title: "treap / \u6811\u5806"
+    document_title: "AVL tree / AVL \u6811"
     links: []
-  bundledCode: "#line 1 \"datastructure/tree/treap.hpp\"\n\n\n\n/**\n * @brief treap\
-    \ / \u6811\u5806\n *\n */\n\n#include <random>\n#include <utility>\n\n#line 1\
-    \ \"datastructure/tree/binary_search_tree_base.hpp\"\n\n\n\n/**\n * @brief binary\
-    \ search tree base / \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\u7C7B\n *\n */\n\n#include\
-    \ <cassert>\n#include <functional>\n#include <optional>\n\nnamespace lib {\n\n\
-    /**\n * @brief \u4E8C\u53C9\u641C\u7D22\u6811\u8282\u70B9\u7C7B\n */\ntemplate\
-    \ <typename DataType, typename Base> struct BSTNodeType1 : public Base {\npublic:\n\
-    \  using node_ptr_type = BSTNodeType1 *;\n  using value_type = DataType;\n\n \
-    \ BSTNodeType1(const value_type &v)\n      : left(nullptr), right(nullptr), parent(nullptr),\
-    \ size(1), data(v) {}\n  ~BSTNodeType1() {\n    delete left;\n    delete right;\n\
-    \  }\n\n  node_ptr_type left, right, parent;\n  int size;\n  value_type data;\n\
-    };\n\n/**\n * @brief \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\u7C7B\n */\ntemplate\
-    \ <typename NodeType, typename Comp = std::less<>> class BSTType1 {\npublic:\n\
-    \  using node_ptr_type = typename NodeType::node_ptr_type;\n  using const_node_ptr_type\
-    \ = const node_ptr_type;\n  using value_type = typename NodeType::value_type;\n\
+  bundledCode: "#line 1 \"datastructure/tree/AVL_tree.hpp\"\n\n\n\n/**\n * @brief\
+    \ AVL tree / AVL \u6811\n *\n */\n\n#include <algorithm>\n\n#line 1 \"datastructure/tree/binary_search_tree_base.hpp\"\
+    \n\n\n\n/**\n * @brief binary search tree base / \u4E8C\u53C9\u641C\u7D22\u6811\
+    \u57FA\u7C7B\n *\n */\n\n#include <cassert>\n#include <functional>\n#include <optional>\n\
+    \nnamespace lib {\n\n/**\n * @brief \u4E8C\u53C9\u641C\u7D22\u6811\u8282\u70B9\
+    \u7C7B\n */\ntemplate <typename DataType, typename Base> struct BSTNodeType1 :\
+    \ public Base {\npublic:\n  using node_ptr_type = BSTNodeType1 *;\n  using value_type\
+    \ = DataType;\n\n  BSTNodeType1(const value_type &v)\n      : left(nullptr), right(nullptr),\
+    \ parent(nullptr), size(1), data(v) {}\n  ~BSTNodeType1() {\n    delete left;\n\
+    \    delete right;\n  }\n\n  node_ptr_type left, right, parent;\n  int size;\n\
+    \  value_type data;\n};\n\n/**\n * @brief \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\
+    \u7C7B\n */\ntemplate <typename NodeType, typename Comp = std::less<>> class BSTType1\
+    \ {\npublic:\n  using node_ptr_type = typename NodeType::node_ptr_type;\n  using\
+    \ const_node_ptr_type = const node_ptr_type;\n  using value_type = typename NodeType::value_type;\n\
     \n#ifdef LOCAL\n\n  virtual void test() {\n    dfs(root_);\n    std::cout << \"\
     \\ntest over\\n\";\n  }\n\n  virtual void dfs(const_node_ptr_type x) {\n    if\
     \ (x == nullptr) return;\n    if (x->left != nullptr) dfs(x->left);\n    std::cout\
@@ -147,65 +146,108 @@ data:
     \ {\n      if (x->parent->left == x) {\n        x->parent->left = l;\n      }\
     \ else {\n        x->parent->right = l;\n      }\n    } else {\n      root_ =\
     \ l;\n    }\n    (l->right = x)->parent = l;\n  }\n};\n\n} // namespace lib\n\n\
-    \n#line 13 \"datastructure/tree/treap.hpp\"\n\nnamespace lib {\n\n/**\n * @brief\
-    \ treap \u8282\u70B9\u7C7B\n */\nstruct TreapNode {\npublic:\n  TreapNode() :\
-    \ priority(get_rand()) {}\n  ~TreapNode() = default;\n  int priority;\n  static\
-    \ int get_rand() {\n    static std::random_device rd;\n    static std::mt19937_64\
-    \ gen(rd());\n    static std::uniform_int_distribution<int> dis(0, 1919810);\n\
-    \    return dis(gen);\n  }\n};\n\n/**\n * @brief treap\n */\ntemplate <typename\
-    \ DataType, typename Comp = std::less<>>\nclass Treap final : public BSTType1<BSTNodeType1<DataType,\
-    \ TreapNode>, Comp> {\npublic:\n  using base = BSTType1<BSTNodeType1<DataType,\
-    \ TreapNode>, Comp>;\n  using base::base;\n  using value_type = typename base::value_type;\n\
-    \  using node_ptr_type = typename base::node_ptr_type;\n  using const_node_ptr_type\
-    \ = typename base::const_node_ptr_type;\n\n  static int get_priority(const_node_ptr_type\
-    \ x) { return x == nullptr ? -1 : x->priority; }\n  void insert_at_node(node_ptr_type\
+    \n#line 12 \"datastructure/tree/AVL_tree.hpp\"\n\nnamespace lib {\n\n/**\n * @brief\
+    \ AVL \u6811\u8282\u70B9\u7C7B\n */\nstruct AVLTreeNode {\npublic:\n  AVLTreeNode()\
+    \ : height(1) {}\n  ~AVLTreeNode() = default;\n  int height;\n};\n\n/**\n * @brief\
+    \ AVL \u6811\n */\ntemplate <typename DataType, typename Comp = std::less<>>\n\
+    class AVLTree final : public BSTType1<BSTNodeType1<DataType, AVLTreeNode>, Comp>\
+    \ {\npublic:\n  using base = BSTType1<BSTNodeType1<DataType, AVLTreeNode>, Comp>;\n\
+    \  using base::base;\n  using value_type = typename base::value_type;\n  using\
+    \ node_ptr_type = typename base::node_ptr_type;\n  using const_node_ptr_type =\
+    \ typename base::const_node_ptr_type;\n\n  static int get_height(const_node_ptr_type\
+    \ x) { return x == nullptr ? 0 : x->height; }\n\n  void insert_at_node(node_ptr_type\
     \ x, node_ptr_type p, int dir) override {\n    base::insert_at_node(x, p, dir);\n\
-    \    int xp = x->priority;\n    while (x->parent != nullptr && x->parent->priority\
-    \ < xp)\n      x == x->parent->left ? base::rotate_right(x->parent) : base::rotate_left(x->parent);\n\
-    \  }\n  void delete_at_node(node_ptr_type x) override {\n    while (x->left !=\
-    \ x->right)\n      get_priority(x->left) < get_priority(x->right) ? base::rotate_left(x)\
-    \ : base::rotate_right(x);\n    for (node_ptr_type y = x->parent; y != nullptr;\
-    \ y = y->parent) --(y->size);\n    if (x->parent == nullptr) {\n      this->root_\
-    \ = nullptr;\n    } else {\n      if (x->parent->left == x) {\n        x->parent->left\
-    \ = nullptr;\n      } else {\n        x->parent->right = nullptr;\n      }\n \
-    \   }\n    delete x;\n  }\n};\n\n} // namespace lib\n\n\n"
-  code: "#ifndef TREAP_HEADER_HPP\n#define TREAP_HEADER_HPP\n\n/**\n * @brief treap\
-    \ / \u6811\u5806\n *\n */\n\n#include <random>\n#include <utility>\n\n#include\
-    \ \"binary_search_tree_base.hpp\"\n\nnamespace lib {\n\n/**\n * @brief treap \u8282\
-    \u70B9\u7C7B\n */\nstruct TreapNode {\npublic:\n  TreapNode() : priority(get_rand())\
-    \ {}\n  ~TreapNode() = default;\n  int priority;\n  static int get_rand() {\n\
-    \    static std::random_device rd;\n    static std::mt19937_64 gen(rd());\n  \
-    \  static std::uniform_int_distribution<int> dis(0, 1919810);\n    return dis(gen);\n\
-    \  }\n};\n\n/**\n * @brief treap\n */\ntemplate <typename DataType, typename Comp\
-    \ = std::less<>>\nclass Treap final : public BSTType1<BSTNodeType1<DataType, TreapNode>,\
-    \ Comp> {\npublic:\n  using base = BSTType1<BSTNodeType1<DataType, TreapNode>,\
-    \ Comp>;\n  using base::base;\n  using value_type = typename base::value_type;\n\
+    \    fix_up(p);\n  }\n  void delete_at_node(node_ptr_type x) override {\n    node_ptr_type\
+    \ y;\n    if (x->left == nullptr || x->right == nullptr) {\n      y = x->parent;\n\
+    \    } else {\n      y = x->right;\n      while (y->left != nullptr) y = y->left;\n\
+    \      if (y->parent != x) y = y->parent;\n    }\n    base::delete_at_node(x);\n\
+    \    fix_up(y);\n  }\n\nprotected:\n  static void fix_height(node_ptr_type x)\
+    \ {\n    if (x == nullptr) return;\n    x->height = std::max(get_height(x->left),\
+    \ get_height(x->right)) + 1;\n  }\n\n  void fix_up(node_ptr_type x) {\n    fix_height(x);\n\
+    \    for (node_ptr_type y = x; y != nullptr && !is_balanced(y);) {\n      node_ptr_type\
+    \ t = y->parent;\n      balance(y);\n      fix_height(t);\n      y = t;\n    }\n\
+    \  }\n\n  void rotate_left(node_ptr_type x) override {\n    node_ptr_type r =\
+    \ x->right;\n    base::rotate_left(x);\n    fix_height(x);\n    fix_height(r);\n\
+    \  }\n\n  void rotate_right(node_ptr_type x) override {\n    node_ptr_type l =\
+    \ x->left;\n    base::rotate_right(x);\n    fix_height(x);\n    fix_height(l);\n\
+    \  }\n\n  /**\n   * @brief \u5224\u65AD\u662F\u5426\u5E73\u8861\n   * @note \u5E73\
+    \u8861\u7684\u8BDD\u5DE6\u53F3\u5B50\u6811\u9AD8\u5EA6\u76F8\u51CF\u7684\u7EDD\
+    \u5BF9\u503C\u5C0F\u4E8E 2 \u4E0D\u5E73\u8861\u7684\u8BDD\u5219\u7B49\u4E8E 2\n\
+    \   */\n  static bool is_balanced(node_ptr_type x) {\n    assert(x != nullptr);\n\
+    \    int d = get_height(x->left) - get_height(x->right);\n    return d >= -1 &&\
+    \ d <= 1;\n  }\n  /**\n   * @brief \u8FD4\u56DE\u66F4\u9AD8\u7684\u4E00\u4E2A\u5B69\
+    \u5B50\u8282\u70B9\n   * @return std::pair<node_ptr_type, int> \u4E3A\u5B69\u5B50\
+    \u8282\u70B9\u548C\u5176\u4E3A\u5DE6\u5B69\u5B50\u8FD8\u662F\u53F3\u5B69\u5B50\
+    \n   */\n  static std::pair<node_ptr_type, int> get_taller_child(node_ptr_type\
+    \ x) {\n    assert(x != nullptr);\n    return get_height(x->left) > get_height(x->right)\
+    \ ? std::make_pair(x->left, 0)\n                                             \
+    \         : std::make_pair(x->right, 1);\n  }\n  void balance(node_ptr_type z)\
+    \ {\n    auto [y, dy] = get_taller_child(z);\n    auto [x, dx] = get_taller_child(y);\n\
+    \    /*     z           z\n          / \\         / \\\n         y   ?   or  ?\
+    \   y      case 1: dx=dy\n        / \\             / \\\n       x   ?        \
+    \   ?   x   */\n    if (dx != dy) dy == 0 ? rotate_left(y) : rotate_right(y);\n\
+    \    /*     z           z\n          / \\         / \\\n         y   ?   or  ?\
+    \   y      case 2: dx!=dy\n        / \\             / \\\n       ?   x       \
+    \    x   ?   */\n    dy == 0 ? rotate_right(z) : rotate_left(z);\n  }\n};\n\n\
+    } // namespace lib\n\n\n"
+  code: "#ifndef AVL_TREE_HEADER_HPP\n#define AVL_TREE_HEADER_HPP\n\n/**\n * @brief\
+    \ AVL tree / AVL \u6811\n *\n */\n\n#include <algorithm>\n\n#include \"binary_search_tree_base.hpp\"\
+    \n\nnamespace lib {\n\n/**\n * @brief AVL \u6811\u8282\u70B9\u7C7B\n */\nstruct\
+    \ AVLTreeNode {\npublic:\n  AVLTreeNode() : height(1) {}\n  ~AVLTreeNode() = default;\n\
+    \  int height;\n};\n\n/**\n * @brief AVL \u6811\n */\ntemplate <typename DataType,\
+    \ typename Comp = std::less<>>\nclass AVLTree final : public BSTType1<BSTNodeType1<DataType,\
+    \ AVLTreeNode>, Comp> {\npublic:\n  using base = BSTType1<BSTNodeType1<DataType,\
+    \ AVLTreeNode>, Comp>;\n  using base::base;\n  using value_type = typename base::value_type;\n\
     \  using node_ptr_type = typename base::node_ptr_type;\n  using const_node_ptr_type\
-    \ = typename base::const_node_ptr_type;\n\n  static int get_priority(const_node_ptr_type\
-    \ x) { return x == nullptr ? -1 : x->priority; }\n  void insert_at_node(node_ptr_type\
+    \ = typename base::const_node_ptr_type;\n\n  static int get_height(const_node_ptr_type\
+    \ x) { return x == nullptr ? 0 : x->height; }\n\n  void insert_at_node(node_ptr_type\
     \ x, node_ptr_type p, int dir) override {\n    base::insert_at_node(x, p, dir);\n\
-    \    int xp = x->priority;\n    while (x->parent != nullptr && x->parent->priority\
-    \ < xp)\n      x == x->parent->left ? base::rotate_right(x->parent) : base::rotate_left(x->parent);\n\
-    \  }\n  void delete_at_node(node_ptr_type x) override {\n    while (x->left !=\
-    \ x->right)\n      get_priority(x->left) < get_priority(x->right) ? base::rotate_left(x)\
-    \ : base::rotate_right(x);\n    for (node_ptr_type y = x->parent; y != nullptr;\
-    \ y = y->parent) --(y->size);\n    if (x->parent == nullptr) {\n      this->root_\
-    \ = nullptr;\n    } else {\n      if (x->parent->left == x) {\n        x->parent->left\
-    \ = nullptr;\n      } else {\n        x->parent->right = nullptr;\n      }\n \
-    \   }\n    delete x;\n  }\n};\n\n} // namespace lib\n\n#endif"
+    \    fix_up(p);\n  }\n  void delete_at_node(node_ptr_type x) override {\n    node_ptr_type\
+    \ y;\n    if (x->left == nullptr || x->right == nullptr) {\n      y = x->parent;\n\
+    \    } else {\n      y = x->right;\n      while (y->left != nullptr) y = y->left;\n\
+    \      if (y->parent != x) y = y->parent;\n    }\n    base::delete_at_node(x);\n\
+    \    fix_up(y);\n  }\n\nprotected:\n  static void fix_height(node_ptr_type x)\
+    \ {\n    if (x == nullptr) return;\n    x->height = std::max(get_height(x->left),\
+    \ get_height(x->right)) + 1;\n  }\n\n  void fix_up(node_ptr_type x) {\n    fix_height(x);\n\
+    \    for (node_ptr_type y = x; y != nullptr && !is_balanced(y);) {\n      node_ptr_type\
+    \ t = y->parent;\n      balance(y);\n      fix_height(t);\n      y = t;\n    }\n\
+    \  }\n\n  void rotate_left(node_ptr_type x) override {\n    node_ptr_type r =\
+    \ x->right;\n    base::rotate_left(x);\n    fix_height(x);\n    fix_height(r);\n\
+    \  }\n\n  void rotate_right(node_ptr_type x) override {\n    node_ptr_type l =\
+    \ x->left;\n    base::rotate_right(x);\n    fix_height(x);\n    fix_height(l);\n\
+    \  }\n\n  /**\n   * @brief \u5224\u65AD\u662F\u5426\u5E73\u8861\n   * @note \u5E73\
+    \u8861\u7684\u8BDD\u5DE6\u53F3\u5B50\u6811\u9AD8\u5EA6\u76F8\u51CF\u7684\u7EDD\
+    \u5BF9\u503C\u5C0F\u4E8E 2 \u4E0D\u5E73\u8861\u7684\u8BDD\u5219\u7B49\u4E8E 2\n\
+    \   */\n  static bool is_balanced(node_ptr_type x) {\n    assert(x != nullptr);\n\
+    \    int d = get_height(x->left) - get_height(x->right);\n    return d >= -1 &&\
+    \ d <= 1;\n  }\n  /**\n   * @brief \u8FD4\u56DE\u66F4\u9AD8\u7684\u4E00\u4E2A\u5B69\
+    \u5B50\u8282\u70B9\n   * @return std::pair<node_ptr_type, int> \u4E3A\u5B69\u5B50\
+    \u8282\u70B9\u548C\u5176\u4E3A\u5DE6\u5B69\u5B50\u8FD8\u662F\u53F3\u5B69\u5B50\
+    \n   */\n  static std::pair<node_ptr_type, int> get_taller_child(node_ptr_type\
+    \ x) {\n    assert(x != nullptr);\n    return get_height(x->left) > get_height(x->right)\
+    \ ? std::make_pair(x->left, 0)\n                                             \
+    \         : std::make_pair(x->right, 1);\n  }\n  void balance(node_ptr_type z)\
+    \ {\n    auto [y, dy] = get_taller_child(z);\n    auto [x, dx] = get_taller_child(y);\n\
+    \    /*     z           z\n          / \\         / \\\n         y   ?   or  ?\
+    \   y      case 1: dx=dy\n        / \\             / \\\n       x   ?        \
+    \   ?   x   */\n    if (dx != dy) dy == 0 ? rotate_left(y) : rotate_right(y);\n\
+    \    /*     z           z\n          / \\         / \\\n         y   ?   or  ?\
+    \   y      case 2: dx!=dy\n        / \\             / \\\n       ?   x       \
+    \    x   ?   */\n    dy == 0 ? rotate_right(z) : rotate_left(z);\n  }\n};\n\n\
+    } // namespace lib\n\n#endif"
   dependsOn:
   - datastructure/tree/binary_search_tree_base.hpp
   isVerificationFile: false
-  path: datastructure/tree/treap.hpp
+  path: datastructure/tree/AVL_tree.hpp
   requiredBy: []
   timestamp: '2021-06-19 02:40:30+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
-  - remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
-documentation_of: datastructure/tree/treap.hpp
+  - remote_test/yosupo/datastructure/predecessor_problem.1.test.cpp
+documentation_of: datastructure/tree/AVL_tree.hpp
 layout: document
 redirect_from:
-- /library/datastructure/tree/treap.hpp
-- /library/datastructure/tree/treap.hpp.html
-title: "treap / \u6811\u5806"
+- /library/datastructure/tree/AVL_tree.hpp
+- /library/datastructure/tree/AVL_tree.hpp.html
+title: "AVL tree / AVL \u6811"
 ---
