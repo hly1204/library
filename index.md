@@ -70,7 +70,7 @@ data:
       title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
   - name: math/matrix
     pages:
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: math/matrix/matrix_basic.hpp
       title: "matrix basic / \u77E9\u9635\u57FA\u7840"
   - name: math/modulo
@@ -201,6 +201,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
       title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/matrix_product.0.test.cpp
+      title: remote_test/yosupo/math/matrix_product.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
       title: remote_test/yosupo/math/mod_sqrt.0.test.cpp

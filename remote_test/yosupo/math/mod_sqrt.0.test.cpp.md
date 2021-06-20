@@ -26,7 +26,7 @@ data:
     \ \"https://judge.yosupo.jp/problem/sqrt_mod\"\n\n#include <iostream>\n#include\
     \ <vector>\n\n#line 1 \"math/modulo/sqrt_mod.hpp\"\n\n\n\n/**\n * @brief square\
     \ root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839\n *\n */\n\n#include <cassert>\n\
-    #include <random>\n#include <type_traits>\n#line 13 \"math/modulo/sqrt_mod.hpp\"\
+    #include <random>\n#include <tuple>\n#include <type_traits>\n#line 14 \"math/modulo/sqrt_mod.hpp\"\
     \n\n#line 1 \"modint/runtime_Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief runtime\
     \ Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\
     \n#include <cstdint>\n#line 12 \"modint/runtime_Montgomery_modint.hpp\"\n\nnamespace\
@@ -75,18 +75,17 @@ data:
     \nusing RuntimeMontModInt = RuntimeMontgomeryModInt;\n\n} // namespace lib\n\n\
     \n#line 1 \"modint/runtime_long_Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief\
     \ runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery\
-    \ \u53D6\u6A21\u7C7B\n *\n */\n\n#line 12 \"modint/runtime_long_Montgomery_modint.hpp\"\
-    \n#include <tuple>\n#line 14 \"modint/runtime_long_Montgomery_modint.hpp\"\n\n\
-    #ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief\
-    \ \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n * @ref\
-    \ https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n * @author\
-    \ Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\nclass RuntimeLongMontgomeryModInt\
-    \ {\npublic:\n  using u32 = std::uint32_t;\n  using i64 = std::int64_t;\n  using\
-    \ u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\n  using\
-    \ value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static bool\
-    \ set_mod(u64 m) {\n    if ((m & 1) == 0 || m == 1 || (m & (1ULL << 63)) != 0)\
-    \ return false;\n    mod = m;\n    r = get_r();\n    r2 = get_r2();\n    return\
-    \ true;\n  }\n\n  RuntimeLongMontgomeryModInt() = default;\n  ~RuntimeLongMontgomeryModInt()\
+    \ \u53D6\u6A21\u7C7B\n *\n */\n\n#line 14 \"modint/runtime_long_Montgomery_modint.hpp\"\
+    \n\n#ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n *\
+    \ @brief \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n\
+    \ * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n *\
+    \ @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
+    class RuntimeLongMontgomeryModInt {\npublic:\n  using u32 = std::uint32_t;\n \
+    \ using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\
+    \n  using value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static\
+    \ bool set_mod(u64 m) {\n    if ((m & 1) == 0 || m == 1 || (m & (1ULL << 63))\
+    \ != 0) return false;\n    mod = m;\n    r = get_r();\n    r2 = get_r2();\n  \
+    \  return true;\n  }\n\n  RuntimeLongMontgomeryModInt() = default;\n  ~RuntimeLongMontgomeryModInt()\
     \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  RuntimeLongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
     \ r2))) {}\n\n  RuntimeLongMontgomeryModInt(const m64 &) = default;\n\n  u64 get()\
@@ -134,7 +133,7 @@ data:
     };\n\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::mod;\nRuntimeLongMontgomeryModInt::u64\
     \ RuntimeLongMontgomeryModInt::r;\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::r2;\n\
     \nusing RuntimeLongMontModInt = RuntimeLongMontgomeryModInt;\n\n} // namespace\
-    \ lib\n\n\n#line 16 \"math/modulo/sqrt_mod.hpp\"\n\nnamespace lib {\n\nnamespace\
+    \ lib\n\n\n#line 17 \"math/modulo/sqrt_mod.hpp\"\n\nnamespace lib {\n\nnamespace\
     \ internal {\n\ntemplate <typename mod_t> std::vector<mod_t> sqrt_mod_prime(const\
     \ mod_t x) {\n  const auto p = mod_t::get_mod();\n  const mod_t ONE(1), MINUS_ONE(-ONE),\
     \ ZERO(0);\n  if (x == ZERO) return {ZERO};\n  if (x.pow(p >> 1) == MINUS_ONE)\
@@ -179,7 +178,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-21 04:10:12+08:00'
+  timestamp: '2021-06-21 04:44:53+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/mod_sqrt.0.test.cpp

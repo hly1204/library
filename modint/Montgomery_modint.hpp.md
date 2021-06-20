@@ -27,6 +27,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/matrix_product.0.test.cpp
+    title: remote_test/yosupo/math/matrix_product.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -152,6 +155,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
+  - remote_test/yosupo/math/matrix_product.0.test.cpp
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
