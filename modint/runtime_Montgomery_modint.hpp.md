@@ -55,9 +55,9 @@ data:
     \ }\n\n  friend std::istream &operator>>(std::istream &is, m32 &rhs) {\n    i32\
     \ x;\n    is >> x;\n    rhs = m32(x);\n    return is;\n  }\n  friend std::ostream\
     \ &operator<<(std::ostream &os, const m32 &rhs) { return os << rhs.get(); }\n\n\
-    \  constexpr m32 pow(u64 y) const {\n    m32 res(1), x(*this);\n    for (; y !=\
-    \ 0; y >>= 1, x *= x)\n      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n\
-    \  static u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod) >> 32; }\n  static\
+    \  m32 pow(u64 y) const {\n    m32 res(1), x(*this);\n    for (; y != 0; y >>=\
+    \ 1, x *= x)\n      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n \
+    \ static u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod) >> 32; }\n  static\
     \ u32 norm(u32 x) { return x - (mod & -((mod - 1 - x) >> 31)); }\n\n  u32 v_;\n\
     \n  static u32 r, r2, mod, mod2;\n};\n\nRuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::r;\n\
     RuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::r2;\nRuntimeMontgomeryModInt::u32\
@@ -102,9 +102,9 @@ data:
     \ }\n\n  friend std::istream &operator>>(std::istream &is, m32 &rhs) {\n    i32\
     \ x;\n    is >> x;\n    rhs = m32(x);\n    return is;\n  }\n  friend std::ostream\
     \ &operator<<(std::ostream &os, const m32 &rhs) { return os << rhs.get(); }\n\n\
-    \  constexpr m32 pow(u64 y) const {\n    m32 res(1), x(*this);\n    for (; y !=\
-    \ 0; y >>= 1, x *= x)\n      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n\
-    \  static u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod) >> 32; }\n  static\
+    \  m32 pow(u64 y) const {\n    m32 res(1), x(*this);\n    for (; y != 0; y >>=\
+    \ 1, x *= x)\n      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n \
+    \ static u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod) >> 32; }\n  static\
     \ u32 norm(u32 x) { return x - (mod & -((mod - 1 - x) >> 31)); }\n\n  u32 v_;\n\
     \n  static u32 r, r2, mod, mod2;\n};\n\nRuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::r;\n\
     RuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::r2;\nRuntimeMontgomeryModInt::u32\
@@ -116,7 +116,7 @@ data:
   path: modint/runtime_Montgomery_modint.hpp
   requiredBy:
   - math/modulo/sqrt_mod.hpp
-  timestamp: '2021-06-21 01:45:03+08:00'
+  timestamp: '2021-06-21 01:47:06+08:00'
   verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp

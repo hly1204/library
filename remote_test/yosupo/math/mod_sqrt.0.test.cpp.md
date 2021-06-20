@@ -64,18 +64,18 @@ data:
     \ m32 &rhs) { return norm(lhs.v_) != norm(rhs.v_); }\n\n  friend std::istream\
     \ &operator>>(std::istream &is, m32 &rhs) {\n    i32 x;\n    is >> x;\n    rhs\
     \ = m32(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
-    \ &os, const m32 &rhs) { return os << rhs.get(); }\n\n  constexpr m32 pow(u64\
-    \ y) const {\n    m32 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n\
-    \      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static u32 reduce(u64\
-    \ x) { return (x + u64(u32(x) * r) * mod) >> 32; }\n  static u32 norm(u32 x) {\
-    \ return x - (mod & -((mod - 1 - x) >> 31)); }\n\n  u32 v_;\n\n  static u32 r,\
-    \ r2, mod, mod2;\n};\n\nRuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::r;\n\
-    RuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::r2;\nRuntimeMontgomeryModInt::u32\
-    \ RuntimeMontgomeryModInt::mod;\nRuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::mod2;\n\
-    \n// \u522B\u540D\nusing RuntimeMontModInt = RuntimeMontgomeryModInt;\n\n} //\
-    \ namespace lib\n\n\n#line 1 \"modint/runtime_long_Montgomery_modint.hpp\"\n\n\
-    \n\n/**\n * @brief runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\
-    \u578B Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#line 14 \"modint/runtime_long_Montgomery_modint.hpp\"\
+    \ &os, const m32 &rhs) { return os << rhs.get(); }\n\n  m32 pow(u64 y) const {\n\
+    \    m32 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n      if (y &\
+    \ 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static u32 reduce(u64 x) {\
+    \ return (x + u64(u32(x) * r) * mod) >> 32; }\n  static u32 norm(u32 x) { return\
+    \ x - (mod & -((mod - 1 - x) >> 31)); }\n\n  u32 v_;\n\n  static u32 r, r2, mod,\
+    \ mod2;\n};\n\nRuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::r;\nRuntimeMontgomeryModInt::u32\
+    \ RuntimeMontgomeryModInt::r2;\nRuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::mod;\n\
+    RuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::mod2;\n\n// \u522B\u540D\
+    \nusing RuntimeMontModInt = RuntimeMontgomeryModInt;\n\n} // namespace lib\n\n\
+    \n#line 1 \"modint/runtime_long_Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief\
+    \ runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery\
+    \ \u53D6\u6A21\u7C7B\n *\n */\n\n#line 14 \"modint/runtime_long_Montgomery_modint.hpp\"\
     \n\n#ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n *\
     \ @brief \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n\
     \ * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n *\
@@ -176,7 +176,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-21 01:45:03+08:00'
+  timestamp: '2021-06-21 01:47:06+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/mod_sqrt.0.test.cpp
