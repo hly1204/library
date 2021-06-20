@@ -1,37 +1,37 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/modulo/sqrt_mod.hpp
     title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: modint/runtime_Montgomery_modint.hpp
     title: "runtime Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\
       \u7C7B"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/runtime_long_Montgomery_modint.hpp
     title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
       \ Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/sqrt_mod
     links:
     - https://judge.yosupo.jp/problem/sqrt_mod
   bundledCode: "#line 1 \"remote_test/yosupo/math/mod_sqrt.0.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/sqrt_mod\"\n\n#include <iostream>\n\n#line\
-    \ 1 \"math/modulo/sqrt_mod.hpp\"\n\n\n\n/**\n * @brief square root mod / \u6A21\
-    \u610F\u4E49\u4E0B\u5E73\u65B9\u6839\n *\n */\n\n#include <cassert>\n#include\
-    \ <random>\n#include <tuple>\n#include <type_traits>\n#include <vector>\n\n#line\
-    \ 1 \"modint/runtime_Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief runtime Montgomery\
-    \ modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#include\
-    \ <cstdint>\n#line 12 \"modint/runtime_Montgomery_modint.hpp\"\n\nnamespace lib\
-    \ {\n\n/**\n * @brief \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\u7C7B\n * @ref\
-    \ https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n * @author\
+    \ \"https://judge.yosupo.jp/problem/sqrt_mod\"\n\n#include <iostream>\n#include\
+    \ <vector>\n\n#line 1 \"math/modulo/sqrt_mod.hpp\"\n\n\n\n/**\n * @brief square\
+    \ root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839\n *\n */\n\n#include <cassert>\n\
+    #include <random>\n#include <type_traits>\n#line 13 \"math/modulo/sqrt_mod.hpp\"\
+    \n\n#line 1 \"modint/runtime_Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief runtime\
+    \ Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\
+    \n#include <cstdint>\n#line 12 \"modint/runtime_Montgomery_modint.hpp\"\n\nnamespace\
+    \ lib {\n\n/**\n * @brief \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\u7C7B\n *\
+    \ @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n * @author\
     \ Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\nclass RuntimeMontgomeryModInt\
     \ {\npublic:\n  using i32 = std::int32_t;\n  using u32 = std::uint32_t;\n  using\
     \ u64 = std::uint64_t;\n  using m32 = RuntimeMontgomeryModInt;\n\n  using value_type\
@@ -75,17 +75,18 @@ data:
     \nusing RuntimeMontModInt = RuntimeMontgomeryModInt;\n\n} // namespace lib\n\n\
     \n#line 1 \"modint/runtime_long_Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief\
     \ runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery\
-    \ \u53D6\u6A21\u7C7B\n *\n */\n\n#line 14 \"modint/runtime_long_Montgomery_modint.hpp\"\
-    \n\n#ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n *\
-    \ @brief \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n\
-    \ * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n *\
-    \ @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    class RuntimeLongMontgomeryModInt {\npublic:\n  using u32 = std::uint32_t;\n \
-    \ using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\
-    \n  using value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static\
-    \ bool set_mod(u64 m) {\n    if ((m & 1) == 0 || m == 1 || (m & (1ULL << 63))\
-    \ != 0) return false;\n    mod = m;\n    r = get_r();\n    r2 = get_r2();\n  \
-    \  return true;\n  }\n\n  RuntimeLongMontgomeryModInt() = default;\n  ~RuntimeLongMontgomeryModInt()\
+    \ \u53D6\u6A21\u7C7B\n *\n */\n\n#line 12 \"modint/runtime_long_Montgomery_modint.hpp\"\
+    \n#include <tuple>\n#line 14 \"modint/runtime_long_Montgomery_modint.hpp\"\n\n\
+    #ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief\
+    \ \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n * @ref\
+    \ https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n * @author\
+    \ Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\nclass RuntimeLongMontgomeryModInt\
+    \ {\npublic:\n  using u32 = std::uint32_t;\n  using i64 = std::int64_t;\n  using\
+    \ u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\n  using\
+    \ value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static bool\
+    \ set_mod(u64 m) {\n    if ((m & 1) == 0 || m == 1 || (m & (1ULL << 63)) != 0)\
+    \ return false;\n    mod = m;\n    r = get_r();\n    r2 = get_r2();\n    return\
+    \ true;\n  }\n\n  RuntimeLongMontgomeryModInt() = default;\n  ~RuntimeLongMontgomeryModInt()\
     \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  RuntimeLongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
     \ r2))) {}\n\n  RuntimeLongMontgomeryModInt(const m64 &) = default;\n\n  u64 get()\
@@ -133,14 +134,14 @@ data:
     };\n\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::mod;\nRuntimeLongMontgomeryModInt::u64\
     \ RuntimeLongMontgomeryModInt::r;\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::r2;\n\
     \nusing RuntimeLongMontModInt = RuntimeLongMontgomeryModInt;\n\n} // namespace\
-    \ lib\n\n\n#line 17 \"math/modulo/sqrt_mod.hpp\"\n\nnamespace lib {\n\nnamespace\
+    \ lib\n\n\n#line 16 \"math/modulo/sqrt_mod.hpp\"\n\nnamespace lib {\n\nnamespace\
     \ internal {\n\ntemplate <typename mod_t> std::vector<mod_t> sqrt_mod_prime(const\
     \ mod_t x) {\n  const auto p = mod_t::get_mod();\n  const mod_t ONE(1), MINUS_ONE(-ONE),\
     \ ZERO(0);\n  if (x == ZERO) return {ZERO};\n  if (x.pow(p >> 1) == MINUS_ONE)\
-    \ return {};\n  if ((p & 3) == 3) {\n    mod_t res = x.pow(p + 1 >> 2);\n    return\
-    \ {res, -res};\n  }\n\n  static std::random_device rd;\n  static std::mt19937\
-    \ gen(rd());\n  static std::uniform_int_distribution<std::uint32_t> dis(2, p -\
-    \ 1);\n\n  const mod_t four(mod_t(4) * x);\n  mod_t t, w2;\n  do {\n    t = mod_t(dis(gen)),\
+    \ return {};\n  if ((p & 3) == 3) {\n    mod_t res = x.pow((p + 1) >> 2);\n  \
+    \  return {res, -res};\n  }\n\n  static std::random_device rd;\n  static std::mt19937\
+    \ gen(rd());\n  std::uniform_int_distribution<std::uint32_t> dis(2, p - 1);\n\n\
+    \  const mod_t four(mod_t(4) * x);\n  mod_t t, w2;\n  do {\n    t = mod_t(dis(gen)),\
     \ w2 = t * t - four;\n    if (w2 == ZERO) { // \u8DB3\u591F\u5E78\u8FD0\u65F6\n\
     \      t /= 2;\n      return {t, -t};\n    }\n  } while (w2.pow(p >> 1) != MINUS_ONE);\n\
     \n  mod_t a(ONE), b(ZERO), c(ZERO), d(ONE);\n\n  for (auto e = (p + 1) >> 1; e\
@@ -151,24 +152,26 @@ data:
     \n/**\n * @brief \u6A21\u5E73\u65B9\u6839\n * @param x [0, p-1] \u4E2D\u7684\u4E00\
     \u4E2A\u503C\n * @param p \u7D20\u6570\n * @return std::vector<T>\n */\ntemplate\
     \ <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>> sqrt_mod_prime(T\
-    \ x, T p) {\n  if (p == 2) return {x};\n  if (p < (3U << 30)) {\n    RuntimeMontgomeryModInt::set_mod(p);\n\
-    \    auto res = internal::sqrt_mod_prime(RuntimeMontgomeryModInt(x));\n    return\
-    \ std::vector<T>(res.begin(), res.end());\n  }\n  RuntimeLongMontgomeryModInt::set_mod(p);\n\
-    \  auto res = internal::sqrt_mod_prime(RuntimeLongMontgomeryModInt(x));\n  return\
-    \ std::vector<T>(res.begin(), res.end());\n}\n\n} // namespace lib\n\n\n#line\
-    \ 6 \"remote_test/yosupo/math/mod_sqrt.0.test.cpp\"\n\nint main() {\n#ifdef LOCAL\n\
-    \  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n\
+    \ x, T p) {\n  if (p == 2 || x == 0) return {x};\n  if (p < (3U << 30)) {\n  \
+    \  bool okay = RuntimeMontgomeryModInt::set_mod(p);\n    assert(okay);\n    auto\
+    \ res = internal::sqrt_mod_prime(RuntimeMontgomeryModInt(x));\n    return std::vector<T>(res.begin(),\
+    \ res.end());\n  }\n  bool okay = RuntimeLongMontgomeryModInt::set_mod(p);\n \
+    \ assert(okay);\n  auto res = internal::sqrt_mod_prime(RuntimeLongMontgomeryModInt(x));\n\
+    \  return std::vector<T>(res.begin(), res.end());\n}\n\n} // namespace lib\n\n\
+    \n#line 7 \"remote_test/yosupo/math/mod_sqrt.0.test.cpp\"\n\nint main() {\n#ifdef\
+    \ LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n\
     #endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n  int t;\n  std::cin\
     \ >> t;\n  while (t--) {\n    int k, p;\n    std::cin >> k >> p;\n    auto res\
     \ = lib::sqrt_mod_prime(k, p);\n    if (res.empty())\n      std::cout << \"-1\\\
     n\";\n    else\n      std::cout << res[0] << '\\n';\n  }\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/sqrt_mod\"\n\n#include\
-    \ <iostream>\n\n#include \"math/modulo/sqrt_mod.hpp\"\n\nint main() {\n#ifdef\
-    \ LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n\
-    #endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n  int t;\n  std::cin\
-    \ >> t;\n  while (t--) {\n    int k, p;\n    std::cin >> k >> p;\n    auto res\
-    \ = lib::sqrt_mod_prime(k, p);\n    if (res.empty())\n      std::cout << \"-1\\\
-    n\";\n    else\n      std::cout << res[0] << '\\n';\n  }\n  return 0;\n}"
+    \ <iostream>\n#include <vector>\n\n#include \"math/modulo/sqrt_mod.hpp\"\n\nint\
+    \ main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
+    \  int t;\n  std::cin >> t;\n  while (t--) {\n    int k, p;\n    std::cin >> k\
+    \ >> p;\n    auto res = lib::sqrt_mod_prime(k, p);\n    if (res.empty())\n   \
+    \   std::cout << \"-1\\n\";\n    else\n      std::cout << res[0] << '\\n';\n \
+    \ }\n  return 0;\n}"
   dependsOn:
   - math/modulo/sqrt_mod.hpp
   - modint/runtime_Montgomery_modint.hpp
@@ -176,8 +179,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-21 03:16:05+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2021-06-21 04:10:12+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/mod_sqrt.0.test.cpp
 layout: document
