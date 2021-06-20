@@ -17,17 +17,6 @@ data:
     - icon: ':heavy_check_mark:'
       path: datastructure/heap/priority_queue.hpp
       title: "priority queue / \u4F18\u5148\u961F\u5217"
-  - name: datastructure/tree
-    pages:
-    - icon: ':x:'
-      path: datastructure/tree/AVL_tree.hpp
-      title: "AVL tree / AVL \u6811"
-    - icon: ':question:'
-      path: datastructure/tree/binary_search_tree_base.hpp
-      title: "binary search tree base / \u4E8C\u53C9\u641C\u7D22\u6811\u57FA\u7C7B"
-    - icon: ':heavy_check_mark:'
-      path: datastructure/tree/treap.hpp
-      title: "treap / \u6811\u5806"
   - name: graph
     pages:
     - icon: ':heavy_check_mark:'
@@ -79,15 +68,19 @@ data:
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/radix_2_NTT.hpp
       title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
+  - name: math/matrix
+    pages:
+    - icon: ':warning:'
+      path: math/matrix/matrix_basic.hpp
+      title: "matrix basic / \u77E9\u9635\u57FA\u7840"
   - name: math/modulo
     pages:
     - icon: ':heavy_check_mark:'
       path: math/modulo/binomial_coefficient_mod.hpp
       title: "binomial coefficient mod / \u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
-    - icon: ':heavy_check_mark:'
-      path: math/modulo/sqrt_mod_Tonelli_Shanks.hpp
-      title: "square root mod Tonelli-Shanks / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\
-        \u6839 Tonelli-Shanks \u7B97\u6CD5"
+    - icon: ':x:'
+      path: math/modulo/sqrt_mod.hpp
+      title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
   - name: misc
     pages:
     - icon: ':warning:'
@@ -107,7 +100,11 @@ data:
     - icon: ':warning:'
       path: modint/long_Montgomery_modint.hpp
       title: "long Montgomery modint / \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B"
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
+      path: modint/runtime_Montgomery_modint.hpp
+      title: "runtime Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\
+        \u7C7B"
+    - icon: ':question:'
       path: modint/runtime_long_Montgomery_modint.hpp
       title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
         \ Montgomery \u53D6\u6A21\u7C7B"
@@ -159,12 +156,6 @@ data:
       path: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp
       title: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp
     - icon: ':heavy_check_mark:'
-      path: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
-      title: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
-    - icon: ':x:'
-      path: remote_test/yosupo/datastructure/predecessor_problem.1.test.cpp
-      title: remote_test/yosupo/datastructure/predecessor_problem.1.test.cpp
-    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/datastructure/union_find.0.test.cpp
       title: remote_test/yosupo/datastructure/union_find.0.test.cpp
   - name: remote_test/yosupo/graph
@@ -210,7 +201,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
       title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
       title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
   - name: remote_test/yosupo/string

@@ -1,28 +1,22 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
-    path: math/basic/binary_mul.hpp
-    title: "binary multiplication / \u5FEB\u901F\u4E58"
-  - icon: ':heavy_check_mark:'
-    path: math/basic/binary_pow.hpp
-    title: "binary power / \u5FEB\u901F\u5E42"
-  - icon: ':heavy_check_mark:'
-    path: math/basic/exgcd.hpp
-    title: "extended Euclidean algorithm / \u6269\u5C55\u6B27\u51E0\u91CC\u5F97\u7B97\
-      \u6CD5"
-  - icon: ':heavy_check_mark:'
-    path: math/modulo/sqrt_mod_Tonelli_Shanks.hpp
-    title: "square root mod Tonelli-Shanks / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839\
-      \ Tonelli-Shanks \u7B97\u6CD5"
-  - icon: ':heavy_check_mark:'
-    path: traits/base.hpp
-    title: "type traits / \u7C7B\u578B\u8403\u53D6"
+  - icon: ':x:'
+    path: math/modulo/sqrt_mod.hpp
+    title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
+  - icon: ':x:'
+    path: modint/runtime_Montgomery_modint.hpp
+    title: "runtime Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\
+      \u7C7B"
+  - icon: ':question:'
+    path: modint/runtime_long_Montgomery_modint.hpp
+    title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
+      \ Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/sqrt_mod
@@ -30,133 +24,160 @@ data:
     - https://judge.yosupo.jp/problem/sqrt_mod
   bundledCode: "#line 1 \"remote_test/yosupo/math/mod_sqrt.0.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.yosupo.jp/problem/sqrt_mod\"\n\n#include <iostream>\n\n#line\
-    \ 1 \"math/modulo/sqrt_mod_Tonelli_Shanks.hpp\"\n\n\n\n/**\n * @brief square root\
-    \ mod Tonelli-Shanks / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839 Tonelli-Shanks\
-    \ \u7B97\u6CD5\n *\n */\n\n#include <cassert>\n#include <optional>\n#include <random>\n\
-    \n#line 1 \"math/basic/binary_pow.hpp\"\n\n\n\n/**\n * @brief binary power / \u5FEB\
-    \u901F\u5E42\n *\n */\n\n#line 10 \"math/basic/binary_pow.hpp\"\n#include <type_traits>\n\
-    \n#line 1 \"traits/base.hpp\"\n\n\n\n/**\n * @brief type traits / \u7C7B\u578B\
-    \u8403\u53D6\n *\n */\n\n#include <cstdint>\n#line 11 \"traits/base.hpp\"\n\n\
-    namespace lib {\n\ntemplate <typename Type> struct promote_integral;\ntemplate\
-    \ <> struct promote_integral<std::int32_t> { using type = std::int64_t; };\ntemplate\
-    \ <> struct promote_integral<std::uint32_t> { using type = std::uint64_t; };\n\
-    \n// \u8F85\u52A9\u6A21\u677F\ntemplate <typename Type> using promote_integral_t\
-    \ = typename promote_integral<Type>::type;\n\ntemplate <typename T, typename U,\n\
-    \          bool = (sizeof(T) > sizeof(U) || (sizeof(T) == sizeof(U) && std::is_signed_v<T>))>\n\
-    struct longer_integral;\ntemplate <typename T, typename U> struct longer_integral<T,\
-    \ U, true> { using type = T; };\ntemplate <typename T, typename U> struct longer_integral<T,\
-    \ U, false> { using type = U; };\n\n// \u8F85\u52A9\u6A21\u677F\ntemplate <typename\
-    \ T, typename U> using longer_integral_t = typename longer_integral<T, U>::type;\n\
-    \n} // namespace lib\n\n\n#line 1 \"math/basic/binary_mul.hpp\"\n\n\n\n/**\n *\
-    \ @brief binary multiplication / \u5FEB\u901F\u4E58\n *\n */\n\n#line 10 \"math/basic/binary_mul.hpp\"\
-    \n\n#line 12 \"math/basic/binary_mul.hpp\"\n\nnamespace lib {\n\nnamespace internal\
-    \ {\n\ntemplate <typename T> std::enable_if_t<std::is_integral_v<T>, T> mul_mod(T\
-    \ x, T y, T mod) {\n  if ((x %= mod) < 0) x += mod;\n  if ((y %= mod) < 0) y +=\
-    \ mod;\n  if constexpr (sizeof(T) < 8) {\n    return static_cast<T>(static_cast<promote_integral_t<T>>(x)\
-    \ * y % mod);\n  } else {\n    T res = 0;\n    for (; y != 0; y >>= 1) {\n   \
-    \   if ((y & 1) && (res += x) >= mod) res -= mod;\n      if ((x <<= 1) >= mod)\
-    \ x -= mod;\n    }\n    return res;\n  }\n}\n\n} // namespace internal\n\ntemplate\
-    \ <typename T1, typename T2, typename T3,\n          typename T = longer_integral_t<longer_integral_t<T1,\
-    \ T2>, T3>>\nstd::enable_if_t<std::is_integral_v<T1> && std::is_integral_v<T2>\
-    \ && std::is_integral_v<T3>, T>\nmul_mod(T1 x, T2 y, T3 mod) {\n  if constexpr\
-    \ (std::is_signed_v<T1> || std::is_signed_v<T2>) {\n    return internal::mul_mod<std::make_signed_t<T>>(x,\
-    \ y, mod);\n  } else {\n    return internal::mul_mod<T>(x, y, mod);\n  }\n}\n\n\
-    } // namespace lib\n\n\n#line 14 \"math/basic/binary_pow.hpp\"\n\nnamespace lib\
-    \ {\n\ntemplate <typename T1, typename T2>\nstd::enable_if_t<std::is_integral_v<T1>\
-    \ && std::is_integral_v<T2>, T1> pow(T1 x, T2 y) {\n  assert(y >= 0);\n  T1 res\
-    \ = 1;\n  for (; y != 0; y >>= 1, x *= x)\n    if (y & 1) res *= x;\n  return\
-    \ res;\n}\n\ntemplate <typename T1, typename T2, typename T3>\nstd::enable_if_t<std::is_integral_v<T1>\
-    \ && std::is_integral_v<T2> && std::is_integral_v<T3>, T1>\npow_mod(T1 x, T2 y,\
-    \ T3 mod) {\n  assert(y >= 0);\n  T1 res = (mod != 1);\n  if constexpr (sizeof(T1)\
-    \ < 8) {\n    using S = promote_integral_t<T1>;\n    for (; y != 0; y >>= 1, x\
-    \ = static_cast<S>(x) * x % mod)\n      if (y & 1) res = static_cast<S>(res) *\
-    \ x % mod;\n  } else {\n    // \u4F7F\u5F97 T1 \u4E3A 64 \u4F4D\u6574\u578B\u65F6\
-    \u4E5F\u80FD\u5DE5\u4F5C\n    for (; y != 0; y >>= 1, x = mul_mod(x, x, mod))\n\
-    \      if (y & 1) res = mul_mod(res, x, mod);\n  }\n  return res;\n}\n\n} // namespace\
-    \ lib\n\n\n#line 1 \"math/basic/exgcd.hpp\"\n\n\n\n/**\n * @brief extended Euclidean\
-    \ algorithm / \u6269\u5C55\u6B27\u51E0\u91CC\u5F97\u7B97\u6CD5\n *\n */\n\n#line\
-    \ 10 \"math/basic/exgcd.hpp\"\n#include <tuple>\n#line 12 \"math/basic/exgcd.hpp\"\
-    \n\n#line 14 \"math/basic/exgcd.hpp\"\n\nnamespace lib {\n\nnamespace internal\
-    \ {\n\ntemplate <typename T> std::enable_if_t<std::is_integral_v<T>, T> gcd(T\
-    \ a, T b) {\n  while (b != 0) std::tie(a, b) = std::make_tuple(b, a % b);\n  return\
-    \ a;\n}\n\ntemplate <typename T, typename S = std::make_signed_t<T>>\nstd::enable_if_t<std::is_integral_v<T>,\
-    \ std::tuple<T, S, S>> exgcd(T a, T b) {\n  S a_p = a, b_p = b, x1 = 1, x2 = 0,\
-    \ x3 = 0, x4 = 1;\n  while (b_p != 0) {\n    S q = a_p / b_p;\n    std::tie(x1,\
-    \ x2, x3, x4, a_p, b_p) =\n        std::make_tuple(x3, x4, x1 - x3 * q, x2 - x4\
-    \ * q, b_p, a_p - b_p * q);\n  }\n  return std::make_tuple(static_cast<T>(a_p),\
-    \ x1, x2);\n}\n\ntemplate <typename T> std::enable_if_t<std::is_integral_v<T>,\
-    \ T> inv_mod(T x, T mod) {\n  using S = std::make_signed_t<T>;\n  S a = x, b =\
-    \ mod, x1 = 1, x3 = 0;\n  assert(a < b);\n  while (b != 0) {\n    S q = a / b;\n\
-    \    std::tie(x1, x3, a, b) = std::make_tuple(x3, x1 - x3 * q, b, a - b * q);\n\
-    \  }\n  assert(a == 1 && \"inv_mod_error\");\n  return static_cast<T>(x1 < 0 ?\
-    \ x1 + mod : x1);\n}\n\n} // namespace internal\n\ntemplate <typename T1, typename\
-    \ T2, typename T = longer_integral_t<T1, T2>>\nstd::enable_if_t<std::is_integral_v<T1>\
-    \ && std::is_integral_v<T2>, T> gcd(T1 a, T2 b) {\n  return internal::gcd<T>(a,\
-    \ b);\n}\n\ntemplate <typename T1, typename T2, typename T = longer_integral_t<T1,\
-    \ T2>,\n          typename S = std::make_signed_t<T>>\nstd::enable_if_t<std::is_integral_v<T1>\
-    \ && std::is_integral_v<T2>, std::tuple<T, S, S>>\nexgcd(T1 a, T2 b) {\n  return\
-    \ internal::exgcd<T, S>(a, b);\n}\n\ntemplate <typename T1, typename T2, typename\
-    \ T = longer_integral_t<T1, T2>>\nstd::enable_if_t<std::is_integral_v<T1> && std::is_integral_v<T2>,\
-    \ T> inv_mod(T1 x, T2 mod) {\n  return internal::inv_mod<T>(x, mod);\n}\n\n} //\
-    \ namespace lib\n\n\n#line 15 \"math/modulo/sqrt_mod_Tonelli_Shanks.hpp\"\n\n\
-    namespace lib {\n\n/**\n * @brief \u6A21\u5E73\u65B9\u6839\n * @tparam T\n * @param\
-    \ x [0, p-1] \u4E2D\u7684\u4E00\u4E2A\u503C\n * @param p \u7D20\u6570\n * @return\
-    \ std::optional<T> \u8FD4\u56DE\u8F83\u5C0F\u7684\u4E00\u4E2A\uFF0C\u82E5 x=0\
-    \ \u5219\u8FD4\u56DE 0 \uFF0C\u65E0\u89E3\u5219\u8FD4\u56DE\u7A7A\n */\ntemplate\
-    \ <typename T> std::optional<T> sqrt_mod_prime(T x, T p) {\n  if (p == 2 || x\
-    \ <= 1) return x;\n  if (pow_mod(x, p >> 1, p) != 1) return {}; // (p>>1)=(p-1)/2\
-    \ \u6B27\u62C9\u51C6\u5219\n  if ((p & 3) == 3) {\n    x = pow_mod(x, (p + 1)\
-    \ >> 2, p);\n    return x < p - x ? x : p - x;\n  }\n\n  T s = p - 1;\n  int r\
-    \ = 0;\n  while ((s & 1) == 0) {\n    ++r;\n    s >>= 1;\n  }\n\n  static std::random_device\
-    \ rd;\n  static std::mt19937_64 gen(rd());\n  std::uniform_int_distribution<T>\
-    \ dis(T(2), p - 1);\n\n  // \u82E5\u5E7F\u4E49\u9ECE\u66FC\u5047\u8BBE\u6210\u7ACB\
-    \uFF0C\u53EF\u4EE5\u4ECE 2 \u5F00\u59CB\u679A\u4E3E\uFF0C\u6700\u5C0F\u7684\u4E8C\
-    \u6B21\u975E\u5269\u4F59\u5927\u7EA6\u4E3A O(\\log^2 p) \u7EA7\u522B\n  // \u9A8C\
-    \u8BC1\u4E00\u6B21\u9700\u8981\u6D88\u8017 O(\\log p) \u65F6\u95F4\uFF0C\u90A3\
-    \u4E48\u65F6\u95F4\u590D\u6742\u5EA6\u8F83\u9AD8\uFF0C\u82E5\u7528\u968F\u673A\
-    \u65B9\u6CD5\u5219\u53EF\u8BC1\u660E\u671F\u671B 2 \u6B21\u627E\u5230\n\n  T v;\
-    \ // \u968F\u673A\u4E00\u4E2A\u4E8C\u6B21\u975E\u5269\u4F59\n  while (pow_mod(v\
-    \ = dis(gen), p >> 1, p) == 1) {\n  }\n\n  T w = pow_mod(v, s, p); // w = v^s\n\
-    \n  int t = 0;\n  T ix = pow_mod(x, p - 2, p);            // ix = x^{-1}\n  x\
-    \ = pow_mod(x, (s + 1) >> 1, p);        // x = x^{(s+1)/2}\n  T y = mul_mod(mul_mod(x,\
-    \ x, p), ix, p); // y = x^s\n  while (pow_mod(y, 1 << t, p) != 1) ++t; // 2^t\
-    \ = ord(x^s) \uFF0C\u8BA1\u7B97 t0\n  while (t != 0) {\n    x = mul_mod(x, pow_mod(w,\
-    \ 1 << (r - t - 1), p), p);\n    y = mul_mod(mul_mod(x, x, p), ix, p);\n    for\
-    \ (--t; t != 0 && pow_mod(y, 1 << (t - 1), p) == 1; --t) {\n    }\n  }\n  return\
-    \ x < p - x ? x : p - x;\n}\n\n/**\n * @brief Hensel lifting \u6C42\u6A21\u7D20\
-    \u6570\u5E42\u6B21\u7684\u5E73\u65B9\u6839\uFF0C\n * @tparam T\n * @param x [0,\
-    \ p^e-1] \u4E2D\u7684\u4E00\u4E2A\u503C\u4E14 x \u4E0D\u80FD\u6574\u9664\u6A21\
-    \u6570\n * @param p \u6A21\u6570\u4E0D\u80FD\u4E3A 2\n * @param e\n * @return\
-    \ std::optional<T>\n */\ntemplate <typename T> std::optional<T> sqrt_mod_prime_power(T\
-    \ x, T p, int e) {\n  if (x % p == 0 || (p & 1) == 0) return {};\n  auto a = sqrt_mod_prime(x\
-    \ % p, p);\n  if (!a) return {};\n  T pe = lib::pow(p, e);\n  T b = inv_mod(a.value(),\
-    \ pe);\n  T it = inv_mod(2, pe);\n  for (int i = 1; i < e; i <<= 1) {\n    b +=\
-    \ mul_mod(b, mul_mod(1 + pe - mul_mod(x, mul_mod(b, b, pe), pe), it, pe), pe);\n\
-    \    if (b >= pe) b -= pe;\n  }\n  return inv_mod(b, pe);\n}\n\n} // namespace\
-    \ lib\n\n\n#line 6 \"remote_test/yosupo/math/mod_sqrt.0.test.cpp\"\n\nint main()\
-    \ {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\"\
-    , \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
-    \  int t;\n  std::cin >> t;\n  while (t--) {\n    int k, p;\n    std::cin >> k\
-    \ >> p;\n    std::cout << lib::sqrt_mod_prime(k, p).value_or(-1) << '\\n';\n \
-    \ }\n  return 0;\n}\n"
+    \ 1 \"math/modulo/sqrt_mod.hpp\"\n\n\n\n/**\n * @brief square root mod / \u6A21\
+    \u610F\u4E49\u4E0B\u5E73\u65B9\u6839\n *\n */\n\n#include <cassert>\n#include\
+    \ <random>\n#include <tuple>\n#include <type_traits>\n#include <vector>\n\n#line\
+    \ 1 \"modint/runtime_Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief runtime Montgomery\
+    \ modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#include\
+    \ <cstdint>\n#line 12 \"modint/runtime_Montgomery_modint.hpp\"\n\nnamespace lib\
+    \ {\n\n/**\n * @brief \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\u7C7B\n * @ref\
+    \ https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n * @author\
+    \ Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\nclass RuntimeMontgomeryModInt\
+    \ {\npublic:\n  using i32 = std::int32_t;\n  using u32 = std::uint32_t;\n  using\
+    \ u64 = std::uint64_t;\n  using m32 = RuntimeMontgomeryModInt;\n\n  using value_type\
+    \ = u32;\n\n  static u32 get_mod() { return mod; }\n\n  static bool set_mod(u32\
+    \ m) {\n    if ((m & 1) == 0 || m == 1 || (m & (3U << 30)) != 0) return false;\n\
+    \    mod = m, mod2 = mod << 1;\n    u32 two = 2, iv = mod * (two - mod * mod);\n\
+    \    iv *= two - mod * iv;\n    iv *= two - mod * iv;\n    r = iv * (mod * iv\
+    \ - two);\n    r2 = -u64(mod) % mod;\n    return true;\n  }\n\n  RuntimeMontgomeryModInt()\
+    \ = default;\n  ~RuntimeMontgomeryModInt() = default;\n\n  template <typename\
+    \ T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  RuntimeMontgomeryModInt(T\
+    \ v) : v_(reduce(u64(v % i32(mod) + i32(mod)) * r2)) {}\n\n  RuntimeMontgomeryModInt(const\
+    \ m32 &) = default;\n\n  u32 get() const { return norm(reduce(v_)); }\n\n  template\
+    \ <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  explicit constexpr\
+    \ operator T() const {\n    return T(get());\n  }\n\n  m32 operator-() const {\n\
+    \    m32 res;\n    res.v_ = (mod2 & -(v_ != 0)) - v_;\n    return res;\n  }\n\n\
+    \  m32 inv() const {\n    i32 x1 = 1, x3 = 0, a = get(), b = mod;\n    while (b\
+    \ != 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3 = x1_old\
+    \ - x3 * q, a = b, b = a_old - b * q;\n    }\n    return m32(x1);\n  }\n\n  m32\
+    \ &operator+=(const m32 &rhs) {\n    v_ += rhs.v_ - mod2;\n    v_ += mod2 & -(v_\
+    \ >> 31);\n    return *this;\n  }\n  m32 &operator-=(const m32 &rhs) {\n    v_\
+    \ -= rhs.v_;\n    v_ += mod2 & -(v_ >> 31);\n    return *this;\n  }\n  m32 &operator*=(const\
+    \ m32 &rhs) {\n    v_ = reduce(u64(v_) * rhs.v_);\n    return *this;\n  }\n  m32\
+    \ &operator/=(const m32 &rhs) { return operator*=(rhs.inv()); }\n  friend m32\
+    \ operator+(const m32 &lhs, const m32 &rhs) { return m32(lhs) += rhs; }\n  friend\
+    \ m32 operator-(const m32 &lhs, const m32 &rhs) { return m32(lhs) -= rhs; }\n\
+    \  friend m32 operator*(const m32 &lhs, const m32 &rhs) { return m32(lhs) *= rhs;\
+    \ }\n  friend m32 operator/(const m32 &lhs, const m32 &rhs) { return m32(lhs)\
+    \ /= rhs; }\n  friend bool operator==(const m32 &lhs, const m32 &rhs) { return\
+    \ norm(lhs.v_) == norm(rhs.v_); }\n  friend bool operator!=(const m32 &lhs, const\
+    \ m32 &rhs) { return norm(lhs.v_) != norm(rhs.v_); }\n\n  friend std::istream\
+    \ &operator>>(std::istream &is, m32 &rhs) {\n    i32 x;\n    is >> x;\n    rhs\
+    \ = m32(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
+    \ &os, const m32 &rhs) { return os << rhs.get(); }\n\n  constexpr m32 pow(u64\
+    \ y) const {\n    m32 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n\
+    \      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static u32 reduce(u64\
+    \ x) { return (x + u64(u32(x) * r) * mod) >> 32; }\n  static u32 norm(u32 x) {\
+    \ return x - (mod & -((mod - 1 - x) >> 31)); }\n\n  u32 v_;\n\n  static u32 r,\
+    \ r2, mod, mod2;\n};\n\nRuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::r;\n\
+    RuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::r2;\nRuntimeMontgomeryModInt::u32\
+    \ RuntimeMontgomeryModInt::mod;\nRuntimeMontgomeryModInt::u32 RuntimeMontgomeryModInt::mod2;\n\
+    \n// \u522B\u540D\nusing RuntimeMontModInt = RuntimeMontgomeryModInt;\n\n} //\
+    \ namespace lib\n\n\n#line 1 \"modint/runtime_long_Montgomery_modint.hpp\"\n\n\
+    \n\n/**\n * @brief runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\
+    \u578B Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#line 14 \"modint/runtime_long_Montgomery_modint.hpp\"\
+    \n\n#ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n *\
+    \ @brief \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n\
+    \ * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n *\
+    \ @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
+    class RuntimeLongMontgomeryModInt {\npublic:\n  using u32 = std::uint32_t;\n \
+    \ using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\
+    \n  using value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static\
+    \ bool set_mod(u64 m) {\n    if ((m & 1) == 0 || m == 1 || (m & (1ULL << 63))\
+    \ != 0) return false;\n    mod = m;\n    r = get_r();\n    r2 = get_r2();\n  \
+    \  return true;\n  }\n\n  RuntimeLongMontgomeryModInt() = default;\n  ~RuntimeLongMontgomeryModInt()\
+    \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    \ int> = 0>\n  RuntimeLongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
+    \ r2))) {}\n\n  RuntimeLongMontgomeryModInt(const m64 &) = default;\n\n  u64 get()\
+    \ const { return reduce({0, v_}); }\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    \ int> = 0>\n  explicit operator T() const {\n    return T(get());\n  }\n\n  m64\
+    \ operator-() const {\n    m64 res;\n    res.v_ = (mod & -(v_ != 0)) - v_;\n \
+    \   return res;\n  }\n\n  m64 inv() const {\n    i64 x1 = 1, x3 = 0, a = get(),\
+    \ b = mod;\n    while (b != 0) {\n      i64 q = a / b, x1_old = x1, a_old = a;\n\
+    \      x1 = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;\n    }\n    return\
+    \ m64(x1);\n  }\n\n  m64 &operator+=(const m64 &rhs) {\n    v_ += rhs.v_ - mod;\n\
+    \    v_ += mod & -(v_ >> 63);\n    return *this;\n  }\n  m64 &operator-=(const\
+    \ m64 &rhs) {\n    v_ -= rhs.v_;\n    v_ += mod & -(v_ >> 63);\n    return *this;\n\
+    \  }\n  m64 &operator*=(const m64 &rhs) {\n    v_ = reduce(mul(v_, rhs.v_));\n\
+    \    return *this;\n  }\n  m64 &operator/=(const m64 &rhs) { return operator*=(rhs.inv());\
+    \ }\n  friend m64 operator+(const m64 &lhs, const m64 &rhs) { return m64(lhs)\
+    \ += rhs; }\n  friend m64 operator-(const m64 &lhs, const m64 &rhs) { return m64(lhs)\
+    \ -= rhs; }\n  friend m64 operator*(const m64 &lhs, const m64 &rhs) { return m64(lhs)\
+    \ *= rhs; }\n  friend m64 operator/(const m64 &lhs, const m64 &rhs) { return m64(lhs)\
+    \ /= rhs; }\n  friend bool operator==(const m64 &lhs, const m64 &rhs) { return\
+    \ lhs.v_ == rhs.v_; }\n  friend bool operator!=(const m64 &lhs, const m64 &rhs)\
+    \ { return lhs.v_ != rhs.v_; }\n\n  friend std::istream &operator>>(std::istream\
+    \ &is, m64 &rhs) {\n    i64 x;\n    is >> x;\n    rhs = m64(x);\n    return is;\n\
+    \  }\n  friend std::ostream &operator<<(std::ostream &os, const m64 &rhs) { return\
+    \ os << rhs.get(); }\n\n  m64 pow(u64 y) const {\n    m64 res(1), x(*this);\n\
+    \    for (; y != 0; y >>= 1, x *= x)\n      if (y & 1) res *= x;\n    return res;\n\
+    \  }\n\nprivate:\n  static std::pair<u64, u64> mul(u64 x, u64 y) {\n#ifdef __GNUC__\n\
+    \    unsigned __int128 res = (unsigned __int128)x * y;\n    return {u64(res >>\
+    \ 64), u64(res)};\n#elif defined(_MSC_VER)\n    u64 h, l = _umul128(x, y, &h);\n\
+    \    return {h, l};\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d =\
+    \ u32(y), ad = a * d, bc = b * c;\n    return {a * c + (ad >> 32) + (bc >> 32)\
+    \ +\n                (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32))\
+    \ >> 32),\n            x * y};\n#endif\n  }\n\n  static u64 mulh(u64 x, u64 y)\
+    \ {\n#ifdef __GNUC__\n    return u64((unsigned __int128)x * y >> 64);\n#elif defined(_MSC_VER)\n\
+    \    return __umulh(x, y);\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32,\
+    \ d = u32(y), ad = a * d, bc = b * c;\n    return a * c + (ad >> 32) + (bc >>\
+    \ 32) +\n           (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32))\
+    \ >> 32);\n#endif\n  }\n\n  static u64 get_r() {\n    u64 two = 2, iv = mod *\
+    \ (two - mod * mod);\n    iv *= two - mod * iv;\n    iv *= two - mod * iv;\n \
+    \   iv *= two - mod * iv;\n    return iv * (two - mod * iv);\n  }\n\n  static\
+    \ u64 get_r2() {\n    u64 iv = -u64(mod) % mod;\n    for (int i = 0; i != 64;\
+    \ ++i)\n      if ((iv <<= 1) >= mod) iv -= mod;\n    return iv;\n  }\n\n  static\
+    \ u64 reduce(const std::pair<u64, u64> &x) {\n    u64 res = x.first - mulh(x.second\
+    \ * r, mod);\n    return res + (mod & -(res >> 63));\n  }\n\n  static u64 norm(i64\
+    \ x) { return x + (mod & -(x < 0)); }\n\n  u64 v_;\n\n  static u64 mod, r, r2;\n\
+    };\n\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::mod;\nRuntimeLongMontgomeryModInt::u64\
+    \ RuntimeLongMontgomeryModInt::r;\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::r2;\n\
+    \nusing RuntimeLongMontModInt = RuntimeLongMontgomeryModInt;\n\n} // namespace\
+    \ lib\n\n\n#line 17 \"math/modulo/sqrt_mod.hpp\"\n\nnamespace lib {\n\nnamespace\
+    \ internal {\n\ntemplate <typename mod_t> std::vector<mod_t> sqrt_mod_prime(mod_t\
+    \ x) {\n  if (x == 0) return {mod_t(0)};\n  const mod_t ONE(1), MINUS_ONE(-1);\n\
+    \  auto p = mod_t::get_mod();\n  if (x.pow(p >> 1) == MINUS_ONE) return {};\n\
+    \  if ((p & 3) == 3) {\n    mod_t res = x.pow((p + 1) >> 2);\n    return {res,\
+    \ -res};\n  }\n\n  static std::random_device rd;\n  static std::mt19937 gen(rd());\n\
+    \  std::uniform_int_distribution<decltype(p)> dis(2, p - 1);\n\n  mod_t t;\n \
+    \ do {\n    t = dis(gen); // t^2-4x \u4E3A\u4E8C\u6B21\u975E\u5269\u4F59\u5373\
+    \ f(x)=x^2-tx+a \u4E0D\u53EF\u7EA6\n  } while ((t * t - 4 * x).pow(p >> 1) ==\
+    \ ONE);\n\n  mod_t a(ONE), b(0), c(0), d(ONE); // F_p[x]/f(x) \u4E2D\u8BA1\u7B97\
+    \ x^{(p+1)/2} \u4E3A\u89E3\n  const mod_t TWO(2);\n  for (auto e = (p + 1) >>\
+    \ 1; e != 0; e >>= 1) {\n    if (e & 1) {\n      mod_t bd = b * d;\n      std::tie(a,\
+    \ b) = std::make_tuple(a * c - bd * x, a * d + b * c + t * bd);\n    }\n    mod_t\
+    \ d_2 = d * d;\n    std::tie(c, d) = std::make_tuple(c * c - d_2 * x, d_2 * t\
+    \ + TWO * c * d);\n  }\n  return {a, -a};\n}\n\n} // namespace internal\n\n/**\n\
+    \ * @brief \u6A21\u5E73\u65B9\u6839\n * @param x [0, p-1] \u4E2D\u7684\u4E00\u4E2A\
+    \u503C\n * @param p \u5947\u7D20\u6570\n * @return std::vector<T>\n */\ntemplate\
+    \ <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>> sqrt_mod_prime(T\
+    \ x, T p) {\n  if (p < (3U << 30)) {\n    RuntimeMontgomeryModInt::set_mod(p);\n\
+    \    auto res = internal::sqrt_mod_prime(RuntimeMontgomeryModInt(x));\n    return\
+    \ std::vector<T>(res.begin(), res.end());\n  }\n  RuntimeLongMontgomeryModInt::set_mod(p);\n\
+    \  auto res = internal::sqrt_mod_prime(RuntimeLongMontgomeryModInt(x));\n  return\
+    \ std::vector<T>(res.begin(), res.end());\n}\n\n} // namespace lib\n\n\n#line\
+    \ 6 \"remote_test/yosupo/math/mod_sqrt.0.test.cpp\"\n\nint main() {\n#ifdef LOCAL\n\
+    \  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n\
+    #endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n  int t;\n  std::cin\
+    \ >> t;\n  while (t--) {\n    int k, p;\n    std::cin >> k >> p;\n    auto res\
+    \ = lib::sqrt_mod_prime(k, p);\n    if (res.empty())\n      std::cout << \"-1\\\
+    n\";\n    else\n      std::cout << res[0] << '\\n';\n  }\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/sqrt_mod\"\n\n#include\
-    \ <iostream>\n\n#include \"math/modulo/sqrt_mod_Tonelli_Shanks.hpp\"\n\nint main()\
-    \ {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\"\
-    , \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
-    \  int t;\n  std::cin >> t;\n  while (t--) {\n    int k, p;\n    std::cin >> k\
-    \ >> p;\n    std::cout << lib::sqrt_mod_prime(k, p).value_or(-1) << '\\n';\n \
-    \ }\n  return 0;\n}"
+    \ <iostream>\n\n#include \"math/modulo/sqrt_mod.hpp\"\n\nint main() {\n#ifdef\
+    \ LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n\
+    #endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n  int t;\n  std::cin\
+    \ >> t;\n  while (t--) {\n    int k, p;\n    std::cin >> k >> p;\n    auto res\
+    \ = lib::sqrt_mod_prime(k, p);\n    if (res.empty())\n      std::cout << \"-1\\\
+    n\";\n    else\n      std::cout << res[0] << '\\n';\n  }\n  return 0;\n}"
   dependsOn:
-  - math/modulo/sqrt_mod_Tonelli_Shanks.hpp
-  - math/basic/binary_pow.hpp
-  - traits/base.hpp
-  - math/basic/binary_mul.hpp
-  - math/basic/exgcd.hpp
+  - math/modulo/sqrt_mod.hpp
+  - modint/runtime_Montgomery_modint.hpp
+  - modint/runtime_long_Montgomery_modint.hpp
   isVerificationFile: true
   path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-17 19:06:03+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2021-06-21 01:45:03+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/mod_sqrt.0.test.cpp
 layout: document
