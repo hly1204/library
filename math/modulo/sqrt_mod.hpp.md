@@ -130,24 +130,24 @@ data:
     \ RuntimeLongMontgomeryModInt::r;\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::r2;\n\
     \nusing RuntimeLongMontModInt = RuntimeLongMontgomeryModInt;\n\n} // namespace\
     \ lib\n\n\n#line 17 \"math/modulo/sqrt_mod.hpp\"\n\nnamespace lib {\n\nnamespace\
-    \ internal {\n\ntemplate <typename mod_t> std::vector<mod_t> sqrt_mod_prime(mod_t\
-    \ x) {\n  if (x == 0) return {mod_t(0)};\n  const mod_t ONE(1), MINUS_ONE(-1);\n\
-    \  auto p = mod_t::get_mod();\n  if (x.pow(p >> 1) == MINUS_ONE) return {};\n\
-    \  if ((p & 3) == 3) {\n    mod_t res = x.pow((p + 1) >> 2);\n    return {res,\
-    \ -res};\n  }\n\n  static std::random_device rd;\n  static std::mt19937 gen(rd());\n\
-    \  std::uniform_int_distribution<decltype(p)> dis(2, p - 1);\n\n  mod_t t;\n \
-    \ do {\n    t = dis(gen); // t^2-4x \u4E3A\u4E8C\u6B21\u975E\u5269\u4F59\u5373\
-    \ f(x)=x^2-tx+a \u4E0D\u53EF\u7EA6\n  } while ((t * t - 4 * x).pow(p >> 1) ==\
-    \ ONE);\n\n  mod_t a(ONE), b(0), c(0), d(ONE); // F_p[x]/f(x) \u4E2D\u8BA1\u7B97\
-    \ x^{(p+1)/2} \u4E3A\u89E3\n  const mod_t TWO(2);\n  for (auto e = (p + 1) >>\
-    \ 1; e != 0; e >>= 1) {\n    if (e & 1) {\n      mod_t bd = b * d;\n      std::tie(a,\
-    \ b) = std::make_tuple(a * c - bd * x, a * d + b * c + t * bd);\n    }\n    mod_t\
-    \ d_2 = d * d;\n    std::tie(c, d) = std::make_tuple(c * c - d_2 * x, d_2 * t\
-    \ + TWO * c * d);\n  }\n  return {a, -a};\n}\n\n} // namespace internal\n\n/**\n\
-    \ * @brief \u6A21\u5E73\u65B9\u6839\n * @param x [0, p-1] \u4E2D\u7684\u4E00\u4E2A\
-    \u503C\n * @param p \u5947\u7D20\u6570\n * @return std::vector<T>\n */\ntemplate\
-    \ <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>> sqrt_mod_prime(T\
-    \ x, T p) {\n  if (p < (3U << 30)) {\n    RuntimeMontgomeryModInt::set_mod(p);\n\
+    \ internal {\n\ntemplate <typename mod_t> std::vector<mod_t> sqrt_mod_prime(const\
+    \ mod_t x) {\n  const auto p = mod_t::get_mod();\n  const mod_t ONE(1), MINUS_ONE(-ONE),\
+    \ ZERO(0);\n  if (x == ZERO) return {ZERO};\n  if (x.pow(p >> 1) == MINUS_ONE)\
+    \ return {};\n  if ((p & 3) == 3) {\n    mod_t res = x.pow(p + 1 >> 2);\n    return\
+    \ {res, -res};\n  }\n\n  static std::random_device rd;\n  static std::mt19937\
+    \ gen(rd());\n  static std::uniform_int_distribution<std::uint32_t> dis(2, p -\
+    \ 1);\n\n  const mod_t four(mod_t(4) * x);\n  mod_t t, w2;\n  do {\n    t = mod_t(dis(gen)),\
+    \ w2 = t * t - four;\n    if (w2 == ZERO) { // \u8DB3\u591F\u5E78\u8FD0\u65F6\n\
+    \      t /= 2;\n      return {t, -t};\n    }\n  } while (w2.pow(p >> 1) != MINUS_ONE);\n\
+    \n  mod_t a(ONE), b(ZERO), c(ZERO), d(ONE);\n\n  for (auto e = (p + 1) >> 1; e\
+    \ != 0; e >>= 1) {\n    if (e & 1) {\n      mod_t bd = b * d;\n      std::tie(a,\
+    \ b) = std::make_pair(a * c - bd * x, a * d + b * c + bd * t);\n    }\n    mod_t\
+    \ dd = d * d, cd = c * d;\n    std::tie(c, d) = std::make_pair(c * c - dd * x,\
+    \ cd + cd + dd * t);\n  }\n\n  return {a, -a};\n}\n\n} // namespace internal\n\
+    \n/**\n * @brief \u6A21\u5E73\u65B9\u6839\n * @param x [0, p-1] \u4E2D\u7684\u4E00\
+    \u4E2A\u503C\n * @param p \u5947\u7D20\u6570\n * @return std::vector<T>\n */\n\
+    template <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>>\
+    \ sqrt_mod_prime(T x, T p) {\n  if (p < (3U << 30)) {\n    RuntimeMontgomeryModInt::set_mod(p);\n\
     \    auto res = internal::sqrt_mod_prime(RuntimeMontgomeryModInt(x));\n    return\
     \ std::vector<T>(res.begin(), res.end());\n  }\n  RuntimeLongMontgomeryModInt::set_mod(p);\n\
     \  auto res = internal::sqrt_mod_prime(RuntimeLongMontgomeryModInt(x));\n  return\
@@ -157,23 +157,23 @@ data:
     \ <cassert>\n#include <random>\n#include <tuple>\n#include <type_traits>\n#include\
     \ <vector>\n\n#include \"modint/runtime_Montgomery_modint.hpp\"\n#include \"modint/runtime_long_Montgomery_modint.hpp\"\
     \n\nnamespace lib {\n\nnamespace internal {\n\ntemplate <typename mod_t> std::vector<mod_t>\
-    \ sqrt_mod_prime(mod_t x) {\n  if (x == 0) return {mod_t(0)};\n  const mod_t ONE(1),\
-    \ MINUS_ONE(-1);\n  auto p = mod_t::get_mod();\n  if (x.pow(p >> 1) == MINUS_ONE)\
-    \ return {};\n  if ((p & 3) == 3) {\n    mod_t res = x.pow((p + 1) >> 2);\n  \
-    \  return {res, -res};\n  }\n\n  static std::random_device rd;\n  static std::mt19937\
-    \ gen(rd());\n  std::uniform_int_distribution<decltype(p)> dis(2, p - 1);\n\n\
-    \  mod_t t;\n  do {\n    t = dis(gen); // t^2-4x \u4E3A\u4E8C\u6B21\u975E\u5269\
-    \u4F59\u5373 f(x)=x^2-tx+a \u4E0D\u53EF\u7EA6\n  } while ((t * t - 4 * x).pow(p\
-    \ >> 1) == ONE);\n\n  mod_t a(ONE), b(0), c(0), d(ONE); // F_p[x]/f(x) \u4E2D\u8BA1\
-    \u7B97 x^{(p+1)/2} \u4E3A\u89E3\n  const mod_t TWO(2);\n  for (auto e = (p + 1)\
-    \ >> 1; e != 0; e >>= 1) {\n    if (e & 1) {\n      mod_t bd = b * d;\n      std::tie(a,\
-    \ b) = std::make_tuple(a * c - bd * x, a * d + b * c + t * bd);\n    }\n    mod_t\
-    \ d_2 = d * d;\n    std::tie(c, d) = std::make_tuple(c * c - d_2 * x, d_2 * t\
-    \ + TWO * c * d);\n  }\n  return {a, -a};\n}\n\n} // namespace internal\n\n/**\n\
-    \ * @brief \u6A21\u5E73\u65B9\u6839\n * @param x [0, p-1] \u4E2D\u7684\u4E00\u4E2A\
-    \u503C\n * @param p \u5947\u7D20\u6570\n * @return std::vector<T>\n */\ntemplate\
-    \ <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>> sqrt_mod_prime(T\
-    \ x, T p) {\n  if (p < (3U << 30)) {\n    RuntimeMontgomeryModInt::set_mod(p);\n\
+    \ sqrt_mod_prime(const mod_t x) {\n  const auto p = mod_t::get_mod();\n  const\
+    \ mod_t ONE(1), MINUS_ONE(-ONE), ZERO(0);\n  if (x == ZERO) return {ZERO};\n \
+    \ if (x.pow(p >> 1) == MINUS_ONE) return {};\n  if ((p & 3) == 3) {\n    mod_t\
+    \ res = x.pow(p + 1 >> 2);\n    return {res, -res};\n  }\n\n  static std::random_device\
+    \ rd;\n  static std::mt19937 gen(rd());\n  static std::uniform_int_distribution<std::uint32_t>\
+    \ dis(2, p - 1);\n\n  const mod_t four(mod_t(4) * x);\n  mod_t t, w2;\n  do {\n\
+    \    t = mod_t(dis(gen)), w2 = t * t - four;\n    if (w2 == ZERO) { // \u8DB3\u591F\
+    \u5E78\u8FD0\u65F6\n      t /= 2;\n      return {t, -t};\n    }\n  } while (w2.pow(p\
+    \ >> 1) != MINUS_ONE);\n\n  mod_t a(ONE), b(ZERO), c(ZERO), d(ONE);\n\n  for (auto\
+    \ e = (p + 1) >> 1; e != 0; e >>= 1) {\n    if (e & 1) {\n      mod_t bd = b *\
+    \ d;\n      std::tie(a, b) = std::make_pair(a * c - bd * x, a * d + b * c + bd\
+    \ * t);\n    }\n    mod_t dd = d * d, cd = c * d;\n    std::tie(c, d) = std::make_pair(c\
+    \ * c - dd * x, cd + cd + dd * t);\n  }\n\n  return {a, -a};\n}\n\n} // namespace\
+    \ internal\n\n/**\n * @brief \u6A21\u5E73\u65B9\u6839\n * @param x [0, p-1] \u4E2D\
+    \u7684\u4E00\u4E2A\u503C\n * @param p \u5947\u7D20\u6570\n * @return std::vector<T>\n\
+    \ */\ntemplate <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>>\
+    \ sqrt_mod_prime(T x, T p) {\n  if (p < (3U << 30)) {\n    RuntimeMontgomeryModInt::set_mod(p);\n\
     \    auto res = internal::sqrt_mod_prime(RuntimeMontgomeryModInt(x));\n    return\
     \ std::vector<T>(res.begin(), res.end());\n  }\n  RuntimeLongMontgomeryModInt::set_mod(p);\n\
     \  auto res = internal::sqrt_mod_prime(RuntimeLongMontgomeryModInt(x));\n  return\
@@ -184,7 +184,7 @@ data:
   isVerificationFile: false
   path: math/modulo/sqrt_mod.hpp
   requiredBy: []
-  timestamp: '2021-06-21 01:47:06+08:00'
+  timestamp: '2021-06-21 03:06:17+08:00'
   verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp
