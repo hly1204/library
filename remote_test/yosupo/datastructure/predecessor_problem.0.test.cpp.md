@@ -100,76 +100,76 @@ data:
     \u5BF9\u5E94 size\n        --(r->size);\n        r = r->left;\n      }\n     \
     \ if (r->parent == x) { // \u53F3\u5B50\u6811\u6700\u5C0F\u8282\u70B9\u5C31\u662F\
     \ x \u7684\u53F3\u5B69\u5B50\n        x->right = nullptr;\n      } else {\n  \
-    \      r->parent->left = nullptr;\n      }\n      r->parent = x->parent;\n   \
-    \   (r->left = x->left)->parent = r;\n      if (x->right != nullptr) (r->right\
-    \ = x->right)->parent = r;\n      r->size = x->size;\n      if (x->parent != nullptr)\
-    \ {\n        if (x == x->parent->left) {\n          x->parent->left = r;\n   \
-    \     } else {\n          x->parent->right = r;\n        }\n      } else {\n \
-    \       root_ = r;\n      }\n    }\n    x->left = x->right = nullptr;\n    delete\
-    \ x;\n  }\n\nprotected:\n  mutable node_ptr_type root_;\n  Comp cmp_;\n\n  /**\n\
-    \   * @brief \u63D2\u5165\u8282\u70B9\u8F85\u52A9\u51FD\u6570\n   * @note \u4F7F\
-    \u7528\u8BE5\u51FD\u6570\u53EF\u4EE5\u51CF\u5C11\u7EE7\u627F\u540E override \u7684\
-    \u51FD\u6570\n   * @param x \u5F85\u63D2\u5165\u8282\u70B9\n   * @param p \u5F85\
-    \u63D2\u5165\u8282\u70B9\u7684\u53CC\u4EB2\u8282\u70B9\n   * @param dir \u82E5\
-    \ dir=0 \u5219 x \u6210\u4E3A p \u7684\u5DE6\u5B69\u5B50\uFF0C\u5426\u5219\u6210\
-    \u4E3A\u53F3\u5B69\u5B50\n   */\n  virtual void insert_at_node(node_ptr_type x,\
-    \ node_ptr_type p, int dir) {\n    if (p == nullptr) {\n      root_ = x;\n   \
-    \ } else {\n      if (dir == 0) {\n        p->left = x;\n      } else {\n    \
-    \    p->right = x;\n      }\n      x->parent = p;\n    }\n  }\n\n  virtual node_ptr_type\
-    \ find_node(const value_type &v) const {\n    node_ptr_type x = root_;\n    while\
-    \ (x != nullptr) {\n      if (cmp_(x->data, v)) {\n        x = x->right;\n   \
-    \   } else if (cmp_(v, x->data)) {\n        x = x->left;\n      } else {\n   \
-    \     return x;\n      }\n    }\n    return x;\n  }\n\n  virtual node_ptr_type\
-    \ select_node(int k) const {\n    if (k < 0 || k >= size()) return {};\n    node_ptr_type\
-    \ x = root_;\n    while (get_size(x->left) != k) {\n      if (get_size(x->left)\
-    \ < k) {\n        k -= get_size(x->left) + 1;\n        x = x->right;\n      }\
-    \ else {\n        x = x->left;\n      }\n    }\n    return x;\n  }\n\n  virtual\
-    \ void insert_at_value(node_ptr_type x) {\n    node_ptr_type p = nullptr, y =\
-    \ root_;\n    int dir = -1;\n    while (y != nullptr) {\n      p = y;\n      ++(y->size);\n\
-    \      if (cmp_(x->data, y->data)) {\n        y = y->left;\n        dir = 0;\n\
-    \      } else {\n        y = y->right;\n        dir = 1;\n      }\n    }\n   \
-    \ insert_at_node(x, p, dir);\n  }\n\n  /**\n   * @brief \u5728\u6392\u540D k \u7684\
-    \u5143\u7D20\u524D\u63D2\u5165\u4E00\u4E2A\u5143\u7D20\n   * @note \u6392\u540D\
-    \u4ECE 0 \u5F00\u59CB\n   * @param x\n   */\n  virtual void insert_at_rank(node_ptr_type\
-    \ x, int k) {\n    assert(k >= 0);\n    assert(k < size());\n    node_ptr_type\
-    \ p = nullptr, y = root_;\n    int dir = -1;\n    while (y != nullptr) {\n   \
-    \   p = y;\n      ++(y->size);\n      if (k <= get_size(y->left)) {\n        y\
-    \ = y->left;\n        dir = 0;\n      } else {\n        y = y->right;\n      \
-    \  k -= get_size(y->left) + 1;\n        dir = 1;\n      }\n    }\n    insert_at_node(x,\
-    \ p, dir);\n  }\n\n  static int get_size(const_node_ptr_type x) { return x ==\
-    \ nullptr ? 0 : x->size; }\n\n  virtual void rotate_left(node_ptr_type x) const\
-    \ {\n    assert(x != nullptr);\n    assert(x->right != nullptr);\n    node_ptr_type\
-    \ r = x->right, rl = r->left;\n    int rs = r->size;\n    r->size = x->size;\n\
-    \    x->size -= rs;\n    if ((x->right = rl) != nullptr) (rl->parent = x)->size\
-    \ += rl->size;\n    if ((r->parent = x->parent) != nullptr) {\n      if (x->parent->left\
-    \ == x) {\n        x->parent->left = r;\n      } else {\n        x->parent->right\
-    \ = r;\n      }\n    } else {\n      root_ = r;\n    }\n    (r->left = x)->parent\
-    \ = r;\n  }\n  virtual void rotate_right(node_ptr_type x) const {\n    assert(x\
-    \ != nullptr);\n    assert(x->left != nullptr);\n    node_ptr_type l = x->left,\
-    \ lr = l->right;\n    int ls = l->size;\n    l->size = x->size;\n    x->size -=\
-    \ ls;\n    if ((x->left = lr) != nullptr) (lr->parent = x)->size += lr->size;\n\
-    \    if ((l->parent = x->parent) != nullptr) {\n      if (x->parent->left == x)\
-    \ {\n        x->parent->left = l;\n      } else {\n        x->parent->right =\
-    \ l;\n      }\n    } else {\n      root_ = l;\n    }\n    (l->right = x)->parent\
-    \ = l;\n  }\n};\n\n} // namespace lib\n\n\n#line 13 \"datastructure/tree/treap.hpp\"\
-    \n\nnamespace lib {\n\n/**\n * @brief treap \u8282\u70B9\u7C7B\n */\nstruct TreapNode\
-    \ {\npublic:\n  TreapNode() : priority(get_rand()) {}\n  ~TreapNode() = default;\n\
-    \  int priority;\n  static int get_rand() {\n    static std::random_device rd;\n\
-    \    static std::mt19937_64 gen(rd());\n    static std::uniform_int_distribution<int>\
-    \ dis(0, 1919810);\n    return dis(gen);\n  }\n};\n\n/**\n * @brief treap\n */\n\
-    template <typename DataType, typename Comp = std::less<>>\nclass Treap final :\
-    \ public BSTType1<BSTNodeType1<DataType, TreapNode>, Comp> {\npublic:\n  using\
-    \ base = BSTType1<BSTNodeType1<DataType, TreapNode>, Comp>;\n  using base::base;\n\
-    \  using value_type = typename base::value_type;\n  using node_ptr_type = typename\
-    \ base::node_ptr_type;\n  using const_node_ptr_type = typename base::const_node_ptr_type;\n\
-    \n  static int get_priority(const_node_ptr_type x) { return x == nullptr ? -1\
-    \ : x->priority; }\n  void insert_at_node(node_ptr_type x, node_ptr_type p, int\
-    \ dir) override {\n    base::insert_at_node(x, p, dir);\n    int xp = x->priority;\n\
-    \    while (x->parent != nullptr && x->parent->priority < xp)\n      x == x->parent->left\
-    \ ? base::rotate_right(x->parent) : base::rotate_left(x->parent);\n  }\n  void\
-    \ delete_at_node(node_ptr_type x) override {\n    while (x->left != x->right)\n\
-    \      get_priority(x->left) < get_priority(x->right) ? base::rotate_left(x) :\
-    \ base::rotate_right(x);\n    for (node_ptr_type y = x->parent; y != nullptr;\
+    \      if ((r->parent->left = r->right) != nullptr) r->right->parent = r->parent;\n\
+    \      }\n      r->parent = x->parent;\n      (r->left = x->left)->parent = r;\n\
+    \      if (x->right != nullptr) (r->right = x->right)->parent = r;\n      r->size\
+    \ = x->size;\n      if (x->parent != nullptr) {\n        if (x == x->parent->left)\
+    \ {\n          x->parent->left = r;\n        } else {\n          x->parent->right\
+    \ = r;\n        }\n      } else {\n        root_ = r;\n      }\n    }\n    x->left\
+    \ = x->right = nullptr;\n    delete x;\n  }\n\nprotected:\n  mutable node_ptr_type\
+    \ root_;\n  Comp cmp_;\n\n  /**\n   * @brief \u63D2\u5165\u8282\u70B9\u8F85\u52A9\
+    \u51FD\u6570\n   * @note \u4F7F\u7528\u8BE5\u51FD\u6570\u53EF\u4EE5\u51CF\u5C11\
+    \u7EE7\u627F\u540E override \u7684\u51FD\u6570\n   * @param x \u5F85\u63D2\u5165\
+    \u8282\u70B9\n   * @param p \u5F85\u63D2\u5165\u8282\u70B9\u7684\u53CC\u4EB2\u8282\
+    \u70B9\n   * @param dir \u82E5 dir=0 \u5219 x \u6210\u4E3A p \u7684\u5DE6\u5B69\
+    \u5B50\uFF0C\u5426\u5219\u6210\u4E3A\u53F3\u5B69\u5B50\n   */\n  virtual void\
+    \ insert_at_node(node_ptr_type x, node_ptr_type p, int dir) {\n    if (p == nullptr)\
+    \ {\n      root_ = x;\n    } else {\n      if (dir == 0) {\n        p->left =\
+    \ x;\n      } else {\n        p->right = x;\n      }\n      x->parent = p;\n \
+    \   }\n  }\n\n  virtual node_ptr_type find_node(const value_type &v) const {\n\
+    \    node_ptr_type x = root_;\n    while (x != nullptr) {\n      if (cmp_(x->data,\
+    \ v)) {\n        x = x->right;\n      } else if (cmp_(v, x->data)) {\n       \
+    \ x = x->left;\n      } else {\n        return x;\n      }\n    }\n    return\
+    \ x;\n  }\n\n  virtual node_ptr_type select_node(int k) const {\n    if (k < 0\
+    \ || k >= size()) return {};\n    node_ptr_type x = root_;\n    while (get_size(x->left)\
+    \ != k) {\n      if (get_size(x->left) < k) {\n        k -= get_size(x->left)\
+    \ + 1;\n        x = x->right;\n      } else {\n        x = x->left;\n      }\n\
+    \    }\n    return x;\n  }\n\n  virtual void insert_at_value(node_ptr_type x)\
+    \ {\n    node_ptr_type p = nullptr, y = root_;\n    int dir = -1;\n    while (y\
+    \ != nullptr) {\n      p = y;\n      ++(y->size);\n      if (cmp_(x->data, y->data))\
+    \ {\n        y = y->left;\n        dir = 0;\n      } else {\n        y = y->right;\n\
+    \        dir = 1;\n      }\n    }\n    insert_at_node(x, p, dir);\n  }\n\n  /**\n\
+    \   * @brief \u5728\u6392\u540D k \u7684\u5143\u7D20\u524D\u63D2\u5165\u4E00\u4E2A\
+    \u5143\u7D20\n   * @note \u6392\u540D\u4ECE 0 \u5F00\u59CB\n   * @param x\n  \
+    \ */\n  virtual void insert_at_rank(node_ptr_type x, int k) {\n    assert(k >=\
+    \ 0);\n    assert(k < size());\n    node_ptr_type p = nullptr, y = root_;\n  \
+    \  int dir = -1;\n    while (y != nullptr) {\n      p = y;\n      ++(y->size);\n\
+    \      if (k <= get_size(y->left)) {\n        y = y->left;\n        dir = 0;\n\
+    \      } else {\n        y = y->right;\n        k -= get_size(y->left) + 1;\n\
+    \        dir = 1;\n      }\n    }\n    insert_at_node(x, p, dir);\n  }\n\n  static\
+    \ int get_size(const_node_ptr_type x) { return x == nullptr ? 0 : x->size; }\n\
+    \n  virtual void rotate_left(node_ptr_type x) const {\n    assert(x != nullptr);\n\
+    \    assert(x->right != nullptr);\n    node_ptr_type r = x->right, rl = r->left;\n\
+    \    int rs = r->size;\n    r->size = x->size;\n    x->size -= rs;\n    if ((x->right\
+    \ = rl) != nullptr) (rl->parent = x)->size += rl->size;\n    if ((r->parent =\
+    \ x->parent) != nullptr) {\n      if (x->parent->left == x) {\n        x->parent->left\
+    \ = r;\n      } else {\n        x->parent->right = r;\n      }\n    } else {\n\
+    \      root_ = r;\n    }\n    (r->left = x)->parent = r;\n  }\n  virtual void\
+    \ rotate_right(node_ptr_type x) const {\n    assert(x != nullptr);\n    assert(x->left\
+    \ != nullptr);\n    node_ptr_type l = x->left, lr = l->right;\n    int ls = l->size;\n\
+    \    l->size = x->size;\n    x->size -= ls;\n    if ((x->left = lr) != nullptr)\
+    \ (lr->parent = x)->size += lr->size;\n    if ((l->parent = x->parent) != nullptr)\
+    \ {\n      if (x->parent->left == x) {\n        x->parent->left = l;\n      }\
+    \ else {\n        x->parent->right = l;\n      }\n    } else {\n      root_ =\
+    \ l;\n    }\n    (l->right = x)->parent = l;\n  }\n};\n\n} // namespace lib\n\n\
+    \n#line 13 \"datastructure/tree/treap.hpp\"\n\nnamespace lib {\n\n/**\n * @brief\
+    \ treap \u8282\u70B9\u7C7B\n */\nstruct TreapNode {\npublic:\n  TreapNode() :\
+    \ priority(get_rand()) {}\n  ~TreapNode() = default;\n  int priority;\n  static\
+    \ int get_rand() {\n    static std::random_device rd;\n    static std::mt19937_64\
+    \ gen(rd());\n    static std::uniform_int_distribution<int> dis(0, 1919810);\n\
+    \    return dis(gen);\n  }\n};\n\n/**\n * @brief treap\n */\ntemplate <typename\
+    \ DataType, typename Comp = std::less<>>\nclass Treap final : public BSTType1<BSTNodeType1<DataType,\
+    \ TreapNode>, Comp> {\npublic:\n  using base = BSTType1<BSTNodeType1<DataType,\
+    \ TreapNode>, Comp>;\n  using base::base;\n  using value_type = typename base::value_type;\n\
+    \  using node_ptr_type = typename base::node_ptr_type;\n  using const_node_ptr_type\
+    \ = typename base::const_node_ptr_type;\n\n  static int get_priority(const_node_ptr_type\
+    \ x) { return x == nullptr ? -1 : x->priority; }\n  void insert_at_node(node_ptr_type\
+    \ x, node_ptr_type p, int dir) override {\n    base::insert_at_node(x, p, dir);\n\
+    \    int xp = x->priority;\n    while (x->parent != nullptr && x->parent->priority\
+    \ < xp)\n      x == x->parent->left ? base::rotate_right(x->parent) : base::rotate_left(x->parent);\n\
+    \  }\n  void delete_at_node(node_ptr_type x) override {\n    while (x->left !=\
+    \ x->right)\n      get_priority(x->left) < get_priority(x->right) ? base::rotate_left(x)\
+    \ : base::rotate_right(x);\n    for (node_ptr_type y = x->parent; y != nullptr;\
     \ y = y->parent) --(y->size);\n    if (x->parent == nullptr) {\n      this->root_\
     \ = nullptr;\n    } else {\n      if (x->parent->left == x) {\n        x->parent->left\
     \ = nullptr;\n      } else {\n        x->parent->right = nullptr;\n      }\n \
@@ -202,7 +202,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-20 13:23:41+08:00'
+  timestamp: '2021-06-20 14:36:14+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/datastructure/predecessor_problem.0.test.cpp
