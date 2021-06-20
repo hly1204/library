@@ -145,9 +145,9 @@ data:
     \ dd = d * d, cd = c * d;\n    std::tie(c, d) = std::make_pair(c * c - dd * x,\
     \ cd + cd + dd * t);\n  }\n\n  return {a, -a};\n}\n\n} // namespace internal\n\
     \n/**\n * @brief \u6A21\u5E73\u65B9\u6839\n * @param x [0, p-1] \u4E2D\u7684\u4E00\
-    \u4E2A\u503C\n * @param p \u5947\u7D20\u6570\n * @return std::vector<T>\n */\n\
-    template <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>>\
-    \ sqrt_mod_prime(T x, T p) {\n  if (p < (3U << 30)) {\n    RuntimeMontgomeryModInt::set_mod(p);\n\
+    \u4E2A\u503C\n * @param p \u7D20\u6570\n * @return std::vector<T>\n */\ntemplate\
+    \ <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>> sqrt_mod_prime(T\
+    \ x, T p) {\n  if (p == 2) return {x};\n  if (p < (3U << 30)) {\n    RuntimeMontgomeryModInt::set_mod(p);\n\
     \    auto res = internal::sqrt_mod_prime(RuntimeMontgomeryModInt(x));\n    return\
     \ std::vector<T>(res.begin(), res.end());\n  }\n  RuntimeLongMontgomeryModInt::set_mod(p);\n\
     \  auto res = internal::sqrt_mod_prime(RuntimeLongMontgomeryModInt(x));\n  return\
@@ -171,11 +171,11 @@ data:
     \ * t);\n    }\n    mod_t dd = d * d, cd = c * d;\n    std::tie(c, d) = std::make_pair(c\
     \ * c - dd * x, cd + cd + dd * t);\n  }\n\n  return {a, -a};\n}\n\n} // namespace\
     \ internal\n\n/**\n * @brief \u6A21\u5E73\u65B9\u6839\n * @param x [0, p-1] \u4E2D\
-    \u7684\u4E00\u4E2A\u503C\n * @param p \u5947\u7D20\u6570\n * @return std::vector<T>\n\
+    \u7684\u4E00\u4E2A\u503C\n * @param p \u7D20\u6570\n * @return std::vector<T>\n\
     \ */\ntemplate <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>>\
-    \ sqrt_mod_prime(T x, T p) {\n  if (p < (3U << 30)) {\n    RuntimeMontgomeryModInt::set_mod(p);\n\
-    \    auto res = internal::sqrt_mod_prime(RuntimeMontgomeryModInt(x));\n    return\
-    \ std::vector<T>(res.begin(), res.end());\n  }\n  RuntimeLongMontgomeryModInt::set_mod(p);\n\
+    \ sqrt_mod_prime(T x, T p) {\n  if (p == 2) return {x};\n  if (p < (3U << 30))\
+    \ {\n    RuntimeMontgomeryModInt::set_mod(p);\n    auto res = internal::sqrt_mod_prime(RuntimeMontgomeryModInt(x));\n\
+    \    return std::vector<T>(res.begin(), res.end());\n  }\n  RuntimeLongMontgomeryModInt::set_mod(p);\n\
     \  auto res = internal::sqrt_mod_prime(RuntimeLongMontgomeryModInt(x));\n  return\
     \ std::vector<T>(res.begin(), res.end());\n}\n\n} // namespace lib\n\n#endif"
   dependsOn:
@@ -184,7 +184,7 @@ data:
   isVerificationFile: false
   path: math/modulo/sqrt_mod.hpp
   requiredBy: []
-  timestamp: '2021-06-21 03:06:17+08:00'
+  timestamp: '2021-06-21 03:16:05+08:00'
   verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp

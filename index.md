@@ -94,7 +94,7 @@ data:
       title: "pseudo random generator / \u4F2A\u968F\u673A\u6570\u751F\u6210\u5668"
   - name: modint
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint/Montgomery_modint.hpp
       title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
     - icon: ':warning:'
