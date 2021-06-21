@@ -16,6 +16,9 @@ data:
     path: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
   - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/inverse_matrix.0.test.cpp
+    title: remote_test/yosupo/math/inverse_matrix.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -154,6 +157,7 @@ data:
   timestamp: '2021-06-11 23:09:55+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - remote_test/yosupo/math/inverse_matrix.0.test.cpp
   - remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
   - remote_test/yosupo/math/matrix_product.0.test.cpp
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp

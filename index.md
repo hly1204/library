@@ -190,6 +190,9 @@ data:
       path: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
       title: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
     - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/inverse_matrix.0.test.cpp
+      title: remote_test/yosupo/math/inverse_matrix.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
       title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     - icon: ':heavy_check_mark:'
