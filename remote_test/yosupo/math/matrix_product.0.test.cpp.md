@@ -63,39 +63,58 @@ data:
     \u5143\n   * @note \u4F7F\u7528 Gauss-Jordan \u6D88\u5143\uFF0C\u6709\u9664\u6CD5\
     \uFF0C\u6240\u4EE5\u5143\u7D20\u9700\u8981\u5C5E\u4E8E\u57DF\n   * @return Matrix\n\
     \   */\n  Matrix inv() const {\n    int n = row();\n    assert(col() == n);\n\
-    \    Matrix extmat(n, n << 1, Type(0)), res(n, n);\n    for (int i = 0; i < n;\
-    \ ++i) std::copy(row_begin(i), row_end(i), extmat.row_begin(i));\n    for (int\
-    \ i = 0; i < n; ++i) extmat.at(i, i + n) = Type(1);\n    /*\n      [ x x x x |\
-    \ 1 0 0 0 ] => [ 1 0 0 0 | x x x x ]\n      [ x x x x | 0 1 0 0 ] => [ 0 1 0 0\
-    \ | x x x x ]\n      [ x x x x | 0 0 1 0 ] => [ 0 0 1 0 | x x x x ]\n      [ x\
-    \ x x x | 0 0 0 1 ] => [ 0 0 0 1 | x x x x ]\n    */\n    // \u5148\u5C06\u5DE6\
-    \u8FB9\u77E9\u9635\u6D88\u5143\u4E3A\u4E0A\u4E09\u89D2\u77E9\u9635\u4E14\u4E3B\
-    \u5BF9\u89D2\u7EBF\u4E3A 1 \u518D\u4E0B\u9762\u5F80\u4E0A\u5C06\u8BE5\u77E9\u9635\
-    \u6D88\u4E3A diag(1,1,1 ...)\n    {\n      for (int i = 0; i < n; ++i) {     \
-    \  // \u7B2C\u4E00\u9636\u6BB5\n        if (extmat.at(i, i) == Type(0)) { // \u9009\
-    \u4E3B\u5143\n          int pivot = i + 1;\n          for (; pivot < n; ++pivot)\n\
-    \            if (extmat.at(pivot, i) != Type(0)) break;\n          if (pivot ==\
-    \ n) return Matrix(0, 0); // \u4E0D\u5B58\u5728\u9006\u77E9\u9635\n          std::swap_ranges(extmat.row_begin(i)\
-    \ + i, extmat.row_end(i),\n                           extmat.row_begin(pivot)\
-    \ + i); // \u4EA4\u6362\u884C\n        }\n        if (extmat.at(i, i) != Type(1))\
-    \ {\n          Type iv = Type(1) / extmat.at(i, i);\n          std::for_each(extmat.row_begin(i)\
-    \ + i, extmat.row_end(i), [iv](Type &a) { a *= iv; });\n        }\n        for\
-    \ (int j = i + 1; j < n; ++j) {\n          Type p = extmat.at(j, i);\n       \
-    \   if (p == Type(0)) continue;\n          extmat.at(j, i) = Type(0);\n      \
-    \    for (int k = i + 1; k < (n << 1); ++k) extmat.at(j, k) -= p * extmat.at(i,\
-    \ k);\n        }\n      }\n      for (int i = n - 2; i >= 0; --i) { // \u7B2C\u4E8C\
-    \u9636\u6BB5\n        for (int j = i; j >= 0; --j) {\n          Type p = extmat.at(j,\
-    \ i + 1);\n          if (p == Type(0)) continue;\n          // \u8FD9\u91CC\u76F4\
-    \u63A5\u4ECE n \u5F00\u59CB\u679A\u4E3E\u5373\u53EF\uFF0C\u800C\u975E i + 2 \uFF0C\
-    \u56E0\u4E3A i + 2 \u5230 n - 1 \u90FD\u4E3A\u96F6\u4E86\n          for (int k\
-    \ = n; k < (n << 1); ++k) extmat.at(j, k) -= p * extmat.at(i + 1, k);\n      \
-    \  }\n      }\n    }\n    for (int i = 0; i < n; ++i)\n      std::copy(extmat.row_begin(i)\
-    \ + n, extmat.row_end(i), res.row_begin(i));\n    return res;\n  }\n\n  Type det()\
-    \ const;\n  int rank() const;\n\nprivate:\n  int row_, col_;\n  Container mat_;\n\
-    };\n\n} // namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n\
-    /**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n\
-    #include <cstdint>\n#line 11 \"modint/Montgomery_modint.hpp\"\n#include <type_traits>\n\
-    \nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \    Matrix aug(n, n << 1, Type(0)), res(n, n); // aug \u5373 augmented matrix\
+    \ \u589E\u5E7F\u77E9\u9635\n    for (int i = 0; i < n; ++i) std::copy(row_begin(i),\
+    \ row_end(i), aug.row_begin(i));\n    for (int i = 0; i < n; ++i) aug.at(i, i\
+    \ + n) = Type(1);\n    /*\n      [ x x x x | 1 0 0 0 ] => [ 1 0 0 0 | x x x x\
+    \ ]\n      [ x x x x | 0 1 0 0 ] => [ 0 1 0 0 | x x x x ]\n      [ x x x x | 0\
+    \ 0 1 0 ] => [ 0 0 1 0 | x x x x ]\n      [ x x x x | 0 0 0 1 ] => [ 0 0 0 1 |\
+    \ x x x x ]\n    */\n    // \u5148\u5C06\u5DE6\u8FB9\u77E9\u9635\u6D88\u5143\u4E3A\
+    \u4E0A\u4E09\u89D2\u77E9\u9635\u4E14\u4E3B\u5BF9\u89D2\u7EBF\u4E3A 1 \u518D\u4E0B\
+    \u9762\u5F80\u4E0A\u5C06\u8BE5\u77E9\u9635\u6D88\u4E3A diag(1,1,1 ...)\n    {\n\
+    \      for (int i = 0; i < n; ++i) {    // \u7B2C\u4E00\u9636\u6BB5\n        if\
+    \ (aug.at(i, i) == Type(0)) { // \u9009\u4E3B\u5143\n          int pivot = i +\
+    \ 1;\n          for (; pivot < n; ++pivot)\n            if (aug.at(pivot, i) !=\
+    \ Type(0)) break;\n          if (pivot == n) return Matrix(0, 0); // \u4E0D\u5B58\
+    \u5728\u9006\u77E9\u9635\n          std::swap_ranges(aug.row_begin(i) + i, aug.row_end(i),\n\
+    \                           aug.row_begin(pivot) + i); // \u4EA4\u6362\u884C\n\
+    \        }\n        if (aug.at(i, i) != Type(1)) {\n          Type iv = Type(1)\
+    \ / aug.at(i, i);\n          std::for_each(aug.row_begin(i) + i, aug.row_end(i),\
+    \ [iv](Type &a) { a *= iv; });\n        }\n        for (int j = i + 1; j < n;\
+    \ ++j) {\n          Type p = aug.at(j, i);\n          if (p == Type(0)) continue;\n\
+    \          aug.at(j, i) = Type(0);\n          for (int k = i + 1; k < (n << 1);\
+    \ ++k) aug.at(j, k) -= p * aug.at(i, k);\n        }\n      }\n      for (int i\
+    \ = n - 2; i >= 0; --i) { // \u7B2C\u4E8C\u9636\u6BB5\n        for (int j = i;\
+    \ j >= 0; --j) {\n          Type p = aug.at(j, i + 1);\n          if (p == Type(0))\
+    \ continue;\n          // \u8FD9\u91CC\u76F4\u63A5\u4ECE n \u5F00\u59CB\u679A\u4E3E\
+    \u5373\u53EF\uFF0C\u800C\u975E i + 2 \uFF0C\u56E0\u4E3A i + 2 \u5230 n - 1 \u90FD\
+    \u4E3A\u96F6\u4E86\n          for (int k = n; k < (n << 1); ++k) aug.at(j, k)\
+    \ -= p * aug.at(i + 1, k);\n        }\n      }\n    }\n    for (int i = 0; i <\
+    \ n; ++i) std::copy(aug.row_begin(i) + n, aug.row_end(i), res.row_begin(i));\n\
+    \    return res;\n  }\n\n  /**\n   * @brief \u65B9\u9635\u7684\u884C\u5217\u5F0F\
+    \n   * @note \u4F7F\u7528 Gauss \u6D88\u5143\uFF0C\u6709\u9664\u6CD5\uFF0C\u6240\
+    \u4EE5\u5143\u7D20\u9700\u8981\u5C5E\u4E8E\u57DF\n   * @return Type\n   */\n \
+    \ Type det() const {\n    int n = row();\n    assert(col() == n);\n    Matrix\
+    \ m(*this);\n    bool odd = false;\n    // \u5BF9\u77E9\u9635 m \u7528 Gauss \u6D88\
+    \u5143\u6210\u4E0A\u4E09\u89D2\u77E9\u9635\uFF0C\u5176\u5BF9\u89D2\u7EBF\u5143\
+    \u7D20\u7684\u79EF\u5373\u89E3\n    Type res(1); // 0x0 \u77E9\u9635\u7684\u884C\
+    \u5217\u5F0F\u4E5F\u4E3A 1\n    {\n      for (int i = 0; i < n; ++i) {\n     \
+    \   if (m.at(i, i) == Type(0)) { // \u9009\u4E3B\u5143\n          int pivot =\
+    \ i + 1;\n          for (; pivot < n; ++pivot)\n            if (m.at(pivot, i)\
+    \ != Type(0)) break;\n          if (pivot == n) return Type(0); // \u884C\u5217\
+    \u5F0F\u4E3A 0\n          std::swap_ranges(m.row_begin(i) + i, m.row_end(i), m.row_begin(pivot)\
+    \ + i);\n          odd = !odd;\n        }\n        res *= m.at(i, i);\n      \
+    \  Type iv = Type(1) / m.at(i, i);\n        for (int j = i + 1; j < n; ++j) {\n\
+    \          Type p = m.at(j, i) * iv;\n          m.at(j, i) = Type(0);\n      \
+    \    for (int k = i + 1; k < n; ++k) m.at(j, k) -= p * m.at(i, k);\n        }\n\
+    \      }\n    }\n    return odd ? -res : res;\n  }\n\n  /**\n   * @brief \u77E9\
+    \u9635\u7684\u79E9\n   * @note \u6B64\u65F6\u4E0D\u9700\u8981\u4E3A\u65B9\u9635\
+    \n   * @return int\n   */\n  int rank() const;\n\nprivate:\n  int row_, col_;\n\
+    \  Container mat_;\n};\n\n} // namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\
+    \n\n\n\n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n *\n\
+    \ */\n\n#include <cstdint>\n#line 11 \"modint/Montgomery_modint.hpp\"\n#include\
+    \ <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\
+    \n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
@@ -165,7 +184,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/matrix_product.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-22 08:44:24+08:00'
+  timestamp: '2021-06-22 22:57:27+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/matrix_product.0.test.cpp

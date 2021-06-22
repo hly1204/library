@@ -205,6 +205,9 @@ data:
       path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
       title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/matrix_det.0.test.cpp
+      title: remote_test/yosupo/math/matrix_det.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/matrix_product.0.test.cpp
       title: remote_test/yosupo/math/matrix_product.0.test.cpp
     - icon: ':heavy_check_mark:'

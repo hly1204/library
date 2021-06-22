@@ -14,11 +14,11 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/inverse_matrix
+    PROBLEM: https://judge.yosupo.jp/problem/matrix_det
     links:
-    - https://judge.yosupo.jp/problem/inverse_matrix
-  bundledCode: "#line 1 \"remote_test/yosupo/math/inverse_matrix.0.test.cpp\"\n#define\
-    \ PROBLEM \"https://judge.yosupo.jp/problem/inverse_matrix\"\n\n#include <iostream>\n\
+    - https://judge.yosupo.jp/problem/matrix_det
+  bundledCode: "#line 1 \"remote_test/yosupo/math/matrix_det.0.test.cpp\"\n#define\
+    \ PROBLEM \"https://judge.yosupo.jp/problem/matrix_det\"\n\n#include <iostream>\n\
     \n#line 1 \"math/matrix/matrix_basic.hpp\"\n\n\n\n/**\n * @brief matrix basic\
     \ / \u77E9\u9635\u57FA\u7840\n *\n */\n\n#include <algorithm>\n#include <cassert>\n\
     #line 12 \"math/matrix/matrix_basic.hpp\"\n#include <vector>\n\nnamespace lib\
@@ -165,32 +165,30 @@ data:
     \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
     \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
     \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n\n#line 7 \"remote_test/yosupo/math/inverse_matrix.0.test.cpp\"\
+    \ // namespace lib\n\n\n#line 7 \"remote_test/yosupo/math/matrix_det.0.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n;\n  std::cin >> n;\n  lib::Matrix<lib::MontModInt<998244353>> m(n, n);\n\
-    \  std::cin >> m;\n  auto iv = m.inv();\n  if (iv.is_empty())\n    std::cout <<\
-    \ \"-1\";\n  else\n    std::cout << iv;\n  return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inverse_matrix\"\n\n#include\
+    \  std::cin >> m;\n  std::cout << m.det();\n  return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/matrix_det\"\n\n#include\
     \ <iostream>\n\n#include \"math/matrix/matrix_basic.hpp\"\n#include \"modint/Montgomery_modint.hpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n;\n  std::cin >> n;\n  lib::Matrix<lib::MontModInt<998244353>> m(n, n);\n\
-    \  std::cin >> m;\n  auto iv = m.inv();\n  if (iv.is_empty())\n    std::cout <<\
-    \ \"-1\";\n  else\n    std::cout << iv;\n  return 0;\n}"
+    \  std::cin >> m;\n  std::cout << m.det();\n  return 0;\n}"
   dependsOn:
   - math/matrix/matrix_basic.hpp
   - modint/Montgomery_modint.hpp
   isVerificationFile: true
-  path: remote_test/yosupo/math/inverse_matrix.0.test.cpp
+  path: remote_test/yosupo/math/matrix_det.0.test.cpp
   requiredBy: []
   timestamp: '2021-06-22 22:57:27+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: remote_test/yosupo/math/inverse_matrix.0.test.cpp
+documentation_of: remote_test/yosupo/math/matrix_det.0.test.cpp
 layout: document
 redirect_from:
-- /verify/remote_test/yosupo/math/inverse_matrix.0.test.cpp
-- /verify/remote_test/yosupo/math/inverse_matrix.0.test.cpp.html
-title: remote_test/yosupo/math/inverse_matrix.0.test.cpp
+- /verify/remote_test/yosupo/math/matrix_det.0.test.cpp
+- /verify/remote_test/yosupo/math/matrix_det.0.test.cpp.html
+title: remote_test/yosupo/math/matrix_det.0.test.cpp
 ---
