@@ -81,12 +81,14 @@ data:
     \    for (int k = i + 1; k < (n << 1); ++k) extmat.at(j, k) -= p * extmat.at(i,\
     \ k);\n        }\n      }\n      for (int i = n - 2; i >= 0; --i) { // \u7B2C\u4E8C\
     \u9636\u6BB5\n        for (int j = i; j >= 0; --j) {\n          Type p = extmat.at(j,\
-    \ i + 1);\n          if (p == Type(0)) continue;\n          extmat.at(j, i + 1)\
-    \ = Type(0);\n          for (int k = i + 2; k < (n << 1); ++k) extmat.at(j, k)\
-    \ -= p * extmat.at(i + 1, k);\n        }\n      }\n    }\n    for (int i = 0;\
-    \ i < n; ++i)\n      std::copy(extmat.row_begin(i) + n, extmat.row_end(i), res.row_begin(i));\n\
-    \    return res;\n  }\n\n  Type det() const;\n  int rank() const;\n\nprivate:\n\
-    \  int row_, col_;\n  Container mat_;\n};\n\n} // namespace lib\n\n\n"
+    \ i + 1);\n          if (p == Type(0)) continue;\n          // \u8FD9\u91CC\u76F4\
+    \u63A5\u4ECE n \u5F00\u59CB\u679A\u4E3E\u5373\u53EF\uFF0C\u800C\u975E i + 2 \uFF0C\
+    \u56E0\u4E3A i + 2 \u5230 n - 1 \u90FD\u4E3A\u96F6\u4E86\n          for (int k\
+    \ = n; k < (n << 1); ++k) extmat.at(j, k) -= p * extmat.at(i + 1, k);\n      \
+    \  }\n      }\n    }\n    for (int i = 0; i < n; ++i)\n      std::copy(extmat.row_begin(i)\
+    \ + n, extmat.row_end(i), res.row_begin(i));\n    return res;\n  }\n\n  Type det()\
+    \ const;\n  int rank() const;\n\nprivate:\n  int row_, col_;\n  Container mat_;\n\
+    };\n\n} // namespace lib\n\n\n"
   code: "#ifndef MATRIX_BASIC_HEADER_HPP\n#define MATRIX_BASIC_HEADER_HPP\n\n/**\n\
     \ * @brief matrix basic / \u77E9\u9635\u57FA\u7840\n *\n */\n\n#include <algorithm>\n\
     #include <cassert>\n#include <iostream>\n#include <vector>\n\nnamespace lib {\n\
@@ -153,17 +155,19 @@ data:
     \    for (int k = i + 1; k < (n << 1); ++k) extmat.at(j, k) -= p * extmat.at(i,\
     \ k);\n        }\n      }\n      for (int i = n - 2; i >= 0; --i) { // \u7B2C\u4E8C\
     \u9636\u6BB5\n        for (int j = i; j >= 0; --j) {\n          Type p = extmat.at(j,\
-    \ i + 1);\n          if (p == Type(0)) continue;\n          extmat.at(j, i + 1)\
-    \ = Type(0);\n          for (int k = i + 2; k < (n << 1); ++k) extmat.at(j, k)\
-    \ -= p * extmat.at(i + 1, k);\n        }\n      }\n    }\n    for (int i = 0;\
-    \ i < n; ++i)\n      std::copy(extmat.row_begin(i) + n, extmat.row_end(i), res.row_begin(i));\n\
-    \    return res;\n  }\n\n  Type det() const;\n  int rank() const;\n\nprivate:\n\
-    \  int row_, col_;\n  Container mat_;\n};\n\n} // namespace lib\n\n#endif"
+    \ i + 1);\n          if (p == Type(0)) continue;\n          // \u8FD9\u91CC\u76F4\
+    \u63A5\u4ECE n \u5F00\u59CB\u679A\u4E3E\u5373\u53EF\uFF0C\u800C\u975E i + 2 \uFF0C\
+    \u56E0\u4E3A i + 2 \u5230 n - 1 \u90FD\u4E3A\u96F6\u4E86\n          for (int k\
+    \ = n; k < (n << 1); ++k) extmat.at(j, k) -= p * extmat.at(i + 1, k);\n      \
+    \  }\n      }\n    }\n    for (int i = 0; i < n; ++i)\n      std::copy(extmat.row_begin(i)\
+    \ + n, extmat.row_end(i), res.row_begin(i));\n    return res;\n  }\n\n  Type det()\
+    \ const;\n  int rank() const;\n\nprivate:\n  int row_, col_;\n  Container mat_;\n\
+    };\n\n} // namespace lib\n\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: math/matrix/matrix_basic.hpp
   requiredBy: []
-  timestamp: '2021-06-22 07:36:50+08:00'
+  timestamp: '2021-06-22 08:44:24+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/inverse_matrix.0.test.cpp

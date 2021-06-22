@@ -85,16 +85,17 @@ data:
     \    for (int k = i + 1; k < (n << 1); ++k) extmat.at(j, k) -= p * extmat.at(i,\
     \ k);\n        }\n      }\n      for (int i = n - 2; i >= 0; --i) { // \u7B2C\u4E8C\
     \u9636\u6BB5\n        for (int j = i; j >= 0; --j) {\n          Type p = extmat.at(j,\
-    \ i + 1);\n          if (p == Type(0)) continue;\n          extmat.at(j, i + 1)\
-    \ = Type(0);\n          for (int k = i + 2; k < (n << 1); ++k) extmat.at(j, k)\
-    \ -= p * extmat.at(i + 1, k);\n        }\n      }\n    }\n    for (int i = 0;\
-    \ i < n; ++i)\n      std::copy(extmat.row_begin(i) + n, extmat.row_end(i), res.row_begin(i));\n\
-    \    return res;\n  }\n\n  Type det() const;\n  int rank() const;\n\nprivate:\n\
-    \  int row_, col_;\n  Container mat_;\n};\n\n} // namespace lib\n\n\n#line 1 \"\
-    modint/Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief Montgomery modint / Montgomery\
-    \ \u53D6\u6A21\u7C7B\n *\n */\n\n#include <cstdint>\n#line 11 \"modint/Montgomery_modint.hpp\"\
-    \n#include <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\
-    \u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \ i + 1);\n          if (p == Type(0)) continue;\n          // \u8FD9\u91CC\u76F4\
+    \u63A5\u4ECE n \u5F00\u59CB\u679A\u4E3E\u5373\u53EF\uFF0C\u800C\u975E i + 2 \uFF0C\
+    \u56E0\u4E3A i + 2 \u5230 n - 1 \u90FD\u4E3A\u96F6\u4E86\n          for (int k\
+    \ = n; k < (n << 1); ++k) extmat.at(j, k) -= p * extmat.at(i + 1, k);\n      \
+    \  }\n      }\n    }\n    for (int i = 0; i < n; ++i)\n      std::copy(extmat.row_begin(i)\
+    \ + n, extmat.row_end(i), res.row_begin(i));\n    return res;\n  }\n\n  Type det()\
+    \ const;\n  int rank() const;\n\nprivate:\n  int row_, col_;\n  Container mat_;\n\
+    };\n\n} // namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n\
+    /**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n\
+    #include <cstdint>\n#line 11 \"modint/Montgomery_modint.hpp\"\n#include <type_traits>\n\
+    \nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
@@ -164,7 +165,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/matrix_product.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-22 07:36:50+08:00'
+  timestamp: '2021-06-22 08:44:24+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/matrix_product.0.test.cpp
