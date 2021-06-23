@@ -66,13 +66,13 @@ data:
     \ \u540E\u7F00\u6570\u7EC4\n */\ntemplate <typename Container> std::vector<int>\
     \ get_sa(const Container &s) {\n  std::vector<int> s_cpy(s.size() + 1);\n  std::copy(s.begin(),\
     \ s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy,\
-    \ s_cpy.size()));\n  SA.erase(SA.begin());\n  return SA;\n}\n\n/**\n * @brief\
-    \ \u83B7\u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\u7684\u7279\u5316\
-    \n * @note \u5BB9\u5668\u4E3A std::string \u65F6\u7279\u5316\uFF01\n * @param\
-    \ s \u5B57\u7B26\u4E32\n * @return std::vector<int>\n */\ntemplate <> std::vector<int>\
-    \ get_sa<std::string>(const std::string &s) {\n  std::vector<int> s_cpy(s.size()\
-    \ + 1);\n  std::copy(s.begin(), s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n\
-    \  std::vector<int> SA(internal::SA_IS(s_cpy, 128));\n  SA.erase(SA.begin());\n\
+    \ *std::max_element(s.begin(), s.end()) + 1));\n  SA.erase(SA.begin());\n  return\
+    \ SA;\n}\n\n/**\n * @brief \u83B7\u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed\
+    \ \uFF09\u7684\u7279\u5316\n * @note \u5BB9\u5668\u4E3A std::string \u65F6\u7279\
+    \u5316\uFF01\n * @param s \u5B57\u7B26\u4E32\n * @return std::vector<int>\n */\n\
+    template <> std::vector<int> get_sa<std::string>(const std::string &s) {\n  std::vector<int>\
+    \ s_cpy(s.size() + 1);\n  std::copy(s.begin(), s.end(), s_cpy.begin());\n  s_cpy.back()\
+    \ = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy, 128));\n  SA.erase(SA.begin());\n\
     \  return SA;\n}\n\n/**\n * @brief \u83B7\u53D6 LCP \u6570\u7EC4\n * @ref https://cp-algorithms.com/string/suffix-array.html\n\
     \ * @param s \u5B57\u7B26\u4E32\n * @param SA \u8BA1\u7B97\u5B8C\u6BD5\u7684 s\
     \ \u7684\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n * @return std::vector<int>\
@@ -101,7 +101,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/string/suffix_array.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-17 19:06:03+08:00'
+  timestamp: '2021-06-24 06:20:59+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/string/suffix_array.0.test.cpp

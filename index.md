@@ -116,6 +116,9 @@ data:
         \ Montgomery \u53D6\u6A21\u7C7B"
   - name: string
     pages:
+    - icon: ':warning:'
+      path: string/bwt.hpp
+      title: "Burrows-Wheeler trasformation / Burrows-Wheeler \u53D8\u6362"
     - icon: ':heavy_check_mark:'
       path: string/suffix_array_sais.hpp
       title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\
