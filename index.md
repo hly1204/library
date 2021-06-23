@@ -70,13 +70,13 @@ data:
       title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
   - name: math/matrix
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: math/matrix/characteristic_polynomial.hpp
       title: "characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/matrix/matrix_base.hpp
       title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: math/matrix/square_matrix.hpp
       title: "square matrix / \u65B9\u9635"
   - name: math/modulo
@@ -100,7 +100,7 @@ data:
       title: "pseudo random generator / \u4F2A\u968F\u673A\u6570\u751F\u6210\u5668"
   - name: modint
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint/Montgomery_modint.hpp
       title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
     - icon: ':warning:'
@@ -180,7 +180,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
       title: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
       title: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
     - icon: ':heavy_check_mark:'
@@ -198,7 +198,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
       title: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/inverse_matrix.0.test.cpp
       title: remote_test/yosupo/math/inverse_matrix.0.test.cpp
     - icon: ':heavy_check_mark:'
@@ -213,7 +213,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
       title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/matrix_det.0.test.cpp
       title: remote_test/yosupo/math/matrix_det.0.test.cpp
     - icon: ':heavy_check_mark:'

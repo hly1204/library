@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/matrix_det
@@ -70,8 +70,8 @@ data:
     \  int row_, col_;\n  std::vector<Type> mat_;\n};\n\n} // namespace lib\n\n\n\
     #line 10 \"math/matrix/square_matrix.hpp\"\n\nnamespace lib {\n\ntemplate <typename\
     \ Type> class SquareMatrix : public Matrix<Type> {\npublic:\n  SquareMatrix(int\
-    \ r, const Type &v = Type()) : Matrix(r, r, v) {}\n  virtual ~SquareMatrix() =\
-    \ default;\n\n  /**\n   * @brief \u57DF\u4E0A\u7684\u65B9\u9635\u9006\u5143\n\
+    \ r, const Type &v = Type()) : Matrix<Type>(r, r, v) {}\n  virtual ~SquareMatrix()\
+    \ = default;\n\n  /**\n   * @brief \u57DF\u4E0A\u7684\u65B9\u9635\u9006\u5143\n\
     \   * @note \u4F7F\u7528 Gauss-Jordan \u6D88\u5143\uFF0C\u6709\u9664\u6CD5\uFF0C\
     \u6240\u4EE5\u5143\u7D20\u9700\u8981\u5C5E\u4E8E\u57DF\n   * @return SquareMatrix\n\
     \   */\n  virtual SquareMatrix inv() const {\n    int n = this->row();\n    assert(this->col()\
@@ -226,8 +226,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/matrix_det.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-23 18:51:24+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2021-06-23 18:59:22+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/matrix_det.0.test.cpp
 layout: document

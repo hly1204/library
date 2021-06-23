@@ -2,25 +2,25 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
     title: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/inverse_matrix.0.test.cpp
     title: remote_test/yosupo/math/inverse_matrix.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/matrix_det.0.test.cpp
     title: remote_test/yosupo/math/matrix_det.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/matrix_product.0.test.cpp
     title: remote_test/yosupo/math/matrix_product.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
     links: []
@@ -120,7 +120,7 @@ data:
   requiredBy:
   - math/matrix/square_matrix.hpp
   timestamp: '2021-06-23 18:44:42+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/inverse_matrix.0.test.cpp
   - remote_test/yosupo/math/matrix_product.0.test.cpp

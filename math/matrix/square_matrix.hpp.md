@@ -1,23 +1,23 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
     title: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/inverse_matrix.0.test.cpp
     title: remote_test/yosupo/math/inverse_matrix.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/matrix_det.0.test.cpp
     title: remote_test/yosupo/math/matrix_det.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "square matrix / \u65B9\u9635"
     links: []
@@ -68,14 +68,14 @@ data:
     \  }\n    return os;\n  }\n\nprotected:\n  int row_, col_;\n  std::vector<Type>\
     \ mat_;\n};\n\n} // namespace lib\n\n\n#line 10 \"math/matrix/square_matrix.hpp\"\
     \n\nnamespace lib {\n\ntemplate <typename Type> class SquareMatrix : public Matrix<Type>\
-    \ {\npublic:\n  SquareMatrix(int r, const Type &v = Type()) : Matrix(r, r, v)\
-    \ {}\n  virtual ~SquareMatrix() = default;\n\n  /**\n   * @brief \u57DF\u4E0A\u7684\
-    \u65B9\u9635\u9006\u5143\n   * @note \u4F7F\u7528 Gauss-Jordan \u6D88\u5143\uFF0C\
-    \u6709\u9664\u6CD5\uFF0C\u6240\u4EE5\u5143\u7D20\u9700\u8981\u5C5E\u4E8E\u57DF\
-    \n   * @return SquareMatrix\n   */\n  virtual SquareMatrix inv() const {\n   \
-    \ int n = this->row();\n    assert(this->col() == n);\n    Matrix aug(n, n <<\
-    \ 1, Type(0));\n    SquareMatrix res(n, n); // aug \u5373 augmented matrix \u589E\
-    \u5E7F\u77E9\u9635\n    for (int i = 0; i < n; ++i) std::copy(this->row_begin(i),\
+    \ {\npublic:\n  SquareMatrix(int r, const Type &v = Type()) : Matrix<Type>(r,\
+    \ r, v) {}\n  virtual ~SquareMatrix() = default;\n\n  /**\n   * @brief \u57DF\u4E0A\
+    \u7684\u65B9\u9635\u9006\u5143\n   * @note \u4F7F\u7528 Gauss-Jordan \u6D88\u5143\
+    \uFF0C\u6709\u9664\u6CD5\uFF0C\u6240\u4EE5\u5143\u7D20\u9700\u8981\u5C5E\u4E8E\
+    \u57DF\n   * @return SquareMatrix\n   */\n  virtual SquareMatrix inv() const {\n\
+    \    int n = this->row();\n    assert(this->col() == n);\n    Matrix aug(n, n\
+    \ << 1, Type(0));\n    SquareMatrix res(n, n); // aug \u5373 augmented matrix\
+    \ \u589E\u5E7F\u77E9\u9635\n    for (int i = 0; i < n; ++i) std::copy(this->row_begin(i),\
     \ this->row_end(i), aug.row_begin(i));\n    for (int i = 0; i < n; ++i) aug.at(i,\
     \ i + n) = Type(1);\n    /*\n      [ x x x x | 1 0 0 0 ] => [ 1 0 0 0 | x x x\
     \ x ]\n      [ x x x x | 0 1 0 0 ] => [ 0 1 0 0 | x x x x ]\n      [ x x x x |\
@@ -156,14 +156,14 @@ data:
   code: "#ifndef SQUARE_MATRIX_HEADER_HPP\n#define SQUARE_MATRIX_HEADER_HPP\n\n/**\n\
     \ * @brief square matrix / \u65B9\u9635\n *\n */\n\n#include \"math/matrix/matrix_base.hpp\"\
     \n\nnamespace lib {\n\ntemplate <typename Type> class SquareMatrix : public Matrix<Type>\
-    \ {\npublic:\n  SquareMatrix(int r, const Type &v = Type()) : Matrix(r, r, v)\
-    \ {}\n  virtual ~SquareMatrix() = default;\n\n  /**\n   * @brief \u57DF\u4E0A\u7684\
-    \u65B9\u9635\u9006\u5143\n   * @note \u4F7F\u7528 Gauss-Jordan \u6D88\u5143\uFF0C\
-    \u6709\u9664\u6CD5\uFF0C\u6240\u4EE5\u5143\u7D20\u9700\u8981\u5C5E\u4E8E\u57DF\
-    \n   * @return SquareMatrix\n   */\n  virtual SquareMatrix inv() const {\n   \
-    \ int n = this->row();\n    assert(this->col() == n);\n    Matrix aug(n, n <<\
-    \ 1, Type(0));\n    SquareMatrix res(n, n); // aug \u5373 augmented matrix \u589E\
-    \u5E7F\u77E9\u9635\n    for (int i = 0; i < n; ++i) std::copy(this->row_begin(i),\
+    \ {\npublic:\n  SquareMatrix(int r, const Type &v = Type()) : Matrix<Type>(r,\
+    \ r, v) {}\n  virtual ~SquareMatrix() = default;\n\n  /**\n   * @brief \u57DF\u4E0A\
+    \u7684\u65B9\u9635\u9006\u5143\n   * @note \u4F7F\u7528 Gauss-Jordan \u6D88\u5143\
+    \uFF0C\u6709\u9664\u6CD5\uFF0C\u6240\u4EE5\u5143\u7D20\u9700\u8981\u5C5E\u4E8E\
+    \u57DF\n   * @return SquareMatrix\n   */\n  virtual SquareMatrix inv() const {\n\
+    \    int n = this->row();\n    assert(this->col() == n);\n    Matrix aug(n, n\
+    \ << 1, Type(0));\n    SquareMatrix res(n, n); // aug \u5373 augmented matrix\
+    \ \u589E\u5E7F\u77E9\u9635\n    for (int i = 0; i < n; ++i) std::copy(this->row_begin(i),\
     \ this->row_end(i), aug.row_begin(i));\n    for (int i = 0; i < n; ++i) aug.at(i,\
     \ i + n) = Type(1);\n    /*\n      [ x x x x | 1 0 0 0 ] => [ 1 0 0 0 | x x x\
     \ x ]\n      [ x x x x | 0 1 0 0 ] => [ 0 1 0 0 | x x x x ]\n      [ x x x x |\
@@ -246,8 +246,8 @@ data:
   isVerificationFile: false
   path: math/matrix/square_matrix.hpp
   requiredBy: []
-  timestamp: '2021-06-23 18:51:24+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2021-06-23 18:59:22+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/inverse_matrix.0.test.cpp
   - remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
