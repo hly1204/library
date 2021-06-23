@@ -1,8 +1,14 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: math/matrix/characteristic_polynomial.hpp
+    title: "characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F"
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
+    title: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/inverse_matrix.0.test.cpp
     title: remote_test/yosupo/math/inverse_matrix.0.test.cpp
@@ -108,8 +114,22 @@ data:
     \    for (int k = i + 1; k < n; ++k) m.at(j, k) -= p * m.at(i, k);\n        }\n\
     \      }\n    }\n    return odd ? -res : res;\n  }\n\n  /**\n   * @brief \u77E9\
     \u9635\u7684\u79E9\n   * @note \u6B64\u65F6\u4E0D\u9700\u8981\u4E3A\u65B9\u9635\
-    \n   * @return int\n   */\n  int rank() const;\n\nprivate:\n  int row_, col_;\n\
-    \  Container mat_;\n};\n\n} // namespace lib\n\n\n"
+    \n   * @return int\n   */\n  int rank() const;\n\n  /**\n   * @brief \u76F8\u4F3C\
+    \u53D8\u6362\u4E3A\u4E0A Hessenberg \u65B9\u9635\n   * @note \u4F7F\u7528 Gauss\
+    \ \u6D88\u5143\uFF0C\u6709\u9664\u6CD5\uFF0C\u6240\u4EE5\u5143\u7D20\u9700\u8981\
+    \u5C5E\u4E8E\u57DF\n   * @return Matrix\n   */\n  Matrix to_upper_Hessenberg()\
+    \ const {\n    int n = row();\n    assert(col() == n);\n    Matrix m(*this);\n\
+    \    for (int i = 0; i < n - 2; ++i) {\n      if (m.at(i + 1, i) == Type(0)) {\n\
+    \        int pivot = i + 2;\n        for (; pivot < n; ++pivot)\n          if\
+    \ (m.at(pivot, i) != Type(0)) break;\n        if (pivot == n) continue;\n    \
+    \    std::swap_ranges(m.row_begin(i + 1) + i, m.row_end(i + 1), m.row_begin(pivot)\
+    \ + i);\n        for (int j = 0; j < n; ++j) std::swap(m.at(j, i + 1), m.at(j,\
+    \ pivot));\n      }\n      Type iv = Type(1) / m.at(i + 1, i);\n      for (int\
+    \ j = i + 2; j < n; ++j) {\n        if (m.at(j, i) == Type(0)) continue;\n   \
+    \     Type v = m.at(j, i) * iv;\n        for (int k = i; k < n; ++k) m.at(j, k)\
+    \ -= v * m.at(i + 1, k);\n        for (int k = 0; k != n; ++k) m.at(k, i + 1)\
+    \ += v * m.at(k, j);\n      }\n    }\n    return m;\n  }\n\nprivate:\n  int row_,\
+    \ col_;\n  Container mat_;\n};\n\n} // namespace lib\n\n\n"
   code: "#ifndef MATRIX_BASIC_HEADER_HPP\n#define MATRIX_BASIC_HEADER_HPP\n\n/**\n\
     \ * @brief matrix basic / \u77E9\u9635\u57FA\u7840\n *\n */\n\n#include <algorithm>\n\
     #include <cassert>\n#include <iostream>\n#include <vector>\n\nnamespace lib {\n\
@@ -200,17 +220,33 @@ data:
     \    for (int k = i + 1; k < n; ++k) m.at(j, k) -= p * m.at(i, k);\n        }\n\
     \      }\n    }\n    return odd ? -res : res;\n  }\n\n  /**\n   * @brief \u77E9\
     \u9635\u7684\u79E9\n   * @note \u6B64\u65F6\u4E0D\u9700\u8981\u4E3A\u65B9\u9635\
-    \n   * @return int\n   */\n  int rank() const;\n\nprivate:\n  int row_, col_;\n\
-    \  Container mat_;\n};\n\n} // namespace lib\n\n#endif"
+    \n   * @return int\n   */\n  int rank() const;\n\n  /**\n   * @brief \u76F8\u4F3C\
+    \u53D8\u6362\u4E3A\u4E0A Hessenberg \u65B9\u9635\n   * @note \u4F7F\u7528 Gauss\
+    \ \u6D88\u5143\uFF0C\u6709\u9664\u6CD5\uFF0C\u6240\u4EE5\u5143\u7D20\u9700\u8981\
+    \u5C5E\u4E8E\u57DF\n   * @return Matrix\n   */\n  Matrix to_upper_Hessenberg()\
+    \ const {\n    int n = row();\n    assert(col() == n);\n    Matrix m(*this);\n\
+    \    for (int i = 0; i < n - 2; ++i) {\n      if (m.at(i + 1, i) == Type(0)) {\n\
+    \        int pivot = i + 2;\n        for (; pivot < n; ++pivot)\n          if\
+    \ (m.at(pivot, i) != Type(0)) break;\n        if (pivot == n) continue;\n    \
+    \    std::swap_ranges(m.row_begin(i + 1) + i, m.row_end(i + 1), m.row_begin(pivot)\
+    \ + i);\n        for (int j = 0; j < n; ++j) std::swap(m.at(j, i + 1), m.at(j,\
+    \ pivot));\n      }\n      Type iv = Type(1) / m.at(i + 1, i);\n      for (int\
+    \ j = i + 2; j < n; ++j) {\n        if (m.at(j, i) == Type(0)) continue;\n   \
+    \     Type v = m.at(j, i) * iv;\n        for (int k = i; k < n; ++k) m.at(j, k)\
+    \ -= v * m.at(i + 1, k);\n        for (int k = 0; k != n; ++k) m.at(k, i + 1)\
+    \ += v * m.at(k, j);\n      }\n    }\n    return m;\n  }\n\nprivate:\n  int row_,\
+    \ col_;\n  Container mat_;\n};\n\n} // namespace lib\n\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: math/matrix/matrix_basic.hpp
-  requiredBy: []
-  timestamp: '2021-06-22 22:57:27+08:00'
+  requiredBy:
+  - math/matrix/characteristic_polynomial.hpp
+  timestamp: '2021-06-23 11:51:59+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/inverse_matrix.0.test.cpp
   - remote_test/yosupo/math/matrix_product.0.test.cpp
+  - remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
   - remote_test/yosupo/math/matrix_det.0.test.cpp
 documentation_of: math/matrix/matrix_basic.hpp
 layout: document

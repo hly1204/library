@@ -71,6 +71,9 @@ data:
   - name: math/matrix
     pages:
     - icon: ':heavy_check_mark:'
+      path: math/matrix/characteristic_polynomial.hpp
+      title: "characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F"
+    - icon: ':heavy_check_mark:'
       path: math/matrix/matrix_basic.hpp
       title: "matrix basic / \u77E9\u9635\u57FA\u7840"
   - name: math/modulo
@@ -174,6 +177,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
       title: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
+      title: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/convolution_mod.0.test.cpp
       title: remote_test/yosupo/math/convolution_mod.0.test.cpp

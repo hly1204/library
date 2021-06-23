@@ -109,8 +109,22 @@ data:
     \    for (int k = i + 1; k < n; ++k) m.at(j, k) -= p * m.at(i, k);\n        }\n\
     \      }\n    }\n    return odd ? -res : res;\n  }\n\n  /**\n   * @brief \u77E9\
     \u9635\u7684\u79E9\n   * @note \u6B64\u65F6\u4E0D\u9700\u8981\u4E3A\u65B9\u9635\
-    \n   * @return int\n   */\n  int rank() const;\n\nprivate:\n  int row_, col_;\n\
-    \  Container mat_;\n};\n\n} // namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\
+    \n   * @return int\n   */\n  int rank() const;\n\n  /**\n   * @brief \u76F8\u4F3C\
+    \u53D8\u6362\u4E3A\u4E0A Hessenberg \u65B9\u9635\n   * @note \u4F7F\u7528 Gauss\
+    \ \u6D88\u5143\uFF0C\u6709\u9664\u6CD5\uFF0C\u6240\u4EE5\u5143\u7D20\u9700\u8981\
+    \u5C5E\u4E8E\u57DF\n   * @return Matrix\n   */\n  Matrix to_upper_Hessenberg()\
+    \ const {\n    int n = row();\n    assert(col() == n);\n    Matrix m(*this);\n\
+    \    for (int i = 0; i < n - 2; ++i) {\n      if (m.at(i + 1, i) == Type(0)) {\n\
+    \        int pivot = i + 2;\n        for (; pivot < n; ++pivot)\n          if\
+    \ (m.at(pivot, i) != Type(0)) break;\n        if (pivot == n) continue;\n    \
+    \    std::swap_ranges(m.row_begin(i + 1) + i, m.row_end(i + 1), m.row_begin(pivot)\
+    \ + i);\n        for (int j = 0; j < n; ++j) std::swap(m.at(j, i + 1), m.at(j,\
+    \ pivot));\n      }\n      Type iv = Type(1) / m.at(i + 1, i);\n      for (int\
+    \ j = i + 2; j < n; ++j) {\n        if (m.at(j, i) == Type(0)) continue;\n   \
+    \     Type v = m.at(j, i) * iv;\n        for (int k = i; k < n; ++k) m.at(j, k)\
+    \ -= v * m.at(i + 1, k);\n        for (int k = 0; k != n; ++k) m.at(k, i + 1)\
+    \ += v * m.at(k, j);\n      }\n    }\n    return m;\n  }\n\nprivate:\n  int row_,\
+    \ col_;\n  Container mat_;\n};\n\n} // namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\
     \n\n\n\n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n *\n\
     \ */\n\n#include <cstdint>\n#line 11 \"modint/Montgomery_modint.hpp\"\n#include\
     \ <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\
@@ -184,7 +198,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/matrix_product.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-22 22:57:27+08:00'
+  timestamp: '2021-06-23 11:51:59+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/matrix_product.0.test.cpp
