@@ -78,7 +78,7 @@ data:
       title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
     - icon: ':x:'
       path: math/matrix/square_matrix.hpp
-      title: "\u57DF\u4E0A\u7684\u65B9\u9635\u9006\u5143"
+      title: "square matrix / \u65B9\u9635"
   - name: math/modulo
     pages:
     - icon: ':heavy_check_mark:'

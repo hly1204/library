@@ -4,7 +4,7 @@ data:
   _extendedRequiredBy:
   - icon: ':x:'
     path: math/matrix/square_matrix.hpp
-    title: "\u57DF\u4E0A\u7684\u65B9\u9635\u9006\u5143"
+    title: "square matrix / \u65B9\u9635"
   _extendedVerifiedWith:
   - icon: ':x:'
     path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
