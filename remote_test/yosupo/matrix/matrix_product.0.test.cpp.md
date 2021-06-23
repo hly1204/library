@@ -17,14 +17,14 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/matrix_product
     links:
     - https://judge.yosupo.jp/problem/matrix_product
-  bundledCode: "#line 1 \"remote_test/yosupo/math/matrix_product.0.test.cpp\"\n#define\
-    \ PROBLEM \"https://judge.yosupo.jp/problem/matrix_product\"\n\n#include <iostream>\n\
-    \n#line 1 \"math/matrix/matrix_base.hpp\"\n\n\n\n/**\n * @brief matrix base /\
-    \ \u77E9\u9635\u57FA\u7C7B\n *\n */\n\n#include <algorithm>\n#include <cassert>\n\
-    #line 12 \"math/matrix/matrix_base.hpp\"\n#include <numeric>\n#include <vector>\n\
-    \nnamespace lib {\n\ntemplate <typename Type> class Matrix {\npublic:\n  using\
-    \ value_type = Type;\n\n  /**\n   * @brief Matrix \u7C7B\n   *\n   * @param r\
-    \ \u884C\n   * @param c \u5217\n   * @param v \u521D\u503C\n   */\n  Matrix(int\
+  bundledCode: "#line 1 \"remote_test/yosupo/matrix/matrix_product.0.test.cpp\"\n\
+    #define PROBLEM \"https://judge.yosupo.jp/problem/matrix_product\"\n\n#include\
+    \ <iostream>\n\n#line 1 \"math/matrix/matrix_base.hpp\"\n\n\n\n/**\n * @brief\
+    \ matrix base / \u77E9\u9635\u57FA\u7C7B\n *\n */\n\n#include <algorithm>\n#include\
+    \ <cassert>\n#line 12 \"math/matrix/matrix_base.hpp\"\n#include <numeric>\n#include\
+    \ <vector>\n\nnamespace lib {\n\ntemplate <typename Type> class Matrix {\npublic:\n\
+    \  using value_type = Type;\n\n  /**\n   * @brief Matrix \u7C7B\n   *\n   * @param\
+    \ r \u884C\n   * @param c \u5217\n   * @param v \u521D\u503C\n   */\n  Matrix(int\
     \ r, int c, const Type &v = Type()) : row_(r), col_(c), mat_(row_ * col_, v) {}\n\
     \  virtual ~Matrix() = default;\n  Matrix(const Matrix &) = default;\n\n  virtual\
     \ Matrix &operator=(const Matrix &) = default;\n\n  int row() const { return row_;\
@@ -118,7 +118,7 @@ data:
     \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
     \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
     \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n\n#line 7 \"remote_test/yosupo/math/matrix_product.0.test.cpp\"\
+    \ // namespace lib\n\n\n#line 7 \"remote_test/yosupo/matrix/matrix_product.0.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n, m, k;\n  std::cin >> n >> m >> k;\n  lib::Matrix<lib::MontModInt<998244353>>\
@@ -135,15 +135,15 @@ data:
   - math/matrix/matrix_base.hpp
   - modint/Montgomery_modint.hpp
   isVerificationFile: true
-  path: remote_test/yosupo/math/matrix_product.0.test.cpp
+  path: remote_test/yosupo/matrix/matrix_product.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-23 18:44:42+08:00'
+  timestamp: '2021-06-23 19:36:10+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: remote_test/yosupo/math/matrix_product.0.test.cpp
+documentation_of: remote_test/yosupo/matrix/matrix_product.0.test.cpp
 layout: document
 redirect_from:
-- /verify/remote_test/yosupo/math/matrix_product.0.test.cpp
-- /verify/remote_test/yosupo/math/matrix_product.0.test.cpp.html
-title: remote_test/yosupo/math/matrix_product.0.test.cpp
+- /verify/remote_test/yosupo/matrix/matrix_product.0.test.cpp
+- /verify/remote_test/yosupo/matrix/matrix_product.0.test.cpp.html
+title: remote_test/yosupo/matrix/matrix_product.0.test.cpp
 ---

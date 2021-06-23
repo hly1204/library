@@ -229,17 +229,17 @@ data:
     \ // namespace lib\n\n\n#line 8 \"remote_test/yosupo/math/characteristic_polynomial.0.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
-    \  int n;\n  std::cin >> n;\n  lib::SquareMatrix<lib::MontModInt<998244353>> m(n,\
-    \ n);\n  std::cin >> m;\n  for (auto i : lib::get_charpoly(m)) std::cout << i\
-    \ << ' ';\n  return 0;\n}\n"
+    \  int n;\n  std::cin >> n;\n  lib::SquareMatrix<lib::MontModInt<998244353>> m(n);\n\
+    \  std::cin >> m;\n  for (auto i : lib::get_charpoly(m)) std::cout << i << ' ';\n\
+    \  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/characteristic_polynomial\"\
     \n\n#include <iostream>\n\n#include \"math/matrix/characteristic_polynomial.hpp\"\
     \n#include \"math/matrix/square_matrix.hpp\"\n#include \"modint/Montgomery_modint.hpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
-    \  int n;\n  std::cin >> n;\n  lib::SquareMatrix<lib::MontModInt<998244353>> m(n,\
-    \ n);\n  std::cin >> m;\n  for (auto i : lib::get_charpoly(m)) std::cout << i\
-    \ << ' ';\n  return 0;\n}"
+    \  int n;\n  std::cin >> n;\n  lib::SquareMatrix<lib::MontModInt<998244353>> m(n);\n\
+    \  std::cin >> m;\n  for (auto i : lib::get_charpoly(m)) std::cout << i << ' ';\n\
+    \  return 0;\n}"
   dependsOn:
   - math/matrix/characteristic_polynomial.hpp
   - math/matrix/square_matrix.hpp
@@ -248,7 +248,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-23 18:59:22+08:00'
+  timestamp: '2021-06-23 19:36:10+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp

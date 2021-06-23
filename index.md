@@ -199,9 +199,6 @@ data:
       path: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
       title: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
     - icon: ':heavy_check_mark:'
-      path: remote_test/yosupo/math/inverse_matrix.0.test.cpp
-      title: remote_test/yosupo/math/inverse_matrix.0.test.cpp
-    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
       title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     - icon: ':heavy_check_mark:'
@@ -214,14 +211,19 @@ data:
       path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
       title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     - icon: ':heavy_check_mark:'
-      path: remote_test/yosupo/math/matrix_det.0.test.cpp
-      title: remote_test/yosupo/math/matrix_det.0.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: remote_test/yosupo/math/matrix_product.0.test.cpp
-      title: remote_test/yosupo/math/matrix_product.0.test.cpp
-    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
       title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
+  - name: remote_test/yosupo/matrix
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
+      title: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/matrix/matrix_det.0.test.cpp
+      title: remote_test/yosupo/matrix/matrix_det.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/matrix/matrix_product.0.test.cpp
+      title: remote_test/yosupo/matrix/matrix_product.0.test.cpp
   - name: remote_test/yosupo/string
     pages:
     - icon: ':heavy_check_mark:'

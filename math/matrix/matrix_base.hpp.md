@@ -10,14 +10,14 @@ data:
     path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
     title: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/inverse_matrix.0.test.cpp
-    title: remote_test/yosupo/math/inverse_matrix.0.test.cpp
+    path: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
+    title: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/matrix_det.0.test.cpp
-    title: remote_test/yosupo/math/matrix_det.0.test.cpp
+    path: remote_test/yosupo/matrix/matrix_det.0.test.cpp
+    title: remote_test/yosupo/matrix/matrix_det.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/matrix_product.0.test.cpp
-    title: remote_test/yosupo/math/matrix_product.0.test.cpp
+    path: remote_test/yosupo/matrix/matrix_product.0.test.cpp
+    title: remote_test/yosupo/matrix/matrix_product.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -122,10 +122,10 @@ data:
   timestamp: '2021-06-23 18:44:42+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/inverse_matrix.0.test.cpp
-  - remote_test/yosupo/math/matrix_product.0.test.cpp
+  - remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
+  - remote_test/yosupo/matrix/matrix_product.0.test.cpp
+  - remote_test/yosupo/matrix/matrix_det.0.test.cpp
   - remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
-  - remote_test/yosupo/math/matrix_det.0.test.cpp
 documentation_of: math/matrix/matrix_base.hpp
 layout: document
 redirect_from:
