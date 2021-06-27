@@ -23,7 +23,7 @@ data:
     \n#include <iostream>\n#include <vector>\n\n#line 1 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
     \n\n\n\n/**\n * @brief find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\
     \u77ED\u7EBF\u6027\u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5\n * @docs docs/math/modulo/find_shortest_LFSR_Berlekamp_Massey.md\n\
-    \ */\n\n#include <numeric>\n#line 11 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
+    \ */\n\n#include <numeric>\n#include <utility>\n#line 12 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
     \n\nnamespace lib {\n\n/**\n * @brief \u5BFB\u627E\u6700\u77ED LFSR \uFF08\u4F46\
     \u4EC5\u5F53 L*2 <= N \u65F6\u552F\u4E00\uFF09\n * @ref J.L. Massey, Shift register\
     \ synthesis and BCH decoding,\n *      IEEE Trans. Inform. Theory, vol. IT-15,\
@@ -42,9 +42,9 @@ data:
     \ \u8BB0\u5F55 next discrepancy\n      // C(D)=C(D)-d/bD^xB(D)\n      if (C.size()\
     \ < B.size() + x) C.resize(B.size() + x, ZERO);\n      mod_t coef = d / b;\n \
     \     for (int i = x, ie = B.size() + x; i < ie; ++i) C[i] -= coef * B[i - x];\n\
-    \      L = N + 1 - L, B = T, b = d, x = 1;\n    }\n  }\n  return C;\n}\n\n} //\
-    \ namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief\
-    \ Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n\
+    \      L = N + 1 - L, B = std::move(T), b = d, x = 1;\n    }\n  }\n  return C;\n\
+    }\n\n} // namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n\
+    /**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n\
     \ */\n\n#include <cstdint>\n#line 11 \"modint/Montgomery_modint.hpp\"\n#include\
     \ <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\
     \n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
@@ -119,7 +119,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-27 16:01:52+08:00'
+  timestamp: '2021-06-27 19:19:50+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
