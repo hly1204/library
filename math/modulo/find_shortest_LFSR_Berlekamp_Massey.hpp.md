@@ -18,12 +18,11 @@ data:
     \n\n/**\n * @brief find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\u77ED\
     \u7EBF\u6027\u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5\n * @docs docs/math/modulo/find_shortest_LFSR_Berlekamp_Massey.md\n\
     \ */\n\n#include <numeric>\n#include <vector>\n\nnamespace lib {\n\n/**\n * @brief\
-    \ \u5BFB\u627E\u6700\u77ED(*) LFSR \u6216\u6700\u5C0F(*)\u591A\u9879\u5F0F\uFF08\
-    (*)\u8868\u793A\u4EC5\u5F53\u6570\u5217\u957F\u5EA6\u5927\u4E8E\u5176\u9012\u63A8\
-    \u5F0F\u7684\u4E24\u500D\u65F6\uFF09\n * @ref J.L. Massey, Shift register synthesis\
-    \ and BCH decoding,\n *      IEEE Trans. Inform. Theory, vol. IT-15, 122\u2013\
-    127 (1969).\n * @tparam mod_t \u6709\u9664\u6CD5\uFF0C\u5FC5\u987B\u4E3A\u57DF\
-    \n * @param s s_0, s_1, ..., s_{n-1}\n * @return std::vector<mod_t> C(x)=1+c_{1}*x+c_{2}*x^{2}+...+c_{L}*x^{L}\n\
+    \ \u5BFB\u627E\u6700\u77ED LFSR \uFF08\u4F46\u4EC5\u5F53 L*2 <= N \u65F6\u552F\
+    \u4E00\uFF09\n * @ref J.L. Massey, Shift register synthesis and BCH decoding,\n\
+    \ *      IEEE Trans. Inform. Theory, vol. IT-15, 122\u2013127 (1969).\n * @tparam\
+    \ mod_t \u6709\u9664\u6CD5\uFF0C\u5FC5\u987B\u4E3A\u57DF\n * @param s s_0, s_1,\
+    \ ..., s_{n-1}\n * @return std::vector<mod_t> C(x)=1+c_{1}*x+c_{2}*x^{2}+...+c_{L}*x^{L}\n\
     \ *         \u5BF9\u4E8E\u6240\u6709 i>=L \u548C s = s_0, s_1, ..., s_{L-1}\n\
     \ *         \u6EE1\u8DB3 s_{i} + c_{1}*s_{i-1} + c_{2}*s_{i-2} + ... + c_{L}*s_{i-L}\
     \ = 0\n */\ntemplate <typename mod_t> std::vector<mod_t> find_LFSR(const std::vector<mod_t>\
@@ -43,12 +42,11 @@ data:
     \n/**\n * @brief find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\u77ED\
     \u7EBF\u6027\u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5\n * @docs docs/math/modulo/find_shortest_LFSR_Berlekamp_Massey.md\n\
     \ */\n\n#include <numeric>\n#include <vector>\n\nnamespace lib {\n\n/**\n * @brief\
-    \ \u5BFB\u627E\u6700\u77ED(*) LFSR \u6216\u6700\u5C0F(*)\u591A\u9879\u5F0F\uFF08\
-    (*)\u8868\u793A\u4EC5\u5F53\u6570\u5217\u957F\u5EA6\u5927\u4E8E\u5176\u9012\u63A8\
-    \u5F0F\u7684\u4E24\u500D\u65F6\uFF09\n * @ref J.L. Massey, Shift register synthesis\
-    \ and BCH decoding,\n *      IEEE Trans. Inform. Theory, vol. IT-15, 122\u2013\
-    127 (1969).\n * @tparam mod_t \u6709\u9664\u6CD5\uFF0C\u5FC5\u987B\u4E3A\u57DF\
-    \n * @param s s_0, s_1, ..., s_{n-1}\n * @return std::vector<mod_t> C(x)=1+c_{1}*x+c_{2}*x^{2}+...+c_{L}*x^{L}\n\
+    \ \u5BFB\u627E\u6700\u77ED LFSR \uFF08\u4F46\u4EC5\u5F53 L*2 <= N \u65F6\u552F\
+    \u4E00\uFF09\n * @ref J.L. Massey, Shift register synthesis and BCH decoding,\n\
+    \ *      IEEE Trans. Inform. Theory, vol. IT-15, 122\u2013127 (1969).\n * @tparam\
+    \ mod_t \u6709\u9664\u6CD5\uFF0C\u5FC5\u987B\u4E3A\u57DF\n * @param s s_0, s_1,\
+    \ ..., s_{n-1}\n * @return std::vector<mod_t> C(x)=1+c_{1}*x+c_{2}*x^{2}+...+c_{L}*x^{L}\n\
     \ *         \u5BF9\u4E8E\u6240\u6709 i>=L \u548C s = s_0, s_1, ..., s_{L-1}\n\
     \ *         \u6EE1\u8DB3 s_{i} + c_{1}*s_{i-1} + c_{2}*s_{i-2} + ... + c_{L}*s_{i-L}\
     \ = 0\n */\ntemplate <typename mod_t> std::vector<mod_t> find_LFSR(const std::vector<mod_t>\
@@ -68,7 +66,7 @@ data:
   isVerificationFile: false
   path: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
   requiredBy: []
-  timestamp: '2021-06-27 15:17:15+08:00'
+  timestamp: '2021-06-27 16:01:52+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
@@ -285,7 +283,7 @@ $$
 
 下面给出了相关的算法及证明，但这里略去。
 
-事实上该算法不仅可以找到一个最短 LFSR 也能找到所有最短 LFSR 。如果某个长为 $L_N(s)$ 的 LFSR 生成了 $s_0,s_1,\dots ,s_{N-1}$ 但不能生成 $s_0,s_1,\dots ,s_N$ 那么当且仅当 $2L_N(s)\leq N$ 时才会发生长度变化。这说明了最短 LFSR 是唯一的当且仅当 $2L_N(s)\leq N$ 。因此当算法在 $2L\gt n$ 时终止时结果的最短 LFSR 是不唯一的。事实上定理 3 告诉我们这些多项式的集合为
+事实上该算法不仅可以找到一个最短 LFSR 也能找到所有最短 LFSR 。如果某个长为 $L_N(s)$ 的 LFSR 生成了 $s_0,s_1,\dots ,s_{N-1}$ 但不能生成 $s_0,s_1,\dots ,s_N$ 那么当且仅当 $2L_N(s)\leq N$ 时才会发生长度变化。这说明了最短 LFSR 是唯一的当且仅当 $2L_N(s)\leq N$ 。因此当算法在 $2L\gt n$ 时终止时结果的最短 LFSR 是不唯一的。定理 3 告诉我们这些多项式的集合为
 
 $$
 \lbrace

@@ -24,21 +24,19 @@ data:
     \n\n\n\n/**\n * @brief find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\
     \u77ED\u7EBF\u6027\u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5\n * @docs docs/math/modulo/find_shortest_LFSR_Berlekamp_Massey.md\n\
     \ */\n\n#include <numeric>\n#line 11 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
-    \n\nnamespace lib {\n\n/**\n * @brief \u5BFB\u627E\u6700\u77ED(*) LFSR \u6216\u6700\
-    \u5C0F(*)\u591A\u9879\u5F0F\uFF08(*)\u8868\u793A\u4EC5\u5F53\u6570\u5217\u957F\
-    \u5EA6\u5927\u4E8E\u5176\u9012\u63A8\u5F0F\u7684\u4E24\u500D\u65F6\uFF09\n * @ref\
-    \ J.L. Massey, Shift register synthesis and BCH decoding,\n *      IEEE Trans.\
-    \ Inform. Theory, vol. IT-15, 122\u2013127 (1969).\n * @tparam mod_t \u6709\u9664\
-    \u6CD5\uFF0C\u5FC5\u987B\u4E3A\u57DF\n * @param s s_0, s_1, ..., s_{n-1}\n * @return\
-    \ std::vector<mod_t> C(x)=1+c_{1}*x+c_{2}*x^{2}+...+c_{L}*x^{L}\n *         \u5BF9\
-    \u4E8E\u6240\u6709 i>=L \u548C s = s_0, s_1, ..., s_{L-1}\n *         \u6EE1\u8DB3\
-    \ s_{i} + c_{1}*s_{i-1} + c_{2}*s_{i-2} + ... + c_{L}*s_{i-L} = 0\n */\ntemplate\
-    \ <typename mod_t> std::vector<mod_t> find_LFSR(const std::vector<mod_t> &s) {\n\
-    \  const mod_t ZERO(0);\n  std::vector<mod_t> C{mod_t(1)}, B(C);\n  mod_t b(1);\n\
-    \  for (int N = 0, n = s.size(), L = 0, x = 1; N < n; ++N) {\n    mod_t d(s[N]);\n\
-    \    for (int i = 1; i <= L; ++i) d += C[i] * s[N - i];\n    if (d == ZERO) {\n\
-    \      ++x;\n    } else if ((L << 1) > N) {\n      // C(D)=C(D)-d/bD^xB(D)\n \
-    \     if (C.size() < B.size() + x) C.resize(B.size() + x, ZERO);\n      mod_t\
+    \n\nnamespace lib {\n\n/**\n * @brief \u5BFB\u627E\u6700\u77ED LFSR \uFF08\u4F46\
+    \u4EC5\u5F53 L*2 <= N \u65F6\u552F\u4E00\uFF09\n * @ref J.L. Massey, Shift register\
+    \ synthesis and BCH decoding,\n *      IEEE Trans. Inform. Theory, vol. IT-15,\
+    \ 122\u2013127 (1969).\n * @tparam mod_t \u6709\u9664\u6CD5\uFF0C\u5FC5\u987B\u4E3A\
+    \u57DF\n * @param s s_0, s_1, ..., s_{n-1}\n * @return std::vector<mod_t> C(x)=1+c_{1}*x+c_{2}*x^{2}+...+c_{L}*x^{L}\n\
+    \ *         \u5BF9\u4E8E\u6240\u6709 i>=L \u548C s = s_0, s_1, ..., s_{L-1}\n\
+    \ *         \u6EE1\u8DB3 s_{i} + c_{1}*s_{i-1} + c_{2}*s_{i-2} + ... + c_{L}*s_{i-L}\
+    \ = 0\n */\ntemplate <typename mod_t> std::vector<mod_t> find_LFSR(const std::vector<mod_t>\
+    \ &s) {\n  const mod_t ZERO(0);\n  std::vector<mod_t> C{mod_t(1)}, B(C);\n  mod_t\
+    \ b(1);\n  for (int N = 0, n = s.size(), L = 0, x = 1; N < n; ++N) {\n    mod_t\
+    \ d(s[N]);\n    for (int i = 1; i <= L; ++i) d += C[i] * s[N - i];\n    if (d\
+    \ == ZERO) {\n      ++x;\n    } else if ((L << 1) > N) {\n      // C(D)=C(D)-d/bD^xB(D)\n\
+    \      if (C.size() < B.size() + x) C.resize(B.size() + x, ZERO);\n      mod_t\
     \ coef = d / b;\n      for (int i = x, ie = B.size() + x; i < ie; ++i) C[i] -=\
     \ coef * B[i - x];\n      ++x;\n    } else {\n      std::vector<mod_t> T(C); //\
     \ \u8BB0\u5F55 next discrepancy\n      // C(D)=C(D)-d/bD^xB(D)\n      if (C.size()\
@@ -121,7 +119,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-27 15:17:15+08:00'
+  timestamp: '2021-06-27 16:01:52+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
