@@ -8,7 +8,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   - icon: ':heavy_check_mark:'
@@ -127,9 +127,9 @@ data:
     \ >> 1, q_cpy.data());\n      NTT<mod_t>::dft_doubling(len >> 1, p_cpy.data());\n\
     \    }\n  }\n\nprivate:\n  std::vector<mod_t> p_, q_; // p(x)/q(x)\n};\n\n} //\
     \ namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief\
-    \ Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#line 11 \"modint/Montgomery_modint.hpp\"\
-    \n#include <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\
-    \u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \ Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n\
+    \ */\n\n#line 11 \"modint/Montgomery_modint.hpp\"\n#include <type_traits>\n\n\
+    namespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
@@ -205,7 +205,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-17 19:06:03+08:00'
+  timestamp: '2021-06-27 15:17:15+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp

@@ -1,15 +1,15 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: string/suffix_array_sais.hpp
     title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\u5E8F\
       \uFF09"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/suffixarray
@@ -21,16 +21,16 @@ data:
     \n\n\n\n/**\n * @brief suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\
     \u5BFC\u6392\u5E8F\uFF09\n *\n */\n\n#include <algorithm>\n#line 12 \"string/suffix_array_sais.hpp\"\
     \n\nnamespace lib {\n\nnamespace internal {\n\n/**\n * @brief \u8BF1\u5BFC\u6392\
-    \u5E8F\n * @ref Ge Nong, Sen Zhang and Daricks Wai Hong Chan.\n *      Linear\
-    \ Suffix Array Construction by Almost Pure Induced-Sorting.\n *\n * @param s \u5B57\
-    \u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\u8BC1\u672B\u5C3E\u4E3A 0 \u4E14\
-    \ 0 \u662F\u6574\u4E2A\u5B57\u7B26\u4E32\u6570\u7EC4\u4E2D\u53EA\u51FA\u73B0\u5728\
-    \u672B\u5C3E\u7684\u6700\u5C0F\u5B57\u7B26\uFF01\n * @param K \u5B57\u7B26\u4E32\
-    \u6570\u7EC4\u7684\u503C\u57DF\uFF0C\u7531 [0, K)\n * @return std::vector<int>\n\
-    \ */\nstd::vector<int> SA_IS(const std::vector<int> &s, int K) {\n  const int\
-    \ n = s.size();\n  std::vector<bool> t(n);\n  std::vector<int> bkt(K, 0), bkt_l(K),\
-    \ bkt_r(K), SA(n), p1;\n#define is_S_type(x) (t[x])\n#define is_L_type(x) (!t[x])\n\
-    #define is_LMS_type(x) (is_S_type(x) && x != 0 && is_L_type(x - 1))\n#define induced_sort()\
+    \u5E8F\n * @ref Ge Nong, Sen Zhang and Wai Hong Chan.\n *      Linear Suffix Array\
+    \ Construction by Almost Pure Induced-Sorting.\n *\n * @param s \u5B57\u7B26\u4E32\
+    \u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\u8BC1\u672B\u5C3E\u4E3A 0 \u4E14 0 \u662F\
+    \u6574\u4E2A\u5B57\u7B26\u4E32\u6570\u7EC4\u4E2D\u53EA\u51FA\u73B0\u5728\u672B\
+    \u5C3E\u7684\u6700\u5C0F\u5B57\u7B26\uFF01\n * @param K \u5B57\u7B26\u4E32\u6570\
+    \u7EC4\u7684\u503C\u57DF\uFF0C\u7531 [0, K)\n * @return std::vector<int>\n */\n\
+    std::vector<int> SA_IS(const std::vector<int> &s, int K) {\n  const int n = s.size();\n\
+    \  std::vector<bool> t(n);\n  std::vector<int> bkt(K, 0), bkt_l(K), bkt_r(K),\
+    \ SA(n), p1;\n#define is_S_type(x) (t[x])\n#define is_L_type(x) (!t[x])\n#define\
+    \ is_LMS_type(x) (is_S_type(x) && x != 0 && is_L_type(x - 1))\n#define induced_sort()\
     \                                                                            \
     \ \\\n  do {                                                                 \
     \                            \\\n    std::copy_n(bkt_l.begin(), K, bkt.begin());\
@@ -101,8 +101,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/string/suffix_array.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-24 06:20:59+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2021-06-27 15:17:15+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/string/suffix_array.0.test.cpp
 layout: document

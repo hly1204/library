@@ -13,6 +13,9 @@ data:
     path: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
     title: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
+    title: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -30,26 +33,27 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
     title: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/matrix_det.0.test.cpp
     title: remote_test/yosupo/matrix/matrix_det.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/matrix_product.0.test.cpp
     title: remote_test/yosupo/matrix/matrix_product.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
+    _deprecated_at_docs: docs/modint/Montgomery_modint.md
     document_title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
     links:
     - https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
   bundledCode: "#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief Montgomery\
-    \ modint / Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#include <cstdint>\n#include\
-    \ <iostream>\n#include <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery\
-    \ \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \ modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n\
+    \ */\n\n#include <cstdint>\n#include <iostream>\n#include <type_traits>\n\nnamespace\
+    \ lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
@@ -102,9 +106,9 @@ data:
     \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
     \ // namespace lib\n\n\n"
   code: "#ifndef MONTGOMERY_MODINT_HEADER_HPP\n#define MONTGOMERY_MODINT_HEADER_HPP\n\
-    \n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n\
-    #include <cstdint>\n#include <iostream>\n#include <type_traits>\n\nnamespace lib\
-    \ {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n\
+    \ */\n\n#include <cstdint>\n#include <iostream>\n#include <type_traits>\n\nnamespace\
+    \ lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
@@ -160,13 +164,14 @@ data:
   isVerificationFile: false
   path: modint/Montgomery_modint.hpp
   requiredBy: []
-  timestamp: '2021-06-11 23:09:55+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-06-27 15:17:15+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
   - remote_test/yosupo/matrix/matrix_product.0.test.cpp
   - remote_test/yosupo/matrix/matrix_det.0.test.cpp
   - remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
+  - remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
   - remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
@@ -177,9 +182,11 @@ data:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
 documentation_of: modint/Montgomery_modint.hpp
 layout: document
+redirect_from:
+- /library/modint/Montgomery_modint.hpp
+- /library/modint/Montgomery_modint.hpp.html
 title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
 ---
-
 ## Montgomery modint
 
 类 `MontgomeryModInt` 是一个自动取模的类型，且模数 $M\in(1,2^{30}), M\bmod 2=1$ 。重载有基本的四则运算符号和比较运算符（ `==` 和 `!=` ）。

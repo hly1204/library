@@ -2,16 +2,16 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/modulo/sqrt_mod.hpp
     title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
     title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     document_title: "runtime Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\
       \u6A21\u7C7B"
@@ -117,7 +117,7 @@ data:
   requiredBy:
   - math/modulo/sqrt_mod.hpp
   timestamp: '2021-06-21 01:47:06+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp
 documentation_of: modint/runtime_Montgomery_modint.hpp

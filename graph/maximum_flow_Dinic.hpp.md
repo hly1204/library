@@ -15,7 +15,7 @@ data:
   bundledCode: "#line 1 \"graph/maximum_flow_Dinic.hpp\"\n\n\n\n/**\n * @brief maximum\
     \ flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5\n *\n */\n\n#include <limits>\n\
     #include <queue>\n#include <vector>\n\nnamespace lib {\n\ntemplate <typename CapacityType>\
-    \ struct MaximumFlowGraph {\npublic:\n  struct InputEdge {\n    int from, to;\n\
+    \ class MaximumFlowGraph {\npublic:\n  struct InputEdge {\n    int from, to;\n\
     \    CapacityType cap;\n    InputEdge(int from, int to, CapacityType cap) : from(from),\
     \ to(to), cap(cap) {}\n    ~InputEdge() = default;\n  };\n\n  struct Edge {\n\
     \    int to;\n    CapacityType cap;\n  };\n\n  MaximumFlowGraph(int n) : n_(n)\
@@ -54,7 +54,7 @@ data:
   code: "#ifndef MAXIMUM_FLOW_DINIC_HEADER_HPP\n#define MAXIMUM_FLOW_DINIC_HEADER_HPP\n\
     \n/**\n * @brief maximum flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5\n\
     \ *\n */\n\n#include <limits>\n#include <queue>\n#include <vector>\n\nnamespace\
-    \ lib {\n\ntemplate <typename CapacityType> struct MaximumFlowGraph {\npublic:\n\
+    \ lib {\n\ntemplate <typename CapacityType> class MaximumFlowGraph {\npublic:\n\
     \  struct InputEdge {\n    int from, to;\n    CapacityType cap;\n    InputEdge(int\
     \ from, int to, CapacityType cap) : from(from), to(to), cap(cap) {}\n    ~InputEdge()\
     \ = default;\n  };\n\n  struct Edge {\n    int to;\n    CapacityType cap;\n  };\n\
@@ -94,7 +94,7 @@ data:
   isVerificationFile: false
   path: graph/maximum_flow_Dinic.hpp
   requiredBy: []
-  timestamp: '2021-06-15 12:26:38+08:00'
+  timestamp: '2021-06-27 15:17:15+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizuoj/graph/max_flow.0.test.cpp

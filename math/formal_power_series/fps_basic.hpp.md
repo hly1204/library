@@ -31,39 +31,40 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
+    _deprecated_at_docs: docs/math/formal_power_series/fps_basic.md
     document_title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\
       \u6570\u7684\u57FA\u672C\u64CD\u4F5C"
     links: []
   bundledCode: "#line 1 \"math/formal_power_series/fps_basic.hpp\"\n\n\n\n/**\n *\
     \ @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
-    \u7684\u57FA\u672C\u64CD\u4F5C\n *\n */\n\n#include <algorithm>\n#include <cassert>\n\
-    #include <tuple>\n#include <utility>\n#include <vector>\n\n#include <numeric>\n\
-    \n#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits / \u53D6\u6A21\
-    \u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename mod_t> struct\
-    \ modint_traits {\n  using type = typename mod_t::value_type;\n  static constexpr\
-    \ type get_mod() { return mod_t::get_mod(); }\n  static constexpr type get_primitive_root_prime()\
-    \ { return mod_t::get_primitive_root_prime(); }\n};\n\n} // namespace lib\n\n\n\
-    #line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\n/**\n * @brief radix-2\
-    \ NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\n#line 11 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n#include <cstdint>\n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\
-    #line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\n\nnamespace lib {\n\n/**\n\
-    \ * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\uFF01\uFF01\uFF01\
-    \n */\ntemplate <typename mod_t> class NTT {\npublic:\n  NTT() = delete;\n\n \
-    \ static void set_root(int len) {\n    static int lim = 0;\n    static constexpr\
-    \ mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n    if (lim == 0)\
-    \ {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n      rt[0] = irt[0]\
-    \ = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod() >> 21), ig_t =\
-    \ g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n      for (int i\
-    \ = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n        rt[1 << i]\
-    \ = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n    for (; (lim\
-    \ << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n      for\
-    \ (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i - lim] *\
-    \ g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static void\
-    \ dft(int n, mod_t *x) {\n    for (int j = 0, l = n >> 1; j != l; ++j) {\n   \
-    \   mod_t u = x[j], v = x[j + l];\n      x[j] = u + v, x[j + l] = u - v;\n   \
-    \ }\n    for (int i = n >> 1; i >= 2; i >>= 1) {\n      for (int j = 0, l = i\
-    \ >> 1; j != l; ++j) {\n        mod_t u = x[j], v = x[j + l];\n        x[j] =\
-    \ u + v, x[j + l] = u - v;\n      }\n      for (int j = i, l = i >> 1, m = 1;\
+    \u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/fps_basic.md\n\
+    \ */\n\n#include <algorithm>\n#include <cassert>\n#include <tuple>\n#include <utility>\n\
+    #include <vector>\n\n#include <numeric>\n\n#line 1 \"traits/modint.hpp\"\n\n\n\
+    \n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace\
+    \ lib {\n\ntemplate <typename mod_t> struct modint_traits {\n  using type = typename\
+    \ mod_t::value_type;\n  static constexpr type get_mod() { return mod_t::get_mod();\
+    \ }\n  static constexpr type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
+    \ }\n};\n\n} // namespace lib\n\n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\
+    \n\n\n\n/**\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\
+    \n#line 11 \"math/formal_power_series/radix_2_NTT.hpp\"\n#include <cstdint>\n\
+    #line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
+    \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\
+    \u6A21\u6570\uFF01\uFF01\uFF01\n */\ntemplate <typename mod_t> class NTT {\npublic:\n\
+    \  NTT() = delete;\n\n  static void set_root(int len) {\n    static int lim =\
+    \ 0;\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n\
+    \    if (lim == 0) {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n\
+    \      rt[0] = irt[0] = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod()\
+    \ >> 21), ig_t = g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n \
+    \     for (int i = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n   \
+    \     rt[1 << i] = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n\
+    \    for (; (lim << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n\
+    \      for (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i\
+    \ - lim] * g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static\
+    \ void dft(int n, mod_t *x) {\n    for (int j = 0, l = n >> 1; j != l; ++j) {\n\
+    \      mod_t u = x[j], v = x[j + l];\n      x[j] = u + v, x[j + l] = u - v;\n\
+    \    }\n    for (int i = n >> 1; i >= 2; i >>= 1) {\n      for (int j = 0, l =\
+    \ i >> 1; j != l; ++j) {\n        mod_t u = x[j], v = x[j + l];\n        x[j]\
+    \ = u + v, x[j + l] = u - v;\n      }\n      for (int j = i, l = i >> 1, m = 1;\
     \ j != n; j += i, ++m) {\n        mod_t root = rt[m];\n        for (int k = 0;\
     \ k != l; ++k) {\n          mod_t u = x[j + k], v = x[j + k + l] * root;\n   \
     \       x[j + k] = u + v, x[j + k + l] = u - v;\n        }\n      }\n    }\n \
@@ -315,28 +316,28 @@ data:
     \ Poly = Polynomial<mod_t>;\n\n} // namespace lib\n\n\n"
   code: "#ifndef FPS_BASIC_HEADER_HPP\n#define FPS_BASIC_HEADER_HPP\n\n/**\n * @brief\
     \ basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\u7684\
-    \u57FA\u672C\u64CD\u4F5C\n *\n */\n\n#include <algorithm>\n#include <cassert>\n\
-    #include <tuple>\n#include <utility>\n#include <vector>\n\n#include <numeric>\n\
-    \n#include \"../../traits/modint.hpp\"\n#include \"radix_2_NTT.hpp\"\n\nnamespace\
-    \ lib {\n\n/**\n * @note \u5FC5\u987B\u4F7F\u7528 NTT \u53CB\u597D\u7684\u6A21\
-    \u6570\uFF01\uFF01\uFF01\n *       \u5728\u4F7F\u7528\u6A21\u677F\u7C7B\u7EE7\u627F\
-    \u65F6\uFF0C\u5BF9\u4E8E\u7EE7\u627F\u6765\u7684 public \u6210\u5458\u51FD\u6570\
-    \uFF0C\u8981\u4E48\u4F7F\u7528 using \u6765\u58F0\u660E\uFF0C\u8981\u4E48\u4F7F\
-    \u7528\u57DF\u9650\u5B9A\u7B26\n *       \u8981\u4E48\u4F7F\u7528 this \u6307\u9488\
-    \uFF0C\u8FD9\u6837\u5728\u7B2C\u4E00\u6B21\u626B\u63CF\u65F6\u4E0D\u4F1A\u5904\
-    \u7406\uFF0C\u7B2C\u4E8C\u6B21\u624D\u4F1A\u5206\u6790\u57FA\u7C7B\u4E2D\u7684\
-    \u51FD\u6570\uFF0C\n *       \u5426\u5219\u4E0D\u80FD\u901A\u8FC7\u7F16\u8BD1\u3002\
-    MSVC \u56E0\u4E3A\u6709\u6269\u5C55\u7684\u539F\u56E0\u53EF\u4EE5\u901A\u8FC7\u7F16\
-    \u8BD1\uFF0C\u4F46\u6807\u51C6\u89C4\u5B9A\u662F\u8FD9\u6837\u3002\n *       \u82E5\
-    \u4E0D\u662F\u6A21\u677F\u7C7B\u7EE7\u627F\u5219\u6CA1\u6709\u8FD9\u6837\u7684\
-    \u95EE\u9898\u3002\n *\n */\ntemplate <typename mod_t> class FormalPowerSeries\
-    \ : public std::vector<mod_t> {\nprivate:\n  using vec = std::vector<mod_t>;\n\
-    \  using fps = FormalPowerSeries<mod_t>;\n\n  static inline vec INV;\n\n  static\
-    \ void init_inv(int n) { // \u9884\u5904\u7406 [1, n) \u7684\u9006\u5143\n   \
-    \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    static int\
-    \ lim = 0;\n    if (lim < n) {\n      INV.resize(n);\n      if (lim == 0) INV[1]\
-    \ = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i] = mod_t(mod - mod\
-    \ / i) * INV[mod % i];\n      lim = n;\n    }\n  }\n\npublic:\n  using vec::vec;\n\
+    \u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/fps_basic.md\n\
+    \ */\n\n#include <algorithm>\n#include <cassert>\n#include <tuple>\n#include <utility>\n\
+    #include <vector>\n\n#include <numeric>\n\n#include \"../../traits/modint.hpp\"\
+    \n#include \"radix_2_NTT.hpp\"\n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\
+    \u4F7F\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\uFF01\uFF01\uFF01\n *       \u5728\
+    \u4F7F\u7528\u6A21\u677F\u7C7B\u7EE7\u627F\u65F6\uFF0C\u5BF9\u4E8E\u7EE7\u627F\
+    \u6765\u7684 public \u6210\u5458\u51FD\u6570\uFF0C\u8981\u4E48\u4F7F\u7528 using\
+    \ \u6765\u58F0\u660E\uFF0C\u8981\u4E48\u4F7F\u7528\u57DF\u9650\u5B9A\u7B26\n *\
+    \       \u8981\u4E48\u4F7F\u7528 this \u6307\u9488\uFF0C\u8FD9\u6837\u5728\u7B2C\
+    \u4E00\u6B21\u626B\u63CF\u65F6\u4E0D\u4F1A\u5904\u7406\uFF0C\u7B2C\u4E8C\u6B21\
+    \u624D\u4F1A\u5206\u6790\u57FA\u7C7B\u4E2D\u7684\u51FD\u6570\uFF0C\n *       \u5426\
+    \u5219\u4E0D\u80FD\u901A\u8FC7\u7F16\u8BD1\u3002MSVC \u56E0\u4E3A\u6709\u6269\u5C55\
+    \u7684\u539F\u56E0\u53EF\u4EE5\u901A\u8FC7\u7F16\u8BD1\uFF0C\u4F46\u6807\u51C6\
+    \u89C4\u5B9A\u662F\u8FD9\u6837\u3002\n *       \u82E5\u4E0D\u662F\u6A21\u677F\u7C7B\
+    \u7EE7\u627F\u5219\u6CA1\u6709\u8FD9\u6837\u7684\u95EE\u9898\u3002\n *\n */\n\
+    template <typename mod_t> class FormalPowerSeries : public std::vector<mod_t>\
+    \ {\nprivate:\n  using vec = std::vector<mod_t>;\n  using fps = FormalPowerSeries<mod_t>;\n\
+    \n  static inline vec INV;\n\n  static void init_inv(int n) { // \u9884\u5904\u7406\
+    \ [1, n) \u7684\u9006\u5143\n    static constexpr auto mod = modint_traits<mod_t>::get_mod();\n\
+    \    static int lim = 0;\n    if (lim < n) {\n      INV.resize(n);\n      if (lim\
+    \ == 0) INV[1] = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i] = mod_t(mod\
+    \ - mod / i) * INV[mod % i];\n      lim = n;\n    }\n  }\n\npublic:\n  using vec::vec;\n\
     \n  /**\n   * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n\
     \   * @return int\n   */\n  int deg() const {\n    static constexpr mod_t Z =\
     \ 0;\n    int n = int(this->size()) - 1;\n    while (n >= 0 && this->operator[](n)\
@@ -536,7 +537,7 @@ data:
   isVerificationFile: false
   path: math/formal_power_series/fps_basic.hpp
   requiredBy: []
-  timestamp: '2021-06-17 19:06:03+08:00'
+  timestamp: '2021-06-27 15:17:15+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
@@ -547,10 +548,12 @@ data:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
 documentation_of: math/formal_power_series/fps_basic.hpp
 layout: document
+redirect_from:
+- /library/math/formal_power_series/fps_basic.hpp
+- /library/math/formal_power_series/fps_basic.hpp.html
 title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\u7684\
   \u57FA\u672C\u64CD\u4F5C"
 ---
-
 ## 形式幂级数的四则运算
 
 我们假设后文没有定义的都属于 NTT 友好的模数的形式幂级数环 $\mathbb{F} _ p[[x]]$ 。

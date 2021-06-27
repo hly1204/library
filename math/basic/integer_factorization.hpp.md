@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/runtime_long_Montgomery_modint.hpp
     title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
       \ Montgomery \u53D6\u6A21\u7C7B"
@@ -87,7 +87,7 @@ data:
     \  int t = 0;\n  std::uint64_t u = n - 1;\n  do\n    u >>= 1, ++t;\n  while ((u\
     \ & 1) == 0);\n  const m64 ONE(1), MINUS_ONE(n - 1);\n  for (int i : {2, 3, 5,\
     \ 7, 11, 13, 17, 19, 23, 29, 31, 37}) {\n    if (n == i) return true;\n    m64\
-    \ x = m64(i).pow(u);\n    for (int i = 0; i != t && x != ONE; ++i) {\n      m64\
+    \ x = m64(i).pow(u);\n    for (int j = 0; j != t && x != ONE; ++j) {\n      m64\
     \ y = x * x;\n      if (x != MINUS_ONE && y == ONE) return false;\n      x = y;\n\
     \    }\n    if (x != ONE) return false;\n  }\n  return true;\n}\n\nnamespace internal\
     \ {\n\n/**\n * @brief Pollard-rho \u7B97\u6CD5\n * @param n\n * @return std::uint64_t\
@@ -120,7 +120,7 @@ data:
     \  int t = 0;\n  std::uint64_t u = n - 1;\n  do\n    u >>= 1, ++t;\n  while ((u\
     \ & 1) == 0);\n  const m64 ONE(1), MINUS_ONE(n - 1);\n  for (int i : {2, 3, 5,\
     \ 7, 11, 13, 17, 19, 23, 29, 31, 37}) {\n    if (n == i) return true;\n    m64\
-    \ x = m64(i).pow(u);\n    for (int i = 0; i != t && x != ONE; ++i) {\n      m64\
+    \ x = m64(i).pow(u);\n    for (int j = 0; j != t && x != ONE; ++j) {\n      m64\
     \ y = x * x;\n      if (x != MINUS_ONE && y == ONE) return false;\n      x = y;\n\
     \    }\n    if (x != ONE) return false;\n  }\n  return true;\n}\n\nnamespace internal\
     \ {\n\n/**\n * @brief Pollard-rho \u7B97\u6CD5\n * @param n\n * @return std::uint64_t\
@@ -147,7 +147,7 @@ data:
   isVerificationFile: false
   path: math/basic/integer_factorization.hpp
   requiredBy: []
-  timestamp: '2021-06-17 19:06:03+08:00'
+  timestamp: '2021-06-27 15:17:15+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/factorize.0.test.cpp

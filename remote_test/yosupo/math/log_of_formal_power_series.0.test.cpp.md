@@ -8,7 +8,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   - icon: ':heavy_check_mark:'
@@ -28,13 +28,13 @@ data:
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/log_of_formal_power_series\"\
     \n\n#include <iostream>\n\n#line 1 \"math/formal_power_series/fps_basic.hpp\"\n\
     \n\n\n/**\n * @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\
-    \u7EA7\u6570\u7684\u57FA\u672C\u64CD\u4F5C\n *\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <tuple>\n#include <utility>\n#include <vector>\n\n\
-    #include <numeric>\n\n#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint\
-    \ traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate\
-    \ <typename mod_t> struct modint_traits {\n  using type = typename mod_t::value_type;\n\
-    \  static constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr\
-    \ type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
+    \u7EA7\u6570\u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/fps_basic.md\n\
+    \ */\n\n#include <algorithm>\n#include <cassert>\n#include <tuple>\n#include <utility>\n\
+    #include <vector>\n\n#include <numeric>\n\n#line 1 \"traits/modint.hpp\"\n\n\n\
+    \n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace\
+    \ lib {\n\ntemplate <typename mod_t> struct modint_traits {\n  using type = typename\
+    \ mod_t::value_type;\n  static constexpr type get_mod() { return mod_t::get_mod();\
+    \ }\n  static constexpr type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
     \ }\n};\n\n} // namespace lib\n\n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\
     \n\n\n\n/**\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\
     \n#line 11 \"math/formal_power_series/radix_2_NTT.hpp\"\n#include <cstdint>\n\
@@ -305,9 +305,10 @@ data:
     \ poly &lhs, const poly &rhs) { return poly(lhs) %= rhs; }\n};\n\ntemplate <typename\
     \ mod_t> using FPS = FormalPowerSeries<mod_t>;\ntemplate <typename mod_t> using\
     \ Poly = Polynomial<mod_t>;\n\n} // namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\
-    \n\n\n\n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n *\n\
-    \ */\n\n#line 11 \"modint/Montgomery_modint.hpp\"\n#include <type_traits>\n\n\
-    namespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \n\n\n\n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs\
+    \ docs/modint/Montgomery_modint.md\n */\n\n#line 11 \"modint/Montgomery_modint.hpp\"\
+    \n#include <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\
+    \u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
@@ -379,7 +380,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-17 19:06:03+08:00'
+  timestamp: '2021-06-27 15:17:15+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp

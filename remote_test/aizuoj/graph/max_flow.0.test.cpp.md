@@ -19,13 +19,13 @@ data:
     \n\n#include <iostream>\n\n#line 1 \"graph/maximum_flow_Dinic.hpp\"\n\n\n\n/**\n\
     \ * @brief maximum flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5\n *\n */\n\
     \n#include <limits>\n#include <queue>\n#include <vector>\n\nnamespace lib {\n\n\
-    template <typename CapacityType> struct MaximumFlowGraph {\npublic:\n  struct\
-    \ InputEdge {\n    int from, to;\n    CapacityType cap;\n    InputEdge(int from,\
-    \ int to, CapacityType cap) : from(from), to(to), cap(cap) {}\n    ~InputEdge()\
-    \ = default;\n  };\n\n  struct Edge {\n    int to;\n    CapacityType cap;\n  };\n\
-    \n  MaximumFlowGraph(int n) : n_(n) {}\n  ~MaximumFlowGraph() = default;\n\n \
-    \ void add_directed_edge(int from, int to, CapacityType cap) {\n    input_edge_.emplace_back(from,\
-    \ to, cap);\n  }\n\n  CapacityType get_max_flow(int s, int t) {\n    convert_to_forwardstar();\n\
+    template <typename CapacityType> class MaximumFlowGraph {\npublic:\n  struct InputEdge\
+    \ {\n    int from, to;\n    CapacityType cap;\n    InputEdge(int from, int to,\
+    \ CapacityType cap) : from(from), to(to), cap(cap) {}\n    ~InputEdge() = default;\n\
+    \  };\n\n  struct Edge {\n    int to;\n    CapacityType cap;\n  };\n\n  MaximumFlowGraph(int\
+    \ n) : n_(n) {}\n  ~MaximumFlowGraph() = default;\n\n  void add_directed_edge(int\
+    \ from, int to, CapacityType cap) {\n    input_edge_.emplace_back(from, to, cap);\n\
+    \  }\n\n  CapacityType get_max_flow(int s, int t) {\n    convert_to_forwardstar();\n\
     \    CapacityType max_flow = 0;\n    const CapacityType CAPACITY_LIM = std::numeric_limits<CapacityType>::max();\n\
     \    while (create_layer_graph(s, t)) {\n      cur_edge_ = idx_;\n      max_flow\
     \ += augment(s, CAPACITY_LIM, t);\n    }\n    return max_flow;\n  }\n\nprivate:\n\
@@ -74,7 +74,7 @@ data:
   isVerificationFile: true
   path: remote_test/aizuoj/graph/max_flow.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-15 12:26:38+08:00'
+  timestamp: '2021-06-27 15:17:15+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/aizuoj/graph/max_flow.0.test.cpp

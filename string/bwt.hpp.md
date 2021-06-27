@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: string/suffix_array_sais.hpp
     title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\u5E8F\
       \uFF09"
@@ -11,31 +11,32 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':warning:'
   attributes:
+    _deprecated_at_docs: docs/string/bwt.md
     document_title: "Burrows-Wheeler trasformation / Burrows-Wheeler \u53D8\u6362"
     links: []
   bundledCode: "#line 1 \"string/bwt.hpp\"\n\n\n\n/**\n * @brief Burrows-Wheeler trasformation\
-    \ / Burrows-Wheeler \u53D8\u6362\n *\n */\n\n#include <algorithm>\n#include <cassert>\n\
-    #include <string>\n#include <vector>\n\n#line 1 \"string/suffix_array_sais.hpp\"\
-    \n\n\n\n/**\n * @brief suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\
-    \u5BFC\u6392\u5E8F\uFF09\n *\n */\n\n#line 12 \"string/suffix_array_sais.hpp\"\
-    \n\nnamespace lib {\n\nnamespace internal {\n\n/**\n * @brief \u8BF1\u5BFC\u6392\
-    \u5E8F\n * @ref Ge Nong, Sen Zhang and Daricks Wai Hong Chan.\n *      Linear\
-    \ Suffix Array Construction by Almost Pure Induced-Sorting.\n *\n * @param s \u5B57\
-    \u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\u8BC1\u672B\u5C3E\u4E3A 0 \u4E14\
-    \ 0 \u662F\u6574\u4E2A\u5B57\u7B26\u4E32\u6570\u7EC4\u4E2D\u53EA\u51FA\u73B0\u5728\
-    \u672B\u5C3E\u7684\u6700\u5C0F\u5B57\u7B26\uFF01\n * @param K \u5B57\u7B26\u4E32\
-    \u6570\u7EC4\u7684\u503C\u57DF\uFF0C\u7531 [0, K)\n * @return std::vector<int>\n\
-    \ */\nstd::vector<int> SA_IS(const std::vector<int> &s, int K) {\n  const int\
-    \ n = s.size();\n  std::vector<bool> t(n);\n  std::vector<int> bkt(K, 0), bkt_l(K),\
-    \ bkt_r(K), SA(n), p1;\n#define is_S_type(x) (t[x])\n#define is_L_type(x) (!t[x])\n\
-    #define is_LMS_type(x) (is_S_type(x) && x != 0 && is_L_type(x - 1))\n#define induced_sort()\
-    \                                                                            \
-    \ \\\n  do {                                                                 \
-    \                            \\\n    std::copy_n(bkt_l.begin(), K, bkt.begin());\
-    \                                                    \\\n    for (int i = 0, j;\
-    \ i != n; ++i)                                                               \
-    \ \\\n      if ((j = SA[i] - 1) >= 0 && is_L_type(j)) SA[bkt[s[j]]++] = j;   \
-    \                            \\\n    std::copy_n(bkt_r.begin(), K, bkt.begin());\
+    \ / Burrows-Wheeler \u53D8\u6362\n * @docs docs/string/bwt.md\n */\n\n#include\
+    \ <algorithm>\n#include <cassert>\n#include <string>\n#include <vector>\n\n#line\
+    \ 1 \"string/suffix_array_sais.hpp\"\n\n\n\n/**\n * @brief suffix array SA-IS\
+    \ / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\u5E8F\uFF09\n *\n */\n\n\
+    #line 12 \"string/suffix_array_sais.hpp\"\n\nnamespace lib {\n\nnamespace internal\
+    \ {\n\n/**\n * @brief \u8BF1\u5BFC\u6392\u5E8F\n * @ref Ge Nong, Sen Zhang and\
+    \ Wai Hong Chan.\n *      Linear Suffix Array Construction by Almost Pure Induced-Sorting.\n\
+    \ *\n * @param s \u5B57\u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\u8BC1\u672B\
+    \u5C3E\u4E3A 0 \u4E14 0 \u662F\u6574\u4E2A\u5B57\u7B26\u4E32\u6570\u7EC4\u4E2D\
+    \u53EA\u51FA\u73B0\u5728\u672B\u5C3E\u7684\u6700\u5C0F\u5B57\u7B26\uFF01\n * @param\
+    \ K \u5B57\u7B26\u4E32\u6570\u7EC4\u7684\u503C\u57DF\uFF0C\u7531 [0, K)\n * @return\
+    \ std::vector<int>\n */\nstd::vector<int> SA_IS(const std::vector<int> &s, int\
+    \ K) {\n  const int n = s.size();\n  std::vector<bool> t(n);\n  std::vector<int>\
+    \ bkt(K, 0), bkt_l(K), bkt_r(K), SA(n), p1;\n#define is_S_type(x) (t[x])\n#define\
+    \ is_L_type(x) (!t[x])\n#define is_LMS_type(x) (is_S_type(x) && x != 0 && is_L_type(x\
+    \ - 1))\n#define induced_sort()                                              \
+    \                               \\\n  do {                                   \
+    \                                                          \\\n    std::copy_n(bkt_l.begin(),\
+    \ K, bkt.begin());                                                    \\\n   \
+    \ for (int i = 0, j; i != n; ++i)                                            \
+    \                    \\\n      if ((j = SA[i] - 1) >= 0 && is_L_type(j)) SA[bkt[s[j]]++]\
+    \ = j;                               \\\n    std::copy_n(bkt_r.begin(), K, bkt.begin());\
     \                                                    \\\n    for (int i = n -\
     \ 1, j; i >= 0; --i)                                                         \
     \   \\\n      if ((j = SA[i] - 1) >= 0 && is_S_type(j)) SA[--bkt[s[j]]] = j; \
@@ -123,24 +124,25 @@ data:
     \ res;\n}\n\n} // namespace lib\n\n\n"
   code: "#ifndef BURROWS_WHEELER_TRANSFORMATION_HEADER_HPP\n#define BURROWS_WHEELER_TRANSFORMATION_HEADER_HPP\n\
     \n/**\n * @brief Burrows-Wheeler trasformation / Burrows-Wheeler \u53D8\u6362\n\
-    \ *\n */\n\n#include <algorithm>\n#include <cassert>\n#include <string>\n#include\
-    \ <vector>\n\n#include \"suffix_array_sais.hpp\"\n\nnamespace lib {\n\n/**\n *\
+    \ * @docs docs/string/bwt.md\n */\n\n#include <algorithm>\n#include <cassert>\n\
+    #include <string>\n#include <vector>\n\n#include \"suffix_array_sais.hpp\"\n\n\
+    namespace lib {\n\n/**\n * @brief \u83B7\u53D6 BWT \u6570\u7EC4\uFF08\u5B57\u7B26\
+    \u4E32\uFF09\n * @param v \u5B57\u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\
+    \u8BC1 0 \u662F\u672A\u51FA\u73B0\u7684\u6700\u5C0F\u503C\n * @param SA v \u7684\
+    \u540E\u7F00\u6570\u7EC4\n */\ntemplate <typename Container> Container bwt(const\
+    \ Container &v, const std::vector<int> &SA) {\n  int n = v.size();\n  Container\
+    \ res;\n  res.resize(n + 1);\n  for (int i = 0; i < n; ++i) res[i + 1] = SA[i]\
+    \ != 0 ? v[SA[i] - 1] : 0;\n  res[0] = v.back();\n  return res;\n}\n\n/**\n *\
     \ @brief \u83B7\u53D6 BWT \u6570\u7EC4\uFF08\u5B57\u7B26\u4E32\uFF09\n * @param\
     \ v \u5B57\u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\u8BC1 0 \u662F\u672A\
-    \u51FA\u73B0\u7684\u6700\u5C0F\u503C\n * @param SA v \u7684\u540E\u7F00\u6570\u7EC4\
-    \n */\ntemplate <typename Container> Container bwt(const Container &v, const std::vector<int>\
-    \ &SA) {\n  int n = v.size();\n  Container res;\n  res.resize(n + 1);\n  for (int\
-    \ i = 0; i < n; ++i) res[i + 1] = SA[i] != 0 ? v[SA[i] - 1] : 0;\n  res[0] = v.back();\n\
-    \  return res;\n}\n\n/**\n * @brief \u83B7\u53D6 BWT \u6570\u7EC4\uFF08\u5B57\u7B26\
-    \u4E32\uFF09\n * @param v \u5B57\u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\
-    \u8BC1 0 \u662F\u672A\u51FA\u73B0\u7684\u6700\u5C0F\u503C\n */\ntemplate <typename\
-    \ Container> Container bwt(const Container &v) { return bwt(v, get_sa(v)); }\n\
-    \n/**\n * @brief \u4ECE BWT \u6570\u7EC4\u8BA1\u7B97\u539F\u6570\u7EC4\uFF08\u5B57\
-    \u7B26\u4E32\uFF09\n * @ref M. Burrows and D. J. Wheeler. A block-sorting lossless\
-    \ data compression algorithm.\n *      Technical Report 124, Digital Equipment\
-    \ Corporation, Palo Alto, California, 1994.\n * @param v BWT \u6570\u7EC4\uFF0C\
-    \u5176\u4E2D\u5FC5\u6709\u4E00\u4E2A 0\n */\ntemplate <typename Container> Container\
-    \ ibwt(const Container &v) {\n  int n = v.size();\n  int K = *std::max_element(v.begin(),\
+    \u51FA\u73B0\u7684\u6700\u5C0F\u503C\n */\ntemplate <typename Container> Container\
+    \ bwt(const Container &v) { return bwt(v, get_sa(v)); }\n\n/**\n * @brief \u4ECE\
+    \ BWT \u6570\u7EC4\u8BA1\u7B97\u539F\u6570\u7EC4\uFF08\u5B57\u7B26\u4E32\uFF09\
+    \n * @ref M. Burrows and D. J. Wheeler. A block-sorting lossless data compression\
+    \ algorithm.\n *      Technical Report 124, Digital Equipment Corporation, Palo\
+    \ Alto, California, 1994.\n * @param v BWT \u6570\u7EC4\uFF0C\u5176\u4E2D\u5FC5\
+    \u6709\u4E00\u4E2A 0\n */\ntemplate <typename Container> Container ibwt(const\
+    \ Container &v) {\n  int n = v.size();\n  int K = *std::max_element(v.begin(),\
     \ v.end()) + 1;\n  Container res;\n  res.resize(n); // \u4E3A\u4E86 std::string\
     \ \u7279\u6B8A\u5904\u7406\n  // C[i] \u4E3A\u5B57\u7B26 i \u51FA\u73B0\u7684\u6B21\
     \u6570\uFF0C P[i] \u4E3A v[i] \u5728\u524D\u7F00\u4E2D\u51FA\u73B0\u7684\u6B21\
@@ -166,14 +168,16 @@ data:
   isVerificationFile: false
   path: string/bwt.hpp
   requiredBy: []
-  timestamp: '2021-06-24 06:20:59+08:00'
+  timestamp: '2021-06-27 15:17:15+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: string/bwt.hpp
 layout: document
+redirect_from:
+- /library/string/bwt.hpp
+- /library/string/bwt.hpp.html
 title: "Burrows-Wheeler trasformation / Burrows-Wheeler \u53D8\u6362"
 ---
-
 ## Burrows-Wheeler 变换
 
 对于字符串 $s=\texttt{banana0}$ 定义其后缀数组 SA 为
