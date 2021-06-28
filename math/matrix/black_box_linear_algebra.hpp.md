@@ -53,7 +53,7 @@ data:
     \ Fields.\n * @return std::vector<Type> \u9996\u4E00\u591A\u9879\u5F0F\n */\n\
     template <typename MatType, typename Type = typename MatType::value_type>\nstd::vector<Type>\
     \ black_box_minpoly(const MatType &m) {\n  static std::random_device rd;\n  static\
-    \ std::mt19937 gen(rd());\n  std::uniform_int_distribution<unsigned long long>\
+    \ std::mt19937 gen(rd());\n  std::uniform_int_distribution<typename Type::value_type>\
     \ dis(1, Type::get_mod() - 1);\n  auto gen1 = [&dis]() { return dis(gen); };\n\
     \  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
     \ gen1);\n  const Type ZERO(0);\n  int n = m.row();\n  assert(n == m.col());\n\
@@ -68,9 +68,9 @@ data:
     \u673A\u5316\u7B97\u6CD5\uFF09\n * @ref Douglas H. Wiedemann (1986). Solving Sparse\
     \ Linear Equations Over Finite Fields.\n */\ntemplate <typename MatType, typename\
     \ Type = typename MatType::value_type>\nType black_box_det(const MatType &m) {\n\
-    \  static std::random_device rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<unsigned\
-    \ long long> dis(1, Type::get_mod() - 1);\n  auto gen1 = [&dis]() { return dis(gen);\
-    \ };\n  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
+    \  static std::random_device rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<typename\
+    \ Type::value_type> dis(1, Type::get_mod() - 1);\n  auto gen1 = [&dis]() { return\
+    \ dis(gen); };\n  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
     \ gen1);\n  const Type ZERO(0);\n  int n = m.row();\n  assert(n == m.col());\n\
     \  std::vector<Type> u = std::move(gen2(n)), v = std::move(gen2(n)), diag = std::move(gen2(n)),\n\
     \                    bilinear_projection(n << 1);\n  for (int i = 0; i < (n <<\
@@ -93,7 +93,7 @@ data:
     \ Fields.\n * @return std::vector<Type> \u9996\u4E00\u591A\u9879\u5F0F\n */\n\
     template <typename MatType, typename Type = typename MatType::value_type>\nstd::vector<Type>\
     \ black_box_minpoly(const MatType &m) {\n  static std::random_device rd;\n  static\
-    \ std::mt19937 gen(rd());\n  std::uniform_int_distribution<unsigned long long>\
+    \ std::mt19937 gen(rd());\n  std::uniform_int_distribution<typename Type::value_type>\
     \ dis(1, Type::get_mod() - 1);\n  auto gen1 = [&dis]() { return dis(gen); };\n\
     \  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
     \ gen1);\n  const Type ZERO(0);\n  int n = m.row();\n  assert(n == m.col());\n\
@@ -108,9 +108,9 @@ data:
     \u673A\u5316\u7B97\u6CD5\uFF09\n * @ref Douglas H. Wiedemann (1986). Solving Sparse\
     \ Linear Equations Over Finite Fields.\n */\ntemplate <typename MatType, typename\
     \ Type = typename MatType::value_type>\nType black_box_det(const MatType &m) {\n\
-    \  static std::random_device rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<unsigned\
-    \ long long> dis(1, Type::get_mod() - 1);\n  auto gen1 = [&dis]() { return dis(gen);\
-    \ };\n  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
+    \  static std::random_device rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<typename\
+    \ Type::value_type> dis(1, Type::get_mod() - 1);\n  auto gen1 = [&dis]() { return\
+    \ dis(gen); };\n  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
     \ gen1);\n  const Type ZERO(0);\n  int n = m.row();\n  assert(n == m.col());\n\
     \  std::vector<Type> u = std::move(gen2(n)), v = std::move(gen2(n)), diag = std::move(gen2(n)),\n\
     \                    bilinear_projection(n << 1);\n  for (int i = 0; i < (n <<\
@@ -125,7 +125,7 @@ data:
   isVerificationFile: false
   path: math/matrix/black_box_linear_algebra.hpp
   requiredBy: []
-  timestamp: '2021-06-28 18:43:38+08:00'
+  timestamp: '2021-06-28 19:24:05+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.1.test.cpp
