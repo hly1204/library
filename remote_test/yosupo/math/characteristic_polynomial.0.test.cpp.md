@@ -28,11 +28,12 @@ data:
     \n\n#include <iostream>\n\n#line 1 \"math/matrix/characteristic_polynomial.hpp\"\
     \n\n\n\n/**\n * @brief characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F\
     \n *\n */\n\n#include <vector>\n\nnamespace lib {\n\n/**\n * @brief \u83B7\u53D6\
-    \u65B9\u9635\u7684\u7279\u5F81\u591A\u9879\u5F0F\n * @tparam Type \u65B9\u9635\
-    \u4E2D\u7684\u5143\u7D20\n * @param m \u65B9\u9635 m\n * @return std::vector<Type>\n\
-    \ */\ntemplate <typename MatType, typename Type = typename MatType::value_type>\n\
-    std::vector<Type> get_charpoly(const MatType &m) {\n  auto h = m.to_upper_Hessenberg();\n\
-    \  int n = m.row();\n  std::vector<std::vector<Type>> p(n + 1);\n  p[0] = {Type(1)};\n\
+    \u65B9\u9635\u7684\u7279\u5F81\u591A\u9879\u5F0F\n * @note \u7279\u5F81\u591A\u9879\
+    \u5F0F det(xI-m) \u800C\u975E det(m-xI)\n * @tparam Type \u65B9\u9635\u4E2D\u7684\
+    \u5143\u7D20\n * @param m \u65B9\u9635 m\n * @return std::vector<Type>\n */\n\
+    template <typename MatType, typename Type = typename MatType::value_type>\nstd::vector<Type>\
+    \ get_charpoly(const MatType &m) {\n  auto h = m.to_upper_Hessenberg();\n  int\
+    \ n = m.row();\n  std::vector<std::vector<Type>> p(n + 1);\n  p[0] = {Type(1)};\n\
     \  for (int i = 1; i <= n; ++i) {\n    const std::vector<Type> &pi_1 = p[i - 1];\n\
     \    std::vector<Type> &pi = p[i];\n    pi.resize(i + 1, Type(0));\n    Type v\
     \ = -h.at(i - 1, i - 1);\n    for (int j = 0; j < i; ++j) {\n      pi[j] += pi_1[j]\
@@ -255,7 +256,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-28 18:28:55+08:00'
+  timestamp: '2021-06-28 18:43:38+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp

@@ -32,10 +32,10 @@ data:
     \n#line 1 \"math/matrix/black_box_linear_algebra.hpp\"\n\n\n\n/**\n * @brief black\
     \ box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570\n * @docs docs/math/matrix/black_box_linear_algebra.md\n\
     \ */\n\n#include <algorithm>\n#include <cassert>\n#include <functional>\n#include\
-    \ <random>\n#include <vector>\n\n#line 1 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
+    \ <random>\n#include <utility>\n#include <vector>\n\n#line 1 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
     \n\n\n\n/**\n * @brief find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\
     \u77ED\u7EBF\u6027\u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5\n * @docs docs/math/modulo/find_shortest_LFSR_Berlekamp_Massey.md\n\
-    \ */\n\n#include <numeric>\n#include <utility>\n#line 12 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
+    \ */\n\n#include <numeric>\n#line 12 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
     \n\nnamespace lib {\n\n/**\n * @brief \u5BFB\u627E\u6700\u77ED LFSR \uFF08\u4F46\
     \u4EC5\u5F53 L*2 <= N \u65F6\u552F\u4E00\uFF09\n * @ref J.L. Massey, Shift register\
     \ synthesis and BCH decoding,\n *      IEEE Trans. Inform. Theory, vol. IT-15,\
@@ -55,7 +55,7 @@ data:
     \ < B.size() + x) C.resize(B.size() + x, ZERO);\n      mod_t coef = d / b;\n \
     \     for (int i = x, ie = B.size() + x; i < ie; ++i) C[i] -= coef * B[i - x];\n\
     \      L = N + 1 - L, B = std::move(T), b = d, x = 1;\n    }\n  }\n  return C;\n\
-    }\n\n} // namespace lib\n\n\n#line 16 \"math/matrix/black_box_linear_algebra.hpp\"\
+    }\n\n} // namespace lib\n\n\n#line 17 \"math/matrix/black_box_linear_algebra.hpp\"\
     \n\nnamespace lib {\n\ntemplate <typename T, typename GenFunc> std::vector<T>\
     \ get_rand_vec(int s, GenFunc &gen) {\n  std::vector<T> res(s);\n  std::generate(res.begin(),\
     \ res.end(), gen);\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\
@@ -68,13 +68,13 @@ data:
     \ dis(1, Type::get_mod() - 1);\n  auto gen1 = [&dis]() { return dis(gen); };\n\
     \  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
     \ gen1);\n  const Type ZERO(0);\n  int n = m.row();\n  assert(n == m.col());\n\
-    \  std::vector<Type> u = gen2(n), v = gen2(n), bilinear_projection(n << 1);\n\
-    \  for (int i = 0; i < (n << 1); ++i) {\n    bilinear_projection[i] = std::inner_product(u.begin(),\
-    \ u.end(), v.begin(), ZERO);\n    v = std::move(m.apply(v));\n  }\n  std::vector<Type>\
-    \ res = find_LFSR(bilinear_projection);\n  std::reverse(res.begin(),\n       \
-    \        res.end()); // \u7CFB\u6570\u7FFB\u8F6C\uFF01\u56E0\u4E3A\u5728\u8FD9\
-    \u91CC LFSR \u5BF9\u5E94\u7684\u6700\u5C0F\u591A\u9879\u5F0F\u548C\u77E9\u9635\
-    \u7684\u6700\u5C0F\u591A\u9879\u5F0F\u5B9A\u4E49\u4E0D\u540C\n  return res;\n\
+    \  std::vector<Type> u = std::move(gen2(n)), v = std::move(gen2(n)), bilinear_projection(n\
+    \ << 1);\n  for (int i = 0; i < (n << 1); ++i) {\n    bilinear_projection[i] =\
+    \ std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\n    v = std::move(m.apply(v));\n\
+    \  }\n  std::vector<Type> res = find_LFSR(bilinear_projection);\n  std::reverse(res.begin(),\n\
+    \               res.end()); // \u7CFB\u6570\u7FFB\u8F6C\uFF01\u56E0\u4E3A\u5728\
+    \u8FD9\u91CC LFSR \u5BF9\u5E94\u7684\u6700\u5C0F\u591A\u9879\u5F0F\u548C\u77E9\
+    \u9635\u7684\u6700\u5C0F\u591A\u9879\u5F0F\u5B9A\u4E49\u4E0D\u540C\n  return res;\n\
     }\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\u7684\u884C\u5217\u5F0F\uFF08\u968F\
     \u673A\u5316\u7B97\u6CD5\uFF09\n * @ref Douglas H. Wiedemann (1986). Solving Sparse\
     \ Linear Equations Over Finite Fields.\n */\ntemplate <typename MatType, typename\
@@ -83,53 +83,53 @@ data:
     \ long long> dis(1, Type::get_mod() - 1);\n  auto gen1 = [&dis]() { return dis(gen);\
     \ };\n  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
     \ gen1);\n  const Type ZERO(0);\n  int n = m.row();\n  assert(n == m.col());\n\
-    \  std::vector<Type> u = gen2(n), v = gen2(n), diag = gen2(n), bilinear_projection(n\
-    \ << 1);\n  for (int i = 0; i < (n << 1); ++i) {\n    bilinear_projection[i] =\
-    \ std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\n    for (int i = 0;\
-    \ i < n; ++i) v[i] *= diag[i];\n    v = std::move(m.apply(v));\n  }\n  std::vector<Type>\
-    \ mp = find_LFSR(bilinear_projection);\n  Type res = mp.back();\n  for (auto i\
-    \ : diag) res /= i; // diag \u90FD\u4E0D\u4E3A\u96F6\n  return (n & 1) == 1 ?\
-    \ -res : res;\n}\n\n} // namespace lib\n\n\n#line 1 \"math/matrix/square_matrix.hpp\"\
-    \n\n\n\n/**\n * @brief square matrix / \u65B9\u9635\n *\n */\n\n#line 1 \"math/matrix/matrix_base.hpp\"\
-    \n\n\n\n/**\n * @brief matrix base / \u77E9\u9635\u57FA\u7C7B\n *\n */\n\n#line\
-    \ 14 \"math/matrix/matrix_base.hpp\"\n\nnamespace lib {\n\ntemplate <typename\
-    \ Type> class Matrix {\npublic:\n  using value_type = Type;\n\n  /**\n   * @brief\
-    \ Matrix \u7C7B\n   *\n   * @param r \u884C\n   * @param c \u5217\n   * @param\
-    \ v \u521D\u503C\n   */\n  Matrix(int r, int c, const Type &v = Type()) : row_(r),\
-    \ col_(c), mat_(row_ * col_, v) {}\n  virtual ~Matrix() = default;\n  Matrix(const\
-    \ Matrix &) = default;\n\n  virtual Matrix &operator=(const Matrix &) = default;\n\
-    \n  int row() const { return row_; }\n  int col() const { return col_; }\n  int\
-    \ size() const { return row_ * col_; }\n  bool is_empty() const { return size()\
-    \ == 0; }\n\n  decltype(auto) row_begin(int r) { return mat_.begin() + r * col_;\
-    \ }\n  decltype(auto) row_cbegin(int r) const { return mat_.cbegin() + r * col_;\
-    \ }\n  decltype(auto) row_begin(int r) const { return row_cbegin(r); }\n  decltype(auto)\
-    \ row_end(int r) { return mat_.begin() + (r + 1) * col_; }\n  decltype(auto) row_cend(int\
-    \ r) const { return mat_.cbegin() + (r + 1) * col_; }\n  decltype(auto) row_end(int\
-    \ r) const { return row_cend(r); }\n\n#ifdef LOCAL\n  Type &at(int r, int c) {\
-    \ return mat_.at(r * col_ + c); }\n  const Type &at(int r, int c) const { return\
-    \ mat_.at(r * col_ + c); }\n#else\n  Type &at(int r, int c) { return mat_[r *\
-    \ col_ + c]; }\n  const Type &at(int r, int c) const { return mat_[r * col_ +\
-    \ c]; }\n#endif\n\n  virtual Matrix &operator+=(const Matrix &rhs) {\n    assert(row()\
+    \  std::vector<Type> u = std::move(gen2(n)), v = std::move(gen2(n)), diag = std::move(gen2(n)),\n\
+    \                    bilinear_projection(n << 1);\n  for (int i = 0; i < (n <<\
+    \ 1); ++i) {\n    bilinear_projection[i] = std::inner_product(u.begin(), u.end(),\
+    \ v.begin(), ZERO);\n    for (int i = 0; i < n; ++i) v[i] *= diag[i];\n    v =\
+    \ std::move(m.apply(v));\n  }\n  std::vector<Type> mp = find_LFSR(bilinear_projection);\n\
+    \  Type res = mp.back();\n  for (auto i : diag) res /= i; // diag \u90FD\u4E0D\
+    \u4E3A\u96F6\n  return (n & 1) == 1 ? -res : res;\n}\n\n} // namespace lib\n\n\
+    \n#line 1 \"math/matrix/square_matrix.hpp\"\n\n\n\n/**\n * @brief square matrix\
+    \ / \u65B9\u9635\n *\n */\n\n#line 1 \"math/matrix/matrix_base.hpp\"\n\n\n\n/**\n\
+    \ * @brief matrix base / \u77E9\u9635\u57FA\u7C7B\n *\n */\n\n#line 14 \"math/matrix/matrix_base.hpp\"\
+    \n\nnamespace lib {\n\ntemplate <typename Type> class Matrix {\npublic:\n  using\
+    \ value_type = Type;\n\n  /**\n   * @brief Matrix \u7C7B\n   *\n   * @param r\
+    \ \u884C\n   * @param c \u5217\n   * @param v \u521D\u503C\n   */\n  Matrix(int\
+    \ r, int c, const Type &v = Type()) : row_(r), col_(c), mat_(row_ * col_, v) {}\n\
+    \  virtual ~Matrix() = default;\n  Matrix(const Matrix &) = default;\n\n  virtual\
+    \ Matrix &operator=(const Matrix &) = default;\n\n  int row() const { return row_;\
+    \ }\n  int col() const { return col_; }\n  int size() const { return row_ * col_;\
+    \ }\n  bool is_empty() const { return size() == 0; }\n\n  decltype(auto) row_begin(int\
+    \ r) { return mat_.begin() + r * col_; }\n  decltype(auto) row_cbegin(int r) const\
+    \ { return mat_.cbegin() + r * col_; }\n  decltype(auto) row_begin(int r) const\
+    \ { return row_cbegin(r); }\n  decltype(auto) row_end(int r) { return mat_.begin()\
+    \ + (r + 1) * col_; }\n  decltype(auto) row_cend(int r) const { return mat_.cbegin()\
+    \ + (r + 1) * col_; }\n  decltype(auto) row_end(int r) const { return row_cend(r);\
+    \ }\n\n#ifdef LOCAL\n  Type &at(int r, int c) { return mat_.at(r * col_ + c);\
+    \ }\n  const Type &at(int r, int c) const { return mat_.at(r * col_ + c); }\n\
+    #else\n  Type &at(int r, int c) { return mat_[r * col_ + c]; }\n  const Type &at(int\
+    \ r, int c) const { return mat_[r * col_ + c]; }\n#endif\n\n  virtual Matrix &operator+=(const\
+    \ Matrix &rhs) {\n    assert(row() == rhs.row());\n    assert(col() == rhs.col());\n\
+    \    for (int i = 0, n = size(); i < n; ++i) mat_[i] -= rhs.mat_[i];\n    return\
+    \ *this;\n  }\n\n  virtual Matrix &operator-=(const Matrix &rhs) {\n    assert(row()\
     \ == rhs.row());\n    assert(col() == rhs.col());\n    for (int i = 0, n = size();\
     \ i < n; ++i) mat_[i] -= rhs.mat_[i];\n    return *this;\n  }\n\n  virtual Matrix\
-    \ &operator-=(const Matrix &rhs) {\n    assert(row() == rhs.row());\n    assert(col()\
-    \ == rhs.col());\n    for (int i = 0, n = size(); i < n; ++i) mat_[i] -= rhs.mat_[i];\n\
-    \    return *this;\n  }\n\n  virtual Matrix transpose() const {\n    int n = row(),\
-    \ m = col();\n    Matrix res(m, n, Type(0));\n    for (int i = 0; i < n; ++i)\n\
-    \      for (int j = 0; j < m; ++j) res.at(j, i) = at(i, j);\n    return res;\n\
-    \  }\n\n  /**\n   * @brief \u8FD4\u56DE\u77E9\u9635\u548C\u5217\u5411\u91CF x\
-    \ \u7684\u79EF\n   * @param x \u5217\u5411\u91CF x \u6EE1\u8DB3 x \u7684\u884C\
-    \u6570\u7B49\u4E8E\u77E9\u9635\u7684\u5217\u6570\n   * @return std::vector<Type>\n\
-    \   */\n  virtual std::vector<Type> apply(const std::vector<Type> &x) const {\n\
-    \    assert(col() == x.size());\n    int n = row();\n    std::vector<Type> res(n);\n\
-    \    for (int i = 0; i < n; ++i)\n      res[i] = std::inner_product(row_begin(i),\
-    \ row_end(i), x.begin(), Type(0));\n    return res;\n  }\n\n  /**\n   * @brief\
-    \ \u77E9\u9635\u4E58\u6CD5\n   * @param rhs \u53F3\u4E58\u7684\u77E9\u9635\n \
-    \  * @return Matrix&\n   */\n  virtual Matrix &operator*=(const Matrix &rhs) {\n\
-    \    int n = row(), m = rhs.col(), l = col();\n    assert(l == rhs.row());\n \
-    \   // n*l \u7684\u77E9\u9635\u53F3\u4E58\u4E00\u4E2A l*m \u7684\u77E9\u9635\n\
-    \    Matrix res(n, m), trhs(rhs.transpose());\n    for (int i = 0; i < n; ++i)\n\
-    \      for (int j = 0; j < m; ++j)\n        res.at(i, j) = std::inner_product(row_begin(i),\
+    \ transpose() const {\n    int n = row(), m = col();\n    Matrix res(m, n, Type(0));\n\
+    \    for (int i = 0; i < n; ++i)\n      for (int j = 0; j < m; ++j) res.at(j,\
+    \ i) = at(i, j);\n    return res;\n  }\n\n  /**\n   * @brief \u8FD4\u56DE\u77E9\
+    \u9635\u548C\u5217\u5411\u91CF x \u7684\u79EF\n   * @param x \u5217\u5411\u91CF\
+    \ x \u6EE1\u8DB3 x \u7684\u884C\u6570\u7B49\u4E8E\u77E9\u9635\u7684\u5217\u6570\
+    \n   * @return std::vector<Type>\n   */\n  virtual std::vector<Type> apply(const\
+    \ std::vector<Type> &x) const {\n    assert(col() == x.size());\n    int n = row();\n\
+    \    std::vector<Type> res(n);\n    for (int i = 0; i < n; ++i)\n      res[i]\
+    \ = std::inner_product(row_begin(i), row_end(i), x.begin(), Type(0));\n    return\
+    \ res;\n  }\n\n  /**\n   * @brief \u77E9\u9635\u4E58\u6CD5\n   * @param rhs \u53F3\
+    \u4E58\u7684\u77E9\u9635\n   * @return Matrix&\n   */\n  virtual Matrix &operator*=(const\
+    \ Matrix &rhs) {\n    int n = row(), m = rhs.col(), l = col();\n    assert(l ==\
+    \ rhs.row());\n    // n*l \u7684\u77E9\u9635\u53F3\u4E58\u4E00\u4E2A l*m \u7684\
+    \u77E9\u9635\n    Matrix res(n, m), trhs(rhs.transpose());\n    for (int i = 0;\
+    \ i < n; ++i)\n      for (int j = 0; j < m; ++j)\n        res.at(i, j) = std::inner_product(row_begin(i),\
     \ row_end(i), trhs.row_begin(j), Type(0));\n    return this->operator=(res);\n\
     \  }\n\n  virtual Matrix operator+(const Matrix &rhs) { return Matrix(*this) +=\
     \ rhs; }\n  virtual Matrix operator-(const Matrix &rhs) { return Matrix(*this)\
@@ -302,7 +302,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/matrix/matrix_det.1.test.cpp
   requiredBy: []
-  timestamp: '2021-06-28 18:28:55+08:00'
+  timestamp: '2021-06-28 18:43:38+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/matrix_det.1.test.cpp
