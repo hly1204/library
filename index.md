@@ -71,6 +71,9 @@ data:
   - name: math/matrix
     pages:
     - icon: ':heavy_check_mark:'
+      path: math/matrix/black_box_linear_algebra.hpp
+      title: "black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570"
+    - icon: ':heavy_check_mark:'
       path: math/matrix/characteristic_polynomial.hpp
       title: "characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F"
     - icon: ':heavy_check_mark:'
@@ -231,6 +234,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/matrix/matrix_det.0.test.cpp
       title: remote_test/yosupo/matrix/matrix_det.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/matrix/matrix_det.1.test.cpp
+      title: remote_test/yosupo/matrix/matrix_det.1.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/matrix/matrix_product.0.test.cpp
       title: remote_test/yosupo/matrix/matrix_product.0.test.cpp

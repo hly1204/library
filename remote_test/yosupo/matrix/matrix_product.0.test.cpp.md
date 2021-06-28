@@ -46,28 +46,35 @@ data:
     \ i < n; ++i) mat_[i] -= rhs.mat_[i];\n    return *this;\n  }\n\n  virtual Matrix\
     \ transpose() const {\n    int n = row(), m = col();\n    Matrix res(m, n, Type(0));\n\
     \    for (int i = 0; i < n; ++i)\n      for (int j = 0; j < m; ++j) res.at(j,\
-    \ i) = at(i, j);\n    return res;\n  }\n\n  /**\n   * @brief \u77E9\u9635\u4E58\
-    \u6CD5\n   * @param rhs \u53F3\u4E58\u7684\u77E9\u9635\n   * @return Matrix&\n\
-    \   */\n  virtual Matrix &operator*=(const Matrix &rhs) {\n    int n = row(),\
-    \ m = rhs.col(), l = col();\n    assert(l == rhs.row());\n    // n*l \u7684\u77E9\
-    \u9635\u53F3\u4E58\u4E00\u4E2A l*m \u7684\u77E9\u9635\n    Matrix res(n, m), trhs(rhs.transpose());\n\
-    \    for (int i = 0; i < n; ++i)\n      for (int j = 0; j < m; ++j)\n        res.at(i,\
-    \ j) = std::inner_product(row_begin(i), row_end(i), trhs.row_begin(j), Type(0));\n\
-    \    return this->operator=(res);\n  }\n\n  virtual Matrix operator+(const Matrix\
-    \ &rhs) { return Matrix(*this) += rhs; }\n  virtual Matrix operator-(const Matrix\
-    \ &rhs) { return Matrix(*this) -= rhs; }\n  virtual Matrix operator*(const Matrix\
-    \ &rhs) { return Matrix(*this) *= rhs; }\n\n  friend std::istream &operator>>(std::istream\
-    \ &is, Matrix &rhs) {\n    for (auto &i : rhs.mat_) is >> i;\n    return is;\n\
-    \  }\n  friend std::ostream &operator<<(std::ostream &os, const Matrix &rhs) {\n\
-    \    int n = rhs.col();\n    for (int i = 0, e = rhs.size(), k = 0; i < e; ++i)\
-    \ {\n      os << rhs.mat_[i];\n      if (++k == n) {\n        k = 0;\n       \
-    \ std::cout << '\\n';\n      } else {\n        std::cout << ' ';\n      }\n  \
-    \  }\n    return os;\n  }\n\nprotected:\n  int row_, col_;\n  std::vector<Type>\
-    \ mat_;\n};\n\n} // namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\
-    \n\n\n\n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs\
-    \ docs/modint/Montgomery_modint.md\n */\n\n#include <cstdint>\n#line 11 \"modint/Montgomery_modint.hpp\"\
-    \n#include <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\
-    \u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \ i) = at(i, j);\n    return res;\n  }\n\n  /**\n   * @brief \u8FD4\u56DE\u77E9\
+    \u9635\u548C\u5217\u5411\u91CF x \u7684\u79EF\n   * @param x \u5217\u5411\u91CF\
+    \ x \u6EE1\u8DB3 x \u7684\u884C\u6570\u7B49\u4E8E\u77E9\u9635\u7684\u5217\u6570\
+    \n   * @return std::vector<Type>\n   */\n  virtual std::vector<Type> apply(const\
+    \ std::vector<Type> &x) const {\n    assert(col() == x.size());\n    int n = row();\n\
+    \    std::vector<Type> res(n);\n    for (int i = 0; i < n; ++i)\n      res[i]\
+    \ = std::inner_product(row_begin(i), row_end(i), x.begin(), Type(0));\n    return\
+    \ res;\n  }\n\n  /**\n   * @brief \u77E9\u9635\u4E58\u6CD5\n   * @param rhs \u53F3\
+    \u4E58\u7684\u77E9\u9635\n   * @return Matrix&\n   */\n  virtual Matrix &operator*=(const\
+    \ Matrix &rhs) {\n    int n = row(), m = rhs.col(), l = col();\n    assert(l ==\
+    \ rhs.row());\n    // n*l \u7684\u77E9\u9635\u53F3\u4E58\u4E00\u4E2A l*m \u7684\
+    \u77E9\u9635\n    Matrix res(n, m), trhs(rhs.transpose());\n    for (int i = 0;\
+    \ i < n; ++i)\n      for (int j = 0; j < m; ++j)\n        res.at(i, j) = std::inner_product(row_begin(i),\
+    \ row_end(i), trhs.row_begin(j), Type(0));\n    return this->operator=(res);\n\
+    \  }\n\n  virtual Matrix operator+(const Matrix &rhs) { return Matrix(*this) +=\
+    \ rhs; }\n  virtual Matrix operator-(const Matrix &rhs) { return Matrix(*this)\
+    \ -= rhs; }\n  virtual Matrix operator*(const Matrix &rhs) { return Matrix(*this)\
+    \ *= rhs; }\n\n  friend std::istream &operator>>(std::istream &is, Matrix &rhs)\
+    \ {\n    for (auto &i : rhs.mat_) is >> i;\n    return is;\n  }\n  friend std::ostream\
+    \ &operator<<(std::ostream &os, const Matrix &rhs) {\n    int n = rhs.col();\n\
+    \    for (int i = 0, e = rhs.size(), k = 0; i < e; ++i) {\n      os << rhs.mat_[i];\n\
+    \      if (++k == n) {\n        k = 0;\n        std::cout << '\\n';\n      } else\
+    \ {\n        std::cout << ' ';\n      }\n    }\n    return os;\n  }\n\nprotected:\n\
+    \  int row_, col_;\n  std::vector<Type> mat_;\n};\n\n} // namespace lib\n\n\n\
+    #line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief Montgomery modint\
+    \ / Montgomery \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n\
+    \ */\n\n#include <cstdint>\n#line 11 \"modint/Montgomery_modint.hpp\"\n#include\
+    \ <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\
+    \n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
@@ -137,7 +144,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/matrix/matrix_product.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-27 15:17:15+08:00'
+  timestamp: '2021-06-28 18:28:55+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/matrix_product.0.test.cpp

@@ -2,11 +2,18 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: math/matrix/black_box_linear_algebra.hpp
+    title: "black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570"
+  - icon: ':heavy_check_mark:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
   - icon: ':heavy_check_mark:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
+  - icon: ':heavy_check_mark:'
+    path: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
+    title: "find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\u77ED\u7EBF\u6027\
+      \u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5"
   - icon: ':heavy_check_mark:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
@@ -17,16 +24,75 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/inverse_matrix
+    PROBLEM: https://judge.yosupo.jp/problem/matrix_det
     links:
-    - https://judge.yosupo.jp/problem/inverse_matrix
-  bundledCode: "#line 1 \"remote_test/yosupo/matrix/inverse_matrix.0.test.cpp\"\n\
-    #define PROBLEM \"https://judge.yosupo.jp/problem/inverse_matrix\"\n\n#include\
-    \ <iostream>\n\n#line 1 \"math/matrix/square_matrix.hpp\"\n\n\n\n/**\n * @brief\
-    \ square matrix / \u65B9\u9635\n *\n */\n\n#line 1 \"math/matrix/matrix_base.hpp\"\
-    \n\n\n\n/**\n * @brief matrix base / \u77E9\u9635\u57FA\u7C7B\n *\n */\n\n#include\
-    \ <algorithm>\n#include <cassert>\n#line 12 \"math/matrix/matrix_base.hpp\"\n\
-    #include <numeric>\n#include <vector>\n\nnamespace lib {\n\ntemplate <typename\
+    - https://judge.yosupo.jp/problem/matrix_det
+  bundledCode: "#line 1 \"remote_test/yosupo/matrix/matrix_det.1.test.cpp\"\n#define\
+    \ PROBLEM \"https://judge.yosupo.jp/problem/matrix_det\"\n\n#include <iostream>\n\
+    \n#line 1 \"math/matrix/black_box_linear_algebra.hpp\"\n\n\n\n/**\n * @brief black\
+    \ box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570\n * @docs docs/math/matrix/black_box_linear_algebra.md\n\
+    \ */\n\n#include <algorithm>\n#include <cassert>\n#include <functional>\n#include\
+    \ <random>\n#include <vector>\n\n#line 1 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
+    \n\n\n\n/**\n * @brief find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\
+    \u77ED\u7EBF\u6027\u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5\n * @docs docs/math/modulo/find_shortest_LFSR_Berlekamp_Massey.md\n\
+    \ */\n\n#include <numeric>\n#include <utility>\n#line 12 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
+    \n\nnamespace lib {\n\n/**\n * @brief \u5BFB\u627E\u6700\u77ED LFSR \uFF08\u4F46\
+    \u4EC5\u5F53 L*2 <= N \u65F6\u552F\u4E00\uFF09\n * @ref J.L. Massey, Shift register\
+    \ synthesis and BCH decoding,\n *      IEEE Trans. Inform. Theory, vol. IT-15,\
+    \ 122\u2013127 (1969).\n * @tparam mod_t \u6709\u9664\u6CD5\uFF0C\u5FC5\u987B\u4E3A\
+    \u57DF\n * @param s s_0, s_1, ..., s_{n-1}\n * @return std::vector<mod_t> C(x)=1+c_{1}*x+c_{2}*x^{2}+...+c_{L}*x^{L}\n\
+    \ *         \u5BF9\u4E8E\u6240\u6709 i>=L \u548C s = s_0, s_1, ..., s_{L-1}\n\
+    \ *         \u6EE1\u8DB3 s_{i} + c_{1}*s_{i-1} + c_{2}*s_{i-2} + ... + c_{L}*s_{i-L}\
+    \ = 0\n */\ntemplate <typename mod_t> std::vector<mod_t> find_LFSR(const std::vector<mod_t>\
+    \ &s) {\n  const mod_t ZERO(0);\n  std::vector<mod_t> C{mod_t(1)}, B(C);\n  mod_t\
+    \ b(1);\n  for (int N = 0, n = s.size(), L = 0, x = 1; N < n; ++N) {\n    mod_t\
+    \ d(s[N]);\n    for (int i = 1; i <= L; ++i) d += C[i] * s[N - i];\n    if (d\
+    \ == ZERO) {\n      ++x;\n    } else if ((L << 1) > N) {\n      // C(D)=C(D)-d/bD^xB(D)\n\
+    \      if (C.size() < B.size() + x) C.resize(B.size() + x, ZERO);\n      mod_t\
+    \ coef = d / b;\n      for (int i = x, ie = B.size() + x; i < ie; ++i) C[i] -=\
+    \ coef * B[i - x];\n      ++x;\n    } else {\n      std::vector<mod_t> T(C); //\
+    \ \u8BB0\u5F55 next discrepancy\n      // C(D)=C(D)-d/bD^xB(D)\n      if (C.size()\
+    \ < B.size() + x) C.resize(B.size() + x, ZERO);\n      mod_t coef = d / b;\n \
+    \     for (int i = x, ie = B.size() + x; i < ie; ++i) C[i] -= coef * B[i - x];\n\
+    \      L = N + 1 - L, B = std::move(T), b = d, x = 1;\n    }\n  }\n  return C;\n\
+    }\n\n} // namespace lib\n\n\n#line 16 \"math/matrix/black_box_linear_algebra.hpp\"\
+    \n\nnamespace lib {\n\ntemplate <typename T, typename GenFunc> std::vector<T>\
+    \ get_rand_vec(int s, GenFunc &gen) {\n  std::vector<T> res(s);\n  std::generate(res.begin(),\
+    \ res.end(), gen);\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\
+    \u7684\u6700\u5C0F\u591A\u9879\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\
+    \n * @ref Douglas H. Wiedemann (1986). Solving Sparse Linear Equations Over Finite\
+    \ Fields.\n * @return std::vector<Type> \u9996\u4E00\u591A\u9879\u5F0F\n */\n\
+    template <typename MatType, typename Type = typename MatType::value_type>\nstd::vector<Type>\
+    \ black_box_minpoly(const MatType &m) {\n  static std::random_device rd;\n  static\
+    \ std::mt19937 gen(rd());\n  std::uniform_int_distribution<unsigned long long>\
+    \ dis(1, Type::get_mod() - 1);\n  auto gen1 = [&dis]() { return dis(gen); };\n\
+    \  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
+    \ gen1);\n  const Type ZERO(0);\n  int n = m.row();\n  assert(n == m.col());\n\
+    \  std::vector<Type> u = gen2(n), v = gen2(n), bilinear_projection(n << 1);\n\
+    \  for (int i = 0; i < (n << 1); ++i) {\n    bilinear_projection[i] = std::inner_product(u.begin(),\
+    \ u.end(), v.begin(), ZERO);\n    v = std::move(m.apply(v));\n  }\n  std::vector<Type>\
+    \ res = find_LFSR(bilinear_projection);\n  std::reverse(res.begin(),\n       \
+    \        res.end()); // \u7CFB\u6570\u7FFB\u8F6C\uFF01\u56E0\u4E3A\u5728\u8FD9\
+    \u91CC LFSR \u5BF9\u5E94\u7684\u6700\u5C0F\u591A\u9879\u5F0F\u548C\u77E9\u9635\
+    \u7684\u6700\u5C0F\u591A\u9879\u5F0F\u5B9A\u4E49\u4E0D\u540C\n  return res;\n\
+    }\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\u7684\u884C\u5217\u5F0F\uFF08\u968F\
+    \u673A\u5316\u7B97\u6CD5\uFF09\n * @ref Douglas H. Wiedemann (1986). Solving Sparse\
+    \ Linear Equations Over Finite Fields.\n */\ntemplate <typename MatType, typename\
+    \ Type = typename MatType::value_type>\nType black_box_det(const MatType &m) {\n\
+    \  static std::random_device rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<unsigned\
+    \ long long> dis(1, Type::get_mod() - 1);\n  auto gen1 = [&dis]() { return dis(gen);\
+    \ };\n  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
+    \ gen1);\n  const Type ZERO(0);\n  int n = m.row();\n  assert(n == m.col());\n\
+    \  std::vector<Type> u = gen2(n), v = gen2(n), diag = gen2(n), bilinear_projection(n\
+    \ << 1);\n  for (int i = 0; i < (n << 1); ++i) {\n    bilinear_projection[i] =\
+    \ std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\n    for (int i = 0;\
+    \ i < n; ++i) v[i] *= diag[i];\n    v = std::move(m.apply(v));\n  }\n  std::vector<Type>\
+    \ mp = find_LFSR(bilinear_projection);\n  Type res = mp.back();\n  for (auto i\
+    \ : diag) res /= i; // diag \u90FD\u4E0D\u4E3A\u96F6\n  return (n & 1) == 1 ?\
+    \ -res : res;\n}\n\n} // namespace lib\n\n\n#line 1 \"math/matrix/square_matrix.hpp\"\
+    \n\n\n\n/**\n * @brief square matrix / \u65B9\u9635\n *\n */\n\n#line 1 \"math/matrix/matrix_base.hpp\"\
+    \n\n\n\n/**\n * @brief matrix base / \u77E9\u9635\u57FA\u7C7B\n *\n */\n\n#line\
+    \ 14 \"math/matrix/matrix_base.hpp\"\n\nnamespace lib {\n\ntemplate <typename\
     \ Type> class Matrix {\npublic:\n  using value_type = Type;\n\n  /**\n   * @brief\
     \ Matrix \u7C7B\n   *\n   * @param r \u884C\n   * @param c \u5217\n   * @param\
     \ v \u521D\u503C\n   */\n  Matrix(int r, int c, const Type &v = Type()) : row_(r),\
@@ -215,33 +281,34 @@ data:
     \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
     \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
     \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n\n#line 7 \"remote_test/yosupo/matrix/inverse_matrix.0.test.cpp\"\
+    \ // namespace lib\n\n\n#line 8 \"remote_test/yosupo/matrix/matrix_det.1.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n;\n  std::cin >> n;\n  lib::SquareMatrix<lib::MontModInt<998244353>> m(n);\n\
-    \  std::cin >> m;\n  auto iv = m.inv();\n  if (iv.is_empty())\n    std::cout <<\
-    \ \"-1\";\n  else\n    std::cout << iv;\n  return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inverse_matrix\"\n\n#include\
-    \ <iostream>\n\n#include \"math/matrix/square_matrix.hpp\"\n#include \"modint/Montgomery_modint.hpp\"\
+    \  std::cin >> m;\n  std::cout << lib::black_box_det(m);\n  return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/matrix_det\"\n\n#include\
+    \ <iostream>\n\n#include \"math/matrix/black_box_linear_algebra.hpp\"\n#include\
+    \ \"math/matrix/square_matrix.hpp\"\n#include \"modint/Montgomery_modint.hpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n;\n  std::cin >> n;\n  lib::SquareMatrix<lib::MontModInt<998244353>> m(n);\n\
-    \  std::cin >> m;\n  auto iv = m.inv();\n  if (iv.is_empty())\n    std::cout <<\
-    \ \"-1\";\n  else\n    std::cout << iv;\n  return 0;\n}"
+    \  std::cin >> m;\n  std::cout << lib::black_box_det(m);\n  return 0;\n}"
   dependsOn:
+  - math/matrix/black_box_linear_algebra.hpp
+  - math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
   - math/matrix/square_matrix.hpp
   - math/matrix/matrix_base.hpp
   - modint/Montgomery_modint.hpp
   isVerificationFile: true
-  path: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
+  path: remote_test/yosupo/matrix/matrix_det.1.test.cpp
   requiredBy: []
   timestamp: '2021-06-28 18:28:55+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
+documentation_of: remote_test/yosupo/matrix/matrix_det.1.test.cpp
 layout: document
 redirect_from:
-- /verify/remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
-- /verify/remote_test/yosupo/matrix/inverse_matrix.0.test.cpp.html
-title: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
+- /verify/remote_test/yosupo/matrix/matrix_det.1.test.cpp
+- /verify/remote_test/yosupo/matrix/matrix_det.1.test.cpp.html
+title: remote_test/yosupo/matrix/matrix_det.1.test.cpp
 ---
