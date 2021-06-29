@@ -58,7 +58,7 @@ data:
   - name: math/formal_power_series
     pages:
     - icon: ':heavy_check_mark:'
-      path: math/formal_power_series/fps_basic.hpp
+      path: math/formal_power_series/fps.hpp
       title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
         \u7684\u57FA\u672C\u64CD\u4F5C"
     - icon: ':heavy_check_mark:'

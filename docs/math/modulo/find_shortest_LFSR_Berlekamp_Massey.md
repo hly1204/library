@@ -16,6 +16,8 @@ $$
 
 时 LFSR 才能生成这个序列。
 
+需要注意的是 Sugiyama 等指出扩展 Euclid 算法和 Berlekamp-Massey 算法在该处应用是等价的。
+
 ### 定理 1
 
 对于一个长为 $L$ 的 LFSR 能够生成序列 $s_0,s_1,\dots ,s _ {N-1}$ 但是不能够生成 $s_0,s_1,\dots ,s_N$ 那么能够生成后者的 LFSR 长度为 $L'$ 满足
@@ -219,3 +221,4 @@ $$
 122–127 (1969).
 - J.L. Dornstetter, On the equivalence Between Berlekamp’s and Euclid’s Algorithm, IEEE Trans.
 Inform. Theory, vol. IT-33, no 3,428–431 (1987).
+- Y. Sugiyama, M. Kasahara, H. Hirasawa, and T. Namekawa, “A method for solving key equation for decoding Goppa codes,” Inform. Contr., vol. 27, pp. 87-99, 1975.

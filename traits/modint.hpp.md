@@ -3,7 +3,7 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
-    path: math/formal_power_series/fps_basic.hpp
+    path: math/formal_power_series/fps.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
   - icon: ':heavy_check_mark:'
@@ -62,7 +62,7 @@ data:
   requiredBy:
   - math/formal_power_series/radix_2_NTT.hpp
   - math/formal_power_series/linearly_recurrent_sequence.hpp
-  - math/formal_power_series/fps_basic.hpp
+  - math/formal_power_series/fps.hpp
   timestamp: '2021-06-07 16:48:59+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

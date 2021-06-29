@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: math/formal_power_series/fps_basic.hpp
+    path: math/formal_power_series/fps.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
   - icon: ':heavy_check_mark:'
@@ -26,15 +26,15 @@ data:
     - https://judge.yosupo.jp/problem/convolution_mod
   bundledCode: "#line 1 \"remote_test/yosupo/math/convolution_mod.0.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod\"\n\n#include <iostream>\n\
-    #include <vector>\n\n#line 1 \"math/formal_power_series/fps_basic.hpp\"\n\n\n\n\
-    /**\n * @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\
-    \u6570\u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/fps_basic.md\n\
+    #include <vector>\n\n#line 1 \"math/formal_power_series/fps.hpp\"\n\n\n\n/**\n\
+    \ * @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
+    \u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/fps.md\n\
     \ */\n\n#include <algorithm>\n#include <cassert>\n#include <tuple>\n#include <utility>\n\
-    #line 14 \"math/formal_power_series/fps_basic.hpp\"\n\n#include <numeric>\n\n\
-    #line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits / \u53D6\u6A21\
-    \u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename mod_t> struct\
-    \ modint_traits {\n  using type = typename mod_t::value_type;\n  static constexpr\
-    \ type get_mod() { return mod_t::get_mod(); }\n  static constexpr type get_primitive_root_prime()\
+    #line 14 \"math/formal_power_series/fps.hpp\"\n\n#include <numeric>\n\n#line 1\
+    \ \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\
+    \u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename mod_t> struct modint_traits\
+    \ {\n  using type = typename mod_t::value_type;\n  static constexpr type get_mod()\
+    \ { return mod_t::get_mod(); }\n  static constexpr type get_primitive_root_prime()\
     \ { return mod_t::get_primitive_root_prime(); }\n};\n\n} // namespace lib\n\n\n\
     #line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\n/**\n * @brief radix-2\
     \ NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\n#line 11 \"math/formal_power_series/radix_2_NTT.hpp\"\
@@ -93,20 +93,20 @@ data:
     template <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
     \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
     \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
-    }\n\n} // namespace lib\n\n\n#line 19 \"math/formal_power_series/fps_basic.hpp\"\
-    \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u4F7F\u7528 NTT \u53CB\u597D\
-    \u7684\u6A21\u6570\uFF01\uFF01\uFF01\n *       \u5728\u4F7F\u7528\u6A21\u677F\u7C7B\
-    \u7EE7\u627F\u65F6\uFF0C\u5BF9\u4E8E\u7EE7\u627F\u6765\u7684 public \u6210\u5458\
-    \u51FD\u6570\uFF0C\u8981\u4E48\u4F7F\u7528 using \u6765\u58F0\u660E\uFF0C\u8981\
-    \u4E48\u4F7F\u7528\u57DF\u9650\u5B9A\u7B26\n *       \u8981\u4E48\u4F7F\u7528\
-    \ this \u6307\u9488\uFF0C\u8FD9\u6837\u5728\u7B2C\u4E00\u6B21\u626B\u63CF\u65F6\
-    \u4E0D\u4F1A\u5904\u7406\uFF0C\u7B2C\u4E8C\u6B21\u624D\u4F1A\u5206\u6790\u57FA\
-    \u7C7B\u4E2D\u7684\u51FD\u6570\uFF0C\n *       \u5426\u5219\u4E0D\u80FD\u901A\u8FC7\
-    \u7F16\u8BD1\u3002MSVC \u56E0\u4E3A\u6709\u6269\u5C55\u7684\u539F\u56E0\u53EF\u4EE5\
-    \u901A\u8FC7\u7F16\u8BD1\uFF0C\u4F46\u6807\u51C6\u89C4\u5B9A\u662F\u8FD9\u6837\
-    \u3002\n *       \u82E5\u4E0D\u662F\u6A21\u677F\u7C7B\u7EE7\u627F\u5219\u6CA1\u6709\
-    \u8FD9\u6837\u7684\u95EE\u9898\u3002\n *\n */\ntemplate <typename mod_t> class\
-    \ FormalPowerSeries : public std::vector<mod_t> {\nprivate:\n  using vec = std::vector<mod_t>;\n\
+    }\n\n} // namespace lib\n\n\n#line 19 \"math/formal_power_series/fps.hpp\"\n\n\
+    namespace lib {\n\n/**\n * @note \u5FC5\u987B\u4F7F\u7528 NTT \u53CB\u597D\u7684\
+    \u6A21\u6570\uFF01\uFF01\uFF01\n *       \u5728\u4F7F\u7528\u6A21\u677F\u7C7B\u7EE7\
+    \u627F\u65F6\uFF0C\u5BF9\u4E8E\u7EE7\u627F\u6765\u7684 public \u6210\u5458\u51FD\
+    \u6570\uFF0C\u8981\u4E48\u4F7F\u7528 using \u6765\u58F0\u660E\uFF0C\u8981\u4E48\
+    \u4F7F\u7528\u57DF\u9650\u5B9A\u7B26\n *       \u8981\u4E48\u4F7F\u7528 this \u6307\
+    \u9488\uFF0C\u8FD9\u6837\u5728\u7B2C\u4E00\u6B21\u626B\u63CF\u65F6\u4E0D\u4F1A\
+    \u5904\u7406\uFF0C\u7B2C\u4E8C\u6B21\u624D\u4F1A\u5206\u6790\u57FA\u7C7B\u4E2D\
+    \u7684\u51FD\u6570\uFF0C\n *       \u5426\u5219\u4E0D\u80FD\u901A\u8FC7\u7F16\u8BD1\
+    \u3002MSVC \u56E0\u4E3A\u6709\u6269\u5C55\u7684\u539F\u56E0\u53EF\u4EE5\u901A\u8FC7\
+    \u7F16\u8BD1\uFF0C\u4F46\u6807\u51C6\u89C4\u5B9A\u662F\u8FD9\u6837\u3002\n * \
+    \      \u82E5\u4E0D\u662F\u6A21\u677F\u7C7B\u7EE7\u627F\u5219\u6CA1\u6709\u8FD9\
+    \u6837\u7684\u95EE\u9898\u3002\n *\n */\ntemplate <typename mod_t> class FormalPowerSeries\
+    \ : public std::vector<mod_t> {\nprivate:\n  using vec = std::vector<mod_t>;\n\
     \  using fps = FormalPowerSeries<mod_t>;\n\n  static inline vec INV;\n\n  static\
     \ void init_inv(int n) { // \u9884\u5904\u7406 [1, n) \u7684\u9006\u5143\n   \
     \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    static int\
@@ -368,7 +368,7 @@ data:
     \ &i : b) std::cin >> i;\n  auto c = a * b;\n  for (auto i : c) std::cout << i\
     \ << ' ';\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod\"\n\n#include\
-    \ <iostream>\n#include <vector>\n\n#include \"math/formal_power_series/fps_basic.hpp\"\
+    \ <iostream>\n#include <vector>\n\n#include \"math/formal_power_series/fps.hpp\"\
     \n#include \"modint/Montgomery_modint.hpp\"\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"\
     in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
     \  std::cin.tie(0);\n  using mint = lib::MontModInt<998244353>;\n  int n, m;\n\
@@ -376,14 +376,14 @@ data:
     \ >> i;\n  for (auto &i : b) std::cin >> i;\n  auto c = a * b;\n  for (auto i\
     \ : c) std::cout << i << ' ';\n  return 0;\n}"
   dependsOn:
-  - math/formal_power_series/fps_basic.hpp
+  - math/formal_power_series/fps.hpp
   - traits/modint.hpp
   - math/formal_power_series/radix_2_NTT.hpp
   - modint/Montgomery_modint.hpp
   isVerificationFile: true
   path: remote_test/yosupo/math/convolution_mod.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-27 15:17:15+08:00'
+  timestamp: '2021-06-29 19:22:39+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/convolution_mod.0.test.cpp

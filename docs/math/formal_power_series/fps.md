@@ -318,7 +318,7 @@ TODO
 
 ## 半在线卷积
 
-semi-relaxed convolution 即半在线卷积是由分治 FFT 算法改进而来，主旨大概是原先分治二叉时间为 $O(n\log^2n)$ 而现在考虑分治 $\log n$ 叉，细节略去，时间可以做到 $O\left(\frac{n\log^2n}{\log\log n}\right)$ 。原文应该是出自 Joris van der Hoeven 的论文 [Relax, but Don't be Too Lazy](https://core.ac.uk/download/pdf/81995869.pdf) 其中也提到了全在线卷积也可以做到同样的时间。但本人能力有限并未理解，在 EntropyIncreaser 的 [讲课视频](https://www.bilibili.com/video/BV1kA41187dQ) 中有详细描述。
+semi-relaxed convolution 即半在线卷积是由分治 FFT 算法改进而来，主旨大概是原先分治二叉时间为 $O(n\log^2n)$ 而现在考虑分治 $\log n$ 叉，细节略去，时间可以做到 $O\left(\frac{n\log^2n}{\log\log n}\right)$ 。原文应该是出自 Joris van der Hoeven 的论文 New algorithms for relaxed multiplication 。但本人能力有限并未理解，在 EntropyIncreaser 的 [讲课视频](https://www.bilibili.com/video/BV1kA41187dQ) 中有详细描述。
 
 在幂级数指数上半在线卷积比牛顿法更快（非时间复杂度，而是实践中的效率），而其他算法都可用半在线卷积来做也不会慢，在写完半在线卷积的模板后只需稍作修改就可以适用于上述所有算法，代码量远小于牛顿法，我们所要做的就是会写这些算法的 brute force 版本（均为 $O(n^2)$ 时间）。
 
