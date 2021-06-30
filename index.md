@@ -9,7 +9,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: datastructure/basic/rollbackable_disjoint_set.hpp
       title: "rollbackable disjoint set / \u56DE\u6EDA\u5E76\u67E5\u96C6"
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: datastructure/basic/sparse_table.hpp
       title: "sparse table / \u7A00\u758F\u8868"
   - name: datastructure/heap
@@ -180,7 +180,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp
       title: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/datastructure/staticrmq.0.test.cpp
       title: remote_test/yosupo/datastructure/staticrmq.0.test.cpp
     - icon: ':heavy_check_mark:'

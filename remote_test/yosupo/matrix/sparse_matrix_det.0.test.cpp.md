@@ -198,7 +198,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-30 20:00:18+08:00'
+  timestamp: '2021-06-30 20:06:11+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp

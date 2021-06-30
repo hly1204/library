@@ -3,12 +3,12 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/datastructure/staticrmq.0.test.cpp
     title: remote_test/yosupo/datastructure/staticrmq.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "sparse table / \u7A00\u758F\u8868"
     links: []
@@ -72,8 +72,8 @@ data:
   isVerificationFile: false
   path: datastructure/basic/sparse_table.hpp
   requiredBy: []
-  timestamp: '2021-06-30 20:00:18+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2021-06-30 20:06:11+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/datastructure/staticrmq.0.test.cpp
 documentation_of: datastructure/basic/sparse_table.hpp
