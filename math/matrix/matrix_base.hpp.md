@@ -137,10 +137,10 @@ data:
   timestamp: '2021-06-28 18:28:55+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
-  - remote_test/yosupo/matrix/matrix_product.0.test.cpp
   - remote_test/yosupo/matrix/matrix_det.0.test.cpp
   - remote_test/yosupo/matrix/matrix_det.1.test.cpp
+  - remote_test/yosupo/matrix/matrix_product.0.test.cpp
+  - remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
   - remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
 documentation_of: math/matrix/matrix_base.hpp
 layout: document

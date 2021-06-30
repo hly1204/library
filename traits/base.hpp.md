@@ -64,16 +64,16 @@ data:
   isVerificationFile: false
   path: traits/base.hpp
   requiredBy:
-  - math/basic/exgcd.hpp
-  - math/basic/crt.hpp
-  - math/basic/binary_pow.hpp
   - math/basic/binary_mul.hpp
+  - math/basic/exgcd.hpp
+  - math/basic/binary_pow.hpp
+  - math/basic/crt.hpp
   - math/modulo/binomial_coefficient_mod.hpp
   timestamp: '2021-06-11 23:09:55+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/aizuoj/number_theory/binary_pow.0.test.cpp
   - remote_test/aizuoj/number_theory/extended_Euclidean_algorithm.0.test.cpp
+  - remote_test/aizuoj/number_theory/binary_pow.0.test.cpp
   - remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
 documentation_of: traits/base.hpp
 layout: document

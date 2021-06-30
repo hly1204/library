@@ -9,6 +9,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: datastructure/basic/rollbackable_disjoint_set.hpp
       title: "rollbackable disjoint set / \u56DE\u6EDA\u5E76\u67E5\u96C6"
+    - icon: ':x:'
+      path: datastructure/basic/sparse_table.hpp
+      title: "sparse table / \u7A00\u758F\u8868"
   - name: datastructure/heap
     pages:
     - icon: ':heavy_check_mark:'
@@ -87,7 +90,7 @@ data:
       title: "square matrix / \u65B9\u9635"
     - icon: ':heavy_check_mark:'
       path: math/matrix/square_sparse_matrix.hpp
-      title: "square sparse matrix / \u7A00\u758F\u65B9\u9635"
+      title: "sparse square matrix / \u7A00\u758F\u65B9\u9635"
   - name: math/modulo
     pages:
     - icon: ':heavy_check_mark:'
@@ -177,6 +180,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp
       title: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp
+    - icon: ':x:'
+      path: remote_test/yosupo/datastructure/staticrmq.0.test.cpp
+      title: remote_test/yosupo/datastructure/staticrmq.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/datastructure/union_find.0.test.cpp
       title: remote_test/yosupo/datastructure/union_find.0.test.cpp

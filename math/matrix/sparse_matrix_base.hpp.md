@@ -4,7 +4,7 @@ data:
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: math/matrix/square_sparse_matrix.hpp
-    title: "square sparse matrix / \u7A00\u758F\u65B9\u9635"
+    title: "sparse square matrix / \u7A00\u758F\u65B9\u9635"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
@@ -61,7 +61,7 @@ data:
   path: math/matrix/sparse_matrix_base.hpp
   requiredBy:
   - math/matrix/square_sparse_matrix.hpp
-  timestamp: '2021-06-30 10:39:40+08:00'
+  timestamp: '2021-06-30 20:00:18+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp

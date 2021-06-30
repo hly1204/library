@@ -74,8 +74,8 @@ data:
   isVerificationFile: false
   path: math/basic/binary_mul.hpp
   requiredBy:
-  - math/basic/crt.hpp
   - math/basic/binary_pow.hpp
+  - math/basic/crt.hpp
   - math/modulo/binomial_coefficient_mod.hpp
   timestamp: '2021-06-11 23:09:55+08:00'
   verificationStatus: LIBRARY_ALL_AC

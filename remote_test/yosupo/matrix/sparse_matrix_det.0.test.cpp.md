@@ -9,7 +9,7 @@ data:
     title: "sparse matrix base / \u7A00\u758F\u77E9\u9635\u57FA\u7C7B"
   - icon: ':heavy_check_mark:'
     path: math/matrix/square_sparse_matrix.hpp
-    title: "square sparse matrix / \u7A00\u758F\u65B9\u9635"
+    title: "sparse square matrix / \u7A00\u758F\u65B9\u9635"
   - icon: ':heavy_check_mark:'
     path: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
     title: "find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\u77ED\u7EBF\u6027\
@@ -94,7 +94,7 @@ data:
     \  Type res =\n      mp.back() / std::accumulate(diag.begin(), diag.end(), Type(1),\
     \ std::multiplies<Type>());\n  return (n & 1) == 1 ? -res : res;\n}\n\n} // namespace\
     \ lib\n\n\n#line 1 \"math/matrix/square_sparse_matrix.hpp\"\n\n\n\n/**\n * @brief\
-    \ square sparse matrix / \u7A00\u758F\u65B9\u9635\n *\n */\n\n#line 1 \"math/matrix/sparse_matrix_base.hpp\"\
+    \ sparse square matrix / \u7A00\u758F\u65B9\u9635\n *\n */\n\n#line 1 \"math/matrix/sparse_matrix_base.hpp\"\
     \n\n\n\n/**\n * @brief sparse matrix base / \u7A00\u758F\u77E9\u9635\u57FA\u7C7B\
     \n *\n */\n\n#line 12 \"math/matrix/sparse_matrix_base.hpp\"\n\nnamespace lib\
     \ {\n\ntemplate <typename Type> class SparseMatrix {\npublic:\n  using value_type\
@@ -115,9 +115,9 @@ data:
     \    }\n    return res;\n  }\n\nprotected:\n  int row_, col_;\n  const Type default_val_;\n\
     \  std::vector<std::vector<std::pair<int, Type>>> mat_;\n};\n\n} // namespace\
     \ lib\n\n\n#line 10 \"math/matrix/square_sparse_matrix.hpp\"\n\nnamespace lib\
-    \ {\n\ntemplate <typename Type> class SquareSparseMatrix : public SparseMatrix<Type>\
-    \ {\npublic:\n  SquareSparseMatrix(int r, const Type &v = Type()) : SparseMatrix<Type>(r,\
-    \ r, v) {}\n  virtual ~SquareSparseMatrix() = default;\n};\n\n} // namespace lib\n\
+    \ {\n\ntemplate <typename Type> class SparseSquareMatrix : public SparseMatrix<Type>\
+    \ {\npublic:\n  SparseSquareMatrix(int r, const Type &v = Type()) : SparseMatrix<Type>(r,\
+    \ r, v) {}\n  virtual ~SparseSquareMatrix() = default;\n};\n\n} // namespace lib\n\
     \n\n#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief Montgomery\
     \ modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n\
     \ */\n\n#include <cstdint>\n#line 11 \"modint/Montgomery_modint.hpp\"\n#include\
@@ -176,7 +176,7 @@ data:
     \ // namespace lib\n\n\n#line 8 \"remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
-    \  int n, k;\n  std::cin >> n >> k;\n  lib::SquareSparseMatrix<lib::MontModInt<998244353>>\
+    \  int n, k;\n  std::cin >> n >> k;\n  lib::SparseSquareMatrix<lib::MontModInt<998244353>>\
     \ m(n, 0);\n  while (k--) {\n    int r, c, v;\n    std::cin >> r >> c >> v;\n\
     \    m.at(r, c) = v;\n  }\n  std::cout << lib::black_box_det(m);\n  return 0;\n\
     }\n"
@@ -185,7 +185,7 @@ data:
     #include \"math/matrix/square_sparse_matrix.hpp\"\n#include \"modint/Montgomery_modint.hpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
-    \  int n, k;\n  std::cin >> n >> k;\n  lib::SquareSparseMatrix<lib::MontModInt<998244353>>\
+    \  int n, k;\n  std::cin >> n >> k;\n  lib::SparseSquareMatrix<lib::MontModInt<998244353>>\
     \ m(n, 0);\n  while (k--) {\n    int r, c, v;\n    std::cin >> r >> c >> v;\n\
     \    m.at(r, c) = v;\n  }\n  std::cout << lib::black_box_det(m);\n  return 0;\n\
     }"
@@ -198,7 +198,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-30 10:39:40+08:00'
+  timestamp: '2021-06-30 20:00:18+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
