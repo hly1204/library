@@ -12,6 +12,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/matrix_det.1.test.cpp
     title: remote_test/yosupo/matrix/matrix_det.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
+    title: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -76,6 +79,7 @@ data:
   timestamp: '2021-06-27 19:19:50+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
   - remote_test/yosupo/matrix/matrix_det.1.test.cpp
   - remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
 documentation_of: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp

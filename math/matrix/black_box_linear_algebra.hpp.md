@@ -10,6 +10,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/matrix_det.1.test.cpp
     title: remote_test/yosupo/matrix/matrix_det.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
+    title: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -132,6 +135,7 @@ data:
   timestamp: '2021-06-29 19:22:39+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
   - remote_test/yosupo/matrix/matrix_det.1.test.cpp
 documentation_of: math/matrix/black_box_linear_algebra.hpp
 layout: document

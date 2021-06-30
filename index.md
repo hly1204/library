@@ -80,8 +80,14 @@ data:
       path: math/matrix/matrix_base.hpp
       title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
     - icon: ':heavy_check_mark:'
+      path: math/matrix/sparse_matrix_base.hpp
+      title: "sparse matrix base / \u7A00\u758F\u77E9\u9635\u57FA\u7C7B"
+    - icon: ':heavy_check_mark:'
       path: math/matrix/square_matrix.hpp
       title: "square matrix / \u65B9\u9635"
+    - icon: ':heavy_check_mark:'
+      path: math/matrix/square_sparse_matrix.hpp
+      title: "square sparse matrix / \u7A00\u758F\u65B9\u9635"
   - name: math/modulo
     pages:
     - icon: ':heavy_check_mark:'
@@ -240,6 +246,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/matrix/matrix_product.0.test.cpp
       title: remote_test/yosupo/matrix/matrix_product.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
+      title: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
   - name: remote_test/yosupo/string
     pages:
     - icon: ':heavy_check_mark:'
