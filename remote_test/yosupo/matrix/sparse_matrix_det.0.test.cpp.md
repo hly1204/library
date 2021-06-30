@@ -8,7 +8,7 @@ data:
     path: math/matrix/sparse_matrix_base.hpp
     title: "sparse matrix base / \u7A00\u758F\u77E9\u9635\u57FA\u7C7B"
   - icon: ':heavy_check_mark:'
-    path: math/matrix/square_sparse_matrix.hpp
+    path: math/matrix/sparse_square_matrix.hpp
     title: "sparse square matrix / \u7A00\u758F\u65B9\u9635"
   - icon: ':heavy_check_mark:'
     path: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
@@ -93,7 +93,7 @@ data:
     \ std::move(m.apply(v));\n  }\n  std::vector<Type> mp = find_LFSR(bilinear_projection);\n\
     \  Type res =\n      mp.back() / std::accumulate(diag.begin(), diag.end(), Type(1),\
     \ std::multiplies<Type>());\n  return (n & 1) == 1 ? -res : res;\n}\n\n} // namespace\
-    \ lib\n\n\n#line 1 \"math/matrix/square_sparse_matrix.hpp\"\n\n\n\n/**\n * @brief\
+    \ lib\n\n\n#line 1 \"math/matrix/sparse_square_matrix.hpp\"\n\n\n\n/**\n * @brief\
     \ sparse square matrix / \u7A00\u758F\u65B9\u9635\n *\n */\n\n#line 1 \"math/matrix/sparse_matrix_base.hpp\"\
     \n\n\n\n/**\n * @brief sparse matrix base / \u7A00\u758F\u77E9\u9635\u57FA\u7C7B\
     \n *\n */\n\n#line 12 \"math/matrix/sparse_matrix_base.hpp\"\n\nnamespace lib\
@@ -114,7 +114,7 @@ data:
     \ i = 0; i < r; ++i) {\n      for (auto &[pos, v] : mat_[i]) res[i] += v * x[pos];\n\
     \    }\n    return res;\n  }\n\nprotected:\n  int row_, col_;\n  const Type default_val_;\n\
     \  std::vector<std::vector<std::pair<int, Type>>> mat_;\n};\n\n} // namespace\
-    \ lib\n\n\n#line 10 \"math/matrix/square_sparse_matrix.hpp\"\n\nnamespace lib\
+    \ lib\n\n\n#line 10 \"math/matrix/sparse_square_matrix.hpp\"\n\nnamespace lib\
     \ {\n\ntemplate <typename Type> class SparseSquareMatrix : public SparseMatrix<Type>\
     \ {\npublic:\n  SparseSquareMatrix(int r, const Type &v = Type()) : SparseMatrix<Type>(r,\
     \ r, v) {}\n  virtual ~SparseSquareMatrix() = default;\n};\n\n} // namespace lib\n\
@@ -182,7 +182,7 @@ data:
     }\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/sparse_matrix_det\"\n\n\
     #include <iostream>\n\n#include \"math/matrix/black_box_linear_algebra.hpp\"\n\
-    #include \"math/matrix/square_sparse_matrix.hpp\"\n#include \"modint/Montgomery_modint.hpp\"\
+    #include \"math/matrix/sparse_square_matrix.hpp\"\n#include \"modint/Montgomery_modint.hpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n, k;\n  std::cin >> n >> k;\n  lib::SparseSquareMatrix<lib::MontModInt<998244353>>\
@@ -192,13 +192,13 @@ data:
   dependsOn:
   - math/matrix/black_box_linear_algebra.hpp
   - math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
-  - math/matrix/square_sparse_matrix.hpp
+  - math/matrix/sparse_square_matrix.hpp
   - math/matrix/sparse_matrix_base.hpp
   - modint/Montgomery_modint.hpp
   isVerificationFile: true
   path: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-30 20:06:11+08:00'
+  timestamp: '2021-06-30 23:08:32+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp

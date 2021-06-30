@@ -3,7 +3,7 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
-    path: math/matrix/square_sparse_matrix.hpp
+    path: math/matrix/sparse_square_matrix.hpp
     title: "sparse square matrix / \u7A00\u758F\u65B9\u9635"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
@@ -60,8 +60,8 @@ data:
   isVerificationFile: false
   path: math/matrix/sparse_matrix_base.hpp
   requiredBy:
-  - math/matrix/square_sparse_matrix.hpp
-  timestamp: '2021-06-30 20:06:11+08:00'
+  - math/matrix/sparse_square_matrix.hpp
+  timestamp: '2021-06-30 23:08:32+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp

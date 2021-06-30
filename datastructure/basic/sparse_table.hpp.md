@@ -72,7 +72,7 @@ data:
   isVerificationFile: false
   path: datastructure/basic/sparse_table.hpp
   requiredBy: []
-  timestamp: '2021-06-30 20:06:11+08:00'
+  timestamp: '2021-06-30 23:08:32+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/datastructure/staticrmq.0.test.cpp

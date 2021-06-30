@@ -86,11 +86,11 @@ data:
       path: math/matrix/sparse_matrix_base.hpp
       title: "sparse matrix base / \u7A00\u758F\u77E9\u9635\u57FA\u7C7B"
     - icon: ':heavy_check_mark:'
+      path: math/matrix/sparse_square_matrix.hpp
+      title: "sparse square matrix / \u7A00\u758F\u65B9\u9635"
+    - icon: ':heavy_check_mark:'
       path: math/matrix/square_matrix.hpp
       title: "square matrix / \u65B9\u9635"
-    - icon: ':heavy_check_mark:'
-      path: math/matrix/square_sparse_matrix.hpp
-      title: "sparse square matrix / \u7A00\u758F\u65B9\u9635"
   - name: math/modulo
     pages:
     - icon: ':heavy_check_mark:'
