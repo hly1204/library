@@ -61,7 +61,7 @@ data:
   path: math/matrix/sparse_matrix_base.hpp
   requiredBy:
   - math/matrix/sparse_square_matrix.hpp
-  timestamp: '2021-06-30 23:08:32+08:00'
+  timestamp: '2021-07-01 00:45:41+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
