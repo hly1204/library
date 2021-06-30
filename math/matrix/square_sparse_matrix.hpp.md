@@ -27,19 +27,19 @@ data:
     \n  int row() const { return row_; }\n  int col() const { return col_; }\n  int\
     \ size() const { return row_ * col_; }\n  bool is_empty() const { return size()\
     \ == 0; }\n\n  Type &at(int r, int c) {\n    for (auto &[pos, v] : mat_[r])\n\
-    \      if (pos == c) return v;\n    mat_[r].emplace_back(c, default_val_);\n \
-    \   return mat_[r].back().second;\n  }\n  Type at(int r, int c) const {\n    for\
-    \ (auto &[pos, v] : mat_[r])\n      if (pos == c) return v;\n    return default_val_;\n\
-    \  }\n\n  virtual std::vector<Type> apply(const std::vector<Type> &x) const {\n\
-    \    int r = row(), c = col();\n    assert(c == x.size());\n    std::vector<Type>\
-    \ res(r, Type(0));\n    for (int i = 0; i < r; ++i)\n      for (auto &[pos, v]\
-    \ : mat_[i]) res[i] += v * x[pos];\n    return res;\n  }\n\nprotected:\n  int\
-    \ row_, col_;\n  const Type default_val_;\n  std::vector<std::vector<std::pair<int,\
-    \ Type>>> mat_;\n};\n\n} // namespace lib\n\n\n#line 10 \"math/matrix/square_sparse_matrix.hpp\"\
-    \n\nnamespace lib {\n\ntemplate <typename Type> class SquareSparseMatrix : public\
-    \ SparseMatrix<Type> {\npublic:\n  SquareSparseMatrix(int r, const Type &v = Type())\
-    \ : SparseMatrix<Type>(r, r, v) {}\n  virtual ~SquareSparseMatrix() = default;\n\
-    };\n\n} // namespace lib\n\n\n"
+    \      if (pos == c) return v;\n    return mat_[r].emplace_back(c, default_val_).second;\n\
+    \  }\n  Type at(int r, int c) const {\n    for (auto &[pos, v] : mat_[r])\n  \
+    \    if (pos == c) return v;\n    return default_val_;\n  }\n\n  virtual std::vector<Type>\
+    \ apply(const std::vector<Type> &x) const {\n    int r = row(), c = col();\n \
+    \   assert(c == x.size());\n    std::vector<Type> res(r, Type(0));\n    for (int\
+    \ i = 0; i < r; ++i)\n      for (auto &[pos, v] : mat_[i]) res[i] += v * x[pos];\n\
+    \    return res;\n  }\n\nprotected:\n  int row_, col_;\n  const Type default_val_;\n\
+    \  std::vector<std::vector<std::pair<int, Type>>> mat_;\n};\n\n} // namespace\
+    \ lib\n\n\n#line 10 \"math/matrix/square_sparse_matrix.hpp\"\n\nnamespace lib\
+    \ {\n\ntemplate <typename Type> class SquareSparseMatrix : public SparseMatrix<Type>\
+    \ {\npublic:\n  SquareSparseMatrix(int r, const Type &v = Type()) : SparseMatrix<Type>(r,\
+    \ r, v) {}\n  virtual ~SquareSparseMatrix() = default;\n};\n\n} // namespace lib\n\
+    \n\n"
   code: "#ifndef SQUARE_SPARSE_MATRIX_BASE_HEADER_HPP\n#define SQUARE_SPARSE_MATRIX_BASE_HEADER_HPP\n\
     \n/**\n * @brief square sparse matrix / \u7A00\u758F\u65B9\u9635\n *\n */\n\n\
     #include \"sparse_matrix_base.hpp\"\n\nnamespace lib {\n\ntemplate <typename Type>\
@@ -51,7 +51,7 @@ data:
   isVerificationFile: false
   path: math/matrix/square_sparse_matrix.hpp
   requiredBy: []
-  timestamp: '2021-06-30 10:17:50+08:00'
+  timestamp: '2021-06-30 10:33:53+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
