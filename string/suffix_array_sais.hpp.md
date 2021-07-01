@@ -6,12 +6,12 @@ data:
     path: string/bwt.hpp
     title: "Burrows-Wheeler trasformation / Burrows-Wheeler \u53D8\u6362"
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/string/suffix_array.0.test.cpp
     title: remote_test/yosupo/string/suffix_array.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     document_title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\
       \u6392\u5E8F\uFF09"
@@ -73,7 +73,7 @@ data:
     template <> std::vector<int> get_sa<std::string>(const std::string &s) {\n  std::vector<int>\
     \ s_cpy(s.size() + 1);\n  std::copy(s.begin(), s.end(), s_cpy.begin());\n  s_cpy.back()\
     \ = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy, 128));\n  SA.erase(SA.begin());\n\
-    \  return SA;\n}\n\n/**\n * @brief \u83B7\u53D6 LCP \u6570\u7EC4\n * @ref https://cp-algorithms.com/string/suffix-array.html\n\
+    \  return SA;\n}\n\n/**\n * @brief \u83B7\u53D6 LCP \u6570\u7EC4\n * @see https://cp-algorithms.com/string/suffix-array.html\n\
     \ * @param s \u5B57\u7B26\u4E32\n * @param SA \u8BA1\u7B97\u5B8C\u6BD5\u7684 s\
     \ \u7684\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n * @return std::vector<int>\
     \ LCP \u6570\u7EC4\n */\ntemplate <typename Container>\nstd::vector<int> get_lcp(const\
@@ -142,7 +142,7 @@ data:
     template <> std::vector<int> get_sa<std::string>(const std::string &s) {\n  std::vector<int>\
     \ s_cpy(s.size() + 1);\n  std::copy(s.begin(), s.end(), s_cpy.begin());\n  s_cpy.back()\
     \ = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy, 128));\n  SA.erase(SA.begin());\n\
-    \  return SA;\n}\n\n/**\n * @brief \u83B7\u53D6 LCP \u6570\u7EC4\n * @ref https://cp-algorithms.com/string/suffix-array.html\n\
+    \  return SA;\n}\n\n/**\n * @brief \u83B7\u53D6 LCP \u6570\u7EC4\n * @see https://cp-algorithms.com/string/suffix-array.html\n\
     \ * @param s \u5B57\u7B26\u4E32\n * @param SA \u8BA1\u7B97\u5B8C\u6BD5\u7684 s\
     \ \u7684\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n * @return std::vector<int>\
     \ LCP \u6570\u7EC4\n */\ntemplate <typename Container>\nstd::vector<int> get_lcp(const\
@@ -160,8 +160,8 @@ data:
   path: string/suffix_array_sais.hpp
   requiredBy:
   - string/bwt.hpp
-  timestamp: '2021-06-27 15:17:15+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-07-01 12:57:32+08:00'
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/string/suffix_array.0.test.cpp
 documentation_of: string/suffix_array_sais.hpp

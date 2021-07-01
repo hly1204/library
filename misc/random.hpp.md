@@ -15,11 +15,11 @@ data:
   bundledCode: "#line 1 \"misc/random.hpp\"\n\n\n\n/**\n * @brief pseudo random generator\
     \ / \u4F2A\u968F\u673A\u6570\u751F\u6210\u5668\n *\n */\n\n#include <cassert>\n\
     #include <cstdint>\n#include <type_traits>\n\nnamespace lib {\n\n/**\n * @brief\
-    \ xoshiro256starstar\n * @ref https://prng.di.unimi.it/xoshiro256starstar.c\n\
+    \ xoshiro256starstar\n * @see https://prng.di.unimi.it/xoshiro256starstar.c\n\
     \ */\nclass Random {\nprivate:\n  using u64 = std::uint64_t;\n\npublic:\n  /**\n\
     \   * @brief \u521B\u5EFA\u4E00\u4E2A\u65B0\u7684\u968F\u673A\u6570\u5BF9\u8C61\
     \uFF0C\u5171\u7528\u540C\u4E00\u4E2A\u79CD\u5B50\n   * @param x \u79CD\u5B50\n\
-    \   */\n  Random(u64 x = 0) {\n    // splitmix64\n    // reference: https://prng.di.unimi.it/splitmix64.c\n\
+    \   */\n  Random(u64 x = 0) {\n    // splitmix64 https://prng.di.unimi.it/splitmix64.c\n\
     \    for (int i = 0; i < 4; ++i) {\n      u64 z = (x += 0x9e3779b97f4a7c15);\n\
     \      z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n      z = (z ^ (z >> 27)) *\
     \ 0x94d049bb133111eb;\n      s[i] = z ^ (z >> 31);\n    }\n  }\n  ~Random() =\
@@ -65,11 +65,11 @@ data:
   code: "#ifndef RANDOM_XOSHIRO256STARSTAR_HEADER_HPP\n#define RANDOM_XOSHIRO256STARSTAR_HEADER_HPP\n\
     \n/**\n * @brief pseudo random generator / \u4F2A\u968F\u673A\u6570\u751F\u6210\
     \u5668\n *\n */\n\n#include <cassert>\n#include <cstdint>\n#include <type_traits>\n\
-    \nnamespace lib {\n\n/**\n * @brief xoshiro256starstar\n * @ref https://prng.di.unimi.it/xoshiro256starstar.c\n\
+    \nnamespace lib {\n\n/**\n * @brief xoshiro256starstar\n * @see https://prng.di.unimi.it/xoshiro256starstar.c\n\
     \ */\nclass Random {\nprivate:\n  using u64 = std::uint64_t;\n\npublic:\n  /**\n\
     \   * @brief \u521B\u5EFA\u4E00\u4E2A\u65B0\u7684\u968F\u673A\u6570\u5BF9\u8C61\
     \uFF0C\u5171\u7528\u540C\u4E00\u4E2A\u79CD\u5B50\n   * @param x \u79CD\u5B50\n\
-    \   */\n  Random(u64 x = 0) {\n    // splitmix64\n    // reference: https://prng.di.unimi.it/splitmix64.c\n\
+    \   */\n  Random(u64 x = 0) {\n    // splitmix64 https://prng.di.unimi.it/splitmix64.c\n\
     \    for (int i = 0; i < 4; ++i) {\n      u64 z = (x += 0x9e3779b97f4a7c15);\n\
     \      z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n      z = (z ^ (z >> 27)) *\
     \ 0x94d049bb133111eb;\n      s[i] = z ^ (z >> 31);\n    }\n  }\n  ~Random() =\
@@ -116,7 +116,7 @@ data:
   isVerificationFile: false
   path: misc/random.hpp
   requiredBy: []
-  timestamp: '2021-06-17 19:06:03+08:00'
+  timestamp: '2021-07-01 12:57:32+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: misc/random.hpp

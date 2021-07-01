@@ -17,7 +17,7 @@ data:
     \ * @docs docs/modint/long_Montgomery_modint.md\n */\n\n#include <cstdint>\n#include\
     \ <iostream>\n#include <tuple>\n#include <type_traits>\n\n#ifdef _MSC_VER\n#include\
     \ <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief \u957F\u6574\u578B Montgomery\
-    \ \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \ \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     template <std::uint64_t mod> class LongMontgomeryModInt {\npublic:\n  using u32\
     \ = std::uint32_t;\n  using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n\
@@ -87,7 +87,7 @@ data:
     \u6A21\u7C7B\n * @docs docs/modint/long_Montgomery_modint.md\n */\n\n#include\
     \ <cstdint>\n#include <iostream>\n#include <tuple>\n#include <type_traits>\n\n\
     #ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief\
-    \ \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \ \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     template <std::uint64_t mod> class LongMontgomeryModInt {\npublic:\n  using u32\
     \ = std::uint32_t;\n  using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n\
@@ -156,7 +156,7 @@ data:
   isVerificationFile: false
   path: modint/long_Montgomery_modint.hpp
   requiredBy: []
-  timestamp: '2021-06-27 15:17:15+08:00'
+  timestamp: '2021-07-01 12:57:32+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: modint/long_Montgomery_modint.hpp

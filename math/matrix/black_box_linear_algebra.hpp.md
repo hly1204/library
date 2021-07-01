@@ -1,21 +1,21 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
     title: "find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\u77ED\u7EBF\u6027\
       \u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/matrix_det.1.test.cpp
     title: remote_test/yosupo/matrix/matrix_det.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
     title: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     _deprecated_at_docs: docs/math/matrix/black_box_linear_algebra.md
     document_title: "black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570"
@@ -133,7 +133,7 @@ data:
   path: math/matrix/black_box_linear_algebra.hpp
   requiredBy: []
   timestamp: '2021-06-29 19:22:39+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.1.test.cpp
   - remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp

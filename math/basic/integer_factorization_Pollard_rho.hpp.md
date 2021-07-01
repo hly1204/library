@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/runtime_long_Montgomery_modint.hpp
     title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
       \ Montgomery \u53D6\u6A21\u7C7B"
@@ -14,24 +14,27 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    document_title: "integer factorization / \u6574\u6570\u5206\u89E3"
+    document_title: "integer factorization Pollard's rho / \u6574\u6570\u5206\u89E3\
+      \ Pollard \u7684 rho \u7B97\u6CD5"
     links: []
-  bundledCode: "#line 1 \"math/basic/integer_factorization.hpp\"\n\n\n\n/**\n * @brief\
-    \ integer factorization / \u6574\u6570\u5206\u89E3\n *\n */\n\n#include <cstdint>\n\
-    #include <map>\n#include <numeric>\n#include <random>\n\n#line 1 \"modint/runtime_long_Montgomery_modint.hpp\"\
+  bundledCode: "#line 1 \"math/basic/integer_factorization_Pollard_rho.hpp\"\n\n\n\
+    \n/**\n * @brief integer factorization Pollard's rho / \u6574\u6570\u5206\u89E3\
+    \ Pollard \u7684 rho \u7B97\u6CD5\n *\n */\n\n#include <cstdint>\n#include <map>\n\
+    #include <numeric>\n#include <random>\n\n#line 1 \"modint/runtime_long_Montgomery_modint.hpp\"\
     \n\n\n\n/**\n * @brief runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\
     \u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#include <cassert>\n#line\
     \ 11 \"modint/runtime_long_Montgomery_modint.hpp\"\n#include <iostream>\n#include\
     \ <tuple>\n#include <type_traits>\n\n#ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\
     \nnamespace lib {\n\n/**\n * @brief \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery\
-    \ \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
-    \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    class RuntimeLongMontgomeryModInt {\npublic:\n  using u32 = std::uint32_t;\n \
-    \ using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\
-    \n  using value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static\
-    \ bool set_mod(u64 m) {\n    if ((m & 1) == 0 || m == 1 || (m & (1ULL << 63))\
-    \ != 0) return false;\n    mod = m;\n    r = get_r();\n    r2 = get_r2();\n  \
-    \  return true;\n  }\n\n  RuntimeLongMontgomeryModInt() = default;\n  ~RuntimeLongMontgomeryModInt()\
+    \ \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \ * @author Nyaan\n * @note \u7EA6\u5B9A\u4E0D\u4F7F\u7528\u6A21\u677F\u4E2D int\
+    \ \u4E3A\u8D1F\u6570\u7684\u5BF9\u8C61\n */\ntemplate <int> class RuntimeLongMontgomeryModInt\
+    \ {\npublic:\n  using u32 = std::uint32_t;\n  using i64 = std::int64_t;\n  using\
+    \ u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\n  using\
+    \ value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static bool\
+    \ set_mod(u64 m) {\n    if ((m & 1) == 0 || m == 1 || (m & (1ULL << 63)) != 0)\
+    \ return false;\n    mod = m;\n    r = get_r();\n    r2 = get_r2();\n    return\
+    \ true;\n  }\n\n  RuntimeLongMontgomeryModInt() = default;\n  ~RuntimeLongMontgomeryModInt()\
     \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  RuntimeLongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
     \ r2))) {}\n\n  RuntimeLongMontgomeryModInt(const m64 &) = default;\n\n  u64 get()\
@@ -75,25 +78,24 @@ data:
     \ ++i)\n      if ((iv <<= 1) >= mod) iv -= mod;\n    return iv;\n  }\n\n  static\
     \ u64 reduce(const std::pair<u64, u64> &x) {\n    u64 res = x.first - mulh(x.second\
     \ * r, mod);\n    return res + (mod & -(res >> 63));\n  }\n\n  static u64 norm(i64\
-    \ x) { return x + (mod & -(x < 0)); }\n\n  u64 v_;\n\n  static u64 mod, r, r2;\n\
-    };\n\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::mod;\nRuntimeLongMontgomeryModInt::u64\
-    \ RuntimeLongMontgomeryModInt::r;\nRuntimeLongMontgomeryModInt::u64 RuntimeLongMontgomeryModInt::r2;\n\
-    \nusing RuntimeLongMontModInt = RuntimeLongMontgomeryModInt;\n\n} // namespace\
-    \ lib\n\n\n#line 15 \"math/basic/integer_factorization.hpp\"\n\nnamespace lib\
-    \ {\n\n/**\n * @brief Miller-Rabin \u7D20\u6027\u6D4B\u8BD5\n * @param n\n * @return\
-    \ true\n * @return false\n */\nbool is_prime(std::uint64_t n) {\n  if (n <= 2)\
-    \ return n == 2;\n  if ((n & 1) == 0) return false;\n  if (n < 8) return true;\n\
-    \  using m64 = RuntimeLongMontModInt;\n  bool okay = m64::set_mod(n);\n  assert(okay);\n\
-    \  int t = 0;\n  std::uint64_t u = n - 1;\n  do\n    u >>= 1, ++t;\n  while ((u\
-    \ & 1) == 0);\n  const m64 ONE(1), MINUS_ONE(n - 1);\n  for (int i : {2, 3, 5,\
-    \ 7, 11, 13, 17, 19, 23, 29, 31, 37}) {\n    if (n == i) return true;\n    m64\
-    \ x = m64(i).pow(u);\n    for (int j = 0; j != t && x != ONE; ++j) {\n      m64\
-    \ y = x * x;\n      if (x != MINUS_ONE && y == ONE) return false;\n      x = y;\n\
-    \    }\n    if (x != ONE) return false;\n  }\n  return true;\n}\n\nnamespace internal\
-    \ {\n\n/**\n * @brief Pollard-rho \u7B97\u6CD5\n * @param n\n * @return std::uint64_t\
-    \ \u4E00\u4E2A\uFF08\u7D20\uFF09\u56E0\u6570\uFF1F\n */\nstd::uint64_t rho(std::uint64_t\
-    \ n) {\n  using u64 = std::uint64_t;\n  using m64 = RuntimeLongMontModInt;\n \
-    \ static std::random_device rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<u64>\
+    \ x) { return x + (mod & -(x < 0)); }\n\n  u64 v_;\n\n  static inline u64 mod,\
+    \ r, r2;\n};\n\ntemplate <int id> using RuntimeLongMontModInt = RuntimeLongMontgomeryModInt<id>;\n\
+    \n} // namespace lib\n\n\n#line 15 \"math/basic/integer_factorization_Pollard_rho.hpp\"\
+    \n\nnamespace lib {\n\n/**\n * @brief Miller-Rabin \u7D20\u6027\u6D4B\u8BD5\n\
+    \ * @note \u5047\u8BBE\u5E7F\u4E49\u9ECE\u66FC\u5047\u8BBE\u6210\u7ACB\n */\n\
+    bool is_prime(std::uint64_t n) {\n  if (n <= 2) return n == 2;\n  if ((n & 1)\
+    \ == 0) return false;\n  if (n < 8) return true;\n  using m64 = RuntimeLongMontModInt<-1>;\n\
+    \  bool okay = m64::set_mod(n);\n  assert(okay);\n  int t = 0;\n  std::uint64_t\
+    \ u = n - 1;\n  do\n    u >>= 1, ++t;\n  while ((u & 1) == 0);\n  const m64 ONE(1),\
+    \ MINUS_ONE(n - 1);\n  for (int i : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37})\
+    \ {\n    if (n == i) return true;\n    m64 x = m64(i).pow(u);\n    for (int j\
+    \ = 0; j != t && x != ONE; ++j) {\n      m64 y = x * x;\n      if (x != MINUS_ONE\
+    \ && y == ONE) return false;\n      x = y;\n    }\n    if (x != ONE) return false;\n\
+    \  }\n  return true;\n}\n\nnamespace internal {\n\n/**\n * @brief Pollard-rho\
+    \ \u7B97\u6CD5\n * @param n\n * @return std::uint64_t \u4E00\u4E2A\uFF08\u7D20\
+    \uFF09\u56E0\u6570\uFF1F\n */\nstd::uint64_t rho(std::uint64_t n) {\n  using u64\
+    \ = std::uint64_t;\n  using m64 = RuntimeLongMontModInt<-1>;\n  static std::random_device\
+    \ rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<u64>\
     \ dis(2, n - 1);\n  if (m64::get_mod() != n) m64::set_mod(n);\n  const m64 R(dis(gen));\n\
     \  auto f = [=](m64 x) -> m64 { return x * x + R; };\n  m64 x, y(dis(gen)), ys,\
     \ q(1);\n  u64 g = 1;\n  const int m = 128;\n  for (int r = 1; g == 1; r <<= 1)\
@@ -109,24 +111,25 @@ data:
     \ (n < 2) return res;\n  int t = 0;\n  while ((n & 1) == 0) n >>= 1, ++t;\n  if\
     \ (t) res[2] = t;\n  internal::factorize_odd(n, res);\n  return res;\n}\n\n} //\
     \ namespace lib\n\n\n"
-  code: "#ifndef INTEGER_FACTORIZATION_HEADER_HPP\n#define INTEGER_FACTORIZATION_HEADER_HPP\n\
-    \n/**\n * @brief integer factorization / \u6574\u6570\u5206\u89E3\n *\n */\n\n\
-    #include <cstdint>\n#include <map>\n#include <numeric>\n#include <random>\n\n\
-    #include \"../../modint/runtime_long_Montgomery_modint.hpp\"\n\nnamespace lib\
-    \ {\n\n/**\n * @brief Miller-Rabin \u7D20\u6027\u6D4B\u8BD5\n * @param n\n * @return\
-    \ true\n * @return false\n */\nbool is_prime(std::uint64_t n) {\n  if (n <= 2)\
-    \ return n == 2;\n  if ((n & 1) == 0) return false;\n  if (n < 8) return true;\n\
-    \  using m64 = RuntimeLongMontModInt;\n  bool okay = m64::set_mod(n);\n  assert(okay);\n\
-    \  int t = 0;\n  std::uint64_t u = n - 1;\n  do\n    u >>= 1, ++t;\n  while ((u\
-    \ & 1) == 0);\n  const m64 ONE(1), MINUS_ONE(n - 1);\n  for (int i : {2, 3, 5,\
-    \ 7, 11, 13, 17, 19, 23, 29, 31, 37}) {\n    if (n == i) return true;\n    m64\
-    \ x = m64(i).pow(u);\n    for (int j = 0; j != t && x != ONE; ++j) {\n      m64\
-    \ y = x * x;\n      if (x != MINUS_ONE && y == ONE) return false;\n      x = y;\n\
-    \    }\n    if (x != ONE) return false;\n  }\n  return true;\n}\n\nnamespace internal\
-    \ {\n\n/**\n * @brief Pollard-rho \u7B97\u6CD5\n * @param n\n * @return std::uint64_t\
-    \ \u4E00\u4E2A\uFF08\u7D20\uFF09\u56E0\u6570\uFF1F\n */\nstd::uint64_t rho(std::uint64_t\
-    \ n) {\n  using u64 = std::uint64_t;\n  using m64 = RuntimeLongMontModInt;\n \
-    \ static std::random_device rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<u64>\
+  code: "#ifndef INTEGER_FACTORIZATION_POLLARD_RHO_HEADER_HPP\n#define INTEGER_FACTORIZATION_POLLARD_RHO_HEADER_HPP\n\
+    \n/**\n * @brief integer factorization Pollard's rho / \u6574\u6570\u5206\u89E3\
+    \ Pollard \u7684 rho \u7B97\u6CD5\n *\n */\n\n#include <cstdint>\n#include <map>\n\
+    #include <numeric>\n#include <random>\n\n#include \"../../modint/runtime_long_Montgomery_modint.hpp\"\
+    \n\nnamespace lib {\n\n/**\n * @brief Miller-Rabin \u7D20\u6027\u6D4B\u8BD5\n\
+    \ * @note \u5047\u8BBE\u5E7F\u4E49\u9ECE\u66FC\u5047\u8BBE\u6210\u7ACB\n */\n\
+    bool is_prime(std::uint64_t n) {\n  if (n <= 2) return n == 2;\n  if ((n & 1)\
+    \ == 0) return false;\n  if (n < 8) return true;\n  using m64 = RuntimeLongMontModInt<-1>;\n\
+    \  bool okay = m64::set_mod(n);\n  assert(okay);\n  int t = 0;\n  std::uint64_t\
+    \ u = n - 1;\n  do\n    u >>= 1, ++t;\n  while ((u & 1) == 0);\n  const m64 ONE(1),\
+    \ MINUS_ONE(n - 1);\n  for (int i : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37})\
+    \ {\n    if (n == i) return true;\n    m64 x = m64(i).pow(u);\n    for (int j\
+    \ = 0; j != t && x != ONE; ++j) {\n      m64 y = x * x;\n      if (x != MINUS_ONE\
+    \ && y == ONE) return false;\n      x = y;\n    }\n    if (x != ONE) return false;\n\
+    \  }\n  return true;\n}\n\nnamespace internal {\n\n/**\n * @brief Pollard-rho\
+    \ \u7B97\u6CD5\n * @param n\n * @return std::uint64_t \u4E00\u4E2A\uFF08\u7D20\
+    \uFF09\u56E0\u6570\uFF1F\n */\nstd::uint64_t rho(std::uint64_t n) {\n  using u64\
+    \ = std::uint64_t;\n  using m64 = RuntimeLongMontModInt<-1>;\n  static std::random_device\
+    \ rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<u64>\
     \ dis(2, n - 1);\n  if (m64::get_mod() != n) m64::set_mod(n);\n  const m64 R(dis(gen));\n\
     \  auto f = [=](m64 x) -> m64 { return x * x + R; };\n  m64 x, y(dis(gen)), ys,\
     \ q(1);\n  u64 g = 1;\n  const int m = 128;\n  for (int r = 1; g == 1; r <<= 1)\
@@ -145,16 +148,17 @@ data:
   dependsOn:
   - modint/runtime_long_Montgomery_modint.hpp
   isVerificationFile: false
-  path: math/basic/integer_factorization.hpp
+  path: math/basic/integer_factorization_Pollard_rho.hpp
   requiredBy: []
-  timestamp: '2021-06-27 15:17:15+08:00'
+  timestamp: '2021-07-01 12:57:32+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/factorize.0.test.cpp
-documentation_of: math/basic/integer_factorization.hpp
+documentation_of: math/basic/integer_factorization_Pollard_rho.hpp
 layout: document
 redirect_from:
-- /library/math/basic/integer_factorization.hpp
-- /library/math/basic/integer_factorization.hpp.html
-title: "integer factorization / \u6574\u6570\u5206\u89E3"
+- /library/math/basic/integer_factorization_Pollard_rho.hpp
+- /library/math/basic/integer_factorization_Pollard_rho.hpp.html
+title: "integer factorization Pollard's rho / \u6574\u6570\u5206\u89E3 Pollard \u7684\
+  \ rho \u7B97\u6CD5"
 ---

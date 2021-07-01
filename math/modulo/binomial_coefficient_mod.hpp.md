@@ -142,27 +142,29 @@ data:
     \  }\n    std::vector<u32> factor(factor_.size());\n    for (int i = 0, e = factor_.size();\
     \ i < e; ++i) factor[i] = std::get<2>(factor_[i]);\n    crt_.set_m(factor);\n\
     \  }\n\n  ~BinomialCoefficientModSmall() = default;\n\n  /**\n   * @brief \u8FD4\
-    \u56DE nCm \u5BF9 mod \u53D6\u6A21\n   *\n   * @param n\n   * @param m\n   * @return\
-    \ u32\n   */\n  u32 operator()(u64 n, u64 m) const {\n    if (n < m) return 0;\n\
-    \    std::vector<u32> v;\n    for (auto &i : factor_) {\n      u32 p = std::get<0>(i),\
-    \ q = std::get<1>(i), pq = std::get<2>(i);\n      const std::vector<u32> &fac\
-    \ = std::get<3>(i), &ifac = std::get<4>(i);\n      u64 n_t = n, m_t = m, res =\
-    \ 1;\n      if (q == 1) {\n        for (; n_t; n_t /= p, m_t /= p) {\n       \
-    \   if (n_t % p < m_t % p) {\n            res = 0;\n            break;\n     \
-    \     }\n          res = res * u64(fac[n_t % p]) % p * ifac[m_t % p] % p * ifac[n_t\
-    \ % p - m_t % p] % p;\n        }\n      } else {\n        u64 r = n_t - m_t, k\
-    \ = 0;\n        for (u64 n1 = n_t / p; n1; n1 /= p) k += n1;\n        for (u64\
-    \ m1 = m_t / p; m1; m1 /= p) k -= m1;\n        for (u64 r1 = r / p; r1; r1 /=\
-    \ p) k -= r1;\n        if (k >= q) {\n          res = 0;\n        } else {\n \
-    \         u32 pk = lib::pow(p, k);\n          u64 is_negative = 0;\n         \
-    \ for (; n_t; n_t /= p, m_t /= p, r /= p) {\n            res = res * fac[n_t %\
-    \ pq] % pq * ifac[m_t % pq] % pq * ifac[r % pq] % pq;\n            is_negative\
-    \ += n_t / pq + m_t / pq + r / pq;\n          }\n          if ((p == 2 && q >=\
-    \ 3) || (is_negative & 1) == 0)\n            res = res * pk % pq;\n          else\n\
-    \            res = (pq - res) * pk % pq;\n        }\n      }\n      v.push_back(res);\n\
-    \    }\n    return crt_(v);\n  }\n\nprivate:\n  std::vector<std::tuple<u32, u32,\
-    \ u32, std::vector<u32>, std::vector<u32>>> factor_;\n  CoprimeCRT<u32> crt_;\n\
-    };\n\n} // namespace lib\n\n\n"
+    \u56DE nCm \u5BF9 mod \u53D6\u6A21\n   * @todo \u6CE8\u610F\u8FD9\u91CC n \u8FD9\
+    \u4E2A\u4E0A\u6307\u6807\u53EF\u4EE5\u4E3A\u8D1F\u6570\uFF0C\u4F46\u6211\u5E76\
+    \u672A\u5B9E\u73B0\n   * @param n\n   * @param m\n   * @return u32\n   */\n  u32\
+    \ operator()(u64 n, u64 m) const {\n    if (n < m) return 0;\n    std::vector<u32>\
+    \ v;\n    for (auto &i : factor_) {\n      u32 p = std::get<0>(i), q = std::get<1>(i),\
+    \ pq = std::get<2>(i);\n      const std::vector<u32> &fac = std::get<3>(i), &ifac\
+    \ = std::get<4>(i);\n      u64 n_t = n, m_t = m, res = 1;\n      if (q == 1) {\n\
+    \        for (; n_t; n_t /= p, m_t /= p) {\n          if (n_t % p < m_t % p) {\n\
+    \            res = 0;\n            break;\n          }\n          res = res *\
+    \ u64(fac[n_t % p]) % p * ifac[m_t % p] % p * ifac[n_t % p - m_t % p] % p;\n \
+    \       }\n      } else {\n        u64 r = n_t - m_t, k = 0;\n        for (u64\
+    \ n1 = n_t / p; n1; n1 /= p) k += n1;\n        for (u64 m1 = m_t / p; m1; m1 /=\
+    \ p) k -= m1;\n        for (u64 r1 = r / p; r1; r1 /= p) k -= r1;\n        if\
+    \ (k >= q) {\n          res = 0;\n        } else {\n          u32 pk = lib::pow(p,\
+    \ k);\n          u64 is_negative = 0;\n          for (; n_t; n_t /= p, m_t /=\
+    \ p, r /= p) {\n            res = res * fac[n_t % pq] % pq * ifac[m_t % pq] %\
+    \ pq * ifac[r % pq] % pq;\n            is_negative += n_t / pq + m_t / pq + r\
+    \ / pq;\n          }\n          if ((p == 2 && q >= 3) || (is_negative & 1) ==\
+    \ 0)\n            res = res * pk % pq;\n          else\n            res = (pq\
+    \ - res) * pk % pq;\n        }\n      }\n      v.push_back(res);\n    }\n    return\
+    \ crt_(v);\n  }\n\nprivate:\n  std::vector<std::tuple<u32, u32, u32, std::vector<u32>,\
+    \ std::vector<u32>>> factor_;\n  CoprimeCRT<u32> crt_;\n};\n\n} // namespace lib\n\
+    \n\n"
   code: "#ifndef BINOMIAL_COEFFICIENT_MOD_HEADER_HPP\n#define BINOMIAL_COEFFICIENT_MOD_HEADER_HPP\n\
     \n/**\n * @brief binomial coefficient mod / \u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\
     \u6A21\n *\n */\n\n#include <cassert>\n#include <cstdint>\n#include <tuple>\n\
@@ -195,27 +197,29 @@ data:
     \ (j + 1) % ie;\n    }\n    std::vector<u32> factor(factor_.size());\n    for\
     \ (int i = 0, e = factor_.size(); i < e; ++i) factor[i] = std::get<2>(factor_[i]);\n\
     \    crt_.set_m(factor);\n  }\n\n  ~BinomialCoefficientModSmall() = default;\n\
-    \n  /**\n   * @brief \u8FD4\u56DE nCm \u5BF9 mod \u53D6\u6A21\n   *\n   * @param\
-    \ n\n   * @param m\n   * @return u32\n   */\n  u32 operator()(u64 n, u64 m) const\
-    \ {\n    if (n < m) return 0;\n    std::vector<u32> v;\n    for (auto &i : factor_)\
-    \ {\n      u32 p = std::get<0>(i), q = std::get<1>(i), pq = std::get<2>(i);\n\
-    \      const std::vector<u32> &fac = std::get<3>(i), &ifac = std::get<4>(i);\n\
-    \      u64 n_t = n, m_t = m, res = 1;\n      if (q == 1) {\n        for (; n_t;\
-    \ n_t /= p, m_t /= p) {\n          if (n_t % p < m_t % p) {\n            res =\
-    \ 0;\n            break;\n          }\n          res = res * u64(fac[n_t % p])\
-    \ % p * ifac[m_t % p] % p * ifac[n_t % p - m_t % p] % p;\n        }\n      } else\
-    \ {\n        u64 r = n_t - m_t, k = 0;\n        for (u64 n1 = n_t / p; n1; n1\
-    \ /= p) k += n1;\n        for (u64 m1 = m_t / p; m1; m1 /= p) k -= m1;\n     \
-    \   for (u64 r1 = r / p; r1; r1 /= p) k -= r1;\n        if (k >= q) {\n      \
-    \    res = 0;\n        } else {\n          u32 pk = lib::pow(p, k);\n        \
-    \  u64 is_negative = 0;\n          for (; n_t; n_t /= p, m_t /= p, r /= p) {\n\
-    \            res = res * fac[n_t % pq] % pq * ifac[m_t % pq] % pq * ifac[r % pq]\
-    \ % pq;\n            is_negative += n_t / pq + m_t / pq + r / pq;\n          }\n\
-    \          if ((p == 2 && q >= 3) || (is_negative & 1) == 0)\n            res\
-    \ = res * pk % pq;\n          else\n            res = (pq - res) * pk % pq;\n\
-    \        }\n      }\n      v.push_back(res);\n    }\n    return crt_(v);\n  }\n\
-    \nprivate:\n  std::vector<std::tuple<u32, u32, u32, std::vector<u32>, std::vector<u32>>>\
-    \ factor_;\n  CoprimeCRT<u32> crt_;\n};\n\n} // namespace lib\n\n#endif"
+    \n  /**\n   * @brief \u8FD4\u56DE nCm \u5BF9 mod \u53D6\u6A21\n   * @todo \u6CE8\
+    \u610F\u8FD9\u91CC n \u8FD9\u4E2A\u4E0A\u6307\u6807\u53EF\u4EE5\u4E3A\u8D1F\u6570\
+    \uFF0C\u4F46\u6211\u5E76\u672A\u5B9E\u73B0\n   * @param n\n   * @param m\n   *\
+    \ @return u32\n   */\n  u32 operator()(u64 n, u64 m) const {\n    if (n < m) return\
+    \ 0;\n    std::vector<u32> v;\n    for (auto &i : factor_) {\n      u32 p = std::get<0>(i),\
+    \ q = std::get<1>(i), pq = std::get<2>(i);\n      const std::vector<u32> &fac\
+    \ = std::get<3>(i), &ifac = std::get<4>(i);\n      u64 n_t = n, m_t = m, res =\
+    \ 1;\n      if (q == 1) {\n        for (; n_t; n_t /= p, m_t /= p) {\n       \
+    \   if (n_t % p < m_t % p) {\n            res = 0;\n            break;\n     \
+    \     }\n          res = res * u64(fac[n_t % p]) % p * ifac[m_t % p] % p * ifac[n_t\
+    \ % p - m_t % p] % p;\n        }\n      } else {\n        u64 r = n_t - m_t, k\
+    \ = 0;\n        for (u64 n1 = n_t / p; n1; n1 /= p) k += n1;\n        for (u64\
+    \ m1 = m_t / p; m1; m1 /= p) k -= m1;\n        for (u64 r1 = r / p; r1; r1 /=\
+    \ p) k -= r1;\n        if (k >= q) {\n          res = 0;\n        } else {\n \
+    \         u32 pk = lib::pow(p, k);\n          u64 is_negative = 0;\n         \
+    \ for (; n_t; n_t /= p, m_t /= p, r /= p) {\n            res = res * fac[n_t %\
+    \ pq] % pq * ifac[m_t % pq] % pq * ifac[r % pq] % pq;\n            is_negative\
+    \ += n_t / pq + m_t / pq + r / pq;\n          }\n          if ((p == 2 && q >=\
+    \ 3) || (is_negative & 1) == 0)\n            res = res * pk % pq;\n          else\n\
+    \            res = (pq - res) * pk % pq;\n        }\n      }\n      v.push_back(res);\n\
+    \    }\n    return crt_(v);\n  }\n\nprivate:\n  std::vector<std::tuple<u32, u32,\
+    \ u32, std::vector<u32>, std::vector<u32>>> factor_;\n  CoprimeCRT<u32> crt_;\n\
+    };\n\n} // namespace lib\n\n#endif"
   dependsOn:
   - math/basic/binary_pow.hpp
   - traits/base.hpp
@@ -225,7 +229,7 @@ data:
   isVerificationFile: false
   path: math/modulo/binomial_coefficient_mod.hpp
   requiredBy: []
-  timestamp: '2021-06-17 19:06:03+08:00'
+  timestamp: '2021-07-01 12:57:32+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp

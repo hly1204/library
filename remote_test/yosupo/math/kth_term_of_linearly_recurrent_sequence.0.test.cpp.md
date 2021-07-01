@@ -2,16 +2,16 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: math/formal_power_series/linearly_recurrent_sequence.hpp
-    title: "linearly recurrent sequence / \u5E38\u7CFB\u6570\u7EBF\u6027\u9012\u63A8\
-      \u5E8F\u5217"
-  - icon: ':heavy_check_mark:'
+    path: math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
+    title: "linearly recurrent sequence Bostan-Mori / \u5E38\u7CFB\u6570\u7EBF\u6027\
+      \u9012\u63A8\u5E8F\u5217 Bostan-Mori \u7B97\u6CD5"
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -26,16 +26,17 @@ data:
     - https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence
   bundledCode: "#line 1 \"remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence\"\
-    \n\n#include <algorithm>\n#include <iostream>\n\n#line 1 \"math/formal_power_series/linearly_recurrent_sequence.hpp\"\
-    \n\n\n\n/**\n * @brief linearly recurrent sequence / \u5E38\u7CFB\u6570\u7EBF\u6027\
-    \u9012\u63A8\u5E8F\u5217\n *\n */\n\n#include <numeric>\n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n\n\n\n/**\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\
-    \n#line 10 \"math/formal_power_series/radix_2_NTT.hpp\"\n#include <cassert>\n\
-    #include <cstdint>\n#include <vector>\n\n#line 1 \"traits/modint.hpp\"\n\n\n\n\
-    /**\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace\
-    \ lib {\n\ntemplate <typename mod_t> struct modint_traits {\n  using type = typename\
-    \ mod_t::value_type;\n  static constexpr type get_mod() { return mod_t::get_mod();\
-    \ }\n  static constexpr type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
+    \n\n#include <algorithm>\n#include <iostream>\n\n#line 1 \"math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp\"\
+    \n\n\n\n/**\n * @brief linearly recurrent sequence Bostan-Mori / \u5E38\u7CFB\u6570\
+    \u7EBF\u6027\u9012\u63A8\u5E8F\u5217 Bostan-Mori \u7B97\u6CD5\n *\n */\n\n#include\
+    \ <numeric>\n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\n/**\n\
+    \ * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\n#line 10\
+    \ \"math/formal_power_series/radix_2_NTT.hpp\"\n#include <cassert>\n#include <cstdint>\n\
+    #include <vector>\n\n#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint\
+    \ traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate\
+    \ <typename mod_t> struct modint_traits {\n  using type = typename mod_t::value_type;\n\
+    \  static constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr\
+    \ type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
     \ }\n};\n\n} // namespace lib\n\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
     \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\
     \u6A21\u6570\uFF01\uFF01\uFF01\n */\ntemplate <typename mod_t> class NTT {\npublic:\n\
@@ -90,7 +91,7 @@ data:
     template <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
     \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
     \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
-    }\n\n} // namespace lib\n\n\n#line 12 \"math/formal_power_series/linearly_recurrent_sequence.hpp\"\
+    }\n\n} // namespace lib\n\n\n#line 12 \"math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp\"\
     \n\nnamespace lib {\n\ntemplate <typename mod_t> class LinearlyRecurrentSequence\
     \ {\npublic:\n  /**\n   * @brief \u7EBF\u6027\u9012\u63A8\u5E8F\u5217\n   * @param\
     \ rec_seq \u9012\u63A8\u5F0F rec_seq = {c_0, c_1, c_2, ..., c_{d-1}}\n   * @param\
@@ -129,7 +130,7 @@ data:
     \ namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief\
     \ Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n\
     \ */\n\n#line 11 \"modint/Montgomery_modint.hpp\"\n#include <type_traits>\n\n\
-    namespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @ref https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    namespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
@@ -189,7 +190,7 @@ data:
     \ rec.end());\n  lib::LinearlyRecurrentSequence seq(rec, init_v);\n  std::cout\
     \ << seq[k];\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence\"\
-    \n\n#include <algorithm>\n#include <iostream>\n\n#include \"math/formal_power_series/linearly_recurrent_sequence.hpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n\n#include \"math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp\"\
     \n#include \"modint/Montgomery_modint.hpp\"\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"\
     in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
     \  std::cin.tie(0);\n  using mint = lib::MontModInt<998244353>;\n  int d;\n  long\
@@ -198,14 +199,14 @@ data:
     \ rec.end());\n  lib::LinearlyRecurrentSequence seq(rec, init_v);\n  std::cout\
     \ << seq[k];\n  return 0;\n}"
   dependsOn:
-  - math/formal_power_series/linearly_recurrent_sequence.hpp
+  - math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
   - math/formal_power_series/radix_2_NTT.hpp
   - traits/modint.hpp
   - modint/Montgomery_modint.hpp
   isVerificationFile: true
   path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-27 15:17:15+08:00'
+  timestamp: '2021-07-01 12:57:32+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
