@@ -1,22 +1,22 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/modulo/sqrt_mod.hpp
     title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: modint/runtime_Montgomery_modint.hpp
     title: "runtime Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\
       \u7C7B"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/runtime_long_Montgomery_modint.hpp
     title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
       \ Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/sqrt_mod
@@ -176,7 +176,7 @@ data:
   path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
   requiredBy: []
   timestamp: '2021-07-01 12:57:32+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/mod_sqrt.0.test.cpp
 layout: document
