@@ -6,13 +6,16 @@ data:
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
-    path: math/formal_power_series/fps.hpp
+    path: math/formal_power_series/formal_power_series.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
     title: "linearly recurrent sequence Bostan-Mori / \u5E38\u7CFB\u6570\u7EBF\u6027\
       \u9012\u63A8\u5E8F\u5217 Bostan-Mori \u7B97\u6CD5"
+  - icon: ':heavy_check_mark:'
+    path: math/formal_power_series/polynomial.hpp
+    title: "polynomial / \u591A\u9879\u5F0F"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.0.test.cpp
@@ -169,8 +172,9 @@ data:
   isVerificationFile: false
   path: math/formal_power_series/radix_2_NTT.hpp
   requiredBy:
-  - math/formal_power_series/fps.hpp
+  - math/formal_power_series/polynomial.hpp
   - math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
+  - math/formal_power_series/formal_power_series.hpp
   timestamp: '2021-06-17 19:06:03+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

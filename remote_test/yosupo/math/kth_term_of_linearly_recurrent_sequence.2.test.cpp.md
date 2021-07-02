@@ -2,9 +2,12 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: math/formal_power_series/fps.hpp
+    path: math/formal_power_series/formal_power_series.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
+  - icon: ':heavy_check_mark:'
+    path: math/formal_power_series/polynomial.hpp
+    title: "polynomial / \u591A\u9879\u5F0F"
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
@@ -26,15 +29,17 @@ data:
     - https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence
   bundledCode: "#line 1 \"remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence\"\
-    \n\n#include <algorithm>\n#include <iostream>\n\n#line 1 \"math/formal_power_series/fps.hpp\"\
-    \n\n\n\n/**\n * @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\
-    \u7EA7\u6570\u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/fps.md\n\
-    \ */\n\n#line 10 \"math/formal_power_series/fps.hpp\"\n#include <cassert>\n#include\
-    \ <tuple>\n#include <utility>\n#include <vector>\n\n#include <numeric>\n\n#line\
-    \ 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\
-    \u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename mod_t> struct modint_traits\
-    \ {\n  using type = typename mod_t::value_type;\n  static constexpr type get_mod()\
-    \ { return mod_t::get_mod(); }\n  static constexpr type get_primitive_root_prime()\
+    \n\n#include <algorithm>\n#include <iostream>\n\n#line 1 \"math/formal_power_series/polynomial.hpp\"\
+    \n\n\n\n/**\n * @brief polynomial / \u591A\u9879\u5F0F\n *\n */\n\n#line 1 \"\
+    math/formal_power_series/formal_power_series.hpp\"\n\n\n\n/**\n * @brief basic\
+    \ operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\u7684\u57FA\
+    \u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/fps.md\n */\n\n#line\
+    \ 10 \"math/formal_power_series/formal_power_series.hpp\"\n#include <cassert>\n\
+    #include <tuple>\n#include <utility>\n#include <vector>\n\n#include <numeric>\n\
+    \n#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits / \u53D6\u6A21\
+    \u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename mod_t> struct\
+    \ modint_traits {\n  using type = typename mod_t::value_type;\n  static constexpr\
+    \ type get_mod() { return mod_t::get_mod(); }\n  static constexpr type get_primitive_root_prime()\
     \ { return mod_t::get_primitive_root_prime(); }\n};\n\n} // namespace lib\n\n\n\
     #line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\n/**\n * @brief radix-2\
     \ NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\n#line 11 \"math/formal_power_series/radix_2_NTT.hpp\"\
@@ -93,20 +98,20 @@ data:
     template <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
     \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
     \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
-    }\n\n} // namespace lib\n\n\n#line 19 \"math/formal_power_series/fps.hpp\"\n\n\
-    namespace lib {\n\n/**\n * @note \u5FC5\u987B\u4F7F\u7528 NTT \u53CB\u597D\u7684\
-    \u6A21\u6570\uFF01\uFF01\uFF01\n *       \u5728\u4F7F\u7528\u6A21\u677F\u7C7B\u7EE7\
-    \u627F\u65F6\uFF0C\u5BF9\u4E8E\u7EE7\u627F\u6765\u7684 public \u6210\u5458\u51FD\
-    \u6570\uFF0C\u8981\u4E48\u4F7F\u7528 using \u6765\u58F0\u660E\uFF0C\u8981\u4E48\
-    \u4F7F\u7528\u57DF\u9650\u5B9A\u7B26\n *       \u8981\u4E48\u4F7F\u7528 this \u6307\
-    \u9488\uFF0C\u8FD9\u6837\u5728\u7B2C\u4E00\u6B21\u626B\u63CF\u65F6\u4E0D\u4F1A\
-    \u5904\u7406\uFF0C\u7B2C\u4E8C\u6B21\u624D\u4F1A\u5206\u6790\u57FA\u7C7B\u4E2D\
-    \u7684\u51FD\u6570\uFF0C\n *       \u5426\u5219\u4E0D\u80FD\u901A\u8FC7\u7F16\u8BD1\
-    \u3002MSVC \u56E0\u4E3A\u6709\u6269\u5C55\u7684\u539F\u56E0\u53EF\u4EE5\u901A\u8FC7\
-    \u7F16\u8BD1\uFF0C\u4F46\u6807\u51C6\u89C4\u5B9A\u662F\u8FD9\u6837\u3002\n * \
-    \      \u82E5\u4E0D\u662F\u6A21\u677F\u7C7B\u7EE7\u627F\u5219\u6CA1\u6709\u8FD9\
-    \u6837\u7684\u95EE\u9898\u3002\n *\n */\ntemplate <typename mod_t> class FormalPowerSeries\
-    \ : public std::vector<mod_t> {\nprivate:\n  using vec = std::vector<mod_t>;\n\
+    }\n\n} // namespace lib\n\n\n#line 19 \"math/formal_power_series/formal_power_series.hpp\"\
+    \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u4F7F\u7528 NTT \u53CB\u597D\
+    \u7684\u6A21\u6570\uFF01\uFF01\uFF01\n *       \u5728\u4F7F\u7528\u6A21\u677F\u7C7B\
+    \u7EE7\u627F\u65F6\uFF0C\u5BF9\u4E8E\u7EE7\u627F\u6765\u7684 public \u6210\u5458\
+    \u51FD\u6570\uFF0C\u8981\u4E48\u4F7F\u7528 using \u6765\u58F0\u660E\uFF0C\u8981\
+    \u4E48\u4F7F\u7528\u57DF\u9650\u5B9A\u7B26\n *       \u8981\u4E48\u4F7F\u7528\
+    \ this \u6307\u9488\uFF0C\u8FD9\u6837\u5728\u7B2C\u4E00\u6B21\u626B\u63CF\u65F6\
+    \u4E0D\u4F1A\u5904\u7406\uFF0C\u7B2C\u4E8C\u6B21\u624D\u4F1A\u5206\u6790\u57FA\
+    \u7C7B\u4E2D\u7684\u51FD\u6570\uFF0C\n *       \u5426\u5219\u4E0D\u80FD\u901A\u8FC7\
+    \u7F16\u8BD1\u3002MSVC \u56E0\u4E3A\u6709\u6269\u5C55\u7684\u539F\u56E0\u53EF\u4EE5\
+    \u901A\u8FC7\u7F16\u8BD1\uFF0C\u4F46\u6807\u51C6\u89C4\u5B9A\u662F\u8FD9\u6837\
+    \u3002\n *       \u82E5\u4E0D\u662F\u6A21\u677F\u7C7B\u7EE7\u627F\u5219\u6CA1\u6709\
+    \u8FD9\u6837\u7684\u95EE\u9898\u3002\n *\n */\ntemplate <typename mod_t> class\
+    \ FormalPowerSeries : public std::vector<mod_t> {\nprivate:\n  using vec = std::vector<mod_t>;\n\
     \  using fps = FormalPowerSeries<mod_t>;\n\n  static inline vec INV;\n\n  static\
     \ void init_inv(int n) { // \u9884\u5904\u7406 [1, n) \u7684\u9006\u5143\n   \
     \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    static int\
@@ -127,13 +132,14 @@ data:
     \ mod_t(0));\n    return res;\n  }\n\n  fps deriv() const {\n    int n = this->size();\n\
     \    if (n <= 1) return {0};\n    fps res(n - 1);\n    for (int i = 1; i != n;\
     \ ++i) res[i - 1] = this->operator[](i) * mod_t(i);\n    return res;\n  }\n\n\
-    \  fps integr() const {\n    int n = this->size() + 1;\n    fps res(n);\n    res[0]\
-    \ = 0;\n    init_inv(n);\n    for (int i = 1; i != n; ++i) res[i] = this->operator[](i\
-    \ - 1) * INV[i];\n    return res;\n  }\n\n  fps operator-() const {\n    fps res(this->size());\n\
-    \    for (int i = 0, e = this->size(); i != e; ++i) res[i] = -this->operator[](i);\n\
-    \    return res;\n  }\n\n  fps &operator+=(const fps &rhs) {\n    if (this->size()\
-    \ < rhs.size()) this->resize(rhs.size(), mod_t(0));\n    for (int i = 0, e = rhs.size();\
-    \ i != e; ++i) this->operator[](i) += rhs[i];\n    return *this;\n  }\n  fps &operator-=(const\
+    \  fps integr(const mod_t &c = mod_t(0)) const {\n    int n = this->size() + 1;\n\
+    \    fps res(n);\n    res[0] = c;\n    init_inv(n);\n    for (int i = 1; i !=\
+    \ n; ++i) res[i] = this->operator[](i - 1) * INV[i];\n    return res;\n  }\n\n\
+    \  fps operator-() const {\n    fps res(this->size());\n    for (int i = 0, e\
+    \ = this->size(); i != e; ++i) res[i] = -this->operator[](i);\n    return res;\n\
+    \  }\n\n  fps &operator+=(const fps &rhs) {\n    if (this->size() < rhs.size())\
+    \ this->resize(rhs.size(), mod_t(0));\n    for (int i = 0, e = rhs.size(); i !=\
+    \ e; ++i) this->operator[](i) += rhs[i];\n    return *this;\n  }\n  fps &operator-=(const\
     \ fps &rhs) {\n    if (this->size() < rhs.size()) this->resize(rhs.size(), mod_t(0));\n\
     \    for (int i = 0, e = rhs.size(); i != e; ++i) this->operator[](i) -= rhs[i];\n\
     \    return *this;\n  }\n  fps &operator*=(const fps &rhs) {\n    int n = this->size(),\
@@ -198,13 +204,22 @@ data:
     \ >> 1, cpy.data());\n    idft(len >> 1, rhs_cpy.data());\n    return cpy.div(k\
     \ + 1, rhs_cpy).back();\n  }\n\n  fps log(int n) const {\n    assert(n > 0);\n\
     \    assert(!this->empty());\n    assert(this->operator[](0) == 1);\n    if (this->size()\
-    \ == 1) return fps(n, mod_t(0));\n    return slice().deriv().div(n - 1, *this).integr();\n\
+    \ == 1) return fps(n, mod_t(0));\n    return deriv().div(n - 1, *this).integr();\n\
     \  }\n\n  // TODO\n  fps exp(int n) const;\n\n  // TODO\n  fps pow(int n, mod_t\
     \ e) const;\n\n  // TODO\n  fps sqrt(int n) const;\n\n  friend fps operator+(const\
     \ fps &lhs, const fps &rhs) { return fps(lhs) += rhs; }\n  friend fps operator-(const\
     \ fps &lhs, const fps &rhs) { return fps(lhs) -= rhs; }\n  friend fps operator*(const\
     \ fps &lhs, const fps &rhs) { return fps(lhs) *= rhs; }\n  friend fps operator/(const\
     \ fps &lhs, const fps &rhs) { return fps(lhs) /= rhs; }\n};\n\ntemplate <typename\
+    \ mod_t> using FPS = FormalPowerSeries<mod_t>;\n\n} // namespace lib\n\n\n#line\
+    \ 10 \"math/formal_power_series/polynomial.hpp\"\n\nnamespace lib {\n\n/**\n *\
+    \ @brief \u591A\u9879\u5F0F\u7C7B\n * @note \u57FA\u7C7B FormalPowerSeries \u4E2D\
+    \u51FD\u6570\u90FD\u6CA1\u6709\u4F7F\u7528 virtual\n *       \u6240\u4EE5\u5728\
+    \u8BE5\u7C7B\u4E2D\u6709\u5B9A\u4E49\u76F8\u540C\u7684\u51FD\u6570\u5219\u4F1A\
+    \u963B\u6B62\u8C03\u7528\u57FA\u7C7B\u7684\u51FD\u6570\n *       \u8FD9\u88AB\u79F0\
+    \u4E3A\u9690\u85CF\uFF08 hide \uFF09\u3002\n *       \u800C\u5982\u679C\u4F7F\u7528\
+    \u4E86 virtual \u5219\u88AB\u79F0\u4E3A\u8986\u76D6\uFF08 override \uFF09\uFF0C\
+    \u800C\u8986\u76D6\u4F1A\u5BFC\u51FA\u591A\u6001\u3002\n */\ntemplate <typename\
     \ mod_t> class Polynomial : public FormalPowerSeries<mod_t> {\npublic:\n  using\
     \ fps = FormalPowerSeries<mod_t>;\n  using poly = Polynomial<mod_t>;\n  using\
     \ fps::fps;\n\n  // \u4F7F\u5F97\u80FD\u591F\u4ECE FormalPowerSeries \u8F6C\u6362\
@@ -304,12 +319,11 @@ data:
     \ poly &lhs, const poly &rhs) { return poly(lhs) *= rhs; }\n  friend poly operator/(const\
     \ poly &lhs, const poly &rhs) { return poly(lhs) /= rhs; }\n  friend poly operator%(const\
     \ poly &lhs, const poly &rhs) { return poly(lhs) %= rhs; }\n};\n\ntemplate <typename\
-    \ mod_t> using FPS = FormalPowerSeries<mod_t>;\ntemplate <typename mod_t> using\
-    \ Poly = Polynomial<mod_t>;\n\n} // namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\
-    \n\n\n\n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs\
-    \ docs/modint/Montgomery_modint.md\n */\n\n#line 11 \"modint/Montgomery_modint.hpp\"\
-    \n#include <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\
-    \u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \ mod_t> using Poly = Polynomial<mod_t>;\n\n} // namespace lib\n\n\n#line 1 \"\
+    modint/Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief Montgomery modint / Montgomery\
+    \ \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n */\n\n#line\
+    \ 11 \"modint/Montgomery_modint.hpp\"\n#include <type_traits>\n\nnamespace lib\
+    \ {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
     template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
@@ -370,7 +384,7 @@ data:
     \ 0);\n  mint ans = 0;\n  for (int i = 0; i < d; ++i) ans += res[i] * init[i];\n\
     \  std::cout << ans;\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence\"\
-    \n\n#include <algorithm>\n#include <iostream>\n\n#include \"math/formal_power_series/fps.hpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n\n#include \"math/formal_power_series/polynomial.hpp\"\
     \n#include \"modint/Montgomery_modint.hpp\"\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"\
     in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
     \  std::cin.tie(0);\n  using mint = lib::MontModInt<998244353>;\n  int d;\n  long\
@@ -381,14 +395,15 @@ data:
     \ = 0; i < d; ++i) ans += res[i] * init[i];\n  std::cout << ans;\n  return 0;\n\
     }"
   dependsOn:
-  - math/formal_power_series/fps.hpp
+  - math/formal_power_series/polynomial.hpp
+  - math/formal_power_series/formal_power_series.hpp
   - traits/modint.hpp
   - math/formal_power_series/radix_2_NTT.hpp
   - modint/Montgomery_modint.hpp
   isVerificationFile: true
   path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
   requiredBy: []
-  timestamp: '2021-07-01 12:57:32+08:00'
+  timestamp: '2021-07-03 02:24:28+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp

@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
-    title: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
+    path: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
+    title: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -53,7 +53,7 @@ data:
   timestamp: '2021-06-28 18:43:38+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
+  - remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
 documentation_of: math/matrix/characteristic_polynomial.hpp
 layout: document
 redirect_from:

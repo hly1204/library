@@ -23,7 +23,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/characteristic_polynomial
     links:
     - https://judge.yosupo.jp/problem/characteristic_polynomial
-  bundledCode: "#line 1 \"remote_test/yosupo/math/characteristic_polynomial.0.test.cpp\"\
+  bundledCode: "#line 1 \"remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/characteristic_polynomial\"\
     \n\n#include <iostream>\n\n#line 1 \"math/matrix/characteristic_polynomial.hpp\"\
     \n\n\n\n/**\n * @brief characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F\
@@ -234,7 +234,7 @@ data:
     \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
     \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
     \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n\n#line 8 \"remote_test/yosupo/math/characteristic_polynomial.0.test.cpp\"\
+    \ // namespace lib\n\n\n#line 8 \"remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n;\n  std::cin >> n;\n  lib::SquareMatrix<lib::MontModInt<998244353>> m(n);\n\
@@ -254,15 +254,15 @@ data:
   - math/matrix/matrix_base.hpp
   - modint/Montgomery_modint.hpp
   isVerificationFile: true
-  path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
+  path: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-01 12:57:32+08:00'
+  timestamp: '2021-07-03 02:24:28+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
+documentation_of: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
 layout: document
 redirect_from:
-- /verify/remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
-- /verify/remote_test/yosupo/math/characteristic_polynomial.0.test.cpp.html
-title: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
+- /verify/remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
+- /verify/remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp.html
+title: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
 ---

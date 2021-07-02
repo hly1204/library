@@ -7,8 +7,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
-    title: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
+    path: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
+    title: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
     title: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
@@ -260,8 +260,8 @@ data:
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.0.test.cpp
   - remote_test/yosupo/matrix/matrix_det.1.test.cpp
+  - remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
   - remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
-  - remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
 documentation_of: math/matrix/square_matrix.hpp
 layout: document
 redirect_from:

@@ -4,9 +4,6 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
-    title: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
-  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.0.test.cpp
     title: remote_test/yosupo/math/convolution_mod.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -33,6 +30,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
+    title: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
     title: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
@@ -175,6 +175,7 @@ data:
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.0.test.cpp
   - remote_test/yosupo/matrix/matrix_det.1.test.cpp
+  - remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
   - remote_test/yosupo/matrix/matrix_product.0.test.cpp
   - remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
   - remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
@@ -183,7 +184,6 @@ data:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
-  - remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
   - remote_test/yosupo/math/convolution_mod.0.test.cpp
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
   - remote_test/yosupo/math/division_of_polynomials.0.test.cpp

@@ -62,13 +62,16 @@ data:
   - name: math/formal_power_series
     pages:
     - icon: ':heavy_check_mark:'
-      path: math/formal_power_series/fps.hpp
+      path: math/formal_power_series/formal_power_series.hpp
       title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
         \u7684\u57FA\u672C\u64CD\u4F5C"
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
       title: "linearly recurrent sequence Bostan-Mori / \u5E38\u7CFB\u6570\u7EBF\u6027\
         \u9012\u63A8\u5E8F\u5217 Bostan-Mori \u7B97\u6CD5"
+    - icon: ':heavy_check_mark:'
+      path: math/formal_power_series/polynomial.hpp
+      title: "polynomial / \u591A\u9879\u5F0F"
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/radix_2_NTT.hpp
       title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
@@ -83,6 +86,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: math/matrix/matrix_base.hpp
       title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
+    - icon: ':warning:'
+      path: math/matrix/solve_linear_equations_Lanczos.hpp
+      title: "solve linear equations Lanczos / \u6C42\u89E3\u7EBF\u6027\u65B9\u7A0B\
+        \u7EC4 Lanczos \u7B97\u6CD5"
     - icon: ':heavy_check_mark:'
       path: math/matrix/sparse_matrix_base.hpp
       title: "sparse matrix base / \u7A00\u758F\u77E9\u9635\u57FA\u7C7B"
@@ -204,9 +211,6 @@ data:
       path: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
       title: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
     - icon: ':heavy_check_mark:'
-      path: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
-      title: remote_test/yosupo/math/characteristic_polynomial.0.test.cpp
-    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/convolution_mod.0.test.cpp
       title: remote_test/yosupo/math/convolution_mod.0.test.cpp
     - icon: ':heavy_check_mark:'
@@ -241,6 +245,9 @@ data:
       title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
   - name: remote_test/yosupo/matrix
     pages:
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
+      title: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
       title: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
