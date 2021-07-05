@@ -66,9 +66,9 @@ data:
     \ >>= 1, x *= x)\n    if (y & 1) res *= x;\n  return res;\n}\n\ntemplate <typename\
     \ T1, typename T2, typename T3, typename T = longer_integral_t<T1, T3>>\nstd::enable_if_t<std::is_integral_v<T1>\
     \ && std::is_integral_v<T2> && std::is_integral_v<T3>, T1>\npow_mod(T1 x, T2 y,\
-    \ T3 mod) {\n  assert(y >= 0);\n  T res = (mod != 1);\n  for (; y != 0; y >>=\
-    \ 1, x = mul_mod(x, x, mod))\n    if (y & 1) res = mul_mod(res, x, mod);\n  return\
-    \ res;\n}\n\n} // namespace lib\n\n\n#line 6 \"remote_test/aizuoj/number_theory/binary_pow.0.test.cpp\"\
+    \ T3 mod) {\n  assert(y >= 0);\n  T res = (mod != 1), tx = x;\n  for (; y != 0;\
+    \ y >>= 1, tx = mul_mod(tx, tx, mod))\n    if (y & 1) res = mul_mod(res, tx, mod);\n\
+    \  return res;\n}\n\n} // namespace lib\n\n\n#line 6 \"remote_test/aizuoj/number_theory/binary_pow.0.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n, m;\n  std::cin >> n >> m;\n  std::cout << lib::pow_mod(n, m, 1000000007)\
@@ -86,7 +86,7 @@ data:
   isVerificationFile: true
   path: remote_test/aizuoj/number_theory/binary_pow.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-05 14:46:07+08:00'
+  timestamp: '2021-07-05 14:57:46+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/aizuoj/number_theory/binary_pow.0.test.cpp

@@ -63,7 +63,7 @@ data:
   - math/basic/binary_pow.hpp
   - math/basic/crt.hpp
   - math/modulo/binomial_coefficient_mod.hpp
-  timestamp: '2021-07-05 14:46:07+08:00'
+  timestamp: '2021-07-05 14:57:46+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizuoj/number_theory/extended_Euclidean_algorithm.0.test.cpp

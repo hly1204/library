@@ -131,7 +131,7 @@ data:
   isVerificationFile: false
   path: math/matrix/black_box_linear_algebra.hpp
   requiredBy: []
-  timestamp: '2021-07-05 14:46:07+08:00'
+  timestamp: '2021-07-05 14:57:46+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.1.test.cpp

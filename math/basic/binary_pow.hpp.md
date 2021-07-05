@@ -68,9 +68,9 @@ data:
     \ >>= 1, x *= x)\n    if (y & 1) res *= x;\n  return res;\n}\n\ntemplate <typename\
     \ T1, typename T2, typename T3, typename T = longer_integral_t<T1, T3>>\nstd::enable_if_t<std::is_integral_v<T1>\
     \ && std::is_integral_v<T2> && std::is_integral_v<T3>, T1>\npow_mod(T1 x, T2 y,\
-    \ T3 mod) {\n  assert(y >= 0);\n  T res = (mod != 1);\n  for (; y != 0; y >>=\
-    \ 1, x = mul_mod(x, x, mod))\n    if (y & 1) res = mul_mod(res, x, mod);\n  return\
-    \ res;\n}\n\n} // namespace lib\n\n\n"
+    \ T3 mod) {\n  assert(y >= 0);\n  T res = (mod != 1), tx = x;\n  for (; y != 0;\
+    \ y >>= 1, tx = mul_mod(tx, tx, mod))\n    if (y & 1) res = mul_mod(res, tx, mod);\n\
+    \  return res;\n}\n\n} // namespace lib\n\n\n"
   code: "#ifndef BINARY_POW_HEADER_HPP\n#define BINARY_POW_HEADER_HPP\n\n/**\n * @brief\
     \ binary power / \u5FEB\u901F\u5E42\n *\n */\n\n#include <cassert>\n#include <type_traits>\n\
     \n#include \"../../traits/base.hpp\"\n#include \"binary_mul.hpp\"\n\nnamespace\
@@ -79,9 +79,9 @@ data:
     \ = 1;\n  for (; y != 0; y >>= 1, x *= x)\n    if (y & 1) res *= x;\n  return\
     \ res;\n}\n\ntemplate <typename T1, typename T2, typename T3, typename T = longer_integral_t<T1,\
     \ T3>>\nstd::enable_if_t<std::is_integral_v<T1> && std::is_integral_v<T2> && std::is_integral_v<T3>,\
-    \ T1>\npow_mod(T1 x, T2 y, T3 mod) {\n  assert(y >= 0);\n  T res = (mod != 1);\n\
-    \  for (; y != 0; y >>= 1, x = mul_mod(x, x, mod))\n    if (y & 1) res = mul_mod(res,\
-    \ x, mod);\n  return res;\n}\n\n} // namespace lib\n\n#endif\n"
+    \ T1>\npow_mod(T1 x, T2 y, T3 mod) {\n  assert(y >= 0);\n  T res = (mod != 1),\
+    \ tx = x;\n  for (; y != 0; y >>= 1, tx = mul_mod(tx, tx, mod))\n    if (y & 1)\
+    \ res = mul_mod(res, tx, mod);\n  return res;\n}\n\n} // namespace lib\n\n#endif\n"
   dependsOn:
   - traits/base.hpp
   - math/basic/binary_mul.hpp
@@ -89,7 +89,7 @@ data:
   path: math/basic/binary_pow.hpp
   requiredBy:
   - math/modulo/binomial_coefficient_mod.hpp
-  timestamp: '2021-07-05 14:46:07+08:00'
+  timestamp: '2021-07-05 14:57:46+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizuoj/number_theory/binary_pow.0.test.cpp

@@ -173,7 +173,7 @@ data:
   path: math/basic/crt.hpp
   requiredBy:
   - math/modulo/binomial_coefficient_mod.hpp
-  timestamp: '2021-07-05 14:46:07+08:00'
+  timestamp: '2021-07-05 14:57:46+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp

@@ -76,11 +76,11 @@ data:
     \ >>= 1, x *= x)\n    if (y & 1) res *= x;\n  return res;\n}\n\ntemplate <typename\
     \ T1, typename T2, typename T3, typename T = longer_integral_t<T1, T3>>\nstd::enable_if_t<std::is_integral_v<T1>\
     \ && std::is_integral_v<T2> && std::is_integral_v<T3>, T1>\npow_mod(T1 x, T2 y,\
-    \ T3 mod) {\n  assert(y >= 0);\n  T res = (mod != 1);\n  for (; y != 0; y >>=\
-    \ 1, x = mul_mod(x, x, mod))\n    if (y & 1) res = mul_mod(res, x, mod);\n  return\
-    \ res;\n}\n\n} // namespace lib\n\n\n#line 1 \"math/basic/crt.hpp\"\n\n\n\n/**\n\
-    \ * @brief Chinese remainder theorem / \u4E2D\u56FD\u5269\u4F59\u5B9A\u7406\n\
-    \ * @docs docs/math/basic/crt.md\n */\n\n#line 11 \"math/basic/crt.hpp\"\n#include\
+    \ T3 mod) {\n  assert(y >= 0);\n  T res = (mod != 1), tx = x;\n  for (; y != 0;\
+    \ y >>= 1, tx = mul_mod(tx, tx, mod))\n    if (y & 1) res = mul_mod(res, tx, mod);\n\
+    \  return res;\n}\n\n} // namespace lib\n\n\n#line 1 \"math/basic/crt.hpp\"\n\n\
+    \n\n/**\n * @brief Chinese remainder theorem / \u4E2D\u56FD\u5269\u4F59\u5B9A\u7406\
+    \n * @docs docs/math/basic/crt.md\n */\n\n#line 11 \"math/basic/crt.hpp\"\n#include\
     \ <optional>\n#line 13 \"math/basic/crt.hpp\"\n\n#line 1 \"math/basic/exgcd.hpp\"\
     \n\n\n\n/**\n * @brief extended Euclidean algorithm / \u6269\u5C55\u6B27\u51E0\
     \u91CC\u5F97\u7B97\u6CD5\n *\n */\n\n#line 12 \"math/basic/exgcd.hpp\"\n\n#line\
@@ -257,7 +257,7 @@ data:
   isVerificationFile: false
   path: math/modulo/binomial_coefficient_mod.hpp
   requiredBy: []
-  timestamp: '2021-07-05 14:46:07+08:00'
+  timestamp: '2021-07-05 14:57:46+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
