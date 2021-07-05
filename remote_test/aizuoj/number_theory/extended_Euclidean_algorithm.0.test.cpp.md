@@ -29,14 +29,11 @@ data:
     \ promote_integral<std::int32_t> { using type = std::int64_t; };\ntemplate <>\
     \ struct promote_integral<std::uint32_t> { using type = std::uint64_t; };\n\n\
     // \u8F85\u52A9\u6A21\u677F\ntemplate <typename Type> using promote_integral_t\
-    \ = typename promote_integral<Type>::type;\n\ntemplate <typename T, typename U,\n\
-    \          bool = (sizeof(T) > sizeof(U) || (sizeof(T) == sizeof(U) && std::is_signed_v<T>))>\n\
-    struct longer_integral;\ntemplate <typename T, typename U> struct longer_integral<T,\
-    \ U, true> { using type = T; };\ntemplate <typename T, typename U> struct longer_integral<T,\
-    \ U, false> { using type = U; };\n\n// \u8F85\u52A9\u6A21\u677F\ntemplate <typename\
-    \ T, typename U> using longer_integral_t = typename longer_integral<T, U>::type;\n\
-    \n} // namespace lib\n\n\n#line 14 \"math/basic/exgcd.hpp\"\n\nnamespace lib {\n\
-    \nnamespace internal {\n\ntemplate <typename T> std::enable_if_t<std::is_integral_v<T>,\
+    \ = typename promote_integral<Type>::type;\n\ntemplate <typename T, typename U>\n\
+    using longer_integral_t =\n    std::conditional_t<(sizeof(T) > sizeof(U) || (sizeof(T)\
+    \ == sizeof(U) && std::is_signed_v<T>)),\n                       T, U>;\n\n} //\
+    \ namespace lib\n\n\n#line 14 \"math/basic/exgcd.hpp\"\n\nnamespace lib {\n\n\
+    namespace internal {\n\ntemplate <typename T> std::enable_if_t<std::is_integral_v<T>,\
     \ T> gcd(T a, T b) {\n  while (b != 0) std::tie(a, b) = std::make_tuple(b, a %\
     \ b);\n  return a;\n}\n\ntemplate <typename T, typename S = std::make_signed_t<T>>\n\
     std::enable_if_t<std::is_integral_v<T>, std::tuple<T, S, S>> exgcd(T a, T b) {\n\
@@ -74,7 +71,7 @@ data:
   isVerificationFile: true
   path: remote_test/aizuoj/number_theory/extended_Euclidean_algorithm.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-11 23:09:55+08:00'
+  timestamp: '2021-07-05 14:46:07+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/aizuoj/number_theory/extended_Euclidean_algorithm.0.test.cpp
