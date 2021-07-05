@@ -30,44 +30,48 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
+    title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    _deprecated_at_docs: docs/math/formal_power_series/fps.md
+    _deprecated_at_docs: docs/math/formal_power_series/formal_power_series.md
     document_title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\
       \u6570\u7684\u57FA\u672C\u64CD\u4F5C"
     links: []
   bundledCode: "#line 1 \"math/formal_power_series/formal_power_series.hpp\"\n\n\n\
     \n/**\n * @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\
-    \u6570\u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/fps.md\n\
-    \ */\n\n#include <algorithm>\n#include <cassert>\n#include <tuple>\n#include <utility>\n\
-    #include <vector>\n\n#include <numeric>\n\n#line 1 \"traits/modint.hpp\"\n\n\n\
-    \n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace\
-    \ lib {\n\ntemplate <typename mod_t> struct modint_traits {\n  using type = typename\
-    \ mod_t::value_type;\n  static constexpr type get_mod() { return mod_t::get_mod();\
-    \ }\n  static constexpr type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
-    \ }\n};\n\n} // namespace lib\n\n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n\n\n\n/**\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\
-    \n#line 11 \"math/formal_power_series/radix_2_NTT.hpp\"\n#include <cstdint>\n\
-    #line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\
-    \u6A21\u6570\uFF01\uFF01\uFF01\n */\ntemplate <typename mod_t> class NTT {\npublic:\n\
-    \  NTT() = delete;\n\n  static void set_root(int len) {\n    static int lim =\
-    \ 0;\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n\
-    \    if (lim == 0) {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n\
-    \      rt[0] = irt[0] = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod()\
-    \ >> 21), ig_t = g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n \
-    \     for (int i = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n   \
-    \     rt[1 << i] = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n\
-    \    for (; (lim << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n\
-    \      for (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i\
-    \ - lim] * g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static\
-    \ void dft(int n, mod_t *x) {\n    for (int j = 0, l = n >> 1; j != l; ++j) {\n\
-    \      mod_t u = x[j], v = x[j + l];\n      x[j] = u + v, x[j + l] = u - v;\n\
-    \    }\n    for (int i = n >> 1; i >= 2; i >>= 1) {\n      for (int j = 0, l =\
-    \ i >> 1; j != l; ++j) {\n        mod_t u = x[j], v = x[j + l];\n        x[j]\
-    \ = u + v, x[j + l] = u - v;\n      }\n      for (int j = i, l = i >> 1, m = 1;\
+    \u6570\u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/formal_power_series.md\n\
+    \ */\n\n#include <algorithm>\n#include <cassert>\n#include <numeric>\n#include\
+    \ <tuple>\n#include <utility>\n#include <vector>\n\n#line 1 \"traits/modint.hpp\"\
+    \n\n\n\n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\
+    \nnamespace lib {\n\ntemplate <typename mod_t> struct modint_traits {\n  using\
+    \ type = typename mod_t::value_type;\n  static constexpr type get_mod() { return\
+    \ mod_t::get_mod(); }\n  static constexpr type get_primitive_root_prime() { return\
+    \ mod_t::get_primitive_root_prime(); }\n};\n\n} // namespace lib\n\n\n#line 1\
+    \ \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\n/**\n * @brief radix-2 NTT\
+    \ / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\n#line 11 \"math/formal_power_series/radix_2_NTT.hpp\"\
+    \n#include <cstdint>\n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\
+    #line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\n\nnamespace lib {\n\n/**\n\
+    \ * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\uFF01\uFF01\uFF01\
+    \n */\ntemplate <typename mod_t> class NTT {\npublic:\n  NTT() = delete;\n\n \
+    \ static void set_root(int len) {\n    static int lim = 0;\n    static constexpr\
+    \ mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n    if (lim == 0)\
+    \ {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n      rt[0] = irt[0]\
+    \ = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod() >> 21), ig_t =\
+    \ g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n      for (int i\
+    \ = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n        rt[1 << i]\
+    \ = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n    for (; (lim\
+    \ << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n      for\
+    \ (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i - lim] *\
+    \ g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static void\
+    \ dft(int n, mod_t *x) {\n    for (int j = 0, l = n >> 1; j != l; ++j) {\n   \
+    \   mod_t u = x[j], v = x[j + l];\n      x[j] = u + v, x[j + l] = u - v;\n   \
+    \ }\n    for (int i = n >> 1; i >= 2; i >>= 1) {\n      for (int j = 0, l = i\
+    \ >> 1; j != l; ++j) {\n        mod_t u = x[j], v = x[j + l];\n        x[j] =\
+    \ u + v, x[j + l] = u - v;\n      }\n      for (int j = i, l = i >> 1, m = 1;\
     \ j != n; j += i, ++m) {\n        mod_t root = rt[m];\n        for (int k = 0;\
     \ k != l; ++k) {\n          mod_t u = x[j + k], v = x[j + k + l] * root;\n   \
     \       x[j + k] = u + v, x[j + k + l] = u - v;\n        }\n      }\n    }\n \
@@ -104,7 +108,7 @@ data:
     template <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
     \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
     \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
-    }\n\n} // namespace lib\n\n\n#line 19 \"math/formal_power_series/formal_power_series.hpp\"\
+    }\n\n} // namespace lib\n\n\n#line 18 \"math/formal_power_series/formal_power_series.hpp\"\
     \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u4F7F\u7528 NTT \u53CB\u597D\
     \u7684\u6A21\u6570\uFF01\uFF01\uFF01\n *       \u5728\u4F7F\u7528\u6A21\u677F\u7C7B\
     \u7EE7\u627F\u65F6\uFF0C\u5BF9\u4E8E\u7EE7\u627F\u6765\u7684 public \u6210\u5458\
@@ -120,11 +124,11 @@ data:
     \ FormalPowerSeries : public std::vector<mod_t> {\nprivate:\n  using vec = std::vector<mod_t>;\n\
     \  using fps = FormalPowerSeries<mod_t>;\n\n  static inline vec INV;\n\n  static\
     \ void init_inv(int n) { // \u9884\u5904\u7406 [1, n) \u7684\u9006\u5143\n   \
-    \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    static int\
-    \ lim = 0;\n    if (lim < n) {\n      INV.resize(n);\n      if (lim == 0) INV[1]\
+    \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    int lim =\
+    \ INV.size();\n    if (lim < n) {\n      INV.resize(n);\n      if (lim == 0) INV[1]\
     \ = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i] = mod_t(mod - mod\
-    \ / i) * INV[mod % i];\n      lim = n;\n    }\n  }\n\npublic:\n  using vec::vec;\n\
-    \n  /**\n   * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n\
+    \ / i) * INV[mod % i];\n    }\n  }\n\npublic:\n  using vec::vec;\n\n  /**\n  \
+    \ * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n\
     \   * @return int\n   */\n  int deg() const {\n    static constexpr mod_t Z =\
     \ 0;\n    int n = int(this->size()) - 1;\n    while (n >= 0 && this->operator[](n)\
     \ == Z) --n;\n    return n;\n  }\n\n  /**\n   * @brief \u83B7\u53D6\u6700\u9AD8\
@@ -161,8 +165,8 @@ data:
     \ *= b[i];\n    idft(len, this->data());\n    this->resize(n + m - 1);\n    return\
     \ *this;\n  }\n\n  fps &operator/=(const fps &rhs) { // 13E\n    int n = this->size();\n\
     \    if (n == 0) return *this;\n    assert(rhs[0] != 0);\n    if (n == 1) {\n\
-    \      this->operator[](0) *= rhs[0].inv();\n      return *this;\n    }\n    int\
-    \ len = get_ntt_len(n), len2 = len >> 1;\n    fps work_tmp1(rhs.inv(len2)), work_tmp2(slice(len2)),\
+    \      this->operator[](0) /= rhs[0];\n      return *this;\n    }\n    int len\
+    \ = get_ntt_len(n), len2 = len >> 1;\n    fps work_tmp1(rhs.inv(len2)), work_tmp2(slice(len2)),\
     \ work_tmp3(rhs.slice(len));\n    // rhs.inv(len2) \u82B1\u8D39 5E\n    work_tmp1.resize(len,\
     \ mod_t(0));\n    dft(len, work_tmp1.data()); // 1E\n    work_tmp2.resize(len,\
     \ mod_t(0));\n    dft(len, work_tmp2.data()); // 1E\n    for (int i = 0; i !=\
@@ -177,15 +181,15 @@ data:
     \  idft(len, work_tmp3.data()); // 1E\n    std::copy_n(work_tmp3.begin() + len2,\
     \ n - len2, this->begin() + len2);\n    this->resize(n);\n    return *this;\n\
     \  }\n\n  fps inv(int n) const { // 10E\n    assert(n > 0);\n    assert(this->operator[](0)\
-    \ != 0);\n    if (n == 1) return {this->operator[](0).inv()};\n    int len = get_ntt_len(n);\n\
-    \    fps res(len, mod_t(0)), work_tmp1(len), work_tmp2(len), cpy(slice(len));\n\
-    \    res[0] = this->operator[](0).inv();\n    for (int i = 2; i <= len; i <<=\
-    \ 1) {\n      std::copy_n(cpy.begin(), i, work_tmp1.begin());\n      dft(i, work_tmp1.data());\
-    \ // 2E\n      std::copy_n(res.begin(), i, work_tmp2.begin());\n      dft(i, work_tmp2.data());\
-    \ // 2E\n      for (int j = 0; j != i; ++j) work_tmp1[j] *= work_tmp2[j];\n  \
-    \    idft(i, work_tmp1.data()); // 2E\n      std::fill_n(work_tmp1.begin(), i\
-    \ >> 1, mod_t(0));\n      dft(i, work_tmp1.data()); // 2E\n      for (int j =\
-    \ 0; j != i; ++j) work_tmp1[j] *= work_tmp2[j];\n      idft(i, work_tmp1.data());\
+    \ != 0);\n    if (n == 1) return {mod_t(1) / this->operator[](0)};\n    int len\
+    \ = get_ntt_len(n);\n    fps res(len, mod_t(0)), work_tmp1(len), work_tmp2(len),\
+    \ cpy(slice(len));\n    res[0] = mod_t(1) / this->operator[](0);\n    for (int\
+    \ i = 2; i <= len; i <<= 1) {\n      std::copy_n(cpy.begin(), i, work_tmp1.begin());\n\
+    \      dft(i, work_tmp1.data()); // 2E\n      std::copy_n(res.begin(), i, work_tmp2.begin());\n\
+    \      dft(i, work_tmp2.data()); // 2E\n      for (int j = 0; j != i; ++j) work_tmp1[j]\
+    \ *= work_tmp2[j];\n      idft(i, work_tmp1.data()); // 2E\n      std::fill_n(work_tmp1.begin(),\
+    \ i >> 1, mod_t(0));\n      dft(i, work_tmp1.data()); // 2E\n      for (int j\
+    \ = 0; j != i; ++j) work_tmp1[j] *= work_tmp2[j];\n      idft(i, work_tmp1.data());\
     \ // 2E\n      for (int j = i >> 1; j != i; ++j) res[j] = -work_tmp1[j];\n   \
     \ }\n    res.resize(n);\n    return res;\n  }\n\n  fps div(int n, const fps &rhs)\
     \ const { return slice(n) /= rhs; }\n\n  mod_t div_at(const fps &rhs, unsigned\
@@ -220,9 +224,9 @@ data:
     \ mod_t> using FPS = FormalPowerSeries<mod_t>;\n\n} // namespace lib\n\n\n"
   code: "#ifndef FORMAL_POWER_SERIES_HEADER_HPP\n#define FORMAL_POWER_SERIES_HEADER_HPP\n\
     \n/**\n * @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\
-    \u6570\u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/fps.md\n\
-    \ */\n\n#include <algorithm>\n#include <cassert>\n#include <tuple>\n#include <utility>\n\
-    #include <vector>\n\n#include <numeric>\n\n#include \"../../traits/modint.hpp\"\
+    \u6570\u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/formal_power_series.md\n\
+    \ */\n\n#include <algorithm>\n#include <cassert>\n#include <numeric>\n#include\
+    \ <tuple>\n#include <utility>\n#include <vector>\n\n#include \"../../traits/modint.hpp\"\
     \n#include \"radix_2_NTT.hpp\"\n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\
     \u4F7F\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\uFF01\uFF01\uFF01\n *       \u5728\
     \u4F7F\u7528\u6A21\u677F\u7C7B\u7EE7\u627F\u65F6\uFF0C\u5BF9\u4E8E\u7EE7\u627F\
@@ -239,9 +243,9 @@ data:
     \ {\nprivate:\n  using vec = std::vector<mod_t>;\n  using fps = FormalPowerSeries<mod_t>;\n\
     \n  static inline vec INV;\n\n  static void init_inv(int n) { // \u9884\u5904\u7406\
     \ [1, n) \u7684\u9006\u5143\n    static constexpr auto mod = modint_traits<mod_t>::get_mod();\n\
-    \    static int lim = 0;\n    if (lim < n) {\n      INV.resize(n);\n      if (lim\
-    \ == 0) INV[1] = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i] = mod_t(mod\
-    \ - mod / i) * INV[mod % i];\n      lim = n;\n    }\n  }\n\npublic:\n  using vec::vec;\n\
+    \    int lim = INV.size();\n    if (lim < n) {\n      INV.resize(n);\n      if\
+    \ (lim == 0) INV[1] = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i]\
+    \ = mod_t(mod - mod / i) * INV[mod % i];\n    }\n  }\n\npublic:\n  using vec::vec;\n\
     \n  /**\n   * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n\
     \   * @return int\n   */\n  int deg() const {\n    static constexpr mod_t Z =\
     \ 0;\n    int n = int(this->size()) - 1;\n    while (n >= 0 && this->operator[](n)\
@@ -279,8 +283,8 @@ data:
     \ *= b[i];\n    idft(len, this->data());\n    this->resize(n + m - 1);\n    return\
     \ *this;\n  }\n\n  fps &operator/=(const fps &rhs) { // 13E\n    int n = this->size();\n\
     \    if (n == 0) return *this;\n    assert(rhs[0] != 0);\n    if (n == 1) {\n\
-    \      this->operator[](0) *= rhs[0].inv();\n      return *this;\n    }\n    int\
-    \ len = get_ntt_len(n), len2 = len >> 1;\n    fps work_tmp1(rhs.inv(len2)), work_tmp2(slice(len2)),\
+    \      this->operator[](0) /= rhs[0];\n      return *this;\n    }\n    int len\
+    \ = get_ntt_len(n), len2 = len >> 1;\n    fps work_tmp1(rhs.inv(len2)), work_tmp2(slice(len2)),\
     \ work_tmp3(rhs.slice(len));\n    // rhs.inv(len2) \u82B1\u8D39 5E\n    work_tmp1.resize(len,\
     \ mod_t(0));\n    dft(len, work_tmp1.data()); // 1E\n    work_tmp2.resize(len,\
     \ mod_t(0));\n    dft(len, work_tmp2.data()); // 1E\n    for (int i = 0; i !=\
@@ -295,15 +299,15 @@ data:
     \  idft(len, work_tmp3.data()); // 1E\n    std::copy_n(work_tmp3.begin() + len2,\
     \ n - len2, this->begin() + len2);\n    this->resize(n);\n    return *this;\n\
     \  }\n\n  fps inv(int n) const { // 10E\n    assert(n > 0);\n    assert(this->operator[](0)\
-    \ != 0);\n    if (n == 1) return {this->operator[](0).inv()};\n    int len = get_ntt_len(n);\n\
-    \    fps res(len, mod_t(0)), work_tmp1(len), work_tmp2(len), cpy(slice(len));\n\
-    \    res[0] = this->operator[](0).inv();\n    for (int i = 2; i <= len; i <<=\
-    \ 1) {\n      std::copy_n(cpy.begin(), i, work_tmp1.begin());\n      dft(i, work_tmp1.data());\
-    \ // 2E\n      std::copy_n(res.begin(), i, work_tmp2.begin());\n      dft(i, work_tmp2.data());\
-    \ // 2E\n      for (int j = 0; j != i; ++j) work_tmp1[j] *= work_tmp2[j];\n  \
-    \    idft(i, work_tmp1.data()); // 2E\n      std::fill_n(work_tmp1.begin(), i\
-    \ >> 1, mod_t(0));\n      dft(i, work_tmp1.data()); // 2E\n      for (int j =\
-    \ 0; j != i; ++j) work_tmp1[j] *= work_tmp2[j];\n      idft(i, work_tmp1.data());\
+    \ != 0);\n    if (n == 1) return {mod_t(1) / this->operator[](0)};\n    int len\
+    \ = get_ntt_len(n);\n    fps res(len, mod_t(0)), work_tmp1(len), work_tmp2(len),\
+    \ cpy(slice(len));\n    res[0] = mod_t(1) / this->operator[](0);\n    for (int\
+    \ i = 2; i <= len; i <<= 1) {\n      std::copy_n(cpy.begin(), i, work_tmp1.begin());\n\
+    \      dft(i, work_tmp1.data()); // 2E\n      std::copy_n(res.begin(), i, work_tmp2.begin());\n\
+    \      dft(i, work_tmp2.data()); // 2E\n      for (int j = 0; j != i; ++j) work_tmp1[j]\
+    \ *= work_tmp2[j];\n      idft(i, work_tmp1.data()); // 2E\n      std::fill_n(work_tmp1.begin(),\
+    \ i >> 1, mod_t(0));\n      dft(i, work_tmp1.data()); // 2E\n      for (int j\
+    \ = 0; j != i; ++j) work_tmp1[j] *= work_tmp2[j];\n      idft(i, work_tmp1.data());\
     \ // 2E\n      for (int j = i >> 1; j != i; ++j) res[j] = -work_tmp1[j];\n   \
     \ }\n    res.resize(n);\n    return res;\n  }\n\n  fps div(int n, const fps &rhs)\
     \ const { return slice(n) /= rhs; }\n\n  mod_t div_at(const fps &rhs, unsigned\
@@ -343,10 +347,11 @@ data:
   path: math/formal_power_series/formal_power_series.hpp
   requiredBy:
   - math/formal_power_series/polynomial.hpp
-  timestamp: '2021-07-03 02:24:28+08:00'
+  timestamp: '2021-07-05 20:36:16+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
+  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
   - remote_test/yosupo/math/convolution_mod.0.test.cpp
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
@@ -389,30 +394,6 @@ fg_0^2-2g_0+g\equiv 0\pmod{x^{2n}}\iff g\equiv g_0+g_0(1-fg_0)\pmod{x^{2n}}
 $$
 
 观察上式，发现 $1-fg_0$ 的前 $n$ 项系数都为零，而对 $f$ 和 $g_0$ 都做 $2n$ 长 DFT 后点值相乘再 IDFT 可以求出 $fg_0\bmod (x^{2n}-1)$ ，溢出的项恰好会出现在前 $n$ 项里（我们没有必要做更长的 DFT ），而我们只需要后 $n$ 项即可还原出 $1-fg_0$ 。这也是一个基础技巧，会在以后的文中用到。
-
-## 欧几里得商数和欧几里得余数
-
-或称为带余除法。这里我们要从形式幂级数环转到多项式环，对于多项式 $f$ 与 $g$ 且 $\deg(f)\geq\deg(g)$ 我们假设其属于欧几里得整环上，那么存在 $f=gq+r$ 其中 $\deg(r)\lt \deg(g)$ 且 $\deg(q)=\deg(f)-\deg(g)$ ，那么说 $r$ 是欧几里得余数和 $q$ 是欧几里得商数（存在且唯一，证略）。我们可以考虑使用幂级数的逆元来得到这两者。我们发现 $gq$ 与 $f$ 的高位是相等的，那么
-
-$$
-x^{\deg(f)}f\left(x^{-1}\right)=g\left(x^{-1}\right)q\left(x^{-1}\right)x^{\deg(f)}+r\left(x^{-1}\right)x^{\deg(f)}
-$$
-
-发现 $r\left(x^{-1}\right)x^{\deg(f)}$ 影响的是高位，有
-
-$$
-x^{\deg(f)}f\left(x^{-1}\right)=\left(x^{\deg(g)}g\left(x^{-1}\right)\right)\left(x^{\deg(q)}q\left(x^{-1}\right)\right)+\left(x^{\deg(r)}r\left(x^{-1}\right)x^{\deg(f)-\deg(r)}\right)
-$$
-
-而 $\deg(r)\lt\deg(g)\implies \deg(f)-\deg(r)\geq\deg(f)-\deg(g)+1\gt\deg(q)$ 那么
-
-$$
-x^{\deg(q)}q\left(x^{-1}\right)\equiv x^{\deg(f)}f\left(x^{-1}\right)\left(x^{\deg(g)}g\left(x^{-1}\right)\right)^{-1}\pmod{x^{\deg(f)-\deg(g)+1}}
-$$
-
-且我们保留了 $q$ 的所有信息，所需要的无非是将多项式“系数翻转”。
-
-求出 $q$ 后代入可求得 $r$ ，而我们知道 $f$ 和 $gq$ 高位是相等的，可以求 $r\equiv f-qg\pmod{(x^{\deg(g)}-1)}$ 。当 $\deg(f)-\deg(g)$ 较小时，我们不使用 NTT 计算会更快。 [EntropyIncreaser](https://loj.ac/u/EntropyIncreaser) 很早在 <https://loj.ac/s/943026> 已经使用了这个方法（不愧是 EI ！），当时我也并未理解。
 
 ## 牛顿法
 

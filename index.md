@@ -243,6 +243,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
       title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
+      title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   - name: remote_test/yosupo/matrix
     pages:
     - icon: ':heavy_check_mark:'

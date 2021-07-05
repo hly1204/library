@@ -28,10 +28,10 @@ data:
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence\"\
     \n\n#include <algorithm>\n#include <iostream>\n\n#line 1 \"math/formal_power_series/formal_power_series.hpp\"\
     \n\n\n\n/**\n * @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\
-    \u7EA7\u6570\u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/fps.md\n\
+    \u7EA7\u6570\u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/formal_power_series.md\n\
     \ */\n\n#line 10 \"math/formal_power_series/formal_power_series.hpp\"\n#include\
-    \ <cassert>\n#include <tuple>\n#include <utility>\n#include <vector>\n\n#include\
-    \ <numeric>\n\n#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits\
+    \ <cassert>\n#include <numeric>\n#include <tuple>\n#include <utility>\n#include\
+    \ <vector>\n\n#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits\
     \ / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename\
     \ mod_t> struct modint_traits {\n  using type = typename mod_t::value_type;\n\
     \  static constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr\
@@ -93,7 +93,7 @@ data:
     template <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
     \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
     \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
-    }\n\n} // namespace lib\n\n\n#line 19 \"math/formal_power_series/formal_power_series.hpp\"\
+    }\n\n} // namespace lib\n\n\n#line 18 \"math/formal_power_series/formal_power_series.hpp\"\
     \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u4F7F\u7528 NTT \u53CB\u597D\
     \u7684\u6A21\u6570\uFF01\uFF01\uFF01\n *       \u5728\u4F7F\u7528\u6A21\u677F\u7C7B\
     \u7EE7\u627F\u65F6\uFF0C\u5BF9\u4E8E\u7EE7\u627F\u6765\u7684 public \u6210\u5458\
@@ -109,11 +109,11 @@ data:
     \ FormalPowerSeries : public std::vector<mod_t> {\nprivate:\n  using vec = std::vector<mod_t>;\n\
     \  using fps = FormalPowerSeries<mod_t>;\n\n  static inline vec INV;\n\n  static\
     \ void init_inv(int n) { // \u9884\u5904\u7406 [1, n) \u7684\u9006\u5143\n   \
-    \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    static int\
-    \ lim = 0;\n    if (lim < n) {\n      INV.resize(n);\n      if (lim == 0) INV[1]\
+    \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    int lim =\
+    \ INV.size();\n    if (lim < n) {\n      INV.resize(n);\n      if (lim == 0) INV[1]\
     \ = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i] = mod_t(mod - mod\
-    \ / i) * INV[mod % i];\n      lim = n;\n    }\n  }\n\npublic:\n  using vec::vec;\n\
-    \n  /**\n   * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n\
+    \ / i) * INV[mod % i];\n    }\n  }\n\npublic:\n  using vec::vec;\n\n  /**\n  \
+    \ * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n\
     \   * @return int\n   */\n  int deg() const {\n    static constexpr mod_t Z =\
     \ 0;\n    int n = int(this->size()) - 1;\n    while (n >= 0 && this->operator[](n)\
     \ == Z) --n;\n    return n;\n  }\n\n  /**\n   * @brief \u83B7\u53D6\u6700\u9AD8\
@@ -150,8 +150,8 @@ data:
     \ *= b[i];\n    idft(len, this->data());\n    this->resize(n + m - 1);\n    return\
     \ *this;\n  }\n\n  fps &operator/=(const fps &rhs) { // 13E\n    int n = this->size();\n\
     \    if (n == 0) return *this;\n    assert(rhs[0] != 0);\n    if (n == 1) {\n\
-    \      this->operator[](0) *= rhs[0].inv();\n      return *this;\n    }\n    int\
-    \ len = get_ntt_len(n), len2 = len >> 1;\n    fps work_tmp1(rhs.inv(len2)), work_tmp2(slice(len2)),\
+    \      this->operator[](0) /= rhs[0];\n      return *this;\n    }\n    int len\
+    \ = get_ntt_len(n), len2 = len >> 1;\n    fps work_tmp1(rhs.inv(len2)), work_tmp2(slice(len2)),\
     \ work_tmp3(rhs.slice(len));\n    // rhs.inv(len2) \u82B1\u8D39 5E\n    work_tmp1.resize(len,\
     \ mod_t(0));\n    dft(len, work_tmp1.data()); // 1E\n    work_tmp2.resize(len,\
     \ mod_t(0));\n    dft(len, work_tmp2.data()); // 1E\n    for (int i = 0; i !=\
@@ -166,15 +166,15 @@ data:
     \  idft(len, work_tmp3.data()); // 1E\n    std::copy_n(work_tmp3.begin() + len2,\
     \ n - len2, this->begin() + len2);\n    this->resize(n);\n    return *this;\n\
     \  }\n\n  fps inv(int n) const { // 10E\n    assert(n > 0);\n    assert(this->operator[](0)\
-    \ != 0);\n    if (n == 1) return {this->operator[](0).inv()};\n    int len = get_ntt_len(n);\n\
-    \    fps res(len, mod_t(0)), work_tmp1(len), work_tmp2(len), cpy(slice(len));\n\
-    \    res[0] = this->operator[](0).inv();\n    for (int i = 2; i <= len; i <<=\
-    \ 1) {\n      std::copy_n(cpy.begin(), i, work_tmp1.begin());\n      dft(i, work_tmp1.data());\
-    \ // 2E\n      std::copy_n(res.begin(), i, work_tmp2.begin());\n      dft(i, work_tmp2.data());\
-    \ // 2E\n      for (int j = 0; j != i; ++j) work_tmp1[j] *= work_tmp2[j];\n  \
-    \    idft(i, work_tmp1.data()); // 2E\n      std::fill_n(work_tmp1.begin(), i\
-    \ >> 1, mod_t(0));\n      dft(i, work_tmp1.data()); // 2E\n      for (int j =\
-    \ 0; j != i; ++j) work_tmp1[j] *= work_tmp2[j];\n      idft(i, work_tmp1.data());\
+    \ != 0);\n    if (n == 1) return {mod_t(1) / this->operator[](0)};\n    int len\
+    \ = get_ntt_len(n);\n    fps res(len, mod_t(0)), work_tmp1(len), work_tmp2(len),\
+    \ cpy(slice(len));\n    res[0] = mod_t(1) / this->operator[](0);\n    for (int\
+    \ i = 2; i <= len; i <<= 1) {\n      std::copy_n(cpy.begin(), i, work_tmp1.begin());\n\
+    \      dft(i, work_tmp1.data()); // 2E\n      std::copy_n(res.begin(), i, work_tmp2.begin());\n\
+    \      dft(i, work_tmp2.data()); // 2E\n      for (int j = 0; j != i; ++j) work_tmp1[j]\
+    \ *= work_tmp2[j];\n      idft(i, work_tmp1.data()); // 2E\n      std::fill_n(work_tmp1.begin(),\
+    \ i >> 1, mod_t(0));\n      dft(i, work_tmp1.data()); // 2E\n      for (int j\
+    \ = 0; j != i; ++j) work_tmp1[j] *= work_tmp2[j];\n      idft(i, work_tmp1.data());\
     \ // 2E\n      for (int j = i >> 1; j != i; ++j) res[j] = -work_tmp1[j];\n   \
     \ }\n    res.resize(n);\n    return res;\n  }\n\n  fps div(int n, const fps &rhs)\
     \ const { return slice(n) /= rhs; }\n\n  mod_t div_at(const fps &rhs, unsigned\
@@ -285,7 +285,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
   requiredBy: []
-  timestamp: '2021-07-03 02:24:28+08:00'
+  timestamp: '2021-07-05 20:36:16+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
