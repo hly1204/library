@@ -26,12 +26,14 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
+    _deprecated_at_docs: docs/math/formal_power_series/polynomial.md
     document_title: "polynomial / \u591A\u9879\u5F0F"
     links: []
   bundledCode: "#line 1 \"math/formal_power_series/polynomial.hpp\"\n\n\n\n/**\n *\
-    \ @brief polynomial / \u591A\u9879\u5F0F\n *\n */\n\n#line 1 \"math/formal_power_series/formal_power_series.hpp\"\
-    \n\n\n\n/**\n * @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\
-    \u7EA7\u6570\u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/formal_power_series.md\n\
+    \ @brief polynomial / \u591A\u9879\u5F0F\n * @docs docs/math/formal_power_series/polynomial.md\n\
+    \ */\n\n#line 1 \"math/formal_power_series/formal_power_series.hpp\"\n\n\n\n/**\n\
+    \ * @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
+    \u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/formal_power_series.md\n\
     \ */\n\n#include <algorithm>\n#include <cassert>\n#include <numeric>\n#include\
     \ <tuple>\n#include <utility>\n#include <vector>\n\n#line 1 \"traits/modint.hpp\"\
     \n\n\n\n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\
@@ -330,42 +332,43 @@ data:
     \ poly &lhs, const poly &rhs) { return poly(lhs) %= rhs; }\n};\n\ntemplate <typename\
     \ mod_t> using Poly = Polynomial<mod_t>;\n\n} // namespace lib\n\n\n"
   code: "#ifndef POLYNOMIAL_HEADER_HPP\n#define POLYNOMIAL_HEADER_HPP\n\n/**\n * @brief\
-    \ polynomial / \u591A\u9879\u5F0F\n *\n */\n\n#include \"formal_power_series.hpp\"\
-    \n\nnamespace lib {\n\n/**\n * @brief \u591A\u9879\u5F0F\u7C7B\n * @note \u57FA\
-    \u7C7B FormalPowerSeries \u4E2D\u51FD\u6570\u90FD\u6CA1\u6709\u4F7F\u7528 virtual\n\
-    \ *       \u6240\u4EE5\u5728\u8BE5\u7C7B\u4E2D\u6709\u5B9A\u4E49\u76F8\u540C\u7684\
-    \u51FD\u6570\u5219\u4F1A\u963B\u6B62\u8C03\u7528\u57FA\u7C7B\u7684\u51FD\u6570\
-    \n *       \u8FD9\u88AB\u79F0\u4E3A\u9690\u85CF\uFF08 hide \uFF09\u3002\n *  \
-    \     \u800C\u5982\u679C\u4F7F\u7528\u4E86 virtual \u5219\u88AB\u79F0\u4E3A\u8986\
-    \u76D6\uFF08 override \uFF09\uFF0C\u800C\u8986\u76D6\u4F1A\u5BFC\u51FA\u591A\u6001\
-    \u3002\n */\ntemplate <typename mod_t> class Polynomial : public FormalPowerSeries<mod_t>\
-    \ {\npublic:\n  using fps = FormalPowerSeries<mod_t>;\n  using poly = Polynomial<mod_t>;\n\
-    \  using fps::fps;\n\n  // \u4F7F\u5F97\u80FD\u591F\u4ECE FormalPowerSeries \u8F6C\
-    \u6362\u4E3A Polynomial \u7C7B\u578B\uFF0C\u4F46\u4E0D\u6E05\u695A\u662F\u5426\
-    \u6709\u4EC0\u4E48\u95EE\u9898\n  Polynomial(const fps &rhs) : fps(rhs) {}\n \
-    \ Polynomial(fps &&rhs) : fps(std::move(rhs)) {}\n\n  poly operator-() const {\n\
-    \    poly res = this->fps::operator-();\n    res.shrink();\n    return res;\n\
-    \  }\n  poly &operator+=(const poly &rhs) {\n    this->fps::operator+=(rhs);\n\
-    \    this->shrink();\n    return *this;\n  }\n  poly &operator-=(const poly &rhs)\
-    \ {\n    this->fps::operator-=(rhs);\n    this->shrink();\n    return *this;\n\
-    \  }\n  poly &operator*=(const poly &rhs) {\n    this->fps::operator*=(rhs);\n\
-    \    this->shrink();\n    return *this;\n  }\n  poly &operator/=(const poly &rhs)\
-    \ {\n    assert(rhs.deg() >= 0);\n    this->shrink();\n    int quo_size = this->deg()\
-    \ - rhs.deg() + 1;\n    if (quo_size <= 0) {\n      this->resize(1);\n      this->operator[](0)\
-    \ = 0;\n      return *this;\n    }\n    poly rhs_cpy(rhs);\n    rhs_cpy.shrink();\n\
-    \    std::reverse(this->begin(), this->end());\n    std::reverse(rhs_cpy.begin(),\
-    \ rhs_cpy.end());\n    poly quo(this->div(quo_size, rhs_cpy));\n    this->resize(quo_size);\n\
-    \    std::reverse_copy(quo.begin(), quo.end(), this->begin());\n    return *this;\n\
-    \  }\n  poly &operator%=(const poly &rhs) {\n    // f/g => f=gq+r, deg(r)<deg(g)\
-    \ \u5728\u8FD9\u91CC f \u5C31\u662F (*this) \u800C g \u5C31\u662F rhs\n    //\
-    \ r=f-gq (mod ((x^deg(rhs)) - 1))\n    // \u6240\u4EE5\u6211\u4EEC\u505A NTT \u7684\
-    \u957F\u5EA6\u53EF\u4EE5\u662F O(deg(rhs)) \u7EA7\u522B\u7684\n    int rem_size\
-    \ = rhs.deg();\n    assert(rem_size >= 0);\n    if (rem_size == 0) {\n      this->resize(1);\n\
-    \      this->operator[](0) = 0;\n      return *this;\n    }\n    this->shrink();\n\
-    \    if (this->deg() < rem_size) return *this;\n    poly quo((*this) / rhs), rhs_cpy(rhs);\n\
-    \    int len = get_ntt_len(rem_size);\n    // \u4EE4 (*this) \u548C quo \u548C\
-    \ rhs_cpy \u90FD\u5728 mod ((x^len) - 1) \u610F\u4E49\u4E0B\n    int mask = len\
-    \ - 1;\n    for (int i = len, e = this->size(); i < e; ++i)\n      this->operator[](i\
+    \ polynomial / \u591A\u9879\u5F0F\n * @docs docs/math/formal_power_series/polynomial.md\n\
+    \ */\n\n#include \"formal_power_series.hpp\"\n\nnamespace lib {\n\n/**\n * @brief\
+    \ \u591A\u9879\u5F0F\u7C7B\n * @note \u57FA\u7C7B FormalPowerSeries \u4E2D\u51FD\
+    \u6570\u90FD\u6CA1\u6709\u4F7F\u7528 virtual\n *       \u6240\u4EE5\u5728\u8BE5\
+    \u7C7B\u4E2D\u6709\u5B9A\u4E49\u76F8\u540C\u7684\u51FD\u6570\u5219\u4F1A\u963B\
+    \u6B62\u8C03\u7528\u57FA\u7C7B\u7684\u51FD\u6570\n *       \u8FD9\u88AB\u79F0\u4E3A\
+    \u9690\u85CF\uFF08 hide \uFF09\u3002\n *       \u800C\u5982\u679C\u4F7F\u7528\u4E86\
+    \ virtual \u5219\u88AB\u79F0\u4E3A\u8986\u76D6\uFF08 override \uFF09\uFF0C\u800C\
+    \u8986\u76D6\u4F1A\u5BFC\u51FA\u591A\u6001\u3002\n */\ntemplate <typename mod_t>\
+    \ class Polynomial : public FormalPowerSeries<mod_t> {\npublic:\n  using fps =\
+    \ FormalPowerSeries<mod_t>;\n  using poly = Polynomial<mod_t>;\n  using fps::fps;\n\
+    \n  // \u4F7F\u5F97\u80FD\u591F\u4ECE FormalPowerSeries \u8F6C\u6362\u4E3A Polynomial\
+    \ \u7C7B\u578B\uFF0C\u4F46\u4E0D\u6E05\u695A\u662F\u5426\u6709\u4EC0\u4E48\u95EE\
+    \u9898\n  Polynomial(const fps &rhs) : fps(rhs) {}\n  Polynomial(fps &&rhs) :\
+    \ fps(std::move(rhs)) {}\n\n  poly operator-() const {\n    poly res = this->fps::operator-();\n\
+    \    res.shrink();\n    return res;\n  }\n  poly &operator+=(const poly &rhs)\
+    \ {\n    this->fps::operator+=(rhs);\n    this->shrink();\n    return *this;\n\
+    \  }\n  poly &operator-=(const poly &rhs) {\n    this->fps::operator-=(rhs);\n\
+    \    this->shrink();\n    return *this;\n  }\n  poly &operator*=(const poly &rhs)\
+    \ {\n    this->fps::operator*=(rhs);\n    this->shrink();\n    return *this;\n\
+    \  }\n  poly &operator/=(const poly &rhs) {\n    assert(rhs.deg() >= 0);\n   \
+    \ this->shrink();\n    int quo_size = this->deg() - rhs.deg() + 1;\n    if (quo_size\
+    \ <= 0) {\n      this->resize(1);\n      this->operator[](0) = 0;\n      return\
+    \ *this;\n    }\n    poly rhs_cpy(rhs);\n    rhs_cpy.shrink();\n    std::reverse(this->begin(),\
+    \ this->end());\n    std::reverse(rhs_cpy.begin(), rhs_cpy.end());\n    poly quo(this->div(quo_size,\
+    \ rhs_cpy));\n    this->resize(quo_size);\n    std::reverse_copy(quo.begin(),\
+    \ quo.end(), this->begin());\n    return *this;\n  }\n  poly &operator%=(const\
+    \ poly &rhs) {\n    // f/g => f=gq+r, deg(r)<deg(g) \u5728\u8FD9\u91CC f \u5C31\
+    \u662F (*this) \u800C g \u5C31\u662F rhs\n    // r=f-gq (mod ((x^deg(rhs)) - 1))\n\
+    \    // \u6240\u4EE5\u6211\u4EEC\u505A NTT \u7684\u957F\u5EA6\u53EF\u4EE5\u662F\
+    \ O(deg(rhs)) \u7EA7\u522B\u7684\n    int rem_size = rhs.deg();\n    assert(rem_size\
+    \ >= 0);\n    if (rem_size == 0) {\n      this->resize(1);\n      this->operator[](0)\
+    \ = 0;\n      return *this;\n    }\n    this->shrink();\n    if (this->deg() <\
+    \ rem_size) return *this;\n    poly quo((*this) / rhs), rhs_cpy(rhs);\n    int\
+    \ len = get_ntt_len(rem_size);\n    // \u4EE4 (*this) \u548C quo \u548C rhs_cpy\
+    \ \u90FD\u5728 mod ((x^len) - 1) \u610F\u4E49\u4E0B\n    int mask = len - 1;\n\
+    \    for (int i = len, e = this->size(); i < e; ++i)\n      this->operator[](i\
     \ &mask) += this->operator[](i);\n    for (int i = len, e = quo.size(); i < e;\
     \ ++i) quo[i & mask] += quo[i];\n    for (int i = len, e = rhs_cpy.size(); i <\
     \ e; ++i) rhs_cpy[i & mask] += rhs_cpy[i];\n    this->resize(len, mod_t(0));\n\
@@ -456,7 +459,7 @@ data:
   isVerificationFile: false
   path: math/formal_power_series/polynomial.hpp
   requiredBy: []
-  timestamp: '2021-07-05 20:36:16+08:00'
+  timestamp: '2021-07-05 20:51:34+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
@@ -469,3 +472,62 @@ redirect_from:
 - /library/math/formal_power_series/polynomial.hpp.html
 title: "polynomial / \u591A\u9879\u5F0F"
 ---
+## 欧几里得商数和欧几里得余数
+
+或称为带余除法。对于多项式 $f$ 与 $g$ 且 $\deg(f)\geq\deg(g)$ 我们假设其属于欧几里得整环上，那么存在 $f=gq+r$ 其中 $\deg(r)\lt \deg(g)$ 且 $\deg(q)=\deg(f)-\deg(g)$ ，那么说 $r$ 是欧几里得余数和 $q$ 是欧几里得商数（存在且唯一，证略）。我们可以考虑使用幂级数的逆元来得到这两者。我们发现 $gq$ 与 $f$ 的高位是相等的，那么
+
+$$
+x^{\deg(f)}f\left(x^{-1}\right)=g\left(x^{-1}\right)q\left(x^{-1}\right)x^{\deg(f)}+r\left(x^{-1}\right)x^{\deg(f)}
+$$
+
+发现 $r\left(x^{-1}\right)x^{\deg(f)}$ 影响的是高位，有
+
+$$
+x^{\deg(f)}f\left(x^{-1}\right)=\left(x^{\deg(g)}g\left(x^{-1}\right)\right)\left(x^{\deg(q)}q\left(x^{-1}\right)\right)+\left(x^{\deg(r)}r\left(x^{-1}\right)x^{\deg(f)-\deg(r)}\right)
+$$
+
+而 $\deg(r)\lt\deg(g)\implies \deg(f)-\deg(r)\geq\deg(f)-\deg(g)+1\gt\deg(q)$ 那么
+
+$$
+x^{\deg(q)}q\left(x^{-1}\right)\equiv x^{\deg(f)}f\left(x^{-1}\right)\left(x^{\deg(g)}g\left(x^{-1}\right)\right)^{-1}\pmod{x^{\deg(f)-\deg(g)+1}}
+$$
+
+且我们保留了 $q$ 的所有信息，所需要的无非是将多项式“系数翻转”。
+
+求出 $q$ 后代入可求得 $r$ ，而我们知道 $f$ 和 $gq$ 高位是相等的，可以求 $r\equiv f-qg\pmod{(x^{\deg(g)}-1)}$ 。当 $\deg(f)-\deg(g)$ 较小时，我们不使用 NTT 计算会更快。 [EntropyIncreaser](https://loj.ac/u/EntropyIncreaser) 很早在 <https://loj.ac/s/943026> 已经使用了这个方法（不愧是 EI ！），当时我也并未理解。
+
+## 多项式平移
+
+给出多项式 $A(x)=\sum _ {i=0}^na _ {i}x^{i}$ 且 $\deg(A(x))=n\gt 0$ ，要求 $A(x+c)$ 的系数，我们在 $c$ 处应用泰勒公式，有
+
+$$
+A(x)=A(c)+\frac{A'(c)}{1!}(x-c)+\frac{A''(c)}{2!}(x-c)^{2}+\cdots +\frac{A^{(n)}(c)}{1!}(x-c)^{n}
+$$
+
+那么 $A(x+c)$ 是
+
+$$
+A(x+c)=A(c)+\frac{A'(c)}{1!}x+\frac{A''(c)}{2!}x^{2}+\cdots +\frac{A^{(n)}(c)}{1!}x^{n}
+$$
+
+观察发现
+
+$$
+\begin{aligned}
+t![x^t]A(x+c)&=A^{(t)}(c)\\
+&=\sum _ {i=t}^{n}a _ {i}i!\frac{c^{i-t}}{(i-t)!}\\
+&=\sum _ {i=0}^{n-t}a _ {i+t}(i+t)!\frac{c^i}{i!}
+\end{aligned}
+$$
+
+我们令 $A_0(x)=\sum _ {i=0}^na _ {n-i}(n-i)!x^i$ 和 $B_0(x)=\sum _ {i=0}^n\frac{c^i}{i!}x^i$ 那么
+
+$$
+\begin{aligned}
+[x^{n-t}](A_0(x)B_0(x))&=\sum _ {i=0}^{n-t}([x^{n-t-i}]A_0(x))([x^i]B_0(x))\\
+&=\sum _ {i=0}^{n-t}a _ {i+t}(i+t)!\frac{c^i}{i!}\\
+&=t![x^t]A(x+c)
+\end{aligned}
+$$
+
+可以通过一次多项式乘法得到。一般来说我们假设 $A(x)\in\mathbb{F} _ p[x]$ 其中 $p$ 比较大使得 $\deg(A(x))\lt p$ 。

@@ -11,7 +11,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   - icon: ':heavy_check_mark:'
@@ -30,9 +30,10 @@ data:
   bundledCode: "#line 1 \"remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/polynomial_taylor_shift\"\n\
     \n#include <iostream>\n\n#line 1 \"math/formal_power_series/polynomial.hpp\"\n\
-    \n\n\n/**\n * @brief polynomial / \u591A\u9879\u5F0F\n *\n */\n\n#line 1 \"math/formal_power_series/formal_power_series.hpp\"\
-    \n\n\n\n/**\n * @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\
-    \u7EA7\u6570\u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/formal_power_series.md\n\
+    \n\n\n/**\n * @brief polynomial / \u591A\u9879\u5F0F\n * @docs docs/math/formal_power_series/polynomial.md\n\
+    \ */\n\n#line 1 \"math/formal_power_series/formal_power_series.hpp\"\n\n\n\n/**\n\
+    \ * @brief basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
+    \u7684\u57FA\u672C\u64CD\u4F5C\n * @docs docs/math/formal_power_series/formal_power_series.md\n\
     \ */\n\n#include <algorithm>\n#include <cassert>\n#include <numeric>\n#include\
     \ <tuple>\n#include <utility>\n#include <vector>\n\n#line 1 \"traits/modint.hpp\"\
     \n\n\n\n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\
@@ -407,7 +408,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-05 20:36:16+08:00'
+  timestamp: '2021-07-05 20:51:34+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp

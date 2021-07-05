@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/matrix/black_box_linear_algebra.hpp
     title: "black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570"
   - icon: ':heavy_check_mark:'
@@ -10,11 +10,11 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/matrix/sparse_square_matrix.hpp
     title: "sparse square matrix / \u7A00\u758F\u65B9\u9635"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
     title: "find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\u77ED\u7EBF\u6027\
       \u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []

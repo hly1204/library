@@ -4,13 +4,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/matrix/characteristic_polynomial.hpp
     title: "characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
@@ -256,7 +256,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-05 20:36:16+08:00'
+  timestamp: '2021-07-05 20:51:34+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp

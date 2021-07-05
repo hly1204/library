@@ -77,13 +77,13 @@ data:
       title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
   - name: math/matrix
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: math/matrix/black_box_linear_algebra.hpp
       title: "black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570"
     - icon: ':heavy_check_mark:'
       path: math/matrix/characteristic_polynomial.hpp
       title: "characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: math/matrix/matrix_base.hpp
       title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
     - icon: ':warning:'
@@ -96,7 +96,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: math/matrix/sparse_square_matrix.hpp
       title: "sparse square matrix / \u7A00\u758F\u65B9\u9635"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: math/matrix/square_matrix.hpp
       title: "square matrix / \u65B9\u9635"
   - name: math/modulo
@@ -104,7 +104,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: math/modulo/binomial_coefficient_mod.hpp
       title: "binomial coefficient mod / \u4E8C\u9879\u5F0F\u7CFB\u6570\u53D6\u6A21"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
       title: "find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\u77ED\u7EBF\
         \u6027\u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5"
@@ -124,7 +124,7 @@ data:
       title: "pseudo random generator / \u4F2A\u968F\u673A\u6570\u751F\u6210\u5668"
   - name: modint
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint/Montgomery_modint.hpp
       title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
     - icon: ':warning:'
@@ -254,10 +254,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
       title: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: remote_test/yosupo/matrix/matrix_det.0.test.cpp
       title: remote_test/yosupo/matrix/matrix_det.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: remote_test/yosupo/matrix/matrix_det.1.test.cpp
       title: remote_test/yosupo/matrix/matrix_det.1.test.cpp
     - icon: ':heavy_check_mark:'

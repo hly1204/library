@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/matrix_det
@@ -233,8 +233,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/matrix/matrix_det.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-05 20:36:16+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2021-07-05 20:51:34+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/matrix_det.0.test.cpp
 layout: document

@@ -8,7 +8,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   - icon: ':heavy_check_mark:'
@@ -282,7 +282,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-05 20:36:16+08:00'
+  timestamp: '2021-07-05 20:51:34+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp

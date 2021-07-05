@@ -347,7 +347,7 @@ data:
   path: math/formal_power_series/formal_power_series.hpp
   requiredBy:
   - math/formal_power_series/polynomial.hpp
-  timestamp: '2021-07-05 20:36:16+08:00'
+  timestamp: '2021-07-05 20:51:34+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
