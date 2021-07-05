@@ -524,7 +524,7 @@ $$
 
 $$
 \begin{aligned}
-[x^{n-t}] (A_0(x)B_0(x))&=\sum _ {i=0}^{n-t}([x^{n-t-i}]A_0(x))([x^i]B_0(x))\\
+[x^{n-t}]\left(A_0(x)B_0(x)\right)&=\sum _ {i=0}^{n-t}([x^{n-t-i}]A_0(x))([x^i]B_0(x))\\
 &=\sum _ {i=0}^{n-t}a _ {i+t}(i+t)!\frac{c^i}{i!}\\
 &=t![x^t]A(x+c)
 \end{aligned}
