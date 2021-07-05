@@ -514,7 +514,7 @@ $$
 
 $$
 \begin{aligned}
-t![x^t]A(x+c)&=A^{(t)}(c)\\
+t!\lbrack x^t\rbrack A(x+c)&=A^{(t)}(c)\\
 &=\sum _ {i=t}^{n}a _ {i}i!\frac{c^{i-t}}{(i-t)!}\\
 &=\sum _ {i=0}^{n-t}a _ {i+t}(i+t)!\frac{c^i}{i!}
 \end{aligned}
@@ -524,12 +524,12 @@ $$
 
 $$
 \begin{aligned}
-[x ^ {n-t}]A_0(x)B_0(x)&=\sum _ {i=0}^{n-t}([x^{n-t-i}]A_0(x))([x^i]B_0(x))\\
+\lbrack x^{n-t}\rbrack (A_0(x)B_0(x))&=\sum _ {i=0}^{n-t}(\lbrack x^{n-t-i}\rbrack A_0(x))(\lbrack x^i\rbrack B_0(x))\\
 &=\sum _ {i=0}^{n-t}a _ {i+t}(i+t)!\frac{c^i}{i!}\\
-&=t![x^t]A(x+c)
+&=t!\lbrack x^t\rbrack A(x+c)
 \end{aligned}
 $$
 
 <!-- 注意这里的 Markdown 中 `[]()` 这种不能挨着写，否则会识别错误！ -->
 
-可以通过一次多项式乘法得到。一般来说我们假设 $A(x)\in\mathbb{F} _ p[x]$ 其中 $p$ 比较大使得 $\deg(A(x))\lt p$ 。
+可以通过一次多项式乘法得到。一般来说我们假设 $A(x)\in\mathbb{F} _ p\lbrack x\rbrack$ 其中 $p$ 比较大使得 $\deg(A(x))\lt p$ 。
