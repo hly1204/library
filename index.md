@@ -61,6 +61,9 @@ data:
         \ \u7684 rho \u7B97\u6CD5"
   - name: math/formal_power_series
     pages:
+    - icon: ':warning:'
+      path: math/formal_power_series/chirp_z.hpp
+      title: "chirp z transform / chirp z \u53D8\u6362"
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/formal_power_series.hpp
       title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
@@ -283,3 +286,4 @@ layout: toppage
 
 - [GitHub issues](https://github.com/hly1204/library/issues)
 - [Markdown 语法注意事项](https://hly1204.github.io/library/Markdown.html)
+- [我的笔记](https://hly1204.github.io/library/note.html)

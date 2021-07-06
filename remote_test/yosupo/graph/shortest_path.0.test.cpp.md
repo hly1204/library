@@ -140,7 +140,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/graph/shortest_path.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-15 18:09:03+08:00'
+  timestamp: '2021-07-06 15:14:37+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/graph/shortest_path.0.test.cpp

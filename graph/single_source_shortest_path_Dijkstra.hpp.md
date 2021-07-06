@@ -110,12 +110,12 @@ data:
   code: "#ifndef SINGLE_SOURCE_SHORTEST_PATH_DIJKSTRA_HEADER_HPP\n#define SINGLE_SOURCE_SHORTEST_PATH_DIJKSTRA_HEADER_HPP\n\
     \n/**\n * @brief single source shortest path Dijkstra / \u5355\u6E90\u6700\u77ED\
     \u8DEF Dijkstra \u7B97\u6CD5\n *\n */\n\n#include <limits>\n#include <utility>\n\
-    #include <vector>\n\n#include \"datastructure/heap/priority_queue.hpp\"\n\nnamespace\
-    \ lib {\n\ntemplate <typename DistType> class NonnegativeShortestPathGraph {\n\
-    public:\n  struct InputEdge {\n    int from, to;\n    DistType dist;\n    InputEdge(int\
-    \ from, int to, DistType dist) : from(from), to(to), dist(dist) {}\n    ~InputEdge()\
-    \ = default;\n  };\n\n  struct Edge {\n    int to;\n    DistType dist;\n  };\n\
-    \n  NonnegativeShortestPathGraph(int n) : n_(n) {}\n  ~NonnegativeShortestPathGraph()\
+    #include <vector>\n\n#include \"../datastructure/heap/priority_queue.hpp\"\n\n\
+    namespace lib {\n\ntemplate <typename DistType> class NonnegativeShortestPathGraph\
+    \ {\npublic:\n  struct InputEdge {\n    int from, to;\n    DistType dist;\n  \
+    \  InputEdge(int from, int to, DistType dist) : from(from), to(to), dist(dist)\
+    \ {}\n    ~InputEdge() = default;\n  };\n\n  struct Edge {\n    int to;\n    DistType\
+    \ dist;\n  };\n\n  NonnegativeShortestPathGraph(int n) : n_(n) {}\n  ~NonnegativeShortestPathGraph()\
     \ = default;\n\n  void add_directed_edge(int from, int to, DistType dist) {\n\
     \    input_edge_.emplace_back(from, to, dist);\n  }\n\n  std::pair<std::vector<DistType>,\
     \ std::vector<int>> get_sssp(int source) const {\n    std::vector<int> idx(n_\
@@ -144,7 +144,7 @@ data:
   isVerificationFile: false
   path: graph/single_source_shortest_path_Dijkstra.hpp
   requiredBy: []
-  timestamp: '2021-06-15 18:09:03+08:00'
+  timestamp: '2021-07-06 15:14:37+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizuoj/graph/shortest_path_nonnegative.0.test.cpp

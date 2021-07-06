@@ -154,9 +154,9 @@ data:
   code: "#ifndef SQRT_MOD_HEADER_HPP\n#define SQRT_MOD_HEADER_HPP\n\n/**\n * @brief\
     \ square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839\n * @docs docs/math/modulo/sqrt_mod.md\n\
     \ */\n\n#include <cassert>\n#include <random>\n#include <tuple>\n#include <type_traits>\n\
-    #include <vector>\n\n#include \"modint/runtime_Montgomery_modint.hpp\"\n#include\
-    \ \"modint/runtime_long_Montgomery_modint.hpp\"\n\nnamespace lib {\n\nnamespace\
-    \ internal {\n\ntemplate <typename mod_t> std::vector<mod_t> sqrt_mod_prime(const\
+    #include <vector>\n\n#include \"../../modint/runtime_Montgomery_modint.hpp\"\n\
+    #include \"../../modint/runtime_long_Montgomery_modint.hpp\"\n\nnamespace lib\
+    \ {\n\nnamespace internal {\n\ntemplate <typename mod_t> std::vector<mod_t> sqrt_mod_prime(const\
     \ mod_t x) {\n  const auto p = mod_t::get_mod();\n  const mod_t ONE(1), MINUS_ONE(-ONE),\
     \ ZERO(0);\n  if (x == ZERO) return {ZERO};\n  if (x.pow(p >> 1) == MINUS_ONE)\
     \ return {};\n  if ((p & 3) == 3) {\n    mod_t res = x.pow((p + 1) >> 2);\n  \
@@ -185,7 +185,7 @@ data:
   isVerificationFile: false
   path: math/modulo/sqrt_mod.hpp
   requiredBy: []
-  timestamp: '2021-07-01 12:57:32+08:00'
+  timestamp: '2021-07-06 15:14:37+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp

@@ -175,7 +175,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-01 12:57:32+08:00'
+  timestamp: '2021-07-06 15:14:37+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/mod_sqrt.0.test.cpp
