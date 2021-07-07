@@ -21,16 +21,16 @@ data:
     links: []
   bundledCode: "#line 1 \"math/formal_power_series/chirp_z.hpp\"\n\n\n\n/**\n * @brief\
     \ chirp z transform / chirp z \u53D8\u6362\n * @docs docs/math/formal_power_series/chirp_z.md\n\
-    \ */\n\n#include <algorithm>\n#include <functional>\n#include <vector>\n\n#line\
-    \ 1 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\n/**\n * @brief radix-2\
-    \ NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\n#line 10 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n#include <cassert>\n#include <cstdint>\n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n\n#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits / \u53D6\
-    \u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename mod_t>\
-    \ struct modint_traits {\n  using type = typename mod_t::value_type;\n  static\
-    \ constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr type\
-    \ get_primitive_root_prime() { return mod_t::get_primitive_root_prime(); }\n};\n\
-    \n} // namespace lib\n\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
+    \ */\n\n#include <algorithm>\n#include <cassert>\n#include <functional>\n#include\
+    \ <vector>\n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\n/**\n\
+    \ * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\n#line 11\
+    \ \"math/formal_power_series/radix_2_NTT.hpp\"\n#include <cstdint>\n#line 13 \"\
+    math/formal_power_series/radix_2_NTT.hpp\"\n\n#line 1 \"traits/modint.hpp\"\n\n\
+    \n\n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\n\
+    namespace lib {\n\ntemplate <typename mod_t> struct modint_traits {\n  using type\
+    \ = typename mod_t::value_type;\n  static constexpr type get_mod() { return mod_t::get_mod();\
+    \ }\n  static constexpr type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
+    \ }\n};\n\n} // namespace lib\n\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
     \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\
     \u6A21\u6570\uFF01\uFF01\uFF01\n */\ntemplate <typename mod_t> class NTT {\npublic:\n\
     \  NTT() = delete;\n\n  static void set_root(int len) {\n    static int lim =\
@@ -84,52 +84,56 @@ data:
     template <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
     \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
     \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
-    }\n\n} // namespace lib\n\n\n#line 14 \"math/formal_power_series/chirp_z.hpp\"\
+    }\n\n} // namespace lib\n\n\n#line 15 \"math/formal_power_series/chirp_z.hpp\"\
     \n\nnamespace lib {\n\n/**\n * @brief chirp z \u53D8\u6362\n * @tparam mod_t \u4E3A\
     \ NTT \u53CB\u597D\u7684\u6A21\u6570\n * @param n czt \u7684\u957F\u5EA6\n * @param\
     \ A \u591A\u9879\u5F0F\n * @param c\n * @return std::vector<mod_t> A(1), A(c),\
     \ A(c^2), \u2026, A(c^{n-1})\n */\ntemplate <typename mod_t> std::vector<mod_t>\
     \ czt(int n, const std::vector<mod_t> &A, mod_t c) {\n  const mod_t ZERO(0);\n\
-    \  assert(c != ZERO);\n\n  int m = A.size();\n  while (m > 0 && A[m - 1] == ZERO)\
-    \ --m;\n  if (m <= 1) return std::vector<mod_t>(n, A[0]);\n\n  int sz = n + m\
-    \ - 1, len = get_ntt_len(sz);\n  std::vector<mod_t> A_0(A);\n  A_0.resize(len,\
-    \ ZERO);\n  mod_t c_tmp(1), ic = mod_t(1) / c, ic_tmp(1);\n  std::vector<mod_t>\
-    \ c_choose(sz), ic_choose(sz);\n  for (int i = 0; i < 2 && i < sz; ++i) ic_choose[i]\
-    \ = c_choose[i] = c_tmp;\n  for (int i = 2; i < sz; ++i)\n    c_choose[i] = c_choose[i\
-    \ - 1] * (c_tmp *= c), ic_choose[i] = ic_choose[i - 1] * (ic_tmp *= ic);\n  std::vector<mod_t>\
-    \ B(c_choose);\n  B.resize(len, ZERO);\n  for (int i = 0; i < m; ++i) A_0[i] *=\
-    \ ic_choose[i];\n  std::reverse(A_0.begin(), A_0.begin() + m);\n  dft(A_0), dft(B);\n\
-    \  for (int i = 0; i < len; ++i) B[i] *= A_0[i];\n  idft(B);\n  for (int i = m\
-    \ - 1; i < sz; ++i) B[i] *= ic_choose[i - (m - 1)];\n  return std::vector<mod_t>(B.begin()\
-    \ + m - 1, B.begin() + sz);\n}\n\n} // namespace lib\n\n\n"
+    \  assert(c != ZERO);\n  assert(!A.empty());\n  int m = A.size();\n  while (m\
+    \ > 0 && A[m - 1] == ZERO) --m;\n  if (m <= 1) return std::vector<mod_t>(n, A.front());\n\
+    \  int sz = n + m - 1, len = get_ntt_len(sz), nm_max = std::max(n, m);\n  std::vector<mod_t>\
+    \ A_0(A);\n  A_0.resize(len, ZERO);\n  mod_t c_tmp(1), ic = mod_t(1) / c, ic_tmp(1);\n\
+    \  std::vector<mod_t> c_choose(sz), ic_choose(nm_max);\n  for (int i = 0; i <\
+    \ 2 && i < sz; ++i) c_choose[i] = c_tmp;\n  for (int i = 2; i < sz; ++i) c_choose[i]\
+    \ = c_choose[i - 1] * (c_tmp *= c);\n  for (int i = 0; i < 2 && i < nm_max; ++i)\
+    \ ic_choose[i] = ic_tmp;\n  for (int i = 2; i < nm_max; ++i) ic_choose[i] = ic_choose[i\
+    \ - 1] * (ic_tmp *= ic);\n  c_choose.resize(len, ZERO);\n  for (int i = 0; i <\
+    \ m; ++i) A_0[i] *= ic_choose[i];\n  std::reverse(A_0.begin(), A_0.begin() + m);\n\
+    \  dft(A_0), dft(c_choose);\n  for (int i = 0; i < len; ++i) c_choose[i] *= A_0[i];\n\
+    \  idft(c_choose);\n  c_choose.erase(c_choose.begin(), c_choose.begin() + m -\
+    \ 1);\n  c_choose.resize(n);\n  for (int i = 0; i < n; ++i) c_choose[i] *= ic_choose[i];\n\
+    \  return c_choose;\n}\n\n} // namespace lib\n\n\n"
   code: "#ifndef CHIRP_Z_HEADER_HPP\n#define CHIRP_Z_HEADER_HPP\n\n/**\n * @brief\
     \ chirp z transform / chirp z \u53D8\u6362\n * @docs docs/math/formal_power_series/chirp_z.md\n\
-    \ */\n\n#include <algorithm>\n#include <functional>\n#include <vector>\n\n#include\
-    \ \"radix_2_NTT.hpp\"\n\nnamespace lib {\n\n/**\n * @brief chirp z \u53D8\u6362\
-    \n * @tparam mod_t \u4E3A NTT \u53CB\u597D\u7684\u6A21\u6570\n * @param n czt\
-    \ \u7684\u957F\u5EA6\n * @param A \u591A\u9879\u5F0F\n * @param c\n * @return\
-    \ std::vector<mod_t> A(1), A(c), A(c^2), \u2026, A(c^{n-1})\n */\ntemplate <typename\
-    \ mod_t> std::vector<mod_t> czt(int n, const std::vector<mod_t> &A, mod_t c) {\n\
-    \  const mod_t ZERO(0);\n  assert(c != ZERO);\n\n  int m = A.size();\n  while\
-    \ (m > 0 && A[m - 1] == ZERO) --m;\n  if (m <= 1) return std::vector<mod_t>(n,\
-    \ A[0]);\n\n  int sz = n + m - 1, len = get_ntt_len(sz);\n  std::vector<mod_t>\
-    \ A_0(A);\n  A_0.resize(len, ZERO);\n  mod_t c_tmp(1), ic = mod_t(1) / c, ic_tmp(1);\n\
-    \  std::vector<mod_t> c_choose(sz), ic_choose(sz);\n  for (int i = 0; i < 2 &&\
-    \ i < sz; ++i) ic_choose[i] = c_choose[i] = c_tmp;\n  for (int i = 2; i < sz;\
-    \ ++i)\n    c_choose[i] = c_choose[i - 1] * (c_tmp *= c), ic_choose[i] = ic_choose[i\
-    \ - 1] * (ic_tmp *= ic);\n  std::vector<mod_t> B(c_choose);\n  B.resize(len, ZERO);\n\
-    \  for (int i = 0; i < m; ++i) A_0[i] *= ic_choose[i];\n  std::reverse(A_0.begin(),\
-    \ A_0.begin() + m);\n  dft(A_0), dft(B);\n  for (int i = 0; i < len; ++i) B[i]\
-    \ *= A_0[i];\n  idft(B);\n  for (int i = m - 1; i < sz; ++i) B[i] *= ic_choose[i\
-    \ - (m - 1)];\n  return std::vector<mod_t>(B.begin() + m - 1, B.begin() + sz);\n\
-    }\n\n} // namespace lib\n\n#endif"
+    \ */\n\n#include <algorithm>\n#include <cassert>\n#include <functional>\n#include\
+    \ <vector>\n\n#include \"radix_2_NTT.hpp\"\n\nnamespace lib {\n\n/**\n * @brief\
+    \ chirp z \u53D8\u6362\n * @tparam mod_t \u4E3A NTT \u53CB\u597D\u7684\u6A21\u6570\
+    \n * @param n czt \u7684\u957F\u5EA6\n * @param A \u591A\u9879\u5F0F\n * @param\
+    \ c\n * @return std::vector<mod_t> A(1), A(c), A(c^2), \u2026, A(c^{n-1})\n */\n\
+    template <typename mod_t> std::vector<mod_t> czt(int n, const std::vector<mod_t>\
+    \ &A, mod_t c) {\n  const mod_t ZERO(0);\n  assert(c != ZERO);\n  assert(!A.empty());\n\
+    \  int m = A.size();\n  while (m > 0 && A[m - 1] == ZERO) --m;\n  if (m <= 1)\
+    \ return std::vector<mod_t>(n, A.front());\n  int sz = n + m - 1, len = get_ntt_len(sz),\
+    \ nm_max = std::max(n, m);\n  std::vector<mod_t> A_0(A);\n  A_0.resize(len, ZERO);\n\
+    \  mod_t c_tmp(1), ic = mod_t(1) / c, ic_tmp(1);\n  std::vector<mod_t> c_choose(sz),\
+    \ ic_choose(nm_max);\n  for (int i = 0; i < 2 && i < sz; ++i) c_choose[i] = c_tmp;\n\
+    \  for (int i = 2; i < sz; ++i) c_choose[i] = c_choose[i - 1] * (c_tmp *= c);\n\
+    \  for (int i = 0; i < 2 && i < nm_max; ++i) ic_choose[i] = ic_tmp;\n  for (int\
+    \ i = 2; i < nm_max; ++i) ic_choose[i] = ic_choose[i - 1] * (ic_tmp *= ic);\n\
+    \  c_choose.resize(len, ZERO);\n  for (int i = 0; i < m; ++i) A_0[i] *= ic_choose[i];\n\
+    \  std::reverse(A_0.begin(), A_0.begin() + m);\n  dft(A_0), dft(c_choose);\n \
+    \ for (int i = 0; i < len; ++i) c_choose[i] *= A_0[i];\n  idft(c_choose);\n  c_choose.erase(c_choose.begin(),\
+    \ c_choose.begin() + m - 1);\n  c_choose.resize(n);\n  for (int i = 0; i < n;\
+    \ ++i) c_choose[i] *= ic_choose[i];\n  return c_choose;\n}\n\n} // namespace lib\n\
+    \n#endif"
   dependsOn:
   - math/formal_power_series/radix_2_NTT.hpp
   - traits/modint.hpp
   isVerificationFile: false
   path: math/formal_power_series/chirp_z.hpp
   requiredBy: []
-  timestamp: '2021-07-07 14:30:52+08:00'
+  timestamp: '2021-07-07 15:09:01+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/convolution_mod.1.test.cpp
