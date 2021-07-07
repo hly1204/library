@@ -61,7 +61,7 @@ data:
         \ \u7684 rho \u7B97\u6CD5"
   - name: math/formal_power_series
     pages:
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/chirp_z.hpp
       title: "chirp z transform / chirp z \u53D8\u6362"
     - icon: ':heavy_check_mark:'
@@ -216,6 +216,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/convolution_mod.0.test.cpp
       title: remote_test/yosupo/math/convolution_mod.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/convolution_mod.1.test.cpp
+      title: remote_test/yosupo/math/convolution_mod.1.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
       title: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
