@@ -35,11 +35,11 @@ data:
     \ T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  RuntimeMontgomeryModInt(T\
     \ v) : v_(reduce(u64(v % i32(mod) + i32(mod)) * r2)) {}\n\n  RuntimeMontgomeryModInt(const\
     \ m32 &) = default;\n\n  u32 get() const { return norm(reduce(v_)); }\n\n  template\
-    \ <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  explicit constexpr\
-    \ operator T() const {\n    return T(get());\n  }\n\n  m32 operator-() const {\n\
-    \    m32 res;\n    res.v_ = (mod2 & -(v_ != 0)) - v_;\n    return res;\n  }\n\n\
-    \  m32 inv() const {\n    i32 x1 = 1, x3 = 0, a = get(), b = mod;\n    while (b\
-    \ != 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3 = x1_old\
+    \ <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  explicit operator\
+    \ T() const {\n    return T(get());\n  }\n\n  m32 operator-() const {\n    m32\
+    \ res;\n    res.v_ = (mod2 & -(v_ != 0)) - v_;\n    return res;\n  }\n\n  m32\
+    \ inv() const {\n    i32 x1 = 1, x3 = 0, a = get(), b = mod;\n    while (b !=\
+    \ 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3 = x1_old\
     \ - x3 * q, a = b, b = a_old - b * q;\n    }\n    return m32(x1);\n  }\n\n  m32\
     \ &operator+=(const m32 &rhs) {\n    v_ += rhs.v_ - mod2;\n    v_ += mod2 & -(v_\
     \ >> 31);\n    return *this;\n  }\n  m32 &operator-=(const m32 &rhs) {\n    v_\
@@ -80,11 +80,11 @@ data:
     \ T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  RuntimeMontgomeryModInt(T\
     \ v) : v_(reduce(u64(v % i32(mod) + i32(mod)) * r2)) {}\n\n  RuntimeMontgomeryModInt(const\
     \ m32 &) = default;\n\n  u32 get() const { return norm(reduce(v_)); }\n\n  template\
-    \ <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  explicit constexpr\
-    \ operator T() const {\n    return T(get());\n  }\n\n  m32 operator-() const {\n\
-    \    m32 res;\n    res.v_ = (mod2 & -(v_ != 0)) - v_;\n    return res;\n  }\n\n\
-    \  m32 inv() const {\n    i32 x1 = 1, x3 = 0, a = get(), b = mod;\n    while (b\
-    \ != 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3 = x1_old\
+    \ <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  explicit operator\
+    \ T() const {\n    return T(get());\n  }\n\n  m32 operator-() const {\n    m32\
+    \ res;\n    res.v_ = (mod2 & -(v_ != 0)) - v_;\n    return res;\n  }\n\n  m32\
+    \ inv() const {\n    i32 x1 = 1, x3 = 0, a = get(), b = mod;\n    while (b !=\
+    \ 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3 = x1_old\
     \ - x3 * q, a = b, b = a_old - b * q;\n    }\n    return m32(x1);\n  }\n\n  m32\
     \ &operator+=(const m32 &rhs) {\n    v_ += rhs.v_ - mod2;\n    v_ += mod2 & -(v_\
     \ >> 31);\n    return *this;\n  }\n  m32 &operator-=(const m32 &rhs) {\n    v_\
@@ -112,7 +112,7 @@ data:
   path: modint/runtime_Montgomery_modint.hpp
   requiredBy:
   - math/modulo/sqrt_mod.hpp
-  timestamp: '2021-07-01 12:57:32+08:00'
+  timestamp: '2021-07-08 03:41:52+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp
