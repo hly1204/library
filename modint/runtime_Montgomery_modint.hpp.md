@@ -2,16 +2,16 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/modulo/sqrt_mod.hpp
     title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
     title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     document_title: "runtime Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\
       \u6A21\u7C7B"
@@ -41,27 +41,28 @@ data:
     \ inv() const {\n    i32 x1 = 1, x3 = 0, a = get(), b = mod;\n    while (b !=\
     \ 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3 = x1_old\
     \ - x3 * q, a = b, b = a_old - b * q;\n    }\n    return m32(x1);\n  }\n\n  m32\
-    \ &operator+=(const m32 &rhs) {\n    v_ += rhs.v_ - mod2;\n    v_ += mod2 & -(v_\
-    \ >> 31);\n    return *this;\n  }\n  m32 &operator-=(const m32 &rhs) {\n    v_\
-    \ -= rhs.v_;\n    v_ += mod2 & -(v_ >> 31);\n    return *this;\n  }\n  m32 &operator*=(const\
-    \ m32 &rhs) {\n    v_ = reduce(u64(v_) * rhs.v_);\n    return *this;\n  }\n  m32\
-    \ &operator/=(const m32 &rhs) { return operator*=(rhs.inv()); }\n  friend m32\
-    \ operator+(const m32 &lhs, const m32 &rhs) { return m32(lhs) += rhs; }\n  friend\
-    \ m32 operator-(const m32 &lhs, const m32 &rhs) { return m32(lhs) -= rhs; }\n\
-    \  friend m32 operator*(const m32 &lhs, const m32 &rhs) { return m32(lhs) *= rhs;\
-    \ }\n  friend m32 operator/(const m32 &lhs, const m32 &rhs) { return m32(lhs)\
-    \ /= rhs; }\n  friend bool operator==(const m32 &lhs, const m32 &rhs) { return\
-    \ norm(lhs.v_) == norm(rhs.v_); }\n  friend bool operator!=(const m32 &lhs, const\
-    \ m32 &rhs) { return norm(lhs.v_) != norm(rhs.v_); }\n\n  friend std::istream\
-    \ &operator>>(std::istream &is, m32 &rhs) {\n    i32 x;\n    is >> x;\n    rhs\
-    \ = m32(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
-    \ &os, const m32 &rhs) { return os << rhs.get(); }\n\n  m32 pow(u64 y) const {\n\
-    \    m32 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n      if (y &\
-    \ 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static u32 reduce(u64 x) {\
-    \ return (x + u64(u32(x) * r) * mod) >> 32; }\n  static u32 norm(u32 x) { return\
-    \ x - (mod & -((mod - 1 - x) >> 31)); }\n\n  u32 v_;\n\n  static inline u32 r,\
-    \ r2, mod, mod2;\n};\n\n// \u522B\u540D\ntemplate <int id> using RuntimeMontModInt\
-    \ = RuntimeMontgomeryModInt<id>;\n\n} // namespace lib\n\n\n"
+    \ &operator=(const m32 &) = default;\n\n  m32 &operator+=(const m32 &rhs) {\n\
+    \    v_ += rhs.v_ - mod2;\n    v_ += mod2 & -(v_ >> 31);\n    return *this;\n\
+    \  }\n  m32 &operator-=(const m32 &rhs) {\n    v_ -= rhs.v_;\n    v_ += mod2 &\
+    \ -(v_ >> 31);\n    return *this;\n  }\n  m32 &operator*=(const m32 &rhs) {\n\
+    \    v_ = reduce(u64(v_) * rhs.v_);\n    return *this;\n  }\n  m32 &operator/=(const\
+    \ m32 &rhs) { return operator*=(rhs.inv()); }\n  friend m32 operator+(const m32\
+    \ &lhs, const m32 &rhs) { return m32(lhs) += rhs; }\n  friend m32 operator-(const\
+    \ m32 &lhs, const m32 &rhs) { return m32(lhs) -= rhs; }\n  friend m32 operator*(const\
+    \ m32 &lhs, const m32 &rhs) { return m32(lhs) *= rhs; }\n  friend m32 operator/(const\
+    \ m32 &lhs, const m32 &rhs) { return m32(lhs) /= rhs; }\n  friend bool operator==(const\
+    \ m32 &lhs, const m32 &rhs) { return norm(lhs.v_) == norm(rhs.v_); }\n  friend\
+    \ bool operator!=(const m32 &lhs, const m32 &rhs) { return norm(lhs.v_) != norm(rhs.v_);\
+    \ }\n\n  friend std::istream &operator>>(std::istream &is, m32 &rhs) {\n    i32\
+    \ x;\n    is >> x;\n    rhs = m32(x);\n    return is;\n  }\n  friend std::ostream\
+    \ &operator<<(std::ostream &os, const m32 &rhs) { return os << rhs.get(); }\n\n\
+    \  m32 pow(u64 y) const {\n    m32 res(1), x(*this);\n    for (; y != 0; y >>=\
+    \ 1, x *= x)\n      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n \
+    \ static u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod) >> 32; }\n  static\
+    \ u32 norm(u32 x) { return x - (mod & -((mod - 1 - x) >> 31)); }\n\n  u32 v_;\n\
+    \n  static inline u32 r, r2, mod, mod2;\n};\n\n// \u522B\u540D\ntemplate <int\
+    \ id> using RuntimeMontModInt = RuntimeMontgomeryModInt<id>;\n\n} // namespace\
+    \ lib\n\n\n"
   code: "#ifndef RUNTIME_MONTGOMERY_MODINT_HEADER_HPP\n#define RUNTIME_MONTGOMERY_MODINT_HEADER_HPP\n\
     \n/**\n * @brief runtime Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\
     \u6A21\u7C7B\n *\n */\n\n#include <cstdint>\n#include <iostream>\n#include <type_traits>\n\
@@ -86,34 +87,35 @@ data:
     \ inv() const {\n    i32 x1 = 1, x3 = 0, a = get(), b = mod;\n    while (b !=\
     \ 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3 = x1_old\
     \ - x3 * q, a = b, b = a_old - b * q;\n    }\n    return m32(x1);\n  }\n\n  m32\
-    \ &operator+=(const m32 &rhs) {\n    v_ += rhs.v_ - mod2;\n    v_ += mod2 & -(v_\
-    \ >> 31);\n    return *this;\n  }\n  m32 &operator-=(const m32 &rhs) {\n    v_\
-    \ -= rhs.v_;\n    v_ += mod2 & -(v_ >> 31);\n    return *this;\n  }\n  m32 &operator*=(const\
-    \ m32 &rhs) {\n    v_ = reduce(u64(v_) * rhs.v_);\n    return *this;\n  }\n  m32\
-    \ &operator/=(const m32 &rhs) { return operator*=(rhs.inv()); }\n  friend m32\
-    \ operator+(const m32 &lhs, const m32 &rhs) { return m32(lhs) += rhs; }\n  friend\
-    \ m32 operator-(const m32 &lhs, const m32 &rhs) { return m32(lhs) -= rhs; }\n\
-    \  friend m32 operator*(const m32 &lhs, const m32 &rhs) { return m32(lhs) *= rhs;\
-    \ }\n  friend m32 operator/(const m32 &lhs, const m32 &rhs) { return m32(lhs)\
-    \ /= rhs; }\n  friend bool operator==(const m32 &lhs, const m32 &rhs) { return\
-    \ norm(lhs.v_) == norm(rhs.v_); }\n  friend bool operator!=(const m32 &lhs, const\
-    \ m32 &rhs) { return norm(lhs.v_) != norm(rhs.v_); }\n\n  friend std::istream\
-    \ &operator>>(std::istream &is, m32 &rhs) {\n    i32 x;\n    is >> x;\n    rhs\
-    \ = m32(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
-    \ &os, const m32 &rhs) { return os << rhs.get(); }\n\n  m32 pow(u64 y) const {\n\
-    \    m32 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n      if (y &\
-    \ 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static u32 reduce(u64 x) {\
-    \ return (x + u64(u32(x) * r) * mod) >> 32; }\n  static u32 norm(u32 x) { return\
-    \ x - (mod & -((mod - 1 - x) >> 31)); }\n\n  u32 v_;\n\n  static inline u32 r,\
-    \ r2, mod, mod2;\n};\n\n// \u522B\u540D\ntemplate <int id> using RuntimeMontModInt\
-    \ = RuntimeMontgomeryModInt<id>;\n\n} // namespace lib\n\n#endif"
+    \ &operator=(const m32 &) = default;\n\n  m32 &operator+=(const m32 &rhs) {\n\
+    \    v_ += rhs.v_ - mod2;\n    v_ += mod2 & -(v_ >> 31);\n    return *this;\n\
+    \  }\n  m32 &operator-=(const m32 &rhs) {\n    v_ -= rhs.v_;\n    v_ += mod2 &\
+    \ -(v_ >> 31);\n    return *this;\n  }\n  m32 &operator*=(const m32 &rhs) {\n\
+    \    v_ = reduce(u64(v_) * rhs.v_);\n    return *this;\n  }\n  m32 &operator/=(const\
+    \ m32 &rhs) { return operator*=(rhs.inv()); }\n  friend m32 operator+(const m32\
+    \ &lhs, const m32 &rhs) { return m32(lhs) += rhs; }\n  friend m32 operator-(const\
+    \ m32 &lhs, const m32 &rhs) { return m32(lhs) -= rhs; }\n  friend m32 operator*(const\
+    \ m32 &lhs, const m32 &rhs) { return m32(lhs) *= rhs; }\n  friend m32 operator/(const\
+    \ m32 &lhs, const m32 &rhs) { return m32(lhs) /= rhs; }\n  friend bool operator==(const\
+    \ m32 &lhs, const m32 &rhs) { return norm(lhs.v_) == norm(rhs.v_); }\n  friend\
+    \ bool operator!=(const m32 &lhs, const m32 &rhs) { return norm(lhs.v_) != norm(rhs.v_);\
+    \ }\n\n  friend std::istream &operator>>(std::istream &is, m32 &rhs) {\n    i32\
+    \ x;\n    is >> x;\n    rhs = m32(x);\n    return is;\n  }\n  friend std::ostream\
+    \ &operator<<(std::ostream &os, const m32 &rhs) { return os << rhs.get(); }\n\n\
+    \  m32 pow(u64 y) const {\n    m32 res(1), x(*this);\n    for (; y != 0; y >>=\
+    \ 1, x *= x)\n      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n \
+    \ static u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod) >> 32; }\n  static\
+    \ u32 norm(u32 x) { return x - (mod & -((mod - 1 - x) >> 31)); }\n\n  u32 v_;\n\
+    \n  static inline u32 r, r2, mod, mod2;\n};\n\n// \u522B\u540D\ntemplate <int\
+    \ id> using RuntimeMontModInt = RuntimeMontgomeryModInt<id>;\n\n} // namespace\
+    \ lib\n\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: modint/runtime_Montgomery_modint.hpp
   requiredBy:
   - math/modulo/sqrt_mod.hpp
-  timestamp: '2021-07-08 03:41:52+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-07-08 03:55:34+08:00'
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp
 documentation_of: modint/runtime_Montgomery_modint.hpp

@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/runtime_long_Montgomery_modint.hpp
     title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
       \ Montgomery \u53D6\u6A21\u7C7B"
@@ -44,59 +44,60 @@ data:
     \   return res;\n  }\n\n  m64 inv() const {\n    i64 x1 = 1, x3 = 0, a = get(),\
     \ b = mod;\n    while (b != 0) {\n      i64 q = a / b, x1_old = x1, a_old = a;\n\
     \      x1 = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;\n    }\n    return\
-    \ m64(x1);\n  }\n\n  m64 &operator+=(const m64 &rhs) {\n    v_ += rhs.v_ - mod;\n\
-    \    v_ += mod & -(v_ >> 63);\n    return *this;\n  }\n  m64 &operator-=(const\
-    \ m64 &rhs) {\n    v_ -= rhs.v_;\n    v_ += mod & -(v_ >> 63);\n    return *this;\n\
-    \  }\n  m64 &operator*=(const m64 &rhs) {\n    v_ = reduce(mul(v_, rhs.v_));\n\
-    \    return *this;\n  }\n  m64 &operator/=(const m64 &rhs) { return operator*=(rhs.inv());\
-    \ }\n  friend m64 operator+(const m64 &lhs, const m64 &rhs) { return m64(lhs)\
-    \ += rhs; }\n  friend m64 operator-(const m64 &lhs, const m64 &rhs) { return m64(lhs)\
-    \ -= rhs; }\n  friend m64 operator*(const m64 &lhs, const m64 &rhs) { return m64(lhs)\
-    \ *= rhs; }\n  friend m64 operator/(const m64 &lhs, const m64 &rhs) { return m64(lhs)\
-    \ /= rhs; }\n  friend bool operator==(const m64 &lhs, const m64 &rhs) { return\
-    \ lhs.v_ == rhs.v_; }\n  friend bool operator!=(const m64 &lhs, const m64 &rhs)\
-    \ { return lhs.v_ != rhs.v_; }\n\n  friend std::istream &operator>>(std::istream\
-    \ &is, m64 &rhs) {\n    i64 x;\n    is >> x;\n    rhs = m64(x);\n    return is;\n\
-    \  }\n  friend std::ostream &operator<<(std::ostream &os, const m64 &rhs) { return\
-    \ os << rhs.get(); }\n\n  m64 pow(u64 y) const {\n    m64 res(1), x(*this);\n\
-    \    for (; y != 0; y >>= 1, x *= x)\n      if (y & 1) res *= x;\n    return res;\n\
-    \  }\n\nprivate:\n  static std::pair<u64, u64> mul(u64 x, u64 y) {\n#ifdef __GNUC__\n\
-    \    unsigned __int128 res = (unsigned __int128)x * y;\n    return {u64(res >>\
-    \ 64), u64(res)};\n#elif defined(_MSC_VER)\n    u64 h, l = _umul128(x, y, &h);\n\
-    \    return {h, l};\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d =\
-    \ u32(y), ad = a * d, bc = b * c;\n    return {a * c + (ad >> 32) + (bc >> 32)\
-    \ +\n                (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32))\
-    \ >> 32),\n            x * y};\n#endif\n  }\n\n  static u64 mulh(u64 x, u64 y)\
-    \ {\n#ifdef __GNUC__\n    return u64((unsigned __int128)x * y >> 64);\n#elif defined(_MSC_VER)\n\
-    \    return __umulh(x, y);\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32,\
-    \ d = u32(y), ad = a * d, bc = b * c;\n    return a * c + (ad >> 32) + (bc >>\
-    \ 32) +\n           (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32))\
-    \ >> 32);\n#endif\n  }\n\n  static u64 get_r() {\n    u64 two = 2, iv = mod *\
-    \ (two - mod * mod);\n    iv *= two - mod * iv;\n    iv *= two - mod * iv;\n \
-    \   iv *= two - mod * iv;\n    return iv * (two - mod * iv);\n  }\n\n  static\
-    \ u64 get_r2() {\n    u64 iv = -u64(mod) % mod;\n    for (int i = 0; i != 64;\
-    \ ++i)\n      if ((iv <<= 1) >= mod) iv -= mod;\n    return iv;\n  }\n\n  static\
-    \ u64 reduce(const std::pair<u64, u64> &x) {\n    u64 res = x.first - mulh(x.second\
-    \ * r, mod);\n    return res + (mod & -(res >> 63));\n  }\n\n  static u64 norm(i64\
-    \ x) { return x + (mod & -(x < 0)); }\n\n  u64 v_;\n\n  static inline u64 mod,\
-    \ r, r2;\n};\n\ntemplate <int id> using RuntimeLongMontModInt = RuntimeLongMontgomeryModInt<id>;\n\
-    \n} // namespace lib\n\n\n#line 15 \"math/basic/integer_factorization_Pollard_rho.hpp\"\
-    \n\nnamespace lib {\n\n/**\n * @brief Miller-Rabin \u7D20\u6027\u6D4B\u8BD5\n\
-    \ * @note \u5047\u8BBE\u5E7F\u4E49\u9ECE\u66FC\u5047\u8BBE\u6210\u7ACB\n */\n\
-    bool is_prime(std::uint64_t n) {\n  if (n <= 2) return n == 2;\n  if ((n & 1)\
-    \ == 0) return false;\n  if (n < 8) return true;\n  using m64 = RuntimeLongMontModInt<-1>;\n\
-    \  bool okay = m64::set_mod(n);\n  assert(okay);\n  int t = 0;\n  std::uint64_t\
-    \ u = n - 1;\n  do\n    u >>= 1, ++t;\n  while ((u & 1) == 0);\n  const m64 ONE(1),\
-    \ MINUS_ONE(n - 1);\n  for (int i : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37})\
-    \ {\n    if (n == i) return true;\n    m64 x = m64(i).pow(u);\n    for (int j\
-    \ = 0; j != t && x != ONE; ++j) {\n      m64 y = x * x;\n      if (x != MINUS_ONE\
-    \ && y == ONE) return false;\n      x = y;\n    }\n    if (x != ONE) return false;\n\
-    \  }\n  return true;\n}\n\nnamespace internal {\n\n/**\n * @brief Pollard-rho\
-    \ \u7B97\u6CD5\n * @param n\n * @return std::uint64_t \u4E00\u4E2A\uFF08\u7D20\
-    \uFF09\u56E0\u6570\uFF1F\n */\nstd::uint64_t rho(std::uint64_t n) {\n  using u64\
-    \ = std::uint64_t;\n  using m64 = RuntimeLongMontModInt<-1>;\n  static std::random_device\
-    \ rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<u64>\
-    \ dis(2, n - 1);\n  if (m64::get_mod() != n) m64::set_mod(n);\n  const m64 R(dis(gen));\n\
+    \ m64(x1);\n  }\n\n  m64 &operator=(const m64 &) = default;\n\n  m64 &operator+=(const\
+    \ m64 &rhs) {\n    v_ += rhs.v_ - mod;\n    v_ += mod & -(v_ >> 63);\n    return\
+    \ *this;\n  }\n  m64 &operator-=(const m64 &rhs) {\n    v_ -= rhs.v_;\n    v_\
+    \ += mod & -(v_ >> 63);\n    return *this;\n  }\n  m64 &operator*=(const m64 &rhs)\
+    \ {\n    v_ = reduce(mul(v_, rhs.v_));\n    return *this;\n  }\n  m64 &operator/=(const\
+    \ m64 &rhs) { return operator*=(rhs.inv()); }\n  friend m64 operator+(const m64\
+    \ &lhs, const m64 &rhs) { return m64(lhs) += rhs; }\n  friend m64 operator-(const\
+    \ m64 &lhs, const m64 &rhs) { return m64(lhs) -= rhs; }\n  friend m64 operator*(const\
+    \ m64 &lhs, const m64 &rhs) { return m64(lhs) *= rhs; }\n  friend m64 operator/(const\
+    \ m64 &lhs, const m64 &rhs) { return m64(lhs) /= rhs; }\n  friend bool operator==(const\
+    \ m64 &lhs, const m64 &rhs) { return lhs.v_ == rhs.v_; }\n  friend bool operator!=(const\
+    \ m64 &lhs, const m64 &rhs) { return lhs.v_ != rhs.v_; }\n\n  friend std::istream\
+    \ &operator>>(std::istream &is, m64 &rhs) {\n    i64 x;\n    is >> x;\n    rhs\
+    \ = m64(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
+    \ &os, const m64 &rhs) { return os << rhs.get(); }\n\n  m64 pow(u64 y) const {\n\
+    \    m64 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n      if (y &\
+    \ 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static std::pair<u64, u64>\
+    \ mul(u64 x, u64 y) {\n#ifdef __GNUC__\n    unsigned __int128 res = (unsigned\
+    \ __int128)x * y;\n    return {u64(res >> 64), u64(res)};\n#elif defined(_MSC_VER)\n\
+    \    u64 h, l = _umul128(x, y, &h);\n    return {h, l};\n#else\n    u64 a = x\
+    \ >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d, bc = b * c;\n    return\
+    \ {a * c + (ad >> 32) + (bc >> 32) +\n                (((ad & ~UINT32_C(0)) +\
+    \ (bc & ~UINT32_C(0)) + (b * d >> 32)) >> 32),\n            x * y};\n#endif\n\
+    \  }\n\n  static u64 mulh(u64 x, u64 y) {\n#ifdef __GNUC__\n    return u64((unsigned\
+    \ __int128)x * y >> 64);\n#elif defined(_MSC_VER)\n    return __umulh(x, y);\n\
+    #else\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d, bc\
+    \ = b * c;\n    return a * c + (ad >> 32) + (bc >> 32) +\n           (((ad & ~UINT32_C(0))\
+    \ + (bc & ~UINT32_C(0)) + (b * d >> 32)) >> 32);\n#endif\n  }\n\n  static u64\
+    \ get_r() {\n    u64 two = 2, iv = mod * (two - mod * mod);\n    iv *= two - mod\
+    \ * iv;\n    iv *= two - mod * iv;\n    iv *= two - mod * iv;\n    return iv *\
+    \ (two - mod * iv);\n  }\n\n  static u64 get_r2() {\n    u64 iv = -u64(mod) %\
+    \ mod;\n    for (int i = 0; i != 64; ++i)\n      if ((iv <<= 1) >= mod) iv -=\
+    \ mod;\n    return iv;\n  }\n\n  static u64 reduce(const std::pair<u64, u64> &x)\
+    \ {\n    u64 res = x.first - mulh(x.second * r, mod);\n    return res + (mod &\
+    \ -(res >> 63));\n  }\n\n  static u64 norm(i64 x) { return x + (mod & -(x < 0));\
+    \ }\n\n  u64 v_;\n\n  static inline u64 mod, r, r2;\n};\n\ntemplate <int id> using\
+    \ RuntimeLongMontModInt = RuntimeLongMontgomeryModInt<id>;\n\n} // namespace lib\n\
+    \n\n#line 15 \"math/basic/integer_factorization_Pollard_rho.hpp\"\n\nnamespace\
+    \ lib {\n\n/**\n * @brief Miller-Rabin \u7D20\u6027\u6D4B\u8BD5\n * @note \u5047\
+    \u8BBE\u5E7F\u4E49\u9ECE\u66FC\u5047\u8BBE\u6210\u7ACB\n */\nbool is_prime(std::uint64_t\
+    \ n) {\n  if (n <= 2) return n == 2;\n  if ((n & 1) == 0) return false;\n  if\
+    \ (n < 8) return true;\n  using m64 = RuntimeLongMontModInt<-1>;\n  bool okay\
+    \ = m64::set_mod(n);\n  assert(okay);\n  int t = 0;\n  std::uint64_t u = n - 1;\n\
+    \  do\n    u >>= 1, ++t;\n  while ((u & 1) == 0);\n  const m64 ONE(1), MINUS_ONE(n\
+    \ - 1);\n  for (int i : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {\n    if\
+    \ (n == i) return true;\n    m64 x = m64(i).pow(u);\n    for (int j = 0; j !=\
+    \ t && x != ONE; ++j) {\n      m64 y = x * x;\n      if (x != MINUS_ONE && y ==\
+    \ ONE) return false;\n      x = y;\n    }\n    if (x != ONE) return false;\n \
+    \ }\n  return true;\n}\n\nnamespace internal {\n\n/**\n * @brief Pollard-rho \u7B97\
+    \u6CD5\n * @param n\n * @return std::uint64_t \u4E00\u4E2A\uFF08\u7D20\uFF09\u56E0\
+    \u6570\uFF1F\n */\nstd::uint64_t rho(std::uint64_t n) {\n  using u64 = std::uint64_t;\n\
+    \  using m64 = RuntimeLongMontModInt<-1>;\n  static std::random_device rd;\n \
+    \ static std::mt19937 gen(rd());\n  std::uniform_int_distribution<u64> dis(2,\
+    \ n - 1);\n  if (m64::get_mod() != n) m64::set_mod(n);\n  const m64 R(dis(gen));\n\
     \  auto f = [=](m64 x) -> m64 { return x * x + R; };\n  m64 x, y(dis(gen)), ys,\
     \ q(1);\n  u64 g = 1;\n  const int m = 128;\n  for (int r = 1; g == 1; r <<= 1)\
     \ {\n    x = y;\n    for (int i = 0; i < r; ++i) y = f(y);\n    for (int k = 0;\
@@ -150,7 +151,7 @@ data:
   isVerificationFile: false
   path: math/basic/integer_factorization_Pollard_rho.hpp
   requiredBy: []
-  timestamp: '2021-07-01 12:57:32+08:00'
+  timestamp: '2021-07-08 03:55:34+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/factorize.0.test.cpp
