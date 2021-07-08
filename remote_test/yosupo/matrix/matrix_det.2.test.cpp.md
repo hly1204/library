@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/arbitrary_modulo_square_matrix.hpp
     title: "arbitrary modulo square matrix / \u4EFB\u610F\u6A21\u6570\u65B9\u9635"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
   - icon: ':heavy_check_mark:'
@@ -224,7 +224,7 @@ data:
     \ j = i + 2; j < n; ++j) {\n        while (m.at(j, i) != Type(0)) {\n        \
     \  if (raw_type(m.at(j, i)) < raw_type(m.at(i + 1, i))) {\n            std::swap_ranges(m.row_begin(i\
     \ + 1) + i, m.row_end(i + 1), m.row_begin(j) + i);\n            for (int k = 0;\
-    \ k < n; ++j) std::swap(m.at(k, i + 1), m.at(k, j));\n          }\n          Type\
+    \ k < n; ++k) std::swap(m.at(k, i + 1), m.at(k, j));\n          }\n          Type\
     \ v(raw_type(m.at(j, i)) / raw_type(m.at(i + 1, i)));\n          for (int k =\
     \ i; k < n; ++k) m.at(j, k) -= v * m.at(i + 1, k);\n          for (int k = 0;\
     \ k != n; ++k) m.at(k, i + 1) += v * m.at(k, j);\n        }\n      }\n    }\n\
@@ -302,7 +302,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/matrix/matrix_det.2.test.cpp
   requiredBy: []
-  timestamp: '2021-07-09 03:16:11+08:00'
+  timestamp: '2021-07-09 03:49:04+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/matrix_det.2.test.cpp

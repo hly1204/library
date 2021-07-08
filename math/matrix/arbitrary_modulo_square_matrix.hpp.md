@@ -1,23 +1,23 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
     title: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/matrix_det.2.test.cpp
     title: remote_test/yosupo/matrix/matrix_det.2.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     _deprecated_at_docs: docs/math/matrix/arbitrary_modulo_square_matrix.md
     document_title: "arbitrary modulo square matrix / \u4EFB\u610F\u6A21\u6570\u65B9\
@@ -222,7 +222,7 @@ data:
     \ j = i + 2; j < n; ++j) {\n        while (m.at(j, i) != Type(0)) {\n        \
     \  if (raw_type(m.at(j, i)) < raw_type(m.at(i + 1, i))) {\n            std::swap_ranges(m.row_begin(i\
     \ + 1) + i, m.row_end(i + 1), m.row_begin(j) + i);\n            for (int k = 0;\
-    \ k < n; ++j) std::swap(m.at(k, i + 1), m.at(k, j));\n          }\n          Type\
+    \ k < n; ++k) std::swap(m.at(k, i + 1), m.at(k, j));\n          }\n          Type\
     \ v(raw_type(m.at(j, i)) / raw_type(m.at(i + 1, i)));\n          for (int k =\
     \ i; k < n; ++k) m.at(j, k) -= v * m.at(i + 1, k);\n          for (int k = 0;\
     \ k != n; ++k) m.at(k, i + 1) += v * m.at(k, j);\n        }\n      }\n    }\n\
@@ -294,7 +294,7 @@ data:
     \ j = i + 2; j < n; ++j) {\n        while (m.at(j, i) != Type(0)) {\n        \
     \  if (raw_type(m.at(j, i)) < raw_type(m.at(i + 1, i))) {\n            std::swap_ranges(m.row_begin(i\
     \ + 1) + i, m.row_end(i + 1), m.row_begin(j) + i);\n            for (int k = 0;\
-    \ k < n; ++j) std::swap(m.at(k, i + 1), m.at(k, j));\n          }\n          Type\
+    \ k < n; ++k) std::swap(m.at(k, i + 1), m.at(k, j));\n          }\n          Type\
     \ v(raw_type(m.at(j, i)) / raw_type(m.at(i + 1, i)));\n          for (int k =\
     \ i; k < n; ++k) m.at(j, k) -= v * m.at(i + 1, k);\n          for (int k = 0;\
     \ k != n; ++k) m.at(k, i + 1) += v * m.at(k, j);\n        }\n      }\n    }\n\
@@ -311,8 +311,8 @@ data:
   isVerificationFile: false
   path: math/matrix/arbitrary_modulo_square_matrix.hpp
   requiredBy: []
-  timestamp: '2021-07-09 03:16:11+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2021-07-09 03:49:04+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
   - remote_test/yosupo/matrix/matrix_det.2.test.cpp
