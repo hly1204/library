@@ -6,9 +6,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
     title: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
+    title: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F"
     links: []
@@ -51,8 +54,9 @@ data:
   path: math/matrix/characteristic_polynomial.hpp
   requiredBy: []
   timestamp: '2021-06-28 18:43:38+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
+  - remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
   - remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
 documentation_of: math/matrix/characteristic_polynomial.hpp
 layout: document

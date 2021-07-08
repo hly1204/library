@@ -5,70 +5,74 @@ data:
     path: math/matrix/arbitrary_modulo_square_matrix.hpp
     title: "arbitrary modulo square matrix / \u4EFB\u610F\u6A21\u6570\u65B9\u9635"
   - icon: ':question:'
+    path: math/matrix/characteristic_polynomial.hpp
+    title: "characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F"
+  - icon: ':question:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
   - icon: ':question:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
-  - icon: ':heavy_check_mark:'
-    path: modint/runtime_modint.hpp
-    title: "runtime modint / \u8FD0\u884C\u65F6\u53D6\u6A21\u7C7B"
+  - icon: ':question:'
+    path: modint/Montgomery_modint.hpp
+    title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/matrix_det
+    PROBLEM: https://judge.yosupo.jp/problem/characteristic_polynomial
     links:
-    - https://judge.yosupo.jp/problem/matrix_det
-  bundledCode: "#line 1 \"remote_test/yosupo/matrix/matrix_det.2.test.cpp\"\n#define\
-    \ PROBLEM \"https://judge.yosupo.jp/problem/matrix_det\"\n\n#include <iostream>\n\
-    \n#line 1 \"math/matrix/arbitrary_modulo_square_matrix.hpp\"\n\n\n\n/**\n * @brief\
-    \ arbitrary modulo square matrix / \u4EFB\u610F\u6A21\u6570\u65B9\u9635\n * @docs\
-    \ docs/math/matrix/arbitrary_modulo_square_matrix.md\n */\n\n#line 1 \"math/matrix/square_matrix.hpp\"\
-    \n\n\n\n/**\n * @brief square matrix / \u65B9\u9635\n *\n */\n\n#include <optional>\n\
-    \n#line 1 \"math/matrix/matrix_base.hpp\"\n\n\n\n/**\n * @brief matrix base /\
-    \ \u77E9\u9635\u57FA\u7C7B\n *\n */\n\n#include <algorithm>\n#include <cassert>\n\
-    #line 12 \"math/matrix/matrix_base.hpp\"\n#include <numeric>\n#include <vector>\n\
-    \nnamespace lib {\n\ntemplate <typename Type> class Matrix {\npublic:\n  using\
-    \ value_type = Type;\n\n  /**\n   * @brief Matrix \u7C7B\n   *\n   * @param r\
-    \ \u884C\n   * @param c \u5217\n   * @param v \u521D\u503C\n   */\n  Matrix(int\
-    \ r, int c, const Type &v = Type()) : row_(r), col_(c), mat_(row_ * col_, v) {}\n\
-    \  virtual ~Matrix() = default;\n  Matrix(const Matrix &) = default;\n\n  virtual\
-    \ Matrix &operator=(const Matrix &) = default;\n\n  int row() const { return row_;\
-    \ }\n  int col() const { return col_; }\n  int size() const { return row_ * col_;\
-    \ }\n  bool is_empty() const { return size() == 0; }\n\n  decltype(auto) row_begin(int\
-    \ r) { return mat_.begin() + r * col_; }\n  decltype(auto) row_cbegin(int r) const\
-    \ { return mat_.cbegin() + r * col_; }\n  decltype(auto) row_begin(int r) const\
-    \ { return row_cbegin(r); }\n  decltype(auto) row_end(int r) { return mat_.begin()\
-    \ + (r + 1) * col_; }\n  decltype(auto) row_cend(int r) const { return mat_.cbegin()\
-    \ + (r + 1) * col_; }\n  decltype(auto) row_end(int r) const { return row_cend(r);\
-    \ }\n\n#ifdef LOCAL\n  Type &at(int r, int c) { return mat_.at(r * col_ + c);\
-    \ }\n  const Type &at(int r, int c) const { return mat_.at(r * col_ + c); }\n\
-    #else\n  Type &at(int r, int c) { return mat_[r * col_ + c]; }\n  const Type &at(int\
-    \ r, int c) const { return mat_[r * col_ + c]; }\n#endif\n\n  virtual Matrix &operator+=(const\
-    \ Matrix &rhs) {\n    assert(row() == rhs.row());\n    assert(col() == rhs.col());\n\
-    \    for (int i = 0, n = size(); i < n; ++i) mat_[i] -= rhs.mat_[i];\n    return\
-    \ *this;\n  }\n\n  virtual Matrix &operator-=(const Matrix &rhs) {\n    assert(row()\
+    - https://judge.yosupo.jp/problem/characteristic_polynomial
+  bundledCode: "#line 1 \"remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/characteristic_polynomial\"\
+    \n\n#include <iostream>\n\n#line 1 \"math/matrix/arbitrary_modulo_square_matrix.hpp\"\
+    \n\n\n\n/**\n * @brief arbitrary modulo square matrix / \u4EFB\u610F\u6A21\u6570\
+    \u65B9\u9635\n * @docs docs/math/matrix/arbitrary_modulo_square_matrix.md\n */\n\
+    \n#line 1 \"math/matrix/square_matrix.hpp\"\n\n\n\n/**\n * @brief square matrix\
+    \ / \u65B9\u9635\n *\n */\n\n#include <optional>\n\n#line 1 \"math/matrix/matrix_base.hpp\"\
+    \n\n\n\n/**\n * @brief matrix base / \u77E9\u9635\u57FA\u7C7B\n *\n */\n\n#include\
+    \ <algorithm>\n#include <cassert>\n#line 12 \"math/matrix/matrix_base.hpp\"\n\
+    #include <numeric>\n#include <vector>\n\nnamespace lib {\n\ntemplate <typename\
+    \ Type> class Matrix {\npublic:\n  using value_type = Type;\n\n  /**\n   * @brief\
+    \ Matrix \u7C7B\n   *\n   * @param r \u884C\n   * @param c \u5217\n   * @param\
+    \ v \u521D\u503C\n   */\n  Matrix(int r, int c, const Type &v = Type()) : row_(r),\
+    \ col_(c), mat_(row_ * col_, v) {}\n  virtual ~Matrix() = default;\n  Matrix(const\
+    \ Matrix &) = default;\n\n  virtual Matrix &operator=(const Matrix &) = default;\n\
+    \n  int row() const { return row_; }\n  int col() const { return col_; }\n  int\
+    \ size() const { return row_ * col_; }\n  bool is_empty() const { return size()\
+    \ == 0; }\n\n  decltype(auto) row_begin(int r) { return mat_.begin() + r * col_;\
+    \ }\n  decltype(auto) row_cbegin(int r) const { return mat_.cbegin() + r * col_;\
+    \ }\n  decltype(auto) row_begin(int r) const { return row_cbegin(r); }\n  decltype(auto)\
+    \ row_end(int r) { return mat_.begin() + (r + 1) * col_; }\n  decltype(auto) row_cend(int\
+    \ r) const { return mat_.cbegin() + (r + 1) * col_; }\n  decltype(auto) row_end(int\
+    \ r) const { return row_cend(r); }\n\n#ifdef LOCAL\n  Type &at(int r, int c) {\
+    \ return mat_.at(r * col_ + c); }\n  const Type &at(int r, int c) const { return\
+    \ mat_.at(r * col_ + c); }\n#else\n  Type &at(int r, int c) { return mat_[r *\
+    \ col_ + c]; }\n  const Type &at(int r, int c) const { return mat_[r * col_ +\
+    \ c]; }\n#endif\n\n  virtual Matrix &operator+=(const Matrix &rhs) {\n    assert(row()\
     \ == rhs.row());\n    assert(col() == rhs.col());\n    for (int i = 0, n = size();\
     \ i < n; ++i) mat_[i] -= rhs.mat_[i];\n    return *this;\n  }\n\n  virtual Matrix\
-    \ transpose() const {\n    int n = row(), m = col();\n    Matrix res(m, n, Type(0));\n\
-    \    for (int i = 0; i < n; ++i)\n      for (int j = 0; j < m; ++j) res.at(j,\
-    \ i) = at(i, j);\n    return res;\n  }\n\n  /**\n   * @brief \u8FD4\u56DE\u77E9\
-    \u9635\u548C\u5217\u5411\u91CF x \u7684\u79EF\n   * @param x \u5217\u5411\u91CF\
-    \ x \u6EE1\u8DB3 x \u7684\u884C\u6570\u7B49\u4E8E\u77E9\u9635\u7684\u5217\u6570\
-    \n   * @return std::vector<Type>\n   */\n  virtual std::vector<Type> apply(const\
-    \ std::vector<Type> &x) const {\n    assert(col() == x.size());\n    int n = row();\n\
-    \    std::vector<Type> res(n);\n    for (int i = 0; i < n; ++i)\n      res[i]\
-    \ = std::inner_product(row_begin(i), row_end(i), x.begin(), Type(0));\n    return\
-    \ res;\n  }\n\n  /**\n   * @brief \u77E9\u9635\u4E58\u6CD5\n   * @param rhs \u53F3\
-    \u4E58\u7684\u77E9\u9635\n   * @return Matrix&\n   */\n  virtual Matrix &operator*=(const\
-    \ Matrix &rhs) {\n    int n = row(), m = rhs.col(), l = col();\n    assert(l ==\
-    \ rhs.row());\n    // n*l \u7684\u77E9\u9635\u53F3\u4E58\u4E00\u4E2A l*m \u7684\
-    \u77E9\u9635\n    Matrix res(n, m), trhs(rhs.transpose());\n    for (int i = 0;\
-    \ i < n; ++i)\n      for (int j = 0; j < m; ++j)\n        res.at(i, j) = std::inner_product(row_begin(i),\
+    \ &operator-=(const Matrix &rhs) {\n    assert(row() == rhs.row());\n    assert(col()\
+    \ == rhs.col());\n    for (int i = 0, n = size(); i < n; ++i) mat_[i] -= rhs.mat_[i];\n\
+    \    return *this;\n  }\n\n  virtual Matrix transpose() const {\n    int n = row(),\
+    \ m = col();\n    Matrix res(m, n, Type(0));\n    for (int i = 0; i < n; ++i)\n\
+    \      for (int j = 0; j < m; ++j) res.at(j, i) = at(i, j);\n    return res;\n\
+    \  }\n\n  /**\n   * @brief \u8FD4\u56DE\u77E9\u9635\u548C\u5217\u5411\u91CF x\
+    \ \u7684\u79EF\n   * @param x \u5217\u5411\u91CF x \u6EE1\u8DB3 x \u7684\u884C\
+    \u6570\u7B49\u4E8E\u77E9\u9635\u7684\u5217\u6570\n   * @return std::vector<Type>\n\
+    \   */\n  virtual std::vector<Type> apply(const std::vector<Type> &x) const {\n\
+    \    assert(col() == x.size());\n    int n = row();\n    std::vector<Type> res(n);\n\
+    \    for (int i = 0; i < n; ++i)\n      res[i] = std::inner_product(row_begin(i),\
+    \ row_end(i), x.begin(), Type(0));\n    return res;\n  }\n\n  /**\n   * @brief\
+    \ \u77E9\u9635\u4E58\u6CD5\n   * @param rhs \u53F3\u4E58\u7684\u77E9\u9635\n \
+    \  * @return Matrix&\n   */\n  virtual Matrix &operator*=(const Matrix &rhs) {\n\
+    \    int n = row(), m = rhs.col(), l = col();\n    assert(l == rhs.row());\n \
+    \   // n*l \u7684\u77E9\u9635\u53F3\u4E58\u4E00\u4E2A l*m \u7684\u77E9\u9635\n\
+    \    Matrix res(n, m), trhs(rhs.transpose());\n    for (int i = 0; i < n; ++i)\n\
+    \      for (int j = 0; j < m; ++j)\n        res.at(i, j) = std::inner_product(row_begin(i),\
     \ row_end(i), trhs.row_begin(j), Type(0));\n    return this->operator=(res);\n\
     \  }\n\n  virtual Matrix operator+(const Matrix &rhs) { return Matrix(*this) +=\
     \ rhs; }\n  virtual Matrix operator-(const Matrix &rhs) { return Matrix(*this)\
@@ -235,80 +239,108 @@ data:
     \ i < e; ++i) {\n      os << rhs.mat_[i];\n      if (++k == n) {\n        k =\
     \ 0;\n        std::cout << '\\n';\n      } else {\n        std::cout << ' ';\n\
     \      }\n    }\n    return os;\n  }\n};\n\n} // namespace lib\n\n\n#line 1 \"\
-    modint/runtime_modint.hpp\"\n\n\n\n/**\n * @brief runtime modint / \u8FD0\u884C\
-    \u65F6\u53D6\u6A21\u7C7B\n *\n */\n\n#include <cstdint>\n#line 11 \"modint/runtime_modint.hpp\"\
-    \n#include <type_traits>\n\nnamespace lib {\n\ntemplate <int> class RuntimeModInt\
-    \ {\npublic:\n  using i32 = std::int32_t;\n  using u32 = std::uint32_t;\n  using\
-    \ u64 = std::uint64_t;\n  using m32 = RuntimeModInt;\n\n  using value_type = u32;\n\
-    \n  static u32 get_mod() { return mod; }\n\n  static bool set_mod(u32 m) {\n \
-    \   if (m == 1 || (m & (1U << 31)) != 0) return false;\n    mod = mod_odd = m,\
-    \ offset = 0;\n    while ((mod_odd & 1) == 0) ++offset, mod_odd >>= 1;\n    mask\
-    \ = (1 << offset) - 1;\n    u32 two = 2, iv = mod_odd * (two - mod_odd * mod_odd);\n\
-    \    iv *= two - mod_odd * iv;\n    iv *= two - mod_odd * iv;\n    r = iv * (mod_odd\
-    \ * iv - two);\n    r2 = -u64(mod_odd) % mod_odd;\n    return true;\n  }\n\n \
-    \ RuntimeModInt() = default;\n  ~RuntimeModInt() = default;\n\n  template <typename\
-    \ T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  RuntimeModInt(T v) :\
-    \ v_(transform(v % i32(mod) + i32(mod))) {}\n\n  RuntimeModInt(const m32 &) =\
-    \ default;\n\n  u32 get() const {\n    u32 h = reduce(v_ >> offset);\n    return\
-    \ ((h - v_) * r & mask) * mod_odd + h;\n  }\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
-    \ int> = 0>\n  explicit operator T() const {\n    return T(get());\n  }\n\n  m32\
-    \ operator-() const {\n    m32 res;\n    u32 h = v_ >> offset;\n    res.v_ = (((mod_odd\
-    \ & -(h != 0)) - h) << offset) | (-(v_ & mask) & mask);\n    return res;\n  }\n\
-    \n  m32 inv() const {\n    i32 x1 = 1, x3 = 0, a = get(), b = mod;\n    while\
-    \ (b != 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3\
-    \ = x1_old - x3 * q, a = b, b = a_old - b * q;\n    }\n    return m32(x1);\n \
-    \ }\n\n  m32 &operator=(const m32 &) = default;\n\n  m32 &operator+=(const m32\
-    \ &rhs) {\n    u32 h = (v_ >> offset) + (rhs.v_ >> offset) - mod_odd;\n    v_\
-    \ = ((h + (mod_odd & -(h >> 31))) << offset) | ((v_ + rhs.v_) & mask);\n    return\
-    \ *this;\n  }\n  m32 &operator-=(const m32 &rhs) {\n    u32 h = (v_ >> offset)\
-    \ - (rhs.v_ >> offset);\n    v_ = ((h + (mod_odd & -(h >> 31))) << offset) | ((v_\
-    \ - rhs.v_) & mask);\n    return *this;\n  }\n  m32 &operator*=(const m32 &rhs)\
-    \ {\n    v_ = (reduce(u64(v_ >> offset) * (rhs.v_ >> offset)) << offset) | ((v_\
-    \ * rhs.v_) & mask);\n    return *this;\n  }\n  m32 &operator/=(const m32 &rhs)\
-    \ { return operator*=(rhs.inv()); }\n  friend m32 operator+(const m32 &lhs, const\
-    \ m32 &rhs) { return m32(lhs) += rhs; }\n  friend m32 operator-(const m32 &lhs,\
-    \ const m32 &rhs) { return m32(lhs) -= rhs; }\n  friend m32 operator*(const m32\
-    \ &lhs, const m32 &rhs) { return m32(lhs) *= rhs; }\n  friend m32 operator/(const\
-    \ m32 &lhs, const m32 &rhs) { return m32(lhs) /= rhs; }\n  friend bool operator==(const\
-    \ m32 &lhs, const m32 &rhs) { return lhs.v_ == rhs.v_; }\n  friend bool operator!=(const\
-    \ m32 &lhs, const m32 &rhs) { return lhs.v_ != rhs.v_; }\n\n  friend std::istream\
-    \ &operator>>(std::istream &is, m32 &rhs) {\n    i32 x;\n    is >> x;\n    rhs\
-    \ = m32(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
-    \ &os, const m32 &rhs) { return os << rhs.get(); }\n\n  m32 pow(u64 y) const {\n\
-    \    m32 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n      if (y &\
-    \ 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static u32 reduce(u64 x) {\n\
-    \    u32 t = (x + u64(u32(x) * r) * mod_odd) >> 32;\n    return t - (mod_odd &\
-    \ -((mod_odd - 1 - t) >> 31));\n  }\n  static u32 transform(u32 x) { return (reduce(u64(x)\
-    \ % mod_odd * r2) << offset) | (x & mask); }\n\n  u32 v_;\n  static inline u32\
-    \ r, r2, mod, mod_odd, offset, mask;\n};\n\n} // namespace lib\n\n\n#line 7 \"\
-    remote_test/yosupo/matrix/matrix_det.2.test.cpp\"\n\nint main() {\n#ifdef LOCAL\n\
-    \  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n\
-    #endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n  using mint\
-    \ = lib::RuntimeModInt<0>;\n  mint::set_mod(998244353);\n  int n;\n  std::cin\
-    \ >> n;\n  lib::ArbitraryModuloSquareMatrix<mint> m(n);\n  std::cin >> m;\n  std::cout\
-    \ << m.det();\n  return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/matrix_det\"\n\n#include\
-    \ <iostream>\n\n#include \"math/matrix/arbitrary_modulo_square_matrix.hpp\"\n\
-    #include \"modint/runtime_modint.hpp\"\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"\
-    in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
-    \  std::cin.tie(0);\n  using mint = lib::RuntimeModInt<0>;\n  mint::set_mod(998244353);\n\
-    \  int n;\n  std::cin >> n;\n  lib::ArbitraryModuloSquareMatrix<mint> m(n);\n\
-    \  std::cin >> m;\n  std::cout << m.det();\n  return 0;\n}"
+    math/matrix/characteristic_polynomial.hpp\"\n\n\n\n/**\n * @brief characteristic\
+    \ polynomial / \u7279\u5F81\u591A\u9879\u5F0F\n *\n */\n\n#line 10 \"math/matrix/characteristic_polynomial.hpp\"\
+    \n\nnamespace lib {\n\n/**\n * @brief \u83B7\u53D6\u65B9\u9635\u7684\u7279\u5F81\
+    \u591A\u9879\u5F0F\n * @note \u7279\u5F81\u591A\u9879\u5F0F det(xI-m) \u800C\u975E\
+    \ det(m-xI)\n * @tparam Type \u65B9\u9635\u4E2D\u7684\u5143\u7D20\n * @param m\
+    \ \u65B9\u9635 m\n * @return std::vector<Type>\n */\ntemplate <typename MatType,\
+    \ typename Type = typename MatType::value_type>\nstd::vector<Type> get_charpoly(const\
+    \ MatType &m) {\n  auto h = m.to_upper_Hessenberg();\n  int n = m.row();\n  std::vector<std::vector<Type>>\
+    \ p(n + 1);\n  p[0] = {Type(1)};\n  for (int i = 1; i <= n; ++i) {\n    const\
+    \ std::vector<Type> &pi_1 = p[i - 1];\n    std::vector<Type> &pi = p[i];\n   \
+    \ pi.resize(i + 1, Type(0));\n    Type v = -h.at(i - 1, i - 1);\n    for (int\
+    \ j = 0; j < i; ++j) {\n      pi[j] += pi_1[j] * v;\n      pi[j + 1] += pi_1[j];\n\
+    \    }\n    Type t(1);\n    for (int j = 1; j < i; ++j) {\n      t *= h.at(i -\
+    \ j, i - j - 1);\n      Type prod = t * h.at(i - j - 1, i - 1);\n      if (prod\
+    \ == Type(0)) continue;\n      for (int k = 0; k <= i - j - 1; ++k) pi[k] -= prod\
+    \ * p[i - j - 1][k];\n    }\n  }\n  return p[n];\n}\n\n} // namespace lib\n\n\n\
+    #line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief Montgomery modint\
+    \ / Montgomery \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n\
+    \ */\n\n#include <cstdint>\n#line 11 \"modint/Montgomery_modint.hpp\"\n#include\
+    \ <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\
+    \n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
+    template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
+    \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
+    \  using m32 = MontgomeryModInt;\n\n  using value_type = u32;\n\n  static constexpr\
+    \ u32 get_mod() { return mod; }\n\n  static constexpr u32 get_primitive_root_prime()\
+    \ {\n    u32 tmp[32] = {};\n    int cnt = 0;\n    const u32 phi = mod - 1;\n \
+    \   u32 m = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n      if (m % i == 0)\
+    \ {\n        tmp[cnt++] = i;\n        do {\n          m /= i;\n        } while\
+    \ (m % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32\
+    \ res = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt &&\
+    \ f; ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n  \
+    \  }\n  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()\
+    \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    \ int> = 0>\n  constexpr MontgomeryModInt(T v) : v_(reduce(u64(v % i32(mod) +\
+    \ i32(mod)) * r2)) {}\n\n  constexpr MontgomeryModInt(const m32 &) = default;\n\
+    \n  constexpr u32 get() const { return norm(reduce(v_)); }\n\n  template <typename\
+    \ T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  explicit constexpr operator\
+    \ T() const {\n    return T(get());\n  }\n\n  constexpr m32 operator-() const\
+    \ {\n    m32 res;\n    res.v_ = (mod2 & -(v_ != 0)) - v_;\n    return res;\n \
+    \ }\n\n  constexpr m32 inv() const {\n    i32 x1 = 1, x3 = 0, a = get(), b = mod;\n\
+    \    while (b != 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1\
+    \ = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;\n    }\n    return m32(x1);\n\
+    \  }\n\n  constexpr m32 &operator=(const m32 &) = default;\n\n  constexpr m32\
+    \ &operator+=(const m32 &rhs) {\n    v_ += rhs.v_ - mod2;\n    v_ += mod2 & -(v_\
+    \ >> 31);\n    return *this;\n  }\n  constexpr m32 &operator-=(const m32 &rhs)\
+    \ {\n    v_ -= rhs.v_;\n    v_ += mod2 & -(v_ >> 31);\n    return *this;\n  }\n\
+    \  constexpr m32 &operator*=(const m32 &rhs) {\n    v_ = reduce(u64(v_) * rhs.v_);\n\
+    \    return *this;\n  }\n  constexpr m32 &operator/=(const m32 &rhs) { return\
+    \ operator*=(rhs.inv()); }\n  friend constexpr m32 operator+(const m32 &lhs, const\
+    \ m32 &rhs) { return m32(lhs) += rhs; }\n  friend constexpr m32 operator-(const\
+    \ m32 &lhs, const m32 &rhs) { return m32(lhs) -= rhs; }\n  friend constexpr m32\
+    \ operator*(const m32 &lhs, const m32 &rhs) { return m32(lhs) *= rhs; }\n  friend\
+    \ constexpr m32 operator/(const m32 &lhs, const m32 &rhs) { return m32(lhs) /=\
+    \ rhs; }\n  friend constexpr bool operator==(const m32 &lhs, const m32 &rhs) {\n\
+    \    return norm(lhs.v_) == norm(rhs.v_);\n  }\n  friend constexpr bool operator!=(const\
+    \ m32 &lhs, const m32 &rhs) {\n    return norm(lhs.v_) != norm(rhs.v_);\n  }\n\
+    \n  friend std::istream &operator>>(std::istream &is, m32 &rhs) {\n    i32 x;\n\
+    \    is >> x;\n    rhs = m32(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
+    \ &os, const m32 &rhs) { return os << rhs.get(); }\n\n  constexpr m32 pow(u64\
+    \ y) const {\n    m32 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n\
+    \      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static constexpr\
+    \ u32 get_r() {\n    u32 two = 2, iv = mod * (two - mod * mod);\n    iv *= two\
+    \ - mod * iv;\n    iv *= two - mod * iv;\n    return iv * (mod * iv - two);\n\
+    \  }\n\n  static constexpr u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod)\
+    \ >> 32; }\n  static constexpr u32 norm(u32 x) { return x - (mod & -((mod - 1\
+    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r = get_r();\n  static\
+    \ constexpr u32 r2 = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod << 1;\n\
+    \n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r *\
+    \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
+    \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
+    \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
+    \ // namespace lib\n\n\n#line 8 \"remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp\"\
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
+    \  int n;\n  std::cin >> n;\n  lib::ArbitraryModuloSquareMatrix<lib::MontModInt<998244353>>\
+    \ m(n);\n  std::cin >> m;\n  for (auto i : lib::get_charpoly(m)) std::cout <<\
+    \ i << ' ';\n  return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/characteristic_polynomial\"\
+    \n\n#include <iostream>\n\n#include \"math/matrix/arbitrary_modulo_square_matrix.hpp\"\
+    \n#include \"math/matrix/characteristic_polynomial.hpp\"\n#include \"modint/Montgomery_modint.hpp\"\
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
+    \  int n;\n  std::cin >> n;\n  lib::ArbitraryModuloSquareMatrix<lib::MontModInt<998244353>>\
+    \ m(n);\n  std::cin >> m;\n  for (auto i : lib::get_charpoly(m)) std::cout <<\
+    \ i << ' ';\n  return 0;\n}"
   dependsOn:
   - math/matrix/arbitrary_modulo_square_matrix.hpp
   - math/matrix/square_matrix.hpp
   - math/matrix/matrix_base.hpp
-  - modint/runtime_modint.hpp
+  - math/matrix/characteristic_polynomial.hpp
+  - modint/Montgomery_modint.hpp
   isVerificationFile: true
-  path: remote_test/yosupo/matrix/matrix_det.2.test.cpp
+  path: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
   requiredBy: []
   timestamp: '2021-07-09 03:16:11+08:00'
-  verificationStatus: TEST_ACCEPTED
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: remote_test/yosupo/matrix/matrix_det.2.test.cpp
+documentation_of: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
 layout: document
 redirect_from:
-- /verify/remote_test/yosupo/matrix/matrix_det.2.test.cpp
-- /verify/remote_test/yosupo/matrix/matrix_det.2.test.cpp.html
-title: remote_test/yosupo/matrix/matrix_det.2.test.cpp
+- /verify/remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
+- /verify/remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp.html
+title: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
 ---

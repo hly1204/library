@@ -1,17 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/matrix/arbitrary_modulo_square_matrix.hpp
     title: "arbitrary modulo square matrix / \u4EFB\u610F\u6A21\u6570\u65B9\u9635"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
     title: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
+  - icon: ':x:'
+    path: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
+    title: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
     title: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
@@ -24,9 +27,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/matrix_det.2.test.cpp
     title: remote_test/yosupo/matrix/matrix_det.2.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "square matrix / \u65B9\u9635"
     links: []
@@ -149,7 +152,7 @@ data:
     \   }\n      }\n    }\n    return res;\n  }\n\n  /**\n   * @brief \u76F8\u4F3C\
     \u53D8\u6362\u4E3A\u4E0A Hessenberg \u65B9\u9635\n   * @note \u4F7F\u7528 Gauss\
     \ \u6D88\u5143\uFF0C\u6709\u9664\u6CD5\uFF0C\u6240\u4EE5\u5143\u7D20\u9700\u8981\
-    \u5C5E\u4E8E\u57DF\n   * @return SquareMatrix\n   */\n  virtual SquareMatrix to_upper_Hessenberg()\
+    \u5C5E\u4E8E\u57DF\n   * @return SquareMatrix\n   */\n  SquareMatrix to_upper_Hessenberg()\
     \ const {\n    int n = this->row();\n    assert(this->col() == n);\n    SquareMatrix\
     \ m(*this);\n    for (int i = 0; i < n - 2; ++i) {\n      if (m.at(i + 1, i) ==\
     \ Type(0)) {\n        int pivot = i + 2;\n        for (; pivot < n; ++pivot)\n\
@@ -237,7 +240,7 @@ data:
     \   }\n      }\n    }\n    return res;\n  }\n\n  /**\n   * @brief \u76F8\u4F3C\
     \u53D8\u6362\u4E3A\u4E0A Hessenberg \u65B9\u9635\n   * @note \u4F7F\u7528 Gauss\
     \ \u6D88\u5143\uFF0C\u6709\u9664\u6CD5\uFF0C\u6240\u4EE5\u5143\u7D20\u9700\u8981\
-    \u5C5E\u4E8E\u57DF\n   * @return SquareMatrix\n   */\n  virtual SquareMatrix to_upper_Hessenberg()\
+    \u5C5E\u4E8E\u57DF\n   * @return SquareMatrix\n   */\n  SquareMatrix to_upper_Hessenberg()\
     \ const {\n    int n = this->row();\n    assert(this->col() == n);\n    SquareMatrix\
     \ m(*this);\n    for (int i = 0; i < n - 2; ++i) {\n      if (m.at(i + 1, i) ==\
     \ Type(0)) {\n        int pivot = i + 2;\n        for (; pivot < n; ++pivot)\n\
@@ -262,10 +265,11 @@ data:
   path: math/matrix/square_matrix.hpp
   requiredBy:
   - math/matrix/arbitrary_modulo_square_matrix.hpp
-  timestamp: '2021-07-05 20:51:34+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-07-09 03:16:11+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.0.test.cpp
+  - remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
   - remote_test/yosupo/matrix/matrix_det.1.test.cpp
   - remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
   - remote_test/yosupo/matrix/inverse_matrix.0.test.cpp

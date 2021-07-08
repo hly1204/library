@@ -1,20 +1,23 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
+  - icon: ':x:'
+    path: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
+    title: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/matrix_det.2.test.cpp
     title: remote_test/yosupo/matrix/matrix_det.2.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     _deprecated_at_docs: docs/math/matrix/arbitrary_modulo_square_matrix.md
     document_title: "arbitrary modulo square matrix / \u4EFB\u610F\u6A21\u6570\u65B9\
@@ -142,7 +145,7 @@ data:
     \   }\n      }\n    }\n    return res;\n  }\n\n  /**\n   * @brief \u76F8\u4F3C\
     \u53D8\u6362\u4E3A\u4E0A Hessenberg \u65B9\u9635\n   * @note \u4F7F\u7528 Gauss\
     \ \u6D88\u5143\uFF0C\u6709\u9664\u6CD5\uFF0C\u6240\u4EE5\u5143\u7D20\u9700\u8981\
-    \u5C5E\u4E8E\u57DF\n   * @return SquareMatrix\n   */\n  virtual SquareMatrix to_upper_Hessenberg()\
+    \u5C5E\u4E8E\u57DF\n   * @return SquareMatrix\n   */\n  SquareMatrix to_upper_Hessenberg()\
     \ const {\n    int n = this->row();\n    assert(this->col() == n);\n    SquareMatrix\
     \ m(*this);\n    for (int i = 0; i < n - 2; ++i) {\n      if (m.at(i + 1, i) ==\
     \ Type(0)) {\n        int pivot = i + 2;\n        for (; pivot < n; ++pivot)\n\
@@ -205,14 +208,31 @@ data:
     \            Type p(raw_type(m.at(real_j, i)) / raw_type(m.at(real_i, i)));\n\
     \            for (int k = i; k < n; ++k) m.at(real_j, k) -= p * m.at(real_i, k);\n\
     \          }\n        }\n        res *= m.at(real_row[i], i);\n      }\n    }\n\
-    \    return odd ? -res : res;\n  }\n\n  friend std::istream &operator>>(std::istream\
-    \ &is, ArbitraryModuloSquareMatrix &rhs) {\n    for (auto &i : rhs.mat_) is >>\
-    \ i;\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream &os,\
-    \ const ArbitraryModuloSquareMatrix &rhs) {\n    int n = rhs.col();\n    for (int\
-    \ i = 0, e = rhs.size(), k = 0; i < e; ++i) {\n      os << rhs.mat_[i];\n    \
-    \  if (++k == n) {\n        k = 0;\n        std::cout << '\\n';\n      } else\
-    \ {\n        std::cout << ' ';\n      }\n    }\n    return os;\n  }\n};\n\n} //\
-    \ namespace lib\n\n\n"
+    \    return odd ? -res : res;\n  }\n\n  virtual ArbitraryModuloSquareMatrix to_upper_Hessenberg()\
+    \ const {\n\n    using raw_type = typename Type::value_type;\n\n    int n = this->row();\n\
+    \    assert(this->col() == n);\n    ArbitraryModuloSquareMatrix m(*this);\n  \
+    \  for (int i = 0; i < n - 2; ++i) {\n      int pivot = -1;\n      raw_type min_value;\n\
+    \      for (int j = i + 1; j < n; ++j) { // \u9009\u4E3B\u5143\uFF0C\u4E3B\u5143\
+    \u9009\u62E9\u6570\u503C\u6700\u5C0F\u7684\u975E\u96F6\n        if (m.at(j, i)\
+    \ != Type(0) && (pivot == -1 || raw_type(m.at(j, i)) < min_value)) {\n       \
+    \   min_value = raw_type(m.at(j, i));\n          pivot = j;\n        }\n     \
+    \ }\n      if (pivot == -1) continue;\n      if (pivot != i + 1) {\n        std::swap_ranges(m.row_begin(i\
+    \ + 1) + i, m.row_end(i + 1), m.row_begin(pivot) + i);\n        for (int j = 0;\
+    \ j < n; ++j) std::swap(m.at(j, i + 1), m.at(j, pivot));\n      }\n      for (int\
+    \ j = i + 2; j < n; ++j) {\n        while (m.at(j, i) != Type(0)) {\n        \
+    \  if (raw_type(m.at(j, i)) < raw_type(m.at(i + 1, i))) {\n            std::swap_ranges(m.row_begin(i\
+    \ + 1) + i, m.row_end(i + 1), m.row_begin(j) + i);\n            for (int k = 0;\
+    \ k < n; ++j) std::swap(m.at(k, i + 1), m.at(k, j));\n          }\n          Type\
+    \ v(raw_type(m.at(j, i)) / raw_type(m.at(i + 1, i)));\n          for (int k =\
+    \ i; k < n; ++k) m.at(j, k) -= v * m.at(i + 1, k);\n          for (int k = 0;\
+    \ k != n; ++k) m.at(k, i + 1) += v * m.at(k, j);\n        }\n      }\n    }\n\
+    \    return m;\n  }\n\n  friend std::istream &operator>>(std::istream &is, ArbitraryModuloSquareMatrix\
+    \ &rhs) {\n    for (auto &i : rhs.mat_) is >> i;\n    return is;\n  }\n  friend\
+    \ std::ostream &operator<<(std::ostream &os, const ArbitraryModuloSquareMatrix\
+    \ &rhs) {\n    int n = rhs.col();\n    for (int i = 0, e = rhs.size(), k = 0;\
+    \ i < e; ++i) {\n      os << rhs.mat_[i];\n      if (++k == n) {\n        k =\
+    \ 0;\n        std::cout << '\\n';\n      } else {\n        std::cout << ' ';\n\
+    \      }\n    }\n    return os;\n  }\n};\n\n} // namespace lib\n\n\n"
   code: "#ifndef ARBITRARY_MODULO_SQUARE_MATRIX_HEADER_HPP\n#define ARBITRARY_MODULO_SQUARE_MATRIX_HEADER_HPP\n\
     \n/**\n * @brief arbitrary modulo square matrix / \u4EFB\u610F\u6A21\u6570\u65B9\
     \u9635\n * @docs docs/math/matrix/arbitrary_modulo_square_matrix.md\n */\n\n#include\
@@ -260,23 +280,41 @@ data:
     \            Type p(raw_type(m.at(real_j, i)) / raw_type(m.at(real_i, i)));\n\
     \            for (int k = i; k < n; ++k) m.at(real_j, k) -= p * m.at(real_i, k);\n\
     \          }\n        }\n        res *= m.at(real_row[i], i);\n      }\n    }\n\
-    \    return odd ? -res : res;\n  }\n\n  friend std::istream &operator>>(std::istream\
-    \ &is, ArbitraryModuloSquareMatrix &rhs) {\n    for (auto &i : rhs.mat_) is >>\
-    \ i;\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream &os,\
-    \ const ArbitraryModuloSquareMatrix &rhs) {\n    int n = rhs.col();\n    for (int\
-    \ i = 0, e = rhs.size(), k = 0; i < e; ++i) {\n      os << rhs.mat_[i];\n    \
-    \  if (++k == n) {\n        k = 0;\n        std::cout << '\\n';\n      } else\
-    \ {\n        std::cout << ' ';\n      }\n    }\n    return os;\n  }\n};\n\n} //\
-    \ namespace lib\n\n#endif"
+    \    return odd ? -res : res;\n  }\n\n  virtual ArbitraryModuloSquareMatrix to_upper_Hessenberg()\
+    \ const {\n\n    using raw_type = typename Type::value_type;\n\n    int n = this->row();\n\
+    \    assert(this->col() == n);\n    ArbitraryModuloSquareMatrix m(*this);\n  \
+    \  for (int i = 0; i < n - 2; ++i) {\n      int pivot = -1;\n      raw_type min_value;\n\
+    \      for (int j = i + 1; j < n; ++j) { // \u9009\u4E3B\u5143\uFF0C\u4E3B\u5143\
+    \u9009\u62E9\u6570\u503C\u6700\u5C0F\u7684\u975E\u96F6\n        if (m.at(j, i)\
+    \ != Type(0) && (pivot == -1 || raw_type(m.at(j, i)) < min_value)) {\n       \
+    \   min_value = raw_type(m.at(j, i));\n          pivot = j;\n        }\n     \
+    \ }\n      if (pivot == -1) continue;\n      if (pivot != i + 1) {\n        std::swap_ranges(m.row_begin(i\
+    \ + 1) + i, m.row_end(i + 1), m.row_begin(pivot) + i);\n        for (int j = 0;\
+    \ j < n; ++j) std::swap(m.at(j, i + 1), m.at(j, pivot));\n      }\n      for (int\
+    \ j = i + 2; j < n; ++j) {\n        while (m.at(j, i) != Type(0)) {\n        \
+    \  if (raw_type(m.at(j, i)) < raw_type(m.at(i + 1, i))) {\n            std::swap_ranges(m.row_begin(i\
+    \ + 1) + i, m.row_end(i + 1), m.row_begin(j) + i);\n            for (int k = 0;\
+    \ k < n; ++j) std::swap(m.at(k, i + 1), m.at(k, j));\n          }\n          Type\
+    \ v(raw_type(m.at(j, i)) / raw_type(m.at(i + 1, i)));\n          for (int k =\
+    \ i; k < n; ++k) m.at(j, k) -= v * m.at(i + 1, k);\n          for (int k = 0;\
+    \ k != n; ++k) m.at(k, i + 1) += v * m.at(k, j);\n        }\n      }\n    }\n\
+    \    return m;\n  }\n\n  friend std::istream &operator>>(std::istream &is, ArbitraryModuloSquareMatrix\
+    \ &rhs) {\n    for (auto &i : rhs.mat_) is >> i;\n    return is;\n  }\n  friend\
+    \ std::ostream &operator<<(std::ostream &os, const ArbitraryModuloSquareMatrix\
+    \ &rhs) {\n    int n = rhs.col();\n    for (int i = 0, e = rhs.size(), k = 0;\
+    \ i < e; ++i) {\n      os << rhs.mat_[i];\n      if (++k == n) {\n        k =\
+    \ 0;\n        std::cout << '\\n';\n      } else {\n        std::cout << ' ';\n\
+    \      }\n    }\n    return os;\n  }\n};\n\n} // namespace lib\n\n#endif"
   dependsOn:
   - math/matrix/square_matrix.hpp
   - math/matrix/matrix_base.hpp
   isVerificationFile: false
   path: math/matrix/arbitrary_modulo_square_matrix.hpp
   requiredBy: []
-  timestamp: '2021-07-08 23:44:42+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-07-09 03:16:11+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
+  - remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
   - remote_test/yosupo/matrix/matrix_det.2.test.cpp
 documentation_of: math/matrix/arbitrary_modulo_square_matrix.hpp
 layout: document
