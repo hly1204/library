@@ -5,7 +5,7 @@ data:
     path: math/basic/integer_factorization_Pollard_rho.hpp
     title: "integer factorization Pollard's rho / \u6574\u6570\u5206\u89E3 Pollard\
       \ \u7684 rho \u7B97\u6CD5"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/runtime_long_Montgomery_modint.hpp
     title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
       \ Montgomery \u53D6\u6A21\u7C7B"
