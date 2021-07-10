@@ -307,6 +307,10 @@ $$
 
 其中一些记号可见原文的伪代码。
 
+#### 关系多项式与最小多项式
+
+我们可以发现关系多项式这样定义实际是为了方便，不需要在数组的开头进行插入操作，而其翻转实际上就是最小多项式了（零化这个序列）。
+
 ## 参考文献
 
 - J.L. Massey, Shift register synthesis and BCH decoding, IEEE Trans. Inform. Theory, vol. IT-15,

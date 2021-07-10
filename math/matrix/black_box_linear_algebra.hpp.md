@@ -66,12 +66,15 @@ data:
     \ = std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\n    v = m.apply(v);\
     \ // \u4E0D\u9700\u8981\u5199\u6210 std::move \u56E0\u4E3A\u7F16\u8BD1\u5668\u4F1A\
     \u81EA\u52A8\u4F18\u5316\uFF01\n  }\n  std::vector<Type> res = find_LFSR(bilinear_projection);\n\
-    \  std::reverse(res.begin(),\n               res.end()); // \u7CFB\u6570\u7FFB\
-    \u8F6C\uFF01\u56E0\u4E3A\u5728\u8FD9\u91CC LFSR \u5BF9\u5E94\u7684\u6700\u5C0F\
-    \u591A\u9879\u5F0F\u548C\u77E9\u9635\u7684\u6700\u5C0F\u591A\u9879\u5F0F\u5B9A\
-    \u4E49\u4E0D\u540C\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\
-    \u7684\u884C\u5217\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\n * @note \u5FC5\
-    \u987B\u4E3A\u6709\u9650\u57DF\n * @ref Douglas H. Wiedemann (1986). Solving Sparse\
+    \  // \u7CFB\u6570\u7FFB\u8F6C\uFF01\u56E0\u4E3A\u5728\u8FD9\u91CC LFSR \u8FD4\
+    \u56DE\u5173\u7CFB\u591A\u9879\u5F0F\n  // \u4E3A\u4E86\u4E0D\u5728\u6570\u7EC4\
+    \u7684\u5F00\u5934\u63D2\u5165\u5143\u7D20\u6545\u4F7F\u7528 LFSR \u4E2D\u5B9A\
+    \u4E49\u7684\u5173\u7CFB\u591A\u9879\u5F0F\u66F4\u65B9\u4FBF\n  // \u800C\u6700\
+    \u5C0F\u591A\u9879\u5F0F\u5219\u53EA\u9700\u7FFB\u8F6C\u5176\u7CFB\u6570\u5373\
+    \u9996\u4E00\u7684\u6700\u5C0F\u591A\u9879\u5F0F\n  std::reverse(res.begin(),\
+    \ res.end());\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\u7684\
+    \u884C\u5217\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\n * @note \u5FC5\u987B\
+    \u4E3A\u6709\u9650\u57DF\n * @ref Douglas H. Wiedemann (1986). Solving Sparse\
     \ Linear Equations Over Finite Fields.\n */\ntemplate <typename MatType, typename\
     \ Type = typename MatType::value_type>\nType black_box_det(const MatType &m) {\n\
     \n  static std::random_device rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<typename\
@@ -107,12 +110,15 @@ data:
     \ = std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\n    v = m.apply(v);\
     \ // \u4E0D\u9700\u8981\u5199\u6210 std::move \u56E0\u4E3A\u7F16\u8BD1\u5668\u4F1A\
     \u81EA\u52A8\u4F18\u5316\uFF01\n  }\n  std::vector<Type> res = find_LFSR(bilinear_projection);\n\
-    \  std::reverse(res.begin(),\n               res.end()); // \u7CFB\u6570\u7FFB\
-    \u8F6C\uFF01\u56E0\u4E3A\u5728\u8FD9\u91CC LFSR \u5BF9\u5E94\u7684\u6700\u5C0F\
-    \u591A\u9879\u5F0F\u548C\u77E9\u9635\u7684\u6700\u5C0F\u591A\u9879\u5F0F\u5B9A\
-    \u4E49\u4E0D\u540C\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\
-    \u7684\u884C\u5217\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\n * @note \u5FC5\
-    \u987B\u4E3A\u6709\u9650\u57DF\n * @ref Douglas H. Wiedemann (1986). Solving Sparse\
+    \  // \u7CFB\u6570\u7FFB\u8F6C\uFF01\u56E0\u4E3A\u5728\u8FD9\u91CC LFSR \u8FD4\
+    \u56DE\u5173\u7CFB\u591A\u9879\u5F0F\n  // \u4E3A\u4E86\u4E0D\u5728\u6570\u7EC4\
+    \u7684\u5F00\u5934\u63D2\u5165\u5143\u7D20\u6545\u4F7F\u7528 LFSR \u4E2D\u5B9A\
+    \u4E49\u7684\u5173\u7CFB\u591A\u9879\u5F0F\u66F4\u65B9\u4FBF\n  // \u800C\u6700\
+    \u5C0F\u591A\u9879\u5F0F\u5219\u53EA\u9700\u7FFB\u8F6C\u5176\u7CFB\u6570\u5373\
+    \u9996\u4E00\u7684\u6700\u5C0F\u591A\u9879\u5F0F\n  std::reverse(res.begin(),\
+    \ res.end());\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\u7684\
+    \u884C\u5217\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\n * @note \u5FC5\u987B\
+    \u4E3A\u6709\u9650\u57DF\n * @ref Douglas H. Wiedemann (1986). Solving Sparse\
     \ Linear Equations Over Finite Fields.\n */\ntemplate <typename MatType, typename\
     \ Type = typename MatType::value_type>\nType black_box_det(const MatType &m) {\n\
     \n  static std::random_device rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<typename\
@@ -131,7 +137,7 @@ data:
   isVerificationFile: false
   path: math/matrix/black_box_linear_algebra.hpp
   requiredBy: []
-  timestamp: '2021-07-07 14:30:52+08:00'
+  timestamp: '2021-07-10 23:50:40+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.1.test.cpp
@@ -149,7 +155,7 @@ title: "black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570"
 
 ### 最小多项式
 
-Wiedemann 提出，对于黑盒矩阵 $\mathbf{A}\in\mathbb{F}^{n\times n}$ 和一个随机的向量 $\mathbf{v}\in\mathbb{F}^n$ 其 Krylov 序列 $\lbrace \mathbf{A}^i\mathbf{v} \rbrace _ {i=0}^\infty$ 的最小多项式 $f^{\mathbf{A},\mathbf{v}}$ 很大可能等于 $\mathbf{A}$ 的最小多项式 $f^{\mathbf{A}}$ ，而对于第二个随机向量 $\mathbf{u}$ 其 bilinear projection 序列 $\lbrace \mathbf{u}^{\mathrm{T}}\mathbf{A}^i\mathbf{v} \rbrace _ {i=0}^\infty$ 的最小多项式 $f^{\mathbf{A},\mathbf{v}} _ \mathbf{u}$ 很大可能等于 $f^{\mathbf{A},\mathbf{v}}$ 。而 $f^{\mathbf{A},\mathbf{v}} _ \mathbf{u}$ 我们可以借助 Berlekamp-Massey 算法来计算（只需翻转即能得到首一多项式，这是因为 LFSR （序列的最小多项式）与矩阵最小多项式定义不同）。
+Wiedemann 提出，对于黑盒矩阵 $\mathbf{A}\in\mathbb{F}^{n\times n}$ 和一个随机的向量 $\mathbf{v}\in\mathbb{F}^n$ 其 Krylov 序列 $\lbrace \mathbf{A}^i\mathbf{v} \rbrace _ {i=0}^\infty$ 的最小多项式 $f^{\mathbf{A},\mathbf{v}}$ 很大可能等于 $\mathbf{A}$ 的最小多项式 $f^{\mathbf{A}}$ ，而对于第二个随机向量 $\mathbf{u}$ 其 bilinear projection 序列 $\lbrace \mathbf{u}^{\mathrm{T}}\mathbf{A}^i\mathbf{v} \rbrace _ {i=0}^\infty$ 的最小多项式 $f^{\mathbf{A},\mathbf{v}} _ \mathbf{u}$ 很大可能等于 $f^{\mathbf{A},\mathbf{v}}$ 。而 $f^{\mathbf{A},\mathbf{v}} _ \mathbf{u}$ 我们可以借助 Berlekamp-Massey 算法来计算（只需翻转即能得到首一多项式，这是因为 LFSR （序列的关系多项式）与最小多项式定义不同）。
 
 ### 行列式
 

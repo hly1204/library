@@ -74,12 +74,15 @@ data:
     \ = std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\n    v = m.apply(v);\
     \ // \u4E0D\u9700\u8981\u5199\u6210 std::move \u56E0\u4E3A\u7F16\u8BD1\u5668\u4F1A\
     \u81EA\u52A8\u4F18\u5316\uFF01\n  }\n  std::vector<Type> res = find_LFSR(bilinear_projection);\n\
-    \  std::reverse(res.begin(),\n               res.end()); // \u7CFB\u6570\u7FFB\
-    \u8F6C\uFF01\u56E0\u4E3A\u5728\u8FD9\u91CC LFSR \u5BF9\u5E94\u7684\u6700\u5C0F\
-    \u591A\u9879\u5F0F\u548C\u77E9\u9635\u7684\u6700\u5C0F\u591A\u9879\u5F0F\u5B9A\
-    \u4E49\u4E0D\u540C\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\
-    \u7684\u884C\u5217\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\n * @note \u5FC5\
-    \u987B\u4E3A\u6709\u9650\u57DF\n * @ref Douglas H. Wiedemann (1986). Solving Sparse\
+    \  // \u7CFB\u6570\u7FFB\u8F6C\uFF01\u56E0\u4E3A\u5728\u8FD9\u91CC LFSR \u8FD4\
+    \u56DE\u5173\u7CFB\u591A\u9879\u5F0F\n  // \u4E3A\u4E86\u4E0D\u5728\u6570\u7EC4\
+    \u7684\u5F00\u5934\u63D2\u5165\u5143\u7D20\u6545\u4F7F\u7528 LFSR \u4E2D\u5B9A\
+    \u4E49\u7684\u5173\u7CFB\u591A\u9879\u5F0F\u66F4\u65B9\u4FBF\n  // \u800C\u6700\
+    \u5C0F\u591A\u9879\u5F0F\u5219\u53EA\u9700\u7FFB\u8F6C\u5176\u7CFB\u6570\u5373\
+    \u9996\u4E00\u7684\u6700\u5C0F\u591A\u9879\u5F0F\n  std::reverse(res.begin(),\
+    \ res.end());\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\u7684\
+    \u884C\u5217\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\n * @note \u5FC5\u987B\
+    \u4E3A\u6709\u9650\u57DF\n * @ref Douglas H. Wiedemann (1986). Solving Sparse\
     \ Linear Equations Over Finite Fields.\n */\ntemplate <typename MatType, typename\
     \ Type = typename MatType::value_type>\nType black_box_det(const MatType &m) {\n\
     \n  static std::random_device rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<typename\
@@ -306,7 +309,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/matrix/matrix_det.1.test.cpp
   requiredBy: []
-  timestamp: '2021-07-09 03:16:11+08:00'
+  timestamp: '2021-07-10 23:50:40+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/matrix_det.1.test.cpp
