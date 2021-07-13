@@ -10,13 +10,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/convolution.hpp
     title: "convolution / \u5377\u79EF"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -60,31 +60,31 @@ data:
     \ * M1 % M2, M2);\n};\n\n} // namespace lib\n\n\n#line 1 \"math/formal_power_series/convolution.hpp\"\
     \n\n\n\n/**\n * @brief convolution / \u5377\u79EF\n *\n */\n\n#line 10 \"math/formal_power_series/convolution.hpp\"\
     \n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\n/**\n * @brief\
-    \ radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\
-    #line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits / \u53D6\u6A21\
-    \u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename mod_t> struct\
-    \ modint_traits {\n  using type = typename mod_t::value_type;\n  static constexpr\
-    \ type get_mod() { return mod_t::get_mod(); }\n  static constexpr type get_primitive_root_prime()\
-    \ { return mod_t::get_primitive_root_prime(); }\n};\n\n} // namespace lib\n\n\n\
-    #line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\n\nnamespace lib {\n\n/**\n\
-    \ * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\uFF01\uFF01\uFF01\
-    \n */\ntemplate <typename mod_t> class NTT {\npublic:\n  NTT() = delete;\n\n \
-    \ static void set_root(int len) {\n    static int lim = 0;\n    static constexpr\
-    \ mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n    if (lim == 0)\
-    \ {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n      rt[0] = irt[0]\
-    \ = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod() >> 21), ig_t =\
-    \ g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n      for (int i\
-    \ = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n        rt[1 << i]\
-    \ = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n    for (; (lim\
-    \ << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n      for\
-    \ (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i - lim] *\
-    \ g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static void\
-    \ dft(int n, mod_t *x) {\n    for (int j = 0, l = n >> 1; j != l; ++j) {\n   \
-    \   mod_t u = x[j], v = x[j + l];\n      x[j] = u + v, x[j + l] = u - v;\n   \
-    \ }\n    for (int i = n >> 1; i >= 2; i >>= 1) {\n      for (int j = 0, l = i\
-    \ >> 1; j != l; ++j) {\n        mod_t u = x[j], v = x[j + l];\n        x[j] =\
-    \ u + v, x[j + l] = u - v;\n      }\n      for (int j = i, l = i >> 1, m = 1;\
+    \ radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n * @docs docs/math/formal_power_series/radix_2_NTT.md\n\
+    \ */\n\n#include <algorithm>\n#include <cassert>\n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\
+    \n\n#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits / \u53D6\
+    \u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename mod_t>\
+    \ struct modint_traits {\n  using type = typename mod_t::value_type;\n  static\
+    \ constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr type\
+    \ get_primitive_root_prime() { return mod_t::get_primitive_root_prime(); }\n};\n\
+    \n} // namespace lib\n\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
+    \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\
+    \u6A21\u6570\uFF01\uFF01\uFF01\n */\ntemplate <typename mod_t> class NTT {\npublic:\n\
+    \  NTT() = delete;\n\n  static void set_root(int len) {\n    static int lim =\
+    \ 0;\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n\
+    \    if (lim == 0) {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n\
+    \      rt[0] = irt[0] = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod()\
+    \ >> 21), ig_t = g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n \
+    \     for (int i = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n   \
+    \     rt[1 << i] = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n\
+    \    for (; (lim << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n\
+    \      for (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i\
+    \ - lim] * g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static\
+    \ void dft(int n, mod_t *x) {\n    for (int j = 0, l = n >> 1; j != l; ++j) {\n\
+    \      mod_t u = x[j], v = x[j + l];\n      x[j] = u + v, x[j + l] = u - v;\n\
+    \    }\n    for (int i = n >> 1; i >= 2; i >>= 1) {\n      for (int j = 0, l =\
+    \ i >> 1; j != l; ++j) {\n        mod_t u = x[j], v = x[j + l];\n        x[j]\
+    \ = u + v, x[j + l] = u - v;\n      }\n      for (int j = i, l = i >> 1, m = 1;\
     \ j != n; j += i, ++m) {\n        mod_t root = rt[m];\n        for (int k = 0;\
     \ k != l; ++k) {\n          mod_t u = x[j + k], v = x[j + k + l] * root;\n   \
     \       x[j + k] = u + v, x[j + k + l] = u - v;\n        }\n      }\n    }\n \
@@ -227,7 +227,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-13 17:47:54+08:00'
+  timestamp: '2021-07-13 17:52:29+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp

@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -23,8 +23,9 @@ data:
   bundledCode: "#line 1 \"remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
     \n\n#include <iostream>\n#include <vector>\n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n\n\n\n/**\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n *\n */\n\
-    \n#include <algorithm>\n#include <cassert>\n#include <cstdint>\n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\
+    \n\n\n\n/**\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n * @docs\
+    \ docs/math/formal_power_series/radix_2_NTT.md\n */\n\n#include <algorithm>\n\
+    #include <cassert>\n#include <cstdint>\n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\
     \n\n#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits / \u53D6\
     \u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename mod_t>\
     \ struct modint_traits {\n  using type = typename mod_t::value_type;\n  static\
@@ -185,7 +186,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-08 03:55:34+08:00'
+  timestamp: '2021-07-13 17:52:29+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp

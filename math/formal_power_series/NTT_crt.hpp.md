@@ -69,7 +69,7 @@ data:
   path: math/formal_power_series/NTT_crt.hpp
   requiredBy:
   - math/formal_power_series/arbitrary_modulo_convolution.hpp
-  timestamp: '2021-07-13 17:47:54+08:00'
+  timestamp: '2021-07-13 17:52:29+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
