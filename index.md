@@ -62,8 +62,18 @@ data:
   - name: math/formal_power_series
     pages:
     - icon: ':heavy_check_mark:'
+      path: math/formal_power_series/NTT_crt.hpp
+      title: "NTT prime crt / NTT \u7D20\u6570\u7528\u4E2D\u56FD\u5269\u4F59\u5B9A\
+        \u7406"
+    - icon: ':heavy_check_mark:'
+      path: math/formal_power_series/arbitrary_modulo_convolution.hpp
+      title: "arbitrary modulo convolution / \u4EFB\u610F\u6A21\u6570\u5377\u79EF"
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/chirp_z.hpp
       title: "chirp z transform / chirp z \u53D8\u6362"
+    - icon: ':heavy_check_mark:'
+      path: math/formal_power_series/convolution.hpp
+      title: "convolution / \u5377\u79EF"
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/formal_power_series.hpp
       title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
@@ -225,6 +235,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/convolution_mod.1.test.cpp
       title: remote_test/yosupo/math/convolution_mod.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
+      title: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
       title: remote_test/yosupo/math/division_of_polynomials.0.test.cpp

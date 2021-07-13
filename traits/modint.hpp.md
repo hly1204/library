@@ -3,8 +3,14 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: math/formal_power_series/arbitrary_modulo_convolution.hpp
+    title: "arbitrary modulo convolution / \u4EFB\u610F\u6A21\u6570\u5377\u79EF"
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/chirp_z.hpp
     title: "chirp z transform / chirp z \u53D8\u6362"
+  - icon: ':heavy_check_mark:'
+    path: math/formal_power_series/convolution.hpp
+    title: "convolution / \u5377\u79EF"
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/formal_power_series.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
@@ -26,6 +32,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.1.test.cpp
     title: remote_test/yosupo/math/convolution_mod.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
+    title: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
     title: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
@@ -73,7 +82,9 @@ data:
   path: traits/modint.hpp
   requiredBy:
   - math/formal_power_series/radix_2_NTT.hpp
+  - math/formal_power_series/convolution.hpp
   - math/formal_power_series/chirp_z.hpp
+  - math/formal_power_series/arbitrary_modulo_convolution.hpp
   - math/formal_power_series/polynomial.hpp
   - math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
   - math/formal_power_series/formal_power_series.hpp
@@ -85,6 +96,7 @@ data:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
   - remote_test/yosupo/math/convolution_mod.0.test.cpp
   - remote_test/yosupo/math/convolution_mod.1.test.cpp
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp

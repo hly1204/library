@@ -1,7 +1,10 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: math/formal_power_series/arbitrary_modulo_convolution.hpp
+    title: "arbitrary modulo convolution / \u4EFB\u610F\u6A21\u6570\u5377\u79EF"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.0.test.cpp
@@ -9,6 +12,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.1.test.cpp
     title: remote_test/yosupo/math/convolution_mod.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
+    title: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
     title: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
@@ -180,7 +186,8 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: modint/Montgomery_modint.hpp
-  requiredBy: []
+  requiredBy:
+  - math/formal_power_series/arbitrary_modulo_convolution.hpp
   timestamp: '2021-07-08 03:55:34+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
@@ -197,6 +204,7 @@ data:
   - remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
   - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
   - remote_test/yosupo/math/convolution_mod.0.test.cpp
   - remote_test/yosupo/math/convolution_mod.1.test.cpp
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
