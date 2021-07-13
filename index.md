@@ -74,7 +74,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/convolution.hpp
       title: "convolution / \u5377\u79EF"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/formal_power_series.hpp
       title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
         \u7684\u57FA\u672C\u64CD\u4F5C"
@@ -82,10 +82,10 @@ data:
       path: math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
       title: "linearly recurrent sequence Bostan-Mori / \u5E38\u7CFB\u6570\u7EBF\u6027\
         \u9012\u63A8\u5E8F\u5217 Bostan-Mori \u7B97\u6CD5"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/polynomial.hpp
       title: "polynomial / \u591A\u9879\u5F0F"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/radix_2_NTT.hpp
       title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
   - name: math/matrix
@@ -140,7 +140,7 @@ data:
       title: "pseudo random generator / \u4F2A\u968F\u673A\u6570\u751F\u6210\u5668"
   - name: modint
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint/Montgomery_modint.hpp
       title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
     - icon: ':warning:'
@@ -174,7 +174,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: traits/base.hpp
       title: "type traits / \u7C7B\u578B\u8403\u53D6"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: traits/modint.hpp
       title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   verificationCategories:
@@ -268,7 +268,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
       title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
       title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   - name: remote_test/yosupo/matrix
