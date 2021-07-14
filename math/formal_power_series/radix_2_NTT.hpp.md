@@ -57,6 +57,12 @@ data:
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
+    title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
+    title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   _isVerificationFailed: false
@@ -204,6 +210,7 @@ data:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
   - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
   - remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
@@ -211,6 +218,7 @@ data:
   - remote_test/yosupo/math/convolution_mod.1.test.cpp
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
   - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
+  - remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
   - remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
 documentation_of: math/formal_power_series/radix_2_NTT.hpp
 layout: document

@@ -88,6 +88,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/radix_2_NTT.hpp
       title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
+    - icon: ':heavy_check_mark:'
+      path: math/formal_power_series/subproduct_tree.hpp
+      title: "multi-point evaluation & interpolation / \u591A\u70B9\u6C42\u503C\u548C\
+        \u63D2\u503C"
   - name: math/matrix
     pages:
     - icon: ':heavy_check_mark:'
@@ -268,6 +272,12 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
       title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
+      title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
+      title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
       title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
