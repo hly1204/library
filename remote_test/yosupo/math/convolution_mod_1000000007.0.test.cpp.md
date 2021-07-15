@@ -13,7 +13,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   - icon: ':heavy_check_mark:'

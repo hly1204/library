@@ -1,23 +1,23 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/arbitrary_modulo_square_matrix.hpp
     title: "arbitrary modulo square matrix / \u4EFB\u610F\u6A21\u6570\u65B9\u9635"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: modint/runtime_modint.hpp
     title: "runtime modint / \u8FD0\u884C\u65F6\u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/matrix_det
@@ -320,7 +320,7 @@ data:
   path: remote_test/yosupo/matrix/matrix_det.2.test.cpp
   requiredBy: []
   timestamp: '2021-07-15 17:09:18+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/matrix_det.2.test.cpp
 layout: document

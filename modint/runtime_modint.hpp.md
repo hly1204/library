@@ -3,12 +3,12 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/matrix_det.2.test.cpp
     title: remote_test/yosupo/matrix/matrix_det.2.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "runtime modint / \u8FD0\u884C\u65F6\u53D6\u6A21\u7C7B"
     links: []
@@ -117,7 +117,7 @@ data:
   path: modint/runtime_modint.hpp
   requiredBy: []
   timestamp: '2021-07-15 17:09:18+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.2.test.cpp
 documentation_of: modint/runtime_modint.hpp

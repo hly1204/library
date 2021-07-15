@@ -4,13 +4,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/matrix/characteristic_polynomial.hpp
     title: "characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []

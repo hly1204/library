@@ -15,7 +15,7 @@ data:
     path: math/formal_power_series/subproduct_tree.hpp
     title: "multi-point evaluation & interpolation / \u591A\u70B9\u6C42\u503C\u548C\
       \u63D2\u503C"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   - icon: ':heavy_check_mark:'
