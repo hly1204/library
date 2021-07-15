@@ -59,3 +59,16 @@ $$
 <!-- 注意这里的 Markdown 中 `[]()` 这种不能挨着写，否则会识别错误！ -->
 
 可以通过一次多项式乘法得到。一般来说我们假设 $A(x)\in\mathbb{F} _ p\lbrack x\rbrack$ 其中 $p$ 比较大使得 $\deg(A(x))\lt p$ 。
+
+另一种方法是考虑二项式定理 $(x+c)^y=\sum _ {i=0}^y\binom{y}{i}x^ic^{y-i}$ 即
+
+$$
+\begin{aligned}
+A(x+c)&=\sum _ {i=0}^na_i(x+c)^i\\
+&=\sum _ {i=0}^na_i\left(\sum _ {j=0}^i\binom{i}{j}x^jc^{i-j}\right)\\
+&=\sum _ {i=0}^na_ii!\left(\sum _ {j=0}^i\frac{x^j}{j!}\frac{c^{i-j}}{(i-j)!}\right)\\
+&=\sum _ {i=0}^n\frac{x^i}{i!}\left(\sum _ {j=i}^{n}a_jj!\frac{c^{j-i}}{(j-i)!}\right)
+\end{aligned}
+$$
+
+括号内显然是卷积形式。
