@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "cl.exe 编译并运行",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}\\temp\\${fileBasenameNoExtension}.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}\\temp",
+      "environment": [],
+      "console": "newExternalWindow",
+      "preLaunchTask": "C/C++: cl.exe Od 编译"
+    }
+  ]
+}

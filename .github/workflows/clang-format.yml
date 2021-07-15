@@ -1,0 +1,22 @@
+name: format
+
+on: workflow_dispatch
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Format
+        uses: DoozyX/clang-format-lint-action@v0.12
+        with:
+          clangFormatVersion: 12
+          inplace: True
+      
+      - name: Commit format
+        uses: EndBug/add-and-commit@v4
+        with:
+          author_name: hly1204
+          message: 'Committing clang-format changes'

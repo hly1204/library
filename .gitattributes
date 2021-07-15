@@ -1,0 +1,4 @@
+*.json        text eol=crlf
+*.cpp         text eol=crlf
+*.hpp         text eol=crlf
+.gitignore    text eol=crlf
