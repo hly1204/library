@@ -30,48 +30,48 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
     title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
     title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
     title: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
     title: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
     title: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/matrix_det.0.test.cpp
     title: remote_test/yosupo/matrix/matrix_det.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/matrix_det.1.test.cpp
     title: remote_test/yosupo/matrix/matrix_det.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/matrix_product.0.test.cpp
     title: remote_test/yosupo/matrix/matrix_product.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
     title: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     _deprecated_at_docs: docs/modint/Montgomery_modint.md
     document_title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
@@ -82,18 +82,18 @@ data:
     \ */\n\n#include <cstdint>\n#include <iostream>\n#include <type_traits>\n\nnamespace\
     \ lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
+    template <std::uint32_t mod>\nclass MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
     \  using m32 = MontgomeryModInt;\n\n  using value_type = u32;\n\n  static constexpr\
     \ u32 get_mod() { return mod; }\n\n  static constexpr u32 get_primitive_root_prime()\
-    \ {\n    u32 tmp[32] = {};\n    int cnt = 0;\n    const u32 phi = mod - 1;\n \
-    \   u32 m = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n      if (m % i == 0)\
-    \ {\n        tmp[cnt++] = i;\n        do {\n          m /= i;\n        } while\
-    \ (m % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32\
-    \ res = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt &&\
-    \ f; ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n  \
-    \  }\n  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()\
-    \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    \ {\n    u32 tmp[32]   = {};\n    int cnt       = 0;\n    const u32 phi = mod\
+    \ - 1;\n    u32 m         = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n   \
+    \   if (m % i == 0) {\n        tmp[cnt++] = i;\n        do { m /= i; } while (m\
+    \ % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32 res\
+    \ = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt && f;\
+    \ ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n    }\n\
+    \  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()     \
+    \     = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  constexpr MontgomeryModInt(T v) : v_(reduce(u64(v % i32(mod) +\
     \ i32(mod)) * r2)) {}\n\n  constexpr MontgomeryModInt(const m32 &) = default;\n\
     \n  constexpr u32 get() const { return norm(reduce(v_)); }\n\n  template <typename\
@@ -126,30 +126,30 @@ data:
     \ - mod * iv;\n    iv *= two - mod * iv;\n    return iv * (mod * iv - two);\n\
     \  }\n\n  static constexpr u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod)\
     \ >> 32; }\n  static constexpr u32 norm(u32 x) { return x - (mod & -((mod - 1\
-    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r = get_r();\n  static\
-    \ constexpr u32 r2 = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod << 1;\n\
-    \n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r *\
-    \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
-    \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
-    \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n\n"
+    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r    = get_r();\n  static\
+    \ constexpr u32 r2   = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod <<\
+    \ 1;\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r\
+    \ * mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >=\
+    \ (1 << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\
+    \u540D\ntemplate <std::uint32_t mod>\nusing MontModInt = MontgomeryModInt<mod>;\n\
+    \n} // namespace lib\n\n\n"
   code: "#ifndef MONTGOMERY_MODINT_HEADER_HPP\n#define MONTGOMERY_MODINT_HEADER_HPP\n\
     \n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n\
     \ */\n\n#include <cstdint>\n#include <iostream>\n#include <type_traits>\n\nnamespace\
     \ lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
+    template <std::uint32_t mod>\nclass MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
     \  using m32 = MontgomeryModInt;\n\n  using value_type = u32;\n\n  static constexpr\
     \ u32 get_mod() { return mod; }\n\n  static constexpr u32 get_primitive_root_prime()\
-    \ {\n    u32 tmp[32] = {};\n    int cnt = 0;\n    const u32 phi = mod - 1;\n \
-    \   u32 m = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n      if (m % i == 0)\
-    \ {\n        tmp[cnt++] = i;\n        do {\n          m /= i;\n        } while\
-    \ (m % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32\
-    \ res = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt &&\
-    \ f; ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n  \
-    \  }\n  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()\
-    \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    \ {\n    u32 tmp[32]   = {};\n    int cnt       = 0;\n    const u32 phi = mod\
+    \ - 1;\n    u32 m         = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n   \
+    \   if (m % i == 0) {\n        tmp[cnt++] = i;\n        do { m /= i; } while (m\
+    \ % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32 res\
+    \ = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt && f;\
+    \ ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n    }\n\
+    \  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()     \
+    \     = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  constexpr MontgomeryModInt(T v) : v_(reduce(u64(v % i32(mod) +\
     \ i32(mod)) * r2)) {}\n\n  constexpr MontgomeryModInt(const m32 &) = default;\n\
     \n  constexpr u32 get() const { return norm(reduce(v_)); }\n\n  template <typename\
@@ -182,20 +182,20 @@ data:
     \ - mod * iv;\n    iv *= two - mod * iv;\n    return iv * (mod * iv - two);\n\
     \  }\n\n  static constexpr u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod)\
     \ >> 32; }\n  static constexpr u32 norm(u32 x) { return x - (mod & -((mod - 1\
-    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r = get_r();\n  static\
-    \ constexpr u32 r2 = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod << 1;\n\
-    \n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r *\
-    \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
-    \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
-    \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n#endif"
+    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r    = get_r();\n  static\
+    \ constexpr u32 r2   = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod <<\
+    \ 1;\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r\
+    \ * mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >=\
+    \ (1 << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\
+    \u540D\ntemplate <std::uint32_t mod>\nusing MontModInt = MontgomeryModInt<mod>;\n\
+    \n} // namespace lib\n\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: modint/Montgomery_modint.hpp
   requiredBy:
   - math/formal_power_series/arbitrary_modulo_convolution.hpp
-  timestamp: '2021-07-08 03:55:34+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-07-15 14:25:20+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.0.test.cpp
   - remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp

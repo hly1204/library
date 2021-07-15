@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: string/suffix_array_sais.hpp
     title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\u5E8F\
       \uFF09"
@@ -58,13 +58,13 @@ data:
     \n/**\n * @brief \u83B7\u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n\
     \ * @param s \u5B57\u7B26\u4E32\uFF0C\u4E00\u822C\u4E3A string \u6216 std::vector<int>\n\
     \ * @return std::vector<int> \u540E\u7F00\u6570\u7EC4\n */\ntemplate <typename\
-    \ Container> std::vector<int> get_sa(const Container &s) {\n  std::vector<int>\
+    \ Container>\nstd::vector<int> get_sa(const Container &s) {\n  std::vector<int>\
     \ s_cpy(s.size() + 1);\n  std::copy(s.begin(), s.end(), s_cpy.begin());\n  s_cpy.back()\
     \ = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy, *std::max_element(s.begin(),\
     \ s.end()) + 1));\n  SA.erase(SA.begin());\n  return SA;\n}\n\n/**\n * @brief\
     \ \u83B7\u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\u7684\u7279\u5316\
     \n * @note \u5BB9\u5668\u4E3A std::string \u65F6\u7279\u5316\uFF01\n * @param\
-    \ s \u5B57\u7B26\u4E32\n * @return std::vector<int>\n */\ntemplate <> std::vector<int>\
+    \ s \u5B57\u7B26\u4E32\n * @return std::vector<int>\n */\ntemplate <>\nstd::vector<int>\
     \ get_sa<std::string>(const std::string &s) {\n  std::vector<int> s_cpy(s.size()\
     \ + 1);\n  std::copy(s.begin(), s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n\
     \  std::vector<int> SA(internal::SA_IS(s_cpy, 128));\n  SA.erase(SA.begin());\n\
@@ -84,19 +84,19 @@ data:
     \n\nnamespace lib {\n\n/**\n * @brief \u83B7\u53D6 BWT \u6570\u7EC4\uFF08\u5B57\
     \u7B26\u4E32\uFF09\n * @param v \u5B57\u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\
     \u4FDD\u8BC1 0 \u662F\u672A\u51FA\u73B0\u7684\u6700\u5C0F\u503C\n * @param SA\
-    \ v \u7684\u540E\u7F00\u6570\u7EC4\n */\ntemplate <typename Container> Container\
+    \ v \u7684\u540E\u7F00\u6570\u7EC4\n */\ntemplate <typename Container>\nContainer\
     \ bwt(const Container &v, const std::vector<int> &SA) {\n  int n = v.size();\n\
     \  Container res;\n  res.resize(n + 1);\n  for (int i = 0; i < n; ++i) res[i +\
     \ 1] = SA[i] != 0 ? v[SA[i] - 1] : 0;\n  res[0] = v.back();\n  return res;\n}\n\
     \n/**\n * @brief \u83B7\u53D6 BWT \u6570\u7EC4\uFF08\u5B57\u7B26\u4E32\uFF09\n\
     \ * @param v \u5B57\u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\u8BC1 0 \u662F\
-    \u672A\u51FA\u73B0\u7684\u6700\u5C0F\u503C\n */\ntemplate <typename Container>\
-    \ Container bwt(const Container &v) { return bwt(v, get_sa(v)); }\n\n/**\n * @brief\
-    \ \u4ECE BWT \u6570\u7EC4\u8BA1\u7B97\u539F\u6570\u7EC4\uFF08\u5B57\u7B26\u4E32\
-    \uFF09\n * @ref M. Burrows and D. J. Wheeler. A block-sorting lossless data compression\
-    \ algorithm.\n *      Technical Report 124, Digital Equipment Corporation, Palo\
-    \ Alto, California, 1994.\n * @param v BWT \u6570\u7EC4\uFF0C\u5176\u4E2D\u5FC5\
-    \u6709\u4E00\u4E2A 0\n */\ntemplate <typename Container> Container ibwt(const\
+    \u672A\u51FA\u73B0\u7684\u6700\u5C0F\u503C\n */\ntemplate <typename Container>\n\
+    Container bwt(const Container &v) {\n  return bwt(v, get_sa(v));\n}\n\n/**\n *\
+    \ @brief \u4ECE BWT \u6570\u7EC4\u8BA1\u7B97\u539F\u6570\u7EC4\uFF08\u5B57\u7B26\
+    \u4E32\uFF09\n * @ref M. Burrows and D. J. Wheeler. A block-sorting lossless data\
+    \ compression algorithm.\n *      Technical Report 124, Digital Equipment Corporation,\
+    \ Palo Alto, California, 1994.\n * @param v BWT \u6570\u7EC4\uFF0C\u5176\u4E2D\
+    \u5FC5\u6709\u4E00\u4E2A 0\n */\ntemplate <typename Container>\nContainer ibwt(const\
     \ Container &v) {\n  int n = v.size();\n  int K = *std::max_element(v.begin(),\
     \ v.end()) + 1;\n  Container res;\n  res.resize(n); // \u4E3A\u4E86 std::string\
     \ \u7279\u6B8A\u5904\u7406\n  // C[i] \u4E3A\u5B57\u7B26 i \u51FA\u73B0\u7684\u6B21\
@@ -108,7 +108,7 @@ data:
     \ = sum - C[i];\n  for (int i = I, j = n - 1; j >= 0; --j) res[j] = v[i], i =\
     \ P[i] + C[v[i]];\n  res.pop_back();\n  return res;\n}\n\n/**\n * @brief \u4ECE\
     \ BWT \u6570\u7EC4\u8BA1\u7B97\u539F\u6570\u7EC4\uFF08\u5B57\u7B26\u4E32\uFF09\
-    \u7684\u7279\u5316\n */\ntemplate <> std::string ibwt<std::string>(const std::string\
+    \u7684\u7279\u5316\n */\ntemplate <>\nstd::string ibwt<std::string>(const std::string\
     \ &v) {\n  int n = v.size();\n  std::string res;\n  res.resize(n);\n  // C[i]\
     \ \u4E3A\u5B57\u7B26 i \u51FA\u73B0\u7684\u6B21\u6570\uFF0C P[i] \u4E3A v[i] \u5728\
     \u524D\u7F00\u4E2D\u51FA\u73B0\u7684\u6B21\u6570\uFF08\u4E0D\u5305\u542B\uFF09\
@@ -125,19 +125,19 @@ data:
     namespace lib {\n\n/**\n * @brief \u83B7\u53D6 BWT \u6570\u7EC4\uFF08\u5B57\u7B26\
     \u4E32\uFF09\n * @param v \u5B57\u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\
     \u8BC1 0 \u662F\u672A\u51FA\u73B0\u7684\u6700\u5C0F\u503C\n * @param SA v \u7684\
-    \u540E\u7F00\u6570\u7EC4\n */\ntemplate <typename Container> Container bwt(const\
+    \u540E\u7F00\u6570\u7EC4\n */\ntemplate <typename Container>\nContainer bwt(const\
     \ Container &v, const std::vector<int> &SA) {\n  int n = v.size();\n  Container\
     \ res;\n  res.resize(n + 1);\n  for (int i = 0; i < n; ++i) res[i + 1] = SA[i]\
     \ != 0 ? v[SA[i] - 1] : 0;\n  res[0] = v.back();\n  return res;\n}\n\n/**\n *\
     \ @brief \u83B7\u53D6 BWT \u6570\u7EC4\uFF08\u5B57\u7B26\u4E32\uFF09\n * @param\
     \ v \u5B57\u7B26\u4E32\u6570\u7EC4\uFF0C\u5FC5\u987B\u4FDD\u8BC1 0 \u662F\u672A\
-    \u51FA\u73B0\u7684\u6700\u5C0F\u503C\n */\ntemplate <typename Container> Container\
-    \ bwt(const Container &v) { return bwt(v, get_sa(v)); }\n\n/**\n * @brief \u4ECE\
-    \ BWT \u6570\u7EC4\u8BA1\u7B97\u539F\u6570\u7EC4\uFF08\u5B57\u7B26\u4E32\uFF09\
-    \n * @ref M. Burrows and D. J. Wheeler. A block-sorting lossless data compression\
+    \u51FA\u73B0\u7684\u6700\u5C0F\u503C\n */\ntemplate <typename Container>\nContainer\
+    \ bwt(const Container &v) {\n  return bwt(v, get_sa(v));\n}\n\n/**\n * @brief\
+    \ \u4ECE BWT \u6570\u7EC4\u8BA1\u7B97\u539F\u6570\u7EC4\uFF08\u5B57\u7B26\u4E32\
+    \uFF09\n * @ref M. Burrows and D. J. Wheeler. A block-sorting lossless data compression\
     \ algorithm.\n *      Technical Report 124, Digital Equipment Corporation, Palo\
     \ Alto, California, 1994.\n * @param v BWT \u6570\u7EC4\uFF0C\u5176\u4E2D\u5FC5\
-    \u6709\u4E00\u4E2A 0\n */\ntemplate <typename Container> Container ibwt(const\
+    \u6709\u4E00\u4E2A 0\n */\ntemplate <typename Container>\nContainer ibwt(const\
     \ Container &v) {\n  int n = v.size();\n  int K = *std::max_element(v.begin(),\
     \ v.end()) + 1;\n  Container res;\n  res.resize(n); // \u4E3A\u4E86 std::string\
     \ \u7279\u6B8A\u5904\u7406\n  // C[i] \u4E3A\u5B57\u7B26 i \u51FA\u73B0\u7684\u6B21\
@@ -149,7 +149,7 @@ data:
     \ = sum - C[i];\n  for (int i = I, j = n - 1; j >= 0; --j) res[j] = v[i], i =\
     \ P[i] + C[v[i]];\n  res.pop_back();\n  return res;\n}\n\n/**\n * @brief \u4ECE\
     \ BWT \u6570\u7EC4\u8BA1\u7B97\u539F\u6570\u7EC4\uFF08\u5B57\u7B26\u4E32\uFF09\
-    \u7684\u7279\u5316\n */\ntemplate <> std::string ibwt<std::string>(const std::string\
+    \u7684\u7279\u5316\n */\ntemplate <>\nstd::string ibwt<std::string>(const std::string\
     \ &v) {\n  int n = v.size();\n  std::string res;\n  res.resize(n);\n  // C[i]\
     \ \u4E3A\u5B57\u7B26 i \u51FA\u73B0\u7684\u6B21\u6570\uFF0C P[i] \u4E3A v[i] \u5728\
     \u524D\u7F00\u4E2D\u51FA\u73B0\u7684\u6B21\u6570\uFF08\u4E0D\u5305\u542B\uFF09\
@@ -164,7 +164,7 @@ data:
   isVerificationFile: false
   path: string/bwt.hpp
   requiredBy: []
-  timestamp: '2021-07-03 02:24:28+08:00'
+  timestamp: '2021-07-15 14:25:20+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: string/bwt.hpp

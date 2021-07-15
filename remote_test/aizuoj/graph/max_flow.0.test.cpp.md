@@ -19,24 +19,24 @@ data:
     \n\n#include <iostream>\n\n#line 1 \"graph/maximum_flow_Dinic.hpp\"\n\n\n\n/**\n\
     \ * @brief maximum flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5\n *\n */\n\
     \n#include <limits>\n#include <queue>\n#include <vector>\n\nnamespace lib {\n\n\
-    template <typename CapacityType> class MaximumFlowGraph {\npublic:\n  struct InputEdge\
-    \ {\n    int from, to;\n    CapacityType cap;\n    InputEdge(int from, int to,\
-    \ CapacityType cap) : from(from), to(to), cap(cap) {}\n    ~InputEdge() = default;\n\
-    \  };\n\n  struct Edge {\n    int to;\n    CapacityType cap;\n  };\n\n  MaximumFlowGraph(int\
-    \ n) : n_(n) {}\n  ~MaximumFlowGraph() = default;\n\n  void add_directed_edge(int\
-    \ from, int to, CapacityType cap) {\n    input_edge_.emplace_back(from, to, cap);\n\
-    \  }\n\n  CapacityType\n  get_max_flow(int s, int t,\n               const CapacityType\
-    \ CAPACITY_LIM = std::numeric_limits<CapacityType>::max()) {\n    convert_to_forwardstar();\n\
-    \    CapacityType max_flow = 0;\n    while (create_layer_graph(s, t)) {\n    \
-    \  cur_edge_ = idx_;\n      max_flow += augment(s, CAPACITY_LIM, t);\n    }\n\
-    \    return max_flow;\n  }\n\nprivate:\n  void convert_to_forwardstar() {\n  \
-    \  int m = input_edge_.size() << 1;\n    edge_.resize(m);\n    idx_.assign(n_\
+    template <typename CapacityType>\nclass MaximumFlowGraph {\npublic:\n  struct\
+    \ InputEdge {\n    int from, to;\n    CapacityType cap;\n    InputEdge(int from,\
+    \ int to, CapacityType cap) : from(from), to(to), cap(cap) {}\n    ~InputEdge()\
+    \ = default;\n  };\n\n  struct Edge {\n    int to;\n    CapacityType cap;\n  };\n\
+    \n  MaximumFlowGraph(int n) : n_(n) {}\n  ~MaximumFlowGraph() = default;\n\n \
+    \ void add_directed_edge(int from, int to, CapacityType cap) {\n    input_edge_.emplace_back(from,\
+    \ to, cap);\n  }\n\n  CapacityType\n  get_max_flow(int s, int t,\n           \
+    \    const CapacityType CAPACITY_LIM = std::numeric_limits<CapacityType>::max())\
+    \ {\n    convert_to_forwardstar();\n    CapacityType max_flow = 0;\n    while\
+    \ (create_layer_graph(s, t)) {\n      cur_edge_ = idx_;\n      max_flow += augment(s,\
+    \ CAPACITY_LIM, t);\n    }\n    return max_flow;\n  }\n\nprivate:\n  void convert_to_forwardstar()\
+    \ {\n    int m = input_edge_.size() << 1;\n    edge_.resize(m);\n    idx_.assign(n_\
     \ + 1, 0);\n    rev_idx_.resize(m);\n    for (auto &i : input_edge_) ++idx_[i.from],\
     \ ++idx_[i.to];\n    for (int i = 0, sum = 0; i != n_ + 1; ++i) sum += idx_[i],\
     \ idx_[i] = sum - idx_[i];\n    for (auto &i : input_edge_) {\n      edge_[idx_[i.from]].to\
-    \ = i.to;\n      edge_[idx_[i.from]].cap = i.cap;\n      edge_[idx_[i.to]].to\
-    \ = i.from;\n      edge_[idx_[i.to]].cap = 0;\n      rev_idx_[idx_[i.from]] =\
-    \ idx_[i.to];\n      rev_idx_[idx_[i.to]] = idx_[i.from];\n      ++idx_[i.from];\n\
+    \  = i.to;\n      edge_[idx_[i.from]].cap = i.cap;\n      edge_[idx_[i.to]].to\
+    \    = i.from;\n      edge_[idx_[i.to]].cap   = 0;\n      rev_idx_[idx_[i.from]]\
+    \  = idx_[i.to];\n      rev_idx_[idx_[i.to]]    = idx_[i.from];\n      ++idx_[i.from];\n\
     \      ++idx_[i.to];\n    }\n    for (int i = n_ - 1; i > 0; --i) idx_[i] = idx_[i\
     \ - 1];\n    idx_[0] = 0;\n  }\n\n  bool create_layer_graph(int s, int t) {\n\
     \    level_.assign(n_, -1);\n    std::queue<int> q;\n    q.push(s);\n    level_[s]\
@@ -75,7 +75,7 @@ data:
   isVerificationFile: true
   path: remote_test/aizuoj/graph/max_flow.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-01 12:57:32+08:00'
+  timestamp: '2021-07-15 14:25:20+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/aizuoj/graph/max_flow.0.test.cpp

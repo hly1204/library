@@ -15,22 +15,22 @@ data:
   bundledCode: "#line 1 \"modint/long_Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief\
     \ long Montgomery modint / \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n\
     \ * @docs docs/modint/long_Montgomery_modint.md\n */\n\n#include <cstdint>\n#include\
-    \ <iostream>\n#include <tuple>\n#include <type_traits>\n\n#ifdef _MSC_VER\n#include\
+    \ <iostream>\n#include <tuple>\n#include <type_traits>\n\n#ifdef _MSC_VER\n  #include\
     \ <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief \u957F\u6574\u578B Montgomery\
     \ \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    template <std::uint64_t mod> class LongMontgomeryModInt {\npublic:\n  using u32\
+    template <std::uint64_t mod>\nclass LongMontgomeryModInt {\npublic:\n  using u32\
     \ = std::uint32_t;\n  using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n\
     \  using m64 = LongMontgomeryModInt;\n\n  using value_type = u64;\n\n  static\
     \ constexpr u64 get_mod() { return mod; }\n\n  static constexpr u64 get_primitive_root_prime()\
-    \ {\n    u64 tmp[64] = {};\n    int cnt = 0;\n    const u64 phi = mod - 1;\n \
-    \   u64 m = phi;\n    for (u64 i = 2; i * i <= m; ++i) {\n      if (m % i == 0)\
-    \ {\n        tmp[cnt++] = i;\n        do {\n          m /= i;\n        } while\
-    \ (m % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m64\
-    \ res = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt &&\
-    \ f; ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n  \
-    \  }\n  }\n\n  constexpr LongMontgomeryModInt() = default;\n  ~LongMontgomeryModInt()\
-    \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    \ {\n    u64 tmp[64]   = {};\n    int cnt       = 0;\n    const u64 phi = mod\
+    \ - 1;\n    u64 m         = phi;\n    for (u64 i = 2; i * i <= m; ++i) {\n   \
+    \   if (m % i == 0) {\n        tmp[cnt++] = i;\n        do { m /= i; } while (m\
+    \ % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m64 res\
+    \ = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt && f;\
+    \ ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n    }\n\
+    \  }\n\n  constexpr LongMontgomeryModInt() = default;\n  ~LongMontgomeryModInt()\
+    \          = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  constexpr LongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
     \ r2))) {}\n\n  constexpr LongMontgomeryModInt(const m64 &) = default;\n\n  constexpr\
     \ u64 get() const { return reduce({0, v_}); }\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
@@ -77,31 +77,31 @@ data:
     \  }\n\n  static constexpr u64 reduce(const std::pair<u64, u64> &x) {\n    u64\
     \ res = x.first - mulh(x.second * r, mod);\n    return res + (mod & -(res >> 63));\n\
     \  }\n\n  static constexpr u64 norm(i64 x) { return x + (mod & -(x < 0)); }\n\n\
-    \  u64 v_;\n\n  static constexpr u64 r = get_r();\n  static constexpr u64 r2 =\
-    \ get_r2();\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(r\
+    \  u64 v_;\n\n  static constexpr u64 r  = get_r();\n  static constexpr u64 r2\
+    \ = get_r2();\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(r\
     \ * mod == 1, \"???\\n\");\n  static_assert((mod & (1ULL << 63)) == 0, \"mod >=\
     \ (1ULL << 63)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\ntemplate\
-    \ <std::uint64_t mod> using LongMontModInt = LongMontgomeryModInt<mod>;\n\n} //\
-    \ namespace lib\n\n\n"
+    \ <std::uint64_t mod>\nusing LongMontModInt = LongMontgomeryModInt<mod>;\n\n}\
+    \ // namespace lib\n\n\n"
   code: "#ifndef LONG_MONTGOMERY_MODINT_HEADER_HPP\n#define LONG_MONTGOMERY_MODINT_HEADER_HPP\n\
     \n/**\n * @brief long Montgomery modint / \u957F\u6574\u578B Montgomery \u53D6\
     \u6A21\u7C7B\n * @docs docs/modint/long_Montgomery_modint.md\n */\n\n#include\
     \ <cstdint>\n#include <iostream>\n#include <tuple>\n#include <type_traits>\n\n\
-    #ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief\
+    #ifdef _MSC_VER\n  #include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief\
     \ \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    template <std::uint64_t mod> class LongMontgomeryModInt {\npublic:\n  using u32\
+    template <std::uint64_t mod>\nclass LongMontgomeryModInt {\npublic:\n  using u32\
     \ = std::uint32_t;\n  using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n\
     \  using m64 = LongMontgomeryModInt;\n\n  using value_type = u64;\n\n  static\
     \ constexpr u64 get_mod() { return mod; }\n\n  static constexpr u64 get_primitive_root_prime()\
-    \ {\n    u64 tmp[64] = {};\n    int cnt = 0;\n    const u64 phi = mod - 1;\n \
-    \   u64 m = phi;\n    for (u64 i = 2; i * i <= m; ++i) {\n      if (m % i == 0)\
-    \ {\n        tmp[cnt++] = i;\n        do {\n          m /= i;\n        } while\
-    \ (m % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m64\
-    \ res = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt &&\
-    \ f; ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n  \
-    \  }\n  }\n\n  constexpr LongMontgomeryModInt() = default;\n  ~LongMontgomeryModInt()\
-    \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    \ {\n    u64 tmp[64]   = {};\n    int cnt       = 0;\n    const u64 phi = mod\
+    \ - 1;\n    u64 m         = phi;\n    for (u64 i = 2; i * i <= m; ++i) {\n   \
+    \   if (m % i == 0) {\n        tmp[cnt++] = i;\n        do { m /= i; } while (m\
+    \ % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m64 res\
+    \ = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt && f;\
+    \ ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n    }\n\
+    \  }\n\n  constexpr LongMontgomeryModInt() = default;\n  ~LongMontgomeryModInt()\
+    \          = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  constexpr LongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
     \ r2))) {}\n\n  constexpr LongMontgomeryModInt(const m64 &) = default;\n\n  constexpr\
     \ u64 get() const { return reduce({0, v_}); }\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
@@ -148,17 +148,17 @@ data:
     \  }\n\n  static constexpr u64 reduce(const std::pair<u64, u64> &x) {\n    u64\
     \ res = x.first - mulh(x.second * r, mod);\n    return res + (mod & -(res >> 63));\n\
     \  }\n\n  static constexpr u64 norm(i64 x) { return x + (mod & -(x < 0)); }\n\n\
-    \  u64 v_;\n\n  static constexpr u64 r = get_r();\n  static constexpr u64 r2 =\
-    \ get_r2();\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(r\
+    \  u64 v_;\n\n  static constexpr u64 r  = get_r();\n  static constexpr u64 r2\
+    \ = get_r2();\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(r\
     \ * mod == 1, \"???\\n\");\n  static_assert((mod & (1ULL << 63)) == 0, \"mod >=\
     \ (1ULL << 63)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\ntemplate\
-    \ <std::uint64_t mod> using LongMontModInt = LongMontgomeryModInt<mod>;\n\n} //\
-    \ namespace lib\n\n#endif"
+    \ <std::uint64_t mod>\nusing LongMontModInt = LongMontgomeryModInt<mod>;\n\n}\
+    \ // namespace lib\n\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: modint/long_Montgomery_modint.hpp
   requiredBy: []
-  timestamp: '2021-07-08 03:55:34+08:00'
+  timestamp: '2021-07-15 14:25:20+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: modint/long_Montgomery_modint.hpp

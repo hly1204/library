@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -27,21 +27,21 @@ data:
     \ */\n\n#include <algorithm>\n#include <cassert>\n#include <cstdint>\n#include\
     \ <vector>\n\n#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits\
     \ / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename\
-    \ mod_t> struct modint_traits {\n  using type = typename mod_t::value_type;\n\
+    \ mod_t>\nstruct modint_traits {\n  using type = typename mod_t::value_type;\n\
     \  static constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr\
     \ type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
     \ }\n};\n\n} // namespace lib\n\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
     \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\
-    \u6A21\u6570\uFF01\uFF01\uFF01\n */\ntemplate <typename mod_t> class NTT {\npublic:\n\
-    \  NTT() = delete;\n\n  static void set_root(int len) {\n    static int lim =\
-    \ 0;\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n\
+    \u6A21\u6570\uFF01\uFF01\uFF01\n */\ntemplate <typename mod_t>\nclass NTT {\n\
+    public:\n  NTT() = delete;\n\n  static void set_root(int len) {\n    static int\
+    \ lim = 0;\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n\
     \    if (lim == 0) {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n\
     \      rt[0] = irt[0] = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod()\
     \ >> 21), ig_t = g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n \
     \     for (int i = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n   \
     \     rt[1 << i] = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n\
     \    for (; (lim << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n\
-    \      for (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i\
+    \      for (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i]  = rt[i\
     \ - lim] * g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static\
     \ void dft(int n, mod_t *x) {\n    for (int j = 0, l = n >> 1; j != l; ++j) {\n\
     \      mod_t u = x[j], v = x[j + l];\n      x[j] = u + v, x[j + l] = u - v;\n\
@@ -75,17 +75,17 @@ data:
     \u4E8C\u8FDB\u5236\u7FFB\u8F6C\u540E\u7684 DFT \u5E8F\u5217\uFF0C\u5373 x(1),\
     \ x(-1) \u7B49\uFF0C\n *        \u5BF9\u4E8E\u4E0B\u6807 i \u548C i^1 \u5FC5\u7136\
     \u662F\u4E24\u4E2A\u4E92\u4E3A\u76F8\u53CD\u6570\u7684\u70B9\u503C\n *\n * @tparam\
-    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t> void dft(int\
+    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t>\nvoid dft(int\
     \ n, mod_t *x) {\n  NTT<mod_t>::set_root(n);\n  NTT<mod_t>::dft(n, x);\n}\n\n\
     /**\n * @brief \u63A5\u6536\u4E8C\u8FDB\u5236\u7FFB\u8F6C\u540E\u7684 DFT \u5E8F\
     \u5217\uFF0C\u8FD4\u56DE\u591A\u9879\u5F0F\u5E8F\u5217 mod (x^n - 1)\n *\n * @tparam\
-    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t> void idft(int\
+    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t>\nvoid idft(int\
     \ n, mod_t *x) {\n  NTT<mod_t>::set_root(n);\n  NTT<mod_t>::idft(n, x);\n}\n\n\
-    template <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
-    \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
-    \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
-    }\n\n} // namespace lib\n\n\n#line 12 \"math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp\"\
-    \n\nnamespace lib {\n\ntemplate <typename mod_t> class LinearlyRecurrentSequence\
+    template <typename mod_t>\nvoid dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
+    \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t>\nvoid\
+    \ idft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(),\
+    \ x.data());\n}\n\n} // namespace lib\n\n\n#line 12 \"math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp\"\
+    \n\nnamespace lib {\n\ntemplate <typename mod_t>\nclass LinearlyRecurrentSequence\
     \ {\npublic:\n  /**\n   * @brief \u7EBF\u6027\u9012\u63A8\u5E8F\u5217\n   * @param\
     \ rec_seq \u9012\u63A8\u5F0F rec_seq = {c_0, c_1, c_2, ..., c_{d-1}}\n   * @param\
     \ init_val \u521D\u503C init_val = {u_0, u_1, u_2, ..., u_{d-1}}\n   * @note d\
@@ -124,8 +124,8 @@ data:
   code: "#ifndef LINEARLY_RECURRENT_SEQUENCE_BOSTAN_MORI_HEADER_HPP\n#define LINEARLY_RECURRENT_SEQUENCE_BOSTAN_MORI_HEADER_HPP\n\
     \n/**\n * @brief linearly recurrent sequence Bostan-Mori / \u5E38\u7CFB\u6570\u7EBF\
     \u6027\u9012\u63A8\u5E8F\u5217 Bostan-Mori \u7B97\u6CD5\n *\n */\n\n#include <numeric>\n\
-    \n#include \"radix_2_NTT.hpp\"\n\nnamespace lib {\n\ntemplate <typename mod_t>\
-    \ class LinearlyRecurrentSequence {\npublic:\n  /**\n   * @brief \u7EBF\u6027\u9012\
+    \n#include \"radix_2_NTT.hpp\"\n\nnamespace lib {\n\ntemplate <typename mod_t>\n\
+    class LinearlyRecurrentSequence {\npublic:\n  /**\n   * @brief \u7EBF\u6027\u9012\
     \u63A8\u5E8F\u5217\n   * @param rec_seq \u9012\u63A8\u5F0F rec_seq = {c_0, c_1,\
     \ c_2, ..., c_{d-1}}\n   * @param init_val \u521D\u503C init_val = {u_0, u_1,\
     \ u_2, ..., u_{d-1}}\n   * @note d \u9636\u7684\u9012\u63A8 u_d = c_0u_0 + c_1u_1\
@@ -167,7 +167,7 @@ data:
   isVerificationFile: false
   path: math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
   requiredBy: []
-  timestamp: '2021-07-13 17:52:29+08:00'
+  timestamp: '2021-07-15 14:25:20+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp

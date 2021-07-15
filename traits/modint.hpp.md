@@ -11,7 +11,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/convolution.hpp
     title: "convolution / \u5377\u79EF"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/formal_power_series.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
@@ -19,10 +19,10 @@ data:
     path: math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
     title: "linearly recurrent sequence Bostan-Mori / \u5E38\u7CFB\u6570\u7EBF\u6027\
       \u9012\u63A8\u5E8F\u5217 Bostan-Mori \u7B97\u6CD5"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/polynomial.hpp
     title: "polynomial / \u591A\u9879\u5F0F"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
   _extendedVerifiedWith:
@@ -47,39 +47,39 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
     title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
     title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
     links: []
   bundledCode: "#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits\
     \ / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename\
-    \ mod_t> struct modint_traits {\n  using type = typename mod_t::value_type;\n\
+    \ mod_t>\nstruct modint_traits {\n  using type = typename mod_t::value_type;\n\
     \  static constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr\
     \ type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
     \ }\n};\n\n} // namespace lib\n\n\n"
   code: "#ifndef MODINT_TRAITS_HEADER_HPP\n#define MODINT_TRAITS_HEADER_HPP\n\n/**\n\
     \ * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace\
-    \ lib {\n\ntemplate <typename mod_t> struct modint_traits {\n  using type = typename\
+    \ lib {\n\ntemplate <typename mod_t>\nstruct modint_traits {\n  using type = typename\
     \ mod_t::value_type;\n  static constexpr type get_mod() { return mod_t::get_mod();\
     \ }\n  static constexpr type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
     \ }\n};\n\n} // namespace lib\n\n#endif"
@@ -94,8 +94,8 @@ data:
   - math/formal_power_series/polynomial.hpp
   - math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
   - math/formal_power_series/formal_power_series.hpp
-  timestamp: '2021-06-07 16:48:59+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-07-15 14:25:20+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp

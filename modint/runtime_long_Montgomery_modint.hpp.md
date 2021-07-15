@@ -6,19 +6,19 @@ data:
     path: math/basic/integer_factorization_Pollard_rho.hpp
     title: "integer factorization Pollard's rho / \u6574\u6570\u5206\u89E3 Pollard\
       \ \u7684 rho \u7B97\u6CD5"
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/modulo/sqrt_mod.hpp
     title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/factorize.0.test.cpp
     title: remote_test/yosupo/math/factorize.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
     title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\
       \u578B Montgomery \u53D6\u6A21\u7C7B"
@@ -28,16 +28,16 @@ data:
     \ * @brief runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
     \ Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#include <cassert>\n#include <cstdint>\n\
     #include <iostream>\n#include <tuple>\n#include <type_traits>\n\n#ifdef _MSC_VER\n\
-    #include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief \u8FD0\u884C\u65F6\
-    \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
+    \  #include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief \u8FD0\u884C\
+    \u65F6\u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @note \u7EA6\u5B9A\u4E0D\u4F7F\u7528\u6A21\u677F\u4E2D int\
-    \ \u4E3A\u8D1F\u6570\u7684\u5BF9\u8C61\n */\ntemplate <int> class RuntimeLongMontgomeryModInt\
+    \ \u4E3A\u8D1F\u6570\u7684\u5BF9\u8C61\n */\ntemplate <int>\nclass RuntimeLongMontgomeryModInt\
     \ {\npublic:\n  using u32 = std::uint32_t;\n  using i64 = std::int64_t;\n  using\
     \ u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\n  using\
     \ value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static bool\
     \ set_mod(u64 m) {\n    if ((m & 1) == 0 || m == 1 || (m & (1ULL << 63)) != 0)\
-    \ return false;\n    mod = m;\n    r = get_r();\n    r2 = get_r2();\n    return\
-    \ true;\n  }\n\n  RuntimeLongMontgomeryModInt() = default;\n  ~RuntimeLongMontgomeryModInt()\
+    \ return false;\n    mod = m;\n    r   = get_r();\n    r2  = get_r2();\n    return\
+    \ true;\n  }\n\n  RuntimeLongMontgomeryModInt()  = default;\n  ~RuntimeLongMontgomeryModInt()\
     \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  RuntimeLongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
     \ r2))) {}\n\n  RuntimeLongMontgomeryModInt(const m64 &) = default;\n\n  u64 get()\
@@ -82,24 +82,24 @@ data:
     \ mod;\n    return iv;\n  }\n\n  static u64 reduce(const std::pair<u64, u64> &x)\
     \ {\n    u64 res = x.first - mulh(x.second * r, mod);\n    return res + (mod &\
     \ -(res >> 63));\n  }\n\n  static u64 norm(i64 x) { return x + (mod & -(x < 0));\
-    \ }\n\n  u64 v_;\n\n  static inline u64 mod, r, r2;\n};\n\ntemplate <int id> using\
-    \ RuntimeLongMontModInt = RuntimeLongMontgomeryModInt<id>;\n\n} // namespace lib\n\
-    \n\n"
+    \ }\n\n  u64 v_;\n\n  static inline u64 mod, r, r2;\n};\n\ntemplate <int id>\n\
+    using RuntimeLongMontModInt = RuntimeLongMontgomeryModInt<id>;\n\n} // namespace\
+    \ lib\n\n\n"
   code: "#ifndef RUNTIME_LONG_MONTGOMERY_MODINT_HEADER_HPP\n#define RUNTIME_LONG_MONTGOMERY_MODINT_HEADER_HPP\n\
     \n/**\n * @brief runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\
     \u578B Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#include <cassert>\n#include\
     \ <cstdint>\n#include <iostream>\n#include <tuple>\n#include <type_traits>\n\n\
-    #ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief\
+    #ifdef _MSC_VER\n  #include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief\
     \ \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n * @see\
     \ https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n * @author\
     \ Nyaan\n * @note \u7EA6\u5B9A\u4E0D\u4F7F\u7528\u6A21\u677F\u4E2D int \u4E3A\u8D1F\
-    \u6570\u7684\u5BF9\u8C61\n */\ntemplate <int> class RuntimeLongMontgomeryModInt\
+    \u6570\u7684\u5BF9\u8C61\n */\ntemplate <int>\nclass RuntimeLongMontgomeryModInt\
     \ {\npublic:\n  using u32 = std::uint32_t;\n  using i64 = std::int64_t;\n  using\
     \ u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\n  using\
     \ value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static bool\
     \ set_mod(u64 m) {\n    if ((m & 1) == 0 || m == 1 || (m & (1ULL << 63)) != 0)\
-    \ return false;\n    mod = m;\n    r = get_r();\n    r2 = get_r2();\n    return\
-    \ true;\n  }\n\n  RuntimeLongMontgomeryModInt() = default;\n  ~RuntimeLongMontgomeryModInt()\
+    \ return false;\n    mod = m;\n    r   = get_r();\n    r2  = get_r2();\n    return\
+    \ true;\n  }\n\n  RuntimeLongMontgomeryModInt()  = default;\n  ~RuntimeLongMontgomeryModInt()\
     \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  RuntimeLongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
     \ r2))) {}\n\n  RuntimeLongMontgomeryModInt(const m64 &) = default;\n\n  u64 get()\
@@ -144,17 +144,17 @@ data:
     \ mod;\n    return iv;\n  }\n\n  static u64 reduce(const std::pair<u64, u64> &x)\
     \ {\n    u64 res = x.first - mulh(x.second * r, mod);\n    return res + (mod &\
     \ -(res >> 63));\n  }\n\n  static u64 norm(i64 x) { return x + (mod & -(x < 0));\
-    \ }\n\n  u64 v_;\n\n  static inline u64 mod, r, r2;\n};\n\ntemplate <int id> using\
-    \ RuntimeLongMontModInt = RuntimeLongMontgomeryModInt<id>;\n\n} // namespace lib\n\
-    \n#endif"
+    \ }\n\n  u64 v_;\n\n  static inline u64 mod, r, r2;\n};\n\ntemplate <int id>\n\
+    using RuntimeLongMontModInt = RuntimeLongMontgomeryModInt<id>;\n\n} // namespace\
+    \ lib\n\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: modint/runtime_long_Montgomery_modint.hpp
   requiredBy:
   - math/basic/integer_factorization_Pollard_rho.hpp
   - math/modulo/sqrt_mod.hpp
-  timestamp: '2021-07-08 03:55:34+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-07-15 14:25:20+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp
   - remote_test/yosupo/math/factorize.0.test.cpp

@@ -1,27 +1,27 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/matrix/black_box_linear_algebra.hpp
     title: "black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570"
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/matrix/sparse_matrix_base.hpp
     title: "sparse matrix base / \u7A00\u758F\u77E9\u9635\u57FA\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/matrix/sparse_square_matrix.hpp
     title: "sparse square matrix / \u7A00\u758F\u65B9\u9635"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
     title: "find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\u77ED\u7EBF\u6027\
       \u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/sparse_matrix_det
@@ -45,7 +45,7 @@ data:
     \u57DF\n * @param s s_0, s_1, \u2026, s_{n-1}\n * @return std::vector<mod_t> C(x)=1+c_{1}*x+c_{2}*x^{2}+\
     \ \u2026 +c_{L}*x^{L}\n *         \u5BF9\u4E8E\u6240\u6709 i>=L \u548C s = s_0,\
     \ s_1, \u2026, s_{L-1}\n *         \u6EE1\u8DB3 s_{i} + c_{1}*s_{i-1} + c_{2}*s_{i-2}\
-    \ + \u2026 + c_{L}*s_{i-L} = 0\n */\ntemplate <typename mod_t> std::vector<mod_t>\
+    \ + \u2026 + c_{L}*s_{i-L} = 0\n */\ntemplate <typename mod_t>\nstd::vector<mod_t>\
     \ find_LFSR(const std::vector<mod_t> &s) {\n  const mod_t ZERO(0);\n  std::vector<mod_t>\
     \ C{mod_t(1)}, B(C);\n  mod_t b(1);\n  for (int N = 0, n = s.size(), L = 0, x\
     \ = 1; N < n; ++N) {\n    mod_t d(s[N]);\n    for (int i = 1; i <= L; ++i) d +=\
@@ -58,7 +58,7 @@ data:
     \ coef = d / b;\n      for (int i = x, ie = B.size() + x; i < ie; ++i) C[i] -=\
     \ coef * B[i - x];\n      L = N + 1 - L, B = std::move(T), b = d, x = 1;\n   \
     \ }\n  }\n  return C;\n}\n\n} // namespace lib\n\n\n#line 17 \"math/matrix/black_box_linear_algebra.hpp\"\
-    \n\nnamespace lib {\n\ntemplate <typename T, typename GenFunc> std::vector<T>\
+    \n\nnamespace lib {\n\ntemplate <typename T, typename GenFunc>\nstd::vector<T>\
     \ get_rand_vec(int s, GenFunc &gen) {\n  std::vector<T> res(s);\n  std::generate(res.begin(),\
     \ res.end(), gen);\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\
     \u7684\u6700\u5C0F\u591A\u9879\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\
@@ -100,16 +100,16 @@ data:
     \n\n\n/**\n * @brief sparse square matrix / \u7A00\u758F\u65B9\u9635\n *\n */\n\
     \n#line 1 \"math/matrix/sparse_matrix_base.hpp\"\n\n\n\n/**\n * @brief sparse\
     \ matrix base / \u7A00\u758F\u77E9\u9635\u57FA\u7C7B\n *\n */\n\n#line 12 \"math/matrix/sparse_matrix_base.hpp\"\
-    \n\nnamespace lib {\n\ntemplate <typename Type> class SparseMatrix {\npublic:\n\
+    \n\nnamespace lib {\n\ntemplate <typename Type>\nclass SparseMatrix {\npublic:\n\
     \  using value_type = Type;\n\n  SparseMatrix(int r, int c, const Type &v = Type())\
-    \ : row_(r), col_(c), default_val_(v), mat_(r) {}\n  virtual ~SparseMatrix() =\
-    \ default;\n  SparseMatrix(const SparseMatrix &) = default;\n\n  virtual SparseMatrix\
-    \ &operator=(const SparseMatrix &) = default;\n\n  int row() const { return row_;\
-    \ }\n  int col() const { return col_; }\n  int size() const { return row_ * col_;\
-    \ }\n  bool is_empty() const { return size() == 0; }\n\n  Type &at(int r, int\
-    \ c) {\n    for (auto &[pos, v] : mat_[r])\n      if (pos == c) return v;\n  \
-    \  return mat_[r].emplace_back(c, default_val_).second;\n  }\n  Type at(int r,\
-    \ int c) const {\n    for (auto &[pos, v] : mat_[r])\n      if (pos == c) return\
+    \ : row_(r), col_(c), default_val_(v), mat_(r) {}\n  virtual ~SparseMatrix() \
+    \           = default;\n  SparseMatrix(const SparseMatrix &) = default;\n\n  virtual\
+    \ SparseMatrix &operator=(const SparseMatrix &) = default;\n\n  int row() const\
+    \ { return row_; }\n  int col() const { return col_; }\n  int size() const { return\
+    \ row_ * col_; }\n  bool is_empty() const { return size() == 0; }\n\n  Type &at(int\
+    \ r, int c) {\n    for (auto &[pos, v] : mat_[r])\n      if (pos == c) return\
+    \ v;\n    return mat_[r].emplace_back(c, default_val_).second;\n  }\n  Type at(int\
+    \ r, int c) const {\n    for (auto &[pos, v] : mat_[r])\n      if (pos == c) return\
     \ v;\n    return default_val_;\n  }\n\n  virtual std::vector<Type> apply(const\
     \ std::vector<Type> &x) const {\n    int r = row(), c = col();\n    assert(c ==\
     \ x.size());\n    assert(default_val_ == Type(0)); // \u82E5\u9ED8\u8BA4\u503C\
@@ -118,7 +118,7 @@ data:
     \ v] : mat_[i]) res[i] += v * x[pos];\n    }\n    return res;\n  }\n\nprotected:\n\
     \  int row_, col_;\n  const Type default_val_;\n  std::vector<std::vector<std::pair<int,\
     \ Type>>> mat_;\n};\n\n} // namespace lib\n\n\n#line 10 \"math/matrix/sparse_square_matrix.hpp\"\
-    \n\nnamespace lib {\n\ntemplate <typename Type> class SparseSquareMatrix : public\
+    \n\nnamespace lib {\n\ntemplate <typename Type>\nclass SparseSquareMatrix : public\
     \ SparseMatrix<Type> {\npublic:\n  SparseSquareMatrix(int r, const Type &v = Type())\
     \ : SparseMatrix<Type>(r, r, v) {}\n  virtual ~SparseSquareMatrix() = default;\n\
     };\n\n} // namespace lib\n\n\n#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n\
@@ -127,18 +127,18 @@ data:
     \ <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\
     \n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
+    template <std::uint32_t mod>\nclass MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
     \  using m32 = MontgomeryModInt;\n\n  using value_type = u32;\n\n  static constexpr\
     \ u32 get_mod() { return mod; }\n\n  static constexpr u32 get_primitive_root_prime()\
-    \ {\n    u32 tmp[32] = {};\n    int cnt = 0;\n    const u32 phi = mod - 1;\n \
-    \   u32 m = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n      if (m % i == 0)\
-    \ {\n        tmp[cnt++] = i;\n        do {\n          m /= i;\n        } while\
-    \ (m % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32\
-    \ res = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt &&\
-    \ f; ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n  \
-    \  }\n  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()\
-    \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    \ {\n    u32 tmp[32]   = {};\n    int cnt       = 0;\n    const u32 phi = mod\
+    \ - 1;\n    u32 m         = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n   \
+    \   if (m % i == 0) {\n        tmp[cnt++] = i;\n        do { m /= i; } while (m\
+    \ % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32 res\
+    \ = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt && f;\
+    \ ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n    }\n\
+    \  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()     \
+    \     = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  constexpr MontgomeryModInt(T v) : v_(reduce(u64(v % i32(mod) +\
     \ i32(mod)) * r2)) {}\n\n  constexpr MontgomeryModInt(const m32 &) = default;\n\
     \n  constexpr u32 get() const { return norm(reduce(v_)); }\n\n  template <typename\
@@ -171,13 +171,13 @@ data:
     \ - mod * iv;\n    iv *= two - mod * iv;\n    return iv * (mod * iv - two);\n\
     \  }\n\n  static constexpr u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod)\
     \ >> 32; }\n  static constexpr u32 norm(u32 x) { return x - (mod & -((mod - 1\
-    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r = get_r();\n  static\
-    \ constexpr u32 r2 = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod << 1;\n\
-    \n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r *\
-    \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
-    \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
-    \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n\n#line 8 \"remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp\"\
+    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r    = get_r();\n  static\
+    \ constexpr u32 r2   = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod <<\
+    \ 1;\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r\
+    \ * mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >=\
+    \ (1 << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\
+    \u540D\ntemplate <std::uint32_t mod>\nusing MontModInt = MontgomeryModInt<mod>;\n\
+    \n} // namespace lib\n\n\n#line 8 \"remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n, k;\n  std::cin >> n >> k;\n  lib::SparseSquareMatrix<lib::MontModInt<998244353>>\
@@ -202,8 +202,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-10 23:50:40+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2021-07-15 14:25:20+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
 layout: document

@@ -1,22 +1,22 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: modint/runtime_Montgomery_modint.hpp
     title: "runtime Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\
       \u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/runtime_long_Montgomery_modint.hpp
     title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
       \ Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
     title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     _deprecated_at_docs: docs/math/modulo/sqrt_mod.md
     document_title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
@@ -30,15 +30,15 @@ data:
     modint/runtime_Montgomery_modint.hpp\"\n\nnamespace lib {\n\n/**\n * @brief \u8FD0\
     \u884C\u65F6 Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @note \u7EA6\u5B9A\u4E0D\u4F7F\u7528\u6A21\u677F\u4E2D int\
-    \ \u4E3A\u8D1F\u6570\u7684\u5BF9\u8C61\n */\ntemplate <int> class RuntimeMontgomeryModInt\
+    \ \u4E3A\u8D1F\u6570\u7684\u5BF9\u8C61\n */\ntemplate <int>\nclass RuntimeMontgomeryModInt\
     \ {\npublic:\n  using i32 = std::int32_t;\n  using u32 = std::uint32_t;\n  using\
     \ u64 = std::uint64_t;\n  using m32 = RuntimeMontgomeryModInt;\n\n  using value_type\
     \ = u32;\n\n  static u32 get_mod() { return mod; }\n\n  static bool set_mod(u32\
     \ m) {\n    if ((m & 1) == 0 || m == 1 || (m & (3U << 30)) != 0) return false;\n\
     \    mod = m, mod2 = mod << 1;\n    u32 two = 2, iv = mod * (two - mod * mod);\n\
-    \    iv *= two - mod * iv;\n    iv *= two - mod * iv;\n    r = iv * (mod * iv\
+    \    iv *= two - mod * iv;\n    iv *= two - mod * iv;\n    r  = iv * (mod * iv\
     \ - two);\n    r2 = -u64(mod) % mod;\n    return true;\n  }\n\n  RuntimeMontgomeryModInt()\
-    \ = default;\n  ~RuntimeMontgomeryModInt() = default;\n\n  template <typename\
+    \  = default;\n  ~RuntimeMontgomeryModInt() = default;\n\n  template <typename\
     \ T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  RuntimeMontgomeryModInt(T\
     \ v) : v_(reduce(u64(v % i32(mod) + i32(mod)) * r2)) {}\n\n  RuntimeMontgomeryModInt(const\
     \ m32 &) = default;\n\n  u32 get() const { return norm(reduce(v_)); }\n\n  template\
@@ -68,21 +68,21 @@ data:
     \ static u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod) >> 32; }\n  static\
     \ u32 norm(u32 x) { return x - (mod & -((mod - 1 - x) >> 31)); }\n\n  u32 v_;\n\
     \n  static inline u32 r, r2, mod, mod2;\n};\n\n// \u522B\u540D\ntemplate <int\
-    \ id> using RuntimeMontModInt = RuntimeMontgomeryModInt<id>;\n\n} // namespace\
+    \ id>\nusing RuntimeMontModInt = RuntimeMontgomeryModInt<id>;\n\n} // namespace\
     \ lib\n\n\n#line 1 \"modint/runtime_long_Montgomery_modint.hpp\"\n\n\n\n/**\n\
     \ * @brief runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
     \ Montgomery \u53D6\u6A21\u7C7B\n *\n */\n\n#line 14 \"modint/runtime_long_Montgomery_modint.hpp\"\
-    \n\n#ifdef _MSC_VER\n#include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n *\
-    \ @brief \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n\
+    \n\n#ifdef _MSC_VER\n  #include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n\
+    \ * @brief \u8FD0\u884C\u65F6\u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n\
     \ * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n *\
     \ @author Nyaan\n * @note \u7EA6\u5B9A\u4E0D\u4F7F\u7528\u6A21\u677F\u4E2D int\
-    \ \u4E3A\u8D1F\u6570\u7684\u5BF9\u8C61\n */\ntemplate <int> class RuntimeLongMontgomeryModInt\
+    \ \u4E3A\u8D1F\u6570\u7684\u5BF9\u8C61\n */\ntemplate <int>\nclass RuntimeLongMontgomeryModInt\
     \ {\npublic:\n  using u32 = std::uint32_t;\n  using i64 = std::int64_t;\n  using\
     \ u64 = std::uint64_t;\n  using m64 = RuntimeLongMontgomeryModInt;\n\n  using\
     \ value_type = u64;\n\n  static u64 get_mod() { return mod; }\n\n  static bool\
     \ set_mod(u64 m) {\n    if ((m & 1) == 0 || m == 1 || (m & (1ULL << 63)) != 0)\
-    \ return false;\n    mod = m;\n    r = get_r();\n    r2 = get_r2();\n    return\
-    \ true;\n  }\n\n  RuntimeLongMontgomeryModInt() = default;\n  ~RuntimeLongMontgomeryModInt()\
+    \ return false;\n    mod = m;\n    r   = get_r();\n    r2  = get_r2();\n    return\
+    \ true;\n  }\n\n  RuntimeLongMontgomeryModInt()  = default;\n  ~RuntimeLongMontgomeryModInt()\
     \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  RuntimeLongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
     \ r2))) {}\n\n  RuntimeLongMontgomeryModInt(const m64 &) = default;\n\n  u64 get()\
@@ -127,11 +127,11 @@ data:
     \ mod;\n    return iv;\n  }\n\n  static u64 reduce(const std::pair<u64, u64> &x)\
     \ {\n    u64 res = x.first - mulh(x.second * r, mod);\n    return res + (mod &\
     \ -(res >> 63));\n  }\n\n  static u64 norm(i64 x) { return x + (mod & -(x < 0));\
-    \ }\n\n  u64 v_;\n\n  static inline u64 mod, r, r2;\n};\n\ntemplate <int id> using\
-    \ RuntimeLongMontModInt = RuntimeLongMontgomeryModInt<id>;\n\n} // namespace lib\n\
-    \n\n#line 17 \"math/modulo/sqrt_mod.hpp\"\n\nnamespace lib {\n\nnamespace internal\
-    \ {\n\ntemplate <typename mod_t> std::vector<mod_t> sqrt_mod_prime(const mod_t\
-    \ x) {\n  const auto p = mod_t::get_mod();\n  const mod_t ONE(1), MINUS_ONE(-ONE),\
+    \ }\n\n  u64 v_;\n\n  static inline u64 mod, r, r2;\n};\n\ntemplate <int id>\n\
+    using RuntimeLongMontModInt = RuntimeLongMontgomeryModInt<id>;\n\n} // namespace\
+    \ lib\n\n\n#line 17 \"math/modulo/sqrt_mod.hpp\"\n\nnamespace lib {\n\nnamespace\
+    \ internal {\n\ntemplate <typename mod_t>\nstd::vector<mod_t> sqrt_mod_prime(const\
+    \ mod_t x) {\n  const auto p = mod_t::get_mod();\n  const mod_t ONE(1), MINUS_ONE(-ONE),\
     \ ZERO(0);\n  if (x == ZERO) return {ZERO};\n  if (x.pow(p >> 1) == MINUS_ONE)\
     \ return {};\n  if ((p & 3) == 3) {\n    mod_t res = x.pow((p + 1) >> 2);\n  \
     \  return {res, -res};\n  }\n\n  static std::random_device rd;\n  static std::mt19937\
@@ -140,7 +140,7 @@ data:
     \ w2 = t * t - four;\n    if (w2 == ZERO) { // \u8DB3\u591F\u5E78\u8FD0\u65F6\n\
     \      t /= 2;\n      return {t, -t};\n    }\n  } while (w2.pow(p >> 1) != MINUS_ONE);\n\
     \n  mod_t a(ONE), b(ZERO), c(ZERO), d(ONE);\n\n  for (auto e = (p + 1) >> 1; e\
-    \ != 0; e >>= 1) {\n    if (e & 1) {\n      mod_t bd = b * d;\n      std::tie(a,\
+    \ != 0; e >>= 1) {\n    if (e & 1) {\n      mod_t bd       = b * d;\n      std::tie(a,\
     \ b) = std::make_pair(a * c - bd * x, a * d + b * c + bd * t);\n    }\n    mod_t\
     \ dd = d * d, cd = c * d;\n    std::tie(c, d) = std::make_pair(c * c - dd * x,\
     \ cd + cd + dd * t);\n  }\n\n  return {a, -a};\n}\n\n} // namespace internal\n\
@@ -158,7 +158,7 @@ data:
     \ */\n\n#include <cassert>\n#include <random>\n#include <tuple>\n#include <type_traits>\n\
     #include <vector>\n\n#include \"../../modint/runtime_Montgomery_modint.hpp\"\n\
     #include \"../../modint/runtime_long_Montgomery_modint.hpp\"\n\nnamespace lib\
-    \ {\n\nnamespace internal {\n\ntemplate <typename mod_t> std::vector<mod_t> sqrt_mod_prime(const\
+    \ {\n\nnamespace internal {\n\ntemplate <typename mod_t>\nstd::vector<mod_t> sqrt_mod_prime(const\
     \ mod_t x) {\n  const auto p = mod_t::get_mod();\n  const mod_t ONE(1), MINUS_ONE(-ONE),\
     \ ZERO(0);\n  if (x == ZERO) return {ZERO};\n  if (x.pow(p >> 1) == MINUS_ONE)\
     \ return {};\n  if ((p & 3) == 3) {\n    mod_t res = x.pow((p + 1) >> 2);\n  \
@@ -168,7 +168,7 @@ data:
     \ w2 = t * t - four;\n    if (w2 == ZERO) { // \u8DB3\u591F\u5E78\u8FD0\u65F6\n\
     \      t /= 2;\n      return {t, -t};\n    }\n  } while (w2.pow(p >> 1) != MINUS_ONE);\n\
     \n  mod_t a(ONE), b(ZERO), c(ZERO), d(ONE);\n\n  for (auto e = (p + 1) >> 1; e\
-    \ != 0; e >>= 1) {\n    if (e & 1) {\n      mod_t bd = b * d;\n      std::tie(a,\
+    \ != 0; e >>= 1) {\n    if (e & 1) {\n      mod_t bd       = b * d;\n      std::tie(a,\
     \ b) = std::make_pair(a * c - bd * x, a * d + b * c + bd * t);\n    }\n    mod_t\
     \ dd = d * d, cd = c * d;\n    std::tie(c, d) = std::make_pair(c * c - dd * x,\
     \ cd + cd + dd * t);\n  }\n\n  return {a, -a};\n}\n\n} // namespace internal\n\
@@ -187,8 +187,8 @@ data:
   isVerificationFile: false
   path: math/modulo/sqrt_mod.hpp
   requiredBy: []
-  timestamp: '2021-07-08 03:55:34+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-07-15 14:25:20+08:00'
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp
 documentation_of: math/modulo/sqrt_mod.hpp

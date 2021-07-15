@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/inverse_matrix
@@ -27,10 +27,10 @@ data:
     \n\n\n\n/**\n * @brief matrix base / \u77E9\u9635\u57FA\u7C7B\n *\n */\n\n#include\
     \ <algorithm>\n#include <cassert>\n#line 12 \"math/matrix/matrix_base.hpp\"\n\
     #include <numeric>\n#include <vector>\n\nnamespace lib {\n\ntemplate <typename\
-    \ Type> class Matrix {\npublic:\n  using value_type = Type;\n\n  /**\n   * @brief\
+    \ Type>\nclass Matrix {\npublic:\n  using value_type = Type;\n\n  /**\n   * @brief\
     \ Matrix \u7C7B\n   *\n   * @param r \u884C\n   * @param c \u5217\n   * @param\
     \ v \u521D\u503C\n   */\n  Matrix(int r, int c, const Type &v = Type()) : row_(r),\
-    \ col_(c), mat_(row_ * col_, v) {}\n  virtual ~Matrix() = default;\n  Matrix(const\
+    \ col_(c), mat_(row_ * col_, v) {}\n  virtual ~Matrix()      = default;\n  Matrix(const\
     \ Matrix &) = default;\n\n  virtual Matrix &operator=(const Matrix &) = default;\n\
     \n  int row() const { return row_; }\n  int col() const { return col_; }\n  int\
     \ size() const { return row_ * col_; }\n  bool is_empty() const { return size()\
@@ -76,7 +76,7 @@ data:
     \ {\n        std::cout << ' ';\n      }\n    }\n    return os;\n  }\n\nprotected:\n\
     \  int row_, col_;\n  std::vector<Type> mat_;\n};\n\n} // namespace lib\n\n\n\
     #line 12 \"math/matrix/square_matrix.hpp\"\n\nnamespace lib {\n\ntemplate <typename\
-    \ Type> class SquareMatrix : public Matrix<Type> {\npublic:\n  SquareMatrix(int\
+    \ Type>\nclass SquareMatrix : public Matrix<Type> {\npublic:\n  SquareMatrix(int\
     \ r, const Type &v = Type()) : Matrix<Type>(r, r, v) {}\n  virtual ~SquareMatrix()\
     \ = default;\n\n  /**\n   * @brief \u57DF\u4E0A\u7684\u65B9\u9635\u9006\u5143\n\
     \   * @note \u4F7F\u7528 Gauss-Jordan \u6D88\u5143\uFF0C\u6709\u9664\u6CD5\uFF0C\
@@ -124,7 +124,7 @@ data:
     \ Type(0); // \u884C\u5217\u5F0F\u4E3A 0\n          std::swap_ranges(m.row_begin(i)\
     \ + i, m.row_end(i), m.row_begin(pivot) + i);\n          odd = !odd;\n       \
     \ }\n        res *= m.at(i, i);\n        Type iv = Type(1) / m.at(i, i);\n   \
-    \     for (int j = i + 1; j < n; ++j) {\n          Type p = m.at(j, i) * iv;\n\
+    \     for (int j = i + 1; j < n; ++j) {\n          Type p     = m.at(j, i) * iv;\n\
     \          m.at(j, i) = Type(0);\n          for (int k = i + 1; k < n; ++k) m.at(j,\
     \ k) -= p * m.at(i, k);\n        }\n      }\n    }\n    return odd ? -res : res;\n\
     \  }\n\n  /**\n   * @brief \u77E9\u9635\u7684\u79E9\n   * @note \u4F7F\u7528 Gauss\
@@ -137,9 +137,9 @@ data:
     \          if (pivot == n) continue;\n          std::swap_ranges(m.row_begin(i)\
     \ + i, m.row_end(i), m.row_begin(pivot) + i);\n        }\n        ++res;\n   \
     \     Type iv = Type(1) / m.at(i, i);\n        for (int j = i + 1; j < n; ++j)\
-    \ {\n          Type p = m.at(j, i) * iv;\n          m.at(j, i) = Type(0);\n  \
-    \        for (int k = i + 1; k < n; ++k) m.at(j, k) -= p * m.at(i, k);\n     \
-    \   }\n      }\n    }\n    return res;\n  }\n\n  /**\n   * @brief \u76F8\u4F3C\
+    \ {\n          Type p     = m.at(j, i) * iv;\n          m.at(j, i) = Type(0);\n\
+    \          for (int k = i + 1; k < n; ++k) m.at(j, k) -= p * m.at(i, k);\n   \
+    \     }\n      }\n    }\n    return res;\n  }\n\n  /**\n   * @brief \u76F8\u4F3C\
     \u53D8\u6362\u4E3A\u4E0A Hessenberg \u65B9\u9635\n   * @note \u4F7F\u7528 Gauss\
     \ \u6D88\u5143\uFF0C\u6709\u9664\u6CD5\uFF0C\u6240\u4EE5\u5143\u7D20\u9700\u8981\
     \u5C5E\u4E8E\u57DF\n   * @return SquareMatrix\n   */\n  SquareMatrix to_upper_Hessenberg()\
@@ -166,18 +166,18 @@ data:
     \ <type_traits>\n\nnamespace lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\
     \n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
+    template <std::uint32_t mod>\nclass MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
     \  using m32 = MontgomeryModInt;\n\n  using value_type = u32;\n\n  static constexpr\
     \ u32 get_mod() { return mod; }\n\n  static constexpr u32 get_primitive_root_prime()\
-    \ {\n    u32 tmp[32] = {};\n    int cnt = 0;\n    const u32 phi = mod - 1;\n \
-    \   u32 m = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n      if (m % i == 0)\
-    \ {\n        tmp[cnt++] = i;\n        do {\n          m /= i;\n        } while\
-    \ (m % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32\
-    \ res = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt &&\
-    \ f; ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n  \
-    \  }\n  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()\
-    \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    \ {\n    u32 tmp[32]   = {};\n    int cnt       = 0;\n    const u32 phi = mod\
+    \ - 1;\n    u32 m         = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n   \
+    \   if (m % i == 0) {\n        tmp[cnt++] = i;\n        do { m /= i; } while (m\
+    \ % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32 res\
+    \ = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt && f;\
+    \ ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n    }\n\
+    \  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()     \
+    \     = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  constexpr MontgomeryModInt(T v) : v_(reduce(u64(v % i32(mod) +\
     \ i32(mod)) * r2)) {}\n\n  constexpr MontgomeryModInt(const m32 &) = default;\n\
     \n  constexpr u32 get() const { return norm(reduce(v_)); }\n\n  template <typename\
@@ -210,25 +210,25 @@ data:
     \ - mod * iv;\n    iv *= two - mod * iv;\n    return iv * (mod * iv - two);\n\
     \  }\n\n  static constexpr u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod)\
     \ >> 32; }\n  static constexpr u32 norm(u32 x) { return x - (mod & -((mod - 1\
-    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r = get_r();\n  static\
-    \ constexpr u32 r2 = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod << 1;\n\
-    \n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r *\
-    \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
-    \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
-    \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n\n#line 7 \"remote_test/yosupo/matrix/inverse_matrix.0.test.cpp\"\
+    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r    = get_r();\n  static\
+    \ constexpr u32 r2   = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod <<\
+    \ 1;\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r\
+    \ * mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >=\
+    \ (1 << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\
+    \u540D\ntemplate <std::uint32_t mod>\nusing MontModInt = MontgomeryModInt<mod>;\n\
+    \n} // namespace lib\n\n\n#line 7 \"remote_test/yosupo/matrix/inverse_matrix.0.test.cpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n;\n  std::cin >> n;\n  lib::SquareMatrix<lib::MontModInt<998244353>> m(n);\n\
-    \  std::cin >> m;\n  auto iv = m.inv();\n  if (!iv)\n    std::cout << \"-1\";\n\
-    \  else\n    std::cout << iv.value();\n  return 0;\n}\n"
+    \  std::cin >> m;\n  auto iv = m.inv();\n  if (!iv) std::cout << \"-1\";\n  else\n\
+    \    std::cout << iv.value();\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inverse_matrix\"\n\n#include\
     \ <iostream>\n\n#include \"math/matrix/square_matrix.hpp\"\n#include \"modint/Montgomery_modint.hpp\"\
     \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
     \  int n;\n  std::cin >> n;\n  lib::SquareMatrix<lib::MontModInt<998244353>> m(n);\n\
-    \  std::cin >> m;\n  auto iv = m.inv();\n  if (!iv)\n    std::cout << \"-1\";\n\
-    \  else\n    std::cout << iv.value();\n  return 0;\n}"
+    \  std::cin >> m;\n  auto iv = m.inv();\n  if (!iv) std::cout << \"-1\";\n  else\n\
+    \    std::cout << iv.value();\n  return 0;\n}"
   dependsOn:
   - math/matrix/square_matrix.hpp
   - math/matrix/matrix_base.hpp
@@ -236,8 +236,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-09 03:16:11+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2021-07-15 14:25:20+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/inverse_matrix.0.test.cpp
 layout: document

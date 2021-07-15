@@ -39,11 +39,11 @@ data:
     \u5E42\n *\n */\n\n#line 10 \"math/basic/binary_pow.hpp\"\n#include <type_traits>\n\
     \n#line 1 \"traits/base.hpp\"\n\n\n\n/**\n * @brief type traits / \u7C7B\u578B\
     \u8403\u53D6\n *\n */\n\n#line 11 \"traits/base.hpp\"\n\nnamespace lib {\n\ntemplate\
-    \ <typename Type> struct promote_integral;\ntemplate <> struct promote_integral<std::int32_t>\
-    \ { using type = std::int64_t; };\ntemplate <> struct promote_integral<std::uint32_t>\
-    \ { using type = std::uint64_t; };\n\n// \u8F85\u52A9\u6A21\u677F\ntemplate <typename\
-    \ Type> using promote_integral_t = typename promote_integral<Type>::type;\n\n\
-    template <typename T, typename U>\nusing longer_integral_t =\n    std::conditional_t<(sizeof(T)\
+    \ <typename Type>\nstruct promote_integral;\ntemplate <>\nstruct promote_integral<std::int32_t>\
+    \ {\n  using type = std::int64_t;\n};\ntemplate <>\nstruct promote_integral<std::uint32_t>\
+    \ {\n  using type = std::uint64_t;\n};\n\n// \u8F85\u52A9\u6A21\u677F\ntemplate\
+    \ <typename Type>\nusing promote_integral_t = typename promote_integral<Type>::type;\n\
+    \ntemplate <typename T, typename U>\nusing longer_integral_t =\n    std::conditional_t<(sizeof(T)\
     \ > sizeof(U) || (sizeof(T) == sizeof(U) && std::is_signed_v<T>)),\n         \
     \              T, U>;\n\n} // namespace lib\n\n\n#line 1 \"math/basic/binary_mul.hpp\"\
     \n\n\n\n/**\n * @brief binary multiplication / \u5FEB\u901F\u4E58\n *\n */\n\n\
@@ -88,20 +88,20 @@ data:
     \n\n\n\n/**\n * @brief extended Euclidean algorithm / \u6269\u5C55\u6B27\u51E0\
     \u91CC\u5F97\u7B97\u6CD5\n *\n */\n\n#line 12 \"math/basic/exgcd.hpp\"\n\n#line\
     \ 14 \"math/basic/exgcd.hpp\"\n\nnamespace lib {\n\nnamespace internal {\n\ntemplate\
-    \ <typename T> std::enable_if_t<std::is_integral_v<T>, T> gcd(T a, T b) {\n  while\
-    \ (b != 0) std::tie(a, b) = std::make_tuple(b, a % b);\n  return a;\n}\n\ntemplate\
-    \ <typename T, typename S = std::make_signed_t<T>>\nstd::enable_if_t<std::is_integral_v<T>,\
+    \ <typename T>\nstd::enable_if_t<std::is_integral_v<T>, T> gcd(T a, T b) {\n \
+    \ while (b != 0) std::tie(a, b) = std::make_tuple(b, a % b);\n  return a;\n}\n\
+    \ntemplate <typename T, typename S = std::make_signed_t<T>>\nstd::enable_if_t<std::is_integral_v<T>,\
     \ std::tuple<T, S, S>> exgcd(T a, T b) {\n  S a_p = a, b_p = b, x1 = 1, x2 = 0,\
     \ x3 = 0, x4 = 1;\n  while (b_p != 0) {\n    S q = a_p / b_p;\n    std::tie(x1,\
     \ x2, x3, x4, a_p, b_p) =\n        std::make_tuple(x3, x4, x1 - x3 * q, x2 - x4\
     \ * q, b_p, a_p - b_p * q);\n  }\n  return std::make_tuple(static_cast<T>(a_p),\
-    \ x1, x2);\n}\n\ntemplate <typename T> std::enable_if_t<std::is_integral_v<T>,\
+    \ x1, x2);\n}\n\ntemplate <typename T>\nstd::enable_if_t<std::is_integral_v<T>,\
     \ T> inv_mod(T x, T mod) {\n  using S = std::make_signed_t<T>;\n  S a = x, b =\
-    \ mod, x1 = 1, x3 = 0;\n  assert(a < b);\n  while (b != 0) {\n    S q = a / b;\n\
-    \    std::tie(x1, x3, a, b) = std::make_tuple(x3, x1 - x3 * q, b, a - b * q);\n\
-    \  }\n  assert(a == 1 && \"inv_mod_error\");\n  return static_cast<T>(x1 < 0 ?\
-    \ x1 + mod : x1);\n}\n\n} // namespace internal\n\ntemplate <typename T1, typename\
-    \ T2, typename T = longer_integral_t<T1, T2>>\nstd::enable_if_t<std::is_integral_v<T1>\
+    \ mod, x1 = 1, x3 = 0;\n  assert(a < b);\n  while (b != 0) {\n    S q        \
+    \            = a / b;\n    std::tie(x1, x3, a, b) = std::make_tuple(x3, x1 - x3\
+    \ * q, b, a - b * q);\n  }\n  assert(a == 1 && \"inv_mod_error\");\n  return static_cast<T>(x1\
+    \ < 0 ? x1 + mod : x1);\n}\n\n} // namespace internal\n\ntemplate <typename T1,\
+    \ typename T2, typename T = longer_integral_t<T1, T2>>\nstd::enable_if_t<std::is_integral_v<T1>\
     \ && std::is_integral_v<T2>, T> gcd(T1 a, T2 b) {\n  return internal::gcd<T>(a,\
     \ b);\n}\n\ntemplate <typename T1, typename T2, typename T = longer_integral_t<T1,\
     \ T2>,\n          typename S = std::make_signed_t<T>>\nstd::enable_if_t<std::is_integral_v<T1>\
@@ -113,14 +113,14 @@ data:
     \ * @brief \u4E2D\u56FD\u5269\u4F59\u5B9A\u7406\u5408\u5E76\u6A21\u6570\u4E92\u7D20\
     \u7684\u540C\u4F59\u5F0F\uFF08 Garner \u7B97\u6CD5\uFF09\n * @note \u5982\u679C\
     \u591A\u6B21\u5408\u5E76\u540C\u6837\u6A21\u6570\u7684\u53EF\u4EE5\u9884\u5904\
-    \u7406\n */\ntemplate <typename T> class CoprimeCRT {\npublic:\n  using u64 =\
+    \u7406\n */\ntemplate <typename T>\nclass CoprimeCRT {\npublic:\n  using u64 =\
     \ std::uint64_t;\n\n  CoprimeCRT() = default;\n\n  /**\n   * @note \u5047\u8BBE\
     \ m \u6570\u7EC4\u4E2D\u6240\u6709\u5143\u7D20\u7684\u4E58\u79EF\u5728 std::int64_t\
     \ \u8868\u793A\u8303\u56F4\u5185\n   */\n  CoprimeCRT(const std::vector<T> &m)\
-    \ : m_(m), C_(m.size()) {\n    int n = m_.size();\n    u64 prod = 1;\n    for\
+    \ : m_(m), C_(m.size()) {\n    int n    = m_.size();\n    u64 prod = 1;\n    for\
     \ (int i = 0; i < n; ++i) {\n      C_[i] = inv_mod(prod % m_[i], m_[i]);\n   \
     \   prod *= m_[i];\n    }\n  }\n\n  ~CoprimeCRT() = default;\n\n  void set_m(const\
-    \ std::vector<T> &m) {\n    m_ = m;\n    int n = m_.size();\n    C_.resize(n);\n\
+    \ std::vector<T> &m) {\n    m_    = m;\n    int n = m_.size();\n    C_.resize(n);\n\
     \    u64 prod = 1;\n    for (int i = 0; i < n; ++i) {\n      C_[i] = inv_mod(prod\
     \ % m_[i], m_[i]);\n      prod *= m_[i];\n    }\n  }\n\n  u64 operator()(const\
     \ std::vector<T> &v) const {\n    int n = m_.size();\n    assert(v.size() == n);\n\
@@ -129,23 +129,23 @@ data:
     \  return x;\n  }\n\nprivate:\n  std::vector<T> m_, C_;\n};\n\ntemplate <typename\
     \ T>\nstd::optional<std::pair<std::uint64_t, std::uint64_t>> crt2(T a1, T m1,\
     \ T a2, T m2) {\n  using u64 = std::uint64_t;\n  using i64 = std::int64_t;\n \
-    \ using S = std::make_signed_t<T>;\n\n  if (m1 < m2) return crt2(a2, m2, a1, m1);\n\
-    \n  S d, x, y;\n  std::tie(d, x, y) = exgcd(m1, m2);\n  S a2_a1 = S(a2) - S(a1);\n\
-    \  S a2_a1_d = a2_a1 / d;\n  if (a2_a1 != a2_a1_d * d) return {};\n  S m2_d =\
-    \ m2 / d;\n  S k1 = i64(x % m2_d) * (a2_a1_d % m2_d) % m2_d;\n  if (k1 < 0) k1\
-    \ += m2_d;\n  return std::make_pair(u64(k1) * m1 + a1, u64(m1) * m2_d);\n}\n\n\
-    /**\n * @brief \u4E2D\u56FD\u5269\u4F59\u5B9A\u7406\u5408\u5E76\u540C\u4F59\u5F0F\
-    \n *\n * @tparam T \u5143\u7D20\u7C7B\u578B\n * @param v \u4F59\u6570\n * @param\
-    \ m \u6A21\u6570\n * @return std::optional<std::pair<T, T>> \u82E5\u65E0\u89E3\
-    \u5219\u8FD4\u56DE std::nullopt \u5426\u5219\u8FD4\u56DE (remainder, modular)\n\
-    \ */\ntemplate <typename T>\nstd::optional<std::pair<std::uint64_t, std::uint64_t>>\
-    \ crt(const std::vector<T> &v,\n                                             \
-    \              const std::vector<T> &m) {\n  int n = v.size();\n  assert(n ==\
-    \ m.size());\n  std::uint64_t V = 0, M = 1;\n  for (int i = 0; i < n; ++i) {\n\
-    \    auto res = crt2<std::int64_t>(v[i], m[i], V, M);\n    if (!res) return {};\n\
-    \    std::tie(V, M) = res.value();\n  }\n  return std::make_pair(V, M);\n}\n\n\
-    } // namespace lib\n\n\n#line 17 \"math/modulo/binomial_coefficient_mod.hpp\"\n\
-    \nnamespace lib {\n\nclass BinomialCoefficientModSmall {\npublic:\n  using u32\
+    \ using S   = std::make_signed_t<T>;\n\n  if (m1 < m2) return crt2(a2, m2, a1,\
+    \ m1);\n\n  S d, x, y;\n  std::tie(d, x, y) = exgcd(m1, m2);\n  S a2_a1      \
+    \     = S(a2) - S(a1);\n  S a2_a1_d         = a2_a1 / d;\n  if (a2_a1 != a2_a1_d\
+    \ * d) return {};\n  S m2_d = m2 / d;\n  S k1   = i64(x % m2_d) * (a2_a1_d % m2_d)\
+    \ % m2_d;\n  if (k1 < 0) k1 += m2_d;\n  return std::make_pair(u64(k1) * m1 + a1,\
+    \ u64(m1) * m2_d);\n}\n\n/**\n * @brief \u4E2D\u56FD\u5269\u4F59\u5B9A\u7406\u5408\
+    \u5E76\u540C\u4F59\u5F0F\n *\n * @tparam T \u5143\u7D20\u7C7B\u578B\n * @param\
+    \ v \u4F59\u6570\n * @param m \u6A21\u6570\n * @return std::optional<std::pair<T,\
+    \ T>> \u82E5\u65E0\u89E3\u5219\u8FD4\u56DE std::nullopt \u5426\u5219\u8FD4\u56DE\
+    \ (remainder, modular)\n */\ntemplate <typename T>\nstd::optional<std::pair<std::uint64_t,\
+    \ std::uint64_t>> crt(const std::vector<T> &v,\n                             \
+    \                              const std::vector<T> &m) {\n  int n = v.size();\n\
+    \  assert(n == m.size());\n  std::uint64_t V = 0, M = 1;\n  for (int i = 0; i\
+    \ < n; ++i) {\n    auto res = crt2<std::int64_t>(v[i], m[i], V, M);\n    if (!res)\
+    \ return {};\n    std::tie(V, M) = res.value();\n  }\n  return std::make_pair(V,\
+    \ M);\n}\n\n} // namespace lib\n\n\n#line 17 \"math/modulo/binomial_coefficient_mod.hpp\"\
+    \n\nnamespace lib {\n\nclass BinomialCoefficientModSmall {\npublic:\n  using u32\
     \ = std::uint32_t;\n  using u64 = std::uint64_t;\n\n  /**\n   * @brief \u4E8C\u9879\
     \u5F0F\u7CFB\u6570\u53D6\u6A21\n   * @param mod \u7D20\u56E0\u6570\u5206\u89E3\
     \u540E\u6240\u6709\u7D20\u6570\u5E42\u6B21\u7684\u56E0\u6570\u548C\u4E0D\u80FD\
@@ -153,19 +153,19 @@ data:
     \ = 2; i * i <= mod; ++i) {\n      if (mod % i == 0) {\n        u32 e = 0, old_mod\
     \ = mod;\n        do {\n          ++e;\n          mod /= i;\n        } while (mod\
     \ % i == 0);\n        u32 ie = old_mod / mod;\n        factor_.push_back({i, e,\
-    \ ie, {}, {}});\n        auto &fac = std::get<3>(factor_.back());\n        auto\
+    \ ie, {}, {}});\n        auto &fac  = std::get<3>(factor_.back());\n        auto\
     \ &ifac = std::get<4>(factor_.back());\n        fac.resize(ie);\n        ifac.resize(ie);\n\
     \        if (e == 1) {\n          fac[0] = ifac[0] = 1;\n          for (int j\
     \ = 1; j != ie; ++j) fac[j] = u64(fac[j - 1]) * j % ie;\n          ifac[ie - 1]\
     \ = ie - 1; // Wilson's theorem\n          for (int j = ie - 2; j > 0; --j) ifac[j]\
     \ = u64(ifac[j + 1]) * (j + 1) % ie;\n        } else {\n          ifac[0] = fac[0]\
-    \ = 1;\n          for (int j = 1; j != ie; ++j) {\n            fac[j] = (j % i\
-    \ == 0) ? fac[j - 1] : u64(fac[j - 1]) * j % ie;\n            ifac[j] = u64(fac[j])\
+    \ = 1;\n          for (int j = 1; j != ie; ++j) {\n            fac[j]  = (j %\
+    \ i == 0) ? fac[j - 1] : u64(fac[j - 1]) * j % ie;\n            ifac[j] = u64(fac[j])\
     \ * ifac[j - 1] % ie;\n          }\n          u32 ivie = inv_mod(ifac[ie - 1],\
     \ ie);\n          for (int j = ie - 1; j > 0; --j)\n            ifac[j] = u64(ivie)\
     \ * ifac[j - 1] % ie, ivie = u64(ivie) * fac[j] % ie;\n        }\n      }\n  \
     \  }\n    if (mod != 1) {\n      u32 ie = mod;\n      factor_.push_back({mod,\
-    \ 1, mod, {}, {}});\n      auto &fac = std::get<3>(factor_.back());\n      auto\
+    \ 1, mod, {}, {}});\n      auto &fac  = std::get<3>(factor_.back());\n      auto\
     \ &ifac = std::get<4>(factor_.back());\n      fac.resize(ie);\n      ifac.resize(ie);\n\
     \      fac[0] = ifac[0] = 1;\n      for (int j = 1; j != ie; ++j) fac[j] = u64(fac[j\
     \ - 1]) * j % ie;\n      ifac[ie - 1] = ie - 1; // Wilson's theorem\n      for\
@@ -186,20 +186,20 @@ data:
     \       }\n      } else {\n        u64 r = n_t - m_t, k = 0;\n        for (u64\
     \ n1 = n_t / p; n1; n1 /= p) k += n1;\n        for (u64 m1 = m_t / p; m1; m1 /=\
     \ p) k -= m1;\n        for (u64 r1 = r / p; r1; r1 /= p) k -= r1;\n        if\
-    \ (k >= q) {\n          res = 0;\n        } else {\n          u32 pk = lib::pow(p,\
-    \ k);\n          u64 is_negative = 0;\n          for (; n_t; n_t /= p, m_t /=\
-    \ p, r /= p) {\n            res = res * fac[n_t % pq] % pq * ifac[m_t % pq] %\
-    \ pq * ifac[r % pq] % pq;\n            is_negative += n_t / pq + m_t / pq + r\
-    \ / pq;\n          }\n          if ((p == 2 && q >= 3) || (is_negative & 1) ==\
-    \ 0)\n            res = res * pk % pq;\n          else\n            res = (pq\
-    \ - res) * pk % pq;\n        }\n      }\n      v.push_back(res);\n    }\n    return\
-    \ crt_(v);\n  }\n\nprivate:\n  std::vector<std::tuple<u32, u32, u32, std::vector<u32>,\
-    \ std::vector<u32>>> factor_;\n  CoprimeCRT<u32> crt_;\n};\n\n} // namespace lib\n\
-    \n\n#line 4 \"remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp\"\n\n\
-    #include <iostream>\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\"\
-    , stdin), std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
-    \  std::cin.tie(0);\n  int t, m;\n  std::cin >> t >> m;\n  lib::BinomialCoefficientModSmall\
-    \ bc(m);\n  while (t--) {\n    long long n, m;\n    std::cin >> n >> m;\n    std::cout\
+    \ (k >= q) {\n          res = 0;\n        } else {\n          u32 pk         \
+    \ = lib::pow(p, k);\n          u64 is_negative = 0;\n          for (; n_t; n_t\
+    \ /= p, m_t /= p, r /= p) {\n            res = res * fac[n_t % pq] % pq * ifac[m_t\
+    \ % pq] % pq * ifac[r % pq] % pq;\n            is_negative += n_t / pq + m_t /\
+    \ pq + r / pq;\n          }\n          if ((p == 2 && q >= 3) || (is_negative\
+    \ & 1) == 0) res = res * pk % pq;\n          else\n            res = (pq - res)\
+    \ * pk % pq;\n        }\n      }\n      v.push_back(res);\n    }\n    return crt_(v);\n\
+    \  }\n\nprivate:\n  std::vector<std::tuple<u32, u32, u32, std::vector<u32>, std::vector<u32>>>\
+    \ factor_;\n  CoprimeCRT<u32> crt_;\n};\n\n} // namespace lib\n\n\n#line 4 \"\
+    remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp\"\n\n#include <iostream>\n\
+    \nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
+    \  int t, m;\n  std::cin >> t >> m;\n  lib::BinomialCoefficientModSmall bc(m);\n\
+    \  while (t--) {\n    long long n, m;\n    std::cin >> n >> m;\n    std::cout\
     \ << bc(n, m) << '\\n';\n  }\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/binomial_coefficient\"\n\
     \n#include \"math/modulo/binomial_coefficient_mod.hpp\"\n\n#include <iostream>\n\
@@ -218,7 +218,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-05 15:23:46+08:00'
+  timestamp: '2021-07-15 14:25:20+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp

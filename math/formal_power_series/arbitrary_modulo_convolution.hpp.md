@@ -7,13 +7,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/convolution.hpp
     title: "convolution / \u5377\u79EF"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -34,53 +34,53 @@ data:
     \n\n\n\n/**\n * @brief NTT prime crt / NTT \u7D20\u6570\u7528\u4E2D\u56FD\u5269\
     \u4F59\u5B9A\u7406\n *\n */\n\n#line 10 \"math/formal_power_series/NTT_crt.hpp\"\
     \n#include <type_traits>\n\nnamespace lib {\n\ntemplate <std::uint32_t M0, std::uint32_t\
-    \ M1, std::uint32_t M2,\n          std::enable_if_t<(M0 < M1) && (M0 < (1U <<\
-    \ 31)) && (M1 < (1U << 31)) &&\n                               (M2 < (1U << 31))\
-    \ && (M0 != M1) && (M0 != M2) && (M1 != M2),\n                           int>\
-    \ = 0>\nclass NTTCRT3 {\npublic:\n  using u32 = std::uint32_t;\n  using u64 =\
-    \ std::uint64_t;\n\n  NTTCRT3(u32 mod) : m_(mod), M0M1_mod_m_(u64(M0) * M1 % mod)\
-    \ {}\n  ~NTTCRT3() = default;\n\n  u32 operator()(u32 a, u32 b, u32 c) const {\n\
-    \    // x mod M0 = a, x mod M1 = b, x mod M2 = c\n    // a + k0M0 = b + k1M1 =>\
-    \ k0 = (b - a) / M0 (mod M1)\n    // x = a + k0M0 (mod M0M1) => a + k0M0 + k01M0M1\
-    \ = c + k2M2\n    // => k01 = (c - (a + k0M0)) / (M0M1) (mod M2)\n    // => x\
-    \ mod M0M1M2 = a + k0M0 + k01M0M1\n    u32 k0 = b - a;\n    if (int(k0) < 0) k0\
-    \ += M1;\n    k0 = u64(k0) * M0_inv_M1_ % M1;\n    u64 d = a + u64(k0) * M0;\n\
-    \    u32 k01 = c - d % M2;\n    if (int(k01) < 0) k01 += M2;\n    // NTT \u6A21\
-    \u6570\u90FD\u5C0F\u4E8E (1U << 31) \u6240\u4EE5\u5728\u8FD9\u91CC\u53EF\u4EE5\
-    \u4F7F\u7528\u52A0\u6CD5\u540E\u518D\u53D6\u6A21\n    return (d + u64(k01) * M0M1_inv_M2_\
+    \ M1, std::uint32_t M2,\n          std::enable_if_t<(M0 < M1) && ((M0 | M1 | M2)\
+    \ < (1U << 31)) &&\n                               ((M0 & M1 & M2 & 1) == 1) &&\
+    \ (M0 != M1) && (M0 != M2) && (M1 != M2),\n                           int> = 0>\n\
+    class NTTCRT3 {\npublic:\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
+    \n  NTTCRT3(u32 mod) : m_(mod), M0M1_mod_m_(u64(M0) * M1 % mod) {}\n  ~NTTCRT3()\
+    \ = default;\n\n  u32 operator()(u32 a, u32 b, u32 c) const {\n    // x mod M0\
+    \ = a, x mod M1 = b, x mod M2 = c\n    // a + k0M0 = b + k1M1 => k0 = (b - a)\
+    \ / M0 (mod M1)\n    // x = a + k0M0 (mod M0M1) => a + k0M0 + k01M0M1 = c + k2M2\n\
+    \    // => k01 = (c - (a + k0M0)) / (M0M1) (mod M2)\n    // => x mod M0M1M2 =\
+    \ a + k0M0 + k01M0M1\n    u32 k0 = b - a;\n    if (int(k0) < 0) k0 += M1;\n  \
+    \  k0      = u64(k0) * M0_inv_M1_ % M1;\n    u64 d   = a + u64(k0) * M0;\n   \
+    \ u32 k01 = c - d % M2;\n    if (int(k01) < 0) k01 += M2;\n    // NTT \u6A21\u6570\
+    \u90FD\u5C0F\u4E8E (1U << 31) \u6240\u4EE5\u5728\u8FD9\u91CC\u53EF\u4EE5\u4F7F\
+    \u7528\u52A0\u6CD5\u540E\u518D\u53D6\u6A21\n    return (d + u64(k01) * M0M1_inv_M2_\
     \ % M2 * M0M1_mod_m_) % m_;\n  }\n\n  static constexpr u32 get_inv(u32 x, u32\
     \ mod) {\n    u32 res = 1;\n    for (u32 e = mod - 2; e != 0; e >>= 1) {\n   \
     \   if (e & 1) res = u64(res) * x % mod;\n      x = u64(x) * x % mod;\n    }\n\
     \    return res;\n  }\n\nprivate:\n  u32 m_, M0M1_mod_m_;\n  static constexpr\
-    \ u32 M0_inv_M1_ = get_inv(M0, M1);\n  static constexpr u32 M0M1_inv_M2_ = get_inv(u64(M0)\
+    \ u32 M0_inv_M1_   = get_inv(M0, M1);\n  static constexpr u32 M0M1_inv_M2_ = get_inv(u64(M0)\
     \ * M1 % M2, M2);\n};\n\n} // namespace lib\n\n\n#line 1 \"math/formal_power_series/convolution.hpp\"\
     \n\n\n\n/**\n * @brief convolution / \u5377\u79EF\n *\n */\n\n#line 10 \"math/formal_power_series/convolution.hpp\"\
     \n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\n/**\n * @brief\
     \ radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\n * @docs docs/math/formal_power_series/radix_2_NTT.md\n\
     \ */\n\n#include <algorithm>\n#include <cassert>\n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\
     \n\n#line 1 \"traits/modint.hpp\"\n\n\n\n/**\n * @brief modint traits / \u53D6\
-    \u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename mod_t>\
-    \ struct modint_traits {\n  using type = typename mod_t::value_type;\n  static\
-    \ constexpr type get_mod() { return mod_t::get_mod(); }\n  static constexpr type\
-    \ get_primitive_root_prime() { return mod_t::get_primitive_root_prime(); }\n};\n\
-    \n} // namespace lib\n\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\
-    \u6A21\u6570\uFF01\uFF01\uFF01\n */\ntemplate <typename mod_t> class NTT {\npublic:\n\
-    \  NTT() = delete;\n\n  static void set_root(int len) {\n    static int lim =\
-    \ 0;\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n\
-    \    if (lim == 0) {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n\
-    \      rt[0] = irt[0] = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod()\
-    \ >> 21), ig_t = g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n \
-    \     for (int i = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n   \
-    \     rt[1 << i] = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n\
-    \    for (; (lim << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n\
-    \      for (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i\
-    \ - lim] * g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static\
-    \ void dft(int n, mod_t *x) {\n    for (int j = 0, l = n >> 1; j != l; ++j) {\n\
-    \      mod_t u = x[j], v = x[j + l];\n      x[j] = u + v, x[j + l] = u - v;\n\
-    \    }\n    for (int i = n >> 1; i >= 2; i >>= 1) {\n      for (int j = 0, l =\
-    \ i >> 1; j != l; ++j) {\n        mod_t u = x[j], v = x[j + l];\n        x[j]\
-    \ = u + v, x[j + l] = u - v;\n      }\n      for (int j = i, l = i >> 1, m = 1;\
+    \u6A21\u7C7B\u8403\u53D6\n *\n */\n\nnamespace lib {\n\ntemplate <typename mod_t>\n\
+    struct modint_traits {\n  using type = typename mod_t::value_type;\n  static constexpr\
+    \ type get_mod() { return mod_t::get_mod(); }\n  static constexpr type get_primitive_root_prime()\
+    \ { return mod_t::get_primitive_root_prime(); }\n};\n\n} // namespace lib\n\n\n\
+    #line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\n\nnamespace lib {\n\n/**\n\
+    \ * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\uFF01\uFF01\uFF01\
+    \n */\ntemplate <typename mod_t>\nclass NTT {\npublic:\n  NTT() = delete;\n\n\
+    \  static void set_root(int len) {\n    static int lim = 0;\n    static constexpr\
+    \ mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n    if (lim == 0)\
+    \ {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n      rt[0] = irt[0]\
+    \ = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod() >> 21), ig_t =\
+    \ g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n      for (int i\
+    \ = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n        rt[1 << i]\
+    \ = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n    for (; (lim\
+    \ << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n      for\
+    \ (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i]  = rt[i - lim]\
+    \ * g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static void\
+    \ dft(int n, mod_t *x) {\n    for (int j = 0, l = n >> 1; j != l; ++j) {\n   \
+    \   mod_t u = x[j], v = x[j + l];\n      x[j] = u + v, x[j + l] = u - v;\n   \
+    \ }\n    for (int i = n >> 1; i >= 2; i >>= 1) {\n      for (int j = 0, l = i\
+    \ >> 1; j != l; ++j) {\n        mod_t u = x[j], v = x[j + l];\n        x[j] =\
+    \ u + v, x[j + l] = u - v;\n      }\n      for (int j = i, l = i >> 1, m = 1;\
     \ j != n; j += i, ++m) {\n        mod_t root = rt[m];\n        for (int k = 0;\
     \ k != l; ++k) {\n          mod_t u = x[j + k], v = x[j + k + l] * root;\n   \
     \       x[j + k] = u + v, x[j + k + l] = u - v;\n        }\n      }\n    }\n \
@@ -108,16 +108,16 @@ data:
     \u4E8C\u8FDB\u5236\u7FFB\u8F6C\u540E\u7684 DFT \u5E8F\u5217\uFF0C\u5373 x(1),\
     \ x(-1) \u7B49\uFF0C\n *        \u5BF9\u4E8E\u4E0B\u6807 i \u548C i^1 \u5FC5\u7136\
     \u662F\u4E24\u4E2A\u4E92\u4E3A\u76F8\u53CD\u6570\u7684\u70B9\u503C\n *\n * @tparam\
-    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t> void dft(int\
+    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t>\nvoid dft(int\
     \ n, mod_t *x) {\n  NTT<mod_t>::set_root(n);\n  NTT<mod_t>::dft(n, x);\n}\n\n\
     /**\n * @brief \u63A5\u6536\u4E8C\u8FDB\u5236\u7FFB\u8F6C\u540E\u7684 DFT \u5E8F\
     \u5217\uFF0C\u8FD4\u56DE\u591A\u9879\u5F0F\u5E8F\u5217 mod (x^n - 1)\n *\n * @tparam\
-    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t> void idft(int\
+    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t>\nvoid idft(int\
     \ n, mod_t *x) {\n  NTT<mod_t>::set_root(n);\n  NTT<mod_t>::idft(n, x);\n}\n\n\
-    template <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
-    \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
-    \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
-    }\n\n} // namespace lib\n\n\n#line 12 \"math/formal_power_series/convolution.hpp\"\
+    template <typename mod_t>\nvoid dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
+    \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t>\nvoid\
+    \ idft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(),\
+    \ x.data());\n}\n\n} // namespace lib\n\n\n#line 12 \"math/formal_power_series/convolution.hpp\"\
     \n\nnamespace lib {\n\n/**\n * @brief NTT \u6A21\u6570\u5377\u79EF\n * @tparam\
     \ mod_t NTT \u53CB\u597D\u7684\u6A21\u6570\u7C7B\n */\ntemplate <typename mod_t>\n\
     std::vector<mod_t> convolve(const std::vector<mod_t> &x, const std::vector<mod_t>\
@@ -136,18 +136,18 @@ data:
     \n#include <iostream>\n#line 12 \"modint/Montgomery_modint.hpp\"\n\nnamespace\
     \ lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
     \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    template <std::uint32_t mod> class MontgomeryModInt {\npublic:\n  using i32 =\
+    template <std::uint32_t mod>\nclass MontgomeryModInt {\npublic:\n  using i32 =\
     \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
     \  using m32 = MontgomeryModInt;\n\n  using value_type = u32;\n\n  static constexpr\
     \ u32 get_mod() { return mod; }\n\n  static constexpr u32 get_primitive_root_prime()\
-    \ {\n    u32 tmp[32] = {};\n    int cnt = 0;\n    const u32 phi = mod - 1;\n \
-    \   u32 m = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n      if (m % i == 0)\
-    \ {\n        tmp[cnt++] = i;\n        do {\n          m /= i;\n        } while\
-    \ (m % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32\
-    \ res = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt &&\
-    \ f; ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n  \
-    \  }\n  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()\
-    \ = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
+    \ {\n    u32 tmp[32]   = {};\n    int cnt       = 0;\n    const u32 phi = mod\
+    \ - 1;\n    u32 m         = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n   \
+    \   if (m % i == 0) {\n        tmp[cnt++] = i;\n        do { m /= i; } while (m\
+    \ % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32 res\
+    \ = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt && f;\
+    \ ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n    }\n\
+    \  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()     \
+    \     = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
     \ int> = 0>\n  constexpr MontgomeryModInt(T v) : v_(reduce(u64(v % i32(mod) +\
     \ i32(mod)) * r2)) {}\n\n  constexpr MontgomeryModInt(const m32 &) = default;\n\
     \n  constexpr u32 get() const { return norm(reduce(v_)); }\n\n  template <typename\
@@ -180,22 +180,22 @@ data:
     \ - mod * iv;\n    iv *= two - mod * iv;\n    return iv * (mod * iv - two);\n\
     \  }\n\n  static constexpr u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod)\
     \ >> 32; }\n  static constexpr u32 norm(u32 x) { return x - (mod & -((mod - 1\
-    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r = get_r();\n  static\
-    \ constexpr u32 r2 = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod << 1;\n\
-    \n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r *\
-    \ mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >= (1\
-    \ << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\u540D\
-    \ntemplate <std::uint32_t mod> using MontModInt = MontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n\n#line 15 \"math/formal_power_series/arbitrary_modulo_convolution.hpp\"\
+    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r    = get_r();\n  static\
+    \ constexpr u32 r2   = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod <<\
+    \ 1;\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r\
+    \ * mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >=\
+    \ (1 << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\
+    \u540D\ntemplate <std::uint32_t mod>\nusing MontModInt = MontgomeryModInt<mod>;\n\
+    \n} // namespace lib\n\n\n#line 15 \"math/formal_power_series/arbitrary_modulo_convolution.hpp\"\
     \n\nnamespace lib {\n\n/**\n * @brief \u4EFB\u610F\u6A21\u6570\u5377\u79EF\n *\
     \ @note \u53EA\u9002\u7528\u4E8E\u6A21\u6570\u4E3A 32 \u4F4D\n */\ntemplate <typename\
     \ Int, typename ModType>\nstd::enable_if_t<std::is_integral_v<ModType> && (sizeof(ModType)\
     \ <= 4) && std::is_integral_v<Int>,\n                 std::vector<Int>>\nconvolve_mod(const\
     \ std::vector<Int> &x, const std::vector<Int> &y, ModType mod) {\n  using u32\
-    \ = std::uint32_t;\n  static constexpr u32 M0 = 880803841, M1 = 897581057, M2\
-    \ = 998244353;\n  NTTCRT3<M0, M1, M2> crt(mod);\n  using mod_t0 = MontModInt<M0>;\n\
-    \  using mod_t1 = MontModInt<M1>;\n  using mod_t2 = MontModInt<M2>;\n  auto res0\
-    \ =\n      convolve(std::vector<mod_t0>(x.begin(), x.end()), std::vector<mod_t0>(y.begin(),\
+    \               = std::uint32_t;\n  static constexpr u32 M0 = 880803841, M1 =\
+    \ 897581057, M2 = 998244353;\n  NTTCRT3<M0, M1, M2> crt(mod);\n  using mod_t0\
+    \ = MontModInt<M0>;\n  using mod_t1 = MontModInt<M1>;\n  using mod_t2 = MontModInt<M2>;\n\
+    \  auto res0 =\n      convolve(std::vector<mod_t0>(x.begin(), x.end()), std::vector<mod_t0>(y.begin(),\
     \ y.end()));\n  auto res1 =\n      convolve(std::vector<mod_t1>(x.begin(), x.end()),\
     \ std::vector<mod_t1>(y.begin(), y.end()));\n  auto res2 =\n      convolve(std::vector<mod_t2>(x.begin(),\
     \ x.end()), std::vector<mod_t2>(y.begin(), y.end()));\n  int n = res0.size();\n\
@@ -210,10 +210,10 @@ data:
     \ Int, typename ModType>\nstd::enable_if_t<std::is_integral_v<ModType> && (sizeof(ModType)\
     \ <= 4) && std::is_integral_v<Int>,\n                 std::vector<Int>>\nconvolve_mod(const\
     \ std::vector<Int> &x, const std::vector<Int> &y, ModType mod) {\n  using u32\
-    \ = std::uint32_t;\n  static constexpr u32 M0 = 880803841, M1 = 897581057, M2\
-    \ = 998244353;\n  NTTCRT3<M0, M1, M2> crt(mod);\n  using mod_t0 = MontModInt<M0>;\n\
-    \  using mod_t1 = MontModInt<M1>;\n  using mod_t2 = MontModInt<M2>;\n  auto res0\
-    \ =\n      convolve(std::vector<mod_t0>(x.begin(), x.end()), std::vector<mod_t0>(y.begin(),\
+    \               = std::uint32_t;\n  static constexpr u32 M0 = 880803841, M1 =\
+    \ 897581057, M2 = 998244353;\n  NTTCRT3<M0, M1, M2> crt(mod);\n  using mod_t0\
+    \ = MontModInt<M0>;\n  using mod_t1 = MontModInt<M1>;\n  using mod_t2 = MontModInt<M2>;\n\
+    \  auto res0 =\n      convolve(std::vector<mod_t0>(x.begin(), x.end()), std::vector<mod_t0>(y.begin(),\
     \ y.end()));\n  auto res1 =\n      convolve(std::vector<mod_t1>(x.begin(), x.end()),\
     \ std::vector<mod_t1>(y.begin(), y.end()));\n  auto res2 =\n      convolve(std::vector<mod_t2>(x.begin(),\
     \ x.end()), std::vector<mod_t2>(y.begin(), y.end()));\n  int n = res0.size();\n\
@@ -228,7 +228,7 @@ data:
   isVerificationFile: false
   path: math/formal_power_series/arbitrary_modulo_convolution.hpp
   requiredBy: []
-  timestamp: '2021-07-13 17:52:29+08:00'
+  timestamp: '2021-07-15 14:25:20+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp

@@ -1,15 +1,15 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: string/suffix_array_sais.hpp
     title: "suffix array SA-IS / \u540E\u7F00\u6570\u7EC4\uFF08\u8BF1\u5BFC\u6392\u5E8F\
       \uFF09"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/suffixarray
@@ -59,13 +59,13 @@ data:
     \n/**\n * @brief \u83B7\u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\n\
     \ * @param s \u5B57\u7B26\u4E32\uFF0C\u4E00\u822C\u4E3A string \u6216 std::vector<int>\n\
     \ * @return std::vector<int> \u540E\u7F00\u6570\u7EC4\n */\ntemplate <typename\
-    \ Container> std::vector<int> get_sa(const Container &s) {\n  std::vector<int>\
+    \ Container>\nstd::vector<int> get_sa(const Container &s) {\n  std::vector<int>\
     \ s_cpy(s.size() + 1);\n  std::copy(s.begin(), s.end(), s_cpy.begin());\n  s_cpy.back()\
     \ = 0;\n  std::vector<int> SA(internal::SA_IS(s_cpy, *std::max_element(s.begin(),\
     \ s.end()) + 1));\n  SA.erase(SA.begin());\n  return SA;\n}\n\n/**\n * @brief\
     \ \u83B7\u53D6\u540E\u7F00\u6570\u7EC4\uFF08 0-indexed \uFF09\u7684\u7279\u5316\
     \n * @note \u5BB9\u5668\u4E3A std::string \u65F6\u7279\u5316\uFF01\n * @param\
-    \ s \u5B57\u7B26\u4E32\n * @return std::vector<int>\n */\ntemplate <> std::vector<int>\
+    \ s \u5B57\u7B26\u4E32\n * @return std::vector<int>\n */\ntemplate <>\nstd::vector<int>\
     \ get_sa<std::string>(const std::string &s) {\n  std::vector<int> s_cpy(s.size()\
     \ + 1);\n  std::copy(s.begin(), s.end(), s_cpy.begin());\n  s_cpy.back() = 0;\n\
     \  std::vector<int> SA(internal::SA_IS(s_cpy, 128));\n  SA.erase(SA.begin());\n\
@@ -97,8 +97,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/string/suffix_array.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-03 02:24:28+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2021-07-15 14:25:20+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/string/suffix_array.0.test.cpp
 layout: document

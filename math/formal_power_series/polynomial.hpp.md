@@ -1,14 +1,14 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/formal_power_series.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -16,21 +16,21 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
     title: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
     title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
     title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     _deprecated_at_docs: docs/math/formal_power_series/polynomial.md
     document_title: "polynomial / \u591A\u9879\u5F0F"
@@ -43,7 +43,7 @@ data:
     \ */\n\n#include <algorithm>\n#include <cassert>\n#include <numeric>\n#include\
     \ <tuple>\n#include <utility>\n#include <vector>\n\n#line 1 \"traits/modint.hpp\"\
     \n\n\n\n/**\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\n *\n */\n\
-    \nnamespace lib {\n\ntemplate <typename mod_t> struct modint_traits {\n  using\
+    \nnamespace lib {\n\ntemplate <typename mod_t>\nstruct modint_traits {\n  using\
     \ type = typename mod_t::value_type;\n  static constexpr type get_mod() { return\
     \ mod_t::get_mod(); }\n  static constexpr type get_primitive_root_prime() { return\
     \ mod_t::get_primitive_root_prime(); }\n};\n\n} // namespace lib\n\n\n#line 1\
@@ -52,16 +52,16 @@ data:
     \ */\n\n#line 11 \"math/formal_power_series/radix_2_NTT.hpp\"\n#include <cstdint>\n\
     #line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
     \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\
-    \u6A21\u6570\uFF01\uFF01\uFF01\n */\ntemplate <typename mod_t> class NTT {\npublic:\n\
-    \  NTT() = delete;\n\n  static void set_root(int len) {\n    static int lim =\
-    \ 0;\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n\
+    \u6A21\u6570\uFF01\uFF01\uFF01\n */\ntemplate <typename mod_t>\nclass NTT {\n\
+    public:\n  NTT() = delete;\n\n  static void set_root(int len) {\n    static int\
+    \ lim = 0;\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\n\
     \    if (lim == 0) {\n      rt.resize(1 << 20);\n      irt.resize(1 << 20);\n\
     \      rt[0] = irt[0] = 1;\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod()\
     \ >> 21), ig_t = g_t.inv();\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\n \
     \     for (int i = 18; i >= 0; --i) {\n        g_t *= g_t, ig_t *= ig_t;\n   \
     \     rt[1 << i] = g_t, irt[1 << i] = ig_t;\n      }\n      lim = 1;\n    }\n\
     \    for (; (lim << 1) < len; lim <<= 1) {\n      mod_t g = rt[lim], ig = irt[lim];\n\
-    \      for (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i] = rt[i\
+    \      for (int i = lim + 1, e = lim << 1; i < e; ++i) {\n        rt[i]  = rt[i\
     \ - lim] * g;\n        irt[i] = irt[i - lim] * ig;\n      }\n    }\n  }\n\n  static\
     \ void dft(int n, mod_t *x) {\n    for (int j = 0, l = n >> 1; j != l; ++j) {\n\
     \      mod_t u = x[j], v = x[j + l];\n      x[j] = u + v, x[j + l] = u - v;\n\
@@ -95,16 +95,16 @@ data:
     \u4E8C\u8FDB\u5236\u7FFB\u8F6C\u540E\u7684 DFT \u5E8F\u5217\uFF0C\u5373 x(1),\
     \ x(-1) \u7B49\uFF0C\n *        \u5BF9\u4E8E\u4E0B\u6807 i \u548C i^1 \u5FC5\u7136\
     \u662F\u4E24\u4E2A\u4E92\u4E3A\u76F8\u53CD\u6570\u7684\u70B9\u503C\n *\n * @tparam\
-    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t> void dft(int\
+    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t>\nvoid dft(int\
     \ n, mod_t *x) {\n  NTT<mod_t>::set_root(n);\n  NTT<mod_t>::dft(n, x);\n}\n\n\
     /**\n * @brief \u63A5\u6536\u4E8C\u8FDB\u5236\u7FFB\u8F6C\u540E\u7684 DFT \u5E8F\
     \u5217\uFF0C\u8FD4\u56DE\u591A\u9879\u5F0F\u5E8F\u5217 mod (x^n - 1)\n *\n * @tparam\
-    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t> void idft(int\
+    \ mod_t\n * @param n\n * @param x\n */\ntemplate <typename mod_t>\nvoid idft(int\
     \ n, mod_t *x) {\n  NTT<mod_t>::set_root(n);\n  NTT<mod_t>::idft(n, x);\n}\n\n\
-    template <typename mod_t> void dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
-    \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t> void idft(std::vector<mod_t>\
-    \ &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(), x.data());\n\
-    }\n\n} // namespace lib\n\n\n#line 18 \"math/formal_power_series/formal_power_series.hpp\"\
+    template <typename mod_t>\nvoid dft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n\
+    \  NTT<mod_t>::dft(x.size(), x.data());\n}\n\ntemplate <typename mod_t>\nvoid\
+    \ idft(std::vector<mod_t> &x) {\n  NTT<mod_t>::set_root(x.size());\n  NTT<mod_t>::idft(x.size(),\
+    \ x.data());\n}\n\n} // namespace lib\n\n\n#line 18 \"math/formal_power_series/formal_power_series.hpp\"\
     \n\nnamespace lib {\n\n/**\n * @note \u5FC5\u987B\u4F7F\u7528 NTT \u53CB\u597D\
     \u7684\u6A21\u6570\uFF01\uFF01\uFF01\n *       \u5728\u4F7F\u7528\u6A21\u677F\u7C7B\
     \u7EE7\u627F\u65F6\uFF0C\u5BF9\u4E8E\u7EE7\u627F\u6765\u7684 public \u6210\u5458\
@@ -116,67 +116,67 @@ data:
     \u7F16\u8BD1\u3002MSVC \u56E0\u4E3A\u6709\u6269\u5C55\u7684\u539F\u56E0\u53EF\u4EE5\
     \u901A\u8FC7\u7F16\u8BD1\uFF0C\u4F46\u6807\u51C6\u89C4\u5B9A\u662F\u8FD9\u6837\
     \u3002\n *       \u82E5\u4E0D\u662F\u6A21\u677F\u7C7B\u7EE7\u627F\u5219\u6CA1\u6709\
-    \u8FD9\u6837\u7684\u95EE\u9898\u3002\n *\n */\ntemplate <typename mod_t> class\
+    \u8FD9\u6837\u7684\u95EE\u9898\u3002\n *\n */\ntemplate <typename mod_t>\nclass\
     \ FormalPowerSeries : public std::vector<mod_t> {\nprivate:\n  using vec = std::vector<mod_t>;\n\
     \  using fps = FormalPowerSeries<mod_t>;\n\n  static inline vec INV;\n\n  static\
     \ void init_inv(int n) { // \u9884\u5904\u7406 [1, n) \u7684\u9006\u5143\n   \
-    \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    int lim =\
-    \ INV.size();\n    if (lim < n) {\n      INV.resize(n);\n      if (lim == 0) INV[1]\
-    \ = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i] = mod_t(mod - mod\
-    \ / i) * INV[mod % i];\n    }\n  }\n\npublic:\n  using vec::vec;\n\n  /**\n  \
-    \ * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n\
+    \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    int lim  \
+    \                 = INV.size();\n    if (lim < n) {\n      INV.resize(n);\n  \
+    \    if (lim == 0) INV[1] = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i]\
+    \ = mod_t(mod - mod / i) * INV[mod % i];\n    }\n  }\n\npublic:\n  using vec::vec;\n\
+    \n  /**\n   * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n\
     \   * @return int\n   */\n  int deg() const {\n    static constexpr mod_t Z =\
-    \ 0;\n    int n = int(this->size()) - 1;\n    while (n >= 0 && this->operator[](n)\
-    \ == Z) --n;\n    return n;\n  }\n\n  /**\n   * @brief \u83B7\u53D6\u6700\u9AD8\
-    \u6B21\u9879\u7684\u7CFB\u6570\n   * @return mod_t\n   */\n  mod_t leading_coeff()\
-    \ const {\n    int d = deg();\n    return d == -1 ? mod_t(0) : this->operator[](d);\n\
-    \  }\n\n  /**\n   * @brief \u53BB\u9664\u5C3E 0 \uFF0C\u4F46\u5982\u679C\u53EA\
-    \u6709\u4E00\u4E2A 0 \u5219\u4F1A\u4FDD\u7559\n   */\n  void shrink() { this->resize(std::max(deg()\
-    \ + 1, 1)); }\n  fps slice() const { return fps(*this); }\n  fps slice(int n)\
-    \ const {\n    assert(n >= 0);\n    int sz = this->size();\n    if (sz >= n) return\
-    \ fps(this->begin(), this->begin() + n);\n    fps res(*this);\n    res.resize(n,\
-    \ mod_t(0));\n    return res;\n  }\n\n  fps deriv() const {\n    int n = this->size();\n\
-    \    if (n <= 1) return {0};\n    fps res(n - 1);\n    for (int i = 1; i != n;\
-    \ ++i) res[i - 1] = this->operator[](i) * mod_t(i);\n    return res;\n  }\n\n\
-    \  fps integr(const mod_t &c = mod_t(0)) const {\n    int n = this->size() + 1;\n\
-    \    fps res(n);\n    res[0] = c;\n    init_inv(n);\n    for (int i = 1; i !=\
-    \ n; ++i) res[i] = this->operator[](i - 1) * INV[i];\n    return res;\n  }\n\n\
-    \  fps operator-() const {\n    fps res(this->size());\n    for (int i = 0, e\
-    \ = this->size(); i != e; ++i) res[i] = -this->operator[](i);\n    return res;\n\
-    \  }\n\n  fps &operator+=(const fps &rhs) {\n    if (this->size() < rhs.size())\
-    \ this->resize(rhs.size(), mod_t(0));\n    for (int i = 0, e = rhs.size(); i !=\
-    \ e; ++i) this->operator[](i) += rhs[i];\n    return *this;\n  }\n  fps &operator-=(const\
+    \ 0;\n    int n                    = int(this->size()) - 1;\n    while (n >= 0\
+    \ && this->operator[](n) == Z) --n;\n    return n;\n  }\n\n  /**\n   * @brief\
+    \ \u83B7\u53D6\u6700\u9AD8\u6B21\u9879\u7684\u7CFB\u6570\n   * @return mod_t\n\
+    \   */\n  mod_t leading_coeff() const {\n    int d = deg();\n    return d == -1\
+    \ ? mod_t(0) : this->operator[](d);\n  }\n\n  /**\n   * @brief \u53BB\u9664\u5C3E\
+    \ 0 \uFF0C\u4F46\u5982\u679C\u53EA\u6709\u4E00\u4E2A 0 \u5219\u4F1A\u4FDD\u7559\
+    \n   */\n  void shrink() { this->resize(std::max(deg() + 1, 1)); }\n  fps slice()\
+    \ const { return fps(*this); }\n  fps slice(int n) const {\n    assert(n >= 0);\n\
+    \    int sz = this->size();\n    if (sz >= n) return fps(this->begin(), this->begin()\
+    \ + n);\n    fps res(*this);\n    res.resize(n, mod_t(0));\n    return res;\n\
+    \  }\n\n  fps deriv() const {\n    int n = this->size();\n    if (n <= 1) return\
+    \ {0};\n    fps res(n - 1);\n    for (int i = 1; i != n; ++i) res[i - 1] = this->operator[](i)\
+    \ * mod_t(i);\n    return res;\n  }\n\n  fps integr(const mod_t &c = mod_t(0))\
+    \ const {\n    int n = this->size() + 1;\n    fps res(n);\n    res[0] = c;\n \
+    \   init_inv(n);\n    for (int i = 1; i != n; ++i) res[i] = this->operator[](i\
+    \ - 1) * INV[i];\n    return res;\n  }\n\n  fps operator-() const {\n    fps res(this->size());\n\
+    \    for (int i = 0, e = this->size(); i != e; ++i) res[i] = -this->operator[](i);\n\
+    \    return res;\n  }\n\n  fps &operator+=(const fps &rhs) {\n    if (this->size()\
+    \ < rhs.size()) this->resize(rhs.size(), mod_t(0));\n    for (int i = 0, e = rhs.size();\
+    \ i != e; ++i) this->operator[](i) += rhs[i];\n    return *this;\n  }\n  fps &operator-=(const\
     \ fps &rhs) {\n    if (this->size() < rhs.size()) this->resize(rhs.size(), mod_t(0));\n\
     \    for (int i = 0, e = rhs.size(); i != e; ++i) this->operator[](i) -= rhs[i];\n\
     \    return *this;\n  }\n  fps &operator*=(const fps &rhs) {\n    int n = this->size(),\
     \ m = rhs.size();\n    if (std::min(n, m) <= 32) {\n      fps res(n + m - 1, mod_t(0));\n\
-    \      for (int i = 0; i != n; ++i) {\n        for (int j = 0; j != m; ++j) {\n\
-    \          res[i + j] += this->operator[](i) * rhs[j];\n        }\n      }\n \
-    \     return this->operator=(res);\n    }\n    int len = get_ntt_len(n + m - 1);\n\
-    \    this->resize(len, mod_t(0));\n    if (this == &rhs) {\n      dft(len, this->data());\n\
-    \      for (int i = 0; i != len; ++i) this->operator[](i) *= this->operator[](i);\n\
-    \      idft(len, this->data());\n      this->resize(n + m - 1);\n      return\
-    \ *this;\n    }\n    auto b = rhs.slice(len);\n    dft(len, this->data());\n \
-    \   dft(len, b.data());\n    for (int i = 0; i != len; ++i) this->operator[](i)\
-    \ *= b[i];\n    idft(len, this->data());\n    this->resize(n + m - 1);\n    return\
-    \ *this;\n  }\n\n  fps &operator/=(const fps &rhs) { // 13E\n    int n = this->size();\n\
-    \    if (n == 0) return *this;\n    assert(rhs[0] != 0);\n    if (n == 1) {\n\
-    \      this->operator[](0) /= rhs[0];\n      return *this;\n    }\n    int len\
-    \ = get_ntt_len(n), len2 = len >> 1;\n    fps work_tmp1(rhs.inv(len2)), work_tmp2(slice(len2)),\
-    \ work_tmp3(rhs.slice(len));\n    // rhs.inv(len2) \u82B1\u8D39 5E\n    work_tmp1.resize(len,\
-    \ mod_t(0));\n    dft(len, work_tmp1.data()); // 1E\n    work_tmp2.resize(len,\
-    \ mod_t(0));\n    dft(len, work_tmp2.data()); // 1E\n    for (int i = 0; i !=\
-    \ len; ++i) work_tmp2[i] *= work_tmp1[i];\n    idft(len, work_tmp2.data()); //\
-    \ 1E\n    std::copy_n(work_tmp2.begin(), len2, this->begin());\n    std::fill_n(work_tmp2.begin()\
-    \ + len2, len2, mod_t(0));\n    dft(len, work_tmp2.data()); // 1E\n    dft(len,\
-    \ work_tmp3.data()); // 1E\n    for (int i = 0; i != len; ++i) work_tmp3[i] *=\
-    \ work_tmp2[i];\n    idft(len, work_tmp3.data()); // 1E\n    std::fill_n(work_tmp3.begin(),\
-    \ len2, mod_t(0));\n    this->resize(len);\n    for (int i = len2; i != len; ++i)\
-    \ work_tmp3[i] = this->operator[](i) - work_tmp3[i];\n    dft(len, work_tmp3.data());\
-    \ // 1E\n    for (int i = 0; i != len; ++i) work_tmp3[i] *= work_tmp1[i];\n  \
-    \  idft(len, work_tmp3.data()); // 1E\n    std::copy_n(work_tmp3.begin() + len2,\
-    \ n - len2, this->begin() + len2);\n    this->resize(n);\n    return *this;\n\
-    \  }\n\n  fps inv(int n) const { // 10E\n    assert(n > 0);\n    assert(this->operator[](0)\
+    \      for (int i = 0; i != n; ++i) {\n        for (int j = 0; j != m; ++j) {\
+    \ res[i + j] += this->operator[](i) * rhs[j]; }\n      }\n      return this->operator=(res);\n\
+    \    }\n    int len = get_ntt_len(n + m - 1);\n    this->resize(len, mod_t(0));\n\
+    \    if (this == &rhs) {\n      dft(len, this->data());\n      for (int i = 0;\
+    \ i != len; ++i) this->operator[](i) *= this->operator[](i);\n      idft(len,\
+    \ this->data());\n      this->resize(n + m - 1);\n      return *this;\n    }\n\
+    \    auto b = rhs.slice(len);\n    dft(len, this->data());\n    dft(len, b.data());\n\
+    \    for (int i = 0; i != len; ++i) this->operator[](i) *= b[i];\n    idft(len,\
+    \ this->data());\n    this->resize(n + m - 1);\n    return *this;\n  }\n\n  fps\
+    \ &operator/=(const fps &rhs) { // 13E\n    int n = this->size();\n    if (n ==\
+    \ 0) return *this;\n    assert(rhs[0] != 0);\n    if (n == 1) {\n      this->operator[](0)\
+    \ /= rhs[0];\n      return *this;\n    }\n    int len = get_ntt_len(n), len2 =\
+    \ len >> 1;\n    fps work_tmp1(rhs.inv(len2)), work_tmp2(slice(len2)), work_tmp3(rhs.slice(len));\n\
+    \    // rhs.inv(len2) \u82B1\u8D39 5E\n    work_tmp1.resize(len, mod_t(0));\n\
+    \    dft(len, work_tmp1.data()); // 1E\n    work_tmp2.resize(len, mod_t(0));\n\
+    \    dft(len, work_tmp2.data()); // 1E\n    for (int i = 0; i != len; ++i) work_tmp2[i]\
+    \ *= work_tmp1[i];\n    idft(len, work_tmp2.data()); // 1E\n    std::copy_n(work_tmp2.begin(),\
+    \ len2, this->begin());\n    std::fill_n(work_tmp2.begin() + len2, len2, mod_t(0));\n\
+    \    dft(len, work_tmp2.data()); // 1E\n    dft(len, work_tmp3.data()); // 1E\n\
+    \    for (int i = 0; i != len; ++i) work_tmp3[i] *= work_tmp2[i];\n    idft(len,\
+    \ work_tmp3.data()); // 1E\n    std::fill_n(work_tmp3.begin(), len2, mod_t(0));\n\
+    \    this->resize(len);\n    for (int i = len2; i != len; ++i) work_tmp3[i] =\
+    \ this->operator[](i) - work_tmp3[i];\n    dft(len, work_tmp3.data()); // 1E\n\
+    \    for (int i = 0; i != len; ++i) work_tmp3[i] *= work_tmp1[i];\n    idft(len,\
+    \ work_tmp3.data()); // 1E\n    std::copy_n(work_tmp3.begin() + len2, n - len2,\
+    \ this->begin() + len2);\n    this->resize(n);\n    return *this;\n  }\n\n  fps\
+    \ inv(int n) const { // 10E\n    assert(n > 0);\n    assert(this->operator[](0)\
     \ != 0);\n    if (n == 1) return {mod_t(1) / this->operator[](0)};\n    int len\
     \ = get_ntt_len(n);\n    fps res(len, mod_t(0)), work_tmp1(len), work_tmp2(len),\
     \ cpy(slice(len));\n    res[0] = mod_t(1) / this->operator[](0);\n    for (int\
@@ -217,7 +217,7 @@ data:
     \ fps &lhs, const fps &rhs) { return fps(lhs) -= rhs; }\n  friend fps operator*(const\
     \ fps &lhs, const fps &rhs) { return fps(lhs) *= rhs; }\n  friend fps operator/(const\
     \ fps &lhs, const fps &rhs) { return fps(lhs) /= rhs; }\n};\n\ntemplate <typename\
-    \ mod_t> using FPS = FormalPowerSeries<mod_t>;\n\n} // namespace lib\n\n\n#line\
+    \ mod_t>\nusing FPS = FormalPowerSeries<mod_t>;\n\n} // namespace lib\n\n\n#line\
     \ 10 \"math/formal_power_series/polynomial.hpp\"\n\nnamespace lib {\n\n/**\n *\
     \ @brief \u591A\u9879\u5F0F\u7C7B\n * @note \u57FA\u7C7B FormalPowerSeries \u4E2D\
     \u51FD\u6570\u90FD\u6CA1\u6709\u4F7F\u7528 virtual\n *       \u6240\u4EE5\u5728\
@@ -226,8 +226,8 @@ data:
     \u4E3A\u9690\u85CF\uFF08 hide \uFF09\u3002\n *       \u800C\u5982\u679C\u4F7F\u7528\
     \u4E86 virtual \u5219\u88AB\u79F0\u4E3A\u8986\u76D6\uFF08 override \uFF09\uFF0C\
     \u800C\u8986\u76D6\u4F1A\u5BFC\u51FA\u591A\u6001\u3002\n */\ntemplate <typename\
-    \ mod_t> class Polynomial : public FormalPowerSeries<mod_t> {\npublic:\n  using\
-    \ fps = FormalPowerSeries<mod_t>;\n  using poly = Polynomial<mod_t>;\n  using\
+    \ mod_t>\nclass Polynomial : public FormalPowerSeries<mod_t> {\npublic:\n  using\
+    \ fps  = FormalPowerSeries<mod_t>;\n  using poly = Polynomial<mod_t>;\n  using\
     \ fps::fps;\n\n  // \u4F7F\u5F97\u80FD\u591F\u4ECE FormalPowerSeries \u8F6C\u6362\
     \u4E3A Polynomial \u7C7B\u578B\uFF0C\u4F46\u4E0D\u6E05\u695A\u662F\u5426\u6709\
     \u4EC0\u4E48\u95EE\u9898\n  Polynomial(const fps &rhs) : fps(rhs) {}\n  Polynomial(fps\
@@ -278,29 +278,28 @@ data:
     \ &mod) const {\n    int rem_size = mod.deg();\n    assert(rem_size >= 0);\n \
     \   if (rem_size == 0) return poly{0};\n    poly res{1}, cpy(*this % mod), mod_cpy(mod),\
     \ rev_mod(mod);\n    mod_cpy.shrink();\n    rev_mod.shrink();\n    std::reverse(rev_mod.begin(),\
-    \ rev_mod.end()); // x^{deg(mod)}mod(-x)\n    int len = get_ntt_len((rem_size\
-    \ << 1) - 1);   // \u4E24\u4E2A rem_size \u957F\u7684\u591A\u9879\u5F0F\u76F8\u4E58\
-    \n    int len2 = get_ntt_len(rem_size);\n    int mask = len2 - 1;\n    int max_quo_size\
-    \ = rem_size;\n#define MODIFY_POLY(t)                                        \
-    \                                     \\\n  {                                \
-    \                                                                \\\n    for (int\
-    \ i = len2, ie = t.size(); i < ie; ++i) t[i & mask] += t[i];                 \
-    \           \\\n    t.resize(len2);                                          \
-    \                                      \\\n  }\n    MODIFY_POLY(mod_cpy);\n  \
-    \  dft(len2, mod_cpy.data());\n    poly rev_mod_inv(rev_mod.inv(max_quo_size));\n\
-    \    rev_mod_inv.resize(len, mod_t(0));\n    dft(len, rev_mod_inv.data());\n \
-    \   for (; e; e >>= 1) {\n      if (e & 1) {\n        // res=res*cpy%mod,cpy=cpy*cpy%mod\n\
-    \        // \u5148\u8FDB\u884C\u4E24\u6B21\u5377\u79EF\uFF0C\u540E\u7FFB\u8F6C\
-    \uFF0C\u53D6\u524D quo_size \u9879\u4E0E rev_mod \u7684\u9006\u5377\u79EF\u6C42\
-    \u51FA rev_quo\n        // \u7FFB\u8F6C\u6C42\u51FA quo \u540E\u4E0E mod \u5377\
-    \u79EF\uFF0C\u8FD9\u4E00\u6B65\u7684 dft \u53EF\u4EE5\u5728 O(deg(mod)) \u7EA7\
-    \u522B\n        // \u540E\u4F5C\u4E00\u6B21\u51CF\u6CD5\u5373\u53EF\n        res.resize(len,\
-    \ mod_t(0));\n        cpy.resize(len, mod_t(0));\n        dft(len, res.data());\n\
-    \        dft(len, cpy.data());\n        for (int i = 0; i != len; ++i) res[i]\
-    \ *= cpy[i], cpy[i] *= cpy[i];\n        idft(len, res.data());\n        idft(len,\
-    \ cpy.data());\n        int quo_size_res = res.deg() - rem_size + 1;\n       \
-    \ if (quo_size_res > 0) {\n          poly rev_res(res);\n          rev_res.shrink();\n\
-    \          std::reverse(rev_res.begin(), rev_res.end());\n          rev_res.resize(len);\n\
+    \ rev_mod.end());        // x^{deg(mod)}mod(-x)\n    int len          = get_ntt_len((rem_size\
+    \ << 1) - 1); // \u4E24\u4E2A rem_size \u957F\u7684\u591A\u9879\u5F0F\u76F8\u4E58\
+    \n    int len2         = get_ntt_len(rem_size);\n    int mask         = len2 -\
+    \ 1;\n    int max_quo_size = rem_size;\n#define MODIFY_POLY(t)               \
+    \                                   \\\n  {                                  \
+    \                                   \\\n    for (int i = len2, ie = t.size();\
+    \ i < ie; ++i) t[i & mask] += t[i]; \\\n    t.resize(len2);                  \
+    \                                   \\\n  }\n    MODIFY_POLY(mod_cpy);\n    dft(len2,\
+    \ mod_cpy.data());\n    poly rev_mod_inv(rev_mod.inv(max_quo_size));\n    rev_mod_inv.resize(len,\
+    \ mod_t(0));\n    dft(len, rev_mod_inv.data());\n    for (; e; e >>= 1) {\n  \
+    \    if (e & 1) {\n        // res=res*cpy%mod,cpy=cpy*cpy%mod\n        // \u5148\
+    \u8FDB\u884C\u4E24\u6B21\u5377\u79EF\uFF0C\u540E\u7FFB\u8F6C\uFF0C\u53D6\u524D\
+    \ quo_size \u9879\u4E0E rev_mod \u7684\u9006\u5377\u79EF\u6C42\u51FA rev_quo\n\
+    \        // \u7FFB\u8F6C\u6C42\u51FA quo \u540E\u4E0E mod \u5377\u79EF\uFF0C\u8FD9\
+    \u4E00\u6B65\u7684 dft \u53EF\u4EE5\u5728 O(deg(mod)) \u7EA7\u522B\n        //\
+    \ \u540E\u4F5C\u4E00\u6B21\u51CF\u6CD5\u5373\u53EF\n        res.resize(len, mod_t(0));\n\
+    \        cpy.resize(len, mod_t(0));\n        dft(len, res.data());\n        dft(len,\
+    \ cpy.data());\n        for (int i = 0; i != len; ++i) res[i] *= cpy[i], cpy[i]\
+    \ *= cpy[i];\n        idft(len, res.data());\n        idft(len, cpy.data());\n\
+    \        int quo_size_res = res.deg() - rem_size + 1;\n        if (quo_size_res\
+    \ > 0) {\n          poly rev_res(res);\n          rev_res.shrink();\n        \
+    \  std::reverse(rev_res.begin(), rev_res.end());\n          rev_res.resize(len);\n\
     \          std::fill(rev_res.begin() + quo_size_res, rev_res.end(), mod_t(0));\n\
     \          dft(len, rev_res.data());\n          for (int i = 0; i != len; ++i)\
     \ rev_res[i] *= rev_mod_inv[i];\n          idft(len, rev_res.data());\n      \
@@ -321,11 +320,11 @@ data:
     \        for (int i = 0; i != len2; ++i) cpy[i] -= rev_cpy[i];\n      }\n    }\n\
     #undef MODIFY_POLY\n    res.shrink();\n    return res;\n  }\n\n  poly shift(mod_t\
     \ c) const {\n    static std::vector<mod_t> FAC, IFAC;\n    int lim = FAC.size();\n\
-    \    int n = this->deg();\n    if (n < 1) return poly(*this);\n    if (lim <=\
+    \    int n   = this->deg();\n    if (n < 1) return poly(*this);\n    if (lim <=\
     \ n) {\n      FAC.resize(n + 1);\n      IFAC.resize(n + 1);\n      if (lim ==\
     \ 0) FAC[0] = IFAC[0] = mod_t(1), lim = 1;\n      for (int i = lim; i <= n; ++i)\
     \ FAC[i] = FAC[i - 1] * mod_t(i);\n      IFAC.back() = mod_t(1) / FAC.back();\n\
-    \      mod_t t = IFAC.back();\n      for (int i = n - 1; i >= lim; --i) IFAC[i]\
+    \      mod_t t     = IFAC.back();\n      for (int i = n - 1; i >= lim; --i) IFAC[i]\
     \ = (t *= mod_t(i + 1));\n    }\n    poly A(*this), B(n + 1);\n    mod_t c_i(1);\n\
     \    for (int i = 0; i <= n; ++i) A[i] *= FAC[i], B[i] = c_i * IFAC[i], c_i *=\
     \ c;\n    std::reverse(A.begin(), A.end());\n    A *= B;\n    A.resize(n + 1);\n\
@@ -336,7 +335,7 @@ data:
     \ poly &lhs, const poly &rhs) { return poly(lhs) *= rhs; }\n  friend poly operator/(const\
     \ poly &lhs, const poly &rhs) { return poly(lhs) /= rhs; }\n  friend poly operator%(const\
     \ poly &lhs, const poly &rhs) { return poly(lhs) %= rhs; }\n};\n\ntemplate <typename\
-    \ mod_t> using Poly = Polynomial<mod_t>;\n\n} // namespace lib\n\n\n"
+    \ mod_t>\nusing Poly = Polynomial<mod_t>;\n\n} // namespace lib\n\n\n"
   code: "#ifndef POLYNOMIAL_HEADER_HPP\n#define POLYNOMIAL_HEADER_HPP\n\n/**\n * @brief\
     \ polynomial / \u591A\u9879\u5F0F\n * @docs docs/math/formal_power_series/polynomial.md\n\
     \ */\n\n#include \"formal_power_series.hpp\"\n\nnamespace lib {\n\n/**\n * @brief\
@@ -346,8 +345,8 @@ data:
     \u6B62\u8C03\u7528\u57FA\u7C7B\u7684\u51FD\u6570\n *       \u8FD9\u88AB\u79F0\u4E3A\
     \u9690\u85CF\uFF08 hide \uFF09\u3002\n *       \u800C\u5982\u679C\u4F7F\u7528\u4E86\
     \ virtual \u5219\u88AB\u79F0\u4E3A\u8986\u76D6\uFF08 override \uFF09\uFF0C\u800C\
-    \u8986\u76D6\u4F1A\u5BFC\u51FA\u591A\u6001\u3002\n */\ntemplate <typename mod_t>\
-    \ class Polynomial : public FormalPowerSeries<mod_t> {\npublic:\n  using fps =\
+    \u8986\u76D6\u4F1A\u5BFC\u51FA\u591A\u6001\u3002\n */\ntemplate <typename mod_t>\n\
+    class Polynomial : public FormalPowerSeries<mod_t> {\npublic:\n  using fps  =\
     \ FormalPowerSeries<mod_t>;\n  using poly = Polynomial<mod_t>;\n  using fps::fps;\n\
     \n  // \u4F7F\u5F97\u80FD\u591F\u4ECE FormalPowerSeries \u8F6C\u6362\u4E3A Polynomial\
     \ \u7C7B\u578B\uFF0C\u4F46\u4E0D\u6E05\u695A\u662F\u5426\u6709\u4EC0\u4E48\u95EE\
@@ -399,29 +398,28 @@ data:
     \ &mod) const {\n    int rem_size = mod.deg();\n    assert(rem_size >= 0);\n \
     \   if (rem_size == 0) return poly{0};\n    poly res{1}, cpy(*this % mod), mod_cpy(mod),\
     \ rev_mod(mod);\n    mod_cpy.shrink();\n    rev_mod.shrink();\n    std::reverse(rev_mod.begin(),\
-    \ rev_mod.end()); // x^{deg(mod)}mod(-x)\n    int len = get_ntt_len((rem_size\
-    \ << 1) - 1);   // \u4E24\u4E2A rem_size \u957F\u7684\u591A\u9879\u5F0F\u76F8\u4E58\
-    \n    int len2 = get_ntt_len(rem_size);\n    int mask = len2 - 1;\n    int max_quo_size\
-    \ = rem_size;\n#define MODIFY_POLY(t)                                        \
-    \                                     \\\n  {                                \
-    \                                                                \\\n    for (int\
-    \ i = len2, ie = t.size(); i < ie; ++i) t[i & mask] += t[i];                 \
-    \           \\\n    t.resize(len2);                                          \
-    \                                      \\\n  }\n    MODIFY_POLY(mod_cpy);\n  \
-    \  dft(len2, mod_cpy.data());\n    poly rev_mod_inv(rev_mod.inv(max_quo_size));\n\
-    \    rev_mod_inv.resize(len, mod_t(0));\n    dft(len, rev_mod_inv.data());\n \
-    \   for (; e; e >>= 1) {\n      if (e & 1) {\n        // res=res*cpy%mod,cpy=cpy*cpy%mod\n\
-    \        // \u5148\u8FDB\u884C\u4E24\u6B21\u5377\u79EF\uFF0C\u540E\u7FFB\u8F6C\
-    \uFF0C\u53D6\u524D quo_size \u9879\u4E0E rev_mod \u7684\u9006\u5377\u79EF\u6C42\
-    \u51FA rev_quo\n        // \u7FFB\u8F6C\u6C42\u51FA quo \u540E\u4E0E mod \u5377\
-    \u79EF\uFF0C\u8FD9\u4E00\u6B65\u7684 dft \u53EF\u4EE5\u5728 O(deg(mod)) \u7EA7\
-    \u522B\n        // \u540E\u4F5C\u4E00\u6B21\u51CF\u6CD5\u5373\u53EF\n        res.resize(len,\
-    \ mod_t(0));\n        cpy.resize(len, mod_t(0));\n        dft(len, res.data());\n\
-    \        dft(len, cpy.data());\n        for (int i = 0; i != len; ++i) res[i]\
-    \ *= cpy[i], cpy[i] *= cpy[i];\n        idft(len, res.data());\n        idft(len,\
-    \ cpy.data());\n        int quo_size_res = res.deg() - rem_size + 1;\n       \
-    \ if (quo_size_res > 0) {\n          poly rev_res(res);\n          rev_res.shrink();\n\
-    \          std::reverse(rev_res.begin(), rev_res.end());\n          rev_res.resize(len);\n\
+    \ rev_mod.end());        // x^{deg(mod)}mod(-x)\n    int len          = get_ntt_len((rem_size\
+    \ << 1) - 1); // \u4E24\u4E2A rem_size \u957F\u7684\u591A\u9879\u5F0F\u76F8\u4E58\
+    \n    int len2         = get_ntt_len(rem_size);\n    int mask         = len2 -\
+    \ 1;\n    int max_quo_size = rem_size;\n#define MODIFY_POLY(t)               \
+    \                                   \\\n  {                                  \
+    \                                   \\\n    for (int i = len2, ie = t.size();\
+    \ i < ie; ++i) t[i & mask] += t[i]; \\\n    t.resize(len2);                  \
+    \                                   \\\n  }\n    MODIFY_POLY(mod_cpy);\n    dft(len2,\
+    \ mod_cpy.data());\n    poly rev_mod_inv(rev_mod.inv(max_quo_size));\n    rev_mod_inv.resize(len,\
+    \ mod_t(0));\n    dft(len, rev_mod_inv.data());\n    for (; e; e >>= 1) {\n  \
+    \    if (e & 1) {\n        // res=res*cpy%mod,cpy=cpy*cpy%mod\n        // \u5148\
+    \u8FDB\u884C\u4E24\u6B21\u5377\u79EF\uFF0C\u540E\u7FFB\u8F6C\uFF0C\u53D6\u524D\
+    \ quo_size \u9879\u4E0E rev_mod \u7684\u9006\u5377\u79EF\u6C42\u51FA rev_quo\n\
+    \        // \u7FFB\u8F6C\u6C42\u51FA quo \u540E\u4E0E mod \u5377\u79EF\uFF0C\u8FD9\
+    \u4E00\u6B65\u7684 dft \u53EF\u4EE5\u5728 O(deg(mod)) \u7EA7\u522B\n        //\
+    \ \u540E\u4F5C\u4E00\u6B21\u51CF\u6CD5\u5373\u53EF\n        res.resize(len, mod_t(0));\n\
+    \        cpy.resize(len, mod_t(0));\n        dft(len, res.data());\n        dft(len,\
+    \ cpy.data());\n        for (int i = 0; i != len; ++i) res[i] *= cpy[i], cpy[i]\
+    \ *= cpy[i];\n        idft(len, res.data());\n        idft(len, cpy.data());\n\
+    \        int quo_size_res = res.deg() - rem_size + 1;\n        if (quo_size_res\
+    \ > 0) {\n          poly rev_res(res);\n          rev_res.shrink();\n        \
+    \  std::reverse(rev_res.begin(), rev_res.end());\n          rev_res.resize(len);\n\
     \          std::fill(rev_res.begin() + quo_size_res, rev_res.end(), mod_t(0));\n\
     \          dft(len, rev_res.data());\n          for (int i = 0; i != len; ++i)\
     \ rev_res[i] *= rev_mod_inv[i];\n          idft(len, rev_res.data());\n      \
@@ -442,11 +440,11 @@ data:
     \        for (int i = 0; i != len2; ++i) cpy[i] -= rev_cpy[i];\n      }\n    }\n\
     #undef MODIFY_POLY\n    res.shrink();\n    return res;\n  }\n\n  poly shift(mod_t\
     \ c) const {\n    static std::vector<mod_t> FAC, IFAC;\n    int lim = FAC.size();\n\
-    \    int n = this->deg();\n    if (n < 1) return poly(*this);\n    if (lim <=\
+    \    int n   = this->deg();\n    if (n < 1) return poly(*this);\n    if (lim <=\
     \ n) {\n      FAC.resize(n + 1);\n      IFAC.resize(n + 1);\n      if (lim ==\
     \ 0) FAC[0] = IFAC[0] = mod_t(1), lim = 1;\n      for (int i = lim; i <= n; ++i)\
     \ FAC[i] = FAC[i - 1] * mod_t(i);\n      IFAC.back() = mod_t(1) / FAC.back();\n\
-    \      mod_t t = IFAC.back();\n      for (int i = n - 1; i >= lim; --i) IFAC[i]\
+    \      mod_t t     = IFAC.back();\n      for (int i = n - 1; i >= lim; --i) IFAC[i]\
     \ = (t *= mod_t(i + 1));\n    }\n    poly A(*this), B(n + 1);\n    mod_t c_i(1);\n\
     \    for (int i = 0; i <= n; ++i) A[i] *= FAC[i], B[i] = c_i * IFAC[i], c_i *=\
     \ c;\n    std::reverse(A.begin(), A.end());\n    A *= B;\n    A.resize(n + 1);\n\
@@ -457,7 +455,7 @@ data:
     \ poly &lhs, const poly &rhs) { return poly(lhs) *= rhs; }\n  friend poly operator/(const\
     \ poly &lhs, const poly &rhs) { return poly(lhs) /= rhs; }\n  friend poly operator%(const\
     \ poly &lhs, const poly &rhs) { return poly(lhs) %= rhs; }\n};\n\ntemplate <typename\
-    \ mod_t> using Poly = Polynomial<mod_t>;\n\n} // namespace lib\n\n#endif"
+    \ mod_t>\nusing Poly = Polynomial<mod_t>;\n\n} // namespace lib\n\n#endif"
   dependsOn:
   - math/formal_power_series/formal_power_series.hpp
   - traits/modint.hpp
@@ -465,8 +463,8 @@ data:
   isVerificationFile: false
   path: math/formal_power_series/polynomial.hpp
   requiredBy: []
-  timestamp: '2021-07-13 17:52:29+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-07-15 14:25:20+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
   - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp

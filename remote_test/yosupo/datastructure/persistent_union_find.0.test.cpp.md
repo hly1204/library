@@ -49,10 +49,10 @@ data:
     \ u, v});\n    g[k].push_back(i);\n  }\n  lib::RollbackableDisjointSet ds(n);\n\
     \  std::function<void(int)> dfs = [&](int s) {\n    auto [a, b, c] = query[s];\n\
     \    if (a == 1) {\n      ans[s] = int(ds.same(b, c));\n    } else {\n      b\
-    \ = ds.find(b);\n      c = ds.find(c);\n      bool flag = (b != c);\n      if\
-    \ (flag) ds.unite(b, c);\n      for (auto i : g[s]) dfs(i);\n      if (flag) ds.undo();\n\
-    \    }\n  };\n  for (auto i : g[0]) dfs(i);\n  for (auto i : ans)\n    if (i !=\
-    \ -1) std::cout << i << '\\n';\n  return 0;\n}\n"
+    \         = ds.find(b);\n      c         = ds.find(c);\n      bool flag = (b !=\
+    \ c);\n      if (flag) ds.unite(b, c);\n      for (auto i : g[s]) dfs(i);\n  \
+    \    if (flag) ds.undo();\n    }\n  };\n  for (auto i : g[0]) dfs(i);\n  for (auto\
+    \ i : ans)\n    if (i != -1) std::cout << i << '\\n';\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/persistent_unionfind\"\n\
     \n#include <functional>\n#include <iostream>\n#include <vector>\n\n#include \"\
     datastructure/basic/rollbackable_disjoint_set.hpp\"\n\nint main() {\n#ifdef LOCAL\n\
@@ -64,17 +64,17 @@ data:
     \ t >> k >> u >> v;\n    ++k; // let k in [0, i]\n    query.push_back({t, u, v});\n\
     \    g[k].push_back(i);\n  }\n  lib::RollbackableDisjointSet ds(n);\n  std::function<void(int)>\
     \ dfs = [&](int s) {\n    auto [a, b, c] = query[s];\n    if (a == 1) {\n    \
-    \  ans[s] = int(ds.same(b, c));\n    } else {\n      b = ds.find(b);\n      c\
-    \ = ds.find(c);\n      bool flag = (b != c);\n      if (flag) ds.unite(b, c);\n\
-    \      for (auto i : g[s]) dfs(i);\n      if (flag) ds.undo();\n    }\n  };\n\
-    \  for (auto i : g[0]) dfs(i);\n  for (auto i : ans)\n    if (i != -1) std::cout\
+    \  ans[s] = int(ds.same(b, c));\n    } else {\n      b         = ds.find(b);\n\
+    \      c         = ds.find(c);\n      bool flag = (b != c);\n      if (flag) ds.unite(b,\
+    \ c);\n      for (auto i : g[s]) dfs(i);\n      if (flag) ds.undo();\n    }\n\
+    \  };\n  for (auto i : g[0]) dfs(i);\n  for (auto i : ans)\n    if (i != -1) std::cout\
     \ << i << '\\n';\n  return 0;\n}"
   dependsOn:
   - datastructure/basic/rollbackable_disjoint_set.hpp
   isVerificationFile: true
   path: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-17 19:06:03+08:00'
+  timestamp: '2021-07-15 14:25:20+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/datastructure/persistent_union_find.0.test.cpp

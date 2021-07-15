@@ -2,22 +2,22 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/matrix/black_box_linear_algebra.hpp
     title: "black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
     title: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/matrix_det.1.test.cpp
     title: remote_test/yosupo/matrix/matrix_det.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
     title: remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     _deprecated_at_docs: docs/math/modulo/find_shortest_LFSR_Berlekamp_Massey.md
     document_title: "find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\u77ED\
@@ -34,7 +34,7 @@ data:
     \n * @param s s_0, s_1, \u2026, s_{n-1}\n * @return std::vector<mod_t> C(x)=1+c_{1}*x+c_{2}*x^{2}+\
     \ \u2026 +c_{L}*x^{L}\n *         \u5BF9\u4E8E\u6240\u6709 i>=L \u548C s = s_0,\
     \ s_1, \u2026, s_{L-1}\n *         \u6EE1\u8DB3 s_{i} + c_{1}*s_{i-1} + c_{2}*s_{i-2}\
-    \ + \u2026 + c_{L}*s_{i-L} = 0\n */\ntemplate <typename mod_t> std::vector<mod_t>\
+    \ + \u2026 + c_{L}*s_{i-L} = 0\n */\ntemplate <typename mod_t>\nstd::vector<mod_t>\
     \ find_LFSR(const std::vector<mod_t> &s) {\n  const mod_t ZERO(0);\n  std::vector<mod_t>\
     \ C{mod_t(1)}, B(C);\n  mod_t b(1);\n  for (int N = 0, n = s.size(), L = 0, x\
     \ = 1; N < n; ++N) {\n    mod_t d(s[N]);\n    for (int i = 1; i <= L; ++i) d +=\
@@ -58,7 +58,7 @@ data:
     \n * @param s s_0, s_1, \u2026, s_{n-1}\n * @return std::vector<mod_t> C(x)=1+c_{1}*x+c_{2}*x^{2}+\
     \ \u2026 +c_{L}*x^{L}\n *         \u5BF9\u4E8E\u6240\u6709 i>=L \u548C s = s_0,\
     \ s_1, \u2026, s_{L-1}\n *         \u6EE1\u8DB3 s_{i} + c_{1}*s_{i-1} + c_{2}*s_{i-2}\
-    \ + \u2026 + c_{L}*s_{i-L} = 0\n */\ntemplate <typename mod_t> std::vector<mod_t>\
+    \ + \u2026 + c_{L}*s_{i-L} = 0\n */\ntemplate <typename mod_t>\nstd::vector<mod_t>\
     \ find_LFSR(const std::vector<mod_t> &s) {\n  const mod_t ZERO(0);\n  std::vector<mod_t>\
     \ C{mod_t(1)}, B(C);\n  mod_t b(1);\n  for (int N = 0, n = s.size(), L = 0, x\
     \ = 1; N < n; ++N) {\n    mod_t d(s[N]);\n    for (int i = 1; i <= L; ++i) d +=\
@@ -76,8 +76,8 @@ data:
   path: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
   requiredBy:
   - math/matrix/black_box_linear_algebra.hpp
-  timestamp: '2021-07-07 14:30:52+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2021-07-15 14:25:20+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.1.test.cpp
   - remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp

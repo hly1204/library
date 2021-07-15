@@ -17,8 +17,8 @@ data:
     \n\n/**\n * @brief single source shortest path Bellman-Ford / \u5355\u6E90\u6700\
     \u77ED\u8DEF Bellman-Ford \u7B97\u6CD5\n *\n */\n\n#include <limits>\n#include\
     \ <queue>\n#include <utility>\n#include <vector>\n\nnamespace lib {\n\ntemplate\
-    \ <typename DistType> class ShortestPathGraph {\npublic:\n  struct InputEdge {\n\
-    \    int from, to;\n    DistType dist;\n    InputEdge(int from, int to, DistType\
+    \ <typename DistType>\nclass ShortestPathGraph {\npublic:\n  struct InputEdge\
+    \ {\n    int from, to;\n    DistType dist;\n    InputEdge(int from, int to, DistType\
     \ dist) : from(from), to(to), dist(dist) {}\n    ~InputEdge() = default;\n  };\n\
     \n  struct Edge {\n    int to;\n    DistType dist;\n  };\n\n  ShortestPathGraph(int\
     \ n) : n_(n) {}\n  ~ShortestPathGraph() = default;\n\n  void add_directed_edge(int\
@@ -36,7 +36,7 @@ data:
     \ inq(n_, false);\n    int pass = 0, last = source;\n    dist[source] = 0;\n \
     \   q.push_back(source);\n    inq[source] = true;\n    while (!q.empty()) {\n\
     \      int t = q.front();\n      q.pop_front();\n      inq[t] = false;\n     \
-    \ for (int i = idx[t], ie = idx[t + 1]; i < ie; ++i) {\n        int to = edge[i].to;\n\
+    \ for (int i = idx[t], ie = idx[t + 1]; i < ie; ++i) {\n        int to     = edge[i].to;\n\
     \        DistType d = edge[i].dist;\n        if (dist[t] + d < dist[to]) {\n \
     \         dist[to] = dist[t] + d;\n          pred[to] = t;\n          if (!inq[to])\
     \ {\n            inq[to] = true;\n            q.push_back(to);\n          }\n\
@@ -49,8 +49,8 @@ data:
     \n/**\n * @brief single source shortest path Bellman-Ford / \u5355\u6E90\u6700\
     \u77ED\u8DEF Bellman-Ford \u7B97\u6CD5\n *\n */\n\n#include <limits>\n#include\
     \ <queue>\n#include <utility>\n#include <vector>\n\nnamespace lib {\n\ntemplate\
-    \ <typename DistType> class ShortestPathGraph {\npublic:\n  struct InputEdge {\n\
-    \    int from, to;\n    DistType dist;\n    InputEdge(int from, int to, DistType\
+    \ <typename DistType>\nclass ShortestPathGraph {\npublic:\n  struct InputEdge\
+    \ {\n    int from, to;\n    DistType dist;\n    InputEdge(int from, int to, DistType\
     \ dist) : from(from), to(to), dist(dist) {}\n    ~InputEdge() = default;\n  };\n\
     \n  struct Edge {\n    int to;\n    DistType dist;\n  };\n\n  ShortestPathGraph(int\
     \ n) : n_(n) {}\n  ~ShortestPathGraph() = default;\n\n  void add_directed_edge(int\
@@ -68,7 +68,7 @@ data:
     \ inq(n_, false);\n    int pass = 0, last = source;\n    dist[source] = 0;\n \
     \   q.push_back(source);\n    inq[source] = true;\n    while (!q.empty()) {\n\
     \      int t = q.front();\n      q.pop_front();\n      inq[t] = false;\n     \
-    \ for (int i = idx[t], ie = idx[t + 1]; i < ie; ++i) {\n        int to = edge[i].to;\n\
+    \ for (int i = idx[t], ie = idx[t + 1]; i < ie; ++i) {\n        int to     = edge[i].to;\n\
     \        DistType d = edge[i].dist;\n        if (dist[t] + d < dist[to]) {\n \
     \         dist[to] = dist[t] + d;\n          pred[to] = t;\n          if (!inq[to])\
     \ {\n            inq[to] = true;\n            q.push_back(to);\n          }\n\
@@ -81,7 +81,7 @@ data:
   isVerificationFile: false
   path: graph/single_source_shortest_path_Bellman_Ford.hpp
   requiredBy: []
-  timestamp: '2021-07-01 12:57:32+08:00'
+  timestamp: '2021-07-15 14:25:20+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizuoj/graph/shortest_path_negative.0.test.cpp

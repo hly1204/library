@@ -28,10 +28,10 @@ data:
     \ power / \u5FEB\u901F\u5E42\n *\n */\n\n#include <cassert>\n#include <type_traits>\n\
     \n#line 1 \"traits/base.hpp\"\n\n\n\n/**\n * @brief type traits / \u7C7B\u578B\
     \u8403\u53D6\n *\n */\n\n#include <cstdint>\n#line 11 \"traits/base.hpp\"\n\n\
-    namespace lib {\n\ntemplate <typename Type> struct promote_integral;\ntemplate\
-    \ <> struct promote_integral<std::int32_t> { using type = std::int64_t; };\ntemplate\
-    \ <> struct promote_integral<std::uint32_t> { using type = std::uint64_t; };\n\
-    \n// \u8F85\u52A9\u6A21\u677F\ntemplate <typename Type> using promote_integral_t\
+    namespace lib {\n\ntemplate <typename Type>\nstruct promote_integral;\ntemplate\
+    \ <>\nstruct promote_integral<std::int32_t> {\n  using type = std::int64_t;\n\
+    };\ntemplate <>\nstruct promote_integral<std::uint32_t> {\n  using type = std::uint64_t;\n\
+    };\n\n// \u8F85\u52A9\u6A21\u677F\ntemplate <typename Type>\nusing promote_integral_t\
     \ = typename promote_integral<Type>::type;\n\ntemplate <typename T, typename U>\n\
     using longer_integral_t =\n    std::conditional_t<(sizeof(T) > sizeof(U) || (sizeof(T)\
     \ == sizeof(U) && std::is_signed_v<T>)),\n                       T, U>;\n\n} //\
@@ -89,7 +89,7 @@ data:
   path: math/basic/binary_pow.hpp
   requiredBy:
   - math/modulo/binomial_coefficient_mod.hpp
-  timestamp: '2021-07-05 15:23:46+08:00'
+  timestamp: '2021-07-15 14:25:20+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizuoj/number_theory/binary_pow.0.test.cpp
