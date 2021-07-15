@@ -17,85 +17,89 @@ data:
     document_title: "multi-point evaluation & interpolation / \u591A\u70B9\u6C42\u503C\
       \u548C\u63D2\u503C"
     links: []
-  bundledCode: "#line 1 \"math/formal_power_series/subproduct_tree.hpp\"\n\n\n\n/**\n\
-    \ * @brief multi-point evaluation & interpolation / \u591A\u70B9\u6C42\u503C\u548C\
-    \u63D2\u503C\n * @docs docs/math/formal_power_series/subproduct_tree.md\n */\n\
-    \n#include <cassert>\n#include <functional>\n#include <numeric>\n#include <vector>\n\
-    \nnamespace lib {\n\ntemplate <typename mod_t, typename PolyType>\nclass SubproductTree\
-    \ {\npublic:\n  SubproductTree(const std::vector<mod_t> &x_set) : tree_(x_set.size()\
-    \ << 2) {\n    assert(!tree_.empty());\n    // tree_ \u4E3A 1-indexed\n    std::function<void(int,\
-    \ int, int)> build_tree = [&](int idx, int l, int r) {\n      if (l == r - 1)\
-    \ {\n        tree_[idx] = PolyType{-x_set[l], mod_t(1)};\n      } else {\n   \
-    \     build_tree(idx << 1, l, (l + r) >> 1), build_tree(idx << 1 | 1, (l + r)\
-    \ >> 1, r);\n        tree_[idx] = tree_[idx << 1] * tree_[idx << 1 | 1];\n   \
-    \   }\n    };\n    build_tree(1, 0, x_set.size());\n  }\n  ~SubproductTree() =\
-    \ default;\n\n  std::vector<mod_t> godown(const PolyType &f) const {\n    std::vector<mod_t>\
-    \ res;\n    res.reserve(tree_.size() >> 2);\n    std::function<void(int, int,\
-    \ int, const PolyType &)> dfs = [&](int idx, int l, int r,\n                 \
-    \                                                  const PolyType &t) {\n    \
-    \  PolyType t_mod = t % tree_[idx];\n      if (l == r - 1) {\n        res.emplace_back(t_mod[0]);\n\
-    \      } else {\n        dfs(idx << 1, l, (l + r) >> 1, t_mod), dfs(idx << 1 |\
-    \ 1, (l + r) >> 1, r, t_mod);\n      }\n    };\n    dfs(1, 0, tree_.size() >>\
-    \ 2, f);\n    return res;\n  }\n\n  PolyType goup(const std::vector<mod_t> &y_set)\
-    \ const {\n    assert(y_set.size() == (tree_.size() >> 2));\n    std::vector<mod_t>\
-    \ in_set = godown(tree_[1].deriv());\n    std::vector<mod_t> p_sum(in_set.size()),\
-    \ n_set(in_set.size());\n    std::partial_sum(in_set.begin(), in_set.end(), p_sum.begin(),\
-    \ std::multiplies<>());\n    mod_t p_inv = mod_t(1) / p_sum.back();\n    for (int\
-    \ i = int(n_set.size()) - 1; i > 0; --i)\n      n_set[i] = p_sum[i - 1] * y_set[i]\
-    \ * p_inv, p_inv *= in_set[i];\n    n_set[0]                                 \
-    \  = y_set[0] * p_inv;\n    std::function<PolyType(int, int, int)> dfs = [&](int\
-    \ idx, int l, int r) {\n      if (l == r - 1) {\n        return PolyType{n_set[l]};\n\
-    \      } else {\n        return dfs(idx << 1, l, (l + r) >> 1) * tree_[idx <<\
-    \ 1 | 1] +\n               dfs(idx << 1 | 1, (l + r) >> 1, r) * tree_[idx << 1];\n\
-    \      }\n    };\n    return dfs(1, 0, y_set.size());\n  }\n\nprivate:\n  std::vector<PolyType>\
-    \ tree_;\n};\n\ntemplate <typename PolyType, typename mod_t>\nstd::vector<mod_t>\
-    \ evaluate(const PolyType &f, const std::vector<mod_t> &x_set) {\n  return SubproductTree<mod_t,\
-    \ PolyType>(x_set).godown(f);\n}\n\ntemplate <typename PolyType, typename mod_t>\n\
-    void interpolate(const std::vector<mod_t> &x_set, const std::vector<mod_t> &y_set,\
-    \ PolyType &res) {\n  res = SubproductTree<mod_t, PolyType>(x_set).goup(y_set);\n\
-    }\n\n} // namespace lib\n\n\n"
-  code: "#ifndef SUBPRODUCT_TREE_HEADER_HPP\n#define SUBPRODUCT_TREE_HEADER_HPP\n\n\
-    /**\n * @brief multi-point evaluation & interpolation / \u591A\u70B9\u6C42\u503C\
-    \u548C\u63D2\u503C\n * @docs docs/math/formal_power_series/subproduct_tree.md\n\
-    \ */\n\n#include <cassert>\n#include <functional>\n#include <numeric>\n#include\
-    \ <vector>\n\nnamespace lib {\n\ntemplate <typename mod_t, typename PolyType>\n\
-    class SubproductTree {\npublic:\n  SubproductTree(const std::vector<mod_t> &x_set)\
-    \ : tree_(x_set.size() << 2) {\n    assert(!tree_.empty());\n    // tree_ \u4E3A\
-    \ 1-indexed\n    std::function<void(int, int, int)> build_tree = [&](int idx,\
-    \ int l, int r) {\n      if (l == r - 1) {\n        tree_[idx] = PolyType{-x_set[l],\
-    \ mod_t(1)};\n      } else {\n        build_tree(idx << 1, l, (l + r) >> 1), build_tree(idx\
-    \ << 1 | 1, (l + r) >> 1, r);\n        tree_[idx] = tree_[idx << 1] * tree_[idx\
-    \ << 1 | 1];\n      }\n    };\n    build_tree(1, 0, x_set.size());\n  }\n  ~SubproductTree()\
-    \ = default;\n\n  std::vector<mod_t> godown(const PolyType &f) const {\n    std::vector<mod_t>\
-    \ res;\n    res.reserve(tree_.size() >> 2);\n    std::function<void(int, int,\
-    \ int, const PolyType &)> dfs = [&](int idx, int l, int r,\n                 \
-    \                                                  const PolyType &t) {\n    \
-    \  PolyType t_mod = t % tree_[idx];\n      if (l == r - 1) {\n        res.emplace_back(t_mod[0]);\n\
-    \      } else {\n        dfs(idx << 1, l, (l + r) >> 1, t_mod), dfs(idx << 1 |\
-    \ 1, (l + r) >> 1, r, t_mod);\n      }\n    };\n    dfs(1, 0, tree_.size() >>\
-    \ 2, f);\n    return res;\n  }\n\n  PolyType goup(const std::vector<mod_t> &y_set)\
-    \ const {\n    assert(y_set.size() == (tree_.size() >> 2));\n    std::vector<mod_t>\
-    \ in_set = godown(tree_[1].deriv());\n    std::vector<mod_t> p_sum(in_set.size()),\
-    \ n_set(in_set.size());\n    std::partial_sum(in_set.begin(), in_set.end(), p_sum.begin(),\
-    \ std::multiplies<>());\n    mod_t p_inv = mod_t(1) / p_sum.back();\n    for (int\
-    \ i = int(n_set.size()) - 1; i > 0; --i)\n      n_set[i] = p_sum[i - 1] * y_set[i]\
-    \ * p_inv, p_inv *= in_set[i];\n    n_set[0]                                 \
-    \  = y_set[0] * p_inv;\n    std::function<PolyType(int, int, int)> dfs = [&](int\
-    \ idx, int l, int r) {\n      if (l == r - 1) {\n        return PolyType{n_set[l]};\n\
-    \      } else {\n        return dfs(idx << 1, l, (l + r) >> 1) * tree_[idx <<\
-    \ 1 | 1] +\n               dfs(idx << 1 | 1, (l + r) >> 1, r) * tree_[idx << 1];\n\
-    \      }\n    };\n    return dfs(1, 0, y_set.size());\n  }\n\nprivate:\n  std::vector<PolyType>\
-    \ tree_;\n};\n\ntemplate <typename PolyType, typename mod_t>\nstd::vector<mod_t>\
-    \ evaluate(const PolyType &f, const std::vector<mod_t> &x_set) {\n  return SubproductTree<mod_t,\
-    \ PolyType>(x_set).godown(f);\n}\n\ntemplate <typename PolyType, typename mod_t>\n\
-    void interpolate(const std::vector<mod_t> &x_set, const std::vector<mod_t> &y_set,\
-    \ PolyType &res) {\n  res = SubproductTree<mod_t, PolyType>(x_set).goup(y_set);\n\
-    }\n\n} // namespace lib\n\n#endif"
+  bundledCode: "#line 1 \"math/formal_power_series/subproduct_tree.hpp\"\n\n\n\r\n\
+    /**\r\n * @brief multi-point evaluation & interpolation / \u591A\u70B9\u6C42\u503C\
+    \u548C\u63D2\u503C\r\n * @docs docs/math/formal_power_series/subproduct_tree.md\r\
+    \n */\r\n\r\n#include <cassert>\r\n#include <functional>\r\n#include <numeric>\r\
+    \n#include <vector>\r\n\r\nnamespace lib {\r\n\r\ntemplate <typename mod_t, typename\
+    \ PolyType>\r\nclass SubproductTree {\r\npublic:\r\n  SubproductTree(const std::vector<mod_t>\
+    \ &x_set) : tree_(x_set.size() << 2) {\r\n    assert(!tree_.empty());\r\n    //\
+    \ tree_ \u4E3A 1-indexed\r\n    std::function<void(int, int, int)> build_tree\
+    \ = [&](int idx, int l, int r) {\r\n      if (l == r - 1) {\r\n        tree_[idx]\
+    \ = PolyType{-x_set[l], mod_t(1)};\r\n      } else {\r\n        build_tree(idx\
+    \ << 1, l, (l + r) >> 1), build_tree(idx << 1 | 1, (l + r) >> 1, r);\r\n     \
+    \   tree_[idx] = tree_[idx << 1] * tree_[idx << 1 | 1];\r\n      }\r\n    };\r\
+    \n    build_tree(1, 0, x_set.size());\r\n  }\r\n  ~SubproductTree() = default;\r\
+    \n\r\n  std::vector<mod_t> godown(const PolyType &f) const {\r\n    std::vector<mod_t>\
+    \ res;\r\n    res.reserve(tree_.size() >> 2);\r\n    std::function<void(int, int,\
+    \ int, const PolyType &)> dfs = [&](int idx, int l, int r,\r\n               \
+    \                                                    const PolyType &t) {\r\n\
+    \      PolyType t_mod = t % tree_[idx];\r\n      if (l == r - 1) {\r\n       \
+    \ res.emplace_back(t_mod[0]);\r\n      } else {\r\n        dfs(idx << 1, l, (l\
+    \ + r) >> 1, t_mod), dfs(idx << 1 | 1, (l + r) >> 1, r, t_mod);\r\n      }\r\n\
+    \    };\r\n    dfs(1, 0, tree_.size() >> 2, f);\r\n    return res;\r\n  }\r\n\r\
+    \n  PolyType goup(const std::vector<mod_t> &y_set) const {\r\n    assert(y_set.size()\
+    \ == (tree_.size() >> 2));\r\n    std::vector<mod_t> in_set = godown(tree_[1].deriv());\r\
+    \n    std::vector<mod_t> p_sum(in_set.size()), n_set(in_set.size());\r\n    std::partial_sum(in_set.begin(),\
+    \ in_set.end(), p_sum.begin(), std::multiplies<>());\r\n    mod_t p_inv = mod_t(1)\
+    \ / p_sum.back();\r\n    for (int i = int(n_set.size()) - 1; i > 0; --i)\r\n \
+    \     n_set[i] = p_sum[i - 1] * y_set[i] * p_inv, p_inv *= in_set[i];\r\n    n_set[0]\
+    \                                   = y_set[0] * p_inv;\r\n    std::function<PolyType(int,\
+    \ int, int)> dfs = [&](int idx, int l, int r) {\r\n      if (l == r - 1) {\r\n\
+    \        return PolyType{n_set[l]};\r\n      } else {\r\n        return dfs(idx\
+    \ << 1, l, (l + r) >> 1) * tree_[idx << 1 | 1] +\r\n               dfs(idx <<\
+    \ 1 | 1, (l + r) >> 1, r) * tree_[idx << 1];\r\n      }\r\n    };\r\n    return\
+    \ dfs(1, 0, y_set.size());\r\n  }\r\n\r\nprivate:\r\n  std::vector<PolyType> tree_;\r\
+    \n};\r\n\r\ntemplate <typename PolyType, typename mod_t>\r\nstd::vector<mod_t>\
+    \ evaluate(const PolyType &f, const std::vector<mod_t> &x_set) {\r\n  return SubproductTree<mod_t,\
+    \ PolyType>(x_set).godown(f);\r\n}\r\n\r\ntemplate <typename PolyType, typename\
+    \ mod_t>\r\nvoid interpolate(const std::vector<mod_t> &x_set, const std::vector<mod_t>\
+    \ &y_set, PolyType &res) {\r\n  res = SubproductTree<mod_t, PolyType>(x_set).goup(y_set);\r\
+    \n}\r\n\r\n} // namespace lib\r\n\r\n\n"
+  code: "#ifndef SUBPRODUCT_TREE_HEADER_HPP\r\n#define SUBPRODUCT_TREE_HEADER_HPP\r\
+    \n\r\n/**\r\n * @brief multi-point evaluation & interpolation / \u591A\u70B9\u6C42\
+    \u503C\u548C\u63D2\u503C\r\n * @docs docs/math/formal_power_series/subproduct_tree.md\r\
+    \n */\r\n\r\n#include <cassert>\r\n#include <functional>\r\n#include <numeric>\r\
+    \n#include <vector>\r\n\r\nnamespace lib {\r\n\r\ntemplate <typename mod_t, typename\
+    \ PolyType>\r\nclass SubproductTree {\r\npublic:\r\n  SubproductTree(const std::vector<mod_t>\
+    \ &x_set) : tree_(x_set.size() << 2) {\r\n    assert(!tree_.empty());\r\n    //\
+    \ tree_ \u4E3A 1-indexed\r\n    std::function<void(int, int, int)> build_tree\
+    \ = [&](int idx, int l, int r) {\r\n      if (l == r - 1) {\r\n        tree_[idx]\
+    \ = PolyType{-x_set[l], mod_t(1)};\r\n      } else {\r\n        build_tree(idx\
+    \ << 1, l, (l + r) >> 1), build_tree(idx << 1 | 1, (l + r) >> 1, r);\r\n     \
+    \   tree_[idx] = tree_[idx << 1] * tree_[idx << 1 | 1];\r\n      }\r\n    };\r\
+    \n    build_tree(1, 0, x_set.size());\r\n  }\r\n  ~SubproductTree() = default;\r\
+    \n\r\n  std::vector<mod_t> godown(const PolyType &f) const {\r\n    std::vector<mod_t>\
+    \ res;\r\n    res.reserve(tree_.size() >> 2);\r\n    std::function<void(int, int,\
+    \ int, const PolyType &)> dfs = [&](int idx, int l, int r,\r\n               \
+    \                                                    const PolyType &t) {\r\n\
+    \      PolyType t_mod = t % tree_[idx];\r\n      if (l == r - 1) {\r\n       \
+    \ res.emplace_back(t_mod[0]);\r\n      } else {\r\n        dfs(idx << 1, l, (l\
+    \ + r) >> 1, t_mod), dfs(idx << 1 | 1, (l + r) >> 1, r, t_mod);\r\n      }\r\n\
+    \    };\r\n    dfs(1, 0, tree_.size() >> 2, f);\r\n    return res;\r\n  }\r\n\r\
+    \n  PolyType goup(const std::vector<mod_t> &y_set) const {\r\n    assert(y_set.size()\
+    \ == (tree_.size() >> 2));\r\n    std::vector<mod_t> in_set = godown(tree_[1].deriv());\r\
+    \n    std::vector<mod_t> p_sum(in_set.size()), n_set(in_set.size());\r\n    std::partial_sum(in_set.begin(),\
+    \ in_set.end(), p_sum.begin(), std::multiplies<>());\r\n    mod_t p_inv = mod_t(1)\
+    \ / p_sum.back();\r\n    for (int i = int(n_set.size()) - 1; i > 0; --i)\r\n \
+    \     n_set[i] = p_sum[i - 1] * y_set[i] * p_inv, p_inv *= in_set[i];\r\n    n_set[0]\
+    \                                   = y_set[0] * p_inv;\r\n    std::function<PolyType(int,\
+    \ int, int)> dfs = [&](int idx, int l, int r) {\r\n      if (l == r - 1) {\r\n\
+    \        return PolyType{n_set[l]};\r\n      } else {\r\n        return dfs(idx\
+    \ << 1, l, (l + r) >> 1) * tree_[idx << 1 | 1] +\r\n               dfs(idx <<\
+    \ 1 | 1, (l + r) >> 1, r) * tree_[idx << 1];\r\n      }\r\n    };\r\n    return\
+    \ dfs(1, 0, y_set.size());\r\n  }\r\n\r\nprivate:\r\n  std::vector<PolyType> tree_;\r\
+    \n};\r\n\r\ntemplate <typename PolyType, typename mod_t>\r\nstd::vector<mod_t>\
+    \ evaluate(const PolyType &f, const std::vector<mod_t> &x_set) {\r\n  return SubproductTree<mod_t,\
+    \ PolyType>(x_set).godown(f);\r\n}\r\n\r\ntemplate <typename PolyType, typename\
+    \ mod_t>\r\nvoid interpolate(const std::vector<mod_t> &x_set, const std::vector<mod_t>\
+    \ &y_set, PolyType &res) {\r\n  res = SubproductTree<mod_t, PolyType>(x_set).goup(y_set);\r\
+    \n}\r\n\r\n} // namespace lib\r\n\r\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: math/formal_power_series/subproduct_tree.hpp
   requiredBy: []
-  timestamp: '2021-07-15 14:25:20+08:00'
+  timestamp: '2021-07-15 17:09:18+08:00'
   verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp

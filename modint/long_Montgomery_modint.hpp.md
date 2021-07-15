@@ -12,153 +12,162 @@ data:
       \u6A21\u7C7B"
     links:
     - https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
-  bundledCode: "#line 1 \"modint/long_Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief\
-    \ long Montgomery modint / \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n\
-    \ * @docs docs/modint/long_Montgomery_modint.md\n */\n\n#include <cstdint>\n#include\
-    \ <iostream>\n#include <tuple>\n#include <type_traits>\n\n#ifdef _MSC_VER\n  #include\
-    \ <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief \u957F\u6574\u578B Montgomery\
-    \ \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
-    \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    template <std::uint64_t mod>\nclass LongMontgomeryModInt {\npublic:\n  using u32\
-    \ = std::uint32_t;\n  using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n\
-    \  using m64 = LongMontgomeryModInt;\n\n  using value_type = u64;\n\n  static\
-    \ constexpr u64 get_mod() { return mod; }\n\n  static constexpr u64 get_primitive_root_prime()\
-    \ {\n    u64 tmp[64]   = {};\n    int cnt       = 0;\n    const u64 phi = mod\
-    \ - 1;\n    u64 m         = phi;\n    for (u64 i = 2; i * i <= m; ++i) {\n   \
-    \   if (m % i == 0) {\n        tmp[cnt++] = i;\n        do { m /= i; } while (m\
-    \ % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m64 res\
-    \ = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt && f;\
-    \ ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n    }\n\
-    \  }\n\n  constexpr LongMontgomeryModInt() = default;\n  ~LongMontgomeryModInt()\
-    \          = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
-    \ int> = 0>\n  constexpr LongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
-    \ r2))) {}\n\n  constexpr LongMontgomeryModInt(const m64 &) = default;\n\n  constexpr\
-    \ u64 get() const { return reduce({0, v_}); }\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
-    \ int> = 0>\n  explicit constexpr operator T() const {\n    return T(get());\n\
-    \  }\n\n  constexpr m64 operator-() const {\n    m64 res;\n    res.v_ = (mod &\
-    \ -(v_ != 0)) - v_;\n    return res;\n  }\n\n  constexpr m64 inv() const {\n \
-    \   i64 x1 = 1, x3 = 0, a = get(), b = mod;\n    while (b != 0) {\n      i64 q\
-    \ = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3 = x1_old - x3 * q, a = b,\
-    \ b = a_old - b * q;\n    }\n    return m64(x1);\n  }\n\n  constexpr m64 &operator=(const\
-    \ m64 &) = default;\n\n  constexpr m64 &operator+=(const m64 &rhs) {\n    v_ +=\
-    \ rhs.v_ - mod;\n    v_ += mod & -(v_ >> 63);\n    return *this;\n  }\n  constexpr\
-    \ m64 &operator-=(const m64 &rhs) {\n    v_ -= rhs.v_;\n    v_ += mod & -(v_ >>\
-    \ 63);\n    return *this;\n  }\n  constexpr m64 &operator*=(const m64 &rhs) {\n\
-    \    v_ = reduce(mul(v_, rhs.v_));\n    return *this;\n  }\n  constexpr m64 &operator/=(const\
-    \ m64 &rhs) { return operator*=(rhs.inv()); }\n  friend constexpr m64 operator+(const\
-    \ m64 &lhs, const m64 &rhs) { return m64(lhs) += rhs; }\n  friend constexpr m64\
-    \ operator-(const m64 &lhs, const m64 &rhs) { return m64(lhs) -= rhs; }\n  friend\
-    \ constexpr m64 operator*(const m64 &lhs, const m64 &rhs) { return m64(lhs) *=\
-    \ rhs; }\n  friend constexpr m64 operator/(const m64 &lhs, const m64 &rhs) { return\
-    \ m64(lhs) /= rhs; }\n  friend constexpr bool operator==(const m64 &lhs, const\
-    \ m64 &rhs) { return lhs.v_ == rhs.v_; }\n  friend constexpr bool operator!=(const\
-    \ m64 &lhs, const m64 &rhs) { return lhs.v_ != rhs.v_; }\n\n  friend std::istream\
-    \ &operator>>(std::istream &is, m64 &rhs) {\n    i64 x;\n    is >> x;\n    rhs\
-    \ = m64(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
-    \ &os, const m64 &rhs) { return os << rhs.get(); }\n\n  constexpr m64 pow(u64\
-    \ y) const {\n    m64 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n\
-    \      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static constexpr\
-    \ std::pair<u64, u64> mul(u64 x, u64 y) {\n#ifdef __GNUC__\n    unsigned __int128\
-    \ res = (unsigned __int128)x * y;\n    return {u64(res >> 64), u64(res)};\n#elif\
-    \ defined(_MSC_VER)\n    u64 h, l = _umul128(x, y, &h);\n    return {h, l};\n\
-    #else\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d, bc\
-    \ = b * c;\n    return {a * c + (ad >> 32) + (bc >> 32) +\n                (((ad\
-    \ & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32)) >> 32),\n           \
-    \ x * y};\n#endif\n  }\n\n  static constexpr u64 mulh(u64 x, u64 y) {\n#ifdef\
-    \ __GNUC__\n    return u64((unsigned __int128)x * y >> 64);\n#elif defined(_MSC_VER)\n\
-    \    return __umulh(x, y);\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32,\
-    \ d = u32(y), ad = a * d, bc = b * c;\n    return a * c + (ad >> 32) + (bc >>\
-    \ 32) +\n           (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32))\
-    \ >> 32);\n#endif\n  }\n\n  static constexpr u64 get_r() {\n    u64 two = 2, iv\
-    \ = mod * (two - mod * mod);\n    iv *= two - mod * iv;\n    iv *= two - mod *\
-    \ iv;\n    iv *= two - mod * iv;\n    return iv * (two - mod * iv);\n  }\n\n \
-    \ static constexpr u64 get_r2() {\n    u64 iv = -u64(mod) % mod;\n    for (int\
-    \ i = 0; i != 64; ++i)\n      if ((iv <<= 1) >= mod) iv -= mod;\n    return iv;\n\
-    \  }\n\n  static constexpr u64 reduce(const std::pair<u64, u64> &x) {\n    u64\
-    \ res = x.first - mulh(x.second * r, mod);\n    return res + (mod & -(res >> 63));\n\
-    \  }\n\n  static constexpr u64 norm(i64 x) { return x + (mod & -(x < 0)); }\n\n\
-    \  u64 v_;\n\n  static constexpr u64 r  = get_r();\n  static constexpr u64 r2\
-    \ = get_r2();\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(r\
-    \ * mod == 1, \"???\\n\");\n  static_assert((mod & (1ULL << 63)) == 0, \"mod >=\
-    \ (1ULL << 63)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\ntemplate\
-    \ <std::uint64_t mod>\nusing LongMontModInt = LongMontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n\n"
-  code: "#ifndef LONG_MONTGOMERY_MODINT_HEADER_HPP\n#define LONG_MONTGOMERY_MODINT_HEADER_HPP\n\
-    \n/**\n * @brief long Montgomery modint / \u957F\u6574\u578B Montgomery \u53D6\
-    \u6A21\u7C7B\n * @docs docs/modint/long_Montgomery_modint.md\n */\n\n#include\
-    \ <cstdint>\n#include <iostream>\n#include <tuple>\n#include <type_traits>\n\n\
-    #ifdef _MSC_VER\n  #include <intrin.h>\n#endif\n\nnamespace lib {\n\n/**\n * @brief\
-    \ \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
-    \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    template <std::uint64_t mod>\nclass LongMontgomeryModInt {\npublic:\n  using u32\
-    \ = std::uint32_t;\n  using i64 = std::int64_t;\n  using u64 = std::uint64_t;\n\
-    \  using m64 = LongMontgomeryModInt;\n\n  using value_type = u64;\n\n  static\
-    \ constexpr u64 get_mod() { return mod; }\n\n  static constexpr u64 get_primitive_root_prime()\
-    \ {\n    u64 tmp[64]   = {};\n    int cnt       = 0;\n    const u64 phi = mod\
-    \ - 1;\n    u64 m         = phi;\n    for (u64 i = 2; i * i <= m; ++i) {\n   \
-    \   if (m % i == 0) {\n        tmp[cnt++] = i;\n        do { m /= i; } while (m\
-    \ % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m64 res\
-    \ = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt && f;\
-    \ ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n    }\n\
-    \  }\n\n  constexpr LongMontgomeryModInt() = default;\n  ~LongMontgomeryModInt()\
-    \          = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
-    \ int> = 0>\n  constexpr LongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)),\
-    \ r2))) {}\n\n  constexpr LongMontgomeryModInt(const m64 &) = default;\n\n  constexpr\
-    \ u64 get() const { return reduce({0, v_}); }\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
-    \ int> = 0>\n  explicit constexpr operator T() const {\n    return T(get());\n\
-    \  }\n\n  constexpr m64 operator-() const {\n    m64 res;\n    res.v_ = (mod &\
-    \ -(v_ != 0)) - v_;\n    return res;\n  }\n\n  constexpr m64 inv() const {\n \
-    \   i64 x1 = 1, x3 = 0, a = get(), b = mod;\n    while (b != 0) {\n      i64 q\
-    \ = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3 = x1_old - x3 * q, a = b,\
-    \ b = a_old - b * q;\n    }\n    return m64(x1);\n  }\n\n  constexpr m64 &operator=(const\
-    \ m64 &) = default;\n\n  constexpr m64 &operator+=(const m64 &rhs) {\n    v_ +=\
-    \ rhs.v_ - mod;\n    v_ += mod & -(v_ >> 63);\n    return *this;\n  }\n  constexpr\
-    \ m64 &operator-=(const m64 &rhs) {\n    v_ -= rhs.v_;\n    v_ += mod & -(v_ >>\
-    \ 63);\n    return *this;\n  }\n  constexpr m64 &operator*=(const m64 &rhs) {\n\
-    \    v_ = reduce(mul(v_, rhs.v_));\n    return *this;\n  }\n  constexpr m64 &operator/=(const\
-    \ m64 &rhs) { return operator*=(rhs.inv()); }\n  friend constexpr m64 operator+(const\
-    \ m64 &lhs, const m64 &rhs) { return m64(lhs) += rhs; }\n  friend constexpr m64\
-    \ operator-(const m64 &lhs, const m64 &rhs) { return m64(lhs) -= rhs; }\n  friend\
-    \ constexpr m64 operator*(const m64 &lhs, const m64 &rhs) { return m64(lhs) *=\
-    \ rhs; }\n  friend constexpr m64 operator/(const m64 &lhs, const m64 &rhs) { return\
-    \ m64(lhs) /= rhs; }\n  friend constexpr bool operator==(const m64 &lhs, const\
-    \ m64 &rhs) { return lhs.v_ == rhs.v_; }\n  friend constexpr bool operator!=(const\
-    \ m64 &lhs, const m64 &rhs) { return lhs.v_ != rhs.v_; }\n\n  friend std::istream\
-    \ &operator>>(std::istream &is, m64 &rhs) {\n    i64 x;\n    is >> x;\n    rhs\
-    \ = m64(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
-    \ &os, const m64 &rhs) { return os << rhs.get(); }\n\n  constexpr m64 pow(u64\
-    \ y) const {\n    m64 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n\
-    \      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static constexpr\
-    \ std::pair<u64, u64> mul(u64 x, u64 y) {\n#ifdef __GNUC__\n    unsigned __int128\
-    \ res = (unsigned __int128)x * y;\n    return {u64(res >> 64), u64(res)};\n#elif\
-    \ defined(_MSC_VER)\n    u64 h, l = _umul128(x, y, &h);\n    return {h, l};\n\
-    #else\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d, bc\
-    \ = b * c;\n    return {a * c + (ad >> 32) + (bc >> 32) +\n                (((ad\
-    \ & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32)) >> 32),\n           \
-    \ x * y};\n#endif\n  }\n\n  static constexpr u64 mulh(u64 x, u64 y) {\n#ifdef\
-    \ __GNUC__\n    return u64((unsigned __int128)x * y >> 64);\n#elif defined(_MSC_VER)\n\
-    \    return __umulh(x, y);\n#else\n    u64 a = x >> 32, b = u32(x), c = y >> 32,\
-    \ d = u32(y), ad = a * d, bc = b * c;\n    return a * c + (ad >> 32) + (bc >>\
-    \ 32) +\n           (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32))\
-    \ >> 32);\n#endif\n  }\n\n  static constexpr u64 get_r() {\n    u64 two = 2, iv\
-    \ = mod * (two - mod * mod);\n    iv *= two - mod * iv;\n    iv *= two - mod *\
-    \ iv;\n    iv *= two - mod * iv;\n    return iv * (two - mod * iv);\n  }\n\n \
-    \ static constexpr u64 get_r2() {\n    u64 iv = -u64(mod) % mod;\n    for (int\
-    \ i = 0; i != 64; ++i)\n      if ((iv <<= 1) >= mod) iv -= mod;\n    return iv;\n\
-    \  }\n\n  static constexpr u64 reduce(const std::pair<u64, u64> &x) {\n    u64\
-    \ res = x.first - mulh(x.second * r, mod);\n    return res + (mod & -(res >> 63));\n\
-    \  }\n\n  static constexpr u64 norm(i64 x) { return x + (mod & -(x < 0)); }\n\n\
-    \  u64 v_;\n\n  static constexpr u64 r  = get_r();\n  static constexpr u64 r2\
-    \ = get_r2();\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(r\
-    \ * mod == 1, \"???\\n\");\n  static_assert((mod & (1ULL << 63)) == 0, \"mod >=\
-    \ (1ULL << 63)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\ntemplate\
-    \ <std::uint64_t mod>\nusing LongMontModInt = LongMontgomeryModInt<mod>;\n\n}\
-    \ // namespace lib\n\n#endif"
+  bundledCode: "#line 1 \"modint/long_Montgomery_modint.hpp\"\n\n\n\r\n/**\r\n * @brief\
+    \ long Montgomery modint / \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\r\n\
+    \ * @docs docs/modint/long_Montgomery_modint.md\r\n */\r\n\r\n#include <cstdint>\r\
+    \n#include <iostream>\r\n#include <tuple>\r\n#include <type_traits>\r\n\r\n#ifdef\
+    \ _MSC_VER\r\n  #include <intrin.h>\r\n#endif\r\n\r\nnamespace lib {\r\n\r\n/**\r\
+    \n * @brief \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B\r\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\r\
+    \n * @author Nyaan\r\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\r\n\
+    \ */\r\ntemplate <std::uint64_t mod>\r\nclass LongMontgomeryModInt {\r\npublic:\r\
+    \n  using u32 = std::uint32_t;\r\n  using i64 = std::int64_t;\r\n  using u64 =\
+    \ std::uint64_t;\r\n  using m64 = LongMontgomeryModInt;\r\n\r\n  using value_type\
+    \ = u64;\r\n\r\n  static constexpr u64 get_mod() { return mod; }\r\n\r\n  static\
+    \ constexpr u64 get_primitive_root_prime() {\r\n    u64 tmp[64]   = {};\r\n  \
+    \  int cnt       = 0;\r\n    const u64 phi = mod - 1;\r\n    u64 m         = phi;\r\
+    \n    for (u64 i = 2; i * i <= m; ++i) {\r\n      if (m % i == 0) {\r\n      \
+    \  tmp[cnt++] = i;\r\n        do { m /= i; } while (m % i == 0);\r\n      }\r\n\
+    \    }\r\n    if (m != 1) tmp[cnt++] = m;\r\n    for (m64 res = 2;; res += 1)\
+    \ {\r\n      bool f = true;\r\n      for (int i = 0; i < cnt && f; ++i) f &= res.pow(phi\
+    \ / tmp[i]) != 1;\r\n      if (f) return u32(res);\r\n    }\r\n  }\r\n\r\n  constexpr\
+    \ LongMontgomeryModInt() = default;\r\n  ~LongMontgomeryModInt()          = default;\r\
+    \n\r\n  template <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\r\
+    \n  constexpr LongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)), r2)))\
+    \ {}\r\n\r\n  constexpr LongMontgomeryModInt(const m64 &) = default;\r\n\r\n \
+    \ constexpr u64 get() const { return reduce({0, v_}); }\r\n\r\n  template <typename\
+    \ T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\r\n  explicit constexpr\
+    \ operator T() const {\r\n    return T(get());\r\n  }\r\n\r\n  constexpr m64 operator-()\
+    \ const {\r\n    m64 res;\r\n    res.v_ = (mod & -(v_ != 0)) - v_;\r\n    return\
+    \ res;\r\n  }\r\n\r\n  constexpr m64 inv() const {\r\n    i64 x1 = 1, x3 = 0,\
+    \ a = get(), b = mod;\r\n    while (b != 0) {\r\n      i64 q = a / b, x1_old =\
+    \ x1, a_old = a;\r\n      x1 = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b\
+    \ * q;\r\n    }\r\n    return m64(x1);\r\n  }\r\n\r\n  constexpr m64 &operator=(const\
+    \ m64 &) = default;\r\n\r\n  constexpr m64 &operator+=(const m64 &rhs) {\r\n \
+    \   v_ += rhs.v_ - mod;\r\n    v_ += mod & -(v_ >> 63);\r\n    return *this;\r\
+    \n  }\r\n  constexpr m64 &operator-=(const m64 &rhs) {\r\n    v_ -= rhs.v_;\r\n\
+    \    v_ += mod & -(v_ >> 63);\r\n    return *this;\r\n  }\r\n  constexpr m64 &operator*=(const\
+    \ m64 &rhs) {\r\n    v_ = reduce(mul(v_, rhs.v_));\r\n    return *this;\r\n  }\r\
+    \n  constexpr m64 &operator/=(const m64 &rhs) { return operator*=(rhs.inv());\
+    \ }\r\n  friend constexpr m64 operator+(const m64 &lhs, const m64 &rhs) { return\
+    \ m64(lhs) += rhs; }\r\n  friend constexpr m64 operator-(const m64 &lhs, const\
+    \ m64 &rhs) { return m64(lhs) -= rhs; }\r\n  friend constexpr m64 operator*(const\
+    \ m64 &lhs, const m64 &rhs) { return m64(lhs) *= rhs; }\r\n  friend constexpr\
+    \ m64 operator/(const m64 &lhs, const m64 &rhs) { return m64(lhs) /= rhs; }\r\n\
+    \  friend constexpr bool operator==(const m64 &lhs, const m64 &rhs) { return lhs.v_\
+    \ == rhs.v_; }\r\n  friend constexpr bool operator!=(const m64 &lhs, const m64\
+    \ &rhs) { return lhs.v_ != rhs.v_; }\r\n\r\n  friend std::istream &operator>>(std::istream\
+    \ &is, m64 &rhs) {\r\n    i64 x;\r\n    is >> x;\r\n    rhs = m64(x);\r\n    return\
+    \ is;\r\n  }\r\n  friend std::ostream &operator<<(std::ostream &os, const m64\
+    \ &rhs) { return os << rhs.get(); }\r\n\r\n  constexpr m64 pow(u64 y) const {\r\
+    \n    m64 res(1), x(*this);\r\n    for (; y != 0; y >>= 1, x *= x)\r\n      if\
+    \ (y & 1) res *= x;\r\n    return res;\r\n  }\r\n\r\nprivate:\r\n  static constexpr\
+    \ std::pair<u64, u64> mul(u64 x, u64 y) {\r\n#ifdef __GNUC__\r\n    unsigned __int128\
+    \ res = (unsigned __int128)x * y;\r\n    return {u64(res >> 64), u64(res)};\r\n\
+    #elif defined(_MSC_VER)\r\n    u64 h, l = _umul128(x, y, &h);\r\n    return {h,\
+    \ l};\r\n#else\r\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad\
+    \ = a * d, bc = b * c;\r\n    return {a * c + (ad >> 32) + (bc >> 32) +\r\n  \
+    \              (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32)) >>\
+    \ 32),\r\n            x * y};\r\n#endif\r\n  }\r\n\r\n  static constexpr u64 mulh(u64\
+    \ x, u64 y) {\r\n#ifdef __GNUC__\r\n    return u64((unsigned __int128)x * y >>\
+    \ 64);\r\n#elif defined(_MSC_VER)\r\n    return __umulh(x, y);\r\n#else\r\n  \
+    \  u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d, bc = b *\
+    \ c;\r\n    return a * c + (ad >> 32) + (bc >> 32) +\r\n           (((ad & ~UINT32_C(0))\
+    \ + (bc & ~UINT32_C(0)) + (b * d >> 32)) >> 32);\r\n#endif\r\n  }\r\n\r\n  static\
+    \ constexpr u64 get_r() {\r\n    u64 two = 2, iv = mod * (two - mod * mod);\r\n\
+    \    iv *= two - mod * iv;\r\n    iv *= two - mod * iv;\r\n    iv *= two - mod\
+    \ * iv;\r\n    return iv * (two - mod * iv);\r\n  }\r\n\r\n  static constexpr\
+    \ u64 get_r2() {\r\n    u64 iv = -u64(mod) % mod;\r\n    for (int i = 0; i !=\
+    \ 64; ++i)\r\n      if ((iv <<= 1) >= mod) iv -= mod;\r\n    return iv;\r\n  }\r\
+    \n\r\n  static constexpr u64 reduce(const std::pair<u64, u64> &x) {\r\n    u64\
+    \ res = x.first - mulh(x.second * r, mod);\r\n    return res + (mod & -(res >>\
+    \ 63));\r\n  }\r\n\r\n  static constexpr u64 norm(i64 x) { return x + (mod & -(x\
+    \ < 0)); }\r\n\r\n  u64 v_;\r\n\r\n  static constexpr u64 r  = get_r();\r\n  static\
+    \ constexpr u64 r2 = get_r2();\r\n\r\n  static_assert((mod & 1) == 1, \"mod %\
+    \ 2 == 0\\n\");\r\n  static_assert(r * mod == 1, \"???\\n\");\r\n  static_assert((mod\
+    \ & (1ULL << 63)) == 0, \"mod >= (1ULL << 63)\\n\");\r\n  static_assert(mod !=\
+    \ 1, \"mod == 1\\n\");\r\n};\r\n\r\ntemplate <std::uint64_t mod>\r\nusing LongMontModInt\
+    \ = LongMontgomeryModInt<mod>;\r\n\r\n} // namespace lib\r\n\r\n\n"
+  code: "#ifndef LONG_MONTGOMERY_MODINT_HEADER_HPP\r\n#define LONG_MONTGOMERY_MODINT_HEADER_HPP\r\
+    \n\r\n/**\r\n * @brief long Montgomery modint / \u957F\u6574\u578B Montgomery\
+    \ \u53D6\u6A21\u7C7B\r\n * @docs docs/modint/long_Montgomery_modint.md\r\n */\r\
+    \n\r\n#include <cstdint>\r\n#include <iostream>\r\n#include <tuple>\r\n#include\
+    \ <type_traits>\r\n\r\n#ifdef _MSC_VER\r\n  #include <intrin.h>\r\n#endif\r\n\r\
+    \nnamespace lib {\r\n\r\n/**\r\n * @brief \u957F\u6574\u578B Montgomery \u53D6\
+    \u6A21\u7C7B\r\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\r\
+    \n * @author Nyaan\r\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\r\n\
+    \ */\r\ntemplate <std::uint64_t mod>\r\nclass LongMontgomeryModInt {\r\npublic:\r\
+    \n  using u32 = std::uint32_t;\r\n  using i64 = std::int64_t;\r\n  using u64 =\
+    \ std::uint64_t;\r\n  using m64 = LongMontgomeryModInt;\r\n\r\n  using value_type\
+    \ = u64;\r\n\r\n  static constexpr u64 get_mod() { return mod; }\r\n\r\n  static\
+    \ constexpr u64 get_primitive_root_prime() {\r\n    u64 tmp[64]   = {};\r\n  \
+    \  int cnt       = 0;\r\n    const u64 phi = mod - 1;\r\n    u64 m         = phi;\r\
+    \n    for (u64 i = 2; i * i <= m; ++i) {\r\n      if (m % i == 0) {\r\n      \
+    \  tmp[cnt++] = i;\r\n        do { m /= i; } while (m % i == 0);\r\n      }\r\n\
+    \    }\r\n    if (m != 1) tmp[cnt++] = m;\r\n    for (m64 res = 2;; res += 1)\
+    \ {\r\n      bool f = true;\r\n      for (int i = 0; i < cnt && f; ++i) f &= res.pow(phi\
+    \ / tmp[i]) != 1;\r\n      if (f) return u32(res);\r\n    }\r\n  }\r\n\r\n  constexpr\
+    \ LongMontgomeryModInt() = default;\r\n  ~LongMontgomeryModInt()          = default;\r\
+    \n\r\n  template <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\r\
+    \n  constexpr LongMontgomeryModInt(T v) : v_(reduce(mul(norm(v % i64(mod)), r2)))\
+    \ {}\r\n\r\n  constexpr LongMontgomeryModInt(const m64 &) = default;\r\n\r\n \
+    \ constexpr u64 get() const { return reduce({0, v_}); }\r\n\r\n  template <typename\
+    \ T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\r\n  explicit constexpr\
+    \ operator T() const {\r\n    return T(get());\r\n  }\r\n\r\n  constexpr m64 operator-()\
+    \ const {\r\n    m64 res;\r\n    res.v_ = (mod & -(v_ != 0)) - v_;\r\n    return\
+    \ res;\r\n  }\r\n\r\n  constexpr m64 inv() const {\r\n    i64 x1 = 1, x3 = 0,\
+    \ a = get(), b = mod;\r\n    while (b != 0) {\r\n      i64 q = a / b, x1_old =\
+    \ x1, a_old = a;\r\n      x1 = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b\
+    \ * q;\r\n    }\r\n    return m64(x1);\r\n  }\r\n\r\n  constexpr m64 &operator=(const\
+    \ m64 &) = default;\r\n\r\n  constexpr m64 &operator+=(const m64 &rhs) {\r\n \
+    \   v_ += rhs.v_ - mod;\r\n    v_ += mod & -(v_ >> 63);\r\n    return *this;\r\
+    \n  }\r\n  constexpr m64 &operator-=(const m64 &rhs) {\r\n    v_ -= rhs.v_;\r\n\
+    \    v_ += mod & -(v_ >> 63);\r\n    return *this;\r\n  }\r\n  constexpr m64 &operator*=(const\
+    \ m64 &rhs) {\r\n    v_ = reduce(mul(v_, rhs.v_));\r\n    return *this;\r\n  }\r\
+    \n  constexpr m64 &operator/=(const m64 &rhs) { return operator*=(rhs.inv());\
+    \ }\r\n  friend constexpr m64 operator+(const m64 &lhs, const m64 &rhs) { return\
+    \ m64(lhs) += rhs; }\r\n  friend constexpr m64 operator-(const m64 &lhs, const\
+    \ m64 &rhs) { return m64(lhs) -= rhs; }\r\n  friend constexpr m64 operator*(const\
+    \ m64 &lhs, const m64 &rhs) { return m64(lhs) *= rhs; }\r\n  friend constexpr\
+    \ m64 operator/(const m64 &lhs, const m64 &rhs) { return m64(lhs) /= rhs; }\r\n\
+    \  friend constexpr bool operator==(const m64 &lhs, const m64 &rhs) { return lhs.v_\
+    \ == rhs.v_; }\r\n  friend constexpr bool operator!=(const m64 &lhs, const m64\
+    \ &rhs) { return lhs.v_ != rhs.v_; }\r\n\r\n  friend std::istream &operator>>(std::istream\
+    \ &is, m64 &rhs) {\r\n    i64 x;\r\n    is >> x;\r\n    rhs = m64(x);\r\n    return\
+    \ is;\r\n  }\r\n  friend std::ostream &operator<<(std::ostream &os, const m64\
+    \ &rhs) { return os << rhs.get(); }\r\n\r\n  constexpr m64 pow(u64 y) const {\r\
+    \n    m64 res(1), x(*this);\r\n    for (; y != 0; y >>= 1, x *= x)\r\n      if\
+    \ (y & 1) res *= x;\r\n    return res;\r\n  }\r\n\r\nprivate:\r\n  static constexpr\
+    \ std::pair<u64, u64> mul(u64 x, u64 y) {\r\n#ifdef __GNUC__\r\n    unsigned __int128\
+    \ res = (unsigned __int128)x * y;\r\n    return {u64(res >> 64), u64(res)};\r\n\
+    #elif defined(_MSC_VER)\r\n    u64 h, l = _umul128(x, y, &h);\r\n    return {h,\
+    \ l};\r\n#else\r\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad\
+    \ = a * d, bc = b * c;\r\n    return {a * c + (ad >> 32) + (bc >> 32) +\r\n  \
+    \              (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32)) >>\
+    \ 32),\r\n            x * y};\r\n#endif\r\n  }\r\n\r\n  static constexpr u64 mulh(u64\
+    \ x, u64 y) {\r\n#ifdef __GNUC__\r\n    return u64((unsigned __int128)x * y >>\
+    \ 64);\r\n#elif defined(_MSC_VER)\r\n    return __umulh(x, y);\r\n#else\r\n  \
+    \  u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d, bc = b *\
+    \ c;\r\n    return a * c + (ad >> 32) + (bc >> 32) +\r\n           (((ad & ~UINT32_C(0))\
+    \ + (bc & ~UINT32_C(0)) + (b * d >> 32)) >> 32);\r\n#endif\r\n  }\r\n\r\n  static\
+    \ constexpr u64 get_r() {\r\n    u64 two = 2, iv = mod * (two - mod * mod);\r\n\
+    \    iv *= two - mod * iv;\r\n    iv *= two - mod * iv;\r\n    iv *= two - mod\
+    \ * iv;\r\n    return iv * (two - mod * iv);\r\n  }\r\n\r\n  static constexpr\
+    \ u64 get_r2() {\r\n    u64 iv = -u64(mod) % mod;\r\n    for (int i = 0; i !=\
+    \ 64; ++i)\r\n      if ((iv <<= 1) >= mod) iv -= mod;\r\n    return iv;\r\n  }\r\
+    \n\r\n  static constexpr u64 reduce(const std::pair<u64, u64> &x) {\r\n    u64\
+    \ res = x.first - mulh(x.second * r, mod);\r\n    return res + (mod & -(res >>\
+    \ 63));\r\n  }\r\n\r\n  static constexpr u64 norm(i64 x) { return x + (mod & -(x\
+    \ < 0)); }\r\n\r\n  u64 v_;\r\n\r\n  static constexpr u64 r  = get_r();\r\n  static\
+    \ constexpr u64 r2 = get_r2();\r\n\r\n  static_assert((mod & 1) == 1, \"mod %\
+    \ 2 == 0\\n\");\r\n  static_assert(r * mod == 1, \"???\\n\");\r\n  static_assert((mod\
+    \ & (1ULL << 63)) == 0, \"mod >= (1ULL << 63)\\n\");\r\n  static_assert(mod !=\
+    \ 1, \"mod == 1\\n\");\r\n};\r\n\r\ntemplate <std::uint64_t mod>\r\nusing LongMontModInt\
+    \ = LongMontgomeryModInt<mod>;\r\n\r\n} // namespace lib\r\n\r\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: modint/long_Montgomery_modint.hpp
   requiredBy: []
-  timestamp: '2021-07-15 14:25:20+08:00'
+  timestamp: '2021-07-15 17:09:18+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: modint/long_Montgomery_modint.hpp

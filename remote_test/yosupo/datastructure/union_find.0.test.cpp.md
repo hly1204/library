@@ -15,42 +15,44 @@ data:
     links:
     - https://judge.yosupo.jp/problem/unionfind
   bundledCode: "#line 1 \"remote_test/yosupo/datastructure/union_find.0.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/unionfind\"\n\n#line 1 \"\
-    datastructure/basic/disjoint_set.hpp\"\n\n\n\n/**\n * @brief disjoint set / \u5E76\
-    \u67E5\u96C6\n *\n */\n\n#include <vector>\n\nnamespace lib {\n\nclass DisjointSet\
-    \ {\npublic:\n  DisjointSet() = default;\n  DisjointSet(int n) : p_(n + 1), sz_(n\
-    \ + 1, 1) {\n    for (int i = 0; i <= n; ++i) p_[i] = i;\n  }\n  ~DisjointSet()\
-    \ = default;\n\n  void make_set(int n) {\n    p_.resize(n + 1);\n    sz_.assign(n\
-    \ + 1, 1);\n    for (int i = 0; i <= n; ++i) p_[i] = i;\n  }\n\n  int find(int\
-    \ u) { // path havling\n    while (p_[u] != p_[p_[u]]) u = p_[u] = p_[p_[u]];\n\
-    \    return p_[u];\n  }\n\n  bool same(int u, int v) { return find(u) == find(v);\
-    \ }\n\n  int unite(int u, int v) {\n    u = find(u), v = find(v);\n    if (u ==\
-    \ v) return u;\n    return link(u, v);\n  }\n\n  int get_component_size(int u)\
-    \ { return sz_[find(u)]; }\n\nprivate:\n  std::vector<int> p_, sz_;\n  int link(int\
-    \ u, int v) {\n    if (sz_[u] > sz_[v]) return link(v, u);\n    // u \u662F\u5C0F\
-    \u6811\uFF0C v \u662F\u5927\u6811\uFF0C\u628A\u5C0F\u6811\u63A5\u5230\u5927\u6811\
-    \u4E0A\n    sz_[v] += sz_[u];\n    // sz_[u] = 0;\n    return p_[u] = v;\n  }\n\
-    };\n\n} // namespace lib\n\n\n#line 4 \"remote_test/yosupo/datastructure/union_find.0.test.cpp\"\
-    \n\n#include <iostream>\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\",\
-    \ \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
-    \  std::cin.tie(0);\n  int n, q;\n  std::cin >> n >> q;\n  lib::DisjointSet ds(n);\n\
-    \  while (q--) {\n    int cmd, u, v;\n    std::cin >> cmd >> u >> v;\n    if (cmd\
-    \ == 0) {\n      ds.unite(u, v);\n    } else {\n      std::cout << int(ds.same(u,\
-    \ v)) << '\\n';\n    }\n  }\n  return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/unionfind\"\n\n#include\
-    \ \"datastructure/basic/disjoint_set.hpp\"\n\n#include <iostream>\n\nint main()\
-    \ {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\"\
-    , \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(0);\n\
-    \  int n, q;\n  std::cin >> n >> q;\n  lib::DisjointSet ds(n);\n  while (q--)\
-    \ {\n    int cmd, u, v;\n    std::cin >> cmd >> u >> v;\n    if (cmd == 0) {\n\
-    \      ds.unite(u, v);\n    } else {\n      std::cout << int(ds.same(u, v)) <<\
-    \ '\\n';\n    }\n  }\n  return 0;\n}"
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/unionfind\"\r\n\r\n#line 1\
+    \ \"datastructure/basic/disjoint_set.hpp\"\n\n\n\r\n/**\r\n * @brief disjoint\
+    \ set / \u5E76\u67E5\u96C6\r\n *\r\n */\r\n\r\n#include <vector>\r\n\r\nnamespace\
+    \ lib {\r\n\r\nclass DisjointSet {\r\npublic:\r\n  DisjointSet() = default;\r\n\
+    \  DisjointSet(int n) : p_(n + 1), sz_(n + 1, 1) {\r\n    for (int i = 0; i <=\
+    \ n; ++i) p_[i] = i;\r\n  }\r\n  ~DisjointSet() = default;\r\n\r\n  void make_set(int\
+    \ n) {\r\n    p_.resize(n + 1);\r\n    sz_.assign(n + 1, 1);\r\n    for (int i\
+    \ = 0; i <= n; ++i) p_[i] = i;\r\n  }\r\n\r\n  int find(int u) { // path havling\r\
+    \n    while (p_[u] != p_[p_[u]]) u = p_[u] = p_[p_[u]];\r\n    return p_[u];\r\
+    \n  }\r\n\r\n  bool same(int u, int v) { return find(u) == find(v); }\r\n\r\n\
+    \  int unite(int u, int v) {\r\n    u = find(u), v = find(v);\r\n    if (u ==\
+    \ v) return u;\r\n    return link(u, v);\r\n  }\r\n\r\n  int get_component_size(int\
+    \ u) { return sz_[find(u)]; }\r\n\r\nprivate:\r\n  std::vector<int> p_, sz_;\r\
+    \n  int link(int u, int v) {\r\n    if (sz_[u] > sz_[v]) return link(v, u);\r\n\
+    \    // u \u662F\u5C0F\u6811\uFF0C v \u662F\u5927\u6811\uFF0C\u628A\u5C0F\u6811\
+    \u63A5\u5230\u5927\u6811\u4E0A\r\n    sz_[v] += sz_[u];\r\n    // sz_[u] = 0;\r\
+    \n    return p_[u] = v;\r\n  }\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n#line\
+    \ 4 \"remote_test/yosupo/datastructure/union_find.0.test.cpp\"\n\r\n#include <iostream>\r\
+    \n\r\nint main() {\r\n#ifdef LOCAL\r\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\r\n#endif\r\n  std::ios::sync_with_stdio(false);\r\n  std::cin.tie(0);\r\
+    \n  int n, q;\r\n  std::cin >> n >> q;\r\n  lib::DisjointSet ds(n);\r\n  while\
+    \ (q--) {\r\n    int cmd, u, v;\r\n    std::cin >> cmd >> u >> v;\r\n    if (cmd\
+    \ == 0) {\r\n      ds.unite(u, v);\r\n    } else {\r\n      std::cout << int(ds.same(u,\
+    \ v)) << '\\n';\r\n    }\r\n  }\r\n  return 0;\r\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/unionfind\"\r\n\r\n#include\
+    \ \"datastructure/basic/disjoint_set.hpp\"\r\n\r\n#include <iostream>\r\n\r\n\
+    int main() {\r\n#ifdef LOCAL\r\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\r\n#endif\r\n  std::ios::sync_with_stdio(false);\r\n  std::cin.tie(0);\r\
+    \n  int n, q;\r\n  std::cin >> n >> q;\r\n  lib::DisjointSet ds(n);\r\n  while\
+    \ (q--) {\r\n    int cmd, u, v;\r\n    std::cin >> cmd >> u >> v;\r\n    if (cmd\
+    \ == 0) {\r\n      ds.unite(u, v);\r\n    } else {\r\n      std::cout << int(ds.same(u,\
+    \ v)) << '\\n';\r\n    }\r\n  }\r\n  return 0;\r\n}"
   dependsOn:
   - datastructure/basic/disjoint_set.hpp
   isVerificationFile: true
   path: remote_test/yosupo/datastructure/union_find.0.test.cpp
   requiredBy: []
-  timestamp: '2021-06-17 19:06:03+08:00'
+  timestamp: '2021-07-15 17:09:18+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/datastructure/union_find.0.test.cpp

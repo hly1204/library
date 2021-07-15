@@ -78,7 +78,7 @@ data:
       path: math/formal_power_series/formal_power_series.hpp
       title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
         \u7684\u57FA\u672C\u64CD\u4F5C"
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
       title: "linearly recurrent sequence Bostan-Mori / \u5E38\u7CFB\u6570\u7EBF\u6027\
         \u9012\u63A8\u5E8F\u5217 Bostan-Mori \u7B97\u6CD5"
@@ -124,7 +124,7 @@ data:
       path: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
       title: "find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\u77ED\u7EBF\
         \u6027\u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5"
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: math/modulo/sqrt_mod.hpp
       title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
   - name: misc
@@ -146,11 +146,11 @@ data:
     - icon: ':warning:'
       path: modint/long_Montgomery_modint.hpp
       title: "long Montgomery modint / \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B"
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: modint/runtime_Montgomery_modint.hpp
       title: "runtime Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\
         \u7C7B"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint/runtime_long_Montgomery_modint.hpp
       title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
         \ Montgomery \u53D6\u6A21\u7C7B"
@@ -247,25 +247,25 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
       title: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
       title: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
       title: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
       title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
       title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
       title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
       title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
       title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
     - icon: ':x:'

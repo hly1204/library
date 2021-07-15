@@ -21,22 +21,22 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
     title: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
   - icon: ':x:'
@@ -77,124 +77,132 @@ data:
     document_title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
     links:
     - https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
-  bundledCode: "#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\n/**\n * @brief Montgomery\
-    \ modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n\
-    \ */\n\n#include <cstdint>\n#include <iostream>\n#include <type_traits>\n\nnamespace\
-    \ lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
-    \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    template <std::uint32_t mod>\nclass MontgomeryModInt {\npublic:\n  using i32 =\
-    \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
-    \  using m32 = MontgomeryModInt;\n\n  using value_type = u32;\n\n  static constexpr\
-    \ u32 get_mod() { return mod; }\n\n  static constexpr u32 get_primitive_root_prime()\
-    \ {\n    u32 tmp[32]   = {};\n    int cnt       = 0;\n    const u32 phi = mod\
-    \ - 1;\n    u32 m         = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n   \
-    \   if (m % i == 0) {\n        tmp[cnt++] = i;\n        do { m /= i; } while (m\
-    \ % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32 res\
-    \ = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt && f;\
-    \ ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n    }\n\
-    \  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()     \
-    \     = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
-    \ int> = 0>\n  constexpr MontgomeryModInt(T v) : v_(reduce(u64(v % i32(mod) +\
-    \ i32(mod)) * r2)) {}\n\n  constexpr MontgomeryModInt(const m32 &) = default;\n\
-    \n  constexpr u32 get() const { return norm(reduce(v_)); }\n\n  template <typename\
-    \ T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  explicit constexpr operator\
-    \ T() const {\n    return T(get());\n  }\n\n  constexpr m32 operator-() const\
-    \ {\n    m32 res;\n    res.v_ = (mod2 & -(v_ != 0)) - v_;\n    return res;\n \
-    \ }\n\n  constexpr m32 inv() const {\n    i32 x1 = 1, x3 = 0, a = get(), b = mod;\n\
-    \    while (b != 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1\
-    \ = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;\n    }\n    return m32(x1);\n\
-    \  }\n\n  constexpr m32 &operator=(const m32 &) = default;\n\n  constexpr m32\
-    \ &operator+=(const m32 &rhs) {\n    v_ += rhs.v_ - mod2;\n    v_ += mod2 & -(v_\
-    \ >> 31);\n    return *this;\n  }\n  constexpr m32 &operator-=(const m32 &rhs)\
-    \ {\n    v_ -= rhs.v_;\n    v_ += mod2 & -(v_ >> 31);\n    return *this;\n  }\n\
-    \  constexpr m32 &operator*=(const m32 &rhs) {\n    v_ = reduce(u64(v_) * rhs.v_);\n\
-    \    return *this;\n  }\n  constexpr m32 &operator/=(const m32 &rhs) { return\
-    \ operator*=(rhs.inv()); }\n  friend constexpr m32 operator+(const m32 &lhs, const\
-    \ m32 &rhs) { return m32(lhs) += rhs; }\n  friend constexpr m32 operator-(const\
-    \ m32 &lhs, const m32 &rhs) { return m32(lhs) -= rhs; }\n  friend constexpr m32\
-    \ operator*(const m32 &lhs, const m32 &rhs) { return m32(lhs) *= rhs; }\n  friend\
-    \ constexpr m32 operator/(const m32 &lhs, const m32 &rhs) { return m32(lhs) /=\
-    \ rhs; }\n  friend constexpr bool operator==(const m32 &lhs, const m32 &rhs) {\n\
-    \    return norm(lhs.v_) == norm(rhs.v_);\n  }\n  friend constexpr bool operator!=(const\
-    \ m32 &lhs, const m32 &rhs) {\n    return norm(lhs.v_) != norm(rhs.v_);\n  }\n\
-    \n  friend std::istream &operator>>(std::istream &is, m32 &rhs) {\n    i32 x;\n\
-    \    is >> x;\n    rhs = m32(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
-    \ &os, const m32 &rhs) { return os << rhs.get(); }\n\n  constexpr m32 pow(u64\
-    \ y) const {\n    m32 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n\
-    \      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static constexpr\
-    \ u32 get_r() {\n    u32 two = 2, iv = mod * (two - mod * mod);\n    iv *= two\
-    \ - mod * iv;\n    iv *= two - mod * iv;\n    return iv * (mod * iv - two);\n\
-    \  }\n\n  static constexpr u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod)\
-    \ >> 32; }\n  static constexpr u32 norm(u32 x) { return x - (mod & -((mod - 1\
-    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r    = get_r();\n  static\
-    \ constexpr u32 r2   = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod <<\
-    \ 1;\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r\
-    \ * mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >=\
-    \ (1 << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\
-    \u540D\ntemplate <std::uint32_t mod>\nusing MontModInt = MontgomeryModInt<mod>;\n\
-    \n} // namespace lib\n\n\n"
-  code: "#ifndef MONTGOMERY_MODINT_HEADER_HPP\n#define MONTGOMERY_MODINT_HEADER_HPP\n\
-    \n/**\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\n * @docs docs/modint/Montgomery_modint.md\n\
-    \ */\n\n#include <cstdint>\n#include <iostream>\n#include <type_traits>\n\nnamespace\
-    \ lib {\n\n/**\n * @brief Montgomery \u53D6\u6A21\u7C7B\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\n\
-    \ * @author Nyaan\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\n */\n\
-    template <std::uint32_t mod>\nclass MontgomeryModInt {\npublic:\n  using i32 =\
-    \ std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
-    \  using m32 = MontgomeryModInt;\n\n  using value_type = u32;\n\n  static constexpr\
-    \ u32 get_mod() { return mod; }\n\n  static constexpr u32 get_primitive_root_prime()\
-    \ {\n    u32 tmp[32]   = {};\n    int cnt       = 0;\n    const u32 phi = mod\
-    \ - 1;\n    u32 m         = phi;\n    for (u32 i = 2; i * i <= m; ++i) {\n   \
-    \   if (m % i == 0) {\n        tmp[cnt++] = i;\n        do { m /= i; } while (m\
-    \ % i == 0);\n      }\n    }\n    if (m != 1) tmp[cnt++] = m;\n    for (m32 res\
-    \ = 2;; res += 1) {\n      bool f = true;\n      for (int i = 0; i < cnt && f;\
-    \ ++i) f &= res.pow(phi / tmp[i]) != 1;\n      if (f) return u32(res);\n    }\n\
-    \  }\n\n  constexpr MontgomeryModInt() = default;\n  ~MontgomeryModInt()     \
-    \     = default;\n\n  template <typename T, std::enable_if_t<std::is_integral_v<T>,\
-    \ int> = 0>\n  constexpr MontgomeryModInt(T v) : v_(reduce(u64(v % i32(mod) +\
-    \ i32(mod)) * r2)) {}\n\n  constexpr MontgomeryModInt(const m32 &) = default;\n\
-    \n  constexpr u32 get() const { return norm(reduce(v_)); }\n\n  template <typename\
-    \ T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\n  explicit constexpr operator\
-    \ T() const {\n    return T(get());\n  }\n\n  constexpr m32 operator-() const\
-    \ {\n    m32 res;\n    res.v_ = (mod2 & -(v_ != 0)) - v_;\n    return res;\n \
-    \ }\n\n  constexpr m32 inv() const {\n    i32 x1 = 1, x3 = 0, a = get(), b = mod;\n\
-    \    while (b != 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1\
-    \ = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;\n    }\n    return m32(x1);\n\
-    \  }\n\n  constexpr m32 &operator=(const m32 &) = default;\n\n  constexpr m32\
-    \ &operator+=(const m32 &rhs) {\n    v_ += rhs.v_ - mod2;\n    v_ += mod2 & -(v_\
-    \ >> 31);\n    return *this;\n  }\n  constexpr m32 &operator-=(const m32 &rhs)\
-    \ {\n    v_ -= rhs.v_;\n    v_ += mod2 & -(v_ >> 31);\n    return *this;\n  }\n\
-    \  constexpr m32 &operator*=(const m32 &rhs) {\n    v_ = reduce(u64(v_) * rhs.v_);\n\
-    \    return *this;\n  }\n  constexpr m32 &operator/=(const m32 &rhs) { return\
-    \ operator*=(rhs.inv()); }\n  friend constexpr m32 operator+(const m32 &lhs, const\
-    \ m32 &rhs) { return m32(lhs) += rhs; }\n  friend constexpr m32 operator-(const\
-    \ m32 &lhs, const m32 &rhs) { return m32(lhs) -= rhs; }\n  friend constexpr m32\
-    \ operator*(const m32 &lhs, const m32 &rhs) { return m32(lhs) *= rhs; }\n  friend\
-    \ constexpr m32 operator/(const m32 &lhs, const m32 &rhs) { return m32(lhs) /=\
-    \ rhs; }\n  friend constexpr bool operator==(const m32 &lhs, const m32 &rhs) {\n\
-    \    return norm(lhs.v_) == norm(rhs.v_);\n  }\n  friend constexpr bool operator!=(const\
-    \ m32 &lhs, const m32 &rhs) {\n    return norm(lhs.v_) != norm(rhs.v_);\n  }\n\
-    \n  friend std::istream &operator>>(std::istream &is, m32 &rhs) {\n    i32 x;\n\
-    \    is >> x;\n    rhs = m32(x);\n    return is;\n  }\n  friend std::ostream &operator<<(std::ostream\
-    \ &os, const m32 &rhs) { return os << rhs.get(); }\n\n  constexpr m32 pow(u64\
-    \ y) const {\n    m32 res(1), x(*this);\n    for (; y != 0; y >>= 1, x *= x)\n\
-    \      if (y & 1) res *= x;\n    return res;\n  }\n\nprivate:\n  static constexpr\
-    \ u32 get_r() {\n    u32 two = 2, iv = mod * (two - mod * mod);\n    iv *= two\
-    \ - mod * iv;\n    iv *= two - mod * iv;\n    return iv * (mod * iv - two);\n\
-    \  }\n\n  static constexpr u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod)\
-    \ >> 32; }\n  static constexpr u32 norm(u32 x) { return x - (mod & -((mod - 1\
-    \ - x) >> 31)); }\n\n  u32 v_;\n\n  static constexpr u32 r    = get_r();\n  static\
-    \ constexpr u32 r2   = -u64(mod) % mod;\n  static constexpr u32 mod2 = mod <<\
-    \ 1;\n\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\n  static_assert(-r\
-    \ * mod == 1, \"???\\n\");\n  static_assert((mod & (3U << 30)) == 0, \"mod >=\
-    \ (1 << 30)\\n\");\n  static_assert(mod != 1, \"mod == 1\\n\");\n};\n\n// \u522B\
-    \u540D\ntemplate <std::uint32_t mod>\nusing MontModInt = MontgomeryModInt<mod>;\n\
-    \n} // namespace lib\n\n#endif"
+  bundledCode: "#line 1 \"modint/Montgomery_modint.hpp\"\n\n\n\r\n/**\r\n * @brief\
+    \ Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\r\n * @docs docs/modint/Montgomery_modint.md\r\
+    \n */\r\n\r\n#include <cstdint>\r\n#include <iostream>\r\n#include <type_traits>\r\
+    \n\r\nnamespace lib {\r\n\r\n/**\r\n * @brief Montgomery \u53D6\u6A21\u7C7B\r\n\
+    \ * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\r\n\
+    \ * @author Nyaan\r\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\r\n\
+    \ */\r\ntemplate <std::uint32_t mod>\r\nclass MontgomeryModInt {\r\npublic:\r\n\
+    \  using i32 = std::int32_t;\r\n  using u32 = std::uint32_t;\r\n  using u64 =\
+    \ std::uint64_t;\r\n  using m32 = MontgomeryModInt;\r\n\r\n  using value_type\
+    \ = u32;\r\n\r\n  static constexpr u32 get_mod() { return mod; }\r\n\r\n  static\
+    \ constexpr u32 get_primitive_root_prime() {\r\n    u32 tmp[32]   = {};\r\n  \
+    \  int cnt       = 0;\r\n    const u32 phi = mod - 1;\r\n    u32 m         = phi;\r\
+    \n    for (u32 i = 2; i * i <= m; ++i) {\r\n      if (m % i == 0) {\r\n      \
+    \  tmp[cnt++] = i;\r\n        do { m /= i; } while (m % i == 0);\r\n      }\r\n\
+    \    }\r\n    if (m != 1) tmp[cnt++] = m;\r\n    for (m32 res = 2;; res += 1)\
+    \ {\r\n      bool f = true;\r\n      for (int i = 0; i < cnt && f; ++i) f &= res.pow(phi\
+    \ / tmp[i]) != 1;\r\n      if (f) return u32(res);\r\n    }\r\n  }\r\n\r\n  constexpr\
+    \ MontgomeryModInt() = default;\r\n  ~MontgomeryModInt()          = default;\r\
+    \n\r\n  template <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\r\
+    \n  constexpr MontgomeryModInt(T v) : v_(reduce(u64(v % i32(mod) + i32(mod)) *\
+    \ r2)) {}\r\n\r\n  constexpr MontgomeryModInt(const m32 &) = default;\r\n\r\n\
+    \  constexpr u32 get() const { return norm(reduce(v_)); }\r\n\r\n  template <typename\
+    \ T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\r\n  explicit constexpr\
+    \ operator T() const {\r\n    return T(get());\r\n  }\r\n\r\n  constexpr m32 operator-()\
+    \ const {\r\n    m32 res;\r\n    res.v_ = (mod2 & -(v_ != 0)) - v_;\r\n    return\
+    \ res;\r\n  }\r\n\r\n  constexpr m32 inv() const {\r\n    i32 x1 = 1, x3 = 0,\
+    \ a = get(), b = mod;\r\n    while (b != 0) {\r\n      i32 q = a / b, x1_old =\
+    \ x1, a_old = a;\r\n      x1 = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b\
+    \ * q;\r\n    }\r\n    return m32(x1);\r\n  }\r\n\r\n  constexpr m32 &operator=(const\
+    \ m32 &) = default;\r\n\r\n  constexpr m32 &operator+=(const m32 &rhs) {\r\n \
+    \   v_ += rhs.v_ - mod2;\r\n    v_ += mod2 & -(v_ >> 31);\r\n    return *this;\r\
+    \n  }\r\n  constexpr m32 &operator-=(const m32 &rhs) {\r\n    v_ -= rhs.v_;\r\n\
+    \    v_ += mod2 & -(v_ >> 31);\r\n    return *this;\r\n  }\r\n  constexpr m32\
+    \ &operator*=(const m32 &rhs) {\r\n    v_ = reduce(u64(v_) * rhs.v_);\r\n    return\
+    \ *this;\r\n  }\r\n  constexpr m32 &operator/=(const m32 &rhs) { return operator*=(rhs.inv());\
+    \ }\r\n  friend constexpr m32 operator+(const m32 &lhs, const m32 &rhs) { return\
+    \ m32(lhs) += rhs; }\r\n  friend constexpr m32 operator-(const m32 &lhs, const\
+    \ m32 &rhs) { return m32(lhs) -= rhs; }\r\n  friend constexpr m32 operator*(const\
+    \ m32 &lhs, const m32 &rhs) { return m32(lhs) *= rhs; }\r\n  friend constexpr\
+    \ m32 operator/(const m32 &lhs, const m32 &rhs) { return m32(lhs) /= rhs; }\r\n\
+    \  friend constexpr bool operator==(const m32 &lhs, const m32 &rhs) {\r\n    return\
+    \ norm(lhs.v_) == norm(rhs.v_);\r\n  }\r\n  friend constexpr bool operator!=(const\
+    \ m32 &lhs, const m32 &rhs) {\r\n    return norm(lhs.v_) != norm(rhs.v_);\r\n\
+    \  }\r\n\r\n  friend std::istream &operator>>(std::istream &is, m32 &rhs) {\r\n\
+    \    i32 x;\r\n    is >> x;\r\n    rhs = m32(x);\r\n    return is;\r\n  }\r\n\
+    \  friend std::ostream &operator<<(std::ostream &os, const m32 &rhs) { return\
+    \ os << rhs.get(); }\r\n\r\n  constexpr m32 pow(u64 y) const {\r\n    m32 res(1),\
+    \ x(*this);\r\n    for (; y != 0; y >>= 1, x *= x)\r\n      if (y & 1) res *=\
+    \ x;\r\n    return res;\r\n  }\r\n\r\nprivate:\r\n  static constexpr u32 get_r()\
+    \ {\r\n    u32 two = 2, iv = mod * (two - mod * mod);\r\n    iv *= two - mod *\
+    \ iv;\r\n    iv *= two - mod * iv;\r\n    return iv * (mod * iv - two);\r\n  }\r\
+    \n\r\n  static constexpr u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod)\
+    \ >> 32; }\r\n  static constexpr u32 norm(u32 x) { return x - (mod & -((mod -\
+    \ 1 - x) >> 31)); }\r\n\r\n  u32 v_;\r\n\r\n  static constexpr u32 r    = get_r();\r\
+    \n  static constexpr u32 r2   = -u64(mod) % mod;\r\n  static constexpr u32 mod2\
+    \ = mod << 1;\r\n\r\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\r\n\
+    \  static_assert(-r * mod == 1, \"???\\n\");\r\n  static_assert((mod & (3U <<\
+    \ 30)) == 0, \"mod >= (1 << 30)\\n\");\r\n  static_assert(mod != 1, \"mod == 1\\\
+    n\");\r\n};\r\n\r\n// \u522B\u540D\r\ntemplate <std::uint32_t mod>\r\nusing MontModInt\
+    \ = MontgomeryModInt<mod>;\r\n\r\n} // namespace lib\r\n\r\n\n"
+  code: "#ifndef MONTGOMERY_MODINT_HEADER_HPP\r\n#define MONTGOMERY_MODINT_HEADER_HPP\r\
+    \n\r\n/**\r\n * @brief Montgomery modint / Montgomery \u53D6\u6A21\u7C7B\r\n *\
+    \ @docs docs/modint/Montgomery_modint.md\r\n */\r\n\r\n#include <cstdint>\r\n\
+    #include <iostream>\r\n#include <type_traits>\r\n\r\nnamespace lib {\r\n\r\n/**\r\
+    \n * @brief Montgomery \u53D6\u6A21\u7C7B\r\n * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp\r\
+    \n * @author Nyaan\r\n * @tparam mod \u4E3A\u5947\u6570\u4E14\u5927\u4E8E 1\r\n\
+    \ */\r\ntemplate <std::uint32_t mod>\r\nclass MontgomeryModInt {\r\npublic:\r\n\
+    \  using i32 = std::int32_t;\r\n  using u32 = std::uint32_t;\r\n  using u64 =\
+    \ std::uint64_t;\r\n  using m32 = MontgomeryModInt;\r\n\r\n  using value_type\
+    \ = u32;\r\n\r\n  static constexpr u32 get_mod() { return mod; }\r\n\r\n  static\
+    \ constexpr u32 get_primitive_root_prime() {\r\n    u32 tmp[32]   = {};\r\n  \
+    \  int cnt       = 0;\r\n    const u32 phi = mod - 1;\r\n    u32 m         = phi;\r\
+    \n    for (u32 i = 2; i * i <= m; ++i) {\r\n      if (m % i == 0) {\r\n      \
+    \  tmp[cnt++] = i;\r\n        do { m /= i; } while (m % i == 0);\r\n      }\r\n\
+    \    }\r\n    if (m != 1) tmp[cnt++] = m;\r\n    for (m32 res = 2;; res += 1)\
+    \ {\r\n      bool f = true;\r\n      for (int i = 0; i < cnt && f; ++i) f &= res.pow(phi\
+    \ / tmp[i]) != 1;\r\n      if (f) return u32(res);\r\n    }\r\n  }\r\n\r\n  constexpr\
+    \ MontgomeryModInt() = default;\r\n  ~MontgomeryModInt()          = default;\r\
+    \n\r\n  template <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\r\
+    \n  constexpr MontgomeryModInt(T v) : v_(reduce(u64(v % i32(mod) + i32(mod)) *\
+    \ r2)) {}\r\n\r\n  constexpr MontgomeryModInt(const m32 &) = default;\r\n\r\n\
+    \  constexpr u32 get() const { return norm(reduce(v_)); }\r\n\r\n  template <typename\
+    \ T, std::enable_if_t<std::is_integral_v<T>, int> = 0>\r\n  explicit constexpr\
+    \ operator T() const {\r\n    return T(get());\r\n  }\r\n\r\n  constexpr m32 operator-()\
+    \ const {\r\n    m32 res;\r\n    res.v_ = (mod2 & -(v_ != 0)) - v_;\r\n    return\
+    \ res;\r\n  }\r\n\r\n  constexpr m32 inv() const {\r\n    i32 x1 = 1, x3 = 0,\
+    \ a = get(), b = mod;\r\n    while (b != 0) {\r\n      i32 q = a / b, x1_old =\
+    \ x1, a_old = a;\r\n      x1 = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b\
+    \ * q;\r\n    }\r\n    return m32(x1);\r\n  }\r\n\r\n  constexpr m32 &operator=(const\
+    \ m32 &) = default;\r\n\r\n  constexpr m32 &operator+=(const m32 &rhs) {\r\n \
+    \   v_ += rhs.v_ - mod2;\r\n    v_ += mod2 & -(v_ >> 31);\r\n    return *this;\r\
+    \n  }\r\n  constexpr m32 &operator-=(const m32 &rhs) {\r\n    v_ -= rhs.v_;\r\n\
+    \    v_ += mod2 & -(v_ >> 31);\r\n    return *this;\r\n  }\r\n  constexpr m32\
+    \ &operator*=(const m32 &rhs) {\r\n    v_ = reduce(u64(v_) * rhs.v_);\r\n    return\
+    \ *this;\r\n  }\r\n  constexpr m32 &operator/=(const m32 &rhs) { return operator*=(rhs.inv());\
+    \ }\r\n  friend constexpr m32 operator+(const m32 &lhs, const m32 &rhs) { return\
+    \ m32(lhs) += rhs; }\r\n  friend constexpr m32 operator-(const m32 &lhs, const\
+    \ m32 &rhs) { return m32(lhs) -= rhs; }\r\n  friend constexpr m32 operator*(const\
+    \ m32 &lhs, const m32 &rhs) { return m32(lhs) *= rhs; }\r\n  friend constexpr\
+    \ m32 operator/(const m32 &lhs, const m32 &rhs) { return m32(lhs) /= rhs; }\r\n\
+    \  friend constexpr bool operator==(const m32 &lhs, const m32 &rhs) {\r\n    return\
+    \ norm(lhs.v_) == norm(rhs.v_);\r\n  }\r\n  friend constexpr bool operator!=(const\
+    \ m32 &lhs, const m32 &rhs) {\r\n    return norm(lhs.v_) != norm(rhs.v_);\r\n\
+    \  }\r\n\r\n  friend std::istream &operator>>(std::istream &is, m32 &rhs) {\r\n\
+    \    i32 x;\r\n    is >> x;\r\n    rhs = m32(x);\r\n    return is;\r\n  }\r\n\
+    \  friend std::ostream &operator<<(std::ostream &os, const m32 &rhs) { return\
+    \ os << rhs.get(); }\r\n\r\n  constexpr m32 pow(u64 y) const {\r\n    m32 res(1),\
+    \ x(*this);\r\n    for (; y != 0; y >>= 1, x *= x)\r\n      if (y & 1) res *=\
+    \ x;\r\n    return res;\r\n  }\r\n\r\nprivate:\r\n  static constexpr u32 get_r()\
+    \ {\r\n    u32 two = 2, iv = mod * (two - mod * mod);\r\n    iv *= two - mod *\
+    \ iv;\r\n    iv *= two - mod * iv;\r\n    return iv * (mod * iv - two);\r\n  }\r\
+    \n\r\n  static constexpr u32 reduce(u64 x) { return (x + u64(u32(x) * r) * mod)\
+    \ >> 32; }\r\n  static constexpr u32 norm(u32 x) { return x - (mod & -((mod -\
+    \ 1 - x) >> 31)); }\r\n\r\n  u32 v_;\r\n\r\n  static constexpr u32 r    = get_r();\r\
+    \n  static constexpr u32 r2   = -u64(mod) % mod;\r\n  static constexpr u32 mod2\
+    \ = mod << 1;\r\n\r\n  static_assert((mod & 1) == 1, \"mod % 2 == 0\\n\");\r\n\
+    \  static_assert(-r * mod == 1, \"???\\n\");\r\n  static_assert((mod & (3U <<\
+    \ 30)) == 0, \"mod >= (1 << 30)\\n\");\r\n  static_assert(mod != 1, \"mod == 1\\\
+    n\");\r\n};\r\n\r\n// \u522B\u540D\r\ntemplate <std::uint32_t mod>\r\nusing MontModInt\
+    \ = MontgomeryModInt<mod>;\r\n\r\n} // namespace lib\r\n\r\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: modint/Montgomery_modint.hpp
   requiredBy:
   - math/formal_power_series/arbitrary_modulo_convolution.hpp
-  timestamp: '2021-07-15 14:25:20+08:00'
+  timestamp: '2021-07-15 17:09:18+08:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.0.test.cpp

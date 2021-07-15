@@ -12,91 +12,95 @@ data:
   attributes:
     document_title: "maximum flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5"
     links: []
-  bundledCode: "#line 1 \"graph/maximum_flow_Dinic.hpp\"\n\n\n\n/**\n * @brief maximum\
-    \ flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5\n *\n */\n\n#include <limits>\n\
-    #include <queue>\n#include <vector>\n\nnamespace lib {\n\ntemplate <typename CapacityType>\n\
-    class MaximumFlowGraph {\npublic:\n  struct InputEdge {\n    int from, to;\n \
-    \   CapacityType cap;\n    InputEdge(int from, int to, CapacityType cap) : from(from),\
-    \ to(to), cap(cap) {}\n    ~InputEdge() = default;\n  };\n\n  struct Edge {\n\
-    \    int to;\n    CapacityType cap;\n  };\n\n  MaximumFlowGraph(int n) : n_(n)\
-    \ {}\n  ~MaximumFlowGraph() = default;\n\n  void add_directed_edge(int from, int\
-    \ to, CapacityType cap) {\n    input_edge_.emplace_back(from, to, cap);\n  }\n\
-    \n  CapacityType\n  get_max_flow(int s, int t,\n               const CapacityType\
-    \ CAPACITY_LIM = std::numeric_limits<CapacityType>::max()) {\n    convert_to_forwardstar();\n\
-    \    CapacityType max_flow = 0;\n    while (create_layer_graph(s, t)) {\n    \
-    \  cur_edge_ = idx_;\n      max_flow += augment(s, CAPACITY_LIM, t);\n    }\n\
-    \    return max_flow;\n  }\n\nprivate:\n  void convert_to_forwardstar() {\n  \
-    \  int m = input_edge_.size() << 1;\n    edge_.resize(m);\n    idx_.assign(n_\
-    \ + 1, 0);\n    rev_idx_.resize(m);\n    for (auto &i : input_edge_) ++idx_[i.from],\
-    \ ++idx_[i.to];\n    for (int i = 0, sum = 0; i != n_ + 1; ++i) sum += idx_[i],\
-    \ idx_[i] = sum - idx_[i];\n    for (auto &i : input_edge_) {\n      edge_[idx_[i.from]].to\
-    \  = i.to;\n      edge_[idx_[i.from]].cap = i.cap;\n      edge_[idx_[i.to]].to\
-    \    = i.from;\n      edge_[idx_[i.to]].cap   = 0;\n      rev_idx_[idx_[i.from]]\
-    \  = idx_[i.to];\n      rev_idx_[idx_[i.to]]    = idx_[i.from];\n      ++idx_[i.from];\n\
-    \      ++idx_[i.to];\n    }\n    for (int i = n_ - 1; i > 0; --i) idx_[i] = idx_[i\
-    \ - 1];\n    idx_[0] = 0;\n  }\n\n  bool create_layer_graph(int s, int t) {\n\
-    \    level_.assign(n_, -1);\n    std::queue<int> q;\n    q.push(s);\n    level_[s]\
-    \ = 0;\n    while (!q.empty()) {\n      int u = q.front();\n      q.pop();\n \
-    \     for (int i = idx_[u], ie = idx_[u + 1]; i < ie; ++i)\n        if (edge_[i].cap\
-    \ > 0 && level_[edge_[i].to] == -1) {\n          level_[edge_[i].to] = level_[u]\
-    \ + 1;\n          q.push(edge_[i].to);\n        }\n    }\n    return level_[t]\
-    \ != -1;\n  }\n\n  CapacityType augment(int from, CapacityType bottleneck, int\
-    \ t) {\n    if (bottleneck == 0 || from == t) return bottleneck;\n    CapacityType\
-    \ max_flow = 0;\n    for (int &i = cur_edge_[from], ie = idx_[from + 1]; i < ie;\
-    \ ++i) {\n      if (level_[edge_[i].to] == level_[from] + 1 && edge_[i].cap >\
-    \ 0) {\n        CapacityType flow = augment(edge_[i].to, std::min(bottleneck,\
-    \ edge_[i].cap), t);\n        if (flow == 0) continue;\n        edge_[i].cap -=\
-    \ flow;\n        edge_[rev_idx_[i]].cap += flow;\n        max_flow += flow;\n\
-    \        bottleneck -= flow;\n        if (bottleneck == 0) break;\n      }\n \
-    \   }\n    return max_flow;\n  }\n\n  const int n_; // n \u4E2A vertex \u4E14\u7F16\
-    \u53F7\u5728 [0,n-1] \u8303\u56F4\u5185\n  std::vector<InputEdge> input_edge_;\n\
-    \  std::vector<Edge> edge_;\n  std::vector<int> idx_, rev_idx_, cur_edge_, level_;\n\
-    };\n\n} // namespace lib\n\n\n"
-  code: "#ifndef MAXIMUM_FLOW_DINIC_HEADER_HPP\n#define MAXIMUM_FLOW_DINIC_HEADER_HPP\n\
-    \n/**\n * @brief maximum flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5\n\
-    \ *\n */\n\n#include <limits>\n#include <queue>\n#include <vector>\n\nnamespace\
-    \ lib {\n\ntemplate <typename CapacityType>\nclass MaximumFlowGraph {\npublic:\n\
-    \  struct InputEdge {\n    int from, to;\n    CapacityType cap;\n    InputEdge(int\
-    \ from, int to, CapacityType cap) : from(from), to(to), cap(cap) {}\n    ~InputEdge()\
-    \ = default;\n  };\n\n  struct Edge {\n    int to;\n    CapacityType cap;\n  };\n\
-    \n  MaximumFlowGraph(int n) : n_(n) {}\n  ~MaximumFlowGraph() = default;\n\n \
-    \ void add_directed_edge(int from, int to, CapacityType cap) {\n    input_edge_.emplace_back(from,\
-    \ to, cap);\n  }\n\n  CapacityType\n  get_max_flow(int s, int t,\n           \
-    \    const CapacityType CAPACITY_LIM = std::numeric_limits<CapacityType>::max())\
-    \ {\n    convert_to_forwardstar();\n    CapacityType max_flow = 0;\n    while\
-    \ (create_layer_graph(s, t)) {\n      cur_edge_ = idx_;\n      max_flow += augment(s,\
-    \ CAPACITY_LIM, t);\n    }\n    return max_flow;\n  }\n\nprivate:\n  void convert_to_forwardstar()\
-    \ {\n    int m = input_edge_.size() << 1;\n    edge_.resize(m);\n    idx_.assign(n_\
-    \ + 1, 0);\n    rev_idx_.resize(m);\n    for (auto &i : input_edge_) ++idx_[i.from],\
-    \ ++idx_[i.to];\n    for (int i = 0, sum = 0; i != n_ + 1; ++i) sum += idx_[i],\
-    \ idx_[i] = sum - idx_[i];\n    for (auto &i : input_edge_) {\n      edge_[idx_[i.from]].to\
-    \  = i.to;\n      edge_[idx_[i.from]].cap = i.cap;\n      edge_[idx_[i.to]].to\
-    \    = i.from;\n      edge_[idx_[i.to]].cap   = 0;\n      rev_idx_[idx_[i.from]]\
-    \  = idx_[i.to];\n      rev_idx_[idx_[i.to]]    = idx_[i.from];\n      ++idx_[i.from];\n\
-    \      ++idx_[i.to];\n    }\n    for (int i = n_ - 1; i > 0; --i) idx_[i] = idx_[i\
-    \ - 1];\n    idx_[0] = 0;\n  }\n\n  bool create_layer_graph(int s, int t) {\n\
-    \    level_.assign(n_, -1);\n    std::queue<int> q;\n    q.push(s);\n    level_[s]\
-    \ = 0;\n    while (!q.empty()) {\n      int u = q.front();\n      q.pop();\n \
-    \     for (int i = idx_[u], ie = idx_[u + 1]; i < ie; ++i)\n        if (edge_[i].cap\
-    \ > 0 && level_[edge_[i].to] == -1) {\n          level_[edge_[i].to] = level_[u]\
-    \ + 1;\n          q.push(edge_[i].to);\n        }\n    }\n    return level_[t]\
-    \ != -1;\n  }\n\n  CapacityType augment(int from, CapacityType bottleneck, int\
-    \ t) {\n    if (bottleneck == 0 || from == t) return bottleneck;\n    CapacityType\
-    \ max_flow = 0;\n    for (int &i = cur_edge_[from], ie = idx_[from + 1]; i < ie;\
-    \ ++i) {\n      if (level_[edge_[i].to] == level_[from] + 1 && edge_[i].cap >\
-    \ 0) {\n        CapacityType flow = augment(edge_[i].to, std::min(bottleneck,\
-    \ edge_[i].cap), t);\n        if (flow == 0) continue;\n        edge_[i].cap -=\
-    \ flow;\n        edge_[rev_idx_[i]].cap += flow;\n        max_flow += flow;\n\
-    \        bottleneck -= flow;\n        if (bottleneck == 0) break;\n      }\n \
-    \   }\n    return max_flow;\n  }\n\n  const int n_; // n \u4E2A vertex \u4E14\u7F16\
-    \u53F7\u5728 [0,n-1] \u8303\u56F4\u5185\n  std::vector<InputEdge> input_edge_;\n\
-    \  std::vector<Edge> edge_;\n  std::vector<int> idx_, rev_idx_, cur_edge_, level_;\n\
-    };\n\n} // namespace lib\n\n#endif"
+  bundledCode: "#line 1 \"graph/maximum_flow_Dinic.hpp\"\n\n\n\r\n/**\r\n * @brief\
+    \ maximum flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5\r\n *\r\n */\r\n\r\
+    \n#include <limits>\r\n#include <queue>\r\n#include <vector>\r\n\r\nnamespace\
+    \ lib {\r\n\r\ntemplate <typename CapacityType>\r\nclass MaximumFlowGraph {\r\n\
+    public:\r\n  struct InputEdge {\r\n    int from, to;\r\n    CapacityType cap;\r\
+    \n    InputEdge(int from, int to, CapacityType cap) : from(from), to(to), cap(cap)\
+    \ {}\r\n    ~InputEdge() = default;\r\n  };\r\n\r\n  struct Edge {\r\n    int\
+    \ to;\r\n    CapacityType cap;\r\n  };\r\n\r\n  MaximumFlowGraph(int n) : n_(n)\
+    \ {}\r\n  ~MaximumFlowGraph() = default;\r\n\r\n  void add_directed_edge(int from,\
+    \ int to, CapacityType cap) {\r\n    input_edge_.emplace_back(from, to, cap);\r\
+    \n  }\r\n\r\n  CapacityType\r\n  get_max_flow(int s, int t,\r\n              \
+    \ const CapacityType CAPACITY_LIM = std::numeric_limits<CapacityType>::max())\
+    \ {\r\n    convert_to_forwardstar();\r\n    CapacityType max_flow = 0;\r\n   \
+    \ while (create_layer_graph(s, t)) {\r\n      cur_edge_ = idx_;\r\n      max_flow\
+    \ += augment(s, CAPACITY_LIM, t);\r\n    }\r\n    return max_flow;\r\n  }\r\n\r\
+    \nprivate:\r\n  void convert_to_forwardstar() {\r\n    int m = input_edge_.size()\
+    \ << 1;\r\n    edge_.resize(m);\r\n    idx_.assign(n_ + 1, 0);\r\n    rev_idx_.resize(m);\r\
+    \n    for (auto &i : input_edge_) ++idx_[i.from], ++idx_[i.to];\r\n    for (int\
+    \ i = 0, sum = 0; i != n_ + 1; ++i) sum += idx_[i], idx_[i] = sum - idx_[i];\r\
+    \n    for (auto &i : input_edge_) {\r\n      edge_[idx_[i.from]].to  = i.to;\r\
+    \n      edge_[idx_[i.from]].cap = i.cap;\r\n      edge_[idx_[i.to]].to    = i.from;\r\
+    \n      edge_[idx_[i.to]].cap   = 0;\r\n      rev_idx_[idx_[i.from]]  = idx_[i.to];\r\
+    \n      rev_idx_[idx_[i.to]]    = idx_[i.from];\r\n      ++idx_[i.from];\r\n \
+    \     ++idx_[i.to];\r\n    }\r\n    for (int i = n_ - 1; i > 0; --i) idx_[i] =\
+    \ idx_[i - 1];\r\n    idx_[0] = 0;\r\n  }\r\n\r\n  bool create_layer_graph(int\
+    \ s, int t) {\r\n    level_.assign(n_, -1);\r\n    std::queue<int> q;\r\n    q.push(s);\r\
+    \n    level_[s] = 0;\r\n    while (!q.empty()) {\r\n      int u = q.front();\r\
+    \n      q.pop();\r\n      for (int i = idx_[u], ie = idx_[u + 1]; i < ie; ++i)\r\
+    \n        if (edge_[i].cap > 0 && level_[edge_[i].to] == -1) {\r\n          level_[edge_[i].to]\
+    \ = level_[u] + 1;\r\n          q.push(edge_[i].to);\r\n        }\r\n    }\r\n\
+    \    return level_[t] != -1;\r\n  }\r\n\r\n  CapacityType augment(int from, CapacityType\
+    \ bottleneck, int t) {\r\n    if (bottleneck == 0 || from == t) return bottleneck;\r\
+    \n    CapacityType max_flow = 0;\r\n    for (int &i = cur_edge_[from], ie = idx_[from\
+    \ + 1]; i < ie; ++i) {\r\n      if (level_[edge_[i].to] == level_[from] + 1 &&\
+    \ edge_[i].cap > 0) {\r\n        CapacityType flow = augment(edge_[i].to, std::min(bottleneck,\
+    \ edge_[i].cap), t);\r\n        if (flow == 0) continue;\r\n        edge_[i].cap\
+    \ -= flow;\r\n        edge_[rev_idx_[i]].cap += flow;\r\n        max_flow += flow;\r\
+    \n        bottleneck -= flow;\r\n        if (bottleneck == 0) break;\r\n     \
+    \ }\r\n    }\r\n    return max_flow;\r\n  }\r\n\r\n  const int n_; // n \u4E2A\
+    \ vertex \u4E14\u7F16\u53F7\u5728 [0,n-1] \u8303\u56F4\u5185\r\n  std::vector<InputEdge>\
+    \ input_edge_;\r\n  std::vector<Edge> edge_;\r\n  std::vector<int> idx_, rev_idx_,\
+    \ cur_edge_, level_;\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n"
+  code: "#ifndef MAXIMUM_FLOW_DINIC_HEADER_HPP\r\n#define MAXIMUM_FLOW_DINIC_HEADER_HPP\r\
+    \n\r\n/**\r\n * @brief maximum flow Dinic / \u6700\u5927\u6D41 Dinic \u7B97\u6CD5\
+    \r\n *\r\n */\r\n\r\n#include <limits>\r\n#include <queue>\r\n#include <vector>\r\
+    \n\r\nnamespace lib {\r\n\r\ntemplate <typename CapacityType>\r\nclass MaximumFlowGraph\
+    \ {\r\npublic:\r\n  struct InputEdge {\r\n    int from, to;\r\n    CapacityType\
+    \ cap;\r\n    InputEdge(int from, int to, CapacityType cap) : from(from), to(to),\
+    \ cap(cap) {}\r\n    ~InputEdge() = default;\r\n  };\r\n\r\n  struct Edge {\r\n\
+    \    int to;\r\n    CapacityType cap;\r\n  };\r\n\r\n  MaximumFlowGraph(int n)\
+    \ : n_(n) {}\r\n  ~MaximumFlowGraph() = default;\r\n\r\n  void add_directed_edge(int\
+    \ from, int to, CapacityType cap) {\r\n    input_edge_.emplace_back(from, to,\
+    \ cap);\r\n  }\r\n\r\n  CapacityType\r\n  get_max_flow(int s, int t,\r\n     \
+    \          const CapacityType CAPACITY_LIM = std::numeric_limits<CapacityType>::max())\
+    \ {\r\n    convert_to_forwardstar();\r\n    CapacityType max_flow = 0;\r\n   \
+    \ while (create_layer_graph(s, t)) {\r\n      cur_edge_ = idx_;\r\n      max_flow\
+    \ += augment(s, CAPACITY_LIM, t);\r\n    }\r\n    return max_flow;\r\n  }\r\n\r\
+    \nprivate:\r\n  void convert_to_forwardstar() {\r\n    int m = input_edge_.size()\
+    \ << 1;\r\n    edge_.resize(m);\r\n    idx_.assign(n_ + 1, 0);\r\n    rev_idx_.resize(m);\r\
+    \n    for (auto &i : input_edge_) ++idx_[i.from], ++idx_[i.to];\r\n    for (int\
+    \ i = 0, sum = 0; i != n_ + 1; ++i) sum += idx_[i], idx_[i] = sum - idx_[i];\r\
+    \n    for (auto &i : input_edge_) {\r\n      edge_[idx_[i.from]].to  = i.to;\r\
+    \n      edge_[idx_[i.from]].cap = i.cap;\r\n      edge_[idx_[i.to]].to    = i.from;\r\
+    \n      edge_[idx_[i.to]].cap   = 0;\r\n      rev_idx_[idx_[i.from]]  = idx_[i.to];\r\
+    \n      rev_idx_[idx_[i.to]]    = idx_[i.from];\r\n      ++idx_[i.from];\r\n \
+    \     ++idx_[i.to];\r\n    }\r\n    for (int i = n_ - 1; i > 0; --i) idx_[i] =\
+    \ idx_[i - 1];\r\n    idx_[0] = 0;\r\n  }\r\n\r\n  bool create_layer_graph(int\
+    \ s, int t) {\r\n    level_.assign(n_, -1);\r\n    std::queue<int> q;\r\n    q.push(s);\r\
+    \n    level_[s] = 0;\r\n    while (!q.empty()) {\r\n      int u = q.front();\r\
+    \n      q.pop();\r\n      for (int i = idx_[u], ie = idx_[u + 1]; i < ie; ++i)\r\
+    \n        if (edge_[i].cap > 0 && level_[edge_[i].to] == -1) {\r\n          level_[edge_[i].to]\
+    \ = level_[u] + 1;\r\n          q.push(edge_[i].to);\r\n        }\r\n    }\r\n\
+    \    return level_[t] != -1;\r\n  }\r\n\r\n  CapacityType augment(int from, CapacityType\
+    \ bottleneck, int t) {\r\n    if (bottleneck == 0 || from == t) return bottleneck;\r\
+    \n    CapacityType max_flow = 0;\r\n    for (int &i = cur_edge_[from], ie = idx_[from\
+    \ + 1]; i < ie; ++i) {\r\n      if (level_[edge_[i].to] == level_[from] + 1 &&\
+    \ edge_[i].cap > 0) {\r\n        CapacityType flow = augment(edge_[i].to, std::min(bottleneck,\
+    \ edge_[i].cap), t);\r\n        if (flow == 0) continue;\r\n        edge_[i].cap\
+    \ -= flow;\r\n        edge_[rev_idx_[i]].cap += flow;\r\n        max_flow += flow;\r\
+    \n        bottleneck -= flow;\r\n        if (bottleneck == 0) break;\r\n     \
+    \ }\r\n    }\r\n    return max_flow;\r\n  }\r\n\r\n  const int n_; // n \u4E2A\
+    \ vertex \u4E14\u7F16\u53F7\u5728 [0,n-1] \u8303\u56F4\u5185\r\n  std::vector<InputEdge>\
+    \ input_edge_;\r\n  std::vector<Edge> edge_;\r\n  std::vector<int> idx_, rev_idx_,\
+    \ cur_edge_, level_;\r\n};\r\n\r\n} // namespace lib\r\n\r\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: graph/maximum_flow_Dinic.hpp
   requiredBy: []
-  timestamp: '2021-07-15 14:25:20+08:00'
+  timestamp: '2021-07-15 17:09:18+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizuoj/graph/max_flow.0.test.cpp

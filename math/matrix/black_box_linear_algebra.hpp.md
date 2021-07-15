@@ -20,124 +20,130 @@ data:
     _deprecated_at_docs: docs/math/matrix/black_box_linear_algebra.md
     document_title: "black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570"
     links: []
-  bundledCode: "#line 1 \"math/matrix/black_box_linear_algebra.hpp\"\n\n\n\n/**\n\
-    \ * @brief black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570\n *\
-    \ @docs docs/math/matrix/black_box_linear_algebra.md\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <functional>\n#include <numeric>\n#include <random>\n\
-    #include <vector>\n\n#line 1 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
-    \n\n\n\n/**\n * @brief find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\
-    \u77ED\u7EBF\u6027\u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5\n * @docs docs/math/modulo/find_shortest_LFSR_Berlekamp_Massey.md\n\
-    \ */\n\n#line 10 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\n#include\
-    \ <utility>\n#line 12 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\n\
-    \nnamespace lib {\n\n/**\n * @brief \u5BFB\u627E\u6700\u77ED LFSR \uFF08\u4F46\
-    \u4EC5\u5F53 L*2 <= N \u65F6\u552F\u4E00\uFF09\n * @ref J.L. Massey, Shift register\
-    \ synthesis and BCH decoding,\n *      IEEE Trans. Inform. Theory, vol. IT-15,\
-    \ 122\u2013127 (1969).\n * @tparam mod_t \u6709\u9664\u6CD5\uFF0C\u5FC5\u987B\u4E3A\
-    \u57DF\n * @param s s_0, s_1, \u2026, s_{n-1}\n * @return std::vector<mod_t> C(x)=1+c_{1}*x+c_{2}*x^{2}+\
-    \ \u2026 +c_{L}*x^{L}\n *         \u5BF9\u4E8E\u6240\u6709 i>=L \u548C s = s_0,\
-    \ s_1, \u2026, s_{L-1}\n *         \u6EE1\u8DB3 s_{i} + c_{1}*s_{i-1} + c_{2}*s_{i-2}\
-    \ + \u2026 + c_{L}*s_{i-L} = 0\n */\ntemplate <typename mod_t>\nstd::vector<mod_t>\
-    \ find_LFSR(const std::vector<mod_t> &s) {\n  const mod_t ZERO(0);\n  std::vector<mod_t>\
-    \ C{mod_t(1)}, B(C);\n  mod_t b(1);\n  for (int N = 0, n = s.size(), L = 0, x\
-    \ = 1; N < n; ++N) {\n    mod_t d(s[N]);\n    for (int i = 1; i <= L; ++i) d +=\
-    \ C[i] * s[N - i];\n    if (d == ZERO) {\n      ++x;\n    } else if ((L << 1)\
-    \ > N) {\n      // C(D)=C(D)-d/bD^xB(D)\n      if (C.size() < B.size() + x) C.resize(B.size()\
-    \ + x, ZERO);\n      mod_t coef = d / b;\n      for (int i = x, ie = B.size()\
-    \ + x; i < ie; ++i) C[i] -= coef * B[i - x];\n      ++x;\n    } else {\n     \
-    \ std::vector<mod_t> T(C); // \u8BB0\u5F55 next discrepancy\n      // C(D)=C(D)-d/bD^xB(D)\n\
-    \      if (C.size() < B.size() + x) C.resize(B.size() + x, ZERO);\n      mod_t\
-    \ coef = d / b;\n      for (int i = x, ie = B.size() + x; i < ie; ++i) C[i] -=\
-    \ coef * B[i - x];\n      L = N + 1 - L, B = std::move(T), b = d, x = 1;\n   \
-    \ }\n  }\n  return C;\n}\n\n} // namespace lib\n\n\n#line 17 \"math/matrix/black_box_linear_algebra.hpp\"\
-    \n\nnamespace lib {\n\ntemplate <typename T, typename GenFunc>\nstd::vector<T>\
-    \ get_rand_vec(int s, GenFunc &gen) {\n  std::vector<T> res(s);\n  std::generate(res.begin(),\
-    \ res.end(), gen);\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\
-    \u7684\u6700\u5C0F\u591A\u9879\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\
-    \n * @note \u5FC5\u987B\u4E3A\u6709\u9650\u57DF\n * @ref Douglas H. Wiedemann\
-    \ (1986). Solving Sparse Linear Equations Over Finite Fields.\n * @return std::vector<Type>\
-    \ \u9996\u4E00\u591A\u9879\u5F0F\n */\ntemplate <typename MatType, typename Type\
-    \ = typename MatType::value_type>\nstd::vector<Type> black_box_minpoly(const MatType\
-    \ &m) {\n\n  static std::random_device rd;\n  static std::mt19937 gen(rd());\n\
-    \  std::uniform_int_distribution<typename Type::value_type> dis(1, Type::get_mod()\
-    \ - 1);\n\n  auto gen1 = [&dis]() { return dis(gen); };\n  auto gen2 = std::bind(get_rand_vec<Type,\
-    \ decltype(gen1)>, std::placeholders::_1, gen1);\n\n  const Type ZERO(0);\n  int\
-    \ n = m.row();\n  assert(n == m.col());\n  std::vector<Type> u(gen2(n)), v(gen2(n)),\
-    \ bilinear_projection(n << 1);\n  for (int i = 0; i < (n << 1); ++i) {\n    bilinear_projection[i]\
-    \ = std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\n    v = m.apply(v);\
+  bundledCode: "#line 1 \"math/matrix/black_box_linear_algebra.hpp\"\n\n\n\r\n/**\r\
+    \n * @brief black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570\r\n\
+    \ * @docs docs/math/matrix/black_box_linear_algebra.md\r\n */\r\n\r\n#include\
+    \ <algorithm>\r\n#include <cassert>\r\n#include <functional>\r\n#include <numeric>\r\
+    \n#include <random>\r\n#include <vector>\r\n\r\n#line 1 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
+    \n\n\n\r\n/**\r\n * @brief find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\
+    \u77ED\u7EBF\u6027\u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5\r\n * @docs docs/math/modulo/find_shortest_LFSR_Berlekamp_Massey.md\r\
+    \n */\r\n\r\n#line 10 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\n\
+    #include <utility>\r\n#line 12 \"math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
+    \n\r\nnamespace lib {\r\n\r\n/**\r\n * @brief \u5BFB\u627E\u6700\u77ED LFSR \uFF08\
+    \u4F46\u4EC5\u5F53 L*2 <= N \u65F6\u552F\u4E00\uFF09\r\n * @ref J.L. Massey, Shift\
+    \ register synthesis and BCH decoding,\r\n *      IEEE Trans. Inform. Theory,\
+    \ vol. IT-15, 122\u2013127 (1969).\r\n * @tparam mod_t \u6709\u9664\u6CD5\uFF0C\
+    \u5FC5\u987B\u4E3A\u57DF\r\n * @param s s_0, s_1, \u2026, s_{n-1}\r\n * @return\
+    \ std::vector<mod_t> C(x)=1+c_{1}*x+c_{2}*x^{2}+ \u2026 +c_{L}*x^{L}\r\n *   \
+    \      \u5BF9\u4E8E\u6240\u6709 i>=L \u548C s = s_0, s_1, \u2026, s_{L-1}\r\n\
+    \ *         \u6EE1\u8DB3 s_{i} + c_{1}*s_{i-1} + c_{2}*s_{i-2} + \u2026 + c_{L}*s_{i-L}\
+    \ = 0\r\n */\r\ntemplate <typename mod_t>\r\nstd::vector<mod_t> find_LFSR(const\
+    \ std::vector<mod_t> &s) {\r\n  const mod_t ZERO(0);\r\n  std::vector<mod_t> C{mod_t(1)},\
+    \ B(C);\r\n  mod_t b(1);\r\n  for (int N = 0, n = s.size(), L = 0, x = 1; N <\
+    \ n; ++N) {\r\n    mod_t d(s[N]);\r\n    for (int i = 1; i <= L; ++i) d += C[i]\
+    \ * s[N - i];\r\n    if (d == ZERO) {\r\n      ++x;\r\n    } else if ((L << 1)\
+    \ > N) {\r\n      // C(D)=C(D)-d/bD^xB(D)\r\n      if (C.size() < B.size() + x)\
+    \ C.resize(B.size() + x, ZERO);\r\n      mod_t coef = d / b;\r\n      for (int\
+    \ i = x, ie = B.size() + x; i < ie; ++i) C[i] -= coef * B[i - x];\r\n      ++x;\r\
+    \n    } else {\r\n      std::vector<mod_t> T(C); // \u8BB0\u5F55 next discrepancy\r\
+    \n      // C(D)=C(D)-d/bD^xB(D)\r\n      if (C.size() < B.size() + x) C.resize(B.size()\
+    \ + x, ZERO);\r\n      mod_t coef = d / b;\r\n      for (int i = x, ie = B.size()\
+    \ + x; i < ie; ++i) C[i] -= coef * B[i - x];\r\n      L = N + 1 - L, B = std::move(T),\
+    \ b = d, x = 1;\r\n    }\r\n  }\r\n  return C;\r\n}\r\n\r\n} // namespace lib\r\
+    \n\r\n\n#line 17 \"math/matrix/black_box_linear_algebra.hpp\"\n\r\nnamespace lib\
+    \ {\r\n\r\ntemplate <typename T, typename GenFunc>\r\nstd::vector<T> get_rand_vec(int\
+    \ s, GenFunc &gen) {\r\n  std::vector<T> res(s);\r\n  std::generate(res.begin(),\
+    \ res.end(), gen);\r\n  return res;\r\n}\r\n\r\n/**\r\n * @brief \u83B7\u53D6\u77E9\
+    \u9635\u7684\u6700\u5C0F\u591A\u9879\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\
+    \uFF09\r\n * @note \u5FC5\u987B\u4E3A\u6709\u9650\u57DF\r\n * @ref Douglas H.\
+    \ Wiedemann (1986). Solving Sparse Linear Equations Over Finite Fields.\r\n *\
+    \ @return std::vector<Type> \u9996\u4E00\u591A\u9879\u5F0F\r\n */\r\ntemplate\
+    \ <typename MatType, typename Type = typename MatType::value_type>\r\nstd::vector<Type>\
+    \ black_box_minpoly(const MatType &m) {\r\n\r\n  static std::random_device rd;\r\
+    \n  static std::mt19937 gen(rd());\r\n  std::uniform_int_distribution<typename\
+    \ Type::value_type> dis(1, Type::get_mod() - 1);\r\n\r\n  auto gen1 = [&dis]()\
+    \ { return dis(gen); };\r\n  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>,\
+    \ std::placeholders::_1, gen1);\r\n\r\n  const Type ZERO(0);\r\n  int n = m.row();\r\
+    \n  assert(n == m.col());\r\n  std::vector<Type> u(gen2(n)), v(gen2(n)), bilinear_projection(n\
+    \ << 1);\r\n  for (int i = 0; i < (n << 1); ++i) {\r\n    bilinear_projection[i]\
+    \ = std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\r\n    v = m.apply(v);\
     \ // \u4E0D\u9700\u8981\u5199\u6210 std::move \u56E0\u4E3A\u7F16\u8BD1\u5668\u4F1A\
-    \u81EA\u52A8\u4F18\u5316\uFF01\n  }\n  std::vector<Type> res = find_LFSR(bilinear_projection);\n\
-    \  // \u7CFB\u6570\u7FFB\u8F6C\uFF01\u56E0\u4E3A\u5728\u8FD9\u91CC LFSR \u8FD4\
-    \u56DE\u5173\u7CFB\u591A\u9879\u5F0F\n  // \u4E3A\u4E86\u4E0D\u5728\u6570\u7EC4\
+    \u81EA\u52A8\u4F18\u5316\uFF01\r\n  }\r\n  std::vector<Type> res = find_LFSR(bilinear_projection);\r\
+    \n  // \u7CFB\u6570\u7FFB\u8F6C\uFF01\u56E0\u4E3A\u5728\u8FD9\u91CC LFSR \u8FD4\
+    \u56DE\u5173\u7CFB\u591A\u9879\u5F0F\r\n  // \u4E3A\u4E86\u4E0D\u5728\u6570\u7EC4\
     \u7684\u5F00\u5934\u63D2\u5165\u5143\u7D20\u6545\u4F7F\u7528 LFSR \u4E2D\u5B9A\
-    \u4E49\u7684\u5173\u7CFB\u591A\u9879\u5F0F\u66F4\u65B9\u4FBF\n  // \u800C\u6700\
+    \u4E49\u7684\u5173\u7CFB\u591A\u9879\u5F0F\u66F4\u65B9\u4FBF\r\n  // \u800C\u6700\
     \u5C0F\u591A\u9879\u5F0F\u5219\u53EA\u9700\u7FFB\u8F6C\u5176\u7CFB\u6570\u5373\
-    \u9996\u4E00\u7684\u6700\u5C0F\u591A\u9879\u5F0F\n  std::reverse(res.begin(),\
-    \ res.end());\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\u7684\
-    \u884C\u5217\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\n * @note \u5FC5\u987B\
-    \u4E3A\u6709\u9650\u57DF\n * @ref Douglas H. Wiedemann (1986). Solving Sparse\
-    \ Linear Equations Over Finite Fields.\n */\ntemplate <typename MatType, typename\
-    \ Type = typename MatType::value_type>\nType black_box_det(const MatType &m) {\n\
-    \n  static std::random_device rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<typename\
-    \ Type::value_type> dis(1, Type::get_mod() - 1);\n\n  auto gen1 = [&dis]() { return\
-    \ dis(gen); };\n  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
-    \ gen1);\n\n  const Type ZERO(0);\n  int n = m.row();\n  assert(n == m.col());\n\
-    \  std::vector<Type> u(gen2(n)), v(gen2(n)), diag(gen2(n)), bilinear_projection(n\
-    \ << 1);\n  for (int i = 0; i < (n << 1); ++i) {\n    bilinear_projection[i] =\
-    \ std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\n    for (int i = 0;\
-    \ i < n; ++i) v[i] *= diag[i];\n    v = m.apply(v);\n  }\n  std::vector<Type>\
-    \ mp = find_LFSR(bilinear_projection);\n  Type res = mp.back() / std::accumulate(diag.begin(),\
-    \ diag.end(), Type(1), std::multiplies<>());\n  return (n & 1) == 1 ? -res : res;\n\
-    }\n\n} // namespace lib\n\n\n"
-  code: "#ifndef BLACK_BOX_LINEAR_ALGEBRA_HEADER_HPP\n#define BLACK_BOX_LINEAR_ALGEBRA_HEADER_HPP\n\
-    \n/**\n * @brief black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570\
-    \n * @docs docs/math/matrix/black_box_linear_algebra.md\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <functional>\n#include <numeric>\n#include <random>\n\
-    #include <vector>\n\n#include \"../modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
-    \n\nnamespace lib {\n\ntemplate <typename T, typename GenFunc>\nstd::vector<T>\
-    \ get_rand_vec(int s, GenFunc &gen) {\n  std::vector<T> res(s);\n  std::generate(res.begin(),\
-    \ res.end(), gen);\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\
-    \u7684\u6700\u5C0F\u591A\u9879\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\
-    \n * @note \u5FC5\u987B\u4E3A\u6709\u9650\u57DF\n * @ref Douglas H. Wiedemann\
-    \ (1986). Solving Sparse Linear Equations Over Finite Fields.\n * @return std::vector<Type>\
-    \ \u9996\u4E00\u591A\u9879\u5F0F\n */\ntemplate <typename MatType, typename Type\
-    \ = typename MatType::value_type>\nstd::vector<Type> black_box_minpoly(const MatType\
-    \ &m) {\n\n  static std::random_device rd;\n  static std::mt19937 gen(rd());\n\
-    \  std::uniform_int_distribution<typename Type::value_type> dis(1, Type::get_mod()\
-    \ - 1);\n\n  auto gen1 = [&dis]() { return dis(gen); };\n  auto gen2 = std::bind(get_rand_vec<Type,\
-    \ decltype(gen1)>, std::placeholders::_1, gen1);\n\n  const Type ZERO(0);\n  int\
-    \ n = m.row();\n  assert(n == m.col());\n  std::vector<Type> u(gen2(n)), v(gen2(n)),\
-    \ bilinear_projection(n << 1);\n  for (int i = 0; i < (n << 1); ++i) {\n    bilinear_projection[i]\
-    \ = std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\n    v = m.apply(v);\
+    \u9996\u4E00\u7684\u6700\u5C0F\u591A\u9879\u5F0F\r\n  std::reverse(res.begin(),\
+    \ res.end());\r\n  return res;\r\n}\r\n\r\n/**\r\n * @brief \u83B7\u53D6\u77E9\
+    \u9635\u7684\u884C\u5217\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\r\n *\
+    \ @note \u5FC5\u987B\u4E3A\u6709\u9650\u57DF\r\n * @ref Douglas H. Wiedemann (1986).\
+    \ Solving Sparse Linear Equations Over Finite Fields.\r\n */\r\ntemplate <typename\
+    \ MatType, typename Type = typename MatType::value_type>\r\nType black_box_det(const\
+    \ MatType &m) {\r\n\r\n  static std::random_device rd;\r\n  static std::mt19937\
+    \ gen(rd());\r\n  std::uniform_int_distribution<typename Type::value_type> dis(1,\
+    \ Type::get_mod() - 1);\r\n\r\n  auto gen1 = [&dis]() { return dis(gen); };\r\n\
+    \  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
+    \ gen1);\r\n\r\n  const Type ZERO(0);\r\n  int n = m.row();\r\n  assert(n == m.col());\r\
+    \n  std::vector<Type> u(gen2(n)), v(gen2(n)), diag(gen2(n)), bilinear_projection(n\
+    \ << 1);\r\n  for (int i = 0; i < (n << 1); ++i) {\r\n    bilinear_projection[i]\
+    \ = std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\r\n    for (int i\
+    \ = 0; i < n; ++i) v[i] *= diag[i];\r\n    v = m.apply(v);\r\n  }\r\n  std::vector<Type>\
+    \ mp = find_LFSR(bilinear_projection);\r\n  Type res = mp.back() / std::accumulate(diag.begin(),\
+    \ diag.end(), Type(1), std::multiplies<>());\r\n  return (n & 1) == 1 ? -res :\
+    \ res;\r\n}\r\n\r\n} // namespace lib\r\n\r\n\n"
+  code: "#ifndef BLACK_BOX_LINEAR_ALGEBRA_HEADER_HPP\r\n#define BLACK_BOX_LINEAR_ALGEBRA_HEADER_HPP\r\
+    \n\r\n/**\r\n * @brief black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\
+    \u6570\r\n * @docs docs/math/matrix/black_box_linear_algebra.md\r\n */\r\n\r\n\
+    #include <algorithm>\r\n#include <cassert>\r\n#include <functional>\r\n#include\
+    \ <numeric>\r\n#include <random>\r\n#include <vector>\r\n\r\n#include \"../modulo/find_shortest_LFSR_Berlekamp_Massey.hpp\"\
+    \r\n\r\nnamespace lib {\r\n\r\ntemplate <typename T, typename GenFunc>\r\nstd::vector<T>\
+    \ get_rand_vec(int s, GenFunc &gen) {\r\n  std::vector<T> res(s);\r\n  std::generate(res.begin(),\
+    \ res.end(), gen);\r\n  return res;\r\n}\r\n\r\n/**\r\n * @brief \u83B7\u53D6\u77E9\
+    \u9635\u7684\u6700\u5C0F\u591A\u9879\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\
+    \uFF09\r\n * @note \u5FC5\u987B\u4E3A\u6709\u9650\u57DF\r\n * @ref Douglas H.\
+    \ Wiedemann (1986). Solving Sparse Linear Equations Over Finite Fields.\r\n *\
+    \ @return std::vector<Type> \u9996\u4E00\u591A\u9879\u5F0F\r\n */\r\ntemplate\
+    \ <typename MatType, typename Type = typename MatType::value_type>\r\nstd::vector<Type>\
+    \ black_box_minpoly(const MatType &m) {\r\n\r\n  static std::random_device rd;\r\
+    \n  static std::mt19937 gen(rd());\r\n  std::uniform_int_distribution<typename\
+    \ Type::value_type> dis(1, Type::get_mod() - 1);\r\n\r\n  auto gen1 = [&dis]()\
+    \ { return dis(gen); };\r\n  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>,\
+    \ std::placeholders::_1, gen1);\r\n\r\n  const Type ZERO(0);\r\n  int n = m.row();\r\
+    \n  assert(n == m.col());\r\n  std::vector<Type> u(gen2(n)), v(gen2(n)), bilinear_projection(n\
+    \ << 1);\r\n  for (int i = 0; i < (n << 1); ++i) {\r\n    bilinear_projection[i]\
+    \ = std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\r\n    v = m.apply(v);\
     \ // \u4E0D\u9700\u8981\u5199\u6210 std::move \u56E0\u4E3A\u7F16\u8BD1\u5668\u4F1A\
-    \u81EA\u52A8\u4F18\u5316\uFF01\n  }\n  std::vector<Type> res = find_LFSR(bilinear_projection);\n\
-    \  // \u7CFB\u6570\u7FFB\u8F6C\uFF01\u56E0\u4E3A\u5728\u8FD9\u91CC LFSR \u8FD4\
-    \u56DE\u5173\u7CFB\u591A\u9879\u5F0F\n  // \u4E3A\u4E86\u4E0D\u5728\u6570\u7EC4\
+    \u81EA\u52A8\u4F18\u5316\uFF01\r\n  }\r\n  std::vector<Type> res = find_LFSR(bilinear_projection);\r\
+    \n  // \u7CFB\u6570\u7FFB\u8F6C\uFF01\u56E0\u4E3A\u5728\u8FD9\u91CC LFSR \u8FD4\
+    \u56DE\u5173\u7CFB\u591A\u9879\u5F0F\r\n  // \u4E3A\u4E86\u4E0D\u5728\u6570\u7EC4\
     \u7684\u5F00\u5934\u63D2\u5165\u5143\u7D20\u6545\u4F7F\u7528 LFSR \u4E2D\u5B9A\
-    \u4E49\u7684\u5173\u7CFB\u591A\u9879\u5F0F\u66F4\u65B9\u4FBF\n  // \u800C\u6700\
+    \u4E49\u7684\u5173\u7CFB\u591A\u9879\u5F0F\u66F4\u65B9\u4FBF\r\n  // \u800C\u6700\
     \u5C0F\u591A\u9879\u5F0F\u5219\u53EA\u9700\u7FFB\u8F6C\u5176\u7CFB\u6570\u5373\
-    \u9996\u4E00\u7684\u6700\u5C0F\u591A\u9879\u5F0F\n  std::reverse(res.begin(),\
-    \ res.end());\n  return res;\n}\n\n/**\n * @brief \u83B7\u53D6\u77E9\u9635\u7684\
-    \u884C\u5217\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\n * @note \u5FC5\u987B\
-    \u4E3A\u6709\u9650\u57DF\n * @ref Douglas H. Wiedemann (1986). Solving Sparse\
-    \ Linear Equations Over Finite Fields.\n */\ntemplate <typename MatType, typename\
-    \ Type = typename MatType::value_type>\nType black_box_det(const MatType &m) {\n\
-    \n  static std::random_device rd;\n  static std::mt19937 gen(rd());\n  std::uniform_int_distribution<typename\
-    \ Type::value_type> dis(1, Type::get_mod() - 1);\n\n  auto gen1 = [&dis]() { return\
-    \ dis(gen); };\n  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
-    \ gen1);\n\n  const Type ZERO(0);\n  int n = m.row();\n  assert(n == m.col());\n\
-    \  std::vector<Type> u(gen2(n)), v(gen2(n)), diag(gen2(n)), bilinear_projection(n\
-    \ << 1);\n  for (int i = 0; i < (n << 1); ++i) {\n    bilinear_projection[i] =\
-    \ std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\n    for (int i = 0;\
-    \ i < n; ++i) v[i] *= diag[i];\n    v = m.apply(v);\n  }\n  std::vector<Type>\
-    \ mp = find_LFSR(bilinear_projection);\n  Type res = mp.back() / std::accumulate(diag.begin(),\
-    \ diag.end(), Type(1), std::multiplies<>());\n  return (n & 1) == 1 ? -res : res;\n\
-    }\n\n} // namespace lib\n\n#endif"
+    \u9996\u4E00\u7684\u6700\u5C0F\u591A\u9879\u5F0F\r\n  std::reverse(res.begin(),\
+    \ res.end());\r\n  return res;\r\n}\r\n\r\n/**\r\n * @brief \u83B7\u53D6\u77E9\
+    \u9635\u7684\u884C\u5217\u5F0F\uFF08\u968F\u673A\u5316\u7B97\u6CD5\uFF09\r\n *\
+    \ @note \u5FC5\u987B\u4E3A\u6709\u9650\u57DF\r\n * @ref Douglas H. Wiedemann (1986).\
+    \ Solving Sparse Linear Equations Over Finite Fields.\r\n */\r\ntemplate <typename\
+    \ MatType, typename Type = typename MatType::value_type>\r\nType black_box_det(const\
+    \ MatType &m) {\r\n\r\n  static std::random_device rd;\r\n  static std::mt19937\
+    \ gen(rd());\r\n  std::uniform_int_distribution<typename Type::value_type> dis(1,\
+    \ Type::get_mod() - 1);\r\n\r\n  auto gen1 = [&dis]() { return dis(gen); };\r\n\
+    \  auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1,\
+    \ gen1);\r\n\r\n  const Type ZERO(0);\r\n  int n = m.row();\r\n  assert(n == m.col());\r\
+    \n  std::vector<Type> u(gen2(n)), v(gen2(n)), diag(gen2(n)), bilinear_projection(n\
+    \ << 1);\r\n  for (int i = 0; i < (n << 1); ++i) {\r\n    bilinear_projection[i]\
+    \ = std::inner_product(u.begin(), u.end(), v.begin(), ZERO);\r\n    for (int i\
+    \ = 0; i < n; ++i) v[i] *= diag[i];\r\n    v = m.apply(v);\r\n  }\r\n  std::vector<Type>\
+    \ mp = find_LFSR(bilinear_projection);\r\n  Type res = mp.back() / std::accumulate(diag.begin(),\
+    \ diag.end(), Type(1), std::multiplies<>());\r\n  return (n & 1) == 1 ? -res :\
+    \ res;\r\n}\r\n\r\n} // namespace lib\r\n\r\n#endif"
   dependsOn:
   - math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
   isVerificationFile: false
   path: math/matrix/black_box_linear_algebra.hpp
   requiredBy: []
-  timestamp: '2021-07-15 14:25:20+08:00'
+  timestamp: '2021-07-15 17:09:18+08:00'
   verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.1.test.cpp
