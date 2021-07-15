@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix/characteristic_polynomial.hpp
     title: "characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F"
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
   - icon: ':question:'
@@ -15,9 +15,9 @@ data:
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/characteristic_polynomial
@@ -272,7 +272,7 @@ data:
   path: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
   requiredBy: []
   timestamp: '2021-07-15 17:09:18+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
 layout: document

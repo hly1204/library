@@ -4,10 +4,10 @@ data:
   - icon: ':x:'
     path: math/matrix/black_box_linear_algebra.hpp
     title: "black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570"
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
   - icon: ':question:'

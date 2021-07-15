@@ -2,17 +2,17 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/matrix/arbitrary_modulo_square_matrix.hpp
     title: "arbitrary modulo square matrix / \u4EFB\u610F\u6A21\u6570\u65B9\u9635"
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
     title: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
     title: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
   - icon: ':x:'
@@ -32,7 +32,7 @@ data:
     title: remote_test/yosupo/matrix/matrix_product.0.test.cpp
   _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
     links: []
@@ -155,7 +155,7 @@ data:
   - math/matrix/arbitrary_modulo_square_matrix.hpp
   - math/matrix/square_matrix.hpp
   timestamp: '2021-07-15 17:09:18+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/matrix/matrix_det.0.test.cpp
   - remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp

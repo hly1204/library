@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "linearly recurrent sequence Bostan-Mori / \u5E38\u7CFB\u6570\u7EBF\
       \u6027\u9012\u63A8\u5E8F\u5217 Bostan-Mori \u7B97\u6CD5"
@@ -176,7 +176,7 @@ data:
   path: math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
   requiredBy: []
   timestamp: '2021-07-15 17:09:18+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
 documentation_of: math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp

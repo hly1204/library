@@ -74,36 +74,36 @@ data:
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/convolution.hpp
       title: "convolution / \u5377\u79EF"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/formal_power_series.hpp
       title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
         \u7684\u57FA\u672C\u64CD\u4F5C"
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
       title: "linearly recurrent sequence Bostan-Mori / \u5E38\u7CFB\u6570\u7EBF\u6027\
         \u9012\u63A8\u5E8F\u5217 Bostan-Mori \u7B97\u6CD5"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/polynomial.hpp
       title: "polynomial / \u591A\u9879\u5F0F"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/radix_2_NTT.hpp
       title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/subproduct_tree.hpp
       title: "multi-point evaluation & interpolation / \u591A\u70B9\u6C42\u503C\u548C\
         \u63D2\u503C"
   - name: math/matrix
     pages:
-    - icon: ':x:'
+    - icon: ':question:'
       path: math/matrix/arbitrary_modulo_square_matrix.hpp
       title: "arbitrary modulo square matrix / \u4EFB\u610F\u6A21\u6570\u65B9\u9635"
     - icon: ':x:'
       path: math/matrix/black_box_linear_algebra.hpp
       title: "black box linear algebra / \u9ED1\u76D2\u7EBF\u6027\u4EE3\u6570"
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: math/matrix/characteristic_polynomial.hpp
       title: "characteristic polynomial / \u7279\u5F81\u591A\u9879\u5F0F"
-    - icon: ':x:'
+    - icon: ':question:'
       path: math/matrix/matrix_base.hpp
       title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
     - icon: ':x:'
@@ -112,7 +112,7 @@ data:
     - icon: ':x:'
       path: math/matrix/sparse_square_matrix.hpp
       title: "sparse square matrix / \u7A00\u758F\u65B9\u9635"
-    - icon: ':x:'
+    - icon: ':question:'
       path: math/matrix/square_matrix.hpp
       title: "square matrix / \u65B9\u9635"
   - name: math/modulo
@@ -124,7 +124,7 @@ data:
       path: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
       title: "find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\u77ED\u7EBF\
         \u6027\u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5"
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: math/modulo/sqrt_mod.hpp
       title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
   - name: misc
@@ -146,11 +146,11 @@ data:
     - icon: ':warning:'
       path: modint/long_Montgomery_modint.hpp
       title: "long Montgomery modint / \u957F\u6574\u578B Montgomery \u53D6\u6A21\u7C7B"
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: modint/runtime_Montgomery_modint.hpp
       title: "runtime Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\
         \u7C7B"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint/runtime_long_Montgomery_modint.hpp
       title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
         \ Montgomery \u53D6\u6A21\u7C7B"
@@ -174,7 +174,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: traits/base.hpp
       title: "type traits / \u7C7B\u578B\u8403\u53D6"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: traits/modint.hpp
       title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   verificationCategories:
@@ -247,42 +247,42 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
       title: remote_test/yosupo/math/find_linear_recurrence.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
       title: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
       title: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
       title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
       title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
       title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
       title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
       title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
       title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
       title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
       title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   - name: remote_test/yosupo/matrix
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
       title: remote_test/yosupo/matrix/characteristic_polynomial.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
       title: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
     - icon: ':x:'

@@ -1,15 +1,15 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/matrix/matrix_base.hpp
     title: "matrix base / \u77E9\u9635\u57FA\u7C7B"
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/matrix/square_matrix.hpp
     title: "square matrix / \u65B9\u9635"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
     title: remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
   - icon: ':x:'
@@ -17,7 +17,7 @@ data:
     title: remote_test/yosupo/matrix/matrix_det.2.test.cpp
   _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':question:'
   attributes:
     _deprecated_at_docs: docs/math/matrix/arbitrary_modulo_square_matrix.md
     document_title: "arbitrary modulo square matrix / \u4EFB\u610F\u6A21\u6570\u65B9\
@@ -330,7 +330,7 @@ data:
   path: math/matrix/arbitrary_modulo_square_matrix.hpp
   requiredBy: []
   timestamp: '2021-07-15 17:09:18+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp
   - remote_test/yosupo/matrix/matrix_det.2.test.cpp
