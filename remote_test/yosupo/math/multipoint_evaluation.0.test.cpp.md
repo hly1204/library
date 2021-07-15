@@ -121,7 +121,7 @@ data:
     \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    int lim  \
     \                 = INV.size();\n    if (lim < n) {\n      INV.resize(n);\n  \
     \    if (lim == 0) INV[1] = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i]\
-    \ = mod_t(mod - mod / i) * INV[mod % i];\n    }\n  }\n\npublic:\n  using vec::vec;\n\
+    \ = mod_t(mod - mod / i) * INV[mod % i];\n    }\n  }\n\npublic:\n  using std::vector<mod_t>::vector;\n\
     \n  /**\n   * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n\
     \   * @return int\n   */\n  int deg() const {\n    static constexpr mod_t Z =\
     \ 0;\n    int n                    = int(this->size()) - 1;\n    while (n >= 0\
@@ -226,32 +226,32 @@ data:
     \u800C\u8986\u76D6\u4F1A\u5BFC\u51FA\u591A\u6001\u3002\n */\ntemplate <typename\
     \ mod_t>\nclass Polynomial : public FormalPowerSeries<mod_t> {\npublic:\n  using\
     \ fps  = FormalPowerSeries<mod_t>;\n  using poly = Polynomial<mod_t>;\n  using\
-    \ fps::fps;\n\n  // \u4F7F\u5F97\u80FD\u591F\u4ECE FormalPowerSeries \u8F6C\u6362\
-    \u4E3A Polynomial \u7C7B\u578B\uFF0C\u4F46\u4E0D\u6E05\u695A\u662F\u5426\u6709\
-    \u4EC0\u4E48\u95EE\u9898\n  Polynomial(const fps &rhs) : fps(rhs) {}\n  Polynomial(fps\
-    \ &&rhs) : fps(std::move(rhs)) {}\n\n  poly operator-() const {\n    poly res\
-    \ = this->fps::operator-();\n    res.shrink();\n    return res;\n  }\n  poly &operator+=(const\
-    \ poly &rhs) {\n    this->fps::operator+=(rhs);\n    this->shrink();\n    return\
-    \ *this;\n  }\n  poly &operator-=(const poly &rhs) {\n    this->fps::operator-=(rhs);\n\
-    \    this->shrink();\n    return *this;\n  }\n  poly &operator*=(const poly &rhs)\
-    \ {\n    this->fps::operator*=(rhs);\n    this->shrink();\n    return *this;\n\
-    \  }\n  poly &operator/=(const poly &rhs) {\n    assert(rhs.deg() >= 0);\n   \
-    \ this->shrink();\n    int quo_size = this->deg() - rhs.deg() + 1;\n    if (quo_size\
-    \ <= 0) {\n      this->resize(1);\n      this->operator[](0) = 0;\n      return\
-    \ *this;\n    }\n    poly rhs_cpy(rhs);\n    rhs_cpy.shrink();\n    std::reverse(this->begin(),\
-    \ this->end());\n    std::reverse(rhs_cpy.begin(), rhs_cpy.end());\n    poly quo(this->div(quo_size,\
-    \ rhs_cpy));\n    this->resize(quo_size);\n    std::reverse_copy(quo.begin(),\
-    \ quo.end(), this->begin());\n    return *this;\n  }\n  poly &operator%=(const\
-    \ poly &rhs) {\n    // f/g => f=gq+r, deg(r)<deg(g) \u5728\u8FD9\u91CC f \u5C31\
-    \u662F (*this) \u800C g \u5C31\u662F rhs\n    // r=f-gq (mod ((x^deg(rhs)) - 1))\n\
-    \    // \u6240\u4EE5\u6211\u4EEC\u505A NTT \u7684\u957F\u5EA6\u53EF\u4EE5\u662F\
-    \ O(deg(rhs)) \u7EA7\u522B\u7684\n    int rem_size = rhs.deg();\n    assert(rem_size\
-    \ >= 0);\n    if (rem_size == 0) {\n      this->resize(1);\n      this->operator[](0)\
-    \ = 0;\n      return *this;\n    }\n    this->shrink();\n    if (this->deg() <\
-    \ rem_size) return *this;\n    poly quo((*this) / rhs), rhs_cpy(rhs);\n    int\
-    \ len = get_ntt_len(rem_size);\n    // \u4EE4 (*this) \u548C quo \u548C rhs_cpy\
-    \ \u90FD\u5728 mod ((x^len) - 1) \u610F\u4E49\u4E0B\n    int mask = len - 1;\n\
-    \    for (int i = len, e = this->size(); i < e; ++i)\n      this->operator[](i\
+    \ FormalPowerSeries<mod_t>::FormalPowerSeries;\n\n  // \u4F7F\u5F97\u80FD\u591F\
+    \u4ECE FormalPowerSeries \u8F6C\u6362\u4E3A Polynomial \u7C7B\u578B\uFF0C\u4F46\
+    \u4E0D\u6E05\u695A\u662F\u5426\u6709\u4EC0\u4E48\u95EE\u9898\n  Polynomial(const\
+    \ fps &rhs) : fps(rhs) {}\n  Polynomial(fps &&rhs) : fps(std::move(rhs)) {}\n\n\
+    \  poly operator-() const {\n    poly res = this->fps::operator-();\n    res.shrink();\n\
+    \    return res;\n  }\n  poly &operator+=(const poly &rhs) {\n    this->fps::operator+=(rhs);\n\
+    \    this->shrink();\n    return *this;\n  }\n  poly &operator-=(const poly &rhs)\
+    \ {\n    this->fps::operator-=(rhs);\n    this->shrink();\n    return *this;\n\
+    \  }\n  poly &operator*=(const poly &rhs) {\n    this->fps::operator*=(rhs);\n\
+    \    this->shrink();\n    return *this;\n  }\n  poly &operator/=(const poly &rhs)\
+    \ {\n    assert(rhs.deg() >= 0);\n    this->shrink();\n    int quo_size = this->deg()\
+    \ - rhs.deg() + 1;\n    if (quo_size <= 0) {\n      this->resize(1);\n      this->operator[](0)\
+    \ = 0;\n      return *this;\n    }\n    poly rhs_cpy(rhs);\n    rhs_cpy.shrink();\n\
+    \    std::reverse(this->begin(), this->end());\n    std::reverse(rhs_cpy.begin(),\
+    \ rhs_cpy.end());\n    poly quo(this->div(quo_size, rhs_cpy));\n    this->resize(quo_size);\n\
+    \    std::reverse_copy(quo.begin(), quo.end(), this->begin());\n    return *this;\n\
+    \  }\n  poly &operator%=(const poly &rhs) {\n    // f/g => f=gq+r, deg(r)<deg(g)\
+    \ \u5728\u8FD9\u91CC f \u5C31\u662F (*this) \u800C g \u5C31\u662F rhs\n    //\
+    \ r=f-gq (mod ((x^deg(rhs)) - 1))\n    // \u6240\u4EE5\u6211\u4EEC\u505A NTT \u7684\
+    \u957F\u5EA6\u53EF\u4EE5\u662F O(deg(rhs)) \u7EA7\u522B\u7684\n    int rem_size\
+    \ = rhs.deg();\n    assert(rem_size >= 0);\n    if (rem_size == 0) {\n      this->resize(1);\n\
+    \      this->operator[](0) = 0;\n      return *this;\n    }\n    this->shrink();\n\
+    \    if (this->deg() < rem_size) return *this;\n    poly quo((*this) / rhs), rhs_cpy(rhs);\n\
+    \    int len = get_ntt_len(rem_size);\n    // \u4EE4 (*this) \u548C quo \u548C\
+    \ rhs_cpy \u90FD\u5728 mod ((x^len) - 1) \u610F\u4E49\u4E0B\n    int mask = len\
+    \ - 1;\n    for (int i = len, e = this->size(); i < e; ++i)\n      this->operator[](i\
     \ &mask) += this->operator[](i);\n    for (int i = len, e = quo.size(); i < e;\
     \ ++i) quo[i & mask] += quo[i];\n    for (int i = len, e = rhs_cpy.size(); i <\
     \ e; ++i) rhs_cpy[i & mask] += rhs_cpy[i];\n    this->resize(len, mod_t(0));\n\
@@ -453,7 +453,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-15 14:25:20+08:00'
+  timestamp: '2021-07-15 16:37:02+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp

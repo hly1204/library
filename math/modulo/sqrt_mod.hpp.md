@@ -1,22 +1,22 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: modint/runtime_Montgomery_modint.hpp
     title: "runtime Montgomery modint / \u8FD0\u884C\u65F6 Montgomery \u53D6\u6A21\
       \u7C7B"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/runtime_long_Montgomery_modint.hpp
     title: "runtime long Montgomery modint / \u8FD0\u884C\u65F6\u957F\u6574\u578B\
       \ Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/mod_sqrt.0.test.cpp
     title: remote_test/yosupo/math/mod_sqrt.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     _deprecated_at_docs: docs/math/modulo/sqrt_mod.md
     document_title: "square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839"
@@ -129,9 +129,9 @@ data:
     \ -(res >> 63));\n  }\n\n  static u64 norm(i64 x) { return x + (mod & -(x < 0));\
     \ }\n\n  u64 v_;\n\n  static inline u64 mod, r, r2;\n};\n\ntemplate <int id>\n\
     using RuntimeLongMontModInt = RuntimeLongMontgomeryModInt<id>;\n\n} // namespace\
-    \ lib\n\n\n#line 17 \"math/modulo/sqrt_mod.hpp\"\n\nnamespace lib {\n\nnamespace\
-    \ internal {\n\ntemplate <typename mod_t>\nstd::vector<mod_t> sqrt_mod_prime(const\
-    \ mod_t x) {\n  const auto p = mod_t::get_mod();\n  const mod_t ONE(1), MINUS_ONE(-ONE),\
+    \ lib\n\n\n#line 17 \"math/modulo/sqrt_mod.hpp\"\n\nnamespace lib::internal {\n\
+    \ntemplate <typename mod_t>\nstd::vector<mod_t> sqrt_mod_prime(const mod_t x)\
+    \ {\n  const auto p = mod_t::get_mod();\n  const mod_t ONE(1), MINUS_ONE(-ONE),\
     \ ZERO(0);\n  if (x == ZERO) return {ZERO};\n  if (x.pow(p >> 1) == MINUS_ONE)\
     \ return {};\n  if ((p & 3) == 3) {\n    mod_t res = x.pow((p + 1) >> 2);\n  \
     \  return {res, -res};\n  }\n\n  static std::random_device rd;\n  static std::mt19937\
@@ -143,23 +143,24 @@ data:
     \ != 0; e >>= 1) {\n    if (e & 1) {\n      mod_t bd       = b * d;\n      std::tie(a,\
     \ b) = std::make_pair(a * c - bd * x, a * d + b * c + bd * t);\n    }\n    mod_t\
     \ dd = d * d, cd = c * d;\n    std::tie(c, d) = std::make_pair(c * c - dd * x,\
-    \ cd + cd + dd * t);\n  }\n\n  return {a, -a};\n}\n\n} // namespace internal\n\
-    \n/**\n * @brief \u6A21\u5E73\u65B9\u6839\n * @param x [0, p-1] \u4E2D\u7684\u4E00\
-    \u4E2A\u503C\n * @param p \u7D20\u6570\n * @return std::vector<T>\n */\ntemplate\
-    \ <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>> sqrt_mod_prime(T\
-    \ x, T p) {\n  using m32 = RuntimeMontModInt<-1>;\n  using m64 = RuntimeLongMontModInt<-1>;\n\
-    \  if (p == 2 || x == 0) return {x};\n  if (p < (3U << 30)) {\n    bool okay =\
-    \ m32::set_mod(p);\n    assert(okay);\n    auto res = internal::sqrt_mod_prime(m32(x));\n\
-    \    return std::vector<T>(res.begin(), res.end());\n  }\n  bool okay = m64::set_mod(p);\n\
-    \  assert(okay);\n  auto res = internal::sqrt_mod_prime(m64(x));\n  return std::vector<T>(res.begin(),\
-    \ res.end());\n}\n\n} // namespace lib\n\n\n"
+    \ cd + cd + dd * t);\n  }\n\n  return {a, -a};\n}\n\n} // namespace lib::internal\n\
+    \nnamespace lib {\n\n/**\n * @brief \u6A21\u5E73\u65B9\u6839\n * @param x [0,\
+    \ p-1] \u4E2D\u7684\u4E00\u4E2A\u503C\n * @param p \u7D20\u6570\n * @return std::vector<T>\n\
+    \ */\ntemplate <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>>\
+    \ sqrt_mod_prime(T x, T p) {\n  using m32 = RuntimeMontModInt<-1>;\n  using m64\
+    \ = RuntimeLongMontModInt<-1>;\n  if (p == 2 || x == 0) return {x};\n  if (p <\
+    \ (3U << 30)) {\n    bool okay = m32::set_mod(p);\n    assert(okay);\n    auto\
+    \ res = internal::sqrt_mod_prime(m32(x));\n    return std::vector<T>(res.begin(),\
+    \ res.end());\n  }\n  bool okay = m64::set_mod(p);\n  assert(okay);\n  auto res\
+    \ = internal::sqrt_mod_prime(m64(x));\n  return std::vector<T>(res.begin(), res.end());\n\
+    }\n\n} // namespace lib\n\n\n"
   code: "#ifndef SQRT_MOD_HEADER_HPP\n#define SQRT_MOD_HEADER_HPP\n\n/**\n * @brief\
     \ square root mod / \u6A21\u610F\u4E49\u4E0B\u5E73\u65B9\u6839\n * @docs docs/math/modulo/sqrt_mod.md\n\
     \ */\n\n#include <cassert>\n#include <random>\n#include <tuple>\n#include <type_traits>\n\
     #include <vector>\n\n#include \"../../modint/runtime_Montgomery_modint.hpp\"\n\
-    #include \"../../modint/runtime_long_Montgomery_modint.hpp\"\n\nnamespace lib\
-    \ {\n\nnamespace internal {\n\ntemplate <typename mod_t>\nstd::vector<mod_t> sqrt_mod_prime(const\
-    \ mod_t x) {\n  const auto p = mod_t::get_mod();\n  const mod_t ONE(1), MINUS_ONE(-ONE),\
+    #include \"../../modint/runtime_long_Montgomery_modint.hpp\"\n\nnamespace lib::internal\
+    \ {\n\ntemplate <typename mod_t>\nstd::vector<mod_t> sqrt_mod_prime(const mod_t\
+    \ x) {\n  const auto p = mod_t::get_mod();\n  const mod_t ONE(1), MINUS_ONE(-ONE),\
     \ ZERO(0);\n  if (x == ZERO) return {ZERO};\n  if (x.pow(p >> 1) == MINUS_ONE)\
     \ return {};\n  if ((p & 3) == 3) {\n    mod_t res = x.pow((p + 1) >> 2);\n  \
     \  return {res, -res};\n  }\n\n  static std::random_device rd;\n  static std::mt19937\
@@ -171,24 +172,25 @@ data:
     \ != 0; e >>= 1) {\n    if (e & 1) {\n      mod_t bd       = b * d;\n      std::tie(a,\
     \ b) = std::make_pair(a * c - bd * x, a * d + b * c + bd * t);\n    }\n    mod_t\
     \ dd = d * d, cd = c * d;\n    std::tie(c, d) = std::make_pair(c * c - dd * x,\
-    \ cd + cd + dd * t);\n  }\n\n  return {a, -a};\n}\n\n} // namespace internal\n\
-    \n/**\n * @brief \u6A21\u5E73\u65B9\u6839\n * @param x [0, p-1] \u4E2D\u7684\u4E00\
-    \u4E2A\u503C\n * @param p \u7D20\u6570\n * @return std::vector<T>\n */\ntemplate\
-    \ <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>> sqrt_mod_prime(T\
-    \ x, T p) {\n  using m32 = RuntimeMontModInt<-1>;\n  using m64 = RuntimeLongMontModInt<-1>;\n\
-    \  if (p == 2 || x == 0) return {x};\n  if (p < (3U << 30)) {\n    bool okay =\
-    \ m32::set_mod(p);\n    assert(okay);\n    auto res = internal::sqrt_mod_prime(m32(x));\n\
-    \    return std::vector<T>(res.begin(), res.end());\n  }\n  bool okay = m64::set_mod(p);\n\
-    \  assert(okay);\n  auto res = internal::sqrt_mod_prime(m64(x));\n  return std::vector<T>(res.begin(),\
-    \ res.end());\n}\n\n} // namespace lib\n\n#endif"
+    \ cd + cd + dd * t);\n  }\n\n  return {a, -a};\n}\n\n} // namespace lib::internal\n\
+    \nnamespace lib {\n\n/**\n * @brief \u6A21\u5E73\u65B9\u6839\n * @param x [0,\
+    \ p-1] \u4E2D\u7684\u4E00\u4E2A\u503C\n * @param p \u7D20\u6570\n * @return std::vector<T>\n\
+    \ */\ntemplate <typename T>\nstd::enable_if_t<std::is_integral_v<T>, std::vector<T>>\
+    \ sqrt_mod_prime(T x, T p) {\n  using m32 = RuntimeMontModInt<-1>;\n  using m64\
+    \ = RuntimeLongMontModInt<-1>;\n  if (p == 2 || x == 0) return {x};\n  if (p <\
+    \ (3U << 30)) {\n    bool okay = m32::set_mod(p);\n    assert(okay);\n    auto\
+    \ res = internal::sqrt_mod_prime(m32(x));\n    return std::vector<T>(res.begin(),\
+    \ res.end());\n  }\n  bool okay = m64::set_mod(p);\n  assert(okay);\n  auto res\
+    \ = internal::sqrt_mod_prime(m64(x));\n  return std::vector<T>(res.begin(), res.end());\n\
+    }\n\n} // namespace lib\n\n#endif"
   dependsOn:
   - modint/runtime_Montgomery_modint.hpp
   - modint/runtime_long_Montgomery_modint.hpp
   isVerificationFile: false
   path: math/modulo/sqrt_mod.hpp
   requiredBy: []
-  timestamp: '2021-07-15 14:25:20+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2021-07-15 16:37:02+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/mod_sqrt.0.test.cpp
 documentation_of: math/modulo/sqrt_mod.hpp

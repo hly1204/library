@@ -45,9 +45,9 @@ data:
     \ == sizeof(U) && std::is_signed_v<T>)),\n                       T, U>;\n\n} //\
     \ namespace lib\n\n\n#line 1 \"math/basic/binary_mul.hpp\"\n\n\n\n/**\n * @brief\
     \ binary multiplication / \u5FEB\u901F\u4E58\n *\n */\n\n#line 10 \"math/basic/binary_mul.hpp\"\
-    \n\n#line 12 \"math/basic/binary_mul.hpp\"\n\nnamespace lib {\n\nnamespace internal\
-    \ {\n\ntemplate <typename T>\nstd::enable_if_t<std::is_integral_v<T> && sizeof(T)\
-    \ <= 4 && std::is_signed_v<T>, T>\nmul_mod(T x, T y, T mod) {\n  T res = static_cast<T>(static_cast<promote_integral_t<T>>(x)\
+    \n\n#line 12 \"math/basic/binary_mul.hpp\"\n\nnamespace lib::internal {\n\ntemplate\
+    \ <typename T>\nstd::enable_if_t<std::is_integral_v<T> && sizeof(T) <= 4 && std::is_signed_v<T>,\
+    \ T>\nmul_mod(T x, T y, T mod) {\n  T res = static_cast<T>(static_cast<promote_integral_t<T>>(x)\
     \ * y % mod);\n  return res < 0 ? res + mod : res;\n}\n\ntemplate <typename T>\n\
     std::enable_if_t<std::is_integral_v<T> && sizeof(T) <= 4 && std::is_unsigned_v<T>,\
     \ T>\nmul_mod(T x, T y, T mod) {\n  return static_cast<T>(static_cast<promote_integral_t<T>>(x)\
@@ -60,12 +60,12 @@ data:
     \  if ((x %= mod) < 0) x += mod;\n  if ((y %= mod) < 0) y += mod;\n  T res = 0;\n\
     \  for (; y != 0; y >>= 1) {\n    if ((y & 1) && (res += x) >= mod) res -= mod;\n\
     \    if ((x <<= 1) >= mod) x -= mod;\n  }\n  return res;\n}\n\n} // namespace\
-    \ internal\n\ntemplate <typename T1, typename T2, typename T3,\n          typename\
-    \ T = longer_integral_t<longer_integral_t<T1, T2>, T3>>\nstd::enable_if_t<std::is_integral_v<T1>\
-    \ && std::is_integral_v<T2> && std::is_integral_v<T3> &&\n                   \
-    \  (std::is_signed_v<T1> || std::is_signed_v<T2>),\n                 T>\nmul_mod(T1\
-    \ x, T2 y, T3 mod) {\n  return internal::mul_mod<std::make_signed_t<T>>(x, y,\
-    \ mod);\n}\n\ntemplate <typename T1, typename T2, typename T3,\n          typename\
+    \ lib::internal\n\nnamespace lib {\n\ntemplate <typename T1, typename T2, typename\
+    \ T3,\n          typename T = longer_integral_t<longer_integral_t<T1, T2>, T3>>\n\
+    std::enable_if_t<std::is_integral_v<T1> && std::is_integral_v<T2> && std::is_integral_v<T3>\
+    \ &&\n                     (std::is_signed_v<T1> || std::is_signed_v<T2>),\n \
+    \                T>\nmul_mod(T1 x, T2 y, T3 mod) {\n  return internal::mul_mod<std::make_signed_t<T>>(x,\
+    \ y, mod);\n}\n\ntemplate <typename T1, typename T2, typename T3,\n          typename\
     \ T = longer_integral_t<longer_integral_t<T1, T2>, T3>>\nstd::enable_if_t<std::is_integral_v<T1>\
     \ && std::is_integral_v<T2> && std::is_integral_v<T3> &&\n                   \
     \  std::is_unsigned_v<T1> && std::is_unsigned_v<T2>,\n                 T>\nmul_mod(T1\
@@ -84,10 +84,10 @@ data:
     \ <optional>\n#line 13 \"math/basic/crt.hpp\"\n\n#line 1 \"math/basic/exgcd.hpp\"\
     \n\n\n\n/**\n * @brief extended Euclidean algorithm / \u6269\u5C55\u6B27\u51E0\
     \u91CC\u5F97\u7B97\u6CD5\n *\n */\n\n#line 12 \"math/basic/exgcd.hpp\"\n\n#line\
-    \ 14 \"math/basic/exgcd.hpp\"\n\nnamespace lib {\n\nnamespace internal {\n\ntemplate\
-    \ <typename T>\nstd::enable_if_t<std::is_integral_v<T>, T> gcd(T a, T b) {\n \
-    \ while (b != 0) std::tie(a, b) = std::make_tuple(b, a % b);\n  return a;\n}\n\
-    \ntemplate <typename T, typename S = std::make_signed_t<T>>\nstd::enable_if_t<std::is_integral_v<T>,\
+    \ 14 \"math/basic/exgcd.hpp\"\n\nnamespace lib::internal {\n\ntemplate <typename\
+    \ T>\nstd::enable_if_t<std::is_integral_v<T>, T> gcd(T a, T b) {\n  while (b !=\
+    \ 0) std::tie(a, b) = std::make_tuple(b, a % b);\n  return a;\n}\n\ntemplate <typename\
+    \ T, typename S = std::make_signed_t<T>>\nstd::enable_if_t<std::is_integral_v<T>,\
     \ std::tuple<T, S, S>> exgcd(T a, T b) {\n  S a_p = a, b_p = b, x1 = 1, x2 = 0,\
     \ x3 = 0, x4 = 1;\n  while (b_p != 0) {\n    S q = a_p / b_p;\n    std::tie(x1,\
     \ x2, x3, x4, a_p, b_p) =\n        std::make_tuple(x3, x4, x1 - x3 * q, x2 - x4\
@@ -97,26 +97,26 @@ data:
     \ mod, x1 = 1, x3 = 0;\n  assert(a < b);\n  while (b != 0) {\n    S q        \
     \            = a / b;\n    std::tie(x1, x3, a, b) = std::make_tuple(x3, x1 - x3\
     \ * q, b, a - b * q);\n  }\n  assert(a == 1 && \"inv_mod_error\");\n  return static_cast<T>(x1\
-    \ < 0 ? x1 + mod : x1);\n}\n\n} // namespace internal\n\ntemplate <typename T1,\
-    \ typename T2, typename T = longer_integral_t<T1, T2>>\nstd::enable_if_t<std::is_integral_v<T1>\
-    \ && std::is_integral_v<T2>, T> gcd(T1 a, T2 b) {\n  return internal::gcd<T>(a,\
-    \ b);\n}\n\ntemplate <typename T1, typename T2, typename T = longer_integral_t<T1,\
-    \ T2>,\n          typename S = std::make_signed_t<T>>\nstd::enable_if_t<std::is_integral_v<T1>\
-    \ && std::is_integral_v<T2>, std::tuple<T, S, S>>\nexgcd(T1 a, T2 b) {\n  return\
-    \ internal::exgcd<T, S>(a, b);\n}\n\ntemplate <typename T1, typename T2, typename\
-    \ T = longer_integral_t<T1, T2>>\nstd::enable_if_t<std::is_integral_v<T1> && std::is_integral_v<T2>,\
-    \ T> inv_mod(T1 x, T2 mod) {\n  return internal::inv_mod<T>(x, mod);\n}\n\n} //\
-    \ namespace lib\n\n\n#line 16 \"math/basic/crt.hpp\"\n\nnamespace lib {\n\n/**\n\
-    \ * @brief \u4E2D\u56FD\u5269\u4F59\u5B9A\u7406\u5408\u5E76\u6A21\u6570\u4E92\u7D20\
-    \u7684\u540C\u4F59\u5F0F\uFF08 Garner \u7B97\u6CD5\uFF09\n * @note \u5982\u679C\
-    \u591A\u6B21\u5408\u5E76\u540C\u6837\u6A21\u6570\u7684\u53EF\u4EE5\u9884\u5904\
-    \u7406\n */\ntemplate <typename T>\nclass CoprimeCRT {\npublic:\n  using u64 =\
-    \ std::uint64_t;\n\n  CoprimeCRT() = default;\n\n  /**\n   * @note \u5047\u8BBE\
-    \ m \u6570\u7EC4\u4E2D\u6240\u6709\u5143\u7D20\u7684\u4E58\u79EF\u5728 std::int64_t\
-    \ \u8868\u793A\u8303\u56F4\u5185\n   */\n  CoprimeCRT(const std::vector<T> &m)\
-    \ : m_(m), C_(m.size()) {\n    int n    = m_.size();\n    u64 prod = 1;\n    for\
-    \ (int i = 0; i < n; ++i) {\n      C_[i] = inv_mod(prod % m_[i], m_[i]);\n   \
-    \   prod *= m_[i];\n    }\n  }\n\n  ~CoprimeCRT() = default;\n\n  void set_m(const\
+    \ < 0 ? x1 + mod : x1);\n}\n\n} // namespace lib::internal\n\nnamespace lib {\n\
+    \ntemplate <typename T1, typename T2, typename T = longer_integral_t<T1, T2>>\n\
+    std::enable_if_t<std::is_integral_v<T1> && std::is_integral_v<T2>, T> gcd(T1 a,\
+    \ T2 b) {\n  return internal::gcd<T>(a, b);\n}\n\ntemplate <typename T1, typename\
+    \ T2, typename T = longer_integral_t<T1, T2>,\n          typename S = std::make_signed_t<T>>\n\
+    std::enable_if_t<std::is_integral_v<T1> && std::is_integral_v<T2>, std::tuple<T,\
+    \ S, S>>\nexgcd(T1 a, T2 b) {\n  return internal::exgcd<T, S>(a, b);\n}\n\ntemplate\
+    \ <typename T1, typename T2, typename T = longer_integral_t<T1, T2>>\nstd::enable_if_t<std::is_integral_v<T1>\
+    \ && std::is_integral_v<T2>, T> inv_mod(T1 x, T2 mod) {\n  return internal::inv_mod<T>(x,\
+    \ mod);\n}\n\n} // namespace lib\n\n\n#line 16 \"math/basic/crt.hpp\"\n\nnamespace\
+    \ lib {\n\n/**\n * @brief \u4E2D\u56FD\u5269\u4F59\u5B9A\u7406\u5408\u5E76\u6A21\
+    \u6570\u4E92\u7D20\u7684\u540C\u4F59\u5F0F\uFF08 Garner \u7B97\u6CD5\uFF09\n *\
+    \ @note \u5982\u679C\u591A\u6B21\u5408\u5E76\u540C\u6837\u6A21\u6570\u7684\u53EF\
+    \u4EE5\u9884\u5904\u7406\n */\ntemplate <typename T>\nclass CoprimeCRT {\npublic:\n\
+    \  using u64 = std::uint64_t;\n\n  CoprimeCRT() = default;\n\n  /**\n   * @note\
+    \ \u5047\u8BBE m \u6570\u7EC4\u4E2D\u6240\u6709\u5143\u7D20\u7684\u4E58\u79EF\u5728\
+    \ std::int64_t \u8868\u793A\u8303\u56F4\u5185\n   */\n  CoprimeCRT(const std::vector<T>\
+    \ &m) : m_(m), C_(m.size()) {\n    int n    = m_.size();\n    u64 prod = 1;\n\
+    \    for (int i = 0; i < n; ++i) {\n      C_[i] = inv_mod(prod % m_[i], m_[i]);\n\
+    \      prod *= m_[i];\n    }\n  }\n\n  ~CoprimeCRT() = default;\n\n  void set_m(const\
     \ std::vector<T> &m) {\n    m_    = m;\n    int n = m_.size();\n    C_.resize(n);\n\
     \    u64 prod = 1;\n    for (int i = 0; i < n; ++i) {\n      C_[i] = inv_mod(prod\
     \ % m_[i], m_[i]);\n      prod *= m_[i];\n    }\n  }\n\n  u64 operator()(const\
@@ -256,7 +256,7 @@ data:
   isVerificationFile: false
   path: math/modulo/binomial_coefficient_mod.hpp
   requiredBy: []
-  timestamp: '2021-07-15 14:25:20+08:00'
+  timestamp: '2021-07-15 16:37:02+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp

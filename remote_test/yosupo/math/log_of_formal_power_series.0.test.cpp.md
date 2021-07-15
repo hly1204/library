@@ -16,9 +16,9 @@ data:
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/log_of_formal_power_series
@@ -112,7 +112,7 @@ data:
     \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    int lim  \
     \                 = INV.size();\n    if (lim < n) {\n      INV.resize(n);\n  \
     \    if (lim == 0) INV[1] = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i]\
-    \ = mod_t(mod - mod / i) * INV[mod % i];\n    }\n  }\n\npublic:\n  using vec::vec;\n\
+    \ = mod_t(mod - mod / i) * INV[mod % i];\n    }\n  }\n\npublic:\n  using std::vector<mod_t>::vector;\n\
     \n  /**\n   * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n\
     \   * @return int\n   */\n  int deg() const {\n    static constexpr mod_t Z =\
     \ 0;\n    int n                    = int(this->size()) - 1;\n    while (n >= 0\
@@ -283,8 +283,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-15 14:25:20+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2021-07-15 16:37:02+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
 layout: document

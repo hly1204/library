@@ -21,13 +21,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
     title: remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.2.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
   - icon: ':x:'
@@ -133,7 +133,7 @@ data:
     \ static constexpr auto mod = modint_traits<mod_t>::get_mod();\n    int lim  \
     \                 = INV.size();\n    if (lim < n) {\n      INV.resize(n);\n  \
     \    if (lim == 0) INV[1] = 1, lim = 2;\n      for (int i = lim; i < n; ++i) INV[i]\
-    \ = mod_t(mod - mod / i) * INV[mod % i];\n    }\n  }\n\npublic:\n  using vec::vec;\n\
+    \ = mod_t(mod - mod / i) * INV[mod % i];\n    }\n  }\n\npublic:\n  using std::vector<mod_t>::vector;\n\
     \n  /**\n   * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n\
     \   * @return int\n   */\n  int deg() const {\n    static constexpr mod_t Z =\
     \ 0;\n    int n                    = int(this->size()) - 1;\n    while (n >= 0\
@@ -252,51 +252,51 @@ data:
     \    int lim                   = INV.size();\n    if (lim < n) {\n      INV.resize(n);\n\
     \      if (lim == 0) INV[1] = 1, lim = 2;\n      for (int i = lim; i < n; ++i)\
     \ INV[i] = mod_t(mod - mod / i) * INV[mod % i];\n    }\n  }\n\npublic:\n  using\
-    \ vec::vec;\n\n  /**\n   * @brief \u83B7\u53D6\u5EA6\u6570\n   * @note \u7279\u4F8B\
-    \u4E3A deg(0)=-1\n   * @return int\n   */\n  int deg() const {\n    static constexpr\
-    \ mod_t Z = 0;\n    int n                    = int(this->size()) - 1;\n    while\
-    \ (n >= 0 && this->operator[](n) == Z) --n;\n    return n;\n  }\n\n  /**\n   *\
-    \ @brief \u83B7\u53D6\u6700\u9AD8\u6B21\u9879\u7684\u7CFB\u6570\n   * @return\
-    \ mod_t\n   */\n  mod_t leading_coeff() const {\n    int d = deg();\n    return\
-    \ d == -1 ? mod_t(0) : this->operator[](d);\n  }\n\n  /**\n   * @brief \u53BB\u9664\
-    \u5C3E 0 \uFF0C\u4F46\u5982\u679C\u53EA\u6709\u4E00\u4E2A 0 \u5219\u4F1A\u4FDD\
-    \u7559\n   */\n  void shrink() { this->resize(std::max(deg() + 1, 1)); }\n  fps\
-    \ slice() const { return fps(*this); }\n  fps slice(int n) const {\n    assert(n\
-    \ >= 0);\n    int sz = this->size();\n    if (sz >= n) return fps(this->begin(),\
-    \ this->begin() + n);\n    fps res(*this);\n    res.resize(n, mod_t(0));\n   \
-    \ return res;\n  }\n\n  fps deriv() const {\n    int n = this->size();\n    if\
-    \ (n <= 1) return {0};\n    fps res(n - 1);\n    for (int i = 1; i != n; ++i)\
-    \ res[i - 1] = this->operator[](i) * mod_t(i);\n    return res;\n  }\n\n  fps\
-    \ integr(const mod_t &c = mod_t(0)) const {\n    int n = this->size() + 1;\n \
-    \   fps res(n);\n    res[0] = c;\n    init_inv(n);\n    for (int i = 1; i != n;\
-    \ ++i) res[i] = this->operator[](i - 1) * INV[i];\n    return res;\n  }\n\n  fps\
-    \ operator-() const {\n    fps res(this->size());\n    for (int i = 0, e = this->size();\
-    \ i != e; ++i) res[i] = -this->operator[](i);\n    return res;\n  }\n\n  fps &operator+=(const\
+    \ std::vector<mod_t>::vector;\n\n  /**\n   * @brief \u83B7\u53D6\u5EA6\u6570\n\
+    \   * @note \u7279\u4F8B\u4E3A deg(0)=-1\n   * @return int\n   */\n  int deg()\
+    \ const {\n    static constexpr mod_t Z = 0;\n    int n                    = int(this->size())\
+    \ - 1;\n    while (n >= 0 && this->operator[](n) == Z) --n;\n    return n;\n \
+    \ }\n\n  /**\n   * @brief \u83B7\u53D6\u6700\u9AD8\u6B21\u9879\u7684\u7CFB\u6570\
+    \n   * @return mod_t\n   */\n  mod_t leading_coeff() const {\n    int d = deg();\n\
+    \    return d == -1 ? mod_t(0) : this->operator[](d);\n  }\n\n  /**\n   * @brief\
+    \ \u53BB\u9664\u5C3E 0 \uFF0C\u4F46\u5982\u679C\u53EA\u6709\u4E00\u4E2A 0 \u5219\
+    \u4F1A\u4FDD\u7559\n   */\n  void shrink() { this->resize(std::max(deg() + 1,\
+    \ 1)); }\n  fps slice() const { return fps(*this); }\n  fps slice(int n) const\
+    \ {\n    assert(n >= 0);\n    int sz = this->size();\n    if (sz >= n) return\
+    \ fps(this->begin(), this->begin() + n);\n    fps res(*this);\n    res.resize(n,\
+    \ mod_t(0));\n    return res;\n  }\n\n  fps deriv() const {\n    int n = this->size();\n\
+    \    if (n <= 1) return {0};\n    fps res(n - 1);\n    for (int i = 1; i != n;\
+    \ ++i) res[i - 1] = this->operator[](i) * mod_t(i);\n    return res;\n  }\n\n\
+    \  fps integr(const mod_t &c = mod_t(0)) const {\n    int n = this->size() + 1;\n\
+    \    fps res(n);\n    res[0] = c;\n    init_inv(n);\n    for (int i = 1; i !=\
+    \ n; ++i) res[i] = this->operator[](i - 1) * INV[i];\n    return res;\n  }\n\n\
+    \  fps operator-() const {\n    fps res(this->size());\n    for (int i = 0, e\
+    \ = this->size(); i != e; ++i) res[i] = -this->operator[](i);\n    return res;\n\
+    \  }\n\n  fps &operator+=(const fps &rhs) {\n    if (this->size() < rhs.size())\
+    \ this->resize(rhs.size(), mod_t(0));\n    for (int i = 0, e = rhs.size(); i !=\
+    \ e; ++i) this->operator[](i) += rhs[i];\n    return *this;\n  }\n  fps &operator-=(const\
     \ fps &rhs) {\n    if (this->size() < rhs.size()) this->resize(rhs.size(), mod_t(0));\n\
-    \    for (int i = 0, e = rhs.size(); i != e; ++i) this->operator[](i) += rhs[i];\n\
-    \    return *this;\n  }\n  fps &operator-=(const fps &rhs) {\n    if (this->size()\
-    \ < rhs.size()) this->resize(rhs.size(), mod_t(0));\n    for (int i = 0, e = rhs.size();\
-    \ i != e; ++i) this->operator[](i) -= rhs[i];\n    return *this;\n  }\n  fps &operator*=(const\
-    \ fps &rhs) {\n    int n = this->size(), m = rhs.size();\n    if (std::min(n,\
-    \ m) <= 32) {\n      fps res(n + m - 1, mod_t(0));\n      for (int i = 0; i !=\
-    \ n; ++i) {\n        for (int j = 0; j != m; ++j) { res[i + j] += this->operator[](i)\
-    \ * rhs[j]; }\n      }\n      return this->operator=(res);\n    }\n    int len\
-    \ = get_ntt_len(n + m - 1);\n    this->resize(len, mod_t(0));\n    if (this ==\
-    \ &rhs) {\n      dft(len, this->data());\n      for (int i = 0; i != len; ++i)\
-    \ this->operator[](i) *= this->operator[](i);\n      idft(len, this->data());\n\
-    \      this->resize(n + m - 1);\n      return *this;\n    }\n    auto b = rhs.slice(len);\n\
-    \    dft(len, this->data());\n    dft(len, b.data());\n    for (int i = 0; i !=\
-    \ len; ++i) this->operator[](i) *= b[i];\n    idft(len, this->data());\n    this->resize(n\
-    \ + m - 1);\n    return *this;\n  }\n\n  fps &operator/=(const fps &rhs) { //\
-    \ 13E\n    int n = this->size();\n    if (n == 0) return *this;\n    assert(rhs[0]\
-    \ != 0);\n    if (n == 1) {\n      this->operator[](0) /= rhs[0];\n      return\
-    \ *this;\n    }\n    int len = get_ntt_len(n), len2 = len >> 1;\n    fps work_tmp1(rhs.inv(len2)),\
-    \ work_tmp2(slice(len2)), work_tmp3(rhs.slice(len));\n    // rhs.inv(len2) \u82B1\
-    \u8D39 5E\n    work_tmp1.resize(len, mod_t(0));\n    dft(len, work_tmp1.data());\
-    \ // 1E\n    work_tmp2.resize(len, mod_t(0));\n    dft(len, work_tmp2.data());\
-    \ // 1E\n    for (int i = 0; i != len; ++i) work_tmp2[i] *= work_tmp1[i];\n  \
-    \  idft(len, work_tmp2.data()); // 1E\n    std::copy_n(work_tmp2.begin(), len2,\
-    \ this->begin());\n    std::fill_n(work_tmp2.begin() + len2, len2, mod_t(0));\n\
+    \    for (int i = 0, e = rhs.size(); i != e; ++i) this->operator[](i) -= rhs[i];\n\
+    \    return *this;\n  }\n  fps &operator*=(const fps &rhs) {\n    int n = this->size(),\
+    \ m = rhs.size();\n    if (std::min(n, m) <= 32) {\n      fps res(n + m - 1, mod_t(0));\n\
+    \      for (int i = 0; i != n; ++i) {\n        for (int j = 0; j != m; ++j) {\
+    \ res[i + j] += this->operator[](i) * rhs[j]; }\n      }\n      return this->operator=(res);\n\
+    \    }\n    int len = get_ntt_len(n + m - 1);\n    this->resize(len, mod_t(0));\n\
+    \    if (this == &rhs) {\n      dft(len, this->data());\n      for (int i = 0;\
+    \ i != len; ++i) this->operator[](i) *= this->operator[](i);\n      idft(len,\
+    \ this->data());\n      this->resize(n + m - 1);\n      return *this;\n    }\n\
+    \    auto b = rhs.slice(len);\n    dft(len, this->data());\n    dft(len, b.data());\n\
+    \    for (int i = 0; i != len; ++i) this->operator[](i) *= b[i];\n    idft(len,\
+    \ this->data());\n    this->resize(n + m - 1);\n    return *this;\n  }\n\n  fps\
+    \ &operator/=(const fps &rhs) { // 13E\n    int n = this->size();\n    if (n ==\
+    \ 0) return *this;\n    assert(rhs[0] != 0);\n    if (n == 1) {\n      this->operator[](0)\
+    \ /= rhs[0];\n      return *this;\n    }\n    int len = get_ntt_len(n), len2 =\
+    \ len >> 1;\n    fps work_tmp1(rhs.inv(len2)), work_tmp2(slice(len2)), work_tmp3(rhs.slice(len));\n\
+    \    // rhs.inv(len2) \u82B1\u8D39 5E\n    work_tmp1.resize(len, mod_t(0));\n\
+    \    dft(len, work_tmp1.data()); // 1E\n    work_tmp2.resize(len, mod_t(0));\n\
+    \    dft(len, work_tmp2.data()); // 1E\n    for (int i = 0; i != len; ++i) work_tmp2[i]\
+    \ *= work_tmp1[i];\n    idft(len, work_tmp2.data()); // 1E\n    std::copy_n(work_tmp2.begin(),\
+    \ len2, this->begin());\n    std::fill_n(work_tmp2.begin() + len2, len2, mod_t(0));\n\
     \    dft(len, work_tmp2.data()); // 1E\n    dft(len, work_tmp3.data()); // 1E\n\
     \    for (int i = 0; i != len; ++i) work_tmp3[i] *= work_tmp2[i];\n    idft(len,\
     \ work_tmp3.data()); // 1E\n    std::fill_n(work_tmp3.begin(), len2, mod_t(0));\n\
@@ -354,7 +354,7 @@ data:
   path: math/formal_power_series/formal_power_series.hpp
   requiredBy:
   - math/formal_power_series/polynomial.hpp
-  timestamp: '2021-07-15 14:25:20+08:00'
+  timestamp: '2021-07-15 16:37:02+08:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp

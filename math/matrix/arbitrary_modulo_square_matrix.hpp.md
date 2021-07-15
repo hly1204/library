@@ -166,8 +166,8 @@ data:
     \   std::cout << ' ';\n      }\n    }\n    return os;\n  }\n};\n\n} // namespace\
     \ lib\n\n\n#line 10 \"math/matrix/arbitrary_modulo_square_matrix.hpp\"\n\nnamespace\
     \ lib {\n\ntemplate <typename Type>\nclass ArbitraryModuloSquareMatrix : public\
-    \ SquareMatrix<Type> {\npublic:\n  using base = SquareMatrix<Type>;\n  using base::base;\n\
-    \n  virtual ~ArbitraryModuloSquareMatrix() = default;\n  virtual int rank() const\
+    \ SquareMatrix<Type> {\npublic:\n  using SquareMatrix<Type>::SquareMatrix;\n\n\
+    \  virtual ~ArbitraryModuloSquareMatrix() = default;\n  virtual int rank() const\
     \ override {\n\n    using raw_type = typename Type::value_type;\n\n    int n =\
     \ this->row(), res = 0;\n    assert(this->col() == n);\n    ArbitraryModuloSquareMatrix\
     \ m(*this);\n    std::vector<int> real_row(n);\n    for (int i = 0; i < n; ++i)\
@@ -240,7 +240,7 @@ data:
     \u9635\n * @docs docs/math/matrix/arbitrary_modulo_square_matrix.md\n */\n\n#include\
     \ \"square_matrix.hpp\"\n\nnamespace lib {\n\ntemplate <typename Type>\nclass\
     \ ArbitraryModuloSquareMatrix : public SquareMatrix<Type> {\npublic:\n  using\
-    \ base = SquareMatrix<Type>;\n  using base::base;\n\n  virtual ~ArbitraryModuloSquareMatrix()\
+    \ SquareMatrix<Type>::SquareMatrix;\n\n  virtual ~ArbitraryModuloSquareMatrix()\
     \ = default;\n  virtual int rank() const override {\n\n    using raw_type = typename\
     \ Type::value_type;\n\n    int n = this->row(), res = 0;\n    assert(this->col()\
     \ == n);\n    ArbitraryModuloSquareMatrix m(*this);\n    std::vector<int> real_row(n);\n\
@@ -314,7 +314,7 @@ data:
   isVerificationFile: false
   path: math/matrix/arbitrary_modulo_square_matrix.hpp
   requiredBy: []
-  timestamp: '2021-07-15 14:25:20+08:00'
+  timestamp: '2021-07-15 16:37:02+08:00'
   verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/matrix/characteristic_polynomial.1.test.cpp

@@ -35,9 +35,9 @@ data:
     \ == sizeof(U) && std::is_signed_v<T>)),\n                       T, U>;\n\n} //\
     \ namespace lib\n\n\n#line 1 \"math/basic/binary_mul.hpp\"\n\n\n\n/**\n * @brief\
     \ binary multiplication / \u5FEB\u901F\u4E58\n *\n */\n\n#line 10 \"math/basic/binary_mul.hpp\"\
-    \n\n#line 12 \"math/basic/binary_mul.hpp\"\n\nnamespace lib {\n\nnamespace internal\
-    \ {\n\ntemplate <typename T>\nstd::enable_if_t<std::is_integral_v<T> && sizeof(T)\
-    \ <= 4 && std::is_signed_v<T>, T>\nmul_mod(T x, T y, T mod) {\n  T res = static_cast<T>(static_cast<promote_integral_t<T>>(x)\
+    \n\n#line 12 \"math/basic/binary_mul.hpp\"\n\nnamespace lib::internal {\n\ntemplate\
+    \ <typename T>\nstd::enable_if_t<std::is_integral_v<T> && sizeof(T) <= 4 && std::is_signed_v<T>,\
+    \ T>\nmul_mod(T x, T y, T mod) {\n  T res = static_cast<T>(static_cast<promote_integral_t<T>>(x)\
     \ * y % mod);\n  return res < 0 ? res + mod : res;\n}\n\ntemplate <typename T>\n\
     std::enable_if_t<std::is_integral_v<T> && sizeof(T) <= 4 && std::is_unsigned_v<T>,\
     \ T>\nmul_mod(T x, T y, T mod) {\n  return static_cast<T>(static_cast<promote_integral_t<T>>(x)\
@@ -50,12 +50,12 @@ data:
     \  if ((x %= mod) < 0) x += mod;\n  if ((y %= mod) < 0) y += mod;\n  T res = 0;\n\
     \  for (; y != 0; y >>= 1) {\n    if ((y & 1) && (res += x) >= mod) res -= mod;\n\
     \    if ((x <<= 1) >= mod) x -= mod;\n  }\n  return res;\n}\n\n} // namespace\
-    \ internal\n\ntemplate <typename T1, typename T2, typename T3,\n          typename\
-    \ T = longer_integral_t<longer_integral_t<T1, T2>, T3>>\nstd::enable_if_t<std::is_integral_v<T1>\
-    \ && std::is_integral_v<T2> && std::is_integral_v<T3> &&\n                   \
-    \  (std::is_signed_v<T1> || std::is_signed_v<T2>),\n                 T>\nmul_mod(T1\
-    \ x, T2 y, T3 mod) {\n  return internal::mul_mod<std::make_signed_t<T>>(x, y,\
-    \ mod);\n}\n\ntemplate <typename T1, typename T2, typename T3,\n          typename\
+    \ lib::internal\n\nnamespace lib {\n\ntemplate <typename T1, typename T2, typename\
+    \ T3,\n          typename T = longer_integral_t<longer_integral_t<T1, T2>, T3>>\n\
+    std::enable_if_t<std::is_integral_v<T1> && std::is_integral_v<T2> && std::is_integral_v<T3>\
+    \ &&\n                     (std::is_signed_v<T1> || std::is_signed_v<T2>),\n \
+    \                T>\nmul_mod(T1 x, T2 y, T3 mod) {\n  return internal::mul_mod<std::make_signed_t<T>>(x,\
+    \ y, mod);\n}\n\ntemplate <typename T1, typename T2, typename T3,\n          typename\
     \ T = longer_integral_t<longer_integral_t<T1, T2>, T3>>\nstd::enable_if_t<std::is_integral_v<T1>\
     \ && std::is_integral_v<T2> && std::is_integral_v<T3> &&\n                   \
     \  std::is_unsigned_v<T1> && std::is_unsigned_v<T2>,\n                 T>\nmul_mod(T1\
@@ -86,7 +86,7 @@ data:
   isVerificationFile: true
   path: remote_test/aizuoj/number_theory/binary_pow.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-15 14:25:20+08:00'
+  timestamp: '2021-07-15 16:37:02+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/aizuoj/number_theory/binary_pow.0.test.cpp
