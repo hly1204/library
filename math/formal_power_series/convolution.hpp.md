@@ -12,6 +12,10 @@ data:
     path: math/formal_power_series/arbitrary_modulo_convolution.hpp
     title: "arbitrary modulo convolution / \u4EFB\u610F\u6A21\u6570\u5377\u79EF"
   - icon: ':warning:'
+    path: math/formal_power_series/falling_factorial_polynomial_multiplication.hpp
+    title: "falling factorial polynomial multiplication / \u4E0B\u964D\u5E42\u591A\
+      \u9879\u5F0F\u4E58\u6CD5"
+  - icon: ':warning:'
     path: math/formal_power_series/sample_points_shift.hpp
     title: "sample points shift / \u6837\u672C\u70B9\u5E73\u79FB"
   _extendedVerifiedWith:
@@ -131,6 +135,7 @@ data:
   isVerificationFile: false
   path: math/formal_power_series/convolution.hpp
   requiredBy:
+  - math/formal_power_series/falling_factorial_polynomial_multiplication.hpp
   - math/formal_power_series/arbitrary_modulo_convolution.hpp
   - math/formal_power_series/sample_points_shift.hpp
   timestamp: '2021-07-15 17:09:18+08:00'

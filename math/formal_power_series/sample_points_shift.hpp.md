@@ -49,23 +49,26 @@ data:
     \u610F\u4E0A\u6307\u6807\u53EF\u4EE5\u4E3A\u8D1F\u6570\u4F46\u8FD9\u91CC\u5E76\
     \u672A\u5B9E\u73B0\uFF01\r\n    return n >= k ? fac_[n] * ifac_[k] * ifac_[n -\
     \ k] : mod_t(0);\r\n  }\r\n\r\nprivate:\r\n  static inline std::vector<mod_t>\
-    \ fac_, ifac_;\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n#line 1 \"math/formal_power_series/convolution.hpp\"\
-    \n\n\n\r\n/**\r\n * @brief convolution / \u5377\u79EF\r\n *\r\n */\r\n\r\n#line\
-    \ 10 \"math/formal_power_series/convolution.hpp\"\n\r\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n\n\n\r\n/**\r\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\r\n\
-    \ * @docs docs/math/formal_power_series/radix_2_NTT.md\r\n */\r\n\r\n#include\
-    \ <algorithm>\r\n#line 11 \"math/formal_power_series/radix_2_NTT.hpp\"\n#include\
-    \ <cstdint>\r\n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\n\r\n#line\
-    \ 1 \"traits/modint.hpp\"\n\n\n\r\n/**\r\n * @brief modint traits / \u53D6\u6A21\
-    \u7C7B\u8403\u53D6\r\n *\r\n */\r\n\r\nnamespace lib {\r\n\r\ntemplate <typename\
-    \ mod_t>\r\nstruct modint_traits {\r\n  using type = typename mod_t::value_type;\r\
-    \n  static constexpr type get_mod() { return mod_t::get_mod(); }\r\n  static constexpr\
-    \ type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
-    \ }\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\
-    \n\r\nnamespace lib {\r\n\r\n/**\r\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\
-    \u7684\u6A21\u6570\uFF01\uFF01\uFF01\r\n */\r\ntemplate <typename mod_t>\r\nclass\
-    \ NTT {\r\npublic:\r\n  NTT() = delete;\r\n\r\n  static void set_root(int len)\
-    \ {\r\n    static int lim = 0;\r\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\r\
+    \ fac_, ifac_;\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n#line 1 \"math/formal_power_series/falling_factorial_polynomial_multiplication.hpp\"\
+    \n\n\n\r\n/**\r\n * @brief falling factorial polynomial multiplication / \u4E0B\
+    \u964D\u5E42\u591A\u9879\u5F0F\u4E58\u6CD5\r\n * @docs docs/math/formal_power_series/falling_factorial_polynomial_multiplication.md\r\
+    \n */\r\n\r\n#include <algorithm>\r\n#include <type_traits>\r\n#line 13 \"math/formal_power_series/falling_factorial_polynomial_multiplication.hpp\"\
+    \n\r\n#line 1 \"math/formal_power_series/convolution.hpp\"\n\n\n\r\n/**\r\n *\
+    \ @brief convolution / \u5377\u79EF\r\n *\r\n */\r\n\r\n#line 10 \"math/formal_power_series/convolution.hpp\"\
+    \n\r\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\r\n/**\r\n *\
+    \ @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\r\n * @docs docs/math/formal_power_series/radix_2_NTT.md\r\
+    \n */\r\n\r\n#line 11 \"math/formal_power_series/radix_2_NTT.hpp\"\n#include <cstdint>\r\
+    \n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\n\r\n#line 1 \"traits/modint.hpp\"\
+    \n\n\n\r\n/**\r\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\r\n\
+    \ *\r\n */\r\n\r\nnamespace lib {\r\n\r\ntemplate <typename mod_t>\r\nstruct modint_traits\
+    \ {\r\n  using type = typename mod_t::value_type;\r\n  static constexpr type get_mod()\
+    \ { return mod_t::get_mod(); }\r\n  static constexpr type get_primitive_root_prime()\
+    \ { return mod_t::get_primitive_root_prime(); }\r\n};\r\n\r\n} // namespace lib\r\
+    \n\r\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\n\r\nnamespace lib\
+    \ {\r\n\r\n/**\r\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\
+    \uFF01\uFF01\uFF01\r\n */\r\ntemplate <typename mod_t>\r\nclass NTT {\r\npublic:\r\
+    \n  NTT() = delete;\r\n\r\n  static void set_root(int len) {\r\n    static int\
+    \ lim = 0;\r\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\r\
     \n    if (lim == 0) {\r\n      rt.resize(1 << 20);\r\n      irt.resize(1 << 20);\r\
     \n      rt[0] = irt[0] = 1;\r\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod()\
     \ >> 21), ig_t = g_t.inv();\r\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\r\
@@ -133,12 +136,7 @@ data:
     \n    std::fill(y_tmp.begin() + m, y_tmp.end(), mod_t(0));\r\n    dft(y_tmp);\r\
     \n    for (int i = 0; i < len; ++i) res[i] *= y_tmp[i];\r\n  }\r\n  idft(res);\r\
     \n  res.resize(n + m - 1);\r\n  return res;\r\n}\r\n\r\n} // namespace lib\r\n\
-    \r\n\n#line 1 \"math/formal_power_series/falling_factorial_polynomial_multiplication.hpp\"\
-    \n\n\n\r\n/**\r\n * @brief falling factorial polynomial multiplication / \u4E0B\
-    \u964D\u5E42\u591A\u9879\u5F0F\u4E58\u6CD5\r\n * @docs docs/math/formal_power_series/falling_factorial_polynomial_multiplication.md\r\
-    \n */\r\n\r\n#line 10 \"math/formal_power_series/falling_factorial_polynomial_multiplication.hpp\"\
-    \n#include <type_traits>\r\n#line 13 \"math/formal_power_series/falling_factorial_polynomial_multiplication.hpp\"\
-    \n\r\n#line 15 \"math/formal_power_series/falling_factorial_polynomial_multiplication.hpp\"\
+    \r\n\n#line 16 \"math/formal_power_series/falling_factorial_polynomial_multiplication.hpp\"\
     \n\r\nnamespace lib {\r\n\r\n/**\r\n * @brief \u6837\u672C\u70B9\u8F6C\u6362\u4E3A\
     \u4E0B\u964D\u5E42\u591A\u9879\u5F0F\r\n *\r\n * @tparam mod_t NTT \u53CB\u597D\
     \u7684\u6A21\u6570\r\n * @param pts f(0), f(1), \u2026, f(n-1)\r\n * @return std::vector<mod_t>\
@@ -186,12 +184,12 @@ data:
     \ m));\r\n}\r\n\r\ntemplate <typename mod_t>\r\nstd::vector<mod_t> shift_sample_points_via_FFP(const\
     \ std::vector<mod_t> &pts, mod_t m) {\r\n  return shift_sample_points_via_FFP(pts.size(),\
     \ pts, m);\r\n}\r\n\r\n/**\r\n * @brief \u6837\u672C\u70B9\u5E73\u79FB\uFF08\u901A\
-    \u8FC7\u62C9\u683C\u6717\u65E5\u63D2\u503C\uFF09\r\n * @note \u4E0D\u5B89\u5168\
-    \u7684\u7B97\u6CD5\r\n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\u6570\r\n\
-    \ * @param n \u8FD4\u56DE\u503C\u7684\u70B9\u6570\uFF0C\u9700\u5927\u4E8E\u96F6\
-    \r\n * @param pts f(0), f(1), \u2026, f(k-1) \u786E\u5B9A\u4E00\u4E2A\u552F\u4E00\
-    \u591A\u9879\u5F0F mod x^{\\underline{k}}\r\n * @param m \u5E73\u79FB\u8DDD\u79BB\
-    \ f(x) => f(x+m)\r\n * @return std::vector<mod_t> f(m), f(m+1), \u2026, f(m+n-1)\r\
+    \u8FC7\u62C9\u683C\u6717\u65E5\u63D2\u503C\u516C\u5F0F\uFF09\r\n * @note \u4E0D\
+    \u5B89\u5168\u7684\u7B97\u6CD5\r\n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\
+    \u6570\r\n * @param n \u8FD4\u56DE\u503C\u7684\u70B9\u6570\uFF0C\u9700\u5927\u4E8E\
+    \u96F6\r\n * @param pts f(0), f(1), \u2026, f(k-1) \u786E\u5B9A\u4E00\u4E2A\u552F\
+    \u4E00\u591A\u9879\u5F0F mod x^{\\underline{k}}\r\n * @param m \u5E73\u79FB\u8DDD\
+    \u79BB f(x) => f(x+m)\r\n * @return std::vector<mod_t> f(m), f(m+1), \u2026, f(m+n-1)\r\
     \n */\r\ntemplate <typename mod_t>\r\nstd::vector<mod_t> shift_sample_points_unsafe(int\
     \ n, const std::vector<mod_t> &pts, mod_t m) {\r\n  int s = pts.size(), deg_A\
     \ = s - 1;\r\n  NTTBinomial<mod_t> bi(s);\r\n  std::vector<mod_t> A(s), B(deg_A\
@@ -202,19 +200,21 @@ data:
     \n  }\r\n  std::partial_sum(B.begin(), B.end(), p_sum.begin(), std::multiplies<>());\r\
     \n  mod_t p_inv = mod_t(1) / p_sum.back();\r\n  for (int i = deg_A + n - 1; i\
     \ > 0; --i) {\r\n    mod_t t = p_inv * B[i];\r\n    B[i]    = p_inv * p_sum[i\
-    \ - 1];\r\n    p_inv   = t;\r\n  }\r\n  B[0] = p_inv;\r\n  A    = std::move(convolve(A,\
-    \ B));\r\n  mod_t coeff(m);\r\n  for (int i = 1; i < s; ++i) coeff *= m - mod_t(i);\r\
-    \n  for (int i = 0; i < n; ++i) A[i] = A[deg_A + i] * coeff, coeff *= (m + mod_t(i\
-    \ + 1)) * B[i];\r\n  A.resize(n);\r\n  return A;\r\n}\r\n\r\ntemplate <typename\
-    \ mod_t>\r\nstd::vector<mod_t> shift_sample_points_unsafe(const std::vector<mod_t>\
-    \ &pts, mod_t m) {\r\n  return shift_sample_points_unsafe(pts.size(), pts, m);\r\
-    \n}\r\n\r\n} // namespace lib\r\n\r\n\n"
+    \ - 1];\r\n    p_inv   = t;\r\n  }\r\n  B[0]    = p_inv;\r\n  p_sum   = B;\r\n\
+    \  int len = get_ntt_len(s + s - 1 + n - (s < 2 ? 0 : deg_A - 1) - 1);\r\n  p_sum.resize(len,\
+    \ ZERO);\r\n  A.resize(len, ZERO);\r\n  dft(A), dft(p_sum);\r\n  for (int i =\
+    \ 0; i < len; ++i) A[i] *= p_sum[i];\r\n  idft(A);\r\n  mod_t coeff(m);\r\n  for\
+    \ (int i = 1; i < s; ++i) coeff *= m - mod_t(i);\r\n  for (int i = 0; i < n; ++i)\
+    \ A[i] = A[deg_A + i] * coeff, coeff *= (m + mod_t(i + 1)) * B[i];\r\n  A.resize(n);\r\
+    \n  return A;\r\n}\r\n\r\ntemplate <typename mod_t>\r\nstd::vector<mod_t> shift_sample_points_unsafe(const\
+    \ std::vector<mod_t> &pts, mod_t m) {\r\n  return shift_sample_points_unsafe(pts.size(),\
+    \ pts, m);\r\n}\r\n\r\n} // namespace lib\r\n\r\n\n"
   code: "#ifndef SAMPLE_POINTS_SHIFT_HEADER_HPP\r\n#define SAMPLE_POINTS_SHIFT_HEADER_HPP\r\
     \n\r\n/**\r\n * @brief sample points shift / \u6837\u672C\u70B9\u5E73\u79FB\r\n\
     \ * @docs docs/math/formal_power_series/sample_points_shift.md\r\n */\r\n\r\n\
     #include <cassert>\r\n#include <functional>\r\n#include <numeric>\r\n#include\
     \ <utility>\r\n#include <vector>\r\n\r\n#include \"NTT_binomial.hpp\"\r\n#include\
-    \ \"convolution.hpp\"\r\n#include \"falling_factorial_polynomial_multiplication.hpp\"\
+    \ \"falling_factorial_polynomial_multiplication.hpp\"\r\n#include \"radix_2_NTT.hpp\"\
     \r\n\r\nnamespace lib {\r\n\r\n/**\r\n * @brief \u6837\u672C\u70B9\u5E73\u79FB\
     \uFF08\u901A\u8FC7\u4E0B\u964D\u5E42\u591A\u9879\u5F0F\u5E73\u79FB\uFF09\r\n *\r\
     \n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\u6570\r\n * @param n \u8FD4\u56DE\
@@ -227,12 +227,12 @@ data:
     \ m));\r\n}\r\n\r\ntemplate <typename mod_t>\r\nstd::vector<mod_t> shift_sample_points_via_FFP(const\
     \ std::vector<mod_t> &pts, mod_t m) {\r\n  return shift_sample_points_via_FFP(pts.size(),\
     \ pts, m);\r\n}\r\n\r\n/**\r\n * @brief \u6837\u672C\u70B9\u5E73\u79FB\uFF08\u901A\
-    \u8FC7\u62C9\u683C\u6717\u65E5\u63D2\u503C\uFF09\r\n * @note \u4E0D\u5B89\u5168\
-    \u7684\u7B97\u6CD5\r\n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\u6570\r\n\
-    \ * @param n \u8FD4\u56DE\u503C\u7684\u70B9\u6570\uFF0C\u9700\u5927\u4E8E\u96F6\
-    \r\n * @param pts f(0), f(1), \u2026, f(k-1) \u786E\u5B9A\u4E00\u4E2A\u552F\u4E00\
-    \u591A\u9879\u5F0F mod x^{\\underline{k}}\r\n * @param m \u5E73\u79FB\u8DDD\u79BB\
-    \ f(x) => f(x+m)\r\n * @return std::vector<mod_t> f(m), f(m+1), \u2026, f(m+n-1)\r\
+    \u8FC7\u62C9\u683C\u6717\u65E5\u63D2\u503C\u516C\u5F0F\uFF09\r\n * @note \u4E0D\
+    \u5B89\u5168\u7684\u7B97\u6CD5\r\n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\
+    \u6570\r\n * @param n \u8FD4\u56DE\u503C\u7684\u70B9\u6570\uFF0C\u9700\u5927\u4E8E\
+    \u96F6\r\n * @param pts f(0), f(1), \u2026, f(k-1) \u786E\u5B9A\u4E00\u4E2A\u552F\
+    \u4E00\u591A\u9879\u5F0F mod x^{\\underline{k}}\r\n * @param m \u5E73\u79FB\u8DDD\
+    \u79BB f(x) => f(x+m)\r\n * @return std::vector<mod_t> f(m), f(m+1), \u2026, f(m+n-1)\r\
     \n */\r\ntemplate <typename mod_t>\r\nstd::vector<mod_t> shift_sample_points_unsafe(int\
     \ n, const std::vector<mod_t> &pts, mod_t m) {\r\n  int s = pts.size(), deg_A\
     \ = s - 1;\r\n  NTTBinomial<mod_t> bi(s);\r\n  std::vector<mod_t> A(s), B(deg_A\
@@ -243,23 +243,25 @@ data:
     \n  }\r\n  std::partial_sum(B.begin(), B.end(), p_sum.begin(), std::multiplies<>());\r\
     \n  mod_t p_inv = mod_t(1) / p_sum.back();\r\n  for (int i = deg_A + n - 1; i\
     \ > 0; --i) {\r\n    mod_t t = p_inv * B[i];\r\n    B[i]    = p_inv * p_sum[i\
-    \ - 1];\r\n    p_inv   = t;\r\n  }\r\n  B[0] = p_inv;\r\n  A    = std::move(convolve(A,\
-    \ B));\r\n  mod_t coeff(m);\r\n  for (int i = 1; i < s; ++i) coeff *= m - mod_t(i);\r\
-    \n  for (int i = 0; i < n; ++i) A[i] = A[deg_A + i] * coeff, coeff *= (m + mod_t(i\
-    \ + 1)) * B[i];\r\n  A.resize(n);\r\n  return A;\r\n}\r\n\r\ntemplate <typename\
-    \ mod_t>\r\nstd::vector<mod_t> shift_sample_points_unsafe(const std::vector<mod_t>\
-    \ &pts, mod_t m) {\r\n  return shift_sample_points_unsafe(pts.size(), pts, m);\r\
-    \n}\r\n\r\n} // namespace lib\r\n\r\n#endif"
+    \ - 1];\r\n    p_inv   = t;\r\n  }\r\n  B[0]    = p_inv;\r\n  p_sum   = B;\r\n\
+    \  int len = get_ntt_len(s + s - 1 + n - (s < 2 ? 0 : deg_A - 1) - 1);\r\n  p_sum.resize(len,\
+    \ ZERO);\r\n  A.resize(len, ZERO);\r\n  dft(A), dft(p_sum);\r\n  for (int i =\
+    \ 0; i < len; ++i) A[i] *= p_sum[i];\r\n  idft(A);\r\n  mod_t coeff(m);\r\n  for\
+    \ (int i = 1; i < s; ++i) coeff *= m - mod_t(i);\r\n  for (int i = 0; i < n; ++i)\
+    \ A[i] = A[deg_A + i] * coeff, coeff *= (m + mod_t(i + 1)) * B[i];\r\n  A.resize(n);\r\
+    \n  return A;\r\n}\r\n\r\ntemplate <typename mod_t>\r\nstd::vector<mod_t> shift_sample_points_unsafe(const\
+    \ std::vector<mod_t> &pts, mod_t m) {\r\n  return shift_sample_points_unsafe(pts.size(),\
+    \ pts, m);\r\n}\r\n\r\n} // namespace lib\r\n\r\n#endif"
   dependsOn:
   - math/formal_power_series/NTT_binomial.hpp
+  - math/formal_power_series/falling_factorial_polynomial_multiplication.hpp
   - math/formal_power_series/convolution.hpp
   - math/formal_power_series/radix_2_NTT.hpp
   - traits/modint.hpp
-  - math/formal_power_series/falling_factorial_polynomial_multiplication.hpp
   isVerificationFile: false
   path: math/formal_power_series/sample_points_shift.hpp
   requiredBy: []
-  timestamp: '2021-07-17 05:32:32+08:00'
+  timestamp: '2021-07-17 06:24:28+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: math/formal_power_series/sample_points_shift.hpp

@@ -14,6 +14,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/convolution.hpp
     title: "convolution / \u5377\u79EF"
+  - icon: ':warning:'
+    path: math/formal_power_series/falling_factorial_polynomial_multiplication.hpp
+    title: "falling factorial polynomial multiplication / \u4E0B\u964D\u5E42\u591A\
+      \u9879\u5F0F\u4E58\u6CD5"
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/formal_power_series.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
@@ -209,6 +213,7 @@ data:
   path: math/formal_power_series/radix_2_NTT.hpp
   requiredBy:
   - math/formal_power_series/convolution.hpp
+  - math/formal_power_series/falling_factorial_polynomial_multiplication.hpp
   - math/formal_power_series/chirp_z.hpp
   - math/formal_power_series/arbitrary_modulo_convolution.hpp
   - math/formal_power_series/polynomial.hpp
