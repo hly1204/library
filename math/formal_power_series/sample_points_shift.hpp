@@ -3,7 +3,7 @@
 
 /**
  * @brief sample points shift / 样本点平移
- *
+ * @docs docs/math/formal_power_series/sample_points_shift.md
  */
 
 #include <type_traits>
