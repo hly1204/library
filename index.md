@@ -62,6 +62,9 @@ data:
   - name: math/formal_power_series
     pages:
     - icon: ':heavy_check_mark:'
+      path: math/formal_power_series/NTT_binomial.hpp
+      title: "NTT prime binomial / NTT \u7D20\u6570\u7528\u4E8C\u9879\u5F0F\u7CFB\u6570"
+    - icon: ':heavy_check_mark:'
       path: math/formal_power_series/NTT_crt.hpp
       title: "NTT prime crt / NTT \u7D20\u6570\u7528\u4E2D\u56FD\u5269\u4F59\u5B9A\
         \u7406"
@@ -74,6 +77,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/convolution.hpp
       title: "convolution / \u5377\u79EF"
+    - icon: ':warning:'
+      path: math/formal_power_series/falling_factorial_polynomial_multiplication.hpp
+      title: "falling factorial polynomial multiplication / \u4E0B\u964D\u5E42\u591A\
+        \u9879\u5F0F\u4E58\u6CD5"
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/formal_power_series.hpp
       title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
@@ -88,6 +95,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/radix_2_NTT.hpp
       title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
+    - icon: ':warning:'
+      path: math/formal_power_series/sample_points_shift.hpp
+      title: "sample points shift / \u6837\u672C\u70B9\u5E73\u79FB"
     - icon: ':heavy_check_mark:'
       path: math/formal_power_series/subproduct_tree.hpp
       title: "multi-point evaluation & interpolation / \u591A\u70B9\u6C42\u503C\u548C\

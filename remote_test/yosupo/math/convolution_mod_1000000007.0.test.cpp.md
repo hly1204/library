@@ -42,10 +42,10 @@ data:
     \ M2) < (1U << 31)) &&\r\n                               ((M0 & M1 & M2 & 1) ==\
     \ 1) && (M0 != M1) && (M0 != M2) && (M1 != M2),\r\n                          \
     \ int> = 0>\r\nclass NTTCRT3 {\r\npublic:\r\n  using u32 = std::uint32_t;\r\n\
-    \  using u64 = std::uint64_t;\r\n\r\n  NTTCRT3(u32 mod) : m_(mod), M0M1_mod_m_(u64(M0)\
-    \ * M1 % mod) {}\r\n  ~NTTCRT3() = default;\r\n\r\n  u32 operator()(u32 a, u32\
-    \ b, u32 c) const {\r\n    // x mod M0 = a, x mod M1 = b, x mod M2 = c\r\n   \
-    \ // a + k0M0 = b + k1M1 => k0 = (b - a) / M0 (mod M1)\r\n    // x = a + k0M0\
+    \  using u64 = std::uint64_t;\r\n\r\n  constexpr NTTCRT3(u32 mod) : m_(mod), M0M1_mod_m_(u64(M0)\
+    \ * M1 % mod) {}\r\n  ~NTTCRT3() = default;\r\n\r\n  constexpr u32 operator()(u32\
+    \ a, u32 b, u32 c) const {\r\n    // x mod M0 = a, x mod M1 = b, x mod M2 = c\r\
+    \n    // a + k0M0 = b + k1M1 => k0 = (b - a) / M0 (mod M1)\r\n    // x = a + k0M0\
     \ (mod M0M1) => a + k0M0 + k01M0M1 = c + k2M2\r\n    // => k01 = (c - (a + k0M0))\
     \ / (M0M1) (mod M2)\r\n    // => x mod M0M1M2 = a + k0M0 + k01M0M1\r\n    u32\
     \ k0 = b - a;\r\n    if (int(k0) < 0) k0 += M1;\r\n    k0      = u64(k0) * M0_inv_M1_\
@@ -240,7 +240,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-15 17:09:18+08:00'
+  timestamp: '2021-07-16 15:42:02+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp

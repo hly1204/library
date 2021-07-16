@@ -2,6 +2,9 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: math/formal_power_series/NTT_binomial.hpp
+    title: "NTT prime binomial / NTT \u7D20\u6570\u7528\u4E8C\u9879\u5F0F\u7CFB\u6570"
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/formal_power_series.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
@@ -36,7 +39,26 @@ data:
     \nstruct modint_traits {\r\n  using type = typename mod_t::value_type;\r\n  static\
     \ constexpr type get_mod() { return mod_t::get_mod(); }\r\n  static constexpr\
     \ type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
-    \ }\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\
+    \ }\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n#line 1 \"math/formal_power_series/NTT_binomial.hpp\"\
+    \n\n\n\r\n/**\r\n * @brief NTT prime binomial / NTT \u7D20\u6570\u7528\u4E8C\u9879\
+    \u5F0F\u7CFB\u6570\r\n *\r\n */\r\n\r\n#line 10 \"math/formal_power_series/NTT_binomial.hpp\"\
+    \n\r\nnamespace lib {\r\n\r\ntemplate <typename mod_t>\r\nclass NTTBinomial {\r\
+    \npublic:\r\n  NTTBinomial(int lim = 0) {\r\n    if (fac_.empty()) {\r\n     \
+    \ fac_.emplace_back(1);\r\n      ifac_.emplace_back(1);\r\n    }\r\n    init(lim);\r\
+    \n  }\r\n  ~NTTBinomial() = default;\r\n\r\n  void init(int n) { // \u9884\u5904\
+    \u7406 [0, n) \u7684\u9636\u4E58\u548C\u5176\u9006\u5143\uFF01\r\n    if (int(fac_.size())\
+    \ < n) {\r\n      int old_size = fac_.size();\r\n      fac_.resize(n);\r\n   \
+    \   ifac_.resize(n);\r\n      for (int i = old_size; i < n; ++i) fac_[i] = fac_[i\
+    \ - 1] * mod_t(i);\r\n      mod_t iv     = mod_t(1) / fac_.back();\r\n      ifac_.back()\
+    \ = iv;\r\n      for (int i = n - 2; i >= lim; --i) ifac_[i] = ifac_[i + 1] *\
+    \ mod_t(i + 1);\r\n    }\r\n  }\r\n\r\n  mod_t fac_unsafe(int n) const { return\
+    \ fac_[n]; }\r\n  mod_t ifac_unsafe(int n) const { return ifac_[n]; }\r\n  mod_t\
+    \ inv_unsafe(int n) const { return ifac_[n] * fac_[n - 1]; }\r\n  mod_t choose_unsafe(int\
+    \ n, int k) const {\r\n    // \u8FD4\u56DE binom{n}{k} \u6CE8\u610F\u4E0A\u6307\
+    \u6807\u53EF\u4EE5\u4E3A\u8D1F\u6570\u4F46\u8FD9\u91CC\u5E76\u672A\u5B9E\u73B0\
+    \uFF01\r\n    return n >= k ? fac_[n] * ifac_[k] * ifac_[n - k] : mod_t(0);\r\n\
+    \  }\r\n\r\nprivate:\r\n  static inline std::vector<mod_t> fac_, ifac_;\r\n  static\
+    \ inline int lim = 0;\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\
     \n\n\n\r\n/**\r\n * @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\r\n\
     \ * @docs docs/math/formal_power_series/radix_2_NTT.md\r\n */\r\n\r\n#line 11\
     \ \"math/formal_power_series/radix_2_NTT.hpp\"\n#include <cstdint>\r\n#line 13\
@@ -97,7 +119,7 @@ data:
     \ &x) {\r\n  NTT<mod_t>::set_root(x.size());\r\n  NTT<mod_t>::dft(x.size(), x.data());\r\
     \n}\r\n\r\ntemplate <typename mod_t>\r\nvoid idft(std::vector<mod_t> &x) {\r\n\
     \  NTT<mod_t>::set_root(x.size());\r\n  NTT<mod_t>::idft(x.size(), x.data());\r\
-    \n}\r\n\r\n} // namespace lib\r\n\r\n\n#line 18 \"math/formal_power_series/formal_power_series.hpp\"\
+    \n}\r\n\r\n} // namespace lib\r\n\r\n\n#line 19 \"math/formal_power_series/formal_power_series.hpp\"\
     \n\r\nnamespace lib {\r\n\r\n/**\r\n * @note \u5FC5\u987B\u4F7F\u7528 NTT \u53CB\
     \u597D\u7684\u6A21\u6570\uFF01\uFF01\uFF01\r\n *       \u5728\u4F7F\u7528\u6A21\
     \u677F\u7C7B\u7EE7\u627F\u65F6\uFF0C\u5BF9\u4E8E\u7EE7\u627F\u6765\u7684 public\
@@ -112,42 +134,38 @@ data:
     \u627F\u5219\u6CA1\u6709\u8FD9\u6837\u7684\u95EE\u9898\u3002\r\n *\r\n */\r\n\
     template <typename mod_t>\r\nclass FormalPowerSeries : public std::vector<mod_t>\
     \ {\r\nprivate:\r\n  using vec = std::vector<mod_t>;\r\n  using fps = FormalPowerSeries<mod_t>;\r\
-    \n\r\n  static inline vec INV;\r\n\r\n  static void init_inv(int n) { // \u9884\
-    \u5904\u7406 [1, n) \u7684\u9006\u5143\r\n    static constexpr auto mod = modint_traits<mod_t>::get_mod();\r\
-    \n    int lim                   = INV.size();\r\n    if (lim < n) {\r\n      INV.resize(n);\r\
-    \n      if (lim == 0) INV[1] = 1, lim = 2;\r\n      for (int i = lim; i < n; ++i)\
-    \ INV[i] = mod_t(mod - mod / i) * INV[mod % i];\r\n    }\r\n  }\r\n\r\npublic:\r\
-    \n  using std::vector<mod_t>::vector;\r\n\r\n  /**\r\n   * @brief \u83B7\u53D6\
-    \u5EA6\u6570\r\n   * @note \u7279\u4F8B\u4E3A deg(0)=-1\r\n   * @return int\r\n\
-    \   */\r\n  int deg() const {\r\n    static constexpr mod_t Z = 0;\r\n    int\
-    \ n                    = int(this->size()) - 1;\r\n    while (n >= 0 && this->operator[](n)\
-    \ == Z) --n;\r\n    return n;\r\n  }\r\n\r\n  /**\r\n   * @brief \u83B7\u53D6\u6700\
-    \u9AD8\u6B21\u9879\u7684\u7CFB\u6570\r\n   * @return mod_t\r\n   */\r\n  mod_t\
-    \ leading_coeff() const {\r\n    int d = deg();\r\n    return d == -1 ? mod_t(0)\
-    \ : this->operator[](d);\r\n  }\r\n\r\n  /**\r\n   * @brief \u53BB\u9664\u5C3E\
-    \ 0 \uFF0C\u4F46\u5982\u679C\u53EA\u6709\u4E00\u4E2A 0 \u5219\u4F1A\u4FDD\u7559\
-    \r\n   */\r\n  void shrink() { this->resize(std::max(deg() + 1, 1)); }\r\n  fps\
-    \ slice() const { return fps(*this); }\r\n  fps slice(int n) const {\r\n    assert(n\
-    \ >= 0);\r\n    int sz = this->size();\r\n    if (sz >= n) return fps(this->begin(),\
-    \ this->begin() + n);\r\n    fps res(*this);\r\n    res.resize(n, mod_t(0));\r\
-    \n    return res;\r\n  }\r\n\r\n  fps deriv() const {\r\n    int n = this->size();\r\
-    \n    if (n <= 1) return {0};\r\n    fps res(n - 1);\r\n    for (int i = 1; i\
-    \ != n; ++i) res[i - 1] = this->operator[](i) * mod_t(i);\r\n    return res;\r\
-    \n  }\r\n\r\n  fps integr(const mod_t &c = mod_t(0)) const {\r\n    int n = this->size()\
-    \ + 1;\r\n    fps res(n);\r\n    res[0] = c;\r\n    init_inv(n);\r\n    for (int\
-    \ i = 1; i != n; ++i) res[i] = this->operator[](i - 1) * INV[i];\r\n    return\
-    \ res;\r\n  }\r\n\r\n  fps operator-() const {\r\n    fps res(this->size());\r\
-    \n    for (int i = 0, e = this->size(); i != e; ++i) res[i] = -this->operator[](i);\r\
-    \n    return res;\r\n  }\r\n\r\n  fps &operator+=(const fps &rhs) {\r\n    if\
-    \ (this->size() < rhs.size()) this->resize(rhs.size(), mod_t(0));\r\n    for (int\
-    \ i = 0, e = rhs.size(); i != e; ++i) this->operator[](i) += rhs[i];\r\n    return\
-    \ *this;\r\n  }\r\n  fps &operator-=(const fps &rhs) {\r\n    if (this->size()\
+    \n\r\npublic:\r\n  using std::vector<mod_t>::vector;\r\n  using value_type = mod_t;\r\
+    \n\r\n  /**\r\n   * @brief \u83B7\u53D6\u5EA6\u6570\r\n   * @note \u7279\u4F8B\
+    \u4E3A deg(0)=-1\r\n   * @return int\r\n   */\r\n  int deg() const {\r\n    static\
+    \ constexpr mod_t Z = 0;\r\n    int n                    = int(this->size()) -\
+    \ 1;\r\n    while (n >= 0 && this->operator[](n) == Z) --n;\r\n    return n;\r\
+    \n  }\r\n\r\n  /**\r\n   * @brief \u83B7\u53D6\u6700\u9AD8\u6B21\u9879\u7684\u7CFB\
+    \u6570\r\n   * @return mod_t\r\n   */\r\n  mod_t leading_coeff() const {\r\n \
+    \   int d = deg();\r\n    return d == -1 ? mod_t(0) : this->operator[](d);\r\n\
+    \  }\r\n\r\n  /**\r\n   * @brief \u53BB\u9664\u5C3E 0 \uFF0C\u4F46\u5982\u679C\
+    \u53EA\u6709\u4E00\u4E2A 0 \u5219\u4F1A\u4FDD\u7559\r\n   */\r\n  void shrink()\
+    \ { this->resize(std::max(deg() + 1, 1)); }\r\n  fps slice() const { return fps(*this);\
+    \ }\r\n  fps slice(int n) const {\r\n    assert(n >= 0);\r\n    int sz = this->size();\r\
+    \n    if (sz >= n) return fps(this->begin(), this->begin() + n);\r\n    fps res(*this);\r\
+    \n    res.resize(n, mod_t(0));\r\n    return res;\r\n  }\r\n\r\n  fps deriv()\
+    \ const {\r\n    int n = this->size();\r\n    if (n <= 1) return {0};\r\n    fps\
+    \ res(n - 1);\r\n    for (int i = 1; i != n; ++i) res[i - 1] = this->operator[](i)\
+    \ * mod_t(i);\r\n    return res;\r\n  }\r\n\r\n  fps integr(const mod_t &c = mod_t(0))\
+    \ const {\r\n    int n = this->size() + 1;\r\n    NTTBinomial<mod_t> bi(n);\r\n\
+    \    fps res(n);\r\n    res[0] = c;\r\n    for (int i = 1; i != n; ++i) res[i]\
+    \ = this->operator[](i - 1) * bi.inv_unsafe(i);\r\n    return res;\r\n  }\r\n\r\
+    \n  fps operator-() const {\r\n    fps res(this->size());\r\n    for (int i =\
+    \ 0, e = this->size(); i != e; ++i) res[i] = -this->operator[](i);\r\n    return\
+    \ res;\r\n  }\r\n\r\n  fps &operator+=(const fps &rhs) {\r\n    if (this->size()\
     \ < rhs.size()) this->resize(rhs.size(), mod_t(0));\r\n    for (int i = 0, e =\
-    \ rhs.size(); i != e; ++i) this->operator[](i) -= rhs[i];\r\n    return *this;\r\
-    \n  }\r\n  fps &operator*=(const fps &rhs) {\r\n    int n = this->size(), m =\
-    \ rhs.size();\r\n    if (std::min(n, m) <= 32) {\r\n      fps res(n + m - 1, mod_t(0));\r\
-    \n      for (int i = 0; i != n; ++i) {\r\n        for (int j = 0; j != m; ++j)\
-    \ { res[i + j] += this->operator[](i) * rhs[j]; }\r\n      }\r\n      return this->operator=(res);\r\
+    \ rhs.size(); i != e; ++i) this->operator[](i) += rhs[i];\r\n    return *this;\r\
+    \n  }\r\n  fps &operator-=(const fps &rhs) {\r\n    if (this->size() < rhs.size())\
+    \ this->resize(rhs.size(), mod_t(0));\r\n    for (int i = 0, e = rhs.size(); i\
+    \ != e; ++i) this->operator[](i) -= rhs[i];\r\n    return *this;\r\n  }\r\n  fps\
+    \ &operator*=(const fps &rhs) {\r\n    int n = this->size(), m = rhs.size();\r\
+    \n    if (std::min(n, m) <= 32) {\r\n      fps res(n + m - 1, mod_t(0));\r\n \
+    \     for (int i = 0; i != n; ++i) {\r\n        for (int j = 0; j != m; ++j) {\
+    \ res[i + j] += this->operator[](i) * rhs[j]; }\r\n      }\r\n      return this->operator=(res);\r\
     \n    }\r\n    int len = get_ntt_len(n + m - 1);\r\n    this->resize(len, mod_t(0));\r\
     \n    if (this == &rhs) {\r\n      dft(len, this->data());\r\n      for (int i\
     \ = 0; i != len; ++i) this->operator[](i) *= this->operator[](i);\r\n      idft(len,\
@@ -293,12 +311,13 @@ data:
   dependsOn:
   - math/formal_power_series/formal_power_series.hpp
   - traits/modint.hpp
+  - math/formal_power_series/NTT_binomial.hpp
   - math/formal_power_series/radix_2_NTT.hpp
   - modint/Montgomery_modint.hpp
   isVerificationFile: true
   path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-15 17:09:18+08:00'
+  timestamp: '2021-07-16 15:42:02+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
