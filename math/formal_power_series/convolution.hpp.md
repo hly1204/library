@@ -1,16 +1,19 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/arbitrary_modulo_convolution.hpp
     title: "arbitrary modulo convolution / \u4EFB\u610F\u6A21\u6570\u5377\u79EF"
+  - icon: ':warning:'
+    path: math/formal_power_series/sample_points_shift.hpp
+    title: "sample points shift / \u6837\u672C\u70B9\u5E73\u79FB"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
@@ -129,6 +132,7 @@ data:
   path: math/formal_power_series/convolution.hpp
   requiredBy:
   - math/formal_power_series/arbitrary_modulo_convolution.hpp
+  - math/formal_power_series/sample_points_shift.hpp
   timestamp: '2021-07-15 17:09:18+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

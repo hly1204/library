@@ -4,13 +4,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/chirp_z.hpp
     title: "chirp z transform / chirp z \u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []

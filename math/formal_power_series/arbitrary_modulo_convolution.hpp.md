@@ -7,13 +7,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/convolution.hpp
     title: "convolution / \u5377\u79EF"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -217,7 +217,7 @@ data:
   code: "#ifndef ARBITRARY_CONVOLUTION_HEADER_HPP\r\n#define ARBITRARY_CONVOLUTION_HEADER_HPP\r\
     \n\r\n/**\r\n * @brief arbitrary modulo convolution / \u4EFB\u610F\u6A21\u6570\
     \u5377\u79EF\r\n *\r\n */\r\n\r\n#include <cstdint>\r\n#include <vector>\r\n\r\
-    \n#include \"NTT_crt.hpp\"\r\n#include \"convolution.hpp\"\r\n#include \"modint/Montgomery_modint.hpp\"\
+    \n#include \"NTT_crt.hpp\"\r\n#include \"convolution.hpp\"\r\n#include \"../../modint/Montgomery_modint.hpp\"\
     \r\n\r\nnamespace lib {\r\n\r\n/**\r\n * @brief \u4EFB\u610F\u6A21\u6570\u5377\
     \u79EF\r\n * @note \u53EA\u9002\u7528\u4E8E\u6A21\u6570\u4E3A 32 \u4F4D\r\n */\r\
     \ntemplate <typename Int, typename ModType>\r\nstd::enable_if_t<std::is_integral_v<ModType>\
@@ -243,7 +243,7 @@ data:
   isVerificationFile: false
   path: math/formal_power_series/arbitrary_modulo_convolution.hpp
   requiredBy: []
-  timestamp: '2021-07-16 15:42:02+08:00'
+  timestamp: '2021-07-17 05:32:32+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp

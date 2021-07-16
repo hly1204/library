@@ -11,7 +11,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/formal_power_series/convolution.hpp
     title: "convolution / \u5377\u79EF"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/formal_power_series.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
@@ -19,12 +19,15 @@ data:
     path: math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
     title: "linearly recurrent sequence Bostan-Mori / \u5E38\u7CFB\u6570\u7EBF\u6027\
       \u9012\u63A8\u5E8F\u5217 Bostan-Mori \u7B97\u6CD5"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/polynomial.hpp
     title: "polynomial / \u591A\u9879\u5F0F"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
+  - icon: ':warning:'
+    path: math/formal_power_series/sample_points_shift.hpp
+    title: "sample points shift / \u6837\u672C\u70B9\u5E73\u79FB"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.0.test.cpp
@@ -62,12 +65,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
     title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
     links: []
@@ -93,10 +96,11 @@ data:
   - math/formal_power_series/chirp_z.hpp
   - math/formal_power_series/arbitrary_modulo_convolution.hpp
   - math/formal_power_series/polynomial.hpp
+  - math/formal_power_series/sample_points_shift.hpp
   - math/formal_power_series/linearly_recurrent_sequence_Bostan_Mori.hpp
   - math/formal_power_series/formal_power_series.hpp
   timestamp: '2021-07-15 17:09:18+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
