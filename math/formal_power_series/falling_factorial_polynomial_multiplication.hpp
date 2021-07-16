@@ -6,6 +6,8 @@
  * @docs docs/math/formal_power_series/falling_factorial_polynomial_multiplication.md
  */
 
+#include <algorithm>
+#include <type_traits>
 #include <vector>
 
 #include "NTT_binomial.hpp"
@@ -61,6 +63,26 @@ PolyType mul_FFP(const PolyType &lhs, const PolyType &rhs) {
   std::vector<mod_t> lhs_pts(FFP_to_sample_points(d, lhs)), rhs_pts(FFP_to_sample_points(d, rhs));
   for (int i = 0; i < d; ++i) lhs_pts[i] *= rhs_pts[i];
   return sample_points_to_FFP<PolyType>(lhs_pts);
+}
+
+/**
+ * @brief 下降幂多项式平移
+ */
+template <typename PolyType, typename mod_t>
+std::enable_if_t<std::is_same_v<typename PolyType::value_type, mod_t>, PolyType>
+shift_FFP(const PolyType &ffp, mod_t c) {
+  int n = ffp.size();
+  NTTBinomial<mod_t> bi(n);
+  PolyType A(ffp), B(n);
+  mod_t c_i(1);
+  for (int i = 0; i < n; ++i)
+    A[i] *= bi.fac_unsafe(i), B[i] = c_i * bi.ifac_unsafe(i), c_i *= c - mod_t(i);
+  std::reverse(A.begin(), A.end());
+  A *= B;
+  A.resize(n);
+  std::reverse(A.begin(), A.end());
+  for (int i = 0; i < n; ++i) A[i] *= bi.ifac_unsafe(i);
+  return A;
 }
 
 } // namespace lib
