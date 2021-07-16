@@ -20,10 +20,10 @@ public:
   using u32 = std::uint32_t;
   using u64 = std::uint64_t;
 
-  NTTCRT3(u32 mod) : m_(mod), M0M1_mod_m_(u64(M0) * M1 % mod) {}
+  constexpr NTTCRT3(u32 mod) : m_(mod), M0M1_mod_m_(u64(M0) * M1 % mod) {}
   ~NTTCRT3() = default;
 
-  u32 operator()(u32 a, u32 b, u32 c) const {
+  constexpr u32 operator()(u32 a, u32 b, u32 c) const {
     // x mod M0 = a, x mod M1 = b, x mod M2 = c
     // a + k0M0 = b + k1M1 => k0 = (b - a) / M0 (mod M1)
     // x = a + k0M0 (mod M0M1) => a + k0M0 + k01M0M1 = c + k2M2

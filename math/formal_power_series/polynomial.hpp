@@ -6,6 +6,7 @@
  * @docs docs/math/formal_power_series/polynomial.md
  */
 
+#include "NTT_binomial.hpp"
 #include "formal_power_series.hpp"
 
 namespace lib {
@@ -19,10 +20,13 @@ namespace lib {
  */
 template <typename mod_t>
 class Polynomial : public FormalPowerSeries<mod_t> {
-public:
+private:
   using fps  = FormalPowerSeries<mod_t>;
   using poly = Polynomial<mod_t>;
+
+public:
   using FormalPowerSeries<mod_t>::FormalPowerSeries;
+  using value_type = mod_t;
 
   // 使得能够从 FormalPowerSeries 转换为 Polynomial 类型，但不清楚是否有什么问题
   Polynomial(const fps &rhs) : fps(rhs) {}
@@ -207,27 +211,17 @@ public:
   }
 
   poly shift(mod_t c) const {
-    static std::vector<mod_t> FAC, IFAC;
-    int lim = FAC.size();
-    int n   = this->deg();
+    int n = this->deg();
     if (n < 1) return poly(*this);
-    if (lim <= n) {
-      FAC.resize(n + 1);
-      IFAC.resize(n + 1);
-      if (lim == 0) FAC[0] = IFAC[0] = mod_t(1), lim = 1;
-      for (int i = lim; i <= n; ++i) FAC[i] = FAC[i - 1] * mod_t(i);
-      IFAC.back() = mod_t(1) / FAC.back();
-      mod_t t     = IFAC.back();
-      for (int i = n - 1; i >= lim; --i) IFAC[i] = (t *= mod_t(i + 1));
-    }
+    NTTBinomial<mod_t> bi(n + 1);
     poly A(*this), B(n + 1);
     mod_t c_i(1);
-    for (int i = 0; i <= n; ++i) A[i] *= FAC[i], B[i] = c_i * IFAC[i], c_i *= c;
+    for (int i = 0; i <= n; ++i) A[i] *= bi.fac_unsafe(i), B[i] = c_i * bi.ifac_unsafe(i), c_i *= c;
     std::reverse(A.begin(), A.end());
     A *= B;
     A.resize(n + 1);
     std::reverse(A.begin(), A.end());
-    for (int i = 0; i <= n; ++i) A[i] *= IFAC[i];
+    for (int i = 0; i <= n; ++i) A[i] *= bi.ifac_unsafe(i);
     return A;
   }
 
