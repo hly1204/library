@@ -6,11 +6,11 @@ data:
     path: math/formal_power_series/falling_factorial_polynomial_multiplication.hpp
     title: "falling factorial polynomial multiplication / \u4E0B\u964D\u5E42\u591A\
       \u9879\u5F0F\u4E58\u6CD5"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/formal_power_series.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/polynomial.hpp
     title: "polynomial / \u591A\u9879\u5F0F"
   - icon: ':warning:'
@@ -41,12 +41,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
     title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "NTT prime binomial / NTT \u7D20\u6570\u7528\u4E8C\u9879\u5F0F\
       \u7CFB\u6570"
@@ -99,7 +99,7 @@ data:
   - math/formal_power_series/sample_points_shift.hpp
   - math/formal_power_series/formal_power_series.hpp
   timestamp: '2021-07-17 05:32:32+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
   - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
