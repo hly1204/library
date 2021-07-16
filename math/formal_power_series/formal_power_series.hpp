@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "../../traits/modint.hpp"
+#include "NTT_binomial.hpp"
 #include "radix_2_NTT.hpp"
 
 namespace lib {
@@ -32,20 +33,9 @@ private:
   using vec = std::vector<mod_t>;
   using fps = FormalPowerSeries<mod_t>;
 
-  static inline vec INV;
-
-  static void init_inv(int n) { // 预处理 [1, n) 的逆元
-    static constexpr auto mod = modint_traits<mod_t>::get_mod();
-    int lim                   = INV.size();
-    if (lim < n) {
-      INV.resize(n);
-      if (lim == 0) INV[1] = 1, lim = 2;
-      for (int i = lim; i < n; ++i) INV[i] = mod_t(mod - mod / i) * INV[mod % i];
-    }
-  }
-
 public:
   using std::vector<mod_t>::vector;
+  using value_type = mod_t;
 
   /**
    * @brief 获取度数
@@ -92,10 +82,10 @@ public:
 
   fps integr(const mod_t &c = mod_t(0)) const {
     int n = this->size() + 1;
+    NTTBinomial<mod_t> bi(n);
     fps res(n);
     res[0] = c;
-    init_inv(n);
-    for (int i = 1; i != n; ++i) res[i] = this->operator[](i - 1) * INV[i];
+    for (int i = 1; i != n; ++i) res[i] = this->operator[](i - 1) * bi.inv_unsafe(i);
     return res;
   }
 
