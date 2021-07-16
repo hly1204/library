@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "NTT_binomial.hpp"
+#include "convolution.hpp"
 
 namespace lib {
 

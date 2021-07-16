@@ -13,8 +13,8 @@
 #include <vector>
 
 #include "NTT_binomial.hpp"
-#include "convolution.hpp"
 #include "falling_factorial_polynomial_multiplication.hpp"
+#include "radix_2_NTT.hpp"
 
 namespace lib {
 
@@ -38,7 +38,7 @@ std::vector<mod_t> shift_sample_points_via_FFP(const std::vector<mod_t> &pts, mo
 }
 
 /**
- * @brief 样本点平移（通过拉格朗日插值）
+ * @brief 样本点平移（通过拉格朗日插值公式）
  * @note 不安全的算法
  * @tparam mod_t NTT 友好的模数
  * @param n 返回值的点数，需大于零
@@ -67,8 +67,14 @@ std::vector<mod_t> shift_sample_points_unsafe(int n, const std::vector<mod_t> &p
     B[i]    = p_inv * p_sum[i - 1];
     p_inv   = t;
   }
-  B[0] = p_inv;
-  A    = std::move(convolve(A, B));
+  B[0]    = p_inv;
+  p_sum   = B;
+  int len = get_ntt_len(s + s - 1 + n - (s < 2 ? 0 : deg_A - 1) - 1);
+  p_sum.resize(len, ZERO);
+  A.resize(len, ZERO);
+  dft(A), dft(p_sum);
+  for (int i = 0; i < len; ++i) A[i] *= p_sum[i];
+  idft(A);
   mod_t coeff(m);
   for (int i = 1; i < s; ++i) coeff *= m - mod_t(i);
   for (int i = 0; i < n; ++i) A[i] = A[deg_A + i] * coeff, coeff *= (m + mod_t(i + 1)) * B[i];
