@@ -6,8 +6,11 @@
  *
  */
 
+#include <algorithm>
 #include <cstdint>
-#include <utility>
+#include <functional>
+#include <iterator>
+#include <numeric>
 #include <vector>
 
 #include "../../traits/modint.hpp"
@@ -31,19 +34,20 @@ public:
     fac_table_ = std::vector<mod_t>{mod_t(1), mod_t(v_ + 1)};
     fac_table_.reserve(v_ + 1);
     for (u64 d = 1; d != v_; d <<= 1) {
-      std::vector<mod_t> g(shift_sample_points_via_FFP(d, fac_table_, mod_t(d + 1)));
-      for (auto i : g) fac_table_.emplace_back(i);
-      g = std::move(shift_sample_points_via_FFP(d << 1 | 1, fac_table_, mod_t(d) * iv));
-      for (int i = 0; i <= (d << 1); ++i) fac_table_[i] *= g[i];
+      std::vector<mod_t> g0(shift_sample_points_unsafe(d, fac_table_, mod_t(d + 1)));
+      std::vector<mod_t> g1(shift_sample_points_unsafe(d << 1 | 1, fac_table_, mod_t(d) * iv));
+      std::copy(g0.begin(), g0.end(), std::back_inserter(fac_table_));
+      for (int i = 0; i <= (d << 1); ++i) fac_table_[i] *= g1[i];
     }
+    std::partial_sum(fac_table_.begin(), fac_table_.end(), fac_table_.begin(), std::multiplies<>());
   }
   ~NTTPrimeFactorial() = default;
 
   mod_t fac(mod_t n) const {
     mod_t res(1);
-    u64 pass = 0, in = u64(n);
-    for (int i = 0; pass + v_ <= in; pass += v_) res *= fac_table_[i++];
-    for (mod_t ONE(1), mpass(pass); mpass != n;) res *= (mpass += ONE);
+    u64 pass = u64(n) / v_;
+    if (pass != 0) res *= fac_table_[pass - 1];
+    for (mod_t ONE(1), mpass(pass * v_); mpass != n;) res *= (mpass += ONE);
     return res;
   }
 
