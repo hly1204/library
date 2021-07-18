@@ -9,9 +9,9 @@
 #include <cstdint>
 #include <vector>
 
+#include "../../modint/Montgomery_modint.hpp"
 #include "NTT_crt.hpp"
 #include "convolution.hpp"
-#include "../../modint/Montgomery_modint.hpp"
 
 namespace lib {
 

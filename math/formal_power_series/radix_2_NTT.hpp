@@ -27,12 +27,13 @@ public:
     static int lim = 0;
     static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());
     if (lim == 0) {
-      rt.resize(1 << 20);
-      irt.resize(1 << 20);
+      constexpr int offset = 20;
+      rt.resize(1 << offset);
+      irt.resize(1 << offset);
       rt[0] = irt[0] = 1;
-      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod() >> 21), ig_t = g_t.inv();
-      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;
-      for (int i = 18; i >= 0; --i) {
+      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod() >> (offset + 1)), ig_t = g_t.inv();
+      rt[1 << (offset - 1)] = g_t, irt[1 << (offset - 1)] = ig_t;
+      for (int i = offset - 2; i >= 0; --i) {
         g_t *= g_t, ig_t *= ig_t;
         rt[1 << i] = g_t, irt[1 << i] = ig_t;
       }

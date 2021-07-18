@@ -1,7 +1,6 @@
 {
   "editor.tabSize": 2,
   "editor.fontFamily": "Cascadia Code, 'Courier New', 微软雅黑",
-  "editor.fontSize": 15,
   "editor.defaultFormatter": "xaver.clang-format",
   "editor.smoothScrolling": true,
   "editor.cursorBlinking": "expand",

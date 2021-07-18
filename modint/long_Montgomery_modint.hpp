@@ -128,9 +128,9 @@ private:
 #ifdef __GNUC__
     unsigned __int128 res = (unsigned __int128)x * y;
     return {u64(res >> 64), u64(res)};
-#elif defined(_MSC_VER)
-    u64 h, l = _umul128(x, y, &h);
-    return {h, l};
+// #elif defined(_MSC_VER)
+//     u64 h, l = _umul128(x, y, &h);
+//     return {h, l};
 #else
     u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d, bc = b * c;
     return {a * c + (ad >> 32) + (bc >> 32) +
@@ -142,8 +142,8 @@ private:
   static constexpr u64 mulh(u64 x, u64 y) {
 #ifdef __GNUC__
     return u64((unsigned __int128)x * y >> 64);
-#elif defined(_MSC_VER)
-    return __umulh(x, y);
+// #elif defined(_MSC_VER)
+//     return __umulh(x, y);
 #else
     u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d, bc = b * c;
     return a * c + (ad >> 32) + (bc >> 32) +
