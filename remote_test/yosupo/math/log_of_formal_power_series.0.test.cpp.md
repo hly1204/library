@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/NTT_binomial.hpp
     title: "NTT prime binomial / NTT \u7D20\u6570\u7528\u4E8C\u9879\u5F0F\u7CFB\u6570"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/formal_power_series.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -67,40 +67,41 @@ data:
     \u7684\u6A21\u6570\uFF01\uFF01\uFF01\r\n */\r\ntemplate <typename mod_t>\r\nclass\
     \ NTT {\r\npublic:\r\n  NTT() = delete;\r\n\r\n  static void set_root(int len)\
     \ {\r\n    static int lim = 0;\r\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\r\
-    \n    if (lim == 0) {\r\n      rt.resize(1 << 20);\r\n      irt.resize(1 << 20);\r\
-    \n      rt[0] = irt[0] = 1;\r\n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod()\
-    \ >> 21), ig_t = g_t.inv();\r\n      rt[1 << 19] = g_t, irt[1 << 19] = ig_t;\r\
-    \n      for (int i = 18; i >= 0; --i) {\r\n        g_t *= g_t, ig_t *= ig_t;\r\
-    \n        rt[1 << i] = g_t, irt[1 << i] = ig_t;\r\n      }\r\n      lim = 1;\r\
-    \n    }\r\n    for (; (lim << 1) < len; lim <<= 1) {\r\n      mod_t g = rt[lim],\
-    \ ig = irt[lim];\r\n      for (int i = lim + 1, e = lim << 1; i < e; ++i) {\r\n\
-    \        rt[i]  = rt[i - lim] * g;\r\n        irt[i] = irt[i - lim] * ig;\r\n\
-    \      }\r\n    }\r\n  }\r\n\r\n  static void dft(int n, mod_t *x) {\r\n    for\
-    \ (int j = 0, l = n >> 1; j != l; ++j) {\r\n      mod_t u = x[j], v = x[j + l];\r\
-    \n      x[j] = u + v, x[j + l] = u - v;\r\n    }\r\n    for (int i = n >> 1; i\
-    \ >= 2; i >>= 1) {\r\n      for (int j = 0, l = i >> 1; j != l; ++j) {\r\n   \
-    \     mod_t u = x[j], v = x[j + l];\r\n        x[j] = u + v, x[j + l] = u - v;\r\
+    \n    if (lim == 0) {\r\n      constexpr int offset = 20;\r\n      rt.resize(1\
+    \ << offset);\r\n      irt.resize(1 << offset);\r\n      rt[0] = irt[0] = 1;\r\
+    \n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod() >> (offset + 1)), ig_t\
+    \ = g_t.inv();\r\n      rt[1 << (offset - 1)] = g_t, irt[1 << (offset - 1)] =\
+    \ ig_t;\r\n      for (int i = offset - 2; i >= 0; --i) {\r\n        g_t *= g_t,\
+    \ ig_t *= ig_t;\r\n        rt[1 << i] = g_t, irt[1 << i] = ig_t;\r\n      }\r\n\
+    \      lim = 1;\r\n    }\r\n    for (; (lim << 1) < len; lim <<= 1) {\r\n    \
+    \  mod_t g = rt[lim], ig = irt[lim];\r\n      for (int i = lim + 1, e = lim <<\
+    \ 1; i < e; ++i) {\r\n        rt[i]  = rt[i - lim] * g;\r\n        irt[i] = irt[i\
+    \ - lim] * ig;\r\n      }\r\n    }\r\n  }\r\n\r\n  static void dft(int n, mod_t\
+    \ *x) {\r\n    for (int j = 0, l = n >> 1; j != l; ++j) {\r\n      mod_t u = x[j],\
+    \ v = x[j + l];\r\n      x[j] = u + v, x[j + l] = u - v;\r\n    }\r\n    for (int\
+    \ i = n >> 1; i >= 2; i >>= 1) {\r\n      for (int j = 0, l = i >> 1; j != l;\
+    \ ++j) {\r\n        mod_t u = x[j], v = x[j + l];\r\n        x[j] = u + v, x[j\
+    \ + l] = u - v;\r\n      }\r\n      for (int j = i, l = i >> 1, m = 1; j != n;\
+    \ j += i, ++m) {\r\n        mod_t root = rt[m];\r\n        for (int k = 0; k !=\
+    \ l; ++k) {\r\n          mod_t u = x[j + k], v = x[j + k + l] * root;\r\n    \
+    \      x[j + k] = u + v, x[j + k + l] = u - v;\r\n        }\r\n      }\r\n   \
+    \ }\r\n  }\r\n\r\n  static void idft(int n, mod_t *x) {\r\n    for (int i = 2;\
+    \ i < n; i <<= 1) {\r\n      for (int j = 0, l = i >> 1; j != l; ++j) {\r\n  \
+    \      mod_t u = x[j], v = x[j + l];\r\n        x[j] = u + v, x[j + l] = u - v;\r\
     \n      }\r\n      for (int j = i, l = i >> 1, m = 1; j != n; j += i, ++m) {\r\
-    \n        mod_t root = rt[m];\r\n        for (int k = 0; k != l; ++k) {\r\n  \
-    \        mod_t u = x[j + k], v = x[j + k + l] * root;\r\n          x[j + k] =\
-    \ u + v, x[j + k + l] = u - v;\r\n        }\r\n      }\r\n    }\r\n  }\r\n\r\n\
-    \  static void idft(int n, mod_t *x) {\r\n    for (int i = 2; i < n; i <<= 1)\
-    \ {\r\n      for (int j = 0, l = i >> 1; j != l; ++j) {\r\n        mod_t u = x[j],\
-    \ v = x[j + l];\r\n        x[j] = u + v, x[j + l] = u - v;\r\n      }\r\n    \
-    \  for (int j = i, l = i >> 1, m = 1; j != n; j += i, ++m) {\r\n        mod_t\
-    \ root = irt[m];\r\n        for (int k = 0; k != l; ++k) {\r\n          mod_t\
-    \ u = x[j + k], v = x[j + k + l];\r\n          x[j + k] = u + v, x[j + k + l]\
-    \ = (u - v) * root;\r\n        }\r\n      }\r\n    }\r\n    mod_t iv(mod_t(n).inv());\r\
-    \n    for (int j = 0, l = n >> 1; j != l; ++j) {\r\n      mod_t u = x[j] * iv,\
-    \ v = x[j + l] * iv;\r\n      x[j] = u + v, x[j + l] = u - v;\r\n    }\r\n  }\r\
-    \n\r\n  static void even_dft(int n, mod_t *x) {\r\n    static constexpr mod_t\
-    \ IT(mod_t(2).inv());\r\n    for (int i = 0, j = 0; i != n; i += 2, ++j) x[j]\
-    \ = IT * (x[i] + x[i + 1]);\r\n  }\r\n\r\n  static void odd_dft(int n, mod_t *x)\
-    \ {\r\n    static constexpr mod_t IT(mod_t(2).inv());\r\n    for (int i = 0, j\
-    \ = 0; i != n; i += 2, ++j) x[j] = IT * irt[j] * (x[i] - x[i + 1]);\r\n  }\r\n\
-    \r\n  static void dft_doubling(int n, mod_t *x) {\r\n    static constexpr mod_t\
-    \ g(modint_traits<mod_t>::get_primitive_root_prime());\r\n    std::copy_n(x, n,\
-    \ x + n);\r\n    idft(n, x + n);\r\n    mod_t k(1), t(g.pow((modint_traits<mod_t>::get_mod()\
+    \n        mod_t root = irt[m];\r\n        for (int k = 0; k != l; ++k) {\r\n \
+    \         mod_t u = x[j + k], v = x[j + k + l];\r\n          x[j + k] = u + v,\
+    \ x[j + k + l] = (u - v) * root;\r\n        }\r\n      }\r\n    }\r\n    mod_t\
+    \ iv(mod_t(n).inv());\r\n    for (int j = 0, l = n >> 1; j != l; ++j) {\r\n  \
+    \    mod_t u = x[j] * iv, v = x[j + l] * iv;\r\n      x[j] = u + v, x[j + l] =\
+    \ u - v;\r\n    }\r\n  }\r\n\r\n  static void even_dft(int n, mod_t *x) {\r\n\
+    \    static constexpr mod_t IT(mod_t(2).inv());\r\n    for (int i = 0, j = 0;\
+    \ i != n; i += 2, ++j) x[j] = IT * (x[i] + x[i + 1]);\r\n  }\r\n\r\n  static void\
+    \ odd_dft(int n, mod_t *x) {\r\n    static constexpr mod_t IT(mod_t(2).inv());\r\
+    \n    for (int i = 0, j = 0; i != n; i += 2, ++j) x[j] = IT * irt[j] * (x[i] -\
+    \ x[i + 1]);\r\n  }\r\n\r\n  static void dft_doubling(int n, mod_t *x) {\r\n \
+    \   static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\r\
+    \n    std::copy_n(x, n, x + n);\r\n    idft(n, x + n);\r\n    mod_t k(1), t(g.pow((modint_traits<mod_t>::get_mod()\
     \ - 1) / (n << 1)));\r\n    for (int i = 0; i != n; ++i) x[n + i] *= k, k *= t;\r\
     \n    dft(n, x + n);\r\n  }\r\n\r\nprivate:\r\n  static inline std::vector<mod_t>\
     \ rt, irt;\r\n};\r\n\r\nstd::uint32_t get_ntt_len(std::uint32_t n) {\r\n  --n;\r\
@@ -317,7 +318,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2021-07-17 05:32:32+08:00'
+  timestamp: '2021-07-19 03:14:01+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp

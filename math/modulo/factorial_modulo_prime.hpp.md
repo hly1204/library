@@ -14,64 +14,71 @@ data:
   - icon: ':question:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
+  - icon: ':warning:'
+    path: math/formal_power_series/sample_points_shift.hpp
+    title: "sample points shift / \u6837\u672C\u70B9\u5E73\u79FB"
   - icon: ':question:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
-  _extendedRequiredBy:
-  - icon: ':warning:'
-    path: math/modulo/factorial_modulo_prime.hpp
-    title: "factorial modulo prime / \u9636\u4E58\u6A21\u7D20\u6570"
+  - icon: ':question:'
+    path: traits/modint.hpp
+    title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
+  _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':warning:'
   attributes:
-    _deprecated_at_docs: docs/math/formal_power_series/sample_points_shift.md
-    document_title: "sample points shift / \u6837\u672C\u70B9\u5E73\u79FB"
+    document_title: "factorial modulo prime / \u9636\u4E58\u6A21\u7D20\u6570"
     links: []
-  bundledCode: "#line 1 \"math/formal_power_series/sample_points_shift.hpp\"\n\n\n\
-    \r\n/**\r\n * @brief sample points shift / \u6837\u672C\u70B9\u5E73\u79FB\r\n\
-    \ * @docs docs/math/formal_power_series/sample_points_shift.md\r\n */\r\n\r\n\
-    #include <cassert>\r\n#include <functional>\r\n#include <numeric>\r\n#include\
-    \ <utility>\r\n#include <vector>\r\n\r\n#line 1 \"math/formal_power_series/NTT_binomial.hpp\"\
-    \n\n\n\r\n/**\r\n * @brief NTT prime binomial / NTT \u7D20\u6570\u7528\u4E8C\u9879\
-    \u5F0F\u7CFB\u6570\r\n *\r\n */\r\n\r\n#line 10 \"math/formal_power_series/NTT_binomial.hpp\"\
-    \n\r\nnamespace lib {\r\n\r\ntemplate <typename mod_t>\r\nclass NTTBinomial {\r\
-    \npublic:\r\n  NTTBinomial(int lim = 0) {\r\n    if (fac_.empty()) {\r\n     \
-    \ fac_.emplace_back(1);\r\n      ifac_.emplace_back(1);\r\n    }\r\n    init(lim);\r\
-    \n  }\r\n  ~NTTBinomial() = default;\r\n\r\n  /**\r\n   * @brief \u9884\u5904\u7406\
-    \ [0, n) \u7684\u9636\u4E58\u548C\u5176\u9006\u5143\r\n   */\r\n  static void\
-    \ init(int n) {\r\n    if (int(fac_.size()) < n) {\r\n      int old_size = fac_.size();\r\
-    \n      fac_.resize(n);\r\n      ifac_.resize(n);\r\n      for (int i = old_size;\
-    \ i < n; ++i) fac_[i] = fac_[i - 1] * mod_t(i);\r\n      ifac_.back() = mod_t(1)\
-    \ / fac_.back();\r\n      for (int i = n - 2; i >= old_size; --i) ifac_[i] = ifac_[i\
-    \ + 1] * mod_t(i + 1);\r\n    }\r\n  }\r\n\r\n  mod_t fac_unsafe(int n) const\
-    \ { return fac_[n]; }\r\n  mod_t ifac_unsafe(int n) const { return ifac_[n]; }\r\
-    \n  mod_t inv_unsafe(int n) const { return ifac_[n] * fac_[n - 1]; }\r\n  mod_t\
-    \ choose_unsafe(int n, int k) const {\r\n    // \u8FD4\u56DE binom{n}{k} \u6CE8\
-    \u610F\u4E0A\u6307\u6807\u53EF\u4EE5\u4E3A\u8D1F\u6570\u4F46\u8FD9\u91CC\u5E76\
-    \u672A\u5B9E\u73B0\uFF01\r\n    return n >= k ? fac_[n] * ifac_[k] * ifac_[n -\
-    \ k] : mod_t(0);\r\n  }\r\n\r\nprivate:\r\n  static inline std::vector<mod_t>\
-    \ fac_, ifac_;\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n#line 1 \"math/formal_power_series/falling_factorial_polynomial_multiplication.hpp\"\
+  bundledCode: "#line 1 \"math/modulo/factorial_modulo_prime.hpp\"\n\n\n\r\n/**\r\n\
+    \ * @brief factorial modulo prime / \u9636\u4E58\u6A21\u7D20\u6570\r\n *\r\n */\r\
+    \n\r\n#include <algorithm>\r\n#include <cstdint>\r\n#include <functional>\r\n\
+    #include <iterator>\r\n#include <numeric>\r\n#include <vector>\r\n\r\n#line 1\
+    \ \"traits/modint.hpp\"\n\n\n\r\n/**\r\n * @brief modint traits / \u53D6\u6A21\
+    \u7C7B\u8403\u53D6\r\n *\r\n */\r\n\r\nnamespace lib {\r\n\r\ntemplate <typename\
+    \ mod_t>\r\nstruct modint_traits {\r\n  using type = typename mod_t::value_type;\r\
+    \n  static constexpr type get_mod() { return mod_t::get_mod(); }\r\n  static constexpr\
+    \ type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
+    \ }\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n#line 1 \"math/formal_power_series/sample_points_shift.hpp\"\
+    \n\n\n\r\n/**\r\n * @brief sample points shift / \u6837\u672C\u70B9\u5E73\u79FB\
+    \r\n * @docs docs/math/formal_power_series/sample_points_shift.md\r\n */\r\n\r\
+    \n#include <cassert>\r\n#line 12 \"math/formal_power_series/sample_points_shift.hpp\"\
+    \n#include <utility>\r\n#line 14 \"math/formal_power_series/sample_points_shift.hpp\"\
+    \n\r\n#line 1 \"math/formal_power_series/NTT_binomial.hpp\"\n\n\n\r\n/**\r\n *\
+    \ @brief NTT prime binomial / NTT \u7D20\u6570\u7528\u4E8C\u9879\u5F0F\u7CFB\u6570\
+    \r\n *\r\n */\r\n\r\n#line 10 \"math/formal_power_series/NTT_binomial.hpp\"\n\r\
+    \nnamespace lib {\r\n\r\ntemplate <typename mod_t>\r\nclass NTTBinomial {\r\n\
+    public:\r\n  NTTBinomial(int lim = 0) {\r\n    if (fac_.empty()) {\r\n      fac_.emplace_back(1);\r\
+    \n      ifac_.emplace_back(1);\r\n    }\r\n    init(lim);\r\n  }\r\n  ~NTTBinomial()\
+    \ = default;\r\n\r\n  /**\r\n   * @brief \u9884\u5904\u7406 [0, n) \u7684\u9636\
+    \u4E58\u548C\u5176\u9006\u5143\r\n   */\r\n  static void init(int n) {\r\n   \
+    \ if (int(fac_.size()) < n) {\r\n      int old_size = fac_.size();\r\n      fac_.resize(n);\r\
+    \n      ifac_.resize(n);\r\n      for (int i = old_size; i < n; ++i) fac_[i] =\
+    \ fac_[i - 1] * mod_t(i);\r\n      ifac_.back() = mod_t(1) / fac_.back();\r\n\
+    \      for (int i = n - 2; i >= old_size; --i) ifac_[i] = ifac_[i + 1] * mod_t(i\
+    \ + 1);\r\n    }\r\n  }\r\n\r\n  mod_t fac_unsafe(int n) const { return fac_[n];\
+    \ }\r\n  mod_t ifac_unsafe(int n) const { return ifac_[n]; }\r\n  mod_t inv_unsafe(int\
+    \ n) const { return ifac_[n] * fac_[n - 1]; }\r\n  mod_t choose_unsafe(int n,\
+    \ int k) const {\r\n    // \u8FD4\u56DE binom{n}{k} \u6CE8\u610F\u4E0A\u6307\u6807\
+    \u53EF\u4EE5\u4E3A\u8D1F\u6570\u4F46\u8FD9\u91CC\u5E76\u672A\u5B9E\u73B0\uFF01\
+    \r\n    return n >= k ? fac_[n] * ifac_[k] * ifac_[n - k] : mod_t(0);\r\n  }\r\
+    \n\r\nprivate:\r\n  static inline std::vector<mod_t> fac_, ifac_;\r\n};\r\n\r\n\
+    } // namespace lib\r\n\r\n\n#line 1 \"math/formal_power_series/falling_factorial_polynomial_multiplication.hpp\"\
     \n\n\n\r\n/**\r\n * @brief falling factorial polynomial multiplication / \u4E0B\
     \u964D\u5E42\u591A\u9879\u5F0F\u4E58\u6CD5\r\n * @docs docs/math/formal_power_series/falling_factorial_polynomial_multiplication.md\r\
-    \n */\r\n\r\n#include <algorithm>\r\n#include <type_traits>\r\n#line 13 \"math/formal_power_series/falling_factorial_polynomial_multiplication.hpp\"\
+    \n */\r\n\r\n#line 10 \"math/formal_power_series/falling_factorial_polynomial_multiplication.hpp\"\
+    \n#include <type_traits>\r\n#line 13 \"math/formal_power_series/falling_factorial_polynomial_multiplication.hpp\"\
     \n\r\n#line 1 \"math/formal_power_series/convolution.hpp\"\n\n\n\r\n/**\r\n *\
     \ @brief convolution / \u5377\u79EF\r\n *\r\n */\r\n\r\n#line 10 \"math/formal_power_series/convolution.hpp\"\
     \n\r\n#line 1 \"math/formal_power_series/radix_2_NTT.hpp\"\n\n\n\r\n/**\r\n *\
     \ @brief radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362\r\n * @docs docs/math/formal_power_series/radix_2_NTT.md\r\
-    \n */\r\n\r\n#line 11 \"math/formal_power_series/radix_2_NTT.hpp\"\n#include <cstdint>\r\
-    \n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\n\r\n#line 1 \"traits/modint.hpp\"\
-    \n\n\n\r\n/**\r\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\r\n\
-    \ *\r\n */\r\n\r\nnamespace lib {\r\n\r\ntemplate <typename mod_t>\r\nstruct modint_traits\
-    \ {\r\n  using type = typename mod_t::value_type;\r\n  static constexpr type get_mod()\
-    \ { return mod_t::get_mod(); }\r\n  static constexpr type get_primitive_root_prime()\
-    \ { return mod_t::get_primitive_root_prime(); }\r\n};\r\n\r\n} // namespace lib\r\
-    \n\r\n\n#line 15 \"math/formal_power_series/radix_2_NTT.hpp\"\n\r\nnamespace lib\
-    \ {\r\n\r\n/**\r\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\
-    \uFF01\uFF01\uFF01\r\n */\r\ntemplate <typename mod_t>\r\nclass NTT {\r\npublic:\r\
-    \n  NTT() = delete;\r\n\r\n  static void set_root(int len) {\r\n    static int\
-    \ lim = 0;\r\n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\r\
+    \n */\r\n\r\n#line 13 \"math/formal_power_series/radix_2_NTT.hpp\"\n\r\n#line\
+    \ 15 \"math/formal_power_series/radix_2_NTT.hpp\"\n\r\nnamespace lib {\r\n\r\n\
+    /**\r\n * @note \u5FC5\u987B\u7528 NTT \u53CB\u597D\u7684\u6A21\u6570\uFF01\uFF01\
+    \uFF01\r\n */\r\ntemplate <typename mod_t>\r\nclass NTT {\r\npublic:\r\n  NTT()\
+    \ = delete;\r\n\r\n  static void set_root(int len) {\r\n    static int lim = 0;\r\
+    \n    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());\r\
     \n    if (lim == 0) {\r\n      constexpr int offset = 20;\r\n      rt.resize(1\
     \ << offset);\r\n      irt.resize(1 << offset);\r\n      rt[0] = irt[0] = 1;\r\
     \n      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod() >> (offset + 1)), ig_t\
@@ -212,100 +219,66 @@ data:
     \ A[i] = A[deg_A + i] * coeff, coeff *= (m + mod_t(i + 1)) * B[i];\r\n  A.resize(n);\r\
     \n  return A;\r\n}\r\n\r\ntemplate <typename mod_t>\r\nstd::vector<mod_t> shift_sample_points_unsafe(const\
     \ std::vector<mod_t> &pts, mod_t m) {\r\n  return shift_sample_points_unsafe(pts.size(),\
-    \ pts, m);\r\n}\r\n\r\n} // namespace lib\r\n\r\n\n"
-  code: "#ifndef SAMPLE_POINTS_SHIFT_HEADER_HPP\r\n#define SAMPLE_POINTS_SHIFT_HEADER_HPP\r\
-    \n\r\n/**\r\n * @brief sample points shift / \u6837\u672C\u70B9\u5E73\u79FB\r\n\
-    \ * @docs docs/math/formal_power_series/sample_points_shift.md\r\n */\r\n\r\n\
-    #include <cassert>\r\n#include <functional>\r\n#include <numeric>\r\n#include\
-    \ <utility>\r\n#include <vector>\r\n\r\n#include \"NTT_binomial.hpp\"\r\n#include\
-    \ \"falling_factorial_polynomial_multiplication.hpp\"\r\n#include \"radix_2_NTT.hpp\"\
-    \r\n\r\nnamespace lib {\r\n\r\n/**\r\n * @brief \u6837\u672C\u70B9\u5E73\u79FB\
-    \uFF08\u901A\u8FC7\u4E0B\u964D\u5E42\u591A\u9879\u5F0F\u5E73\u79FB\uFF09\r\n *\r\
-    \n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\u6570\r\n * @param n \u8FD4\u56DE\
-    \u503C\u7684\u70B9\u6570\uFF0C\u9700\u5927\u4E8E\u96F6\r\n * @param pts f(0),\
-    \ f(1), \u2026, f(k-1) \u786E\u5B9A\u4E00\u4E2A\u552F\u4E00\u591A\u9879\u5F0F\
-    \ mod x^{\\underline{k}}\r\n * @param m \u5E73\u79FB\u8DDD\u79BB f(x) => f(x+m)\r\
-    \n * @return std::vector<mod_t> f(m), f(m+1), \u2026, f(m+n-1)\r\n */\r\ntemplate\
-    \ <typename mod_t>\r\nstd::vector<mod_t> shift_sample_points_via_FFP(int n, const\
-    \ std::vector<mod_t> &pts, mod_t m) {\r\n  return FFP_to_sample_points(n, shift_FFP(sample_points_to_FFP(pts),\
-    \ m));\r\n}\r\n\r\ntemplate <typename mod_t>\r\nstd::vector<mod_t> shift_sample_points_via_FFP(const\
-    \ std::vector<mod_t> &pts, mod_t m) {\r\n  return shift_sample_points_via_FFP(pts.size(),\
-    \ pts, m);\r\n}\r\n\r\n/**\r\n * @brief \u6837\u672C\u70B9\u5E73\u79FB\uFF08\u901A\
-    \u8FC7\u62C9\u683C\u6717\u65E5\u63D2\u503C\u516C\u5F0F\uFF09\r\n * @note \u4E0D\
-    \u5B89\u5168\u7684\u7B97\u6CD5\r\n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\
-    \u6570\r\n * @param n \u8FD4\u56DE\u503C\u7684\u70B9\u6570\uFF0C\u9700\u5927\u4E8E\
-    \u96F6\r\n * @param pts f(0), f(1), \u2026, f(k-1) \u786E\u5B9A\u4E00\u4E2A\u552F\
-    \u4E00\u591A\u9879\u5F0F mod x^{\\underline{k}}\r\n * @param m \u5E73\u79FB\u8DDD\
-    \u79BB f(x) => f(x+m)\r\n * @return std::vector<mod_t> f(m), f(m+1), \u2026, f(m+n-1)\r\
-    \n */\r\ntemplate <typename mod_t>\r\nstd::vector<mod_t> shift_sample_points_unsafe(int\
-    \ n, const std::vector<mod_t> &pts, mod_t m) {\r\n  int s = pts.size(), deg_A\
-    \ = s - 1;\r\n  NTTBinomial<mod_t> bi(s);\r\n  std::vector<mod_t> A(s), B(deg_A\
-    \ + n), p_sum(deg_A + n);\r\n  for (int i = 0; i < s; ++i) {\r\n    A[i] = pts[i]\
-    \ * bi.ifac_unsafe(i) * bi.ifac_unsafe(deg_A - i);\r\n    if ((deg_A - i) & 1)\
-    \ A[i] = -A[i];\r\n  }\r\n  const mod_t ZERO(0);\r\n  for (int i = 0; i < deg_A\
-    \ + n; ++i) {\r\n    B[i] = m + mod_t(i - deg_A);\r\n    assert(B[i] != ZERO);\r\
-    \n  }\r\n  std::partial_sum(B.begin(), B.end(), p_sum.begin(), std::multiplies<>());\r\
-    \n  mod_t p_inv = mod_t(1) / p_sum.back();\r\n  for (int i = deg_A + n - 1; i\
-    \ > 0; --i) {\r\n    mod_t t = p_inv * B[i];\r\n    B[i]    = p_inv * p_sum[i\
-    \ - 1];\r\n    p_inv   = t;\r\n  }\r\n  B[0]    = p_inv;\r\n  p_sum   = B;\r\n\
-    \  int len = get_ntt_len(s + s - 1 + n - (s < 2 ? 0 : deg_A - 1) - 1);\r\n  p_sum.resize(len,\
-    \ ZERO);\r\n  A.resize(len, ZERO);\r\n  dft(A), dft(p_sum);\r\n  for (int i =\
-    \ 0; i < len; ++i) A[i] *= p_sum[i];\r\n  idft(A);\r\n  mod_t coeff(m);\r\n  for\
-    \ (int i = 1; i < s; ++i) coeff *= m - mod_t(i);\r\n  for (int i = 0; i < n; ++i)\
-    \ A[i] = A[deg_A + i] * coeff, coeff *= (m + mod_t(i + 1)) * B[i];\r\n  A.resize(n);\r\
-    \n  return A;\r\n}\r\n\r\ntemplate <typename mod_t>\r\nstd::vector<mod_t> shift_sample_points_unsafe(const\
-    \ std::vector<mod_t> &pts, mod_t m) {\r\n  return shift_sample_points_unsafe(pts.size(),\
-    \ pts, m);\r\n}\r\n\r\n} // namespace lib\r\n\r\n#endif"
+    \ pts, m);\r\n}\r\n\r\n} // namespace lib\r\n\r\n\n#line 18 \"math/modulo/factorial_modulo_prime.hpp\"\
+    \n\r\nnamespace lib {\r\n\r\n/**\r\n * @brief NTT \u53CB\u597D\u6A21\u6570\u7684\
+    \u9636\u4E58\u8BA1\u7B97\r\n *\r\n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\
+    \u6570\r\n */\r\ntemplate <typename mod_t>\r\nclass NTTPrimeFactorial {\r\npublic:\r\
+    \n  using u32 = std::uint32_t;\r\n  using u64 = std::uint64_t;\r\n  NTTPrimeFactorial()\
+    \ : v_(1) {\r\n    while (v_ * v_ < modint_traits<mod_t>::get_mod()) v_ <<= 1;\r\
+    \n    mod_t iv   = mod_t(1) / mod_t(v_);\r\n    fac_table_ = std::vector<mod_t>{mod_t(1),\
+    \ mod_t(v_ + 1)};\r\n    fac_table_.reserve(v_ + 1);\r\n    for (u64 d = 1; d\
+    \ != v_; d <<= 1) {\r\n      std::vector<mod_t> g0(shift_sample_points_unsafe(d,\
+    \ fac_table_, mod_t(d + 1)));\r\n      std::vector<mod_t> g1(shift_sample_points_unsafe(d\
+    \ << 1 | 1, fac_table_, mod_t(d) * iv));\r\n      std::copy(g0.begin(), g0.end(),\
+    \ std::back_inserter(fac_table_));\r\n      for (int i = 0; i <= (d << 1); ++i)\
+    \ fac_table_[i] *= g1[i];\r\n    }\r\n    std::partial_sum(fac_table_.begin(),\
+    \ fac_table_.end(), fac_table_.begin(), std::multiplies<>());\r\n  }\r\n  ~NTTPrimeFactorial()\
+    \ = default;\r\n\r\n  mod_t fac(mod_t n) const {\r\n    mod_t res(1);\r\n    u64\
+    \ pass = u64(n) / v_;\r\n    if (pass != 0) res *= fac_table_[pass - 1];\r\n \
+    \   for (mod_t ONE(1), mpass(pass * v_); mpass != n;) res *= (mpass += ONE);\r\
+    \n    return res;\r\n  }\r\n\r\nprivate:\r\n  u64 v_;\r\n  std::vector<mod_t>\
+    \ fac_table_;\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n"
+  code: "#ifndef FACTORIAL_MODULO_PRIME_HEADER_HPP\r\n#define FACTORIAL_MODULO_PRIME_HEADER_HPP\r\
+    \n\r\n/**\r\n * @brief factorial modulo prime / \u9636\u4E58\u6A21\u7D20\u6570\
+    \r\n *\r\n */\r\n\r\n#include <algorithm>\r\n#include <cstdint>\r\n#include <functional>\r\
+    \n#include <iterator>\r\n#include <numeric>\r\n#include <vector>\r\n\r\n#include\
+    \ \"../../traits/modint.hpp\"\r\n#include \"../formal_power_series/sample_points_shift.hpp\"\
+    \r\n\r\nnamespace lib {\r\n\r\n/**\r\n * @brief NTT \u53CB\u597D\u6A21\u6570\u7684\
+    \u9636\u4E58\u8BA1\u7B97\r\n *\r\n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\
+    \u6570\r\n */\r\ntemplate <typename mod_t>\r\nclass NTTPrimeFactorial {\r\npublic:\r\
+    \n  using u32 = std::uint32_t;\r\n  using u64 = std::uint64_t;\r\n  NTTPrimeFactorial()\
+    \ : v_(1) {\r\n    while (v_ * v_ < modint_traits<mod_t>::get_mod()) v_ <<= 1;\r\
+    \n    mod_t iv   = mod_t(1) / mod_t(v_);\r\n    fac_table_ = std::vector<mod_t>{mod_t(1),\
+    \ mod_t(v_ + 1)};\r\n    fac_table_.reserve(v_ + 1);\r\n    for (u64 d = 1; d\
+    \ != v_; d <<= 1) {\r\n      std::vector<mod_t> g0(shift_sample_points_unsafe(d,\
+    \ fac_table_, mod_t(d + 1)));\r\n      std::vector<mod_t> g1(shift_sample_points_unsafe(d\
+    \ << 1 | 1, fac_table_, mod_t(d) * iv));\r\n      std::copy(g0.begin(), g0.end(),\
+    \ std::back_inserter(fac_table_));\r\n      for (int i = 0; i <= (d << 1); ++i)\
+    \ fac_table_[i] *= g1[i];\r\n    }\r\n    std::partial_sum(fac_table_.begin(),\
+    \ fac_table_.end(), fac_table_.begin(), std::multiplies<>());\r\n  }\r\n  ~NTTPrimeFactorial()\
+    \ = default;\r\n\r\n  mod_t fac(mod_t n) const {\r\n    mod_t res(1);\r\n    u64\
+    \ pass = u64(n) / v_;\r\n    if (pass != 0) res *= fac_table_[pass - 1];\r\n \
+    \   for (mod_t ONE(1), mpass(pass * v_); mpass != n;) res *= (mpass += ONE);\r\
+    \n    return res;\r\n  }\r\n\r\nprivate:\r\n  u64 v_;\r\n  std::vector<mod_t>\
+    \ fac_table_;\r\n};\r\n\r\n} // namespace lib\r\n\r\n#endif"
   dependsOn:
+  - traits/modint.hpp
+  - math/formal_power_series/sample_points_shift.hpp
   - math/formal_power_series/NTT_binomial.hpp
   - math/formal_power_series/falling_factorial_polynomial_multiplication.hpp
   - math/formal_power_series/convolution.hpp
   - math/formal_power_series/radix_2_NTT.hpp
   - traits/modint.hpp
   isVerificationFile: false
-  path: math/formal_power_series/sample_points_shift.hpp
-  requiredBy:
-  - math/modulo/factorial_modulo_prime.hpp
+  path: math/modulo/factorial_modulo_prime.hpp
+  requiredBy: []
   timestamp: '2021-07-19 03:14:01+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
-documentation_of: math/formal_power_series/sample_points_shift.hpp
+documentation_of: math/modulo/factorial_modulo_prime.hpp
 layout: document
 redirect_from:
-- /library/math/formal_power_series/sample_points_shift.hpp
-- /library/math/formal_power_series/sample_points_shift.hpp.html
-title: "sample points shift / \u6837\u672C\u70B9\u5E73\u79FB"
+- /library/math/modulo/factorial_modulo_prime.hpp
+- /library/math/modulo/factorial_modulo_prime.hpp.html
+title: "factorial modulo prime / \u9636\u4E58\u6A21\u7D20\u6570"
 ---
-## 样本点平移
-
-给出 $f(0),f(1),\dots f(n)$ 求出 $f(c),f(c+1),\dots f(c+n)$ ，其中 $f\in\mathbb{F} _ p\lbrack x\rbrack,c\in\mathbb{F} _ p\setminus \lbrace 0\rbrace ,\deg(f)\leq n$ 。发现可使用下降幂多项式的平移完成，我们考虑拉格朗日插值公式，有
-
-$$
-\begin{aligned}
-f(x)&=\sum _ {0\leq i\leq n}f(i)\prod _ {0\leq j\leq n\land j\neq i}\frac{x-j}{i-j}\\
-&=\sum _ {0\leq i\leq n}f(i)\frac{x!}{(x-n-1)!(x-i)}\frac{(-1)^{n-i}}{i!(n-i)!}\\
-&=\frac{x!}{(x-n-1)!}\sum _ {0\leq i\leq n}\frac{f(i)}{(x-i)}\frac{(-1)^{n-i}}{i!(n-i)!}
-\end{aligned}
-$$
-
-上式虽然是一个卷积形式但是 $x-i$ 在分母上可能为零，故该方法有局限性，我们假设 $\lbrace 0,1,\dots ,n\rbrace \cap\lbrace c,c+1,\dots c+n\rbrace =\emptyset$ 那么此时令
-
-$$
-A(x)=\sum _ {0\leq i\leq n}\frac{f(i)(-1)^{n-i}}{i!(n-i)!}x^i,\quad B(x)=\sum _ {i\geq 0}\frac{1}{c-n+i}x^i
-$$
-
-那么对于 $t\geq 0$ 有
-
-$$
-\begin{aligned}
-\lbrack x^{n+t}\rbrack (A(x)B(x))&=\sum _ {i=0}^{n+t}\lbrack x^i\rbrack A(x)\lbrack x^{n+t-i}\rbrack B(x)\\
-&=\sum _ {i=0}^{n}\frac{f(i)(-1)^{n-i}}{i!(n-i)!}\frac{1}{c+t-i}\\
-&=\frac{(c+t-n-1)!}{(c+t)!}f(c+t)
-\end{aligned}
-$$
-
-也就是说我们可以求出 $f(c),f(c+1),\dots $ 只要 $B(x)$ 足够“长”且不要“跨越”零导致分母为零的话上述算法是正确的。
-
-## 等差数列
-
-沿用上述问题，对于 $k\in\mathbb{F} _ p^{\times}$ 和 $d\in\mathbb{F} _ p$ 给出 $f(d),f(d+k),\dots ,f(d+nk)$ 求出 $f(c+d),f(c+d+k),\dots ,f(c+d+nk)$ 也是类似的，可视作平移 $g(x)=f(d+kx)$ 的点值 $g(0),g(1),\dots g(n)$ 为 $g\left(\frac{c}{k}\right),g\left(\frac{c}{k}+1\right),\dots ,g\left(\frac{c}{k}+n\right)$ 。

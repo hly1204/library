@@ -6,16 +6,19 @@ data:
     path: math/formal_power_series/falling_factorial_polynomial_multiplication.hpp
     title: "falling factorial polynomial multiplication / \u4E0B\u964D\u5E42\u591A\
       \u9879\u5F0F\u4E58\u6CD5"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/formal_power_series.hpp
     title: "basic operations of formal power series / \u5F62\u5F0F\u5E42\u7EA7\u6570\
       \u7684\u57FA\u672C\u64CD\u4F5C"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series/polynomial.hpp
     title: "polynomial / \u591A\u9879\u5F0F"
   - icon: ':warning:'
     path: math/formal_power_series/sample_points_shift.hpp
     title: "sample points shift / \u6837\u672C\u70B9\u5E73\u79FB"
+  - icon: ':warning:'
+    path: math/modulo/factorial_modulo_prime.hpp
+    title: "factorial modulo prime / \u9636\u4E58\u6A21\u7D20\u6570"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.0.test.cpp
@@ -41,12 +44,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
     title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "NTT prime binomial / NTT \u7D20\u6570\u7528\u4E8C\u9879\u5F0F\
       \u7CFB\u6570"
@@ -98,8 +101,9 @@ data:
   - math/formal_power_series/polynomial.hpp
   - math/formal_power_series/sample_points_shift.hpp
   - math/formal_power_series/formal_power_series.hpp
+  - math/modulo/factorial_modulo_prime.hpp
   timestamp: '2021-07-17 05:32:32+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/kth_term_of_linearly_recurrent_sequence.1.test.cpp
   - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp

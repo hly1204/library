@@ -63,30 +63,31 @@ data:
     \ (y & 1) res *= x;\r\n    return res;\r\n  }\r\n\r\nprivate:\r\n  static constexpr\
     \ std::pair<u64, u64> mul(u64 x, u64 y) {\r\n#ifdef __GNUC__\r\n    unsigned __int128\
     \ res = (unsigned __int128)x * y;\r\n    return {u64(res >> 64), u64(res)};\r\n\
-    #elif defined(_MSC_VER)\r\n    u64 h, l = _umul128(x, y, &h);\r\n    return {h,\
-    \ l};\r\n#else\r\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad\
-    \ = a * d, bc = b * c;\r\n    return {a * c + (ad >> 32) + (bc >> 32) +\r\n  \
-    \              (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32)) >>\
-    \ 32),\r\n            x * y};\r\n#endif\r\n  }\r\n\r\n  static constexpr u64 mulh(u64\
-    \ x, u64 y) {\r\n#ifdef __GNUC__\r\n    return u64((unsigned __int128)x * y >>\
-    \ 64);\r\n#elif defined(_MSC_VER)\r\n    return __umulh(x, y);\r\n#else\r\n  \
-    \  u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d, bc = b *\
-    \ c;\r\n    return a * c + (ad >> 32) + (bc >> 32) +\r\n           (((ad & ~UINT32_C(0))\
-    \ + (bc & ~UINT32_C(0)) + (b * d >> 32)) >> 32);\r\n#endif\r\n  }\r\n\r\n  static\
-    \ constexpr u64 get_r() {\r\n    u64 two = 2, iv = mod * (two - mod * mod);\r\n\
-    \    iv *= two - mod * iv;\r\n    iv *= two - mod * iv;\r\n    iv *= two - mod\
-    \ * iv;\r\n    return iv * (two - mod * iv);\r\n  }\r\n\r\n  static constexpr\
-    \ u64 get_r2() {\r\n    u64 iv = -u64(mod) % mod;\r\n    for (int i = 0; i !=\
-    \ 64; ++i)\r\n      if ((iv <<= 1) >= mod) iv -= mod;\r\n    return iv;\r\n  }\r\
-    \n\r\n  static constexpr u64 reduce(const std::pair<u64, u64> &x) {\r\n    u64\
-    \ res = x.first - mulh(x.second * r, mod);\r\n    return res + (mod & -(res >>\
-    \ 63));\r\n  }\r\n\r\n  static constexpr u64 norm(i64 x) { return x + (mod & -(x\
-    \ < 0)); }\r\n\r\n  u64 v_;\r\n\r\n  static constexpr u64 r  = get_r();\r\n  static\
-    \ constexpr u64 r2 = get_r2();\r\n\r\n  static_assert((mod & 1) == 1, \"mod %\
-    \ 2 == 0\\n\");\r\n  static_assert(r * mod == 1, \"???\\n\");\r\n  static_assert((mod\
-    \ & (1ULL << 63)) == 0, \"mod >= (1ULL << 63)\\n\");\r\n  static_assert(mod !=\
-    \ 1, \"mod == 1\\n\");\r\n};\r\n\r\ntemplate <std::uint64_t mod>\r\nusing LongMontModInt\
-    \ = LongMontgomeryModInt<mod>;\r\n\r\n} // namespace lib\r\n\r\n\n"
+    // #elif defined(_MSC_VER)\r\n//     u64 h, l = _umul128(x, y, &h);\r\n//    \
+    \ return {h, l};\r\n#else\r\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d =\
+    \ u32(y), ad = a * d, bc = b * c;\r\n    return {a * c + (ad >> 32) + (bc >> 32)\
+    \ +\r\n                (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >>\
+    \ 32)) >> 32),\r\n            x * y};\r\n#endif\r\n  }\r\n\r\n  static constexpr\
+    \ u64 mulh(u64 x, u64 y) {\r\n#ifdef __GNUC__\r\n    return u64((unsigned __int128)x\
+    \ * y >> 64);\r\n// #elif defined(_MSC_VER)\r\n//     return __umulh(x, y);\r\n\
+    #else\r\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d,\
+    \ bc = b * c;\r\n    return a * c + (ad >> 32) + (bc >> 32) +\r\n           (((ad\
+    \ & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32)) >> 32);\r\n#endif\r\n\
+    \  }\r\n\r\n  static constexpr u64 get_r() {\r\n    u64 two = 2, iv = mod * (two\
+    \ - mod * mod);\r\n    iv *= two - mod * iv;\r\n    iv *= two - mod * iv;\r\n\
+    \    iv *= two - mod * iv;\r\n    return iv * (two - mod * iv);\r\n  }\r\n\r\n\
+    \  static constexpr u64 get_r2() {\r\n    u64 iv = -u64(mod) % mod;\r\n    for\
+    \ (int i = 0; i != 64; ++i)\r\n      if ((iv <<= 1) >= mod) iv -= mod;\r\n   \
+    \ return iv;\r\n  }\r\n\r\n  static constexpr u64 reduce(const std::pair<u64,\
+    \ u64> &x) {\r\n    u64 res = x.first - mulh(x.second * r, mod);\r\n    return\
+    \ res + (mod & -(res >> 63));\r\n  }\r\n\r\n  static constexpr u64 norm(i64 x)\
+    \ { return x + (mod & -(x < 0)); }\r\n\r\n  u64 v_;\r\n\r\n  static constexpr\
+    \ u64 r  = get_r();\r\n  static constexpr u64 r2 = get_r2();\r\n\r\n  static_assert((mod\
+    \ & 1) == 1, \"mod % 2 == 0\\n\");\r\n  static_assert(r * mod == 1, \"???\\n\"\
+    );\r\n  static_assert((mod & (1ULL << 63)) == 0, \"mod >= (1ULL << 63)\\n\");\r\
+    \n  static_assert(mod != 1, \"mod == 1\\n\");\r\n};\r\n\r\ntemplate <std::uint64_t\
+    \ mod>\r\nusing LongMontModInt = LongMontgomeryModInt<mod>;\r\n\r\n} // namespace\
+    \ lib\r\n\r\n\n"
   code: "#ifndef LONG_MONTGOMERY_MODINT_HEADER_HPP\r\n#define LONG_MONTGOMERY_MODINT_HEADER_HPP\r\
     \n\r\n/**\r\n * @brief long Montgomery modint / \u957F\u6574\u578B Montgomery\
     \ \u53D6\u6A21\u7C7B\r\n * @docs docs/modint/long_Montgomery_modint.md\r\n */\r\
@@ -139,35 +140,36 @@ data:
     \ (y & 1) res *= x;\r\n    return res;\r\n  }\r\n\r\nprivate:\r\n  static constexpr\
     \ std::pair<u64, u64> mul(u64 x, u64 y) {\r\n#ifdef __GNUC__\r\n    unsigned __int128\
     \ res = (unsigned __int128)x * y;\r\n    return {u64(res >> 64), u64(res)};\r\n\
-    #elif defined(_MSC_VER)\r\n    u64 h, l = _umul128(x, y, &h);\r\n    return {h,\
-    \ l};\r\n#else\r\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad\
-    \ = a * d, bc = b * c;\r\n    return {a * c + (ad >> 32) + (bc >> 32) +\r\n  \
-    \              (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32)) >>\
-    \ 32),\r\n            x * y};\r\n#endif\r\n  }\r\n\r\n  static constexpr u64 mulh(u64\
-    \ x, u64 y) {\r\n#ifdef __GNUC__\r\n    return u64((unsigned __int128)x * y >>\
-    \ 64);\r\n#elif defined(_MSC_VER)\r\n    return __umulh(x, y);\r\n#else\r\n  \
-    \  u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d, bc = b *\
-    \ c;\r\n    return a * c + (ad >> 32) + (bc >> 32) +\r\n           (((ad & ~UINT32_C(0))\
-    \ + (bc & ~UINT32_C(0)) + (b * d >> 32)) >> 32);\r\n#endif\r\n  }\r\n\r\n  static\
-    \ constexpr u64 get_r() {\r\n    u64 two = 2, iv = mod * (two - mod * mod);\r\n\
-    \    iv *= two - mod * iv;\r\n    iv *= two - mod * iv;\r\n    iv *= two - mod\
-    \ * iv;\r\n    return iv * (two - mod * iv);\r\n  }\r\n\r\n  static constexpr\
-    \ u64 get_r2() {\r\n    u64 iv = -u64(mod) % mod;\r\n    for (int i = 0; i !=\
-    \ 64; ++i)\r\n      if ((iv <<= 1) >= mod) iv -= mod;\r\n    return iv;\r\n  }\r\
-    \n\r\n  static constexpr u64 reduce(const std::pair<u64, u64> &x) {\r\n    u64\
-    \ res = x.first - mulh(x.second * r, mod);\r\n    return res + (mod & -(res >>\
-    \ 63));\r\n  }\r\n\r\n  static constexpr u64 norm(i64 x) { return x + (mod & -(x\
-    \ < 0)); }\r\n\r\n  u64 v_;\r\n\r\n  static constexpr u64 r  = get_r();\r\n  static\
-    \ constexpr u64 r2 = get_r2();\r\n\r\n  static_assert((mod & 1) == 1, \"mod %\
-    \ 2 == 0\\n\");\r\n  static_assert(r * mod == 1, \"???\\n\");\r\n  static_assert((mod\
-    \ & (1ULL << 63)) == 0, \"mod >= (1ULL << 63)\\n\");\r\n  static_assert(mod !=\
-    \ 1, \"mod == 1\\n\");\r\n};\r\n\r\ntemplate <std::uint64_t mod>\r\nusing LongMontModInt\
-    \ = LongMontgomeryModInt<mod>;\r\n\r\n} // namespace lib\r\n\r\n#endif"
+    // #elif defined(_MSC_VER)\r\n//     u64 h, l = _umul128(x, y, &h);\r\n//    \
+    \ return {h, l};\r\n#else\r\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d =\
+    \ u32(y), ad = a * d, bc = b * c;\r\n    return {a * c + (ad >> 32) + (bc >> 32)\
+    \ +\r\n                (((ad & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >>\
+    \ 32)) >> 32),\r\n            x * y};\r\n#endif\r\n  }\r\n\r\n  static constexpr\
+    \ u64 mulh(u64 x, u64 y) {\r\n#ifdef __GNUC__\r\n    return u64((unsigned __int128)x\
+    \ * y >> 64);\r\n// #elif defined(_MSC_VER)\r\n//     return __umulh(x, y);\r\n\
+    #else\r\n    u64 a = x >> 32, b = u32(x), c = y >> 32, d = u32(y), ad = a * d,\
+    \ bc = b * c;\r\n    return a * c + (ad >> 32) + (bc >> 32) +\r\n           (((ad\
+    \ & ~UINT32_C(0)) + (bc & ~UINT32_C(0)) + (b * d >> 32)) >> 32);\r\n#endif\r\n\
+    \  }\r\n\r\n  static constexpr u64 get_r() {\r\n    u64 two = 2, iv = mod * (two\
+    \ - mod * mod);\r\n    iv *= two - mod * iv;\r\n    iv *= two - mod * iv;\r\n\
+    \    iv *= two - mod * iv;\r\n    return iv * (two - mod * iv);\r\n  }\r\n\r\n\
+    \  static constexpr u64 get_r2() {\r\n    u64 iv = -u64(mod) % mod;\r\n    for\
+    \ (int i = 0; i != 64; ++i)\r\n      if ((iv <<= 1) >= mod) iv -= mod;\r\n   \
+    \ return iv;\r\n  }\r\n\r\n  static constexpr u64 reduce(const std::pair<u64,\
+    \ u64> &x) {\r\n    u64 res = x.first - mulh(x.second * r, mod);\r\n    return\
+    \ res + (mod & -(res >> 63));\r\n  }\r\n\r\n  static constexpr u64 norm(i64 x)\
+    \ { return x + (mod & -(x < 0)); }\r\n\r\n  u64 v_;\r\n\r\n  static constexpr\
+    \ u64 r  = get_r();\r\n  static constexpr u64 r2 = get_r2();\r\n\r\n  static_assert((mod\
+    \ & 1) == 1, \"mod % 2 == 0\\n\");\r\n  static_assert(r * mod == 1, \"???\\n\"\
+    );\r\n  static_assert((mod & (1ULL << 63)) == 0, \"mod >= (1ULL << 63)\\n\");\r\
+    \n  static_assert(mod != 1, \"mod == 1\\n\");\r\n};\r\n\r\ntemplate <std::uint64_t\
+    \ mod>\r\nusing LongMontModInt = LongMontgomeryModInt<mod>;\r\n\r\n} // namespace\
+    \ lib\r\n\r\n#endif"
   dependsOn: []
   isVerificationFile: false
   path: modint/long_Montgomery_modint.hpp
   requiredBy: []
-  timestamp: '2021-07-15 17:09:18+08:00'
+  timestamp: '2021-07-19 03:14:01+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: modint/long_Montgomery_modint.hpp
