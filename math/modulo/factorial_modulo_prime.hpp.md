@@ -224,8 +224,9 @@ data:
     \ pts, m);\r\n}\r\n\r\n} // namespace lib\r\n\r\n\n#line 18 \"math/modulo/factorial_modulo_prime.hpp\"\
     \n\r\nnamespace lib {\r\n\r\n/**\r\n * @brief NTT \u53CB\u597D\u6A21\u6570\u7684\
     \u9636\u4E58\u8BA1\u7B97\r\n *\r\n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\
-    \u6570\r\n */\r\ntemplate <typename mod_t>\r\nclass NTTPrimeFactorial {\r\npublic:\r\
-    \n  using u32 = std::uint32_t;\r\n  using u64 = std::uint64_t;\r\n  NTTPrimeFactorial()\
+    \u6570\r\n * @warning \u4EE3\u7801\u662F\u9519\u8BEF\u7684\uFF01\uFF01\r\n */\r\
+    \ntemplate <typename mod_t>\r\nclass NTTPrimeFactorial {\r\npublic:\r\n  using\
+    \ u32 = std::uint32_t;\r\n  using u64 = std::uint64_t;\r\n  NTTPrimeFactorial()\
     \ : v_(1) {\r\n    while (v_ * v_ < modint_traits<mod_t>::get_mod()) v_ <<= 1;\r\
     \n    mod_t iv   = mod_t(1) / mod_t(v_);\r\n    fac_table_ = std::vector<mod_t>{mod_t(1),\
     \ mod_t(v_ + 1)};\r\n    fac_table_.reserve(v_ + 1);\r\n    for (u64 d = 1; d\
@@ -248,22 +249,23 @@ data:
     \r\n#include \"../formal_power_series/sample_points_shift.hpp\"\r\n\r\nnamespace\
     \ lib {\r\n\r\n/**\r\n * @brief NTT \u53CB\u597D\u6A21\u6570\u7684\u9636\u4E58\
     \u8BA1\u7B97\r\n *\r\n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\u6570\r\n\
-    \ */\r\ntemplate <typename mod_t>\r\nclass NTTPrimeFactorial {\r\npublic:\r\n\
-    \  using u32 = std::uint32_t;\r\n  using u64 = std::uint64_t;\r\n  NTTPrimeFactorial()\
-    \ : v_(1) {\r\n    while (v_ * v_ < modint_traits<mod_t>::get_mod()) v_ <<= 1;\r\
-    \n    mod_t iv   = mod_t(1) / mod_t(v_);\r\n    fac_table_ = std::vector<mod_t>{mod_t(1),\
-    \ mod_t(v_ + 1)};\r\n    fac_table_.reserve(v_ + 1);\r\n    for (u64 d = 1; d\
-    \ != v_; d <<= 1) {\r\n      std::vector<mod_t> g0(shift_sample_points_unsafe(d,\
-    \ fac_table_, mod_t(d + 1)));\r\n      std::vector<mod_t> g1(shift_sample_points_unsafe(d\
-    \ << 1 | 1, fac_table_, mod_t(d) * iv));\r\n      std::copy(g0.begin(), g0.end(),\
-    \ std::back_inserter(fac_table_));\r\n      for (int i = 0; i <= (d << 1); ++i)\
-    \ fac_table_[i] *= g1[i];\r\n    }\r\n    std::partial_sum(fac_table_.begin(),\
-    \ fac_table_.end(), fac_table_.begin(), std::multiplies<>());\r\n  }\r\n  ~NTTPrimeFactorial()\
-    \ = default;\r\n\r\n  mod_t fac(mod_t n) const {\r\n    mod_t res(1);\r\n    u64\
-    \ pass = u64(n) / v_;\r\n    if (pass != 0) res *= fac_table_[pass - 1];\r\n \
-    \   for (mod_t ONE(1), mpass(pass * v_); mpass != n;) res *= (mpass += ONE);\r\
-    \n    return res;\r\n  }\r\n\r\nprivate:\r\n  u64 v_;\r\n  std::vector<mod_t>\
-    \ fac_table_;\r\n};\r\n\r\n} // namespace lib\r\n\r\n#endif"
+    \ * @warning \u4EE3\u7801\u662F\u9519\u8BEF\u7684\uFF01\uFF01\r\n */\r\ntemplate\
+    \ <typename mod_t>\r\nclass NTTPrimeFactorial {\r\npublic:\r\n  using u32 = std::uint32_t;\r\
+    \n  using u64 = std::uint64_t;\r\n  NTTPrimeFactorial() : v_(1) {\r\n    while\
+    \ (v_ * v_ < modint_traits<mod_t>::get_mod()) v_ <<= 1;\r\n    mod_t iv   = mod_t(1)\
+    \ / mod_t(v_);\r\n    fac_table_ = std::vector<mod_t>{mod_t(1), mod_t(v_ + 1)};\r\
+    \n    fac_table_.reserve(v_ + 1);\r\n    for (u64 d = 1; d != v_; d <<= 1) {\r\
+    \n      std::vector<mod_t> g0(shift_sample_points_unsafe(d, fac_table_, mod_t(d\
+    \ + 1)));\r\n      std::vector<mod_t> g1(shift_sample_points_unsafe(d << 1 | 1,\
+    \ fac_table_, mod_t(d) * iv));\r\n      std::copy(g0.begin(), g0.end(), std::back_inserter(fac_table_));\r\
+    \n      for (int i = 0; i <= (d << 1); ++i) fac_table_[i] *= g1[i];\r\n    }\r\
+    \n    std::partial_sum(fac_table_.begin(), fac_table_.end(), fac_table_.begin(),\
+    \ std::multiplies<>());\r\n  }\r\n  ~NTTPrimeFactorial() = default;\r\n\r\n  mod_t\
+    \ fac(mod_t n) const {\r\n    mod_t res(1);\r\n    u64 pass = u64(n) / v_;\r\n\
+    \    if (pass != 0) res *= fac_table_[pass - 1];\r\n    for (mod_t ONE(1), mpass(pass\
+    \ * v_); mpass != n;) res *= (mpass += ONE);\r\n    return res;\r\n  }\r\n\r\n\
+    private:\r\n  u64 v_;\r\n  std::vector<mod_t> fac_table_;\r\n};\r\n\r\n} // namespace\
+    \ lib\r\n\r\n#endif"
   dependsOn:
   - traits/modint.hpp
   - math/formal_power_series/sample_points_shift.hpp
@@ -275,7 +277,7 @@ data:
   isVerificationFile: false
   path: math/modulo/factorial_modulo_prime.hpp
   requiredBy: []
-  timestamp: '2021-07-19 10:48:13+08:00'
+  timestamp: '2021-07-19 17:15:25+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: math/modulo/factorial_modulo_prime.hpp
@@ -323,9 +325,7 @@ $g(x)$ 的根为 $-1,-2,\dots ,-v$ 为等差数列，且我们希望对 $g(x)$ �
 
 若考虑从 $g_d(0),g_d(v),\dots ,g_d(dv)$ 推出 $g_{d+1}(0),g_{d+1}(v),\dots ,g_{d+1}(dv+v)$ 显然可在线性时间做到（额外的一项暴力计算即可），这样我们可以求出任意的 $d$ 对应的点值！在 [EntropyIncreaser 的提交记录](https://loj.ac/s/1110094) 中使用了不同的技术使得 DFT 的次数减少，我也不知道该怎么做到的，等有机会想请教 EntropyIncreaser ！
 
-在代码中我们使用拉格朗日插值公式来进行样本点平移，因为 $d\lt v$ 时才需要平移，此时点值不会有重叠部分。
-
-对于任意模数的情况，我暂时不想写了！例题： [FACTMODP](https://www.spoj.com/problems/FACTMODP/) 。
+目前代码是错误的！因为可能在平移时遇到分母为零的情况。
 
 ## 参考文献
 
