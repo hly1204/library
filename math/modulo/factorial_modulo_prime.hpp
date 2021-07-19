@@ -22,6 +22,7 @@ namespace lib {
  * @brief NTT 友好模数的阶乘计算
  *
  * @tparam mod_t NTT 友好的模数
+ * @warning 代码是错误的！！
  */
 template <typename mod_t>
 class NTTPrimeFactorial {
