@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/NTT_binomial.hpp
     title: "NTT prime binomial / NTT \u7D20\u6570\u7528\u4E8C\u9879\u5F0F\u7CFB\u6570"
   - icon: ':heavy_check_mark:'
@@ -11,16 +11,16 @@ data:
     path: math/formal_power_series/falling_factorial_polynomial_multiplication.hpp
     title: "falling factorial polynomial multiplication / \u4E0B\u964D\u5E42\u591A\
       \u9879\u5F0F\u4E58\u6CD5"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series/radix_2_NTT.hpp
     title: "radix-2 NTT / \u57FA-2 \u6570\u8BBA\u53D8\u6362"
   - icon: ':warning:'
     path: math/formal_power_series/sample_points_shift.hpp
     title: "sample points shift / \u6837\u672C\u70B9\u5E73\u79FB"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: traits/modint.hpp
     title: "modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6"
   _extendedRequiredBy: []
@@ -29,22 +29,24 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':warning:'
   attributes:
+    _deprecated_at_docs: docs/math/modulo/factorial_modulo_prime.md
     document_title: "factorial modulo prime / \u9636\u4E58\u6A21\u7D20\u6570"
     links: []
   bundledCode: "#line 1 \"math/modulo/factorial_modulo_prime.hpp\"\n\n\n\r\n/**\r\n\
-    \ * @brief factorial modulo prime / \u9636\u4E58\u6A21\u7D20\u6570\r\n *\r\n */\r\
-    \n\r\n#include <algorithm>\r\n#include <cstdint>\r\n#include <functional>\r\n\
-    #include <iterator>\r\n#include <numeric>\r\n#include <vector>\r\n\r\n#line 1\
-    \ \"traits/modint.hpp\"\n\n\n\r\n/**\r\n * @brief modint traits / \u53D6\u6A21\
-    \u7C7B\u8403\u53D6\r\n *\r\n */\r\n\r\nnamespace lib {\r\n\r\ntemplate <typename\
-    \ mod_t>\r\nstruct modint_traits {\r\n  using type = typename mod_t::value_type;\r\
-    \n  static constexpr type get_mod() { return mod_t::get_mod(); }\r\n  static constexpr\
-    \ type get_primitive_root_prime() { return mod_t::get_primitive_root_prime();\
-    \ }\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n#line 1 \"math/formal_power_series/sample_points_shift.hpp\"\
-    \n\n\n\r\n/**\r\n * @brief sample points shift / \u6837\u672C\u70B9\u5E73\u79FB\
-    \r\n * @docs docs/math/formal_power_series/sample_points_shift.md\r\n */\r\n\r\
-    \n#include <cassert>\r\n#line 12 \"math/formal_power_series/sample_points_shift.hpp\"\
-    \n#include <utility>\r\n#line 14 \"math/formal_power_series/sample_points_shift.hpp\"\
+    \ * @brief factorial modulo prime / \u9636\u4E58\u6A21\u7D20\u6570\r\n * @docs\
+    \ docs/math/modulo/factorial_modulo_prime.md\r\n */\r\n\r\n#include <algorithm>\r\
+    \n#include <cstdint>\r\n#include <functional>\r\n#include <iterator>\r\n#include\
+    \ <numeric>\r\n#include <vector>\r\n\r\n#line 1 \"traits/modint.hpp\"\n\n\n\r\n\
+    /**\r\n * @brief modint traits / \u53D6\u6A21\u7C7B\u8403\u53D6\r\n *\r\n */\r\
+    \n\r\nnamespace lib {\r\n\r\ntemplate <typename mod_t>\r\nstruct modint_traits\
+    \ {\r\n  using type = typename mod_t::value_type;\r\n  static constexpr type get_mod()\
+    \ { return mod_t::get_mod(); }\r\n  static constexpr type get_primitive_root_prime()\
+    \ { return mod_t::get_primitive_root_prime(); }\r\n};\r\n\r\n} // namespace lib\r\
+    \n\r\n\n#line 1 \"math/formal_power_series/sample_points_shift.hpp\"\n\n\n\r\n\
+    /**\r\n * @brief sample points shift / \u6837\u672C\u70B9\u5E73\u79FB\r\n * @docs\
+    \ docs/math/formal_power_series/sample_points_shift.md\r\n */\r\n\r\n#include\
+    \ <cassert>\r\n#line 12 \"math/formal_power_series/sample_points_shift.hpp\"\n\
+    #include <utility>\r\n#line 14 \"math/formal_power_series/sample_points_shift.hpp\"\
     \n\r\n#line 1 \"math/formal_power_series/NTT_binomial.hpp\"\n\n\n\r\n/**\r\n *\
     \ @brief NTT prime binomial / NTT \u7D20\u6570\u7528\u4E8C\u9879\u5F0F\u7CFB\u6570\
     \r\n *\r\n */\r\n\r\n#line 10 \"math/formal_power_series/NTT_binomial.hpp\"\n\r\
@@ -240,13 +242,14 @@ data:
     \ fac_table_;\r\n};\r\n\r\n} // namespace lib\r\n\r\n\n"
   code: "#ifndef FACTORIAL_MODULO_PRIME_HEADER_HPP\r\n#define FACTORIAL_MODULO_PRIME_HEADER_HPP\r\
     \n\r\n/**\r\n * @brief factorial modulo prime / \u9636\u4E58\u6A21\u7D20\u6570\
-    \r\n *\r\n */\r\n\r\n#include <algorithm>\r\n#include <cstdint>\r\n#include <functional>\r\
-    \n#include <iterator>\r\n#include <numeric>\r\n#include <vector>\r\n\r\n#include\
-    \ \"../../traits/modint.hpp\"\r\n#include \"../formal_power_series/sample_points_shift.hpp\"\
-    \r\n\r\nnamespace lib {\r\n\r\n/**\r\n * @brief NTT \u53CB\u597D\u6A21\u6570\u7684\
-    \u9636\u4E58\u8BA1\u7B97\r\n *\r\n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\
-    \u6570\r\n */\r\ntemplate <typename mod_t>\r\nclass NTTPrimeFactorial {\r\npublic:\r\
-    \n  using u32 = std::uint32_t;\r\n  using u64 = std::uint64_t;\r\n  NTTPrimeFactorial()\
+    \r\n * @docs docs/math/modulo/factorial_modulo_prime.md\r\n */\r\n\r\n#include\
+    \ <algorithm>\r\n#include <cstdint>\r\n#include <functional>\r\n#include <iterator>\r\
+    \n#include <numeric>\r\n#include <vector>\r\n\r\n#include \"../../traits/modint.hpp\"\
+    \r\n#include \"../formal_power_series/sample_points_shift.hpp\"\r\n\r\nnamespace\
+    \ lib {\r\n\r\n/**\r\n * @brief NTT \u53CB\u597D\u6A21\u6570\u7684\u9636\u4E58\
+    \u8BA1\u7B97\r\n *\r\n * @tparam mod_t NTT \u53CB\u597D\u7684\u6A21\u6570\r\n\
+    \ */\r\ntemplate <typename mod_t>\r\nclass NTTPrimeFactorial {\r\npublic:\r\n\
+    \  using u32 = std::uint32_t;\r\n  using u64 = std::uint64_t;\r\n  NTTPrimeFactorial()\
     \ : v_(1) {\r\n    while (v_ * v_ < modint_traits<mod_t>::get_mod()) v_ <<= 1;\r\
     \n    mod_t iv   = mod_t(1) / mod_t(v_);\r\n    fac_table_ = std::vector<mod_t>{mod_t(1),\
     \ mod_t(v_ + 1)};\r\n    fac_table_.reserve(v_ + 1);\r\n    for (u64 d = 1; d\
@@ -272,7 +275,7 @@ data:
   isVerificationFile: false
   path: math/modulo/factorial_modulo_prime.hpp
   requiredBy: []
-  timestamp: '2021-07-19 03:14:01+08:00'
+  timestamp: '2021-07-19 10:48:13+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: math/modulo/factorial_modulo_prime.hpp
@@ -282,3 +285,49 @@ redirect_from:
 - /library/math/modulo/factorial_modulo_prime.hpp.html
 title: "factorial modulo prime / \u9636\u4E58\u6A21\u7D20\u6570"
 ---
+## 阶乘模素数
+
+此文译自参考文献！
+
+定义多项式 $f(x)=\prod _ {i=1}^n(x+i)$ 那么 $n!=f(0)$ ，令 $v=\left\lfloor \sqrt{n}\right\rfloor$ 和 $g(x)=\prod _ {i=1}^v(x+i)$ 那么
+
+$$
+n! =\left(\prod _ {i=0}^{v-1}g(vi)\right)\cdot \prod _ {i=v^2+1}^ni
+$$
+
+后者暴力计算时间为 $O(p^{1/2})$ 可以无视，我们只要能快速计算 $g(0),g(v),\dots ,g(v(v-1))$ 就好了。
+
+### $O(p^{1/2}\log ^2p)$ 计算的方法
+
+使用多点求值对 $g(x)$ 求出 $g(0),g(v),\dots ,g(v(v-1))$ 即可，但因为运算量较大有时甚至不能说比 $O(p)$ 的实现更快速。
+
+### $O(p^{1/2}\log p)$ 计算的方法
+
+$g(x)$ 的根为 $-1,-2,\dots ,-v$ 为等差数列，且我们希望对 $g(x)$ 求的点值 $0,v,\dots ,v(v-1)$ 也是等差数列。在这里使用拉格朗日插值公式可以使计算量下降 $\log p$ 。
+
+对于 $d$ 次多项式 $g_d(x)=\prod _ {i=1}^d(x+i)$ 计算 $g_d(0),g_d(v),\dots ,g_d(dv)$ 。此时可以通过 $O(d\log d)$ 的计算量求出 $g_{2d}(0),g_{2d}(v),\dots ,g_{2d}(2dv)$ 。
+
+首先有 $g_{2d}(x)=g_d(x)\cdot g_d(x+d)$ 我们令 $G_d(i)=(g_d(i),g_d(v+i),\dots ,g_d(dv+i))$ 如果我们能从 $G_d(0)$ 计算 $G_d(d),G_d(dv),G_d(dv+d)$ 三组询问的话就可以解决了，在这里使用拉格朗日插值公式。
+
+### 模拟
+
+考虑 $g_1(x)=x+1$ 我们用 $2$ 个点 $g_1(0)=1,g_1(v)=v+1$ 可以唯一确定这个多项式，现要求 $g_2(0),g_2(v),g_2(2v)$ 因为 $g_2(x)=g_1(x)\cdot g_1(x+1)$ 于是我们只需求出 $g_1(2v)$ 和 $g_1(1),g_1(v+1)$ 和 $g_1(2v+1)$ 之后易得。
+
+我们令 $h(x)=g_1(vx)$ 那么有 $h(0)=g_1(0),h(1)=g_1(v)$ 通过样本点平移计算 $h(2)=g_1(2v)$ 是简单的。
+
+同样，已知 $h(0),h(1),h(2)$ 求 $h\left(\frac{1}{v}\right)=g_1(1),h\left(\frac{1}{v}+1\right)=g_1(v+1),h\left(\frac{1}{v}+2\right)=g_1(2v+1)$ 即得。
+
+那么 $g_2(0)=g_1(0)g_1(1),g_2(v)=g_1(v)g_1(v+1),g_2(2v)=g_1(2v)g_1(2v+1)$ 。
+
+在这里我们采取一种更简单的方法即令 $v=2^{\lceil \log_2\sqrt{p}\rceil}\approx \sqrt{p}$ ，这样我们只需要倍增即可，无需额外的调整，但目前我的实现似乎有很大问题，能输出正确解但是速度非常慢。
+
+若考虑从 $g_d(0),g_d(v),\dots ,g_d(dv)$ 推出 $g_{d+1}(0),g_{d+1}(v),\dots ,g_{d+1}(dv+v)$ 显然可在线性时间做到（额外的一项暴力计算即可），这样我们可以求出任意的 $d$ 对应的点值！在 [EntropyIncreaser 的提交记录](https://loj.ac/s/1110094) 中使用了不同的技术使得 DFT 的次数减少，我也不知道该怎么做到的，等有机会想请教 EntropyIncreaser ！
+
+在代码中我们使用拉格朗日插值公式来进行样本点平移，因为 $d\lt v$ 时才需要平移，此时点值不会有重叠部分。
+
+对于任意模数的情况，我暂时不想写了！例题： [FACTMODP](https://www.spoj.com/problems/FACTMODP/) 。
+
+## 参考文献
+
+- [ZZQ 的博客](https://www.cnblogs.com/zzqsblog/p/8408691.html)
+- [Min\_25 的博客（已被删除）](http://min-25.hatenablog.com/entry/2017/04/10/215046)

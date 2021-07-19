@@ -5,7 +5,7 @@ data:
     path: math/modulo/find_shortest_LFSR_Berlekamp_Massey.hpp
     title: "find shortest LFSR Berlekamp-Massey / \u5BFB\u627E\u6700\u77ED\u7EBF\u6027\
       \u9012\u63A8 Berlekamp-Massey \u7B97\u6CD5"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/Montgomery_modint.hpp
     title: "Montgomery modint / Montgomery \u53D6\u6A21\u7C7B"
   _extendedRequiredBy: []
