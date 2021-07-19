@@ -38,6 +38,8 @@ $g(x)$ 的根为 $-1,-2,\dots ,-v$ 为等差数列，且我们希望对 $g(x)$ �
 
 在代码中我们使用拉格朗日插值公式来进行样本点平移，因为 $d\lt v$ 时才需要平移，此时点值不会有重叠部分。
 
+对于任意模数的情况，我暂时不想写了！例题： [FACTMODP](https://www.spoj.com/problems/FACTMODP/) 。
+
 ## 参考文献
 
 - [ZZQ 的博客](https://www.cnblogs.com/zzqsblog/p/8408691.html)

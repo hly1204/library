@@ -3,7 +3,7 @@
 
 /**
  * @brief factorial modulo prime / 阶乘模素数
- *
+ * @docs docs/math/modulo/factorial_modulo_prime.md
  */
 
 #include <algorithm>
