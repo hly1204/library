@@ -77,7 +77,7 @@ std::optional<std::pair<std::uint64_t, std::uint64_t>> crt2(T a1, T m1, T a2, T 
 
   S d, x, y;
   std::tie(d, x, y) = exgcd(m1, m2);
-  S a2_a1           = S(a2) - S(a1);
+  S a2_a1           = S(a2) - S(a1); // assume a1 < m1 and a2 < m2
   S a2_a1_d         = a2_a1 / d;
   if (a2_a1 != a2_a1_d * d) return {};
   S m2_d = m2 / d;
@@ -92,7 +92,8 @@ std::optional<std::pair<std::uint64_t, std::uint64_t>> crt2(T a1, T m1, T a2, T 
  * @tparam T 元素类型
  * @param v 余数
  * @param m 模数
- * @return std::optional<std::pair<T, T>> 若无解则返回 std::nullopt 否则返回 (remainder, modular)
+ * @return std::optional<std::pair<std::uint64_t, std::uint64_t>>
+ *         若无解则返回 std::nullopt 否则返回 (remainder, modulo)
  */
 template <typename T>
 std::optional<std::pair<std::uint64_t, std::uint64_t>> crt(const std::vector<T> &v,

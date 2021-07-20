@@ -12,8 +12,8 @@
 #include <utility>
 #include <vector>
 
-#include "NTT_binomial.hpp"
 #include "falling_factorial_polynomial_multiplication.hpp"
+#include "prime_binomial.hpp"
 #include "radix_2_NTT.hpp"
 
 namespace lib {
@@ -49,7 +49,7 @@ std::vector<mod_t> shift_sample_points_via_FFP(const std::vector<mod_t> &pts, mo
 template <typename mod_t>
 std::vector<mod_t> shift_sample_points_unsafe(int n, const std::vector<mod_t> &pts, mod_t m) {
   int s = pts.size(), deg_A = s - 1;
-  NTTBinomial<mod_t> bi(s);
+  PrimeBinomial<mod_t> bi(s);
   std::vector<mod_t> A(s), B(deg_A + n), p_sum(deg_A + n);
   for (int i = 0; i < s; ++i) {
     A[i] = pts[i] * bi.ifac_unsafe(i) * bi.ifac_unsafe(deg_A - i);

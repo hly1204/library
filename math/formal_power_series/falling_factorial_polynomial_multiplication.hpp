@@ -11,8 +11,8 @@
 #include <utility>
 #include <vector>
 
-#include "NTT_binomial.hpp"
 #include "convolution.hpp"
+#include "prime_binomial.hpp"
 
 namespace lib {
 
@@ -26,7 +26,7 @@ namespace lib {
 template <typename mod_t>
 std::vector<mod_t> sample_points_to_FFP(const std::vector<mod_t> &pts) {
   int n = pts.size();
-  NTTBinomial<mod_t> bi(n);
+  PrimeBinomial<mod_t> bi(n);
   std::vector<mod_t> emx(n), pts_egf(n);
   for (int i = 0; i < n; ++i) {
     pts_egf[i] = pts[i] * (emx[i] = bi.ifac_unsafe(i));
@@ -47,7 +47,7 @@ std::vector<mod_t> sample_points_to_FFP(const std::vector<mod_t> &pts) {
  */
 template <typename mod_t>
 std::vector<mod_t> FFP_to_sample_points(int n, const std::vector<mod_t> &ffp) {
-  NTTBinomial<mod_t> bi(n);
+  PrimeBinomial<mod_t> bi(n);
   std::vector<mod_t> ex(n);
   for (int i = 0; i < n; ++i) ex[i] = bi.ifac_unsafe(i);
   if (ffp.size() > n) {
@@ -78,7 +78,7 @@ std::vector<mod_t> convolve_FFP(const std::vector<mod_t> &lhs, const std::vector
 template <typename mod_t>
 std::vector<mod_t> shift_FFP(const std::vector<mod_t> &ffp, mod_t c) {
   int n = ffp.size();
-  NTTBinomial<mod_t> bi(n);
+  PrimeBinomial<mod_t> bi(n);
   std::vector<mod_t> A(ffp), B(n);
   mod_t c_i(1);
   for (int i = 0; i < n; ++i)

@@ -6,7 +6,9 @@
  *
  */
 
+#include <algorithm>
 #include <limits>
+#include <numeric>
 #include <queue>
 #include <vector>
 
@@ -52,9 +54,10 @@ private:
     edge_.resize(m);
     idx_.assign(n_ + 1, 0);
     rev_idx_.resize(m);
-    for (auto &i : input_edge_) ++idx_[i.from], ++idx_[i.to];
-    for (int i = 0, sum = 0; i != n_ + 1; ++i) sum += idx_[i], idx_[i] = sum - idx_[i];
-    for (auto &i : input_edge_) {
+    std::for_each(input_edge_.begin(), input_edge_.end(),
+                  [this](const InputEdge &i) { ++idx_[i.from], ++idx_[i.to]; });
+    std::exclusive_scan(idx_.begin(), idx_.end(), idx_.begin(), 0);
+    std::for_each(input_edge_.begin(), input_edge_.end(), [this](const InputEdge &i) {
       edge_[idx_[i.from]].to  = i.to;
       edge_[idx_[i.from]].cap = i.cap;
       edge_[idx_[i.to]].to    = i.from;
@@ -63,7 +66,7 @@ private:
       rev_idx_[idx_[i.to]]    = idx_[i.from];
       ++idx_[i.from];
       ++idx_[i.to];
-    }
+    });
     for (int i = n_ - 1; i > 0; --i) idx_[i] = idx_[i - 1];
     idx_[0] = 0;
   }

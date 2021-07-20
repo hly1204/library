@@ -14,7 +14,7 @@
 #include <vector>
 
 #include "../../traits/modint.hpp"
-#include "NTT_binomial.hpp"
+#include "prime_binomial.hpp"
 #include "radix_2_NTT.hpp"
 
 namespace lib {
@@ -82,7 +82,7 @@ public:
 
   fps integr(const mod_t &c = mod_t(0)) const {
     int n = this->size() + 1;
-    NTTBinomial<mod_t> bi(n);
+    PrimeBinomial<mod_t> bi(n);
     fps res(n);
     res[0] = c;
     for (int i = 1; i != n; ++i) res[i] = this->operator[](i - 1) * bi.inv_unsafe(i);

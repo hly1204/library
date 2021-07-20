@@ -7,6 +7,7 @@
  */
 
 #include <cassert>
+#include <numeric>
 #include <queue>
 #include <vector>
 
@@ -33,7 +34,7 @@ public:
       } else {
         root = i;
       }
-    for (int i = 0, sum = 0; i <= n; ++i) sum += idx[i], idx[i] = sum - idx[i];
+    std::exclusive_scan(idx.begin(), idx.end(), idx.begin(), 0);
     for (int i = 0; i < n; ++i)
       if (parent[i] != -1) g[idx[parent[i]]++] = i;
     for (int i = n - 1; i > 0; --i) idx[i] = idx[i - 1];

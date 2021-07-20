@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <numeric>
 #include <stack>
 #include <utility>
 #include <vector>
@@ -32,9 +33,11 @@ public:
         sccno(n_, -1);
     std::stack<int, std::vector<int>> s;
     int dfs_clock = 0, scc_cnt = 0;
-    for (auto &i : input_edge_) ++idx[i.from];
-    for (int i = 0, sum = 0; i <= n_; ++i) sum += idx[i], idx[i] = sum - idx[i];
-    for (auto &i : input_edge_) edge[idx[i.from]++] = i.to;
+    std::for_each(input_edge_.begin(), input_edge_.end(),
+                  [&idx](const InputEdge &i) { ++idx[i.from]; });
+    std::exclusive_scan(idx.begin(), idx.end(), idx.begin(), 0);
+    std::for_each(input_edge_.begin(), input_edge_.end(),
+                  [&idx, &edge](const InputEdge &i) { edge[idx[i.from]++] = i.to; });
     for (int i = n_ - 1; i > 0; --i) idx[i] = idx[i - 1];
     idx[0]                       = 0;
     std::function<void(int)> dfs = [&](int u) {
