@@ -6,7 +6,9 @@
  *
  */
 
+#include <algorithm>
 #include <limits>
+#include <numeric>
 #include <utility>
 #include <vector>
 
@@ -40,9 +42,12 @@ public:
   get_sssp(int source, const DistType INF = std::numeric_limits<DistType>::max()) const {
     std::vector<int> idx(n_ + 1, 0);
     std::vector<Edge> edge(input_edge_.size());
-    for (auto &i : input_edge_) ++idx[i.from];
-    for (int i = 0, sum = 0; i <= n_; ++i) sum += idx[i], idx[i] = sum - idx[i];
-    for (auto &i : input_edge_) edge[idx[i.from]++] = Edge{i.to, i.dist};
+    std::for_each(input_edge_.begin(), input_edge_.end(),
+                  [&idx](const InputEdge &i) { ++idx[i.from]; });
+    std::exclusive_scan(idx.begin(), idx.end(), idx.begin(), 0);
+    std::for_each(input_edge_.begin(), input_edge_.end(), [&idx, &edge](const InputEdge &i) {
+      edge[idx[i.from]++] = Edge{i.to, i.dist};
+    });
     for (int i = n_ - 1; i > 0; --i) idx[i] = idx[i - 1];
     idx[0] = 0;
     std::vector<DistType> dist(n_, INF);
