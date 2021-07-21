@@ -14,6 +14,6 @@ int main() {
   using mint = lib::MontModInt<1000000007>;
   long long v;
   std::cin >> v;
-  std::cout << lib::PrimeFactorial<mint>().fac(v);
+  std::cout << lib::PrimeFactorial<mint>().fac(v) << '\n';
   return 0;
 }
