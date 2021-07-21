@@ -6,8 +6,8 @@
  * @docs docs/math/formal_power_series/polynomial.md
  */
 
-#include "NTT_binomial.hpp"
 #include "formal_power_series.hpp"
+#include "prime_binomial.hpp"
 
 namespace lib {
 
@@ -213,7 +213,7 @@ public:
   poly shift(mod_t c) const {
     int n = this->deg();
     if (n < 1) return poly(*this);
-    NTTBinomial<mod_t> bi(n + 1);
+    PrimeBinomial<mod_t> bi(n + 1);
     poly A(*this), B(n + 1);
     mod_t c_i(1);
     for (int i = 0; i <= n; ++i) A[i] *= bi.fac_unsafe(i), B[i] = c_i * bi.ifac_unsafe(i), c_i *= c;

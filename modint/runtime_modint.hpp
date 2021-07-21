@@ -41,7 +41,7 @@ public:
   ~RuntimeModInt() = default;
 
   template <typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0>
-  RuntimeModInt(T v) : v_(transform(v % i32(mod) + i32(mod))) {}
+  RuntimeModInt(T v) : v_(transform(norm(v %= i32(mod)))) {}
 
   RuntimeModInt(const m32 &) = default;
 
@@ -111,6 +111,8 @@ public:
   }
 
 private:
+  static u32 norm(i32 x) { return x + (-(x < 0) & mod); }
+
   static u32 reduce(u64 x) {
     u32 t = (x + u64(u32(x) * r) * mod_odd) >> 32;
     return t - (mod_odd & -((mod_odd - 1 - t) >> 31));

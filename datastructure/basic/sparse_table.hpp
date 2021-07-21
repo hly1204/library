@@ -26,7 +26,7 @@ public:
     return convert[n * deBruijn >> 27];
   }
   template <typename Container>
-  SparseTable(const Container &init_v, const FoldFunc &f = FoldFunc()) : N_(init_v.size()), f_(f) {
+  SparseTable(const Container &init_v, FoldFunc f = FoldFunc()) : N_(init_v.size()), f_(f) {
     int level = log2_floor(N_);
     table_.resize(level + 1);
     table_[0].resize(N_);
