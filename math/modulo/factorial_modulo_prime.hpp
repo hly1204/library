@@ -15,7 +15,6 @@
 #include <vector>
 
 #include "../../traits/modint.hpp"
-#include "../formal_power_series/arbitrary_modulo_convolution.hpp"
 #include "../formal_power_series/sample_points_shift.hpp"
 
 namespace lib {
@@ -30,7 +29,10 @@ class PrimeFactorial {
 public:
   using u32 = std::uint32_t;
   using u64 = std::uint64_t;
-  PrimeFactorial() : v_(u64(std::sqrt(modint_traits<mod_t>::get_mod()))) {
+
+  template <typename ConvolveCyclicFuncType>
+  PrimeFactorial(ConvolveCyclicFuncType conv)
+      : v_(u64(std::sqrt(modint_traits<mod_t>::get_mod()))) {
     const mod_t ONE(1);
     mod_t mv = mod_t(v_), iv = ONE / mv;
     fac_table_ = std::vector<mod_t>{ONE, mv + ONE};
@@ -39,14 +41,8 @@ public:
     while ((mask & v_) == 0) mask >>= 1;
     mask >>= 1;
     for (u32 d = 1; d != v_; mask >>= 1) {
-      std::vector<mod_t> g0(shift_sample_points(
-          d, fac_table_, mod_t(d + 1),
-          std::bind(lib::convolve_cyclic_mod<mod_t>, std::placeholders::_1, std::placeholders::_2,
-                    modint_traits<mod_t>::get_mod(), std::placeholders::_3)));
-      std::vector<mod_t> g1(shift_sample_points(
-          d << 1 | 1, fac_table_, mod_t(d) * iv,
-          std::bind(lib::convolve_cyclic_mod<mod_t>, std::placeholders::_1, std::placeholders::_2,
-                    modint_traits<mod_t>::get_mod(), std::placeholders::_3)));
+      std::vector<mod_t> g0(shift_sample_points(d, fac_table_, mod_t(d + 1), conv));
+      std::vector<mod_t> g1(shift_sample_points(d << 1 | 1, fac_table_, mod_t(d) * iv, conv));
       std::copy(g0.begin(), g0.end(), std::back_inserter(fac_table_));
       d <<= 1;
       for (int i = 0; i <= d; ++i) fac_table_[i] *= g1[i];

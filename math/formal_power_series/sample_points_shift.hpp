@@ -63,7 +63,6 @@ std::vector<mod_t> shift_sample_points_unsafe(int n, const std::vector<mod_t> &p
     A[i] = pts[i] * bi.ifac_unsafe(i) * bi.ifac_unsafe(deg_A - i);
     if ((deg_A - i) & 1) A[i] = -A[i];
   }
-  const mod_t ZERO(0);
   for (int i = 0; i < deg_A + n; ++i) B[i] = m + mod_t(i - deg_A);
   std::partial_sum(B.begin(), B.end(), p_sum.begin(), std::multiplies<>());
   assert(p_sum.back() != mod_t(0));
