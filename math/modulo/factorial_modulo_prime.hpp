@@ -39,11 +39,11 @@ public:
     while ((mask & v_) == 0) mask >>= 1;
     mask >>= 1;
     for (u32 d = 1; d != v_; mask >>= 1) {
-      std::vector<mod_t> g0(shift_sample_points_unsafe(
+      std::vector<mod_t> g0(shift_sample_points(
           d, fac_table_, mod_t(d + 1),
           std::bind(lib::convolve_cyclic_mod<mod_t>, std::placeholders::_1, std::placeholders::_2,
                     modint_traits<mod_t>::get_mod(), std::placeholders::_3)));
-      std::vector<mod_t> g1(shift_sample_points_unsafe(
+      std::vector<mod_t> g1(shift_sample_points(
           d << 1 | 1, fac_table_, mod_t(d) * iv,
           std::bind(lib::convolve_cyclic_mod<mod_t>, std::placeholders::_1, std::placeholders::_2,
                     modint_traits<mod_t>::get_mod(), std::placeholders::_3)));
