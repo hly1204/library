@@ -37,5 +37,6 @@
 "remote_test/yosupo/matrix/matrix_product.0.test.cpp": "2021-07-15 17:09:18 +0800",
 "remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp": "2021-07-21 23:28:27 +0800",
 "remote_test/yosupo/string/suffix_array.0.test.cpp": "2021-07-15 17:09:18 +0800",
-"remote_test/yosupo/string/z_algorithm.0.test.cpp": "2021-07-15 17:09:18 +0800"
+"remote_test/yosupo/string/z_algorithm.0.test.cpp": "2021-07-15 17:09:18 +0800",
+"remote_test/yuki/math/502.0.test.cpp": "2021-07-21 23:51:44 +0800"
 }
