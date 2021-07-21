@@ -33,11 +33,10 @@ std::vector<T> get_rand_vec(int s, GenFunc &gen) {
 template <typename MatType, typename Type = typename MatType::value_type>
 std::vector<Type> black_box_minpoly(const MatType &m) {
 
-  static std::random_device rd;
-  static std::mt19937 gen(rd());
+  std::mt19937 gen(std::random_device{}());
   std::uniform_int_distribution<typename Type::value_type> dis(1, Type::get_mod() - 1);
 
-  auto gen1 = [&dis]() { return dis(gen); };
+  auto gen1 = [&dis, &gen]() { return dis(gen); };
   auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1, gen1);
 
   const Type ZERO(0);
@@ -64,11 +63,10 @@ std::vector<Type> black_box_minpoly(const MatType &m) {
 template <typename MatType, typename Type = typename MatType::value_type>
 Type black_box_det(const MatType &m) {
 
-  static std::random_device rd;
-  static std::mt19937 gen(rd());
+  std::mt19937 gen(std::random_device{}());
   std::uniform_int_distribution<typename Type::value_type> dis(1, Type::get_mod() - 1);
 
-  auto gen1 = [&dis]() { return dis(gen); };
+  auto gen1 = [&dis, &gen]() { return dis(gen); };
   auto gen2 = std::bind(get_rand_vec<Type, decltype(gen1)>, std::placeholders::_1, gen1);
 
   const Type ZERO(0);

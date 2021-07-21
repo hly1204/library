@@ -1,26 +1,33 @@
-#ifndef NTT_BINOMIAL_HEADER_HPP
-#define NTT_BINOMIAL_HEADER_HPP
+#ifndef PRIME_BINOMIAL_HEADER_HPP
+#define PRIME_BINOMIAL_HEADER_HPP
 
 /**
- * @brief NTT prime binomial / NTT 素数用二项式系数
+ * @brief prime binomial / 素数用二项式系数
  *
  */
 
+#include <cstdint>
 #include <vector>
 
 namespace lib {
 
 template <typename mod_t>
-class NTTBinomial {
+class PrimeBinomial {
 public:
-  NTTBinomial(int lim = 0) {
+  PrimeBinomial(int lim = 0) {
+    static std::uint64_t mod = 0;
+    if (mod != mod_t::get_mod()) {
+      mod = mod_t::get_mod();
+      fac_.clear();
+      ifac_.clear();
+    }
     if (fac_.empty()) {
       fac_.emplace_back(1);
       ifac_.emplace_back(1);
     }
     init(lim);
   }
-  ~NTTBinomial() = default;
+  ~PrimeBinomial() = default;
 
   /**
    * @brief 预处理 [0, n) 的阶乘和其逆元
