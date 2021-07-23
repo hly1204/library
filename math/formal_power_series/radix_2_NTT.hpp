@@ -30,21 +30,16 @@ public:
       constexpr int offset = 20;
       rt.resize(1 << offset);
       irt.resize(1 << offset);
-      rt[0] = irt[0] = 1;
+      rt[0] = irt[0] = mod_t(1);
       mod_t g_t = g.pow(modint_traits<mod_t>::get_mod() >> (offset + 1)), ig_t = g_t.inv();
       rt[1 << (offset - 1)] = g_t, irt[1 << (offset - 1)] = ig_t;
-      for (int i = offset - 2; i >= 0; --i) {
-        g_t *= g_t, ig_t *= ig_t;
-        rt[1 << i] = g_t, irt[1 << i] = ig_t;
-      }
+      for (int i = offset - 2; i >= 0; --i) rt[1 << i] = (g_t *= g_t), irt[1 << i] = (ig_t *= ig_t);
       lim = 1;
     }
     for (; (lim << 1) < len; lim <<= 1) {
       mod_t g = rt[lim], ig = irt[lim];
-      for (int i = lim + 1, e = lim << 1; i < e; ++i) {
-        rt[i]  = rt[i - lim] * g;
-        irt[i] = irt[i - lim] * ig;
-      }
+      for (int i = lim + 1, e = lim << 1; i < e; ++i)
+        rt[i] = rt[i - lim] * g, irt[i] = irt[i - lim] * ig;
     }
   }
 

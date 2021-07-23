@@ -24,7 +24,7 @@ namespace lib {
  * @tparam mod_t 素数模数且点数不能超过模数！
  * @tparam ConvolveFuncType
  * @param n 返回值的点数，需大于零
- * @param pts f(0), f(1), …, f(k-1) 确定一个唯一多项式 mod x^{\underline{k}}
+ * @param pts f(0), f(1), …, f(k-1) 确定一个唯一的度数小于 k 的多项式
  * @param m 平移距离 f(x) => f(x+m)
  * @param f 卷积函数
  * @return std::vector<mod_t> f(m), f(m+1), …, f(m+n-1)
@@ -41,13 +41,17 @@ std::vector<mod_t> shift_sample_points_via_FFP(const std::vector<mod_t> &pts, mo
   return shift_sample_points_via_FFP(pts.size(), pts, m, f);
 }
 
+} // namespace lib
+
+namespace lib::internal {
+
 /**
  * @brief 样本点平移（通过拉格朗日插值公式）
  * @note 不安全的算法
  * @tparam mod_t 素数模数且点数不能超过模数！
  * @tparam ConvolveCyclicFuncType
  * @param n 返回值的点数
- * @param pts f(0), f(1), …, f(k-1) 确定一个唯一多项式 mod x^{\underline{k}}
+ * @param pts f(0), f(1), …, f(k-1) 确定一个唯一的度数小于 k 的多项式
  * @param m 平移距离 f(x) => f(x+m)
  * @param f 循环卷积函数
  * @return std::vector<mod_t> f(m), f(m+1), …, f(m+n-1)
@@ -87,6 +91,10 @@ std::vector<mod_t> shift_sample_points_unsafe(const std::vector<mod_t> &pts, mod
   return shift_sample_points_unsafe(pts.size(), pts, m, f);
 }
 
+} // namespace lib::internal
+
+namespace lib {
+
 template <typename mod_t, typename ConvolveCyclicFuncType>
 std::vector<mod_t> shift_sample_points(int n, const std::vector<mod_t> &pts, mod_t m,
                                        ConvolveCyclicFuncType f) {
@@ -102,39 +110,45 @@ std::vector<mod_t> shift_sample_points(int n, const std::vector<mod_t> &pts, mod
       std::vector<mod_t> res;
       res.reserve(n);
       std::copy_n(pts.begin() + m_64, k - m_64, std::back_inserter(res));
-      std::copy_n(shift_sample_points_unsafe(mod_t::get_mod() - k, pts, mod_t(k), f).begin(),
-                  mod_t::get_mod() - k, std::back_inserter(res));
+      std::copy_n(
+          internal::shift_sample_points_unsafe(mod_t::get_mod() - k, pts, mod_t(k), f).begin(),
+          mod_t::get_mod() - k, std::back_inserter(res));
       std::copy_n(pts.begin(), nm1 + 1, std::back_inserter(res));
       return res;
     } else { // f(0), …, f(m), …, f(k-1), …, f(n+m-1)
       std::vector<mod_t> res;
       res.reserve(n);
       std::copy_n(pts.begin() + m_64, k - m_64, std::back_inserter(res));
-      std::copy_n(shift_sample_points_unsafe(m_64 + n - k, pts, mod_t(k), f).begin(), m_64 + n - k,
-                  std::back_inserter(res));
+      std::copy_n(internal::shift_sample_points_unsafe(m_64 + n - k, pts, mod_t(k), f).begin(),
+                  m_64 + n - k, std::back_inserter(res));
       return res;
     }
   } else {             // f(0), …, f(k-1), …, f(m)
     if (nm1 >= m_64) { // f(0), …, f(k-1), …, f(m), …, f(n+m-1), …, f(mod-1)
-      return shift_sample_points_unsafe(n, pts, m, f);
+      return internal::shift_sample_points_unsafe(n, pts, m, f);
     } else if (nm1 < k) { // f(0), …, f(n+m-1), …, f(k-1), …, f(m), …, f(mod-1)
       std::vector<mod_t> res;
       res.reserve(n);
-      std::copy_n(shift_sample_points_unsafe(int(-m), pts, m, f).begin(), int(-m),
+      std::copy_n(internal::shift_sample_points_unsafe(int(-m), pts, m, f).begin(), int(-m),
                   std::back_inserter(res));
       std::copy_n(pts.begin(), nm1 + 1, std::back_inserter(res));
       return res;
     } else { // f(0), …, f(k-1), …, f(n+m-1), …, f(m), …, f(mod-1)
       std::vector<mod_t> res;
       res.reserve(n);
-      std::copy_n(shift_sample_points_unsafe(int(-m), pts, m, f).begin(), int(-m),
+      std::copy_n(internal::shift_sample_points_unsafe(int(-m), pts, m, f).begin(), int(-m),
                   std::back_inserter(res));
       std::copy_n(pts.begin(), k, std::back_inserter(res));
-      std::copy_n(shift_sample_points_unsafe(nm1 - k + 1, pts, mod_t(k), f).begin(), nm1 - k + 1,
-                  std::back_inserter(res));
+      std::copy_n(internal::shift_sample_points_unsafe(nm1 - k + 1, pts, mod_t(k), f).begin(),
+                  nm1 - k + 1, std::back_inserter(res));
       return res;
     }
   }
+}
+template <typename mod_t, typename ConvolveCyclicFuncType>
+std::vector<mod_t> shift_sample_points(const std::vector<mod_t> &pts, mod_t m,
+                                       ConvolveCyclicFuncType f) {
+  return shift_sample_points(pts.size(), pts, m, f);
 }
 
 } // namespace lib
