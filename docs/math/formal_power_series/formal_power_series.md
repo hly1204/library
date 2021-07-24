@@ -275,6 +275,8 @@ $$
 
 令 $g=1/f=1/\exp(h)$ 和 $g_0=g\bmod x^n$ 。注意这里需要求出 $1/f_0\bmod{x^{2n}}$ 。
 
+基础的复合函数求导公式在这里很重要 $D(\exp(h))=D(h)\exp(h)$ 。
+
 #### 方法 1
 
 - 计算 $\log(f_0)\bmod{x^{2n}}$ 需要 $26\mathsf{E}(n)$ 也可以一起计算 $F _ {2n}(f_0)$ 。
@@ -286,7 +288,46 @@ $$
 
 #### 方法 2
 
-TODO
+令 $q=D(h)\bmod x^{n-1}$ 和 $w=q+g_0(D(f_0)-f_0q)\bmod x^{2n-1}$ 那么
+
+$$
+f\equiv f_0+f_0(h-\smallint w)\pmod{x^{2n}}
+$$
+
+我们只需说明 $w\equiv D(f_0)/f_0\pmod {x^{2n-1}}$ ，因为 $h=\log(f)=\smallint D(f)/f$ 所以
+
+$$
+q\equiv D(h)\equiv D(f_0)/f_0\pmod{x^{n-1}}
+$$
+
+而 $D(f)\equiv fq\pmod{x^{n-1}}$ 和商数的方法 5 如出一辙。
+
+注意在算法结束后可以得到 $g_0$ 和 $f\bmod x^{2n}$ 那么在迭代前我们有 $g_1=g\bmod x^{n/2}$ 。
+
+- 由 $g_1$ 计算 $g_0$ 使用上述倒数的方法 2 需要 $5\mathsf{E}(n)$ 。
+- 计算 $F _ {2n}^{-1}(F _ {2n}(f_0)F _ {2n}(q))$ 需要 $6\mathsf{E}(n)$ 。
+- 计算 $F _ {2n}^{-1}(F _ {2n}(g_0)F _ {2n}((D(f_0)-f_0q)\bmod x^{2n-1}))$ 需要 $6\mathsf{E}(n)$ 。
+- 计算 $F _ {2n}^{-1}(F _ {2n}(f_0)F _ {2n}((h-\smallint w)\bmod x^{2n}))$ 需要额外 $4\mathsf{E}(n)$ 。
+
+共 $21\mathsf{E}(n)$ ，所以计算 $\exp(h)\bmod{x^n}$ 需要 $21\mathsf{E}(n)$ 。
+
+#### 方法 3
+
+仍然考虑方法 2 中的式子，我们令
+
+$$
+\begin{aligned}
+r&=(f_0q)\bmod{(x^n-1)}\\
+s&=(x(D(f_0)-r))\bmod{(x^n-1)}\\
+t&=(g_0s)\bmod{x^n}\\
+u&=(h\bmod{x^{2n}}-\smallint tx^{n-1})\operatorname{div}x^n\\
+v&=(f_0u)\bmod{x^n}\\
+\end{aligned}
+$$
+
+其中二元运算符 $a\operatorname{div}b$ 表示 $(a-a\bmod{b})/b$ 那么 $f\equiv f_0+x^nv\pmod{x^{2n}}$ 。
+
+我们认为该方法与方法 2 的输出相同，首先观察方法 2 中的第二步并不需要求出 $f_0q$ ，因为 $\deg(f_0q)\lt 2n$ 而 $D(f_0)\equiv f_0q\pmod{x^{n-1}}$ 使用 $n$ 长的循环卷积足以还原出 $D(f_0)-f_0q$ 。
 
 ### 平方根
 

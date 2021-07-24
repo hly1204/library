@@ -20,7 +20,7 @@ public:
   using u32 = std::uint32_t;
   using u64 = std::uint64_t;
 
-  constexpr NTTCRT3(u32 mod) : m_(mod), M0M1_mod_m_(u64(M0) * M1 % mod) {}
+  constexpr NTTCRT3(u32 mod) : m_(mod), M0M1_mod_m_(static_cast<u64>(M0) * M1 % mod) {}
   ~NTTCRT3() = default;
 
   constexpr u32 operator()(u32 a, u32 b, u32 c) const {
@@ -30,20 +30,20 @@ public:
     // => k01 = (c - (a + k0M0)) / (M0M1) (mod M2)
     // => x mod M0M1M2 = a + k0M0 + k01M0M1
     u32 k0 = b - a;
-    if (int(k0) < 0) k0 += M1;
-    k0      = u64(k0) * M0_inv_M1_ % M1;
-    u64 d   = a + u64(k0) * M0;
+    if (static_cast<int>(k0) < 0) k0 += M1;
+    k0      = static_cast<u64>(k0) * M0_inv_M1_ % M1;
+    u64 d   = a + static_cast<u64>(k0) * M0;
     u32 k01 = c - d % M2;
-    if (int(k01) < 0) k01 += M2;
+    if (static_cast<int>(k01) < 0) k01 += M2;
     // NTT 模数都小于 (1U << 31) 所以在这里可以使用加法后再取模
-    return (d + u64(k01) * M0M1_inv_M2_ % M2 * M0M1_mod_m_) % m_;
+    return (d + static_cast<u64>(k01) * M0M1_inv_M2_ % M2 * M0M1_mod_m_) % m_;
   }
 
   static constexpr u32 get_inv(u32 x, u32 mod) {
     u32 res = 1;
     for (u32 e = mod - 2; e != 0; e >>= 1) {
-      if (e & 1) res = u64(res) * x % mod;
-      x = u64(x) * x % mod;
+      if (e & 1) res = static_cast<u64>(res) * x % mod;
+      x = static_cast<u64>(x) * x % mod;
     }
     return res;
   }
@@ -51,7 +51,7 @@ public:
 private:
   u32 m_, M0M1_mod_m_;
   static constexpr u32 M0_inv_M1_   = get_inv(M0, M1);
-  static constexpr u32 M0M1_inv_M2_ = get_inv(u64(M0) * M1 % M2, M2);
+  static constexpr u32 M0M1_inv_M2_ = get_inv(static_cast<u64>(M0) * M1 % M2, M2);
 };
 
 } // namespace lib

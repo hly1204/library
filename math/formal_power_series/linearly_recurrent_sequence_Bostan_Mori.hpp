@@ -32,8 +32,7 @@ public:
     int len = get_ntt_len((d << 1) + 1);
     q_cpy.resize(len, mod_t(0));
     p_.resize(len, mod_t(0));
-    dft(q_cpy);
-    dft(p_);
+    dft(q_cpy), dft(p_);
     for (int i = 0; i != len; ++i) p_[i] *= q_cpy[i];
     idft(p_);
     p_.resize(d);
@@ -51,15 +50,12 @@ public:
     int len = get_ntt_len((q_cpy.size() << 1) - 1);
     p_cpy.resize(len, mod_t(0));
     q_cpy.resize(len, mod_t(0));
-    dft(p_cpy);
-    dft(q_cpy);
+    dft(p_cpy), dft(q_cpy);
     for (;; n >>= 1) {                                         // p(x)/q(x) = p(x)q(-x)/(q(x)q(-x))
       for (int i = 0; i != len; ++i) p_cpy[i] *= q_cpy[i ^ 1]; // p(x)q(-x) 分子
-      if (n & 1) {                                             // 长度会变为原先的一半
-        NTT<mod_t>::odd_dft(len, p_cpy.data());
-      } else {
+      if (n & 1) NTT<mod_t>::odd_dft(len, p_cpy.data());       // 长度会变为原先的一半
+      else
         NTT<mod_t>::even_dft(len, p_cpy.data());
-      }
       for (int i = 0; i != len; i += 2) q_cpy[i] = q_cpy[i + 1] = q_cpy[i] * q_cpy[i + 1];
       NTT<mod_t>::even_dft(len, q_cpy.data());
       if (n == 1) // [x^0](q(x)q(-x))=1 ，使用第一种类型的 accumulate 即从左开始 fold 并累加答案

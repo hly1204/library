@@ -23,8 +23,7 @@ namespace lib::internal {
 std::uint64_t rho(std::uint64_t n) {
   using u64 = std::uint64_t;
   using m64 = RuntimeLongMontModInt<-1>;
-  static std::random_device rd;
-  static std::mt19937 gen(rd());
+  std::mt19937 gen(std::random_device{}());
   std::uniform_int_distribution<u64> dis(2, n - 1);
   if (m64::get_mod() != n) m64::set_mod(n);
   const m64 R(dis(gen));

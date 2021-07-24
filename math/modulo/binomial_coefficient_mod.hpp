@@ -42,18 +42,19 @@ public:
         ifac.resize(ie);
         if (e == 1) {
           fac[0] = ifac[0] = 1;
-          for (int j = 1; j != ie; ++j) fac[j] = u64(fac[j - 1]) * j % ie;
+          for (int j = 1; j != ie; ++j) fac[j] = static_cast<u64>(fac[j - 1]) * j % ie;
           ifac[ie - 1] = ie - 1; // Wilson's theorem
-          for (int j = ie - 2; j > 0; --j) ifac[j] = u64(ifac[j + 1]) * (j + 1) % ie;
+          for (int j = ie - 2; j > 0; --j) ifac[j] = static_cast<u64>(ifac[j + 1]) * (j + 1) % ie;
         } else {
           ifac[0] = fac[0] = 1;
           for (int j = 1; j != ie; ++j) {
-            fac[j]  = (j % i == 0) ? fac[j - 1] : u64(fac[j - 1]) * j % ie;
-            ifac[j] = u64(fac[j]) * ifac[j - 1] % ie;
+            fac[j]  = (j % i == 0) ? fac[j - 1] : static_cast<u64>(fac[j - 1]) * j % ie;
+            ifac[j] = static_cast<u64>(fac[j]) * ifac[j - 1] % ie;
           }
           u32 ivie = inv_mod(ifac[ie - 1], ie);
           for (int j = ie - 1; j > 0; --j)
-            ifac[j] = u64(ivie) * ifac[j - 1] % ie, ivie = u64(ivie) * fac[j] % ie;
+            ifac[j] = static_cast<u64>(ivie) * ifac[j - 1] % ie,
+            ivie    = static_cast<u64>(ivie) * fac[j] % ie;
         }
       }
     }
@@ -65,9 +66,9 @@ public:
       fac.resize(ie);
       ifac.resize(ie);
       fac[0] = ifac[0] = 1;
-      for (int j = 1; j != ie; ++j) fac[j] = u64(fac[j - 1]) * j % ie;
+      for (int j = 1; j != ie; ++j) fac[j] = static_cast<u64>(fac[j - 1]) * j % ie;
       ifac[ie - 1] = ie - 1; // Wilson's theorem
-      for (int j = ie - 2; j > 0; --j) ifac[j] = u64(ifac[j + 1]) * (j + 1) % ie;
+      for (int j = ie - 2; j > 0; --j) ifac[j] = static_cast<u64>(ifac[j + 1]) * (j + 1) % ie;
     }
     std::vector<u32> factor(factor_.size());
     for (int i = 0, e = factor_.size(); i < e; ++i) factor[i] = std::get<2>(factor_[i]);
@@ -96,7 +97,7 @@ public:
             res = 0;
             break;
           }
-          res = res * u64(fac[n_t % p]) % p * ifac[m_t % p] % p * ifac[n_t % p - m_t % p] % p;
+          res = res * fac[n_t % p] % p * ifac[m_t % p] % p * ifac[n_t % p - m_t % p] % p;
         }
       } else {
         u64 r = n_t - m_t, k = 0;

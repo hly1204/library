@@ -208,11 +208,9 @@ public:
     dft(len, rhs_cpy.data());
     for (;;) {
       for (int i = 0; i != len; ++i) cpy[i] *= rhs_cpy[i ^ 1];
-      if (k & 1) {
-        NTT<mod_t>::odd_dft(len, cpy.data());
-      } else {
+      if (k & 1) NTT<mod_t>::odd_dft(len, cpy.data());
+      else
         NTT<mod_t>::even_dft(len, cpy.data());
-      }
       for (int i = 0; i != len; i += 2) rhs_cpy[i] = rhs_cpy[i + 1] = rhs_cpy[i] * rhs_cpy[i + 1];
       NTT<mod_t>::even_dft(len, rhs_cpy.data());
       k >>= 1;
