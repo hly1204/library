@@ -33,8 +33,8 @@ public:
         for (int j = i; j < n; ++j) { // 选主元，主元选择数值最小的非零
           int real_j = real_row[j];
           if (m.at(real_j, i) != Type(0) &&
-              (pivot == -1 || raw_type(m.at(real_j, i)) < min_value)) {
-            min_value = raw_type(m.at(real_j, i));
+              (pivot == -1 || static_cast<raw_type>(m.at(real_j, i)) < min_value)) {
+            min_value = static_cast<raw_type>(m.at(real_j, i));
             pivot     = j;
           }
         }
@@ -43,10 +43,11 @@ public:
         if (real_row[pivot] != real_row[i]) std::swap(real_row[i], real_row[pivot]);
         for (int j = i + 1; j < n; ++j) {
           while (m.at(real_row[j], i) != Type(0)) {
-            if (raw_type(m.at(real_row[j], i)) < raw_type(m.at(real_row[i], i)))
+            if (static_cast<raw_type>(m.at(real_row[j], i)) <
+                static_cast<raw_type>(m.at(real_row[i], i)))
               std::swap(real_row[i], real_row[j]);
             int real_i = real_row[i], real_j = real_row[j];
-            Type p(raw_type(m.at(real_j, i)) / raw_type(m.at(real_i, i)));
+            Type p(static_cast<raw_type>(m.at(real_j, i)) / static_cast<raw_type>(m.at(real_i, i)));
             for (int k = i; k < n; ++k) m.at(real_j, k) -= p * m.at(real_i, k);
           }
         }
@@ -73,8 +74,8 @@ public:
         for (int j = i; j < n; ++j) { // 选主元，主元选择数值最小的非零
           int real_j = real_row[j];
           if (m.at(real_j, i) != Type(0) &&
-              (pivot == -1 || raw_type(m.at(real_j, i)) < min_value)) {
-            min_value = raw_type(m.at(real_j, i));
+              (pivot == -1 || static_cast<raw_type>(m.at(real_j, i)) < min_value)) {
+            min_value = static_cast<raw_type>(m.at(real_j, i));
             pivot     = j;
           }
         }
@@ -85,12 +86,13 @@ public:
         }
         for (int j = i + 1; j < n; ++j) {
           while (m.at(real_row[j], i) != Type(0)) {
-            if (raw_type(m.at(real_row[j], i)) < raw_type(m.at(real_row[i], i))) {
+            if (static_cast<raw_type>(m.at(real_row[j], i)) <
+                static_cast<raw_type>(m.at(real_row[i], i))) {
               std::swap(real_row[i], real_row[j]);
               odd = !odd;
             }
             int real_i = real_row[i], real_j = real_row[j];
-            Type p(raw_type(m.at(real_j, i)) / raw_type(m.at(real_i, i)));
+            Type p(static_cast<raw_type>(m.at(real_j, i)) / static_cast<raw_type>(m.at(real_i, i)));
             for (int k = i; k < n; ++k) m.at(real_j, k) -= p * m.at(real_i, k);
           }
         }
@@ -111,8 +113,9 @@ public:
       int pivot = -1;
       raw_type min_value;
       for (int j = i + 1; j < n; ++j) { // 选主元，主元选择数值最小的非零
-        if (m.at(j, i) != Type(0) && (pivot == -1 || raw_type(m.at(j, i)) < min_value)) {
-          min_value = raw_type(m.at(j, i));
+        if (m.at(j, i) != Type(0) &&
+            (pivot == -1 || static_cast<raw_type>(m.at(j, i)) < min_value)) {
+          min_value = static_cast<raw_type>(m.at(j, i));
           pivot     = j;
         }
       }
@@ -123,11 +126,11 @@ public:
       }
       for (int j = i + 2; j < n; ++j) {
         while (m.at(j, i) != Type(0)) {
-          if (raw_type(m.at(j, i)) < raw_type(m.at(i + 1, i))) {
+          if (static_cast<raw_type>(m.at(j, i)) < static_cast<raw_type>(m.at(i + 1, i))) {
             std::swap_ranges(m.row_begin(i + 1) + i, m.row_end(i + 1), m.row_begin(j) + i);
             for (int k = 0; k < n; ++k) std::swap(m.at(k, i + 1), m.at(k, j));
           }
-          Type v(raw_type(m.at(j, i)) / raw_type(m.at(i + 1, i)));
+          Type v(static_cast<raw_type>(m.at(j, i)) / static_cast<raw_type>(m.at(i + 1, i)));
           for (int k = i; k < n; ++k) m.at(j, k) -= v * m.at(i + 1, k);
           for (int k = 0; k != n; ++k) m.at(k, i + 1) += v * m.at(k, j);
         }

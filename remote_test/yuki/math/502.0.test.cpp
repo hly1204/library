@@ -15,8 +15,8 @@ int main() {
   using mint = lib::MontModInt<1000000007>;
   long long v;
   std::cin >> v;
-  std::cout << lib::PrimeFactorial<mint>([](const std::vector<mint> &x, const std::vector<mint> &y,
-                                            int c) {
+  std::cout << lib::FactorialModPrime<mint>([](const std::vector<mint> &x,
+                                               const std::vector<mint> &y, int c) {
                  return lib::convolve_cyclic_mod(x, y, mint::get_mod(), c);
                }).fac(v)
             << '\n';

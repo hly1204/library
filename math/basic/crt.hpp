@@ -77,13 +77,13 @@ std::optional<std::pair<std::uint64_t, std::uint64_t>> crt2(T a1, T m1, T a2, T 
 
   S d, x, y;
   std::tie(d, x, y) = exgcd(m1, m2);
-  S a2_a1           = S(a2) - S(a1); // assume a1 < m1 and a2 < m2
+  S a2_a1           = static_cast<S>(a2) - static_cast<S>(a1); // assume a1 < m1 and a2 < m2
   S a2_a1_d         = a2_a1 / d;
   if (a2_a1 != a2_a1_d * d) return {};
   S m2_d = m2 / d;
-  S k1   = i64(x % m2_d) * (a2_a1_d % m2_d) % m2_d;
+  S k1   = static_cast<i64>(x % m2_d) * (a2_a1_d % m2_d) % m2_d;
   if (k1 < 0) k1 += m2_d;
-  return std::make_pair(u64(k1) * m1 + a1, u64(m1) * m2_d);
+  return std::make_pair(static_cast<u64>(k1) * m1 + a1, static_cast<u64>(m1) * m2_d);
 }
 
 /**

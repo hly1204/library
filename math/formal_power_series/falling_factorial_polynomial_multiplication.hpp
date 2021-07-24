@@ -54,11 +54,9 @@ std::vector<mod_t> FFP_to_sample_points(int n, const std::vector<mod_t> &ffp, Co
   PrimeBinomial<mod_t> bi(n);
   std::vector<mod_t> ex(n);
   for (int i = 0; i < n; ++i) ex[i] = bi.ifac_unsafe(i);
-  if (ffp.size() > n) {
-    ex = f(ex, std::vector<mod_t>(ffp.begin(), ffp.begin() + n));
-  } else {
+  if (ffp.size() > n) ex = f(ex, std::vector<mod_t>(ffp.begin(), ffp.begin() + n));
+  else
     ex = f(ex, ffp);
-  }
   for (int i = 0; i < n; ++i) ex[i] *= bi.fac_unsafe(i);
   ex.resize(n);
   return ex;

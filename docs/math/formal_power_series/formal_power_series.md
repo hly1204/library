@@ -1,5 +1,3 @@
-## 形式幂级数的四则运算
-
 我们假设后文没有定义的都属于 NTT 友好的模数的形式幂级数环 $\mathbb{F} _ p[[x]]$ 。
 
 注意：这篇文章可能有很多错误。
@@ -275,6 +273,8 @@ $$
 
 令 $g=1/f=1/\exp(h)$ 和 $g_0=g\bmod x^n$ 。注意这里需要求出 $1/f_0\bmod{x^{2n}}$ 。
 
+基础的复合函数求导公式在这里很重要 $D(\exp(h))=D(h)\exp(h)$ 。
+
 #### 方法 1
 
 - 计算 $\log(f_0)\bmod{x^{2n}}$ 需要 $26\mathsf{E}(n)$ 也可以一起计算 $F _ {2n}(f_0)$ 。
@@ -286,19 +286,86 @@ $$
 
 #### 方法 2
 
-TODO
+令 $q=D(h)\bmod x^{n-1}$ 和 $w=q+g_0(D(f_0)-f_0q)\bmod x^{2n-1}$ 那么
+
+$$
+f\equiv f_0+f_0(h-\smallint w)\pmod{x^{2n}}
+$$
+
+我们只需说明 $w\equiv D(f_0)/f_0\pmod {x^{2n-1}}$ ，因为 $h=\log(f)=\smallint D(f)/f$ 所以
+
+$$
+q\equiv D(h)\equiv D(f_0)/f_0\pmod{x^{n-1}}
+$$
+
+而 $D(f)\equiv fq\pmod{x^{n-1}}$ 和商数的方法 5 如出一辙。
+
+注意在算法结束后可以得到 $g_0$ 和 $f\bmod x^{2n}$ 那么在迭代前我们有 $g_1=g\bmod x^{n/2}$ 。
+
+- 由 $g_1$ 计算 $g_0$ 使用上述倒数的方法 2 需要 $5\mathsf{E}(n)$ 。
+- 计算 $F _ {2n}^{-1}(F _ {2n}(f_0)F _ {2n}(q))$ 需要 $6\mathsf{E}(n)$ 。
+- 计算 $F _ {2n}^{-1}(F _ {2n}(g_0)F _ {2n}((D(f_0)-f_0q)\bmod x^{2n-1}))$ 需要 $6\mathsf{E}(n)$ 。
+- 计算 $F _ {2n}^{-1}(F _ {2n}(f_0)F _ {2n}((h-\smallint w)\bmod x^{2n}))$ 需要额外 $4\mathsf{E}(n)$ 。
+
+共 $21\mathsf{E}(n)$ ，所以计算 $\exp(h)\bmod{x^n}$ 需要 $21\mathsf{E}(n)$ 。
+
+#### 方法 3
+
+仍然考虑方法 2 中的式子，我们令
+
+$$
+\begin{aligned}
+r&=(f_0q)\bmod{(x^n-1)}\\
+s&=(x(D(f_0)-r))\bmod{(x^n-1)}\\
+t&=(g_0s)\bmod{x^n}\\
+u&=(h\bmod{x^{2n}}-\smallint tx^{n-1})\operatorname{div}x^n\\
+v&=(f_0u)\bmod{x^n}\\
+\end{aligned}
+$$
+
+其中二元运算符 $a\operatorname{div}b$ 表示 $(a-a\bmod{b})/b$ 那么 $f\equiv f_0+x^nv\pmod{x^{2n}}$ 。
+
+我们认为该方法与方法 2 的输出相同，首先观察方法 2 中的第二步并不需要求出 $f_0q$ ，因为 $\deg(f_0q)\lt 2n$ 而 $D(f_0)\equiv f_0q\pmod{x^{n-1}}$ 使用 $n$ 长的循环卷积足以还原出 $D(f_0)-f_0q$ 。
+
+- 计算 $F_n^{-1}(F_n(f_0)F_n(q))$ 需要 $3\mathsf{E}(n)$ 。
+- 计算 $F _ {2n}^{-1}(F _ {2n}(g_0)F _ {2n}(s))$ 需要 $6\mathsf{E}(n)$ 。
+- 计算 $F _ {2n}^{-1}(F _ {2n}(f_0)F _ {2n}(u))$ 需要额外 $5\mathsf{E}(n)$ 。
+- 由 $f\bmod{x^{2n}}$ 计算 $g\bmod{x^{2n}}$ 需要 $10\mathsf{E}(n)$ 但考虑算出 $F _ {4n}(f\bmod{x^{2n}})$ 给下一次迭代使用，且已有 $F _ {2n}(g_0)$ 故仍需 $10\mathsf{E}(n)$ 但上面的 $F_n(f_0)$ 和 $F _ {2n}(f_0)$ 不用再求，可减少 $2\mathsf{E}(n)$ 。
+
+共 $22\mathsf{E}(n)$ ，所以计算 $\exp(h)\bmod{x^n}$ 需要 $22\mathsf{E}(n)$ 而最后一次迭代中可以省去 $5\mathsf{E}(n)$ 故需要 $17\mathsf{E}(n)$ ，在 negiizhao 的博客中提供了更优秀的 $16\mathsf{E}(n)$ 到 $15.5\mathsf{E}(n)$ ，但上面这种实现是非常简单的。
+
+在实际实现时，直接考虑
+
+$$
+f\equiv f_0+f_0(h-\smallint(D(h)+g_0(D(f_0)-f_0D(h))))\pmod{x^{2n}}
+$$
+
+还原出 $D(f_0)-f_0q$ 会比较清晰一些。
 
 ### 平方根
 
-TODO
+给出 $h$ 且 $h(0)=1$ ，令 $f=\sqrt{h},g=1/f,g_0=g\bmod{x^n}$ 和已知 $f_0=f\bmod{x^n}$ 求 $f\bmod{x^{2n}}$ 。
 
-## 半在线卷积
+令 $A(f)=f^2-h$ 那么
 
-semi-relaxed convolution 即半在线卷积是由分治 FFT 算法改进而来，主旨大概是原先分治二叉时间为 $O(n\log^2n)$ 而现在考虑分治 $\log n$ 叉，细节略去，时间可以做到 $O\left(\frac{n\log^2n}{\log\log n}\right)$ 。原文应该是出自 Joris van der Hoeven 的论文 New algorithms for relaxed multiplication 。但本人能力有限并未理解，在 EntropyIncreaser 的 [讲课视频](https://www.bilibili.com/video/BV1kA41187dQ) 中有详细描述。
+$$
+\begin{aligned}
+f&\equiv f_0-\frac{f_0^2-h}{2f_0}\pmod{x^{2n}}\\
+&\equiv f_0-(f_0^2-h)g_0/2\pmod{x^{2n}}
+\end{aligned}
+$$
 
-在幂级数指数上半在线卷积比牛顿法更快（非时间复杂度，而是实践中的效率），而其他算法都可用半在线卷积来做也不会慢，在写完半在线卷积的模板后只需稍作修改就可以适用于上述所有算法，代码量远小于牛顿法，我们所要做的就是会写这些算法的 brute force 版本（均为 $O(n^2)$ 时间）。
+在这里仅描述一个简单的做法，观察到 $f_0^2\equiv h\pmod{x^n}$ 那么
 
-> FFT 做的是离线卷积，因为我们需要将两个多项式的所有系数都拿到才能做，而半在线指其中之一离线给出，另一个在计算中得到，全在线则是要求给出一项系数计算一项相关的系数。这个解释是否合理呢？据说在前不久会半在线的人也寥寥无几，但是现在看来已经不少人学会了，但我依然没学会，我太愚蠢了。
+- 计算 $F_n^{-1}(F_n(f_0)F_n(f_0))$ 后因为 $\deg (f_0^2)\lt 2n$ 所以可还原出 $(f_0^2-h)\bmod{x^{2n}}$ 需要 $2\mathsf{E}(n)$ 。
+- 计算 $g_0$ 需要 $10\mathsf{E}(n)$ 这里不需要计算 $(1/f_0)\bmod{x^{2n}}$ 因为 $f_0^2-h=x^ns$ 其低位为零。但是在结束时我们得到 $g_0$ 意味着下一轮可以维护。
+- 计算 $F _ {2n}^{-1}(F _ {2n}((f_0^2-h)\bmod{x^{2n}})F _ {2n}(g_0))$ 需要 $6\mathsf{E}(n)$ 。
+
+和在指数时的方法相同，我们在迭代的最后维护下一轮要用到的 $g_0$ ，因此需要计算 $F _ {2n}(f\bmod{x^{2n}})$ 可给下一轮迭代使用，而前面计算过 $F _ {2n}(g_0)$ 故需要额外 $8\mathsf{E}(n)$ 共 $15\mathsf{E}(n)$ 最后一次迭代中省去 $4\mathsf{E}(n)$ ，所以计算 $\sqrt{h}\bmod{x^n}$ 需要 $11\mathsf{E}(n)$ ，更优秀的方法见参考文献。
+
+## 半在线算法
+
+可能在实现后补充到其他文件。
 
 ## 参考文献
 

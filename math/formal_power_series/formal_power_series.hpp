@@ -208,11 +208,9 @@ public:
     dft(len, rhs_cpy.data());
     for (;;) {
       for (int i = 0; i != len; ++i) cpy[i] *= rhs_cpy[i ^ 1];
-      if (k & 1) {
-        NTT<mod_t>::odd_dft(len, cpy.data());
-      } else {
+      if (k & 1) NTT<mod_t>::odd_dft(len, cpy.data());
+      else
         NTT<mod_t>::even_dft(len, cpy.data());
-      }
       for (int i = 0; i != len; i += 2) rhs_cpy[i] = rhs_cpy[i + 1] = rhs_cpy[i] * rhs_cpy[i + 1];
       NTT<mod_t>::even_dft(len, rhs_cpy.data());
       k >>= 1;
@@ -235,14 +233,79 @@ public:
     return deriv().div(n - 1, *this).integr();
   }
 
-  // TODO
-  fps exp(int n) const;
+  fps exp(int n) const { // 17E
+    assert(n > 0);
+    assert(this->operator[](0) == 0);
+    const mod_t ZERO(0), ONE(1);
+    if (n == 1) return {mod_t(1)};
+    int len = get_ntt_len(n);
+    fps res(len);
+    res[0] = mod_t(1), res[1] = this->operator[](1);
+    if (n == 2) return res;
+    PrimeBinomial<mod_t> bi(len);
+    fps work_tmp1(len, ZERO), work_tmp2(len, ZERO), work_tmp3(deriv()), cpy(slice(len)),
+        work_tmp4(len), work_tmp6(len), work_tmp7(len);
+    work_tmp3.resize(len, ZERO);
+    work_tmp1[0] = mod_t(1), work_tmp1[1] = -res[1];
+    std::copy_n(res.begin(), 2, work_tmp2.begin());
+    dft(4, work_tmp2.data());
+    for (int i = 4; i <= len; i <<= 1) {
+      mod_t tmp_j(i >> 2);
+      for (int j = i >> 2; j != i >> 1; ++j, tmp_j += ONE) work_tmp7[j - 1] = res[j] * tmp_j;
+      std::copy_n(work_tmp3.begin(), (i >> 1) - 1, work_tmp4.begin());
+      std::fill(work_tmp4.begin() + (i >> 1) - 1, work_tmp4.begin() + i, ZERO);
+      dft(i >> 1, work_tmp4.data()); // 1E
+      for (int j = 0; j != i >> 1; ++j) work_tmp4[j] *= work_tmp2[j];
+      idft(i >> 1, work_tmp4.data()); // 1E
+      for (int j = 0; j != (i >> 1) - 2; ++j) work_tmp4[j + (i >> 1)] = work_tmp7[j] - work_tmp4[j];
+      work_tmp4[(i >> 1) - 1] = -work_tmp4[(i >> 1) - 1];
+      std::fill_n(work_tmp4.begin(), (i >> 1) - 1, ZERO);
+      fps work_tmp5(work_tmp1.slice(i));
+      dft(i, work_tmp5.data()), dft(i, work_tmp4.data()); // 4E
+      for (int j = 0; j != i; ++j) work_tmp4[j] *= work_tmp5[j];
+      idft(i, work_tmp4.data()); // 2E
+      for (int j = i >> 1; j != i; ++j) work_tmp6[j] = work_tmp4[j - 1] * bi.inv_unsafe(j) - cpy[j];
+      std::fill_n(work_tmp6.begin(), i >> 1, ZERO);
+      dft(i, work_tmp6.data()); // 2E
+      for (int j = 0; j != i; ++j) work_tmp2[j] *= work_tmp6[j];
+      idft(i, work_tmp2.data()); // 2E
+      for (int j = i >> 1; j != i; ++j) res[j] = -work_tmp2[j];
+      if (i != len) { // 10E 最后一次迭代节省 5E
+        std::copy_n(res.begin(), i, work_tmp2.begin());
+        dft(i << 1, work_tmp2.data()); // 4E
+        for (int j = 0; j != i; ++j) work_tmp4[j] = work_tmp2[j] * work_tmp5[j];
+        idft(i, work_tmp4.data()); // 2E
+        std::fill_n(work_tmp4.begin(), i >> 1, ZERO);
+        dft(i, work_tmp4.data()); // 2E
+        for (int j = 0; j != i; ++j) work_tmp4[j] *= work_tmp5[j];
+        idft(i, work_tmp4.data()); // 2E
+        for (int j = i >> 1; j != i; ++j) work_tmp1[j] = -work_tmp4[j];
+      }
+    }
+    res.resize(n);
+    return res;
+  }
+
+  fps pow(int n, long long e) const {
+    const mod_t ZERO(0), ME(e);
+    fps cpy(slice(n));
+    int ord = 0;
+    while (ord < n && cpy[ord] == ZERO) ++ord;
+    long long offset = ord * e;
+    if (offset >= n) return fps(n, ZERO);
+    fps res(n, ZERO);
+    mod_t k(cpy[ord]), ik(mod_t(1) / k);
+    for (int i = ord; i != n; ++i) cpy[i] *= ik;
+    fps t(fps(cpy.begin() + ord, cpy.end()).log(n - offset));
+    for (int i = 0; i != n - offset; ++i) t[i] *= ME;
+    fps pt(t.exp(n - offset));
+    k = k.pow(e);
+    for (int i = offset; i != n; ++i) res[i] = pt[i - offset] * k;
+    return res;
+  }
 
   // TODO
-  fps pow(int n, mod_t e) const;
-
-  // TODO
-  fps sqrt(int n) const;
+  fps sqrt(int n, mod_t c) const;
 
   friend fps operator+(const fps &lhs, const fps &rhs) { return fps(lhs) += rhs; }
   friend fps operator-(const fps &lhs, const fps &rhs) { return fps(lhs) -= rhs; }

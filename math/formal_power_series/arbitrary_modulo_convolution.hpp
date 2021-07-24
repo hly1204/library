@@ -7,6 +7,7 @@
  */
 
 #include <cstdint>
+#include <type_traits>
 #include <vector>
 
 #include "../../modint/Montgomery_modint.hpp"
@@ -23,6 +24,7 @@ template <typename Int>
 std::vector<Int> convolve_mod(const std::vector<Int> &x, const std::vector<Int> &y,
                               std::uint32_t mod) {
   using u32               = std::uint32_t;
+  using Type              = std::conditional_t<(sizeof(Int) <= 4), std::uint32_t, std::uint64_t>;
   static constexpr u32 M0 = 880803841, M1 = 897581057, M2 = 998244353;
   NTTCRT3<M0, M1, M2> crt(mod);
   using mod_t0 = MontModInt<M0>;
@@ -33,11 +35,11 @@ std::vector<Int> convolve_mod(const std::vector<Int> &x, const std::vector<Int> 
   std::vector<mod_t1> x1(n), y1(m);
   std::vector<mod_t2> x2(n), y2(m);
   for (int i = 0; i < n; ++i) {
-    u32 v = u32(x[i]);
+    u32 v = static_cast<Type>(x[i]);
     x0[i] = v, x1[i] = v, x2[i] = v;
   }
   for (int i = 0; i < m; ++i) {
-    u32 v = u32(y[i]);
+    u32 v = static_cast<Type>(y[i]);
     y0[i] = v, y1[i] = v, y2[i] = v;
   }
   auto res0 = convolve(x0, y0);
@@ -54,6 +56,7 @@ template <typename Int>
 std::vector<Int> convolve_cyclic_mod(const std::vector<Int> &x, const std::vector<Int> &y,
                                      std::uint32_t mod, int cyclen) {
   using u32               = std::uint32_t;
+  using Type              = std::conditional_t<(sizeof(Int) <= 4), std::uint32_t, std::uint64_t>;
   static constexpr u32 M0 = 880803841, M1 = 897581057, M2 = 998244353;
   NTTCRT3<M0, M1, M2> crt(mod);
   using mod_t0 = MontModInt<M0>;
@@ -64,11 +67,11 @@ std::vector<Int> convolve_cyclic_mod(const std::vector<Int> &x, const std::vecto
   std::vector<mod_t1> x1(n), y1(m);
   std::vector<mod_t2> x2(n), y2(m);
   for (int i = 0; i < n; ++i) {
-    u32 v = u32(x[i]);
+    u32 v = static_cast<Type>(x[i]);
     x0[i] = v, x1[i] = v, x2[i] = v;
   }
   for (int i = 0; i < m; ++i) {
-    u32 v = u32(y[i]);
+    u32 v = static_cast<Type>(y[i]);
     y0[i] = v, y1[i] = v, y2[i] = v;
   }
   auto res0 = convolve_cyclic(x0, y0, cyclen);

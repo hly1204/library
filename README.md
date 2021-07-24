@@ -6,3 +6,4 @@
 [![GitHub Pages](https://img.shields.io/static/v1?label=GitHub+Pages&message=library+&color=brightgreen&logo=github)](https://hly1204.github.io/library/)
 ![Code Lines](https://img.shields.io/tokei/lines/github/hly1204/library)
 ![License](https://img.shields.io/github/license/hly1204/library)
+[![Gitpod](https://img.shields.io/badge/Gitpod-library-orange)](https://gitpod.io/#github.com/hly1204/library)
