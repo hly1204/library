@@ -36,6 +36,8 @@ $g(x)$ 的根为 $-1,-2,\dots ,-v$ 为等差数列，且我们希望对 $g(x)$ �
 
 若考虑从 $g_d(0),g_d(v),\dots ,g_d(dv)$ 推出 $g_{d+1}(0),g_{d+1}(v),\dots ,g_{d+1}(dv+v)$ 显然可在线性时间做到（额外的一项暴力计算即可），这样我们可以求出任意的 $d$ 对应的点值，而不用在二的幂次处。在 [EntropyIncreaser 的提交记录](https://loj.ac/s/1110094) 中使用了不同的技术使得 DFT 的次数减少，具体的我们在刚开始维护 $g_1(0),g_1(1)$ 后计算 $g_1(2),g_1(3),g_1(4),g_1(5)$ 后得到 $g_2(0),g_2(2),g_2(4)$ 以此类推。
 
+考虑 Wilson 定理 $(p-1)!\equiv -1\pmod{p}$ 可仅预处理前一半的阶乘。
+
 ## 某种线性递推序列
 
 对于某种线性递推序列 $\lbrace a_i\rbrace _ {i=0}^\infty$ 我们认为其初值为一个向量 $\mathbf{v} _ 0$ 后有某个其中元素为度数至多为一的多项式的矩阵 $\mathbf{M}$ 满足 $\mathbf{v} _ {i+1}=\mathbf{M}\mathbf{v} _ {i}$ 。在这里我们可以将计算阶乘考虑为矩阵
@@ -219,6 +221,6 @@ $$
 
 ## 参考文献
 
-- [ZZQ 的博客](https://www.cnblogs.com/zzqsblog/p/8408691.html)
-- [Min\_25 的博客（已被删除）](http://min-25.hatenablog.com/entry/2017/04/10/215046)
-- Alin Bostan, Pierrick Gaudry, and Eric Schost, Linear recurrences with polynomial coefficients and application to integer factorization and Cartier-Manin operator.
+- ZZQ 的[博客](https://www.cnblogs.com/zzqsblog/p/8408691.html)
+- Min\_25 的[博客](http://min-25.hatenablog.com/entry/2017/04/10/215046)（已被删除）
+- Alin Bostan, Pierrick Gaudry, and Eric Schost. Linear recurrences with polynomial coefficients and application to integer factorization and Cartier-Manin operator.

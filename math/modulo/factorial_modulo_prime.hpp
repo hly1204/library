@@ -37,7 +37,7 @@ public:
     mod_t mv = mod_t(v_), iv = ONE / mv;
     block_prod_ = std::vector<mod_t>{ONE, mv + ONE};
     block_prod_.reserve(v_ + 1);
-    u64 mask = u64(1) << 63;
+    u64 mask = UINT64_C(1) << 63;
     while ((mask & v_) == 0) mask >>= 1;
     mask >>= 1;
     for (u32 d = 1; d != v_; mask >>= 1) {
