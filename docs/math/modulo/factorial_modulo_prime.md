@@ -162,6 +162,7 @@ n+1&0\\1&n+1
 \begin{bmatrix}
 n!\\n!H_n
 \end{bmatrix}
+,\quad n\gt 0
 $$
 
 那么
@@ -181,7 +182,7 @@ i+1&0\\1&i+1
 \end{bmatrix}
 $$
 
-我们取 $v=\left\lfloor \sqrt{n}\right\rfloor$ 并维护
+其中 $n!H_n={n+1\brack 2}$ （此处为第一类无符号斯特林数），我们取 $v=\left\lfloor \sqrt{n}\right\rfloor$ 并维护
 
 $$
 \begin{aligned}
