@@ -1,4 +1,4 @@
-我们假设后文没有定义的都属于 NTT 友好的模数的形式幂级数环 $\mathbb{F} _ p[[x]]$ 。
+我们假设后文没有定义的都属于 NTT 友好的模数的形式幂级数环 $\mathbb{F} _ p\lbrack \lbrack x\rbrack \rbrack$ 。
 
 注意：这篇文章可能有很多错误。
 
@@ -56,13 +56,13 @@ $$
 
 ### 麦克劳林公式
 
-对于幂级数 $f$ 的指数我们可以通过麦克劳林公式如：
+对于幂级数 $f$ 的指数我们可以通过麦克劳林公式如
 
 $$
 \exp(f)=1+f+\frac{f^2}{2!}+\cdots =\sum _ {i\geq 0}\frac{f^i}{i!}
 $$
 
-而我们都知道幂级数可以是无限长的，若 $[x^0]f\neq 0$ 那么不收敛。所以这里认为其常数项为零。
+而我们都知道幂级数可以是无限长的，若 $f(0)\neq 0$ 那么不收敛。所以这里认为其常数项为零。
 
 同样的我们可以定义其逆运算即
 
@@ -372,4 +372,4 @@ $$
 - negiizhao 的[博客](https://negiizhao.blog.uoj.ac/blog/4671)
 - D. J. Bernstein. [Removing redundancy in high-precision Newton iteration](http://cr.yp.to/fastnewton.html), 2004.
 - Alin Bostan and Eric Schost. [A simple and fast algorithm for computing exponentials of power series](https://arxiv.org/abs/1301.5804), 2013.
-- Guillaume Hanrot and Paul Zimmermann. Newton iteration revisited.
+- Guillaume Hanrot and Paul Zimmermann. [Newton iteration revisited](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.415.9164).
