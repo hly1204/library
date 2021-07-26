@@ -32,23 +32,22 @@ public:
 
   template <typename ConvolveCyclicFuncType>
   FactorialModPrime(ConvolveCyclicFuncType conv)
-      : v_(u64(std::sqrt(modint_traits<mod_t>::get_mod()))) {
+      : v_(static_cast<u64>(std::sqrt(modint_traits<mod_t>::get_mod()))) {
     const mod_t ONE(1);
     mod_t mv = mod_t(v_), iv = ONE / mv;
     block_prod_ = std::vector<mod_t>{ONE, mv + ONE};
     block_prod_.reserve(v_ + 1);
     u64 mask = UINT64_C(1) << 63;
     while ((mask & v_) == 0) mask >>= 1;
-    mask >>= 1;
-    for (u32 d = 1; d != v_; mask >>= 1) {
+    for (u32 d = 1; d != v_;) {
       std::vector<mod_t> g0(shift_sample_points(d, block_prod_, mod_t(d + 1), conv));
       std::vector<mod_t> g1(shift_sample_points(d << 1 | 1, block_prod_, mod_t(d) * iv, conv));
       std::copy(g0.begin(), g0.end(), std::back_inserter(block_prod_));
       d <<= 1;
       for (int i = 0; i <= d; ++i) block_prod_[i] *= g1[i];
-      if (mask & v_) {
+      if ((mask >>= 1) & v_) {
         mod_t k(d | 1), dpv(v_ * k), prod(ONE);
-        for (int i = 1; i <= d; ++i) prod *= (dpv += ONE);
+        for (int i = 0; i < d; ++i) prod *= (dpv += ONE);
         block_prod_.emplace_back(prod);
         d |= 1;
         for (int i = 0; i <= d; ++i) block_prod_[i] *= k, k += mv;

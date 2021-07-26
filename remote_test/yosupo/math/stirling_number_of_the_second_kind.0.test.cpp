@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "math/formal_power_series/Stirling_numbers.hpp"
+#include "math/famous_sequence/Stirling_numbers.hpp"
 #include "math/formal_power_series/polynomial.hpp"
 #include "modint/Montgomery_modint.hpp"
 

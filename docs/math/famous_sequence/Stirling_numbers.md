@@ -17,7 +17,7 @@ $$
 当 $k\lt 0$ 且 $n\geq 0$ 时，认为 ${n\brack k}=0$ 。
 
 | $n$ | ${n\brack 0}$ | ${n\brack 1}$ | ${n\brack 2}$ | ${n\brack 3}$ | ${n\brack 4}$ | ${n\brack 5}$ | ${n\brack 6}$ | ${n\brack 7}$ | ${n\brack 8}$ | ${n\brack 9}$ |
-| :- | :- | :- | :- | :- | :- | :- | :- | :- | :- | :- |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | 0 | 1 |  |  |  |  |  |  |  |  |  |
 | 1 | 0 | 1 |  |  |  |  |  |  |  |  |
 | 2 | 0 | 1 | 1 |  |  |  |  |  |  |  |
@@ -32,7 +32,7 @@ $$
 其递推公式为
 
 $$
-{n+1\brack k}=n{n\brack k}+{n\brack k-1},\quad n\geq 0
+{n+1\brack k}=n{n\brack k}+{n\brack k-1},\quad n\geq 0\tag{1}
 $$
 
 将一个元素插入有 $n$ 个元素的 $k$ 个轮换中有 $n$ 种方案，或者原先有 $k-1$ 个轮换，新元素单独为一个轮换。
@@ -53,7 +53,7 @@ $$
 我们猜测有
 
 $$
-x^{\overline{n}}=\sum _ {i=0}^n{n\brack i}x^i
+x^{\overline{n}}=\sum _ {i=0}^n{n\brack i}x^i,\quad n\geq 0
 $$
 
 使用数学归纳法，当 $n=0$ 时显然成立，假设对于 $n\gt 0$ 成立那么
@@ -62,7 +62,7 @@ $$
 \begin{aligned}
 x^{\overline{n+1}}&=x^{\overline{n}}\cdot (x+n)\\
 &=(x+n)\sum _ {i=0}^n{n\brack i}x^i\\
-&=n\sum _ {i=0}^n{n\brack i}x^i+\sum _ {i=0}^{n+1}{n\brack i-1}x^i\\
+&=n\sum _ {i=0}^{n+1}{n\brack i}x^i+\sum _ {i=0}^{n+1}{n\brack i-1}x^i,\quad \left(\because {n\brack -1}={n\brack n+1}=0\right)\\
 &=\sum _ {i=0}^{n+1}{n+1\brack i}x^i
 \end{aligned}
 $$
@@ -83,10 +83,14 @@ $$
 {n\brace k}
 $$
 
-为将 $n$ 个元素划分为 $k$ 个非空子集的方案数。特别的， $\displaystyle {0\brace k}=\begin{cases}1,&k=0,\\0,&k\gt 0.\end{cases}$ 。
+为将 $n$ 个元素划分为 $k$ 个非空子集的方案数。特别的
+
+$$
+{0\brace k}=\begin{cases}1,&k=0,\\0,&k\gt 0.\end{cases}
+$$
 
 | $n$ | ${n\brace 0}$ | ${n\brace 1}$ | ${n\brace 2}$ | ${n\brace 3}$ | ${n\brace 4}$ | ${n\brace 5}$ | ${n\brace 6}$ | ${n\brace 7}$ | ${n\brace 8}$ | ${n\brace 9}$ |
-| :- | :- | :- | :- | :- | :- | :- | :- | :- | :- | :- |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | 0 | 1 |  |  |  |  |  |  |  |  |  |
 | 1 | 0 | 1 |  |  |  |  |  |  |  |  |
 | 2 | 0 | 1 | 1 |  |  |  |  |  |  |  |
@@ -106,10 +110,10 @@ $$
 \lbrace 1\rbrace \cup\lbrace 2,3\rbrace \cup\lbrace 4\rbrace ,\lbrace 1,2\rbrace \cup\lbrace 3\rbrace \cup\lbrace 4\rbrace 
 $$
 
-其递推式为
+故 ${4\brace 3}=6$ 。其递推式为
 
 $$
-{n+1\brace k}=k{n\brace k}+{n\brace k-1},\quad n\geq 0
+{n+1\brace k}=k{n\brace k}+{n\brace k-1},\quad n\geq 0\tag{2}
 $$
 
 将一个新元素加入 $k$ 个子集有 $k$ 种可能，或者自己单独为一个集合。
@@ -120,7 +124,7 @@ $$
 {n\brack k}\geq {n\brace k},\quad n\geq 0
 $$
 
-因为 $k\leq n$ 根据递推式显然。因为
+因为 $k\leq n$ 根据 $(1),(2)$ 显然。且
 
 $$
 \begin{aligned}
@@ -135,7 +139,38 @@ $$
 i^n=d^n\cdot (i/d)^n
 $$
 
-此时只需计算 $i$ 为素数的情况。
+此时只需计算 $i$ 为素数的情况。关注表格中的每一行和
+
+$$
+\begin{aligned}
+x^0&=1\\
+x^1&=0+x^{\underline{1}}\\
+x^2&=0+x^{\underline{1}}+x^{\underline{2}}\\
+x^3&=0+x^{\underline{1}}+3x^{\underline{2}}+x^{\underline{3}}\\
+x^4&=0+x^{\underline{1}}+7x^{\underline{2}}+6x^{\underline{3}}+x^{\underline{4}}\\
+\vdots
+\end{aligned}
+$$
+
+我们猜测有
+
+$$
+x^n=\sum _ {i=0}^n{n\brace i}x^{\underline{i}},\quad n\geq 0
+$$
+
+当 $n=0$ 时显然，假设在 $n\gt 0$ 时成立，那么
+
+$$
+\begin{aligned}
+x^{n+1}&=x^n\cdot x\\
+&=x\sum _ {i=0}^n{n\brace i}x^{\underline{i}}\\
+&=\sum _ {i=0}^n{n\brace i}x^{\underline{i+1}}+\sum _ {i=0}^n{n\brace i}i\cdot x^{\underline{i}},\quad \left(\because x\cdot x^{\underline{i}}=x^{\underline{i+1}}+i\cdot x^{\underline{i}}\right)\\
+&=\sum _ {i=0}^{n+1}{n\brace i-1}x^{\underline{i}}+\sum _ {i=0}^{n+1}{n\brace i}i\cdot x^{\underline{i}},\quad \left(\because {n\brace -1}={n\brace n+1}=0\right)\\
+&=\sum _ {i=0}^{n+1}{n+1\brace i}x^{\underline{i}}
+\end{aligned}
+$$
+
+得证。将 $x^{n}$ 转换为下降幂多项式容易联想到其点值的指数生成函数，使用下降幂多项式乘法中提到的方法发现本质和上述卷积相同。
 
 ## 参考文献
 

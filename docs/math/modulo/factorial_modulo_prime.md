@@ -169,6 +169,9 @@ $$
 
 $$
 \begin{bmatrix}
+{n+1\brack 1}\\{n+1\brack 2}
+\end{bmatrix}=
+\begin{bmatrix}
 n!\\n!H_n
 \end{bmatrix}=
 \left(
@@ -182,7 +185,7 @@ i+1&0\\1&i+1
 \end{bmatrix}
 $$
 
-其中 $n!H_n={n+1\brack 2}$ （此处为第一类无符号斯特林数），我们取 $v=\left\lfloor \sqrt{n}\right\rfloor$ 并维护
+我们取 $v=\left\lfloor \sqrt{n}\right\rfloor$ 并维护
 
 $$
 \begin{aligned}
@@ -218,7 +221,25 @@ g_d(x)g_d(x+d)&0\\h_d(x+d)g_d(x)+g_d(x+d)h_d(x)&g_d(x)g_d(x+d)
 \end{aligned}
 $$
 
-是易维护的，上述其余矩阵同理。
+而
+
+$$
+\begin{aligned}
+\mathbf{M} _ {d+1}(x)&=
+\begin{bmatrix}
+x+d+1&0\\1&x+d+1
+\end{bmatrix}
+\begin{bmatrix}
+g_d(x)&0\\h_d(x)&g_d(x)
+\end{bmatrix}\\
+&=
+\begin{bmatrix}
+(x+d+1)g_d(x)&0\\g_d(x)+(x+d+1)h_d(x)&(x+d+1)g_d(x)
+\end{bmatrix}
+\end{aligned}
+$$
+
+易维护，上述其余矩阵同理。
 
 ## 参考文献
 

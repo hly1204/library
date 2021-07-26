@@ -3,15 +3,15 @@
 
 /**
  * @brief Stirling numbers / 斯特林数
- * @docs docs/math/formal_power_series/Stirling_numbers.md
+ * @docs docs/math/famous_sequence/Stirling_numbers.md
  */
 
-#include "math/formal_power_series/prime_binomial.hpp"
+#include "../formal_power_series/prime_binomial.hpp"
 
 namespace lib {
 
 /**
- * @brief 第一类斯特林数-行
+ * @brief 第一类无符号斯特林数-行
  *
  * @tparam PolyType 多项式类
  * @param n
