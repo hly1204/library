@@ -23,27 +23,35 @@ class NTT {
 public:
   NTT() = delete;
 
-  static void set_root(int len) {
-    static int lim = 0;
+  static int deBruijn_log2(std::uint64_t n) {
+    static constexpr std::uint64_t deBruijn = 0x022fdd63cc95386d;
+    static constexpr int convert[64]        = {
+        0,  1,  2,  53, 3,  7,  54, 27, 4,  38, 41, 8,  34, 55, 48, 28, 62, 5,  39, 46, 44, 42,
+        22, 9,  24, 35, 59, 56, 49, 18, 29, 11, 63, 52, 6,  26, 37, 40, 33, 47, 61, 45, 43, 21,
+        23, 58, 17, 10, 51, 25, 36, 32, 60, 20, 57, 16, 50, 31, 19, 15, 30, 14, 13, 12};
+    return convert[n * deBruijn >> 58];
+  }
+
+  static int bsr(std::uint64_t n) { return deBruijn_log2(n & ~(n - 1)); }
+
+  static void set_root() {
+    if (!dw_.empty()) return;
     static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());
-    if (lim == 0) {
-      constexpr int offset = 20;
-      rt.resize(1 << offset);
-      irt.resize(1 << offset);
-      rt[0] = irt[0] = mod_t(1);
-      mod_t g_t = g.pow(modint_traits<mod_t>::get_mod() >> (offset + 1)), ig_t = g_t.inv();
-      rt[1 << (offset - 1)] = g_t, irt[1 << (offset - 1)] = ig_t;
-      for (int i = offset - 2; i >= 0; --i) rt[1 << i] = (g_t *= g_t), irt[1 << i] = (ig_t *= ig_t);
-      lim = 1;
-    }
-    for (; (lim << 1) < len; lim <<= 1) {
-      mod_t g = rt[lim], ig = irt[lim];
-      for (int i = lim + 1, e = lim << 1; i < e; ++i)
-        rt[i] = rt[i - lim] * g, irt[i] = irt[i - lim] * ig;
-    }
+    auto mod = modint_traits<mod_t>::get_mod();
+    int lv   = bsr(mod - 1);
+    rt_.resize(lv - 1), irt_.resize(lv - 1), dw_.resize(lv - 1), idw_.resize(lv - 1);
+    rt_.back() = g.pow(mod >> lv);
+    for (int i = lv - 3; i >= 0; --i) rt_[i] = rt_[i + 1] * rt_[i + 1];
+    mod_t v(1);
+    irt_.back() = v / rt_.back();
+    for (int i = lv - 3; i >= 0; --i) irt_[i] = irt_[i + 1] * irt_[i + 1];
+    for (int i = 0; i < lv - 2; ++i) dw_[i] = v * rt_[i], v *= irt_[i];
+    v = mod_t(1);
+    for (int i = 0; i < lv - 2; ++i) idw_[i] = v * irt_[i], v *= rt_[i];
   }
 
   static void dft(int n, mod_t *x) {
+    set_root();
     for (int j = 0, l = n >> 1; j != l; ++j) {
       mod_t u = x[j], v = x[j + l];
       x[j] = u + v, x[j + l] = u - v;
@@ -53,28 +61,31 @@ public:
         mod_t u = x[j], v = x[j + l];
         x[j] = u + v, x[j + l] = u - v;
       }
-      for (int j = i, l = i >> 1, m = 1; j != n; j += i, ++m) {
-        mod_t root = rt[m];
+      mod_t root(dw_[0]);
+      for (int j = i, l = i >> 1, m = 1; j != n; j += i) {
         for (int k = 0; k != l; ++k) {
           mod_t u = x[j + k], v = x[j + k + l] * root;
           x[j + k] = u + v, x[j + k + l] = u - v;
         }
+        root *= dw_[bsr(++m)];
       }
     }
   }
 
   static void idft(int n, mod_t *x) {
+    set_root();
     for (int i = 2; i < n; i <<= 1) {
       for (int j = 0, l = i >> 1; j != l; ++j) {
         mod_t u = x[j], v = x[j + l];
         x[j] = u + v, x[j + l] = u - v;
       }
-      for (int j = i, l = i >> 1, m = 1; j != n; j += i, ++m) {
-        mod_t root = irt[m];
+      mod_t root(idw_[0]);
+      for (int j = i, l = i >> 1, m = 1; j != n; j += i) {
         for (int k = 0; k != l; ++k) {
           mod_t u = x[j + k], v = x[j + k + l];
           x[j + k] = u + v, x[j + k + l] = (u - v) * root;
         }
+        root *= idw_[bsr(++m)];
       }
     }
     mod_t iv(mod_t(n).inv());
@@ -91,7 +102,9 @@ public:
 
   static void odd_dft(int n, mod_t *x) {
     static constexpr mod_t IT(mod_t(2).inv());
-    for (int i = 0, j = 0; i != n; i += 2, ++j) x[j] = IT * irt[j] * (x[i] - x[i + 1]);
+    mod_t root(1);
+    for (int i = 0, j = 0; i != n; i += 2, ++j)
+      x[j] = IT * root * (x[i] - x[i + 1]), root *= idw_[bsr(~static_cast<std::uint64_t>(j))];
   }
 
   static void dft_doubling(int n, mod_t *x) {
@@ -104,7 +117,7 @@ public:
   }
 
 private:
-  static inline std::vector<mod_t> rt, irt;
+  static inline std::vector<mod_t> rt_, irt_, dw_, idw_;
 };
 
 std::uint32_t get_ntt_len(std::uint32_t n) {
@@ -126,7 +139,6 @@ std::uint32_t get_ntt_len(std::uint32_t n) {
  */
 template <typename mod_t>
 void dft(int n, mod_t *x) {
-  NTT<mod_t>::set_root(n);
   NTT<mod_t>::dft(n, x);
 }
 
@@ -139,19 +151,16 @@ void dft(int n, mod_t *x) {
  */
 template <typename mod_t>
 void idft(int n, mod_t *x) {
-  NTT<mod_t>::set_root(n);
   NTT<mod_t>::idft(n, x);
 }
 
 template <typename mod_t>
 void dft(std::vector<mod_t> &x) {
-  NTT<mod_t>::set_root(x.size());
   NTT<mod_t>::dft(x.size(), x.data());
 }
 
 template <typename mod_t>
 void idft(std::vector<mod_t> &x) {
-  NTT<mod_t>::set_root(x.size());
   NTT<mod_t>::idft(x.size(), x.data());
 }
 

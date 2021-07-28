@@ -177,3 +177,4 @@ $$
 - Min\_25 的[博客](https://min-25.hatenablog.com/entry/2015/04/07/160154)
 - WolframMathWorld. [Stirling Number of the First Kind](https://mathworld.wolfram.com/StirlingNumberoftheFirstKind.html)
 - WolframMathWorld. [Stirling Number of the Second Kind](https://mathworld.wolfram.com/StirlingNumberoftheSecondKind.html)
+- 高德纳等. 具体数学.

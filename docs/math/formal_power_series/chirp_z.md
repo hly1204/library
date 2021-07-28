@@ -48,4 +48,4 @@ $$
 \end{aligned}
 $$
 
-可以用一次多项式乘法完成。另外 $\forall i\geq 2$ 有 $c^{\binom{i+1}{2}}=c^{\binom{i}{2}}\cdot c^i$ 。
+可以用一次多项式乘法完成。另外 $\forall i\geq 0$ 有 $c^{\binom{i+1}{2}}=c^{\binom{i}{2}}\cdot c^i$ 。
