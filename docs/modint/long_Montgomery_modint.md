@@ -22,7 +22,7 @@
 
 在 MSVC 中则没有定义，我们可以在 <https://docs.microsoft.com/en-us/cpp/intrinsics/umulh?view=msvc-160> 找到 `__umulh(x, y)` 函数，返回两个 `__int64` 相乘的高位，在 <https://docs.microsoft.com/en-us/cpp/intrinsics/umul128?view=msvc-160> 找到 `_umul128(x, y, high)` 返回值为低位而 `high` 为一个指针，存入高位的结果。
 
-我没有尝试更精细的实现。
+我没有尝试更精细的实现。需要注意的是 MSVC 中这两个函数非 `constexpr` 函数所以暂时不使用。
 
 ## Montgomery reduction
 

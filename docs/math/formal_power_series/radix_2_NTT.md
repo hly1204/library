@@ -85,7 +85,7 @@ $$
 | $\zeta _ {32}=(\zeta _ {16}^7\cdot \zeta _ {32}^{19})$ | $8$ |
 | $\zeta _ {32}^9=(\zeta _ {32}\cdot \zeta_4)$ | $9$ |
 | $\zeta _ {32}^5=\zeta _ {32}\cdot \zeta_8=(\zeta _ {32}^9\cdot \zeta_8^7)$ | $10$ |
-| $\zeta _ {32}^{13}=\zeta _ {32}\cdot \zeta_8^3=(\zeta _ {32}^{11}\cdot \zeta_4)$ | $11$ |
+| $\zeta _ {32}^{13}=\zeta _ {32}\cdot \zeta_8^3=(\zeta _ {32}^5\cdot \zeta_4)$ | $11$ |
 
 考虑
 
