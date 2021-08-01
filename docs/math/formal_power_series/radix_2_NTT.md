@@ -29,18 +29,65 @@ $$
 输入 $f\bmod (x^{2m}-b^2)$ 计算 $f_Y=f\bmod (x^m-b)$ 和 $f_Z=f\bmod (x^m+b)$ 。令 $f\bmod (x^{2m}-b^2)=f_B+f_A\cdot x^m$ 其中 $f_B=(f\bmod{(x^{2m}-b^2)})\bmod{x^m}$ 那么
 
 $$
+\begin{aligned}
 \begin{bmatrix}
-f_Y\\f_Z
-\end{bmatrix}=
+f_Y\\
+f_Z
+\end{bmatrix}&=
 \begin{bmatrix}
-1&1\\-1&1
+b&1\\
+-b&1
 \end{bmatrix}
 \begin{bmatrix}
-b\cdot f_A\\f_B
+f_A\\
+f_B
+\end{bmatrix}\\
+&=
+\begin{bmatrix}
+1&1\\
+-1&1
 \end{bmatrix}
+\begin{bmatrix}
+b\cdot f_A\\
+f_B
+\end{bmatrix}
+\end{aligned}
 $$
 
 当 $2b$ 可逆时该算法可逆，所以一般应用于特征不为 $2$ 的域，而 radix-3 NTT 则适用于特征为 $2$ 的域（如 $\chi (\mathbb{F} _ {2^n})=2$ ）。
+
+该算法的逆运算可表示为
+
+$$
+\begin{bmatrix}
+f_A\\
+f_B
+\end{bmatrix}=
+\frac{1}{2}
+\begin{bmatrix}
+b^{-1}&-b^{-1}\\
+1&1
+\end{bmatrix}
+\begin{bmatrix}
+f_Y\\
+f_Z
+\end{bmatrix}
+$$
+
+且此处
+
+$$
+\begin{bmatrix}
+b&1\\
+-b&1
+\end{bmatrix}^{\mathrm{T}}=
+\begin{bmatrix}
+b&-b\\
+1&1
+\end{bmatrix}
+$$
+
+再将 $b$ 换成 $b^{-1}$ 就得到了逆运算的矩阵！
 
 ## 预处理单位根的手法
 
@@ -98,13 +145,13 @@ $$
 \end{cases}
 $$
 
-我们可以做到在线性时空预处理，但仍不够满意，令 $\operatorname{bsr}(i)$ 表示 bit scan reverse ，即二进制表示中末尾零的数量，考虑
+我们可以做到在线性时空预处理，但仍不够满意，令 $\operatorname{bsf}(i)$ 表示 bit scan forward ，即二进制表示中末尾零的数量，考虑
 
 $$
 \mathrm{ROOT} _ i=
 \begin{cases}
 1,&i=0,\\
-\mathrm{ROOT} _ {i-1}\cdot \mathrm{DW} _ {\operatorname{bsr}(i)},&i\gt 0.
+\mathrm{ROOT} _ {i-1}\cdot \mathrm{DW} _ {\operatorname{bsf}(i)},&i\gt 0.
 \end{cases}
 $$
 
@@ -117,9 +164,11 @@ $$
 | $\zeta _ {16}^{11}=\zeta _ {16}\cdot \zeta_4^{-1}\cdot \zeta_8^{-1}$ | $2$ |
 | $\zeta _ {32}^{19}=\zeta _ {32}\cdot \zeta_4^{-1}\cdot \zeta_8^{-1}\cdot \zeta _ {16}^{-1}$ | $3$ |
 | $\vdots$ | $\vdots$ |
-| $\zeta _ {2^{n+2}}\cdot \zeta_4^{-1}\cdot \zeta_8^{-1}\cdots \zeta _ {2^{n+1}}^{-1}$ | $n$ |
+| $\zeta _ {2^{k+2}}\cdot \zeta_4^{-1}\cdot \zeta_8^{-1}\cdots \zeta _ {2^{k+1}}^{-1}$ | $k$ |
 
-该方案使得单位根可在 $O(\log n)$ 空间预处理且在运算时进行计算，且由于 classical radix-2 NTT 算法在最内层循环中所用单位根为同一个，计算量较小，在使用 Montgomery 乘法时优于处理所有单位根并一一索引的方法。
+该方案使得单位根可在对数级别空间预处理且在运算时进行计算，且由于 classical radix-2 NTT 算法在最内层循环中所用单位根为同一个，计算量较小，在使用 Montgomery 乘法时优于处理所有单位根并一一索引的方法。
+
+我们假设使用 $998244353$ 来进行 $2^{23}$ 长的 NTT 计算，那么需要用 DW 数组去推出 $2^{22}$ 个单位根，而在到 $2^{22}$ 之前的任意一个非零下标的二进制末尾最多只有 $21$ 个零，所以 DW 数组中的 $k=21$ 。
 
 ## 参考文献
 

@@ -6,12 +6,12 @@
 
 Wiedemann 提出，对于黑盒矩阵 $\mathbf{A}\in\mathbb{F}^{n\times n}$ 和一个随机的向量 $\mathbf{v}\in\mathbb{F}^n$ 其 Krylov 序列 $\lbrace \mathbf{A}^i\mathbf{v} \rbrace _ {i=0}^\infty$ 的最小多项式 $f^{\mathbf{A},\mathbf{v}}$ 很大可能等于 $\mathbf{A}$ 的最小多项式 $f^{\mathbf{A}}$ ，而对于第二个随机向量 $\mathbf{u}$ 其 bilinear projection 序列 $\lbrace \mathbf{u}^{\mathrm{T}}\mathbf{A}^i\mathbf{v} \rbrace _ {i=0}^\infty$ 的最小多项式 $f^{\mathbf{A},\mathbf{v}} _ \mathbf{u}$ 很大可能等于 $f^{\mathbf{A},\mathbf{v}}$ 。而 $f^{\mathbf{A},\mathbf{v}} _ \mathbf{u}$ 我们可以借助 Berlekamp-Massey 算法来计算（只需翻转即能得到首一多项式，这是因为 LFSR （序列的关系多项式）与最小多项式定义不同）。
 
-我们考虑 LFSR 零化了该 bilinear projection 序列即找到 $c\in \mathbb{F}$ 满足
+我们考虑 LFSR 零化了该 bilinear projection 序列即找到一些系数 $c\in \mathbb{F}$ 满足
 
 $$
 \begin{aligned}
-c_0\mathbf{u}^{\mathrm{T}}\mathbf{Iv}+c_1\mathbf{u}^{\mathrm{T}}\mathbf{Av}+\cdots +c_k\mathbf{u}^{\mathrm{T}}\mathbf{A}^k\mathbf{v}&=\mathbf{0}\\
-\implies \mathbf{u}^{\mathrm{T}}(c_0\mathbf{I}+c_1\mathbf{A}+\cdots +c_k\mathbf{A}^k)\mathbf{v}&=\mathbf{0}
+c_0\mathbf{u}^{\mathrm{T}}\mathbf{Iv}+c_1\mathbf{u}^{\mathrm{T}}\mathbf{Av}+\cdots +c_k\mathbf{u}^{\mathrm{T}}\mathbf{A}^k\mathbf{v}&=0\\
+\implies \mathbf{u}^{\mathrm{T}}(c_0\mathbf{I}+c_1\mathbf{A}+\cdots +c_k\mathbf{A}^k)\mathbf{v}&=0
 \end{aligned}
 $$
 

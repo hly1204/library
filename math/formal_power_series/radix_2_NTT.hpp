@@ -32,22 +32,29 @@ public:
     return convert[n * deBruijn >> 58];
   }
 
-  static int bsr(std::uint64_t n) { return deBruijn_log2(n & ~(n - 1)); }
+  /**
+   * @brief 返回二进制中尾零的个数，若为零也会返回零
+   * @see https://docs.microsoft.com/en-us/cpp/intrinsics/bitscanforward-bitscanforward64
+   * @see https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html
+   * @param n
+   * @return int
+   */
+  static int bsf(std::uint64_t n) { return deBruijn_log2(n & ~(n - 1)); }
 
   static void set_root() {
     if (!dw_.empty()) return;
     static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());
     auto mod = modint_traits<mod_t>::get_mod();
-    int lv   = bsr(mod - 1);
+    int lv   = bsf(mod - 1);
     rt_.resize(lv - 1), irt_.resize(lv - 1), dw_.resize(lv - 1), idw_.resize(lv - 1);
     rt_.back() = g.pow(mod >> lv);
     for (int i = lv - 3; i >= 0; --i) rt_[i] = rt_[i + 1] * rt_[i + 1];
     mod_t v(1);
     irt_.back() = v / rt_.back();
     for (int i = lv - 3; i >= 0; --i) irt_[i] = irt_[i + 1] * irt_[i + 1];
-    for (int i = 0; i < lv - 2; ++i) dw_[i] = v * rt_[i], v *= irt_[i];
+    for (int i = 0; i < lv - 1; ++i) dw_[i] = v * rt_[i], v *= irt_[i];
     v = mod_t(1);
-    for (int i = 0; i < lv - 2; ++i) idw_[i] = v * irt_[i], v *= rt_[i];
+    for (int i = 0; i < lv - 1; ++i) idw_[i] = v * irt_[i], v *= rt_[i];
   }
 
   static void dft(int n, mod_t *x) {
@@ -63,11 +70,11 @@ public:
       }
       mod_t root(dw_[0]);
       for (int j = i, l = i >> 1, m = 1; j != n; j += i) {
-        for (int k = 0; k != l; ++k) {
-          mod_t u = x[j + k], v = x[j + k + l] * root;
-          x[j + k] = u + v, x[j + k + l] = u - v;
+        for (int k = j; k != j + l; ++k) {
+          mod_t u = x[k], v = x[k + l] * root;
+          x[k] = u + v, x[k + l] = u - v;
         }
-        root *= dw_[bsr(++m)];
+        root *= dw_[bsf(++m)];
       }
     }
   }
@@ -81,14 +88,14 @@ public:
       }
       mod_t root(idw_[0]);
       for (int j = i, l = i >> 1, m = 1; j != n; j += i) {
-        for (int k = 0; k != l; ++k) {
-          mod_t u = x[j + k], v = x[j + k + l];
-          x[j + k] = u + v, x[j + k + l] = (u - v) * root;
+        for (int k = j; k != j + l; ++k) {
+          mod_t u = x[k], v = x[k + l];
+          x[k] = u + v, x[k + l] = (u - v) * root;
         }
-        root *= idw_[bsr(++m)];
+        root *= idw_[bsf(++m)];
       }
     }
-    mod_t iv(mod_t(n).inv());
+    const mod_t iv(mod_t(n).inv());
     for (int j = 0, l = n >> 1; j != l; ++j) {
       mod_t u = x[j] * iv, v = x[j + l] * iv;
       x[j] = u + v, x[j + l] = u - v;
@@ -104,7 +111,7 @@ public:
     static constexpr mod_t IT(mod_t(2).inv());
     mod_t root(1);
     for (int i = 0, j = 0; i != n; i += 2, ++j)
-      x[j] = IT * root * (x[i] - x[i + 1]), root *= idw_[bsr(~static_cast<std::uint64_t>(j))];
+      x[j] = IT * root * (x[i] - x[i + 1]), root *= idw_[bsf(~static_cast<std::uint64_t>(j))];
   }
 
   static void dft_doubling(int n, mod_t *x) {
