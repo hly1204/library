@@ -30,7 +30,7 @@ namespace lib::internal {
  */
 template <typename mod_t, typename ConvolveCyclicFuncType>
 std::vector<mod_t> shift_sample_points_unsafe(int n, const std::vector<mod_t> &pts, mod_t m,
-                                              ConvolveCyclicFuncType f) {
+                                              ConvolveCyclicFuncType &&f) {
   if (n == 0) return {};
   int s = pts.size(), deg_A = s - 1;
   PrimeBinomial<mod_t> bi(s);
@@ -59,7 +59,7 @@ std::vector<mod_t> shift_sample_points_unsafe(int n, const std::vector<mod_t> &p
 
 template <typename mod_t, typename ConvolveCyclicFuncType>
 std::vector<mod_t> shift_sample_points_unsafe(const std::vector<mod_t> &pts, mod_t m,
-                                              ConvolveCyclicFuncType f) {
+                                              ConvolveCyclicFuncType &&f) {
   return shift_sample_points_unsafe(pts.size(), pts, m, f);
 }
 
@@ -69,12 +69,12 @@ namespace lib {
 
 template <typename mod_t, typename ConvolveCyclicFuncType>
 std::vector<mod_t> shift_sample_points(int n, const std::vector<mod_t> &pts, mod_t m,
-                                       ConvolveCyclicFuncType f) {
+                                       ConvolveCyclicFuncType &&f) {
   assert(n <= mod_t::get_mod());
   assert(pts.size() <= mod_t::get_mod());
   if (n == 0) return {};
   using u64 = std::uint64_t;
-  u64 m_64 = u64(m), k = pts.size(), nm1 = u64(m + mod_t(n - 1));
+  u64 m_64 = static_cast<u64>(m), k = pts.size(), nm1 = static_cast<u64>(m + mod_t(n - 1));
   if (m_64 < k) {        // f(0), …, f(m), …, f(k-1)
     if (m_64 + n <= k) { // f(0), …, f(m), …, f(n+m-1), …, f(k-1)
       return std::vector<mod_t>(pts.begin() + m_64, pts.begin() + m_64 + n);
@@ -101,15 +101,15 @@ std::vector<mod_t> shift_sample_points(int n, const std::vector<mod_t> &pts, mod
     } else if (nm1 < k) { // f(0), …, f(n+m-1), …, f(k-1), …, f(m), …, f(mod-1)
       std::vector<mod_t> res;
       res.reserve(n);
-      std::copy_n(internal::shift_sample_points_unsafe(int(-m), pts, m, f).begin(), int(-m),
-                  std::back_inserter(res));
+      std::copy_n(internal::shift_sample_points_unsafe(static_cast<int>(-m), pts, m, f).begin(),
+                  static_cast<int>(-m), std::back_inserter(res));
       std::copy_n(pts.begin(), nm1 + 1, std::back_inserter(res));
       return res;
     } else { // f(0), …, f(k-1), …, f(n+m-1), …, f(m), …, f(mod-1)
       std::vector<mod_t> res;
       res.reserve(n);
-      std::copy_n(internal::shift_sample_points_unsafe(int(-m), pts, m, f).begin(), int(-m),
-                  std::back_inserter(res));
+      std::copy_n(internal::shift_sample_points_unsafe(static_cast<int>(-m), pts, m, f).begin(),
+                  static_cast<int>(-m), std::back_inserter(res));
       std::copy_n(pts.begin(), k, std::back_inserter(res));
       std::copy_n(internal::shift_sample_points_unsafe(nm1 - k + 1, pts, mod_t(k), f).begin(),
                   nm1 - k + 1, std::back_inserter(res));
@@ -120,7 +120,7 @@ std::vector<mod_t> shift_sample_points(int n, const std::vector<mod_t> &pts, mod
 
 template <typename mod_t, typename ConvolveCyclicFuncType>
 std::vector<mod_t> shift_sample_points(const std::vector<mod_t> &pts, mod_t m,
-                                       ConvolveCyclicFuncType f) {
+                                       ConvolveCyclicFuncType &&f) {
   return shift_sample_points(pts.size(), pts, m, f);
 }
 

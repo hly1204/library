@@ -31,7 +31,7 @@ public:
   using u64 = std::uint64_t;
 
   template <typename ConvolveCyclicFuncType>
-  FactorialModPrime(ConvolveCyclicFuncType conv)
+  FactorialModPrime(ConvolveCyclicFuncType &&conv)
       : v_(static_cast<u64>(std::sqrt(modint_traits<mod_t>::get_mod()))) {
     const mod_t ONE(1);
     mod_t mv = mod_t(v_), iv = ONE / mv;
