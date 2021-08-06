@@ -26,12 +26,11 @@ void Stirling1st_row(int n, PolyType &res) {
   }
   int mask = 1 << 30;
   while ((mask & n) == 0) mask >>= 1;
-  mask >>= 1;
   res = PolyType{mod_t(0), mod_t(1)};
-  for (int d = 1; d != n; mask >>= 1) {
+  for (int d = 1; d != n;) {
     res *= res.shift(mod_t(d));
     d <<= 1;
-    if (mask & n) res *= PolyType{mod_t(d), mod_t(1)}, d |= 1;
+    if ((mask >>= 1) & n) res *= PolyType{mod_t(d), mod_t(1)}, d |= 1;
   }
 }
 

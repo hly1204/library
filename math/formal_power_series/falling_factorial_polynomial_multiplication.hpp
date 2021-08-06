@@ -24,7 +24,7 @@ namespace lib {
  * @return std::vector<mod_t> 下降幂多项式系数
  */
 template <typename mod_t, typename ConvolveFuncType>
-std::vector<mod_t> sample_points_to_FFP(const std::vector<mod_t> &pts, ConvolveFuncType f) {
+std::vector<mod_t> sample_points_to_FFP(const std::vector<mod_t> &pts, ConvolveFuncType &&f) {
   int n = pts.size();
   assert(n <= mod_t::get_mod());
   PrimeBinomial<mod_t> bi(n);
@@ -49,7 +49,8 @@ std::vector<mod_t> sample_points_to_FFP(const std::vector<mod_t> &pts, ConvolveF
  * @return std::vector<mod_t> f(0), f(1), …, f(n-1)
  */
 template <typename mod_t, typename ConvolveFuncType>
-std::vector<mod_t> FFP_to_sample_points(int n, const std::vector<mod_t> &ffp, ConvolveFuncType f) {
+std::vector<mod_t> FFP_to_sample_points(int n, const std::vector<mod_t> &ffp,
+                                        ConvolveFuncType &&f) {
   assert(ffp.size() <= mod_t::get_mod());
   PrimeBinomial<mod_t> bi(n);
   std::vector<mod_t> ex(n);
@@ -67,7 +68,7 @@ std::vector<mod_t> FFP_to_sample_points(int n, const std::vector<mod_t> &ffp, Co
  */
 template <typename mod_t, typename ConvolveFuncType>
 std::vector<mod_t> convolve_FFP(const std::vector<mod_t> &lhs, const std::vector<mod_t> &rhs,
-                                ConvolveFuncType f) {
+                                ConvolveFuncType &&f) {
   int d = lhs.size() + rhs.size() - 1;
   std::vector<mod_t> lhs_pts(FFP_to_sample_points(d, lhs, f)),
       rhs_pts(FFP_to_sample_points(d, rhs, f));
@@ -79,7 +80,7 @@ std::vector<mod_t> convolve_FFP(const std::vector<mod_t> &lhs, const std::vector
  * @brief 下降幂多项式平移
  */
 template <typename mod_t, typename ConvolveFuncType>
-std::vector<mod_t> shift_FFP(const std::vector<mod_t> &ffp, mod_t c, ConvolveFuncType f) {
+std::vector<mod_t> shift_FFP(const std::vector<mod_t> &ffp, mod_t c, ConvolveFuncType &&f) {
   assert(ffp.size() <= mod_t::get_mod());
   int n = ffp.size();
   PrimeBinomial<mod_t> bi(n);

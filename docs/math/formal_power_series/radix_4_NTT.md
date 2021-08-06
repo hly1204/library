@@ -11,7 +11,7 @@ $$
 \end{aligned}
 $$
 
-令 $f^{\circ}=f\bmod (x^{4m}-b^4)$ 计算 $f_W=f\bmod (x^m-b),f_X=f\bmod (x^m+b),f_Y=f\bmod (x-\mathrm{i}b),f_Z=f\bmod (x^m+\mathrm{i}b)$ 而将 $f^{\circ}$ 分为了四块多项式为 $f^{\circ}=f_A\cdot x^{3m}+f_B\cdot x^{2m}+f_C\cdot x^m+f_D$ 那么
+令 $f^{\circ}=f\bmod (x^{4m}-b^4)$ 计算 $f_W=f\bmod (x^m-b),f_X=f\bmod (x^m+b),f_Y=f\bmod (x^m-\mathrm{i}b),f_Z=f\bmod (x^m+\mathrm{i}b)$ 而将 $f^{\circ}$ 分为了四块多项式为 $f^{\circ}=f_A\cdot x^{3m}+f_B\cdot x^{2m}+f_C\cdot x^m+f_D$ 那么
 
 $$
 \begin{aligned}
