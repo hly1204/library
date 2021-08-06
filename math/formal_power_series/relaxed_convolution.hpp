@@ -16,7 +16,7 @@ namespace lib {
  * @brief 在线卷积
  * @ref J. van der Hoeven. Relax, but don't be too lazy. JSC, 34:479–542, 2002.
  * @tparam mod_t
- * @note 时间为 O(nlog n)
+ * @note 时间为 O(nlog^2 n) 且常数很大
  */
 template <typename mod_t, typename ConvFuncType>
 class RelaxedConvolution {
