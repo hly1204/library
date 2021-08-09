@@ -26,15 +26,16 @@ public:
       : m00(m00), m01(m01), m10(m10), m11(m11) {}
   ~PolyGCDMat()                  = default;
   PolyGCDMat(const PolyGCDMat &) = default;
+  PolyGCDMat &operator=(const PolyGCDMat &) = default;
   bool is_identity_matrix() const {
     return m01.deg() == -1 && m10.deg() == -1 && m00.deg() == 0 && m00[0] == 1 && m11.deg() == 0 &&
            m11[0] == 1;
   }
-  PolyGCDMat operator*=(const PolyGCDMat &rhs) {
-    if (is_identity_matrix()) return rhs;
+  PolyGCDMat &operator*=(const PolyGCDMat &rhs) {
+    if (is_identity_matrix()) return operator=(rhs);
     if (rhs.is_identity_matrix()) return *this;
-    return PolyGCDMat(m00 * rhs.m00 + m01 * rhs.m10, m00 * rhs.m01 + m01 * rhs.m11,
-                      m10 * rhs.m00 + m11 * rhs.m10, m10 * rhs.m01 + m11 * rhs.m11);
+    return operator=(PolyGCDMat(m00 * rhs.m00 + m01 * rhs.m10, m00 * rhs.m01 + m01 * rhs.m11,
+                                m10 * rhs.m00 + m11 * rhs.m10, m10 * rhs.m01 + m11 * rhs.m11));
   }
   PolyGCDMat operator*(const PolyGCDMat &rhs) const { return PolyGCDMat(*this) *= rhs; }
   std::pair<PolyType, PolyType> operator*(const std::pair<PolyType, PolyType> &rhs) const {
