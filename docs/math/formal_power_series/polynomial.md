@@ -31,13 +31,13 @@ $$
 另一种方法考虑 $A(x)$ 在 $c$ 处应用泰勒公式，有
 
 $$
-A(x)=A(c)+\frac{A'(c)}{1!}(x-c)+\frac{A''(c)}{2!}(x-c)^{2}+\cdots +\frac{A^{(n)}(c)}{1!}(x-c)^{n}
+A(x)=A(c)+\frac{A'(c)}{1!}(x-c)+\frac{A''(c)}{2!}(x-c)^{2}+\cdots +\frac{A^{(n)}(c)}{n!}(x-c)^{n}
 $$
 
 那么 $A(x+c)$ 是
 
 $$
-A(x+c)=A(c)+\frac{A'(c)}{1!}x+\frac{A''(c)}{2!}x^{2}+\cdots +\frac{A^{(n)}(c)}{1!}x^{n}
+A(x+c)=A(c)+\frac{A'(c)}{1!}x+\frac{A''(c)}{2!}x^{2}+\cdots +\frac{A^{(n)}(c)}{n!}x^{n}
 $$
 
 观察发现

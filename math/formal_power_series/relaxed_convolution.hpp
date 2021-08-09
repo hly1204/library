@@ -7,7 +7,6 @@
  */
 
 #include <algorithm>
-#include <iterator>
 #include <vector>
 
 namespace lib {
@@ -26,10 +25,10 @@ public:
   ~RelaxedConvolution() = default;
 
   mod_t next() {
-    // enlarge prod
+    // enlarge contribution
     int sz = 1;
     while (sz <= (n_ << 1)) sz <<= 1;
-    if (prod_.size() < sz) prod_.resize(sz, mod_t(0));
+    if (contribution_.size() < sz) contribution_.resize(sz, mod_t(0));
     // accumulate
     int k = (n_ + 2) << 1, p = -1;
     while ((k & 1) == 0) {
@@ -40,20 +39,20 @@ public:
       for (int offset = (k << p) - 2, i = offset,
                ie = std::min(((k + 2) << p) - 3, static_cast<int>(t0.size()) + offset);
            i < ie; ++i)
-        prod_[i] += t0[i - offset];
-      if (k == 2) return prod_[n_++];
+        contribution_[i] += t0[i - offset];
+      if (k == 2) return contribution_[n_++];
       auto t1 = conv_(cut(B_, a0, b0), cut(A_, a1, b1));
       for (int offset = (k << p) - 2, i = offset,
                ie = std::min(((k + 2) << p) - 3, static_cast<int>(t1.size()) + offset);
            i < ie; ++i)
-        prod_[i] += t1[i - offset];
+        contribution_[i] += t1[i - offset];
     }
-    return prod_[n_++];
+    return contribution_[n_++];
   }
 
 private:
   const std::vector<mod_t> &A_, &B_;
-  std::vector<mod_t> prod_;
+  std::vector<mod_t> contribution_;
   int n_;
   ConvFuncType &&conv_;
 
