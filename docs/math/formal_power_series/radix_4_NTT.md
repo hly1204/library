@@ -4,10 +4,10 @@
 
 $$
 \begin{aligned}
-\mathbb{F} _ p\lbrack x\rbrack /(x^{4m}-b^4)&\to \mathbb{F} _ p\lbrack x\rbrack /(x^m-b)\\
-&\times \mathbb{F} _ p\lbrack x\rbrack /(x^m+b)\\
-&\times \mathbb{F} _ p\lbrack x\rbrack /(x^m-\mathrm{i}b)\\
-&\times \mathbb{F} _ p\lbrack x\rbrack /(x^m+\mathrm{i}b)
+\mathbb{F} _ p\lbrack x\rbrack /(x^{4m}-b^4)&\to &{}\mathbb{F} _ p\lbrack x\rbrack /(x^m-b)\\
+&\times &{}\mathbb{F} _ p\lbrack x\rbrack /(x^m+b)\\
+&\times &{}\mathbb{F} _ p\lbrack x\rbrack /(x^m-\mathrm{i}b)\\
+&\times &{}\mathbb{F} _ p\lbrack x\rbrack /(x^m+\mathrm{i}b)
 \end{aligned}
 $$
 

@@ -21,8 +21,8 @@ NTT 模数是容易得到的，假设我们需要处理 $2^{23}$ 长的 NTT ，�
 
 $$
 \begin{aligned}
-\mathbb{F} _ p\lbrack x\rbrack /(x^{2m}-b^2)&\to \mathbb{F} _ p\lbrack x\rbrack /(x^m-b)\\
-&\times \mathbb{F} _ p\lbrack x\rbrack /(x^m+b)
+\mathbb{F} _ p\lbrack x\rbrack /(x^{2m}-b^2)&\to &{}\mathbb{F} _ p\lbrack x\rbrack /(x^m-b)\\
+&\times &{}\mathbb{F} _ p\lbrack x\rbrack /(x^m+b)
 \end{aligned}
 $$
 

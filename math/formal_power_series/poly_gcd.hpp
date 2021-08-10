@@ -31,13 +31,12 @@ public:
     return m01.deg() == -1 && m10.deg() == -1 && m00.deg() == 0 && m00[0] == 1 && m11.deg() == 0 &&
            m11[0] == 1;
   }
-  PolyGCDMat &operator*=(const PolyGCDMat &rhs) {
-    if (is_identity_matrix()) return operator=(rhs);
+  PolyGCDMat operator*(const PolyGCDMat &rhs) const {
+    if (is_identity_matrix()) return rhs;
     if (rhs.is_identity_matrix()) return *this;
-    return operator=(PolyGCDMat(m00 * rhs.m00 + m01 * rhs.m10, m00 * rhs.m01 + m01 * rhs.m11,
-                                m10 * rhs.m00 + m11 * rhs.m10, m10 * rhs.m01 + m11 * rhs.m11));
+    return PolyGCDMat(m00 * rhs.m00 + m01 * rhs.m10, m00 * rhs.m01 + m01 * rhs.m11,
+                      m10 * rhs.m00 + m11 * rhs.m10, m10 * rhs.m01 + m11 * rhs.m11);
   }
-  PolyGCDMat operator*(const PolyGCDMat &rhs) const { return PolyGCDMat(*this) *= rhs; }
   std::pair<PolyType, PolyType> operator*(const std::pair<PolyType, PolyType> &rhs) const {
     if (is_identity_matrix()) return rhs;
     return std::make_pair(m00 * rhs.first + m01 * rhs.second, m10 * rhs.first + m11 * rhs.second);
@@ -75,7 +74,7 @@ PolyGCDMat<PolyType> cogcd(const PolyType &A, const PolyType &B) {
 template <typename PolyType>
 std::optional<PolyType> poly_inv(const PolyType &A, const PolyType &mod) {
   auto A_mod     = A % mod;
-  auto M         = cogcd(mod, A_mod);
+  auto M         = cogcd<PolyType>(mod, A_mod);
   auto gcd_A_mod = M.m00 * mod + M.m01 * A_mod;
   if (gcd_A_mod.deg() != 0) return {};
   auto t = gcd_A_mod[0].inv();
