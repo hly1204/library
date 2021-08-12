@@ -222,7 +222,10 @@ public:
     rhs_cpy.resize(len >> 1);
     idft(len >> 1, cpy.data());
     idft(len >> 1, rhs_cpy.data());
-    return cpy.div(k + 1, rhs_cpy).back();
+    fps irhs_cpy(rhs_cpy.inv(k + 1));
+    mod_t sum(0);
+    for (int i = 0; i <= k; ++i) sum += irhs_cpy[i] * cpy[k - i];
+    return sum;
   }
 
   fps log(int n) const {
