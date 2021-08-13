@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cassert>
 #include <numeric>
+#include <optional>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -307,8 +308,58 @@ public:
     return res;
   }
 
-  // TODO
-  fps sqrt(int n, mod_t c) const;
+  fps sqrt_unsafe(int n, mod_t c = mod_t(1)) const { // 11E
+    assert(n > 0);
+    const mod_t ZERO(0), miv2(mod_t(-2).inv());
+    assert(c != ZERO);
+    assert(this->operator[](0) == c * c);
+    if (n == 1) return {c};
+    int len = get_ntt_len(n);
+    fps work_tmp1(len, ZERO), work_tmp2(len), work_tmp3(len), work_tmp4(len), cpy(slice(len)),
+        res(len, ZERO);
+    res[0]       = c;
+    work_tmp1[0] = c.inv();
+    work_tmp2[0] = c;
+    for (int i = 2; i <= len; i <<= 1) {
+      for (int j = 0; j != i >> 1; ++j) work_tmp3[j] = work_tmp2[j] * work_tmp2[j];
+      idft(i >> 1, work_tmp3.data()); // 1E
+      for (int j = 0; j != (i >> 1) - 1; ++j)
+        work_tmp3[j + (i >> 1)] = work_tmp3[j] - cpy[j] - cpy[j + (i >> 1)], work_tmp3[j] = ZERO;
+      work_tmp3[(i >> 1) - 1] -= cpy[(i >> 1) - 1], work_tmp3[i - 1] -= cpy[i - 1];
+      std::copy_n(work_tmp1.begin(), i, work_tmp4.begin());
+      dft(i, work_tmp4.data()), dft(i, work_tmp3.data()); // 4E
+      for (int j = 0; j != i; ++j) work_tmp3[j] *= work_tmp4[j];
+      idft(i, work_tmp3.data()); // 2E
+      for (int j = i >> 1; j != i; ++j) res[j] = work_tmp3[j] * miv2;
+      if (i != len) { // 8E 最后一次迭代节省 4E
+        std::copy_n(res.begin(), i, work_tmp2.begin());
+        dft(i, work_tmp2.data());
+        for (int j = 0; j != i; ++j) work_tmp3[j] = work_tmp2[j] * work_tmp4[j];
+        idft(i, work_tmp3.data());
+        std::fill_n(work_tmp3.begin(), i >> 1, ZERO);
+        dft(i, work_tmp3.data());
+        for (int j = 0; j != i; ++j) work_tmp3[j] *= work_tmp4[j];
+        idft(i, work_tmp3.data());
+        for (int j = i >> 1; j != i; ++j) work_tmp1[j] = -work_tmp3[j];
+      }
+    }
+    res.resize(n);
+    return res;
+  }
+
+  std::optional<fps> sqrt(int n, mod_t c = mod_t(1)) const {
+    const mod_t ZERO(0);
+    int ord = 0;
+    while (ord < n && this->operator[](ord) == ZERO) ++ord;
+    if (ord == n) return fps(n, 0);
+    if ((ord & 1) || c * c != this->operator[](ord)) return {};
+    fps res;
+    res.reserve(n);
+    res.resize(ord >> 1, mod_t(0));
+    auto tail = fps(this->begin() + ord, this->end()).sqrt_unsafe(n - (ord >> 1), c);
+    for (auto i : tail) res.emplace_back(i);
+    return res;
+  }
 
   friend fps operator+(const fps &lhs, const fps &rhs) { return fps(lhs) += rhs; }
   friend fps operator-(const fps &lhs, const fps &rhs) { return fps(lhs) -= rhs; }
