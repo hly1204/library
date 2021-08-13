@@ -15,5 +15,15 @@
 "remote_test/yosupo/math/binomial_coefficient_mod.0.test.cpp": "2021-08-13 13:47:59 +0800",
 "remote_test/yosupo/math/convolution_mod.0.test.cpp": "2021-08-13 13:47:59 +0800",
 "remote_test/yosupo/math/convolution_mod.1.test.cpp": "2021-08-13 13:47:59 +0800",
-"remote_test/yosupo/math/convolution_mod.2.test.cpp": "2021-08-13 13:47:59 +0800"
+"remote_test/yosupo/math/convolution_mod.2.test.cpp": "2021-08-13 13:47:59 +0800",
+"remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp": "2021-08-13 13:47:59 +0800",
+"remote_test/yosupo/math/convolution_mod_1000000007.1.test.cpp": "2021-08-13 13:47:59 +0800",
+"remote_test/yosupo/math/division_of_polynomials.0.test.cpp": "2021-08-13 13:47:59 +0800",
+"remote_test/yosupo/math/exp_of_formal_power_series.0.test.cpp": "2021-08-13 13:47:59 +0800",
+"remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp": "2021-08-13 13:47:59 +0800",
+"remote_test/yosupo/math/factorize.0.test.cpp": "2021-08-13 13:47:59 +0800",
+"remote_test/yosupo/math/find_linear_recurrence.0.test.cpp": "2021-08-13 13:47:59 +0800",
+"remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp": "2021-08-13 13:47:59 +0800",
+"remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp": "2021-08-13 13:47:59 +0800",
+"remote_test/yosupo/math/inv_of_polynomials.0.test.cpp": "2021-08-13 13:47:59 +0800"
 }
