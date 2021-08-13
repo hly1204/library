@@ -2,7 +2,7 @@
 #define SINGLE_SOURCE_SHORTEST_PATH_BELLMAN_FORD_HEADER_HPP
 
 /**
- * @brief single source shortest path Bellman-Ford / 单源最短路 Bellman-Ford 算法
+ * @brief single source shortest path Bellman-Ford
  *
  */
 

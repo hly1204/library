@@ -2,7 +2,7 @@
 #define MONTGOMERY_MODINT_HEADER_HPP
 
 /**
- * @brief Montgomery modint / Montgomery 取模类
+ * @brief Montgomery modint
  * @docs docs/modint/Montgomery_modint.md
  */
 

@@ -2,7 +2,7 @@
 #define STRONGLY_CONNECTED_COMPONENTS_TARJAN_HEADER_HPP
 
 /**
- * @brief strongly connected components Tarjan / 强连通分量 Tarjan 算法
+ * @brief strongly connected components Tarjan
  *
  */
 

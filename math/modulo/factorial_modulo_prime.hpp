@@ -2,7 +2,7 @@
 #define FACTORIAL_MODULO_PRIME_HEADER_HPP
 
 /**
- * @brief factorial modulo prime / 阶乘模素数
+ * @brief factorial modulo prime
  * @docs docs/math/modulo/factorial_modulo_prime.md
  */
 

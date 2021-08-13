@@ -2,7 +2,7 @@
 #define RUNTIME_MONTGOMERY_MODINT_HEADER_HPP
 
 /**
- * @brief runtime Montgomery modint / 运行时 Montgomery 取模类
+ * @brief runtime Montgomery modint
  *
  */
 

@@ -2,7 +2,7 @@
 #define FORMAL_POWER_SERIES_HEADER_HPP
 
 /**
- * @brief basic operations of formal power series / 形式幂级数的基本操作
+ * @brief basic operations of formal power series
  * @docs docs/math/formal_power_series/formal_power_series.md
  */
 

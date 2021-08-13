@@ -2,7 +2,7 @@
 #define ARBITRARY_CONVOLUTION_HEADER_HPP
 
 /**
- * @brief arbitrary modulo convolution / 任意模数卷积
+ * @brief arbitrary modulo convolution
  *
  */
 

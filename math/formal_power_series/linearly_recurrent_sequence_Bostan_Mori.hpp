@@ -2,7 +2,7 @@
 #define LINEARLY_RECURRENT_SEQUENCE_BOSTAN_MORI_HEADER_HPP
 
 /**
- * @brief linearly recurrent sequence Bostan-Mori / 常系数线性递推序列 Bostan-Mori 算法
+ * @brief linearly recurrent sequence Bostan-Mori
  *
  */
 

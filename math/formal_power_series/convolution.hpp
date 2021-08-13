@@ -2,7 +2,7 @@
 #define CONVOLUTION_HEADER_HPP
 
 /**
- * @brief convolution / 卷积
+ * @brief convolution
  *
  */
 

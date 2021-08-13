@@ -2,7 +2,7 @@
 #define PARTITION_FUNCTION_P_HEADER_HPP
 
 /**
- * @brief partition function P / 分拆数 P
+ * @brief partition function P
  *
  */
 

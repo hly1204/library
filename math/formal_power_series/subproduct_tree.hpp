@@ -2,7 +2,7 @@
 #define SUBPRODUCT_TREE_HEADER_HPP
 
 /**
- * @brief multi-point evaluation & interpolation / 多点求值和插值
+ * @brief multi-point evaluation & interpolation
  * @docs docs/math/formal_power_series/subproduct_tree.md
  */
 

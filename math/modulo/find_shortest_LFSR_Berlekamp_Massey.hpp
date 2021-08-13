@@ -2,7 +2,7 @@
 #define FIND_SHORTEST_LFSR_BERLEKAMP_MASSEY_HEADER_HPP
 
 /**
- * @brief find shortest LFSR Berlekamp-Massey / 寻找最短线性递推 Berlekamp-Massey 算法
+ * @brief find shortest LFSR Berlekamp-Massey
  * @docs docs/math/modulo/find_shortest_LFSR_Berlekamp_Massey.md
  */
 

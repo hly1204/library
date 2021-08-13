@@ -2,7 +2,7 @@
 #define CHINESE_REMAINDER_THEOREM_HEADER_HPP
 
 /**
- * @brief Chinese remainder theorem / 中国剩余定理
+ * @brief Chinese remainder theorem
  * @docs docs/math/basic/crt.md
  */
 

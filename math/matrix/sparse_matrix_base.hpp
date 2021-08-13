@@ -2,7 +2,7 @@
 #define SPARSE_MATRIX_BASE_HEADER_HPP
 
 /**
- * @brief sparse matrix base / 稀疏矩阵基类
+ * @brief sparse matrix base
  *
  */
 

@@ -2,7 +2,7 @@
 #define POLYNOMIAL_HEADER_HPP
 
 /**
- * @brief polynomial / 多项式
+ * @brief polynomial
  * @docs docs/math/formal_power_series/polynomial.md
  */
 

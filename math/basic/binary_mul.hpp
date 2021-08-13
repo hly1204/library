@@ -2,7 +2,7 @@
 #define BINARY_MUL_HEADER_HPP
 
 /**
- * @brief binary multiplication / 快速乘
+ * @brief binary multiplication
  *
  */
 

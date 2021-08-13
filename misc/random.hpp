@@ -2,7 +2,7 @@
 #define RANDOM_XOSHIRO256STARSTAR_HEADER_HPP
 
 /**
- * @brief pseudo random generator / 伪随机数生成器
+ * @brief pseudo random generator
  *
  */
 

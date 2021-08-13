@@ -2,7 +2,7 @@
 #define ROLLBACKABLE_DISJOINT_SET_HEADER_HPP
 
 /**
- * @brief rollbackable disjoint set / 回滚并查集
+ * @brief rollbackable disjoint set
  *
  */
 

@@ -2,7 +2,7 @@
 #define TYPE_TRAITS_HEADER_HPP
 
 /**
- * @brief type traits / 类型萃取
+ * @brief type traits
  *
  */
 

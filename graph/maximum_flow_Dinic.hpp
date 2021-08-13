@@ -2,7 +2,7 @@
 #define MAXIMUM_FLOW_DINIC_HEADER_HPP
 
 /**
- * @brief maximum flow Dinic / 最大流 Dinic 算法
+ * @brief maximum flow Dinic
  *
  */
 

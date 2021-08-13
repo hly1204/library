@@ -2,7 +2,7 @@
 #define CHARACTERISTIC_POLYNOMIAL_HEADER_HPP
 
 /**
- * @brief characteristic polynomial / 特征多项式
+ * @brief characteristic polynomial
  *
  */
 

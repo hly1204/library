@@ -2,7 +2,7 @@
 #define EXTENDED_EUCLIDEAN_HEADER_HPP
 
 /**
- * @brief extended Euclidean algorithm / 扩展欧几里得算法
+ * @brief extended Euclidean algorithm
  *
  */
 

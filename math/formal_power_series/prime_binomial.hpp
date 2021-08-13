@@ -2,7 +2,7 @@
 #define PRIME_BINOMIAL_HEADER_HPP
 
 /**
- * @brief prime binomial / 素数用二项式系数
+ * @brief prime binomial
  *
  */
 

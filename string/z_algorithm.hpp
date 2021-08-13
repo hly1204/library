@@ -2,7 +2,7 @@
 #define Z_ALGORITHM_HEADER_HPP
 
 /**
- * @brief Z algorithm / Z 算法
+ * @brief Z algorithm
  *
  */
 

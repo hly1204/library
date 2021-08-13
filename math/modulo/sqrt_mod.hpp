@@ -2,7 +2,7 @@
 #define SQRT_MOD_HEADER_HPP
 
 /**
- * @brief square root mod / 模意义下平方根
+ * @brief square root mod
  * @docs docs/math/modulo/sqrt_mod.md
  */
 

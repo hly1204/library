@@ -2,7 +2,7 @@
 #define BURROWS_WHEELER_TRANSFORMATION_HEADER_HPP
 
 /**
- * @brief Burrows-Wheeler trasformation / Burrows-Wheeler 变换
+ * @brief Burrows-Wheeler trasformation
  * @docs docs/string/bwt.md
  */
 

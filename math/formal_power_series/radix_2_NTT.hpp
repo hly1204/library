@@ -2,7 +2,7 @@
 #define RADIX_2_NTT_HEADER_HPP
 
 /**
- * @brief radix-2 NTT / 基-2 数论变换
+ * @brief radix-2 NTT
  * @docs docs/math/formal_power_series/radix_2_NTT.md
  */
 

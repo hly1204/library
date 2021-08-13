@@ -2,7 +2,7 @@
 #define MATRIX_BASE_HEADER_HPP
 
 /**
- * @brief matrix base / 矩阵基类
+ * @brief matrix base
  *
  */
 

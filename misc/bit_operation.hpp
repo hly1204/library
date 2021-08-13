@@ -2,7 +2,7 @@
 #define BIT_OPERATION_HEADER_HPP
 
 /**
- * @brief bit operations / 位运算
+ * @brief bit operations
  *
  */
 

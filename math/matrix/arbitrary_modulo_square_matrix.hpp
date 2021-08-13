@@ -2,7 +2,7 @@
 #define ARBITRARY_MODULO_SQUARE_MATRIX_HEADER_HPP
 
 /**
- * @brief arbitrary modulo square matrix / 任意模数方阵
+ * @brief arbitrary modulo square matrix
  * @docs docs/math/matrix/arbitrary_modulo_square_matrix.md
  */
 

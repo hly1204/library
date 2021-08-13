@@ -2,7 +2,7 @@
 #define RUNTIME_MODINT_HEADER_HPP
 
 /**
- * @brief runtime modint / 运行时取模类
+ * @brief runtime modint
  *
  */
 

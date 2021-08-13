@@ -2,7 +2,7 @@
 #define POLYNOMIAL_GCD_HEADER_HPP
 
 /**
- * @brief polynomial Euclidean algorithm / 多项式欧几里得算法
+ * @brief polynomial Euclidean algorithm
  * @docs docs/math/formal_power_series/poly_gcd.md
  */
 

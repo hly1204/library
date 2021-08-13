@@ -2,7 +2,7 @@
 #define DEBRUIJN_HEADER_HPP
 
 /**
- * @brief de Bruijn sequence / de Bruijn 序列
+ * @brief de Bruijn sequence
  *
  */
 

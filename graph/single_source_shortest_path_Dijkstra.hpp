@@ -2,7 +2,7 @@
 #define SINGLE_SOURCE_SHORTEST_PATH_DIJKSTRA_HEADER_HPP
 
 /**
- * @brief single source shortest path Dijkstra / 单源最短路 Dijkstra 算法
+ * @brief single source shortest path Dijkstra
  *
  */
 

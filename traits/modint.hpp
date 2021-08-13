@@ -2,7 +2,7 @@
 #define MODINT_TRAITS_HEADER_HPP
 
 /**
- * @brief modint traits / 取模类萃取
+ * @brief modint traits
  *
  */
 

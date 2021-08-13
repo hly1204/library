@@ -2,7 +2,7 @@
 #define SAMPLE_POINTS_SHIFT_HEADER_HPP
 
 /**
- * @brief sample points shift / 样本点平移
+ * @brief sample points shift
  * @docs docs/math/formal_power_series/sample_points_shift.md
  */
 

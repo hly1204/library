@@ -2,7 +2,7 @@
 #define FALLING_FACTORIAL_POLYNOMIAL_MULTIPLICATION_HEADER_HPP
 
 /**
- * @brief falling factorial polynomial multiplication / 下降幂多项式乘法
+ * @brief falling factorial polynomial multiplication
  * @docs docs/math/formal_power_series/falling_factorial_polynomial_multiplication.md
  */
 

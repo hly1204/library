@@ -2,7 +2,7 @@
 #define LINEAR_SIEVE_HEADER_HPP
 
 /**
- * @brief linear sieve / 线性筛法
+ * @brief linear sieve
  *
  */
 

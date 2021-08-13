@@ -2,7 +2,7 @@
 #define INTEGER_FACTORIZATION_POLLARD_RHO_HEADER_HPP
 
 /**
- * @brief integer factorization Pollard's rho / 整数分解 Pollard 的 rho 算法
+ * @brief integer factorization Pollard's rho
  *
  */
 

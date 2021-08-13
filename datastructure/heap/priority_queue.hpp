@@ -2,7 +2,7 @@
 #define PRIORITY_QUEUE_HEADER_HPP
 
 /**
- * @brief priority queue / 优先队列
+ * @brief priority queue
  *
  */
 

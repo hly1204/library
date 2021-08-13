@@ -2,7 +2,7 @@
 #define NTT_CRT_HEADER_HPP
 
 /**
- * @brief NTT prime crt / NTT 素数用中国剩余定理
+ * @brief NTT prime crt
  *
  */
 

@@ -2,7 +2,7 @@
 #define SPARSE_TABLE_HEADER_HPP
 
 /**
- * @brief sparse table / 稀疏表
+ * @brief sparse table
  *
  */
 

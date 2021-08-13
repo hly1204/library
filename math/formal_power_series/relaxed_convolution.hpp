@@ -2,7 +2,7 @@
 #define RELAXED_CONVOLUTION_HEADER_HPP
 
 /**
- * @brief relaxed convolution / 在线卷积
+ * @brief relaxed convolution
  * @docs docs/math/formal_power_series/relaxed_convolution.md
  */
 

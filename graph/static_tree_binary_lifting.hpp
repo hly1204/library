@@ -2,7 +2,7 @@
 #define STATIC_TREE_BINARY_LIFTING_HEADER_HPP
 
 /**
- * @brief static tree binary lifting / 树上倍增法
+ * @brief static tree binary lifting
  *
  */
 

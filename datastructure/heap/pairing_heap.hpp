@@ -2,7 +2,7 @@
 #define PAIRING_HEAP_HEADER_HPP
 
 /**
- * @brief pairing heap / 配对堆
+ * @brief pairing heap
  *
  */
 

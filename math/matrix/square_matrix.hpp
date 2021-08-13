@@ -2,7 +2,7 @@
 #define SQUARE_MATRIX_HEADER_HPP
 
 /**
- * @brief square matrix / 方阵
+ * @brief square matrix
  *
  */
 

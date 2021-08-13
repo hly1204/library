@@ -2,7 +2,7 @@
 #define BINOMIAL_COEFFICIENT_MOD_HEADER_HPP
 
 /**
- * @brief binomial coefficient mod / 二项式系数取模
+ * @brief binomial coefficient mod
  *
  */
 

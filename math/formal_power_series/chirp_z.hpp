@@ -2,7 +2,7 @@
 #define CHIRP_Z_HEADER_HPP
 
 /**
- * @brief chirp z transform / chirp z 变换
+ * @brief chirp z transform
  * @docs docs/math/formal_power_series/chirp_z.md
  */
 

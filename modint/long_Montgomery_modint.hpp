@@ -2,7 +2,7 @@
 #define LONG_MONTGOMERY_MODINT_HEADER_HPP
 
 /**
- * @brief long Montgomery modint / 长整型 Montgomery 取模类
+ * @brief long Montgomery modint
  * @docs docs/modint/long_Montgomery_modint.md
  */
 

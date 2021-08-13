@@ -2,7 +2,7 @@
 #define BLACK_BOX_LINEAR_ALGEBRA_HEADER_HPP
 
 /**
- * @brief black box linear algebra / 黑盒线性代数
+ * @brief black box linear algebra
  * @docs docs/math/matrix/black_box_linear_algebra.md
  */
 

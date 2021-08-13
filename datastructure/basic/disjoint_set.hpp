@@ -2,7 +2,7 @@
 #define DISJOINT_SET_HEADER_HPP
 
 /**
- * @brief disjoint set / 并查集
+ * @brief disjoint set
  *
  */
 

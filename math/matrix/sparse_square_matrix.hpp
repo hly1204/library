@@ -2,7 +2,7 @@
 #define SPARSE_SQUARE_MATRIX_BASE_HEADER_HPP
 
 /**
- * @brief sparse square matrix / 稀疏方阵
+ * @brief sparse square matrix
  *
  */
 

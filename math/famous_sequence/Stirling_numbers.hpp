@@ -2,7 +2,7 @@
 #define STIRLING_NUMBERS_HEADER_HPP
 
 /**
- * @brief Stirling numbers / 斯特林数
+ * @brief Stirling numbers
  * @docs docs/math/famous_sequence/Stirling_numbers.md
  */
 

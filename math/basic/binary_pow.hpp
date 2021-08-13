@@ -2,7 +2,7 @@
 #define BINARY_POW_HEADER_HPP
 
 /**
- * @brief binary power / 快速幂
+ * @brief binary exponentiation
  *
  */
 

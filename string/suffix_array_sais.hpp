@@ -2,7 +2,7 @@
 #define SUFFIX_ARRAY_SAIS_HEADER_HPP
 
 /**
- * @brief suffix array SA-IS / 后缀数组（诱导排序）
+ * @brief suffix array SA-IS
  * @docs docs/string/suffix_array_sais.md
  */
 
