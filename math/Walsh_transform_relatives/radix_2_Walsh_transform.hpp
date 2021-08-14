@@ -3,7 +3,7 @@
 
 /**
  * @brief radix-2 Walsh transform
- * @docs math/Walsh_transform_relatives/radix_2_Walsh_transform.md
+ * @docs docs/math/Walsh_transform_relatives/radix_2_Walsh_transform.md
  */
 
 #include <algorithm>
