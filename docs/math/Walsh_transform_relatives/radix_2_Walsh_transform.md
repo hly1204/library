@@ -67,7 +67,7 @@ $$
 2^{-1}\lbrack x^i\rbrack (C_0+C_1)=\sum _ {j\oplus k=i}a_jb_k+\sum _ {j\oplus k=i}a _ {j+n}b_{k+n}
 $$
 
-由 $\oplus$ 的性质可知若 $j$ 和 $k$ 中有一个大于 $n$ 另一个小于 $n$ 的话， $j\oplus k\gt n$ 所以下标确实取遍了所有可能的值， $C_0-C_1$ 同理。
+由 $\oplus$ 的性质可知若 $j$ 和 $k$ 中有一个大于 $n$ 另一个小于 $n$ 的话 $j\oplus k\gt n$ ，所以下标确实取遍了所有可能的值， $C_0-C_1$ 同理。
 
 当然，我们要将 radix-2 修改为 radix-4 也是轻而易举的。
 
