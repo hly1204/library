@@ -19,10 +19,10 @@ int main() {
   std::vector<mint> A(n), B(m), C, D;
   for (auto &i : A) std::cin >> i;
   for (auto &i : B) std::cin >> i;
-  lib::RelaxedConvolution<mint, decltype(lib::convolve<mint>)> rc(C, D, lib::convolve<mint>);
+  lib::RelaxedConvolution<mint> rc(C, D);
   for (int i = 0; i < n + m - 1; ++i) {
-    if (i < n) C.emplace_back(A[i]);
-    if (i < m) D.emplace_back(B[i]);
+    C.emplace_back(i < n ? A[i] : mint(0));
+    D.emplace_back(i < m ? B[i] : mint(0));
     std::cout << rc.next() << ' ';
   }
   return 0;

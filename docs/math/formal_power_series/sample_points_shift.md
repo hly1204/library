@@ -32,4 +32,4 @@ $$
 
 ## 等差数列
 
-沿用上述问题，对于 $k\in\mathbb{F} _ p^{\times}$ 和 $d\in\mathbb{F} _ p$ 给出 $f(d),f(d+k),\dots ,f(d+nk)$ 求出 $f(c+d),f(c+d+k),\dots ,f(c+d+nk)$ 也是类似的，可视作平移 $g(x)=f(d+kx)$ 的点值 $g(0),g(1),\dots g(n)$ 为 $g\left(\frac{c}{k}\right),g\left(\frac{c}{k}+1\right),\dots ,g\left(\frac{c}{k}+n\right)$ 。
+沿用上述问题，对于 $k\in\mathbb{F} _ p^{\times}$ 和 $d\in\mathbb{F} _ p$ 给出 $f(d),f(d+k),\dots ,f(d+nk)$ 求出 $f(c+d),f(c+d+k),\dots ,f(c+d+nk)$ 也是类似的，可视作平移 $g(x)=f(d+kx)$ 的点值 $g(0),g(1),\dots ,g(n)$ 为 $g\left(\frac{c}{k}\right),g\left(\frac{c}{k}+1\right),\dots ,g\left(\frac{c}{k}+n\right)$ 。

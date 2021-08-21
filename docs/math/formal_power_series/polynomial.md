@@ -26,7 +26,7 @@ $$
 
 给出多项式 $A(x)=\sum _ {i=0}^na _ {i}x^{i}$ 且 $\deg(A(x))=n\gt 0$ ，要求 $A(x+c)$ 的系数。
 
-考虑分治法，令 $A(x)=A_0(x)+x^{\lfloor n/2\rfloor}A_1(x)$ 那么 $A(x+c)=A_0(x+c)+(x+c)^{\lfloor n/2\rfloor}A_1(x+c)$ 问题分解为了两部分，其中 $(x+c)^{\lfloor n/2\rfloor}$ 的系数为二项式系数易计算，只需一次卷积。
+考虑分治法，令 $A(x)=A_0(x)+x^{\lfloor n/2\rfloor}A_1(x)$ 那么 $A(x+c)=A_0(x+c)+(x+c)^{\lfloor n/2\rfloor}A_1(x+c)$ 问题分解为了两部分，其中 $(x+c)^{\lfloor n/2\rfloor}$ 的系数为二项式系数易计算，只需一次卷积。对于任意模数， EI 指出这里可以使用（任意模数）二项卷积做到更好的时间，将来我可能会补充一下实现。
 
 另一种方法考虑 $A(x)$ 在 $c$ 处应用泰勒公式，有
 

@@ -19,7 +19,7 @@ int main() {
   std::vector<mint> A, B(n), C(n);
   for (auto &i : B) std::cin >> i;
   for (int i = 0; i < n - 1; ++i) C[i] = B[i + 1] * (i + 1);
-  lib::RelaxedConvolution<mint, decltype(lib::convolve<mint>)> rc(A, C, lib::convolve<mint>);
+  lib::RelaxedConvolution<mint> rc(A, C);
   A.emplace_back(1);
   std::cout << "1 ";
   for (int i = 1; i < n; ++i) {
