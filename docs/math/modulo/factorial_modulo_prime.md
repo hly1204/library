@@ -221,25 +221,168 @@ g_d(x)g_d(x+d)&0\\h_d(x+d)g_d(x)+g_d(x+d)h_d(x)&g_d(x)g_d(x+d)
 \end{aligned}
 $$
 
-而
+易维护，上述其余矩阵同理。
+
+## 例题
+
+[LOJ 6386 组合数前缀和](https://loj.ac/p/6386) 求 $\sum _ {i=0}^m\binom{n}{i}\bmod 998244353$ ，考虑维护矩阵
 
 $$
 \begin{aligned}
-\mathbf{M} _ {d+1}(x)&=
+\mathbf{M} _ d(x)&=
+\prod _ {i=1}^d
 \begin{bmatrix}
-x+d+1&0\\1&x+d+1
-\end{bmatrix}
-\begin{bmatrix}
-g_d(x)&0\\h_d(x)&g_d(x)
+-x+n+1-i&0\\
+x+i&x+i
 \end{bmatrix}\\
 &=
 \begin{bmatrix}
-(x+d+1)g_d(x)&0\\g_d(x)+(x+d+1)h_d(x)&(x+d+1)g_d(x)
+f_d(x)&0\\
+g_d(x)&h_d(x)
 \end{bmatrix}
 \end{aligned}
 $$
 
-易维护，上述其余矩阵同理。
+的点值 $\mathbf{M} _ d(0),\mathbf{M} _ d(v),\dots $ 而
+
+$$
+\begin{aligned}
+\mathbf{M} _ {2d}(x)&=
+\prod _ {i=1}^{2d}
+\begin{bmatrix}
+-x+n+1-i&0\\
+x+i&x+i
+\end{bmatrix}\\
+&=
+\left(
+\prod _ {i=1}^d
+\begin{bmatrix}
+-x-d+n+1-i&0\\
+x+d+i&x+d+i
+\end{bmatrix}
+\right)
+\left(
+\prod _ {i=1}^d
+\begin{bmatrix}
+-x+n+1-i&0\\
+x+i&x+i
+\end{bmatrix}
+\right) \\
+&=
+\begin{bmatrix}
+f_d(x+d)&0\\
+g_d(x+d)&h_d(x+d)
+\end{bmatrix}
+\begin{bmatrix}
+f_d(x)&0\\
+g_d(x)&h_d(x)
+\end{bmatrix} \\
+&=
+\begin{bmatrix}
+f_d(x+d)f_d(x)&0\\
+g_d(x+d)f_d(x)+h_d(x+d)g_d(x)&h_d(x+d)h_d(x)
+\end{bmatrix}
+\end{aligned}
+$$
+
+$\mathbf{M} _ {2d}(x)$ 右下角为阶乘中维护的点值。我们计算
+
+$$
+\begin{aligned}
+\prod _ {i=0}^{m}
+\begin{bmatrix}
+n-i&0\\i+1&i+1
+\end{bmatrix}=
+\left(
+\prod _ {i=(k+1)v}^m
+\begin{bmatrix}
+n-i&0\\
+i+1&i+1
+\end{bmatrix}
+\right)
+\begin{bmatrix}
+f_v(kv)&0\\
+g_v(kv)&h_v(kv)
+\end{bmatrix}
+\cdots
+\begin{bmatrix}
+f_v(v)&0\\
+g_v(v)&h_v(v)
+\end{bmatrix}
+\begin{bmatrix}
+f_v(0)&0\\
+g_v(0)&h_v(0)
+\end{bmatrix}
+\end{aligned}
+$$
+
+即可。
+
+```cpp
+#include <algorithm>
+#include <cstdint>
+#include <iostream>
+#include <random>
+#include <vector>
+
+#include "math/formal_power_series/convolution.hpp"
+#include "math/formal_power_series/sample_points_shift.hpp"
+#include "modint/Montgomery_modint.hpp"
+
+using mint = lib::MontModInt<998244353>;
+
+/**
+ * @brief 计算二项式系数前缀和
+ * @param n
+ * @param m m <= n
+ * @return mint C(n, 0) + C(n, 1) + … + C(n, m)
+ */
+mint binomial_coeff_prefix_sum(mint n, mint m) {
+  using u32 = std::uint32_t;
+  u32 v     = 1;
+  assert(static_cast<u32>(m) <= static_cast<u32>(n));
+  while (v * v < static_cast<u32>(m)) v <<= 1;
+  const mint ONE(1), mv(v), iv(mv.inv());
+  std::vector<mint> f{n, n - mv}, g{ONE, mv + ONE}, h{ONE, mv + ONE};
+  auto conv = lib::convolve_cyclic<mint>;
+  for (u32 d = 1; d != v; d <<= 1) {
+    auto f0 = lib::shift_sample_points(d, f, mint(d) + 1, conv);
+    auto f1 = lib::shift_sample_points(d << 1 | 1, f, mint(d) * iv, conv);
+    auto g0 = lib::shift_sample_points(d, g, mint(d) + 1, conv);
+    auto g1 = lib::shift_sample_points(d << 1 | 1, g, mint(d) * iv, conv);
+    auto h0 = lib::shift_sample_points(d, h, mint(d) + 1, conv);
+    auto h1 = lib::shift_sample_points(d << 1 | 1, h, mint(d) * iv, conv);
+    std::copy_n(f0.begin(), d, std::back_inserter(f));
+    std::copy_n(g0.begin(), d, std::back_inserter(g));
+    std::copy_n(h0.begin(), d, std::back_inserter(h));
+    for (u32 i = 0; i != (d << 1 | 1); ++i)
+      std::tie(f[i], g[i], h[i]) =
+          std::make_tuple(f[i] * f1[i], f[i] * g1[i] + h1[i] * g[i], h1[i] * h[i]);
+  }
+  mint A(1), B(0), C(1);
+  u32 pass = 0;
+  for (int i = 0; pass + v <= static_cast<u32>(m); pass += v, ++i)
+    std::tie(A, B, C) = std::make_tuple(A * f[i], A * g[i] + B * h[i], C * h[i]);
+  for (; pass <= static_cast<u32>(m); ++pass)
+    std::tie(A, B, C) = std::make_tuple(A * (n - pass), (A + B) * (pass + 1), C * (pass + 1));
+  return B / C;
+}
+
+int main() {
+#ifdef LOCAL
+  std::freopen("in", "r", stdin), std::freopen("out", "w", stdout);
+#endif
+  std::ios::sync_with_stdio(false);
+  std::cin.tie(0);
+  int T;
+  std::cin >> T;
+  for (mint n, m; T != 0; --T) {
+    std::cin >> n >> m;
+    std::cout << binomial_coeff_prefix_sum(n, m) << '\n';
+  }
+  return 0;
+}
+```
 
 ## 参考文献
 
