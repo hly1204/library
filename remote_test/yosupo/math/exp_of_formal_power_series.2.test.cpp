@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "math/formal_power_series/relaxed_convolution.hpp"
+#include "math/formal_power_series/semi_relaxed_convolution.hpp"
 #include "modint/Montgomery_modint.hpp"
 
 int main() {
@@ -15,16 +15,13 @@ int main() {
   using mint = lib::MontModInt<998244353>;
   int n;
   std::cin >> n;
-  std::vector<mint> A, B(n), C(n);
-  for (auto &i : B) std::cin >> i;
-  for (int i = 0; i < n - 1; ++i) C[i] = B[i + 1] * (i + 1);
-  lib::RelaxedConvolution<mint> rc(A, C);
-  A.emplace_back(1);
-  std::cout << "1 ";
-  for (int i = 1; i < n; ++i) {
-    auto t = rc.next() / i;
-    A.emplace_back(t);
-    std::cout << t << ' ';
-  }
+  std::vector<mint> A(n), B;
+  for (auto &i : A) std::cin >> i;
+  for (int i = 1; i < n; ++i) A[i - 1] = A[i] * i;
+  auto res = lib::semi_relaxed_convolve(n, A, B, [](int idx, const std::vector<mint> &contri) {
+    if (idx == 0) return mint(1);
+    return contri[idx - 1] / idx;
+  });
+  for (auto i : B) std::cout << i << ' ';
   return 0;
 }

@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "prime_binomial.hpp"
+#include "radix_2_NTT.hpp"
 
 namespace lib::internal {
 
