@@ -71,7 +71,7 @@ namespace lib {
 template <typename mod_t, typename ConvolveCyclicFuncType>
 std::vector<mod_t> shift_sample_points(int n, const std::vector<mod_t> &pts, mod_t m,
                                        ConvolveCyclicFuncType &&f) {
-  assert(n <= mod_t::get_mod());
+  assert(static_cast<typename mod_t::value_type>(n) <= mod_t::get_mod());
   assert(pts.size() <= mod_t::get_mod());
   if (n == 0) return {};
   using u64 = std::uint64_t;
@@ -123,6 +123,33 @@ template <typename mod_t, typename ConvolveCyclicFuncType>
 std::vector<mod_t> shift_sample_points(const std::vector<mod_t> &pts, mod_t m,
                                        ConvolveCyclicFuncType &&f) {
   return shift_sample_points(pts.size(), pts, m, f);
+}
+
+/**
+ * @brief 线性时间连续点值（特殊点值）的单点插值
+ * @param pts f(0), f(1), …, f(k-1) 确定一个唯一的度数小于 k 的多项式
+ * @param c
+ * @return mod_t f(c)
+ */
+template <typename mod_t>
+mod_t shift_sample_points_single(const std::vector<mod_t> &pts, mod_t c) {
+  using u64 = std::uint64_t;
+  int n     = pts.size();
+  u64 uc    = static_cast<u64>(c);
+  if (uc < static_cast<u64>(n)) return pts[uc];
+  std::vector<mod_t> prefix(n), suffix(n);
+  const mod_t ONE(1);
+  mod_t pc(c), res(0);
+  std::for_each_n(prefix.begin(), n, [&pc, &ONE](mod_t &v) { v = pc, pc -= ONE; });
+  std::exclusive_scan(prefix.rbegin(), prefix.rend(), suffix.rbegin(), ONE, std::multiplies<>());
+  std::exclusive_scan(prefix.begin(), prefix.end(), prefix.begin(), ONE, std::multiplies<>());
+  PrimeBinomial<mod_t> bi(n);
+  for (int i = 0; i < n; ++i)
+    if ((n - 1 - i) & 1)
+      res -= pts[i] * prefix[i] * suffix[i] * bi.ifac_unsafe(i) * bi.ifac_unsafe(n - 1 - i);
+    else
+      res += pts[i] * prefix[i] * suffix[i] * bi.ifac_unsafe(i) * bi.ifac_unsafe(n - 1 - i);
+  return res;
 }
 
 } // namespace lib
