@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/exp_of_formal_power_series"
+#define PROBLEM "https://judge.yosupo.jp/problem/inv_of_formal_power_series"
 
 #include <iostream>
 #include <vector>
@@ -17,10 +17,10 @@ int main() {
   std::cin >> n;
   std::vector<mint> A(n), B;
   for (auto &i : A) std::cin >> i;
-  for (int i = 1; i < n; ++i) A[i - 1] = A[i] * i;
-  lib::semi_relaxed_convolve(n, A, B, [](int idx, const std::vector<mint> &contri) {
-    if (idx == 0) return mint(1);
-    return contri[idx - 1] / idx;
+  mint iv = 1 / A[0];
+  lib::semi_relaxed_convolve(n, A, B, [&iv](int idx, const std::vector<mint> &contri) {
+    if (idx == 0) return iv;
+    return -contri[idx] * iv;
   });
   for (auto i : B) std::cout << i << ' ';
   return 0;

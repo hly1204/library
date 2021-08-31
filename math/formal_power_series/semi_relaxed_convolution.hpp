@@ -18,7 +18,7 @@ namespace lib {
 
 /**
  * @brief 半在线卷积计算 AB
- * @note 目前效率较低，可能是因为没有使用 middle product 的方法但我还不知道如何优化
+ * @warning 目前效率较低，可能是因为没有使用 middle product 的方法但我还不知道如何优化！！！
  * @param n 计算前 n 项
  * @param A 离线给出 A 的系数
  * @param B 在线给出 B 的系数
@@ -35,13 +35,16 @@ std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std
   B.resize(len, mod_t(0));
 
   constexpr int THRESHOLD = 32;
-
+  /**
+   * @brief 计算 A[0,len) * B[l,r) 的贡献
+   * @note 为了能计算幂级数倒数等，需要在获取句柄前先计算完对角线上的贡献
+   */
   std::function<void(int, int, int)> run_rec = [&](int l, int r, int lv) {
-    int len = r - l; // 计算 A[0,len) * B[l,r) 的贡献
+    int len = r - l;
     if (r - l <= THRESHOLD) {
       for (int i = 0; i < len; ++i) {
-        B[i + l] = relax(i + l, contribution);
-        for (int j = 0; j <= i; ++j) contribution[i + l] += A_cpy[j] * B[i + l - j];
+        for (int j = 1; j <= i; ++j) contribution[i + l] += A_cpy[j] * B[i + l - j];
+        contribution[i + l] += A_cpy[0] * (B[i + l] = relax(i + l, contribution));
       }
       if (lv)
         for (int i = len; i < (len << 1) - 1; ++i)
