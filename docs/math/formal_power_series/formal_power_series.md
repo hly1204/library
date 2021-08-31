@@ -28,24 +28,24 @@ $$
 
 ## 牛顿法
 
-定义 $D$ 作用于函数 $f(x)$ 为其关于 $x$ 的导数。
+定义算子 $\mathfrak{D}$ 作用于函数 $f(x)$ 为其关于 $x$ 的导数。
 
 给出 $f_0=f\bmod{x^n}$ ，我们求出 $f$ 满足 $A(f)=0$ ，其中 $A(f)$ 可以是某个函数，例：假设给出 $g$ 要求 $g^{-1}$ 那么可设 $A(f)=f^{-1}-g$ 。我们观察 $A(f)$ 在 $f_0$ 处的泰勒公式
 
 $$
-A(f)=A(f_0)+\frac{D(A(f_0))(f-f_0)}{1!}+\frac{D^2(A(f_0))(f-f_0)^2}{2!}+\cdots
+A(f)=A(f_0)+\frac{\mathfrak{D}(A(f_0))(f-f_0)}{1!}+\frac{\mathfrak{D}^2(A(f_0))(f-f_0)^2}{2!}+\cdots
 $$
 
 因为 $f-f_0\equiv 0\pmod{x^n}$ 所以 $(f-f_0)^2\equiv 0\pmod{x^{2n}}$ ，那么
 
 $$
-A(f)\equiv A(f_0)+D(A(f_0))(f-f_0)\equiv 0\pmod{x^{2n}}
+A(f)\equiv A(f_0)+\mathfrak{D}(A(f_0))(f-f_0)\equiv 0\pmod{x^{2n}}
 $$
 
 稍加整理得
 
 $$
-f\equiv f_0-\frac{A(f_0)}{D(A(f_0))}\pmod{x^{2n}}
+f\equiv f_0-\frac{A(f_0)}{\mathfrak{D}(A(f_0))}\pmod{x^{2n}}
 $$
 
 那么我们每次迭代都可以将准确的系数翻倍。
@@ -70,7 +70,7 @@ $$
 \log\left(\sum _ {i\geq 0}\frac{f^i}{i!}\right)=f
 $$
 
-我们知道 $D(\log(x))=1/x$ 而 $D(\log(f))=D(f)/f$ 那么 $\log(f)=\int (D(f)/f)$ ，这里使用 $\int ax^b=a/(b+1)x^{b+1}$ 其中 $b\geq 0$ 。省略 $\mathrm{d}x$ 使更简洁。
+我们知道 $\mathfrak{D}(\log(x))=1/x$ 而 $\mathfrak{D}(\log(f))=\mathfrak{D}(f)/f$ 那么 $\log(f)=\int (\mathfrak{D}(f)/f)$ ，这里使用 $\int ax^b=a/(b+1)x^{b+1}$ 其中 $b\geq 0$ 。省略 $\mathrm{d}x$ 使更简洁。
 
 ### 逆元
 
@@ -265,7 +265,7 @@ $$
 \begin{aligned}
 f&\equiv f_0-\frac{\log(f_0)-h}{1/f_0}\pmod{x^{2n}}\\
 &\equiv f_0-f_0(\log(f_0)-h)\pmod{x^{2n}}\\
-&\equiv f_0-f_0\left(\smallint (D(f_0)/f_0)-h\right)\pmod{x^{2n}}
+&\equiv f_0-f_0\left(\smallint (\mathfrak{D}(f_0)/f_0)-h\right)\pmod{x^{2n}}
 \end{aligned}
 $$
 
@@ -273,7 +273,7 @@ $$
 
 令 $g=1/f=1/\exp(h)$ 和 $g_0=g\bmod x^n$ 。注意这里需要求出 $1/f_0\bmod{x^{2n}}$ 。
 
-基础的复合函数求导公式在这里很重要 $D(\exp(h))=D(h)\exp(h)$ 。
+基础的复合函数求导公式在这里很重要 $\mathfrak{D}(\exp(h))=\mathfrak{D}(h)\exp(h)$ 。
 
 #### 方法 1
 
@@ -286,25 +286,25 @@ $$
 
 #### 方法 2
 
-令 $q=D(h)\bmod x^{n-1}$ 和 $w=q+g_0(D(f_0)-f_0q)\bmod x^{2n-1}$ 那么
+令 $q=\mathfrak{D}(h)\bmod x^{n-1}$ 和 $w=q+g_0(\mathfrak{D}(f_0)-f_0q)\bmod x^{2n-1}$ 那么
 
 $$
 f\equiv f_0+f_0(h-\smallint w)\pmod{x^{2n}}
 $$
 
-我们只需说明 $w\equiv D(f_0)/f_0\pmod {x^{2n-1}}$ ，因为 $h=\log(f)=\smallint D(f)/f$ 所以
+我们只需说明 $w\equiv \mathfrak{D}(f_0)/f_0\pmod {x^{2n-1}}$ ，因为 $h=\log(f)=\smallint \mathfrak{D}(f)/f$ 所以
 
 $$
-q\equiv D(h)\equiv D(f_0)/f_0\pmod{x^{n-1}}
+q\equiv \mathfrak{D}(h)\equiv \mathfrak{D}(f_0)/f_0\pmod{x^{n-1}}
 $$
 
-而 $D(f)\equiv fq\pmod{x^{n-1}}$ 和商数的方法 5 如出一辙。
+而 $\mathfrak{D}(f)\equiv fq\pmod{x^{n-1}}$ 和商数的方法 5 如出一辙。
 
 注意在算法结束后可以得到 $g_0$ 和 $f\bmod x^{2n}$ 那么在迭代前我们有 $g_1=g\bmod x^{n/2}$ 。
 
 - 由 $g_1$ 计算 $g_0$ 使用上述倒数的方法 2 需要 $5\mathsf{E}(n)$ 。
 - 计算 $F _ {2n}^{-1}(F _ {2n}(f_0)F _ {2n}(q))$ 需要 $6\mathsf{E}(n)$ 。
-- 计算 $F _ {2n}^{-1}(F _ {2n}(g_0)F _ {2n}((D(f_0)-f_0q)\bmod x^{2n-1}))$ 需要 $6\mathsf{E}(n)$ 。
+- 计算 $F _ {2n}^{-1}(F _ {2n}(g_0)F _ {2n}((\mathfrak{D}(f_0)-f_0q)\bmod x^{2n-1}))$ 需要 $6\mathsf{E}(n)$ 。
 - 计算 $F _ {2n}^{-1}(F _ {2n}(f_0)F _ {2n}((h-\smallint w)\bmod x^{2n}))$ 需要额外 $4\mathsf{E}(n)$ 。
 
 共 $21\mathsf{E}(n)$ ，所以计算 $\exp(h)\bmod{x^n}$ 需要 $21\mathsf{E}(n)$ 。
@@ -316,7 +316,7 @@ $$
 $$
 \begin{aligned}
 r&=(f_0q)\bmod{(x^n-1)}\\
-s&=(x(D(f_0)-r))\bmod{(x^n-1)}\\
+s&=(x(\mathfrak{D}(f_0)-r))\bmod{(x^n-1)}\\
 t&=(g_0s)\bmod{x^n}\\
 u&=(h\bmod{x^{2n}}-\smallint tx^{n-1})\operatorname{div}x^n\\
 v&=(f_0u)\bmod{x^n}\\
@@ -325,7 +325,7 @@ $$
 
 其中二元运算符 $a\operatorname{div}b$ 表示 $(a-a\bmod{b})/b$ 那么 $f\equiv f_0+x^nv\pmod{x^{2n}}$ 。
 
-我们认为该方法与方法 2 的输出相同，首先观察方法 2 中的第二步并不需要求出 $f_0q$ ，因为 $\deg(f_0q)\lt 2n$ 而 $D(f_0)\equiv f_0q\pmod{x^{n-1}}$ 使用 $n$ 长的循环卷积足以还原出 $D(f_0)-f_0q$ 。
+我们认为该方法与方法 2 的输出相同，首先观察方法 2 中的第二步并不需要求出 $f_0q$ ，因为 $\deg(f_0q)\lt 2n$ 而 $\mathfrak{D}(f_0)\equiv f_0q\pmod{x^{n-1}}$ 使用 $n$ 长的循环卷积足以还原出 $\mathfrak{D}(f_0)-f_0q$ 。
 
 - 计算 $F_n^{-1}(F_n(f_0)F_n(q))$ 需要 $3\mathsf{E}(n)$ 。
 - 计算 $F _ {2n}^{-1}(F _ {2n}(g_0)F _ {2n}(s))$ 需要 $6\mathsf{E}(n)$ 。
@@ -337,10 +337,10 @@ $$
 在实际实现时，直接考虑
 
 $$
-f\equiv f_0+f_0(h-\smallint(D(h)+g_0(D(f_0)-f_0D(h))))\pmod{x^{2n}}
+f\equiv f_0+f_0(h-\smallint(\mathfrak{D}(h)+g_0(\mathfrak{D}(f_0)-f_0\mathfrak{D}(h))))\pmod{x^{2n}}
 $$
 
-还原出 $D(f_0)-f_0q$ 会比较清晰一些。
+还原出 $\mathfrak{D}(f_0)-f_0q$ 会比较清晰一些。
 
 ### 平方根
 
@@ -365,7 +365,7 @@ $$
 
 ## 半在线算法
 
-可能在实现后补充到其他文件。
+见 [半在线算法](https://hly1204.github.io/library/math/formal_power_series/semi_relaxed_convolution.hpp) 。
 
 ## 参考文献
 

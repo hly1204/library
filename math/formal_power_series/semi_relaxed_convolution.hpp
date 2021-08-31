@@ -25,9 +25,9 @@ namespace lib {
  * @param relax 句柄函数用于获取 B 的系数，可依赖于 AB 之前已经完成计算的系数
  * @return std::vector<mod_t> AB mod x^n
  */
-template <typename mod_t, typename HandleFunc>
+template <typename mod_t, typename HandleFuncType>
 std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std::vector<mod_t> &B,
-                                         HandleFunc &&relax) {
+                                         HandleFuncType &&relax) {
   int len = get_ntt_len(n);
   std::vector<mod_t> contribution(len << 1, mod_t(0)), A_cpy(A);
   std::vector<std::vector<std::vector<mod_t>>> dft_A_cache;
@@ -44,7 +44,7 @@ std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std
     if (r - l <= THRESHOLD) {
       for (int i = 0; i < len; ++i) {
         for (int j = 1; j <= i; ++j) contribution[i + l] += A_cpy[j] * B[i + l - j];
-        contribution[i + l] += A_cpy[0] * (B[i + l] = relax(i + l, contribution));
+        if (i + l < n) contribution[i + l] += A_cpy[0] * (B[i + l] = relax(i + l, contribution));
       }
       if (lv)
         for (int i = len; i < (len << 1) - 1; ++i)
