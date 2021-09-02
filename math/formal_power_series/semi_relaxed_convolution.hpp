@@ -44,19 +44,12 @@ std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std
         for (int j = 1; j <= i; ++j) contribution[i + l] += A_cpy[j] * B[i + l - j];
         if (i + l < n) contribution[i + l] += A_cpy[0] * (B[i + l] = relax(i + l, contribution));
       }
-      if (lv)
+      if (r != g_len)
         for (int i = len; i < (len << 1) - 1; ++i)
           for (int j = i + 1 - len; j < len; ++j) contribution[i + l] += A_cpy[j] * B[i + l - j];
       return;
     }
-    int block, block_size;
-    if (1 << 16 <= len) {
-      block = 16, block_size = len >> 4;
-    } else if (1 << 8 <= len) {
-      block = 8, block_size = len >> 3;
-    } else {
-      block = 4, block_size = len >> 2;
-    }
+    const int block = 16, block_size = len >> 4;
     if (l == 0) {
       auto &dft_block = dft_A_cache.emplace_back();
       for (int i = 1; i < block; ++i) {
@@ -75,7 +68,7 @@ std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std
     std::vector<std::vector<mod_t>> dft_B_cache;
     for (int i = 0; i < block; ++i) {
       run_rec(l + i * block_size, l + (i + 1) * block_size, lv + 1);
-      if (lv == 0 && i == block - 1) return;
+      if (r == g_len && i == block - 1) return;
       dft_B_cache.emplace_back(B.begin() + l + i * block_size, B.begin() + l + (i + 1) * block_size)
           .resize(block_size << 1, mod_t(0));
       dft(dft_B_cache.back());
@@ -89,7 +82,6 @@ std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std
           contribution[offset + j] += sum_temp[j];
       }
     }
-    if (r == g_len) return;
     for (int i = block; i < (block << 1) - 1; ++i) {
       std::vector<mod_t> &sum_temp = level_dft_sum_cache[lv][i - block];
       std::fill_n(sum_temp.begin(), block_size << 1, mod_t(0));
