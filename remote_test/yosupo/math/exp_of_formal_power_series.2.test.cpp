@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "math/formal_power_series/prime_binomial.hpp"
 #include "math/formal_power_series/semi_relaxed_convolution.hpp"
 #include "modint/Montgomery_modint.hpp"
 
@@ -18,9 +19,10 @@ int main() {
   std::vector<mint> A(n), B;
   for (auto &i : A) std::cin >> i;
   for (int i = 1; i < n; ++i) A[i - 1] = A[i] * i;
-  lib::semi_relaxed_convolve(n, A, B, [](int idx, const std::vector<mint> &contri) {
+  lib::PrimeBinomial<mint> bi(n);
+  lib::semi_relaxed_convolve(n, A, B, [&bi](int idx, const std::vector<mint> &contri) {
     if (idx == 0) return mint(1);
-    return contri[idx - 1] / idx;
+    return contri[idx - 1] * bi.inv_unsafe(idx);
   });
   for (auto i : B) std::cout << i << ' ';
   return 0;

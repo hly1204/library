@@ -7,9 +7,7 @@
  */
 
 #include <algorithm>
-#include <cassert>
 #include <functional>
-#include <utility>
 #include <vector>
 
 #include "radix_2_NTT.hpp"
@@ -28,15 +26,15 @@ namespace lib {
 template <typename mod_t, typename HandleFuncType>
 std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std::vector<mod_t> &B,
                                          HandleFuncType &&relax) {
-  int len = get_ntt_len(n);
-  std::vector<mod_t> contribution(len << 1, mod_t(0)), A_cpy(A);
-  std::vector<std::vector<std::vector<mod_t>>> dft_A_cache;
-  A_cpy.resize(len, mod_t(0));
-  B.resize(len, mod_t(0));
+  int g_len = get_ntt_len(n);
+  std::vector<mod_t> contribution(g_len << 1, mod_t(0)), A_cpy(A);
+  std::vector<std::vector<std::vector<mod_t>>> dft_A_cache, level_dft_sum_cache;
+  A_cpy.resize(g_len, mod_t(0));
+  B.resize(g_len, mod_t(0));
 
   constexpr int THRESHOLD = 32;
   /**
-   * @brief 计算 A[0,len) * B[l,r) 的贡献
+   * @brief 计算 A[0,g_len) * B[l,r) 的贡献
    * @note 为了能计算幂级数倒数等，需要在获取句柄前先计算完对角线上的贡献
    */
   std::function<void(int, int, int)> run_rec = [&](int l, int r, int lv) {
@@ -60,12 +58,19 @@ std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std
       block = 4, block_size = len >> 2;
     }
     if (l == 0) {
-      auto &ntt_block = dft_A_cache.emplace_back();
+      auto &dft_block = dft_A_cache.emplace_back();
       for (int i = 1; i < block; ++i) {
-        ntt_block.emplace_back(A_cpy.begin() + i * block_size, A_cpy.begin() + (i + 1) * block_size)
+        dft_block.emplace_back(A_cpy.begin() + i * block_size, A_cpy.begin() + (i + 1) * block_size)
             .resize(block_size << 1, mod_t(0));
-        dft(ntt_block.back());
+        dft(dft_block.back());
       }
+      level_dft_sum_cache.emplace_back(
+          std::vector<std::vector<mod_t>>(block, std::vector<mod_t>(block_size << 1, mod_t(0))));
+    } else {
+      idft(level_dft_sum_cache[lv][0]);
+      for (int i = 0; i != (block_size << 1) - 1; ++i)
+        contribution[l + i] += level_dft_sum_cache[lv][0][i];
+      std::fill_n(level_dft_sum_cache[lv].back().begin(), block_size << 1, mod_t(0));
     }
     std::vector<std::vector<mod_t>> dft_B_cache;
     for (int i = 0; i < block; ++i) {
@@ -75,7 +80,7 @@ std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std
           .resize(block_size << 1, mod_t(0));
       dft(dft_B_cache.back());
       if (i != block - 1) {
-        std::vector<mod_t> sum_temp(block_size << 1, mod_t(0));
+        std::vector<mod_t> &sum_temp = level_dft_sum_cache[lv][i + 1];
         for (int j = 0; j <= i; ++j)
           for (int k = 0; k != block_size << 1; ++k)
             sum_temp[k] += dft_A_cache[lv][i - j][k] * dft_B_cache[j][k];
@@ -84,17 +89,16 @@ std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std
           contribution[offset + j] += sum_temp[j];
       }
     }
+    if (r == g_len) return;
     for (int i = block; i < (block << 1) - 1; ++i) {
-      std::vector<mod_t> sum_temp(block_size << 1, mod_t(0));
+      std::vector<mod_t> &sum_temp = level_dft_sum_cache[lv][i - block];
+      std::fill_n(sum_temp.begin(), block_size << 1, mod_t(0));
       for (int j = i + 1 - block; j < block; ++j)
         for (int k = 0; k != block_size << 1; ++k)
           sum_temp[k] += dft_A_cache[lv][i - 1 - j][k] * dft_B_cache[j][k];
-      idft(sum_temp);
-      for (int j = 0, offset = l + i * block_size; j != (block_size << 1) - 1; ++j)
-        contribution[offset + j] += sum_temp[j];
     }
   };
-  run_rec(0, len, 0);
+  run_rec(0, g_len, 0);
   contribution.resize(n);
   B.resize(n);
   return contribution;
