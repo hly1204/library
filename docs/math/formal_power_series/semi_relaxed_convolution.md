@@ -49,7 +49,108 @@ $$
 
 另外注意对于半在线卷积，一般也都是计算截断前 $n$ 项的，也就是只需计算下三角形的贡献，但是在线卷积就需要计算完整的正方形的贡献。
 
-**笔记**：注意参考文献的最后一篇论文，发现我们在使用二叉分治半在线卷积时可以利用 middle product 的技巧减少常数，在这里多叉分治可能也可以应用，但我没有实现！！！有待学习和改进！！！
+**笔记**：注意参考文献的最后一篇论文，我们在使用二叉分治半在线卷积时可以利用 middle product 的技巧减少常数，在这里多叉分治也可以应用，具体的我们对于每一次的递归只处理下三角形的贡献，然后使用 middle product 补充缺失的部分，最后仍计算了下三角形的贡献，这种方法易修改为迭代的。若不使用 middle product 亦不会增加处理 DFT 的时间，但会消耗更多加法与乘法的时间和更精细的实现，虽然我实现了但代码已经弃用，注释在下面。
+
+```cpp
+#ifndef SEMI_RELAXED_CONVOLUTION_HEADER_HPP
+#define SEMI_RELAXED_CONVOLUTION_HEADER_HPP
+
+/**
+ * @brief semi-relaxed convolution
+ * @docs docs/math/formal_power_series/semi_relaxed_convolution.md
+ */
+
+#include <algorithm>
+#include <functional>
+#include <vector>
+
+#include "radix_2_NTT.hpp"
+
+namespace lib {
+
+/**
+ * @note 在计算完下三角形的贡献后，上三角形的贡献累积入同一个 level 的数组即变量 level_dft_sum_cache 后
+ *       将 idft 交给下一次去计算，如此获得了使用 middle product 技巧几乎同样的 dft 长度和次数。
+ *       但这个实现的乘法和加法次数是冗余更多的！若不使用上述技巧则会使得 idft 次数多出一半。
+ */
+template <typename mod_t, typename HandleFuncType>
+std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std::vector<mod_t> &B,
+                                         HandleFuncType &&relax) {
+  int g_len = get_ntt_len(n);
+  std::vector<mod_t> contribution(g_len << 1, mod_t(0)), A_cpy(A);
+  std::vector<std::vector<std::vector<mod_t>>> dft_A_cache, level_dft_sum_cache;
+  A_cpy.resize(g_len, mod_t(0));
+  B.resize(g_len, mod_t(0));
+
+  constexpr int THRESHOLD = 32;
+  /**
+   * @brief 计算 A[0,g_len) * B[l,r) 的贡献
+   * @note 为了能计算幂级数倒数等，需要在获取句柄前先计算完对角线上的贡献
+   */
+  std::function<void(int, int, int)> run_rec = [&](int l, int r, int lv) {
+    int len = r - l;
+    if (r - l <= THRESHOLD) {
+      for (int i = 0; i < len; ++i) {
+        for (int j = 1; j <= i; ++j) contribution[i + l] += A_cpy[j] * B[i + l - j];
+        if (i + l < n) contribution[i + l] += A_cpy[0] * (B[i + l] = relax(i + l, contribution));
+      }
+      if (r != g_len)
+        for (int i = len; i < (len << 1) - 1; ++i)
+          for (int j = i + 1 - len; j < len; ++j) contribution[i + l] += A_cpy[j] * B[i + l - j];
+      return;
+    }
+    const int block = 16, block_size = len >> 4;
+    if (l == 0) {
+      auto &dft_block = dft_A_cache.emplace_back();
+      for (int i = 1; i < block; ++i) {
+        dft_block.emplace_back(A_cpy.begin() + i * block_size, A_cpy.begin() + (i + 1) * block_size)
+            .resize(block_size << 1, mod_t(0));
+        dft(dft_block.back());
+      }
+      level_dft_sum_cache.emplace_back(
+          std::vector<std::vector<mod_t>>(block, std::vector<mod_t>(block_size << 1, mod_t(0))));
+    } else {
+      idft(level_dft_sum_cache[lv][0]);
+      for (int i = 0; i != (block_size << 1) - 1; ++i)
+        contribution[l + i] += level_dft_sum_cache[lv][0][i];
+      std::fill_n(level_dft_sum_cache[lv].back().begin(), block_size << 1, mod_t(0));
+    }
+    std::vector<std::vector<mod_t>> dft_B_cache;
+    for (int i = 0; i < block; ++i) {
+      run_rec(l + i * block_size, l + (i + 1) * block_size, lv + 1);
+      if (r == g_len && i == block - 1) return;
+      dft_B_cache.emplace_back(B.begin() + l + i * block_size, B.begin() + l + (i + 1) * block_size)
+          .resize(block_size << 1, mod_t(0));
+      dft(dft_B_cache.back());
+      if (i != block - 1) {
+        std::vector<mod_t> &sum_temp = level_dft_sum_cache[lv][i + 1];
+        for (int j = 0; j <= i; ++j)
+          for (int k = 0; k != block_size << 1; ++k)
+            sum_temp[k] += dft_A_cache[lv][i - j][k] * dft_B_cache[j][k];
+        idft(sum_temp);
+        for (int j = 0, offset = l + (i + 1) * block_size; j != (block_size << 1) - 1; ++j)
+          contribution[offset + j] += sum_temp[j];
+      }
+    }
+    for (int i = block; i < (block << 1) - 1; ++i) {
+      std::vector<mod_t> &sum_temp = level_dft_sum_cache[lv][i - block];
+      std::fill_n(sum_temp.begin(), block_size << 1, mod_t(0));
+      for (int j = i + 1 - block; j < block; ++j)
+        for (int k = 0; k != block_size << 1; ++k)
+          sum_temp[k] += dft_A_cache[lv][i - 1 - j][k] * dft_B_cache[j][k];
+    }
+  };
+  run_rec(0, g_len, 0);
+  contribution.resize(n);
+  B.resize(n);
+  return contribution;
+}
+
+} // namespace lib
+
+
+#endif
+```
 
 ## 半在线卷积完成幂级数的基本操作
 
