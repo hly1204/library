@@ -33,7 +33,7 @@ public:
    * @brief 预处理 [0, n) 的阶乘和其逆元
    */
   static void init(int n) {
-    if (int(fac_table.size()) < n) {
+    if (static_cast<int>(fac_table.size()) < n) {
       int old_size = fac_table.size();
       fac_table.resize(n);
       ifac_table.resize(n);
@@ -46,7 +46,7 @@ public:
   mod_t fac_unsafe(int n) const { return fac_table[n]; }
   mod_t ifac_unsafe(int n) const { return ifac_table[n]; }
   mod_t inv_unsafe(int n) const { return ifac_table[n] * fac_table[n - 1]; }
-  mod_t choose_unsafe(int n, int k) const {
+  mod_t binom_unsafe(int n, int k) const {
     // 返回 binom{n}{k} 注意上指标可以为负数但这里并未实现！
     return n >= k ? fac_table[n] * ifac_table[k] * ifac_table[n - k] : mod_t(0);
   }
