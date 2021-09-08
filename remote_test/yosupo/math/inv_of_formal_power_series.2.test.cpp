@@ -18,10 +18,11 @@ int main() {
   std::vector<mint> A(n), B;
   for (auto &i : A) std::cin >> i;
   mint iv = 1 / A[0];
-  lib::semi_relaxed_convolve(n, A, B, [&iv](int idx, const std::vector<mint> &contri) {
+  lib::SemiRelaxedConvolution<mint> rc(A, B, [&iv](int idx, const std::vector<mint> &contri) {
     if (idx == 0) return iv;
     return -contri[idx] * iv;
   });
+  while (n--) rc.next();
   for (auto i : B) std::cout << i << ' ';
   return 0;
 }

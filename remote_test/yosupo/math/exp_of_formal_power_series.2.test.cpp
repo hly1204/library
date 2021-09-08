@@ -20,10 +20,11 @@ int main() {
   for (auto &i : A) std::cin >> i;
   for (int i = 1; i < n; ++i) A[i - 1] = A[i] * i;
   lib::PrimeBinomial<mint> bi(n);
-  lib::semi_relaxed_convolve(n, A, B, [&bi](int idx, const std::vector<mint> &contri) {
+  lib::SemiRelaxedConvolution<mint> rc(A, B, [&bi](int idx, const std::vector<mint> &contri) {
     if (idx == 0) return mint(1);
     return contri[idx - 1] * bi.inv_unsafe(idx);
   });
+  while (n--) rc.next();
   for (auto i : B) std::cout << i << ' ';
   return 0;
 }

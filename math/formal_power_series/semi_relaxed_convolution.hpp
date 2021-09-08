@@ -14,68 +14,72 @@
 
 namespace lib {
 
-/**
- * @brief 半在线卷积计算 AB
- * @param n 计算前 n 项
- * @param A 离线给出 A 的系数
- * @param B 在线给出 B 的系数
- * @param relax 句柄函数用于获取 B 的系数，可依赖于 AB 之前已经完成计算的系数
- * @return std::vector<mod_t> AB mod x^n
- */
-template <typename mod_t, typename HandleFuncType>
-std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std::vector<mod_t> &B,
-                                         HandleFuncType &&relax) {
-  int g_len = get_ntt_len(n);
-  std::vector<mod_t> contribution(g_len, mod_t(0)), A_cpy(A);
-  std::vector<std::vector<std::vector<mod_t>>> dft_A_cache;
-  A_cpy.resize(g_len, mod_t(0));
-  B.resize(g_len, mod_t(0));
-
-  constexpr int THRESHOLD = 32;
+template <typename mod_t>
+class SemiRelaxedConvolution {
+public:
   /**
-   * @brief 计算 A[0,g_len) * B[l,r) 的贡献
-   * @note 为了能计算幂级数倒数等，需要在获取句柄前先计算完对角线上的贡献
+   * @param A 离线给出 A 的系数，取拷贝
+   * @param B 在线给出 B 的系数，取引用
    */
-  std::function<void(int, int, int)> run_rec = [&](int l, int r, int lv) {
-    int len = r - l;
-    if (r - l <= THRESHOLD) {
-      for (int i = 0; i < len; ++i) {
-        for (int j = 1; j <= i; ++j) contribution[i + l] += A_cpy[j] * B[i + l - j];
-        if (i + l < n) contribution[i + l] += A_cpy[0] * (B[i + l] = relax(i + l, contribution));
-      }
-      return;
-    }
-    int block = 16, block_size = len >> 4;
-    if (len < 1 << 16) block = 8, block_size = len >> 3;
-    int block_size2 = block_size << 1;
-    if (l == 0) {
-      auto &dft_block = dft_A_cache.emplace_back();
-      for (int i = 0; i < block - 1; ++i)
-        dft(dft_block.emplace_back(A_cpy.begin() + l + i * block_size,
-                                   A_cpy.begin() + l + (i + 2) * block_size));
-    }
-    std::vector<std::vector<mod_t>> dft_B_cache;
-    for (int i = 0; i < block; ++i) {
-      int rec_l = l + i * block_size, rec_r = rec_l + block_size;
-      run_rec(rec_l, rec_r, lv + 1);
-      if (i != block - 1) {
-        dft_B_cache.emplace_back(B.begin() + rec_l, B.begin() + rec_r)
-            .resize(block_size2, mod_t(0));
-        dft(dft_B_cache.back());
-        std::vector<mod_t> sum_temp(block_size2, mod_t(0));
-        for (int j = 0; j <= i; ++j)
-          for (int k = 0; k != block_size2; ++k)
-            sum_temp[k] += dft_A_cache[lv][i - j][k] * dft_B_cache[j][k];
-        idft(sum_temp);
-        for (int j = 0; j != block_size; ++j) contribution[rec_r + j] += sum_temp[block_size + j];
-      }
-    }
-  };
-  run_rec(0, g_len, 0);
-  contribution.resize(n);
-  B.resize(n);
-  return contribution;
-}
+  SemiRelaxedConvolution(const std::vector<mod_t> &A, std::vector<mod_t> &B,
+                         const std::function<mod_t(int, const std::vector<mod_t> &)> &handle)
+      : fixed_A_(A), contribution_(1024, mod_t(0)), B_(B), n_(0), handle_(handle) {
+    B_.clear();
+    B_.reserve(1024);
+  }
+  ~SemiRelaxedConvolution() = default;
+
+  mod_t next() {
+    static constexpr int BASECASE_SIZE = 32;
+    static constexpr int LOG_BLOCK     = 4;
+    static constexpr int BLOCK         = 1 << LOG_BLOCK;
+    static constexpr int MASK          = BLOCK - 1;
+
+    int len = get_ntt_len(n_ << 1 | 1);
+
+    if (static_cast<int>(contribution_.size()) < len) contribution_.resize(len, mod_t(0));
+    if (static_cast<int>(fixed_A_.size()) < len) fixed_A_.resize(len, mod_t(0));
+
+    if ((n_ & (BASECASE_SIZE - 1)) == 0)
+      for (int t = n_ / BASECASE_SIZE, block_size = BASECASE_SIZE, lv = 0; t != 0;
+           t >>= LOG_BLOCK, block_size <<= LOG_BLOCK, ++lv)
+        if (int i = t & MASK, block_size2 = block_size << 1, l = n_ - block_size; i != 0) {
+          if (n_ - block_size * i == 0) {
+            if (static_cast<int>(dft_A_cache_.size()) == lv) {
+              dft_A_cache_.emplace_back();
+              dft_B_cache_.emplace_back(BLOCK - 1);
+            }
+            dft(dft_A_cache_[lv].emplace_back(fixed_A_.begin() + (i - 1) * block_size,
+                                              fixed_A_.begin() + (i + 1) * block_size));
+          }
+          auto &B_cache = dft_B_cache_[lv];
+          B_cache[i - 1].resize(block_size2);
+          std::copy_n(B_.begin() + l, block_size, B_cache[i - 1].begin());
+          std::fill_n(B_cache[i - 1].begin() + block_size, block_size, mod_t(0));
+          dft(B_cache[i - 1]);
+          std::vector<mod_t> temp_sum(block_size2, mod_t(0));
+          for (int j = 0; j < i; ++j)
+            for (int k = 0; k != block_size2; ++k)
+              temp_sum[k] += dft_A_cache_[lv][i - 1 - j][k] * B_cache[j][k];
+          idft(temp_sum);
+          for (int j = block_size; j != block_size2; ++j)
+            contribution_[j + n_ - block_size] += temp_sum[j];
+          break;
+        }
+
+    for (int i = 0, l = n_ / BASECASE_SIZE * BASECASE_SIZE; i < n_ - l; ++i)
+      contribution_[n_] += fixed_A_[n_ - l - i] * B_[l + i];
+    return contribution_[n_] += fixed_A_[0] * B_.emplace_back(handle_(n_, contribution_)),
+           contribution_[n_++];
+  }
+
+private:
+  std::vector<mod_t> fixed_A_, contribution_;
+  std::vector<mod_t> &B_;
+  std::vector<std::vector<std::vector<mod_t>>> dft_A_cache_, dft_B_cache_;
+  int n_;
+  std::function<mod_t(int, const std::vector<mod_t> &)> handle_;
+};
 
 } // namespace lib
 
