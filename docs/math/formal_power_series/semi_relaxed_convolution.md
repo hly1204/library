@@ -49,7 +49,7 @@ $$
 
 另外注意对于半在线卷积，一般也都是计算截断前 $n$ 项的，也就是只需计算下三角形的贡献，但是在线卷积就需要计算完整的正方形的贡献。
 
-**笔记**：注意参考文献的最后一篇论文，我们在使用二叉分治半在线卷积时可以利用 middle product 的技巧减少常数，在这里多叉分治也可以应用，具体的我们对于每一次的递归只处理下三角形的贡献，然后使用 middle product 补充缺失的部分，最后仍计算了下三角形的贡献，这种方法易修改为迭代的。若不使用 middle product 亦不会增加处理 DFT 的时间，但会消耗更多加法与乘法的时间和更精细的实现，虽然我实现了但代码已经弃用，注释在下面。
+**笔记**：注意参考文献的最后一篇论文，我们在使用二叉分治半在线卷积时可以利用 middle product 的技巧减少常数，在这里多叉分治也可以应用，具体的我们对于每一次的递归只处理下三角形的贡献，然后使用 middle product 补充缺失的部分，最后仍计算了下三角形的贡献，这种方法易修改为迭代的。若不使用 middle product 亦不会显著增加处理 DFT 的时间，但会消耗更多加法与乘法的时间和更精细的实现，虽然我实现了但代码已经弃用，注释在下面。
 
 ```cpp
 #ifndef SEMI_RELAXED_CONVOLUTION_HEADER_HPP
@@ -70,7 +70,7 @@ namespace lib {
 
 /**
  * @note 在计算完下三角形的贡献后，上三角形的贡献累积入同一个 level 的数组即变量 level_dft_sum_cache 后
- *       将 idft 交给下一次去计算，如此获得了使用 middle product 技巧几乎同样的 dft 长度和次数。
+ *       将 idft 交给下一次去计算，如此获得了使用 middle product 技巧差不多的 dft 长度和次数。
  *       但这个实现的乘法和加法次数是冗余更多的！若不使用上述技巧则会使得 idft 次数多出一半。
  */
 template <typename mod_t, typename HandleFuncType>
@@ -152,9 +152,75 @@ std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std
 #endif
 ```
 
+现在我已经将整个算法改写为迭代。
+
 ## 半在线卷积完成幂级数的基本操作
 
-只列举两个基本操作。
+给出部分代码片段。
+
+```cpp
+#include <vector>
+
+#include "math/formal_power_series/prime_binomial.hpp"
+#include "math/formal_power_series/semi_relaxed_convolution.hpp"
+
+template <typename mod_t>
+std::vector<mod_t> fps_inv(int n, const std::vector<mod_t> &x) {
+  std::vector<mod_t> res;
+  mod_t iv = mod_t(1) / x[0];
+  lib::SemiRelaxedConvolution<mod_t> rc(
+      x, res, [&iv](int idx, const std::vector<mod_t> &c) { return idx == 0 ? iv : -c[idx] * iv; });
+  while (n--) rc.next();
+  return res;
+}
+
+template <typename mod_t>
+std::vector<mod_t> fps_deriv(const std::vector<mod_t> &x) {
+  int n = x.size();
+  if (n <= 1) return std::vector<mod_t>(1, mod_t(0));
+  std::vector<mod_t> res(n - 1);
+  for (int i = 1; i < n; ++i) res[i - 1] = x[i] * mod_t(i);
+  return res;
+}
+
+template <typename mod_t>
+std::vector<mod_t> fps_integral(const std::vector<mod_t> &x, mod_t c = mod_t(0)) {
+  int n = x.size();
+  std::vector<mod_t> res(n + 1);
+  res[0] = c;
+  lib::PrimeBinomial<mod_t> bi(n + 1);
+  for (int i = 1; i <= n; ++i) res[i] = x[i - 1] * bi.inv_unsafe(i);
+  return res;
+}
+
+template <typename mod_t>
+std::vector<mod_t> fps_exp(int n, const std::vector<mod_t> &x) {
+  std::vector<mod_t> x_cpy(x), res;
+  lib::PrimeBinomial<mod_t> bi(n);
+  lib::SemiRelaxedConvolution<mod_t> rc(
+      fps_deriv(x), res, [&bi](int idx, const std::vector<mod_t> &c) {
+        return idx == 0 ? mod_t(1) : c[idx - 1] * bi.inv_unsafe(idx);
+      });
+  while (n--) rc.next();
+  return res;
+}
+
+template <typename mod_t>
+std::vector<mod_t> fps_quo(int n, const std::vector<mod_t> &x, const std::vector<mod_t> &y) {
+  std::vector<mod_t> res;
+  mod_t iv = mod_t(1) / y[0];
+  lib::SemiRelaxedConvolution<mod_t> rc(y, res, [&iv, &x](int idx, const std::vector<mod_t> &c) {
+    return (idx == 0 ? x[0] : (idx < static_cast<int>(x.size()) ? x[idx] : mod_t(0)) - c[idx]) * iv;
+  });
+  while (n--) rc.next();
+  return res;
+}
+
+template <typename mod_t>
+std::vector<mod_t> fps_log(int n, const std::vector<mod_t> &x) {
+  return fps_integral(fps_quo(n - 1, fps_deriv(x), x));
+}
+```
 
 ### 指数
 
@@ -185,6 +251,20 @@ f_0^{-1},&i=0,\\
 $$
 
 即得。
+
+### 商数或对数
+
+求 $fg^{-1}$ 考虑
+
+$$
+(fg^{-1})g=f
+$$
+
+即得。
+
+### 平方根
+
+求 $f^2=g$ 无需考虑已经得到了解。
 
 ## 参考文献
 
