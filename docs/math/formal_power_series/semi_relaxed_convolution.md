@@ -184,7 +184,7 @@ std::vector<mod_t> fps_deriv(const std::vector<mod_t> &x) {
 }
 
 template <typename mod_t>
-std::vector<mod_t> fps_integral(const std::vector<mod_t> &x, mod_t c = mod_t(0)) {
+std::vector<mod_t> fps_integr(const std::vector<mod_t> &x, mod_t c = mod_t(0)) {
   int n = x.size();
   std::vector<mod_t> res(n + 1);
   res[0] = c;
@@ -218,7 +218,7 @@ std::vector<mod_t> fps_quo(int n, const std::vector<mod_t> &x, const std::vector
 
 template <typename mod_t>
 std::vector<mod_t> fps_log(int n, const std::vector<mod_t> &x) {
-  return fps_integral(fps_quo(n - 1, fps_deriv(x), x));
+  return fps_integr(fps_quo(n - 1, fps_deriv(x), x));
 }
 ```
 
@@ -262,9 +262,18 @@ $$
 
 即得。
 
-### 平方根
+#### 求 $f^k$
 
-求 $f^2=g$ 无需考虑已经得到了解。
+参考 fjzzq2002 的文章，考虑链式求导法则，有 $\mathfrak{D}(f^k)=\mathfrak{D}(f)\cdot k\cdot f^{k-1}$ 那么
+
+$$
+\begin{aligned}
+f^k&=\smallint \left(\mathfrak{D}(f)\cdot k\cdot f^k\cdot f^{-1}\right) \\
+&=\smallint \left(\mathfrak{D}(\log(f))\cdot k\cdot f^k\right)
+\end{aligned}
+$$
+
+即得。这与先求一次对数再求一次指数是一样的，但是这告诉我们可以（半）在线的进行 $f^k$ 的求算了。
 
 ## 参考文献
 
