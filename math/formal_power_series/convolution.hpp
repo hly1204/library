@@ -7,6 +7,7 @@
  */
 
 #include <cassert>
+#include <memory>
 #include <vector>
 
 #include "radix_2_NTT.hpp"
@@ -28,15 +29,13 @@ std::vector<mod_t> convolve(const std::vector<mod_t> &x, const std::vector<mod_t
   }
   int len = get_ntt_len(n + m - 1);
   std::vector<mod_t> res(len);
-  std::copy_n(x.begin(), n, res.begin());
-  std::fill(res.begin() + n, res.end(), mod_t(0));
+  std::fill(std::copy_n(x.begin(), n, res.begin()), res.end(), mod_t(0));
   dft(res);
   if (&x == &y) {
     for (int i = 0; i < len; ++i) res[i] *= res[i];
   } else {
     std::vector<mod_t> y_tmp(len);
-    std::copy_n(y.begin(), m, y_tmp.begin());
-    std::fill(y_tmp.begin() + m, y_tmp.end(), mod_t(0));
+    std::fill(std::copy_n(y.begin(), m, y_tmp.begin()), y_tmp.end(), mod_t(0));
     dft(y_tmp);
     for (int i = 0; i < len; ++i) res[i] *= y_tmp[i];
   }

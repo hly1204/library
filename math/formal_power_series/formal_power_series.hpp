@@ -256,8 +256,8 @@ public:
     for (int i = 4; i <= len; i <<= 1) {
       mod_t tmp_j(i >> 2);
       for (int j = i >> 2; j != i >> 1; ++j, tmp_j += ONE) work_tmp7[j - 1] = res[j] * tmp_j;
-      std::copy_n(work_tmp3.begin(), (i >> 1) - 1, work_tmp4.begin());
-      std::fill(work_tmp4.begin() + (i >> 1) - 1, work_tmp4.begin() + i, ZERO);
+      std::fill(std::copy_n(work_tmp3.begin(), (i >> 1) - 1, work_tmp4.begin()),
+                work_tmp4.begin() + i, ZERO);
       dft(i >> 1, work_tmp4.data()); // 1E
       for (int j = 0; j != i >> 1; ++j) work_tmp4[j] *= work_tmp2[j];
       idft(i >> 1, work_tmp4.data()); // 1E

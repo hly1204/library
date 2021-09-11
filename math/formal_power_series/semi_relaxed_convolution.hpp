@@ -54,8 +54,8 @@ public:
           }
           auto &B_cache = dft_B_cache_[lv];
           B_cache[i - 1].resize(block_size2);
-          std::copy_n(B_.begin() + l, block_size, B_cache[i - 1].begin());
-          std::fill_n(B_cache[i - 1].begin() + block_size, block_size, mod_t(0));
+          std::fill_n(std::copy_n(B_.begin() + l, block_size, B_cache[i - 1].begin()), block_size,
+                      mod_t(0));
           dft(B_cache[i - 1]);
           std::vector<mod_t> temp_sum(block_size2, mod_t(0));
           for (int j = 0; j < i; ++j)

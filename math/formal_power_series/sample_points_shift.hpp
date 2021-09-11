@@ -82,18 +82,18 @@ std::vector<mod_t> shift_sample_points(int n, const std::vector<mod_t> &pts, mod
     } else if (nm1 < k) { // f(0), …, f(n+m-1), …, f(m), …, f(k-1), …, f(mod-1)
       std::vector<mod_t> res;
       res.reserve(n);
-      std::copy_n(pts.begin() + m_64, k - m_64, std::back_inserter(res));
       std::copy_n(
-          internal::shift_sample_points_unsafe(mod_t::get_mod() - k, pts, mod_t(k), f).begin(),
-          mod_t::get_mod() - k, std::back_inserter(res));
-      std::copy_n(pts.begin(), nm1 + 1, std::back_inserter(res));
+          pts.begin(), nm1 + 1,
+          std::copy_n(
+              internal::shift_sample_points_unsafe(mod_t::get_mod() - k, pts, mod_t(k), f).begin(),
+              mod_t::get_mod() - k,
+              std::copy_n(pts.begin() + m_64, k - m_64, std::back_inserter(res))));
       return res;
     } else { // f(0), …, f(m), …, f(k-1), …, f(n+m-1)
       std::vector<mod_t> res;
       res.reserve(n);
-      std::copy_n(pts.begin() + m_64, k - m_64, std::back_inserter(res));
       std::copy_n(internal::shift_sample_points_unsafe(m_64 + n - k, pts, mod_t(k), f).begin(),
-                  m_64 + n - k, std::back_inserter(res));
+                  m_64 + n - k, std::copy_n(pts.begin() + m_64, k - m_64, std::back_inserter(res)));
       return res;
     }
   } else {             // f(0), …, f(k-1), …, f(m)
@@ -102,18 +102,21 @@ std::vector<mod_t> shift_sample_points(int n, const std::vector<mod_t> &pts, mod
     } else if (nm1 < k) { // f(0), …, f(n+m-1), …, f(k-1), …, f(m), …, f(mod-1)
       std::vector<mod_t> res;
       res.reserve(n);
-      std::copy_n(internal::shift_sample_points_unsafe(static_cast<int>(-m), pts, m, f).begin(),
-                  static_cast<int>(-m), std::back_inserter(res));
-      std::copy_n(pts.begin(), nm1 + 1, std::back_inserter(res));
+      std::copy_n(
+          pts.begin(), nm1 + 1,
+          std::copy_n(internal::shift_sample_points_unsafe(static_cast<int>(-m), pts, m, f).begin(),
+                      static_cast<int>(-m), std::back_inserter(res)));
       return res;
     } else { // f(0), …, f(k-1), …, f(n+m-1), …, f(m), …, f(mod-1)
       std::vector<mod_t> res;
       res.reserve(n);
-      std::copy_n(internal::shift_sample_points_unsafe(static_cast<int>(-m), pts, m, f).begin(),
-                  static_cast<int>(-m), std::back_inserter(res));
-      std::copy_n(pts.begin(), k, std::back_inserter(res));
-      std::copy_n(internal::shift_sample_points_unsafe(nm1 - k + 1, pts, mod_t(k), f).begin(),
-                  nm1 - k + 1, std::back_inserter(res));
+      std::copy_n(
+          internal::shift_sample_points_unsafe(nm1 - k + 1, pts, mod_t(k), f).begin(), nm1 - k + 1,
+          std::copy_n(
+              pts.begin(), k,
+              std::copy_n(
+                  internal::shift_sample_points_unsafe(static_cast<int>(-m), pts, m, f).begin(),
+                  static_cast<int>(-m), std::back_inserter(res))));
       return res;
     }
   }
