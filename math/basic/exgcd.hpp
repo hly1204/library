@@ -34,8 +34,7 @@ std::enable_if_t<std::is_integral_v<T>, std::tuple<T, S, S>> exgcd(T a, T b) {
 template <typename T>
 std::enable_if_t<std::is_integral_v<T>, T> inv_mod(T x, T mod) {
   using S = std::make_signed_t<T>;
-  S a = x, b = mod, x1 = 1, x3 = 0;
-  assert(a < b);
+  S a = x < mod ? x : x % mod, b = mod, x1 = 1, x3 = 0;
   while (b != 0) {
     S q                    = a / b;
     std::tie(x1, x3, a, b) = std::make_tuple(x3, x1 - x3 * q, b, a - b * q);
