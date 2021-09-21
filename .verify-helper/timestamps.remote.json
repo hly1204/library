@@ -39,6 +39,7 @@
 "remote_test/yosupo/math/partition_function.0.test.cpp": "2021-09-11 13:04:11 +0800",
 "remote_test/yosupo/math/polynomial_interpolation.0.test.cpp": "2021-09-11 13:04:11 +0800",
 "remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp": "2021-09-11 13:04:11 +0800",
+"remote_test/yosupo/math/polynomial_taylor_shift.1.test.cpp": "2021-09-22 00:24:21 +0800",
 "remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp": "2021-09-11 13:04:11 +0800",
 "remote_test/yosupo/math/shift_of_sampling_points_of_polynomial.0.test.cpp": "2021-09-11 13:04:11 +0800",
 "remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp": "2021-09-11 13:04:11 +0800",
