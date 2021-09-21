@@ -59,9 +59,28 @@ $$
 
 论文中指出，考虑 $f(x)\mapsto f(x+c)$ 就是计算 $\mathrm{e}^{c\mathrm{D}}\cdot f(x)$ 。
 
+具体的，令
+
+$$
+\begin{aligned}
+A(x)&=\sum _ {i=0}^na _ {n-i}(n-i)!x^i,\\
+B(x)&=\sum _ {i=0}^n\frac{b_i}{i!}x^i
+\end{aligned}
+$$
+
+那么
+
+$$
+\begin{aligned}
+\lbrack x^{n-i}\rbrack \left(A(x)B(x)\right)&=\sum _ {j=0}^{n-i}\lbrack x^{n-i-j}\rbrack A(x) \lbrack x^{j}\rbrack B(x)\\
+&=\sum _ {j=0}^{n-i}\frac{(i+j)!}{j!}a _ {i+j}b _ {j}\\
+&=i!\sum _ {j=0}^{n-i}\binom{i+j}{i}a _ {i+j}b_j
+\end{aligned}
+$$
+
 Elegia 还指出可以使用二项卷积完成连续点值的平移，考虑使用一次二项卷积先得到其下降幂表示后同下降幂多项式平移一样操作。
 
-**TODO**：上述两个算法我还未实际测试。
+**TODO**：上述算法我还未实际测试。
 
 ## 参考文献
 
