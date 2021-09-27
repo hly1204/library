@@ -54,9 +54,9 @@ public:
     return buffer_head_ != old_buffer_head;
   }
 
-  template <typename T, typename... Rest>
-  bool scan(T &x, Rest &...y) {
-    return scan(x) && scan(y...);
+  template <typename... T>
+  bool scan(T &...x) {
+    return (scan(x) && ...);
   }
 
 private:
@@ -121,9 +121,9 @@ public:
     while (top_ != stk_) *buffer_head_++ = *--top_;
   }
 
-  template <typename T, typename... Rest>
-  void print(T x, Rest... y) {
-    return print(x), print(y...);
+  template <typename... T>
+  void print(T... x) {
+    return (print(x), ...);
   }
 
 private:

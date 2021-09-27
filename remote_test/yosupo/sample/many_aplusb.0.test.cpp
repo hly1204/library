@@ -5,7 +5,8 @@
 int main() {
   lib::Scanner scanner;
   lib::Printer printer;
-  long long T, n, m;
+  int T;
+  unsigned long long n, m;
   scanner.scan(T);
   while (T--) {
     scanner.scan(n, m);
