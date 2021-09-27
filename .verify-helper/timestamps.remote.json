@@ -53,6 +53,7 @@
 "remote_test/yosupo/matrix/matrix_det.2.test.cpp": "2021-08-13 13:47:59 +0800",
 "remote_test/yosupo/matrix/matrix_product.0.test.cpp": "2021-08-13 13:47:59 +0800",
 "remote_test/yosupo/matrix/sparse_matrix_det.0.test.cpp": "2021-08-13 13:47:59 +0800",
+"remote_test/yosupo/sample/many_aplusb.0.test.cpp": "2021-09-28 01:39:15 +0800",
 "remote_test/yosupo/string/suffix_array.0.test.cpp": "2021-08-13 13:47:59 +0800",
 "remote_test/yosupo/string/z_algorithm.0.test.cpp": "2021-08-13 13:47:59 +0800",
 "remote_test/yuki/math/502.0.test.cpp": "2021-09-11 13:04:11 +0800"
