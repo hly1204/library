@@ -91,17 +91,17 @@ public:
     if (x == static_cast<T>(0)) return putchar('0');
     if (x < 0) {
       putchar('-');
-      while (x != static_cast<T>(0)) {
+      do {
         T y     = x / static_cast<T>(10);
         *top_++ = y * static_cast<T>(10) - x + '0';
         x       = y;
-      }
+      } while (x != static_cast<T>(0));
     } else {
-      while (x != static_cast<T>(0)) {
+      do {
         T y     = x / static_cast<T>(10);
         *top_++ = x - y * static_cast<T>(10) + '0';
         x       = y;
-      }
+      } while (x != static_cast<T>(0));
     }
     if (buffer_end_ - buffer_head_ < top_ - stk_) flush();
     while (top_ != stk_) *buffer_head_++ = *--top_;
@@ -112,11 +112,12 @@ public:
   template <typename T>
   std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, char> && std::is_unsigned_v<T>, void>
   print(T x) {
-    while (x != static_cast<T>(0)) {
+    if (x == static_cast<T>(0)) return putchar('0');
+    do {
       T y     = x / static_cast<T>(10);
       *top_++ = x - y * static_cast<T>(10) + '0';
       x       = y;
-    }
+    } while (x != static_cast<T>(0));
     if (buffer_end_ - buffer_head_ < top_ - stk_) flush();
     while (top_ != stk_) *buffer_head_++ = *--top_;
   }
