@@ -3,7 +3,7 @@
 #include "misc/scanner_printer.hpp"
 
 int main() {
-  lib::Scanner scanner;
+  lib::Scanner scanner(stdin, 1 << 26);
   lib::Printer printer;
   int T;
   unsigned long long n, m;
