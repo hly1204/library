@@ -22,7 +22,9 @@ public:
    */
   Scanner(std::FILE *f = stdin, std::size_t enough_buffer_size = 1 << 25)
       : f_(f), buffer_(new char[enough_buffer_size + 32]), buffer_head_(buffer_),
-        buffer_tail_(buffer_ + std::fread(buffer_, sizeof(char), enough_buffer_size + 32, f_)) {}
+        buffer_tail_(buffer_ + std::fread(buffer_, sizeof(char), enough_buffer_size + 32, f_)) {
+    *buffer_tail_ = '\0';
+  }
   ~Scanner() { delete[] buffer_; }
 
   template <typename T>
@@ -56,7 +58,10 @@ public:
 
   template <typename... T>
   bool scan(T &...x) {
-    return (scan(x) && ...);
+    // ... 对于空逻辑与表达式为 true 表达式折叠为 ((A && B) && C) && D
+    // 如果是加法，则没有默认的值，必须写成 (0 + ... + scan(x))
+    // scan 不返回 int 的原因是使用逻辑与运算符保证运算顺序
+    return (... && scan(x));
   }
 
 private:
@@ -124,7 +129,8 @@ public:
 
   template <typename... T>
   void print(T... x) {
-    return (print(x), ...);
+    // ... 对于空逗号表达式为 void
+    return (..., print(x));
   }
 
 private:
