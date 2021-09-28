@@ -31,16 +31,13 @@ public:
   std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, char> && std::is_signed_v<T>, bool>
   scan(T &x) {
     x = static_cast<T>(0);
-    while (buffer_tail_ != buffer_head_ && *buffer_head_ != '-' && !std::isdigit(*buffer_head_))
-      ++buffer_head_;
+    while (*buffer_head_ != '-' && std::isspace(*buffer_head_)) ++buffer_head_;
     bool is_minus         = *buffer_head_ == '-' && ++buffer_head_;
     char *old_buffer_head = buffer_head_;
     if (is_minus)
-      while (buffer_tail_ != buffer_head_ && std::isdigit(*buffer_head_))
-        x = x * static_cast<T>(10) - (*buffer_head_++ - '0');
+      while (std::isdigit(*buffer_head_)) x = x * static_cast<T>(10) - (*buffer_head_++ - '0');
     else
-      while (buffer_tail_ != buffer_head_ && std::isdigit(*buffer_head_))
-        x = x * static_cast<T>(10) + (*buffer_head_++ - '0');
+      while (std::isdigit(*buffer_head_)) x = x * static_cast<T>(10) + (*buffer_head_++ - '0');
     return buffer_head_ != old_buffer_head;
   }
 
@@ -48,11 +45,9 @@ public:
   std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, char> && std::is_unsigned_v<T>, bool>
   scan(T &x) {
     x = static_cast<T>(0);
-    while (buffer_tail_ != buffer_head_ && *buffer_head_ != '-' && !std::isdigit(*buffer_head_))
-      ++buffer_head_;
+    while (*buffer_head_ != '-' && std::isspace(*buffer_head_)) ++buffer_head_;
     char *old_buffer_head = buffer_head_;
-    while (buffer_tail_ != buffer_head_ && std::isdigit(*buffer_head_))
-      x = x * static_cast<T>(10) + (*buffer_head_++ - '0');
+    while (std::isdigit(*buffer_head_)) x = x * static_cast<T>(10) + (*buffer_head_++ - '0');
     return buffer_head_ != old_buffer_head;
   }
 
