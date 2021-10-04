@@ -76,3 +76,29 @@ A(x+c)&=\sum _ {i=0}^na_i(x+c)^i\\
 $$
 
 括号内显然是卷积形式。
+
+## 多项式快速幂
+
+我经常写的快速幂是
+
+```cpp
+int pow(int x, int e) {
+  int res = 1;
+  for (; e; e >>= 1, x *= x)
+    if (e & 1) res *= x;
+  return res;
+}
+```
+
+注意最后一次的 `x *= x` 是冗余的，在乘法代价大的时候要避免
+
+```cpp
+int pow(int x, int e) {
+  for (int res = 1;; x *= x) {
+    if (e & 1) res *= x;
+    if ((e >>= 1) == 0) return res;
+  }
+}
+```
+
+这部分需要完善，目前在 `if (e & 1) {}` 的语句中仍有可能的冗余计算。

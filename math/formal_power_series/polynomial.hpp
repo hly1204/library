@@ -28,7 +28,6 @@ public:
   using FormalPowerSeries<mod_t>::FormalPowerSeries;
   using value_type = mod_t;
 
-  // 使得能够从 FormalPowerSeries 转换为 Polynomial 类型，但不清楚是否有什么问题
   Polynomial(const fps &rhs) : fps(rhs) {}
   Polynomial(fps &&rhs) : fps(std::move(rhs)) {}
 
@@ -71,9 +70,6 @@ public:
     return *this;
   }
   poly &operator%=(const poly &rhs) {
-    // f/g => f=gq+r, deg(r)<deg(g) 在这里 f 就是 (*this) 而 g 就是 rhs
-    // r=f-gq (mod ((x^deg(rhs)) - 1))
-    // 所以我们做 NTT 的长度可以是 O(deg(rhs)) 级别的
     int rem_size = rhs.deg();
     assert(rem_size >= 0);
     if (rem_size == 0) {
@@ -84,8 +80,7 @@ public:
     this->shrink();
     if (this->deg() < rem_size) return *this;
     poly quo((*this) / rhs), rhs_cpy(rhs);
-    int len = get_ntt_len(rem_size);
-    // 令 (*this) 和 quo 和 rhs_cpy 都在 mod ((x^len) - 1) 意义下
+    int len  = get_ntt_len(rem_size);
     int mask = len - 1;
     for (int i = len, e = this->size(); i < e; ++i)
       this->operator[](i &mask) += this->operator[](i);
@@ -129,14 +124,16 @@ public:
   }
 
   poly pow_mod(unsigned long long e, const poly &mod) const {
+    if (e == 0) return poly{1};
+    if (e == 1) return *this % mod;
     int rem_size = mod.deg();
     assert(rem_size >= 0);
     if (rem_size == 0) return poly{0};
     poly res{1}, cpy(*this % mod), mod_cpy(mod), rev_mod(mod);
     mod_cpy.shrink();
     rev_mod.shrink();
-    std::reverse(rev_mod.begin(), rev_mod.end());        // x^{deg(mod)}mod(-x)
-    int len          = get_ntt_len((rem_size << 1) - 1); // 两个 rem_size 长的多项式相乘
+    std::reverse(rev_mod.begin(), rev_mod.end());
+    int len          = get_ntt_len((rem_size << 1) - 1);
     int len2         = get_ntt_len(rem_size);
     int mask         = len2 - 1;
     int max_quo_size = rem_size;
@@ -150,12 +147,8 @@ public:
     poly rev_mod_inv(rev_mod.inv(max_quo_size));
     rev_mod_inv.resize(len, mod_t(0));
     dft(len, rev_mod_inv.data());
-    for (; e; e >>= 1) {
+    for (;;) {
       if (e & 1) {
-        // res=res*cpy%mod,cpy=cpy*cpy%mod
-        // 先进行两次卷积，后翻转，取前 quo_size 项与 rev_mod 的逆卷积求出 rev_quo
-        // 翻转求出 quo 后与 mod 卷积，这一步的 dft 可以在 O(deg(mod)) 级别
-        // 后作一次减法即可
         res.resize(len, mod_t(0));
         cpy.resize(len, mod_t(0));
         dft(len, res.data());
@@ -182,8 +175,12 @@ public:
           idft(len2, rev_res.data());
           for (int i = 0; i != len2; ++i) res[i] -= rev_res[i];
         }
-      } else {
+      } else if (e >> 1) {
         cpy *= cpy;
+      }
+      if ((e >>= 1) == 0) {
+        res.shrink();
+        return res;
       }
       int quo_size_cpy = cpy.deg() - rem_size + 1;
       if (quo_size_cpy > 0) {
@@ -206,8 +203,6 @@ public:
       }
     }
 #undef MODIFY_POLY
-    res.shrink();
-    return res;
   }
 
   poly shift(mod_t c) const {

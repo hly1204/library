@@ -27,7 +27,7 @@ std::uint64_t rho(std::uint64_t n) {
   std::uniform_int_distribution<u64> dis(2, n - 1);
   if (m64::get_mod() != n) m64::set_mod(n);
   const m64 R(dis(gen));
-  auto f = [=](m64 x) -> m64 { return x * x + R; };
+  auto f = [R](m64 x) -> m64 { return x * x + R; };
   m64 x, y(dis(gen)), ys, q(1);
   u64 g       = 1;
   const int m = 128;

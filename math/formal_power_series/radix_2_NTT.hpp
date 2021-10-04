@@ -139,7 +139,6 @@ std::uint32_t get_ntt_len(std::uint32_t n) {
 /**
  * @brief 接收一个多项式，返回二进制翻转后的 DFT 序列，即 x(1), x(-1) 等，
  *        对于下标 i 和 i^1 必然是两个互为相反数的点值
- *
  * @tparam mod_t
  * @param n
  * @param x
@@ -151,7 +150,6 @@ void dft(int n, mod_t *x) {
 
 /**
  * @brief 接收二进制翻转后的 DFT 序列，返回多项式序列 mod (x^n - 1)
- *
  * @tparam mod_t
  * @param n
  * @param x

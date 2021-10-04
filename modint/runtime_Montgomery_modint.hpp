@@ -104,10 +104,10 @@ public:
   friend std::ostream &operator<<(std::ostream &os, const m32 &rhs) { return os << rhs.get(); }
 
   m32 pow(u64 y) const {
-    m32 res(1), x(*this);
-    for (; y != 0; y >>= 1, x *= x)
+    for (m32 res(1), x(*this);; x *= x) {
       if (y & 1) res *= x;
-    return res;
+      if ((y >>= 1) == 0) return res;
+    }
   }
 
 private:
