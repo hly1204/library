@@ -27,5 +27,6 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.acceptSuggestionOnEnter": "smart",
+  "editor.fontSize": 13,
   
 }
