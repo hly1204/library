@@ -53,16 +53,16 @@ public:
     dft(p_cpy), dft(q_cpy);
     for (;; n >>= 1) {                                         // p(x)/q(x) = p(x)q(-x)/(q(x)q(-x))
       for (int i = 0; i != len; ++i) p_cpy[i] *= q_cpy[i ^ 1]; // p(x)q(-x) 分子
-      if (n & 1) NTT<mod_t>::odd_dft(len, p_cpy.data());       // 长度会变为原先的一半
+      if (n & 1) NTT<mod_t>::get_instance().odd_dft(len, p_cpy.data()); // 长度会变为原先的一半
       else
-        NTT<mod_t>::even_dft(len, p_cpy.data());
+        NTT<mod_t>::get_instance().even_dft(len, p_cpy.data());
       for (int i = 0; i != len; i += 2) q_cpy[i] = q_cpy[i + 1] = q_cpy[i] * q_cpy[i + 1];
       NTT<mod_t>::even_dft(len, q_cpy.data());
       if (n == 1) // [x^0](q(x)q(-x))=1 ，使用第一种类型的 accumulate 即从左开始 fold 并累加答案
         return std::accumulate(p_cpy.begin(), p_cpy.begin() + (len >> 1), mod_t(0)) /
                mod_t(len >> 1);
       // 若要实现任意模数，我们在用 3 模数的同时，在 dft_doubling 的时候用 CRT
-      // 合并出当前准确的值即可，而不用去浪费时间真的做完整的乘法
+      // 合并出当前准确的值即可，而不用去浪费时间真的做完整的乘法（待验证）
       NTT<mod_t>::dft_doubling(len >> 1, q_cpy.data());
       NTT<mod_t>::dft_doubling(len >> 1, p_cpy.data());
     }

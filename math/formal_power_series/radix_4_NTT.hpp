@@ -7,9 +7,9 @@
  */
 
 #include <algorithm>
+#include <array>
 #include <cassert>
 #include <cstdint>
-#include <vector>
 
 #include "../../traits/modint.hpp"
 
@@ -20,34 +20,12 @@ namespace lib {
  */
 template <typename mod_t>
 class NTT4 {
-public:
-  NTT4() = delete;
-
-  static int deBruijn_log2(std::uint64_t n) {
-    static constexpr std::uint64_t deBruijn = 0x022fdd63cc95386d;
-    static constexpr int convert[64]        = {
-        0,  1,  2,  53, 3,  7,  54, 27, 4,  38, 41, 8,  34, 55, 48, 28, 62, 5,  39, 46, 44, 42,
-        22, 9,  24, 35, 59, 56, 49, 18, 29, 11, 63, 52, 6,  26, 37, 40, 33, 47, 61, 45, 43, 21,
-        23, 58, 17, 10, 51, 25, 36, 32, 60, 20, 57, 16, 50, 31, 19, 15, 30, 14, 13, 12};
-    return convert[n * deBruijn >> 58];
-  }
-
-  /**
-   * @brief 返回二进制中尾零的个数，若为零也会返回零
-   * @see https://docs.microsoft.com/en-us/cpp/intrinsics/bitscanforward-bitscanforward64
-   * @see https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html
-   * @param n
-   * @return int
-   */
-  static int bsf(std::uint64_t n) { return deBruijn_log2(n & ~(n - 1)); }
-
-  static void set_root() {
-    if (!dw_.empty()) return;
-    static constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());
-    auto mod = modint_traits<mod_t>::get_mod();
-    int lv   = bsf(mod - 1);
+private:
+  NTT4() {
+    constexpr mod_t g(modint_traits<mod_t>::get_primitive_root_prime());
+    constexpr auto mod = modint_traits<mod_t>::get_mod();
+    constexpr int lv   = bsf(mod - 1);
     assert(lv >= 3);
-    rt_.resize(lv - 1), irt_.resize(lv - 1), dw_.resize(lv - 2), idw_.resize(lv - 2);
     rt_.back() = g.pow(mod >> lv);
     for (int i = lv - 3; i >= 0; --i) rt_[i] = rt_[i + 1] * rt_[i + 1];
     irt_.back() = mod_t(1) / rt_.back();
@@ -58,8 +36,32 @@ public:
     for (int i = 1; i < lv - 2; ++i) idw_[i] = idw_[i - 1] * rt_[i - 1] * irt_[i + 1];
   }
 
-  static void dft(int n, mod_t *x) {
-    set_root();
+public:
+  ~NTT4()            = default;
+  NTT4(const NTT4 &) = delete;
+  NTT4 &operator=(const NTT4 &) = delete;
+
+  static NTT4 &get_instance() {
+    static NTT4 ntt4;
+    return ntt4;
+  }
+
+  /**
+   * @brief 返回二进制中尾零的个数，若为零也会返回零
+   * @see https://docs.microsoft.com/en-us/cpp/intrinsics/bitscanforward-bitscanforward64
+   * @see https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html
+   * @param n
+   * @return int
+   */
+  static constexpr int bsf(std::uint64_t n) {
+    constexpr int convert[64] = {0,  1,  2,  53, 3,  7,  54, 27, 4,  38, 41, 8,  34, 55, 48, 28,
+                                 62, 5,  39, 46, 44, 42, 22, 9,  24, 35, 59, 56, 49, 18, 29, 11,
+                                 63, 52, 6,  26, 37, 40, 33, 47, 61, 45, 43, 21, 23, 58, 17, 10,
+                                 51, 25, 36, 32, 60, 20, 57, 16, 50, 31, 19, 15, 30, 14, 13, 12};
+    return convert[(n & ~(n - 1)) * 0x022fdd63cc95386d >> 58];
+  }
+
+  void dft(int n, mod_t *x) {
     int bn           = bsf(n);
     const mod_t imag = rt_[0];
     if (bn & 1)
@@ -104,8 +106,7 @@ public:
     }
   }
 
-  static void idft(int n, mod_t *x) {
-    set_root();
+  void idft(int n, mod_t *x) {
     int bn           = bsf(n);
     const mod_t imag = rt_[0];
     for (int i = 4; i <= (n >> (bn & 1)); i <<= 2) {
@@ -154,7 +155,8 @@ public:
   }
 
 private:
-  static inline std::vector<mod_t> rt_, irt_, dw_, idw_;
+  std::array<mod_t, bsf(modint_traits<mod_t>::get_mod() - 1) - 1> rt_, irt_;
+  std::array<mod_t, bsf(modint_traits<mod_t>::get_mod() - 1) - 2> dw_, idw_;
 };
 
 } // namespace lib
