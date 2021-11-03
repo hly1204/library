@@ -209,15 +209,15 @@ public:
     dft(len, rhs_cpy.data());
     for (;;) {
       for (int i = 0; i != len; ++i) cpy[i] *= rhs_cpy[i ^ 1];
-      if (k & 1) NTT<mod_t>::odd_dft(len, cpy.data());
+      if (k & 1) NTT<mod_t>::get_instance().odd_dft(len, cpy.data());
       else
-        NTT<mod_t>::even_dft(len, cpy.data());
+        NTT<mod_t>::get_instance().even_dft(len, cpy.data());
       for (int i = 0; i != len; i += 2) rhs_cpy[i] = rhs_cpy[i + 1] = rhs_cpy[i] * rhs_cpy[i + 1];
-      NTT<mod_t>::even_dft(len, rhs_cpy.data());
+      NTT<mod_t>::get_instance().even_dft(len, rhs_cpy.data());
       k >>= 1;
       if (k <= offset) break;
-      NTT<mod_t>::dft_doubling(len >> 1, cpy.data());
-      NTT<mod_t>::dft_doubling(len >> 1, rhs_cpy.data());
+      NTT<mod_t>::get_instance().dft_doubling(len >> 1, cpy.data());
+      NTT<mod_t>::get_instance().dft_doubling(len >> 1, rhs_cpy.data());
     }
     cpy.resize(len >> 1);
     rhs_cpy.resize(len >> 1);
