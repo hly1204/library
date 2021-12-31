@@ -92,13 +92,60 @@ $$
 
 ## Cipolla 算法
 
-与上述问题相同，我们寻找一个多项式 $f(x)=x^2-tx+a\in\mathbb{F}_p[x]$ 且 $f(x)$ 在 $\mathbb{F}_p[x]$ 上不可约（即 $t^2-4a$ 为二次非剩余，使用随机方法寻找 $t$ 期望需要两次，但是这里的证明不是“显然”的），此时 $\mathbb{F}_p[x]/f(x)$ 是一个有 $p^2$ 个元素的域。我们计算 $x^{(p+1)/2}\bmod{f(x)}$ 为一个解。
+部分同余符号省略。
+
+设 $p$ 为奇素数，令 $a_0,a_1,r,u\in \mathbb{F} _ p$ 且 $u$ 为二次剩余， $r^2-u$ 为二次非剩余且 $a_0+a_1x$ 为 $r-x$ 在环 $\mathbb{F} _ p[x]/(x^2-(r^2-u))$ 中的 $(q+1)/2$ 次幂。那么 $a_1=0$ 且 $a_0^2=u$。
+
+证明：
+
+$$
+\begin{aligned}
+x^q&=x(x^2)^{(q-1)/2}\\
+&=x(r^2-u)^{(q-1)/2} \quad (\because x^2\equiv r^2-u\pmod{(x^2-(r^2-u))})\\
+&=-x \quad (\because \text{Euler's criterion})
+\end{aligned}
+$$
+
+所以 $(r-x)^q=r+x$ 。因此
+
+$$
+\begin{aligned}
+a_0^2+a_1^2(r^2-u)+2a_0a_1x&=(a_0+a_1x)^2\\
+&=(r-x)^{q+1}\\
+&=(r+x)(r-x)\\
+&=r^2-x^2\\
+&=u
+\end{aligned}
+$$
+
+若 $a_1\neq 0$ 则 $a_0=0$，所以 $r^2-u=u/a_1^2$ 所以 $r^2-u$ 为二次剩余，不符合定义。因此 $a_1=0$ 且 $a_0^2=u$。
 
 该算法的时间是 $O(\log p)$ 的，快于上述 Tonelli-Shanks 算法（时间为 $O(\log^2 p)$ 若乘法为 $O(1)$ ）。
 
+## Legendre 算法
+
+部分同余符号省略。
+
+设 $p$ 为奇素数，令 $a_0,a_1,r,u\in \mathbb{F} _ p$ 且 $u$ 为二次剩余，$r^2-u$ 为二次非剩余且 $a_0+a_1x$ 为 $r-x$ 在环 $\mathbb{F} _ p[x]/(x^2-u)$ 中的 $(q-1)/2$ 次幂。那么 $a_0=0$ 且 $a_1^{-2}=u$。
+
+证明：考虑选择一个 $u$ 的平方根 $v$ 。那么 $(r-v)(r+v)=r^2-v^2=r^2-u$ 为二次非剩余，所以 $(r-v)^{(q-1)/2}(r+v)^{(q-1)/2}=-1$ 。
+
+存在环态射（ morphism ） $\varphi :\mathbb{F} _ p[x]/(x^2-u)\to \mathbb{F} _ p\times \mathbb{F} _ p$ （我认为可以理解为 $\mathbb{F} _ p[x]/(x\pm u)$ ）将 $x$ 映射为 $(v,-v)$ 那么
+
+$$
+\begin{aligned}
+(a_0+a_1v,a_0-a_1v)&=\varphi (a_0+a_1x)\\
+&=\varphi (r-x)^{(q-1)/2}\\
+&=((r-v)^{(q-1)/2},(r+v)^{(q-1)/2})\\
+&=(\pm 1,\mp 1)
+\end{aligned}
+$$
+
+所以 $2a_0=(\pm 1)+(\mp 1)=0$ 且 $2a_1v=(\pm 1)-(\mp 1)=\pm 2$ 。
+
 ## Hensel lifting 求模素数幂次平方根的逆元
 
-与牛顿迭代法一样，构造 $ f(x)=\frac{1}{x^{2}}-a$ ，一次迭代可表示为 $x_{n+1}=x_{n}-\frac{1/x_{n}^{2}-a}{-2/x_{n}^{3}}=x_{n}+x_{n}\left(\frac{1-ax_{n}^{2}} {2}\right)$ 。令 $\Phi(x)=x+x\left(\frac{1-ax^{2}}{2}\right)$ 。假设我们已经得到 $a$ 在模 **奇** 素数 $p$ 意义下的平方根的逆元 $b$ 满足 $b^{2}\equiv a^{-1}\pmod{p}$ ，认为 $(\Phi(b))^{2}\equiv a^{-1}\pmod{p^{2}}$ 。因为存在某个整数 $k$ 满足 $ab^{2}\equiv 1+kp\pmod{p^{2}}$ ，记 $b^{2}\equiv a^{-1}(1+kp)\pmod{p^{2}}$ ，有
+也称为牛顿迭代法。构造 $ f(x)=\frac{1}{x^{2}}-a$ ，一次迭代可表示为 $x_{n+1}=x_{n}-\frac{1/x_{n}^{2}-a}{-2/x_{n}^{3}}=x_{n}+x_{n}\left(\frac{1-ax_{n}^{2}} {2}\right)$ 。令 $\Phi(x)=x+x\left(\frac{1-ax^{2}}{2}\right)$ 。假设我们已经得到 $a$ 在模 **奇** 素数 $p$ 意义下的平方根的逆元 $b$ 满足 $b^{2}\equiv a^{-1}\pmod{p}$ ，认为 $(\Phi(b))^{2}\equiv a^{-1}\pmod{p^{2}}$ 。因为存在某个整数 $k$ 满足 $ab^{2}\equiv 1+kp\pmod{p^{2}}$ ，记 $b^{2}\equiv a^{-1}(1+kp)\pmod{p^{2}}$ ，有
 
 $$
 \begin{aligned}
@@ -115,8 +162,20 @@ $\square$
 
 不直接求其平方根而求其平方根的逆元是因为求平方根过程中也要维护逆元。
 
+尽管 Cipolla 算法和 Tonelli-Shanks 算法都可以扩展到在模奇素数 $p$ 的幂次意义下求平方根，但我认为还是采用牛顿迭代法更好。
+
+## 重新认识 Tonelli-Shanks 算法
+
+TODO
+
+尽管上文描述了 Tonelli-Shanks 算法，但其距离算法的本质太远，仅仅是算法流程，该算法本质是基于离散对数的算法，而 Adleman-Manders-Miller 算法是 Tonelli-Shanks 算法的一种扩张。
+
 ## 参考文献
 
 - Jeremy Booher. [Square Roots in Finite Fields and Quadratic Nonresidues](https://www.math.arizona.edu/~jeremybooher/expos/sqr_qnr.pdf).
 - A. Menezes, P. van Oorschot and S. Vanstone. [Handbook of Applied Cryptography](http://cacr.uwaterloo.ca/hac/), 1996.
-
+- [Nyaan's Library](https://nyaannyaan.github.io/library/modulo/mod-kth-root.hpp)
+- [Tonelli-Shanks algorithm（sugarknriさん、Min_25さん、37zigenの解法）](https://yukicoder.me/problems/no/981/editorial)
+- [Tonelli-Shanks のアルゴリズム - 37zigenのHP](https://37zigen.com/tonelli-shanks-algorithm/)
+- Adleman, L. M., K. Manders, and G. Miller: 1977, `On taking roots in finite fields'. In: 18th IEEE Symposium on Foundations of Computer Science. pp. 175-177
+- Daniel. J. Bernstein. Faster Square Roots in Annoying Finite Fields.
