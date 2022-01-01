@@ -29,7 +29,7 @@ std::vector<mod_t> sqrt_mod_prime(const mod_t x) {
   }
 
   std::mt19937 gen(std::random_device{}());
-  std::uniform_int_distribution<std::uint32_t> dis(2, p - 1);
+  std::uniform_int_distribution<decltype(p)> dis(2, p - 1);
 
   const mod_t four(mod_t(4) * x);
   mod_t t, w2;
