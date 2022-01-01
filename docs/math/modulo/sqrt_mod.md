@@ -130,7 +130,7 @@ $$
 
 证明：考虑选择一个 $u$ 的平方根 $v$ 。那么 $(r-v)(r+v)=r^2-v^2=r^2-u$ 为二次非剩余，所以 $(r-v)^{(p-1)/2}(r+v)^{(p-1)/2}=-1$ 。
 
-存在环态射（ morphism ） $\varphi :\mathbb{F} _ p[x]/(x^2-u)\to \mathbb{F} _ p\times \mathbb{F} _ p$ （我认为可以理解为 $\mathbb{F} _ p[x]/(x\pm u)$ ）将 $x$ 映射为 $(v,-v)$ 那么
+存在环态射（ morphism ） $\varphi :\mathbb{F} _ p[x]/(x^2-u)\to \mathbb{F} _ p\times \mathbb{F} _ p$ （我认为可以理解为 $\mathbb{F} _ p[x]/(x\pm v)$ ）将 $x$ 映射为 $(v,-v)$ 那么
 
 $$
 \begin{aligned}
@@ -210,7 +210,7 @@ $$
 
 所以 $g$ 的阶为 $2^n$ ；且 $uv^2=u^m$ 为 $1$ 的一个 $2^n$ 次根（因为 $u^{m\cdot 2^n}=u^{p-1}=1$ 显然），所以它是 $g$ 的幂次，记作 $g^e$ 。若 $u$ 为二次剩余则 $g^{2^{n-1}\cdot e}=u^{(p-1)/2}=1$ 所以 $e$ 为偶数且 $(uvg^{-e/2})^2=u^2v^2g^{-e}=u$ 。
 
-我们要借助离散对数来计算 $e$ 。 Tonelli 和 Shanks 通过一个 bit 一个 bit 来计算 $e$ 。令 $e$ 在二进制下表示为 $e=e_0+2e_1+4e_2+\cdots$ 且 $e_k\in\lbrace 0,1\rbrace$ 。我们假设 $e_0=0$ （因为 $e$ 为偶数才能使得 $u$ 是二次剩余，这由 Legendre 符号给出）然后计算 $e_1$ 后 $e_2$ 等等。给出 $g^e$ 和 $e_0,\dots e _ {k-1}$ ， Tonelli 和 Shanks 使用下面的方法来计算 $e_k$
+我们要借助离散对数来计算 $e$ 。 Tonelli 和 Shanks 通过一个 bit 一个 bit 来计算 $e$ 。令 $e$ 在二进制下表示为 $e=e_0+2e_1+4e_2+\cdots$ 且 $e_k\in\lbrace 0,1\rbrace$ 。我们假设 $e_0=0$ （因为 $e$ 为偶数才能使得 $u$ 是二次剩余，这由 Legendre 符号给出）然后计算 $e_1$ 后 $e_2$ 等等。给出 $g^e$ 和 $e_0,\dots ,e _ {k-1}$ ， Tonelli 和 Shanks 使用下面的方法来计算 $e_k$
 
 $$
 \left(g^eg^{-(e\bmod 2^k)}\right)^{2^{n-1-k}}=g^{2^{n-1}\cdot e_k}=
