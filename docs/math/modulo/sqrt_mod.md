@@ -94,24 +94,24 @@ $$
 
 部分同余符号省略。
 
-设 $p$ 为奇素数，令 $a_0,a_1,r,u\in \mathbb{F} _ p$ 且 $u$ 为二次剩余， $r^2-u$ 为二次非剩余且 $a_0+a_1x$ 为 $r-x$ 在环 $\mathbb{F} _ p[x]/(x^2-(r^2-u))$ 中的 $(q+1)/2$ 次幂。那么 $a_1=0$ 且 $a_0^2=u$。
+设 $p$ 为奇素数，令 $a_0,a_1,r,u\in \mathbb{F} _ p$ 且 $u$ 为二次剩余， $r^2-u$ 为二次非剩余且 $a_0+a_1x$ 为 $r-x$ 在环 $\mathbb{F} _ p[x]/(x^2-(r^2-u))$ 中的 $(p+1)/2$ 次幂。那么 $a_1=0$ 且 $a_0^2=u$。
 
 证明：
 
 $$
 \begin{aligned}
-x^q&=x(x^2)^{(q-1)/2}\\
-&=x(r^2-u)^{(q-1)/2} \quad (\because x^2\equiv r^2-u\pmod{(x^2-(r^2-u))})\\
+x^p&=x(x^2)^{(p-1)/2}\\
+&=x(r^2-u)^{(p-1)/2} \quad (\because x^2\equiv r^2-u\pmod{(x^2-(r^2-u))})\\
 &=-x \quad (\because \text{Euler's criterion})
 \end{aligned}
 $$
 
-所以 $(r-x)^q=r+x$ 。因此
+所以 $(r-x)^p=r+x$ 。因此
 
 $$
 \begin{aligned}
 a_0^2+a_1^2(r^2-u)+2a_0a_1x&=(a_0+a_1x)^2\\
-&=(r-x)^{q+1}\\
+&=(r-x)^{p+1}\\
 &=(r+x)(r-x)\\
 &=r^2-x^2\\
 &=u
@@ -126,22 +126,40 @@ $$
 
 部分同余符号省略。
 
-设 $p$ 为奇素数，令 $a_0,a_1,r,u\in \mathbb{F} _ p$ 且 $u$ 为二次剩余，$r^2-u$ 为二次非剩余且 $a_0+a_1x$ 为 $r-x$ 在环 $\mathbb{F} _ p[x]/(x^2-u)$ 中的 $(q-1)/2$ 次幂。那么 $a_0=0$ 且 $a_1^{-2}=u$。
+设 $p$ 为奇素数，令 $a_0,a_1,r,u\in \mathbb{F} _ p$ 且 $u$ 为二次剩余，$r^2-u$ 为二次非剩余且 $a_0+a_1x$ 为 $r-x$ 在环 $\mathbb{F} _ p[x]/(x^2-u)$ 中的 $(p-1)/2$ 次幂。那么 $a_0=0$ 且 $a_1^{-2}=u$。
 
-证明：考虑选择一个 $u$ 的平方根 $v$ 。那么 $(r-v)(r+v)=r^2-v^2=r^2-u$ 为二次非剩余，所以 $(r-v)^{(q-1)/2}(r+v)^{(q-1)/2}=-1$ 。
+证明：考虑选择一个 $u$ 的平方根 $v$ 。那么 $(r-v)(r+v)=r^2-v^2=r^2-u$ 为二次非剩余，所以 $(r-v)^{(p-1)/2}(r+v)^{(p-1)/2}=-1$ 。
 
 存在环态射（ morphism ） $\varphi :\mathbb{F} _ p[x]/(x^2-u)\to \mathbb{F} _ p\times \mathbb{F} _ p$ （我认为可以理解为 $\mathbb{F} _ p[x]/(x\pm u)$ ）将 $x$ 映射为 $(v,-v)$ 那么
 
 $$
 \begin{aligned}
 (a_0+a_1v,a_0-a_1v)&=\varphi (a_0+a_1x)\\
-&=\varphi (r-x)^{(q-1)/2}\\
-&=((r-v)^{(q-1)/2},(r+v)^{(q-1)/2})\\
+&=\varphi (r-x)^{(p-1)/2}\\
+&=((r-v)^{(p-1)/2},(r+v)^{(p-1)/2})\\
 &=(\pm 1,\mp 1)
 \end{aligned}
 $$
 
 所以 $2a_0=(\pm 1)+(\mp 1)=0$ 且 $2a_1v=(\pm 1)-(\mp 1)=\pm 2$ 。
+
+## Pocklington 算法
+
+沿用 Legendre 算法的定义和 $p\in 1+4\mathbb{Z}$ 且记 $b_0+b_1x$ 为 $r-x$ 在 $\mathbb{F} _ p[x]/(x^2-u)$ 中的 $(p-1)/4$ 次幂。那么 $(b_0/b_1)^2=-u$ 。
+
+证明：
+
+$$
+\begin{aligned}
+b_0^2+b_1^2u+2b_0b_1x&=(b_0+b_1x)^2\\
+&=a_0+a_1x\\
+&=a_1x
+\end{aligned}
+$$
+
+根据二次互反律我们知道 $-1$ 在 $p\bmod{4}=1$ 时是模 $p$ 意义下的二次剩余。
+
+这个算法有更通用的说法，详见参考文献。
 
 ## Hensel lifting 求模素数幂次平方根的逆元
 
@@ -166,9 +184,49 @@ $\square$
 
 ## 重新认识 Tonelli-Shanks 算法
 
-TODO
-
 尽管上文描述了 Tonelli-Shanks 算法，但其距离算法的本质太远，仅仅是算法流程，该算法本质是基于离散对数的算法，而 Adleman-Manders-Miller 算法是 Tonelli-Shanks 算法的一种扩张。
+
+依然考虑奇素数 $p$ 和 $p-1=2^n\cdot m$ 其中 $m$ 为奇数。令 $g,r,u,v\in\mathbb{F} _ p$ 且 $g=r^m$ 且 $r$ 为二次非剩余， $u$ 非零和 $v=u^{(m-1)/2}$ 。那么存在整数 $e\in \lbrace 0,1,2,\dots ,2^n-1\rbrace$ 满足 $uv^2=g^e$ 。若 $u$ 为二次剩余，那么 $e$ 为偶数且 $(uvg^{-e/2})^2=u$ 。
+
+证明：
+
+$$
+\begin{aligned}
+g^{2^n}&=r^{2^n\cdot m}\\
+&=r^{p-1}\\
+&=1
+\end{aligned}
+$$
+
+但是
+
+$$
+\begin{aligned}
+g^{2^{n-1}}&=r^{2^{n-1}\cdot m}\\
+&=r^{(p-1)/2}\\
+&=-1
+\end{aligned}
+$$
+
+所以 $g$ 的阶为 $2^n$ ；且 $uv^2=u^m$ 为 $1$ 的一个 $2^n$ 次根（因为 $u^{m\cdot 2^n}=u^{p-1}=1$ 显然），所以它是 $g$ 的幂次，记作 $g^e$ 。若 $u$ 为二次剩余则 $g^{2^{n-1}\cdot e}=u^{(p-1)/2}=1$ 所以 $e$ 为偶数且 $(uvg^{-e/2})^2=u^2v^2g^{-e}=u$ 。
+
+我们要借助离散对数来计算 $e$ 。 Tonelli 和 Shanks 通过一个 bit 一个 bit 来计算 $e$ 。令 $e$ 在二进制下表示为 $e=e_0+2e_1+4e_2+\cdots$ 且 $e_k\in\lbrace 0,1\rbrace$ 。我们假设 $e_0=0$ （因为 $e$ 为偶数才能使得 $u$ 是二次剩余，这由 Legendre 符号给出）然后计算 $e_1$ 后 $e_2$ 等等。给出 $g^e$ 和 $e_0,\dots e _ {k-1}$ ， Tonelli 和 Shanks 使用下面的方法来计算 $e_k$
+
+$$
+\left(g^eg^{-(e\bmod 2^k)}\right)^{2^{n-1-k}}=g^{2^{n-1}\cdot e_k}=
+\begin{cases}
+1&\text{if }e_k=0\text{,}\\
+-1&\text{if }e_k=1\text{.}
+\end{cases}
+$$
+
+Tonelli 的算法还要更加复杂一些，上面的方法由 Shanks 提出。
+
+聪明的您可能发现，和上面验证阶的算法本质是一样的！
+
+通过一些预处理，我们可以一次算出 $e$ 的多个 bit ，详见参考文献。
+
+另外 37zigen's HP 中对于该算法的介绍也非常漂亮，和上述解释是一致的，但是使用了 index 来替代阶，我们使用 $(\mathbb{F} _ p\setminus \lbrace 0\rbrace, \times)\cong (\mathbb{Z}/2^n\mathbb{Z}\times \mathbb{Z}/m\mathbb{Z}, +)$ 将乘法与 index 的加法一一对应，左边也常用记号 $\mathbb{F} _ p^{\times}=\mathbb{F} _ p\setminus \lbrace 0\rbrace$ 表示。
 
 ## 参考文献
 

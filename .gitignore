@@ -10,3 +10,6 @@
 
 # 过滤 local_test 文件夹
 /local_test
+
+# 过滤 .idea 文件夹
+/.idea
