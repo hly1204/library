@@ -26,7 +26,7 @@ std::vector<mod_t> sqrt_mod_prime(const mod_t u) {
   mod_t r(dis(gen)); // 随机一个 r 满足 r^2-u 为二次非剩余
   while ((r * r - u).pow(p >> 1) != MINUS_ONE) r = dis(gen);
 
-  // 计算 (r-x)^((p-1)/2) mod (x^2-u) 即为解的倒数
+  // 计算 (r-x)^((p-1)/2) mod (x^2-u) 结果 x 的系数即为解的倒数
   mod_t a(ONE), b(ZERO), c(r), d(MINUS_ONE); // res=a+bx
 
   for (auto e = (p - 1) >> 1; e != 0; e >>= 1) {
