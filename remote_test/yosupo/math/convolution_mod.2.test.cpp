@@ -18,11 +18,9 @@ int main() {
   std::vector<mint> A(n), B(m), C, D;
   for (auto &i : A) std::cin >> i;
   for (auto &i : B) std::cin >> i;
-  lib::RelaxedConvolution<mint> rc(C, D);
-  for (int i = 0; i < n + m - 1; ++i) {
-    C.emplace_back(i < n ? A[i] : mint(0));
-    D.emplace_back(i < m ? B[i] : mint(0));
-    std::cout << rc.next() << ' ';
-  }
+  lib::RelaxedConvolution<mint> rc(
+      [&A](int i, const auto &) { return i < static_cast<int>(A.size()) ? A[i] : mint(0); },
+      [&B](int i, const auto &) { return i < static_cast<int>(B.size()) ? B[i] : mint(0); });
+  for (int i = 0; i < n + m - 1; ++i) std::cout << rc[i] << ' ';
   return 0;
 }

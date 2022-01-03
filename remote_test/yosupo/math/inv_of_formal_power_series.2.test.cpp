@@ -15,14 +15,13 @@ int main() {
   using mint = lib::MontModInt<998244353>;
   int n;
   std::cin >> n;
-  std::vector<mint> A(n), B;
+  std::vector<mint> A(n);
   for (auto &i : A) std::cin >> i;
   mint iv = 1 / A[0];
-  lib::SemiRelaxedConvolution<mint> rc(A, B, [&iv](int idx, const std::vector<mint> &contri) {
+  lib::SemiRelaxedConvolution rc(A, [&iv](int idx, const std::vector<mint> &contri) {
     if (idx == 0) return iv;
     return -contri[idx] * iv;
   });
-  while (n--) rc.next();
-  for (auto i : B) std::cout << i << ' ';
+  for (auto i : rc.await(n).get_multiplier()) std::cout << i << ' ';
   return 0;
 }
