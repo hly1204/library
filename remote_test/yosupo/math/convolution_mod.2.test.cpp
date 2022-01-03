@@ -15,7 +15,7 @@ int main() {
   using mint = lib::MontModInt<998244353>;
   int n, m;
   std::cin >> n >> m;
-  std::vector<mint> A(n), B(m), C, D;
+  std::vector<mint> A(n), B(m);
   for (auto &i : A) std::cin >> i;
   for (auto &i : B) std::cin >> i;
   lib::RelaxedConvolution<mint> rc(

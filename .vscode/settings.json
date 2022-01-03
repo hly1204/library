@@ -1,6 +1,6 @@
 {
   "editor.tabSize": 2,
-  "editor.fontFamily": "'Cascadia Code', 'Courier New', 微软雅黑",
+  "editor.fontFamily": "'JetBrains Mono', 'Courier New', '微软雅黑'",
   "editor.defaultFormatter": "xaver.clang-format",
   "editor.smoothScrolling": true,
   "editor.cursorBlinking": "expand",
@@ -8,7 +8,7 @@
   "editor.cursorStyle": "underline",
   "editor.snippetSuggestions": "top",
   "editor.wordWrap": "on",
-  "editor.codeLensFontFamily": "Cascadia Code, 'Courier New', 微软雅黑",
+  "editor.codeLensFontFamily": "'JetBrains Mono', 'Courier New', '微软雅黑'",
   "editor.minimap.enabled": false,
   "editor.bracketPairColorization.enabled": true,
   "[markdown]": {
@@ -27,5 +27,4 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.acceptSuggestionOnEnter": "smart",
-  
 }
