@@ -94,7 +94,7 @@ $$
 
 部分同余符号省略。
 
-设 $p$ 为奇素数，令 $a_0,a_1,r,u\in \mathbb{F} _ p$ 且 $u$ 为二次剩余， $r^2-u$ 为二次非剩余且 $a_0+a_1x$ 为 $r-x$ 在环 $\mathbb{F} _ p[x]/(x^2-(r^2-u))$ 中的 $(p+1)/2$ 次幂。那么 $a_1=0$ 且 $a_0^2=u$。
+设 $p$ 为奇素数，令 $a_0,a_1,r,u\in \mathbb{F} _ p$ 且 $u$ 为二次剩余， $r^2-u$ 为二次非剩余且 $a_0+a_1x$ 为 $r-x$ 在环 $\mathbb{F} _ p\lbrack x\rbrack/(x^2-(r^2-u))$ 中的 $(p+1)/2$ 次幂。那么 $a_1=0$ 且 $a_0^2=u$。
 
 证明：
 
@@ -122,15 +122,17 @@ $$
 
 该算法的时间是 $O(\log p)$ 的，快于上述 Tonelli-Shanks 算法（时间为 $O(\log^2 p)$ 若乘法为 $O(1)$ ）。
 
+另一种 Cipolla 算法的表述是找到不可约多项式 $f(x)=x^2-tx+u\in \mathbb{F} _ p\lbrack x\rbrack$ （根据求根公式，只需 $t^2-4u$ 为二次非剩余即可），此时在 $\mathbb{F} _ p\lbrack x\rbrack /f(x)$ 中计算 $x^{(p+1)/2}$ 即为解。令 $\alpha$ 为 $f(x)$ 的根，记 $\mathbb{F} _ p(\alpha)=\lbrace a+b\alpha\mid a,b\in\mathbb{F} _ p\rbrace$ 发现对于加法不必说，对于乘法来说其满足 $\alpha ^2=t\alpha -u$ 运算规则与在 $\mathbb{F} _ p\lbrack x\rbrack /f(x)$ 中是一致的，那么考虑 $\left(\frac{t+\beta}{2}\right)^{p+1}=(t+\beta)^p\cdot (t+\beta)/4$ 其中 $\beta^2=t^2-4u$ ，通过二项式定理可以证明 $(t+\beta)^p=t-\beta$ 那么 $(t+\beta)^p\cdot (t+\beta)/4=(t^2-\beta^2)/4=u$ 即得（显然也可以发现存在同构映射可以在 $\mathbb{F} _ p(\alpha)$ 和 $\mathbb{F} _ p(\beta)$ 互相转换）。这种方法本质和上述方法一致，但是形如 $x^n\bmod{f(x)}$ 容易让人联想到常系数其次线性递推的 Fiduccia 算法。
+
 ## Legendre 算法
 
 部分同余符号省略。
 
-设 $p$ 为奇素数，令 $a_0,a_1,r,u\in \mathbb{F} _ p$ 且 $u$ 为二次剩余，$r^2-u$ 为二次非剩余且 $a_0+a_1x$ 为 $r-x$ 在环 $\mathbb{F} _ p[x]/(x^2-u)$ 中的 $(p-1)/2$ 次幂。那么 $a_0=0$ 且 $a_1^{-2}=u$。
+设 $p$ 为奇素数，令 $a_0,a_1,r,u\in \mathbb{F} _ p$ 且 $u$ 为二次剩余，$r^2-u$ 为二次非剩余且 $a_0+a_1x$ 为 $r-x$ 在环 $\mathbb{F} _ p\lbrack x\rbrack/(x^2-u)$ 中的 $(p-1)/2$ 次幂。那么 $a_0=0$ 且 $a_1^{-2}=u$。
 
 证明：考虑选择一个 $u$ 的平方根 $v$ 。那么 $(r-v)(r+v)=r^2-v^2=r^2-u$ 为二次非剩余，所以 $(r-v)^{(p-1)/2}(r+v)^{(p-1)/2}=-1$ 。
 
-存在环态射（ morphism ） $\varphi :\mathbb{F} _ p[x]/(x^2-u)\to \mathbb{F} _ p\times \mathbb{F} _ p$ （我认为可以理解为 $\mathbb{F} _ p[x]/(x\pm v)$ ）将 $x$ 映射为 $(v,-v)$ 那么
+存在环态射（ morphism ） $\varphi :\mathbb{F} _ p\lbrack x\rbrack/(x^2-u)\to \mathbb{F} _ p\times \mathbb{F} _ p$ （我认为可以理解为 $\mathbb{F} _ p\lbrack x\rbrack/(x\pm v)$ ）将 $x$ 映射为 $(v,-v)$ 那么
 
 $$
 \begin{aligned}
@@ -145,7 +147,7 @@ $$
 
 ## Pocklington 算法
 
-沿用 Legendre 算法的定义和 $p\in 1+4\mathbb{Z}$ 且记 $b_0+b_1x$ 为 $r-x$ 在 $\mathbb{F} _ p[x]/(x^2-u)$ 中的 $(p-1)/4$ 次幂。那么 $(b_0/b_1)^2=-u$ 。
+沿用 Legendre 算法的定义和 $p\in 1+4\mathbb{Z}$ 且记 $b_0+b_1x$ 为 $r-x$ 在 $\mathbb{F} _ p\lbrack x\rbrack/(x^2-u)$ 中的 $(p-1)/4$ 次幂。那么 $(b_0/b_1)^2=-u$ 。
 
 证明：
 
