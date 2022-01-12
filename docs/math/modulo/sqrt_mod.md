@@ -124,6 +124,8 @@ $$
 
 另一种 Cipolla 算法的表述是找到不可约多项式 $f(x)=x^2-tx+u\in \mathbb{F} _ p\lbrack x\rbrack$ （根据求根公式，只需 $t^2-4u$ 为二次非剩余即可），此时在 $\mathbb{F} _ p\lbrack x\rbrack /f(x)$ 中计算 $x^{(p+1)/2}$ 即为解。令 $\alpha$ 为 $f(x)$ 的根，记 $\mathbb{F} _ p(\alpha)=\lbrace a+b\alpha\mid a,b\in\mathbb{F} _ p\rbrace$ 发现对于加法不必说，对于乘法来说其满足 $\alpha ^2=t\alpha -u$ 运算规则与在 $\mathbb{F} _ p\lbrack x\rbrack /f(x)$ 中是一致的，那么考虑 $\left(\frac{t+\beta}{2}\right)^{p+1}=(t+\beta)^p\cdot (t+\beta)/4$ 其中 $\beta^2=t^2-4u$ ，通过二项式定理可以证明 $(t+\beta)^p=t-\beta$ 那么 $(t+\beta)^p\cdot (t+\beta)/4=(t^2-\beta^2)/4=u$ 即得（显然也可以发现存在同构映射可以在 $\mathbb{F} _ p(\alpha)$ 和 $\mathbb{F} _ p(\beta)$ 互相转换）。这种方法本质和上述方法一致，但是形如 $x^n\bmod{f(x)}$ 容易让人联想到常系数其次线性递推的 Fiduccia 算法。
 
+后来我写下了这篇文章 <https://codeforces.com/blog/entry/98881> 。在查找一些资料后发现在最后一篇参考文献中详细讲解了这种算法，但是其关于递推式的导入可能对于像我这样的初学者来说比较突兀，而通过上面 Fiduccia 算法和 Bostan-Mori 算法的转换则显得更自然。尽管我的写法不是最优的，但暂时还是决定保留这种写法，因为证明简单。
+
 ## Legendre 算法
 
 部分同余符号省略。
@@ -239,3 +241,5 @@ Tonelli 的算法还要更加复杂一些，上面的方法由 Shanks 提出。
 - [Tonelli-Shanks のアルゴリズム - 37zigenのHP](https://37zigen.com/tonelli-shanks-algorithm/)
 - Adleman, L. M., K. Manders, and G. Miller: 1977, `On taking roots in finite fields'. In: 18th IEEE Symposium on Foundations of Computer Science. pp. 175-177
 - Daniel. J. Bernstein. Faster Square Roots in Annoying Finite Fields.
+- S. Müller, On the computation of square roots in finite fields, Design, Codes and Cryptography,
+Vol.31, pp. 301-312, 2004
