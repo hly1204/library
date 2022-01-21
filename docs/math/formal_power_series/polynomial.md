@@ -101,4 +101,8 @@ int pow(int x, int e) {
 }
 ```
 
-这部分需要完善，目前在 `if (e & 1) {}` 的语句中仍有可能的冗余计算。
+这部分需要完善，目前在 `if (e & 1) {}` 的语句中仍有可能的冗余计算。如果有兴趣，可以阅读参考文献中的内容，使用加法链减少乘法次数。
+
+## 参考文献
+
+- Daniel J. Bernstein. ["Pippenger's exponentiation algorithm."](http://cr.yp.to/papers.html#pippenger) To be incorporated into author's High-speed cryptography book.
