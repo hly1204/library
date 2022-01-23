@@ -29,30 +29,27 @@ std::vector<mod_t> sqrt_mod_prime(const mod_t x) {
   }
 
   std::mt19937 gen(std::random_device{}());
-  std::uniform_int_distribution<std::uint32_t> dis(2, p - 1);
+  std::uniform_int_distribution<decltype(p)> dis(2, p - 1);
 
   const mod_t four(mod_t(4) * x);
   mod_t t, w2;
   do {
     t = mod_t(dis(gen)), w2 = t * t - four;
-    if (w2 == ZERO) { // 足够幸运时
+    if (w2 == ZERO) {
       t /= 2;
       return {t, -t};
     }
   } while (w2.pow(p >> 1) != MINUS_ONE);
 
-  mod_t a(ONE), b(ZERO), c(ZERO), d(ONE);
+  mod_t k0(ONE), k1(ZERO), k2(-t), k3(x);
 
-  for (auto e = (p + 1) >> 1; e != 0; e >>= 1) {
-    if (e & 1) {
-      mod_t bd       = b * d;
-      std::tie(a, b) = std::make_pair(a * c - bd * x, a * d + b * c + bd * t);
-    }
-    mod_t dd = d * d, cd = c * d;
-    std::tie(c, d) = std::make_pair(c * c - dd * x, cd + cd + dd * t);
+  for (auto e = (p + 1) >> 1;;) {
+    if (e & 1) k0 = k1 - k0 * k2, k1 *= k3;
+    else
+      k1 = k0 * k3 - k1 * k2;
+    k2 = k3 + k3 - k2 * k2, k3 *= k3;
+    if ((e >>= 1) == 0) return {k0, -k0};
   }
-
-  return {a, -a};
 }
 
 } // namespace lib::internal

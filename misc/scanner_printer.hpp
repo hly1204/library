@@ -32,9 +32,9 @@ public:
   scan(T &x) {
     x = static_cast<T>(0);
     while (*buffer_head_ != '-' && std::isspace(*buffer_head_)) ++buffer_head_;
-    bool is_minus         = *buffer_head_ == '-' && ++buffer_head_;
+    bool is_neg           = *buffer_head_ == '-' && ++buffer_head_;
     char *old_buffer_head = buffer_head_;
-    if (is_minus)
+    if (is_neg)
       while (std::isdigit(*buffer_head_)) x = x * static_cast<T>(10) - (*buffer_head_++ - '0');
     else
       while (std::isdigit(*buffer_head_)) x = x * static_cast<T>(10) + (*buffer_head_++ - '0');
@@ -51,11 +51,13 @@ public:
     return buffer_head_ != old_buffer_head;
   }
 
+  /**
+   * @note ... 对于空逻辑与表达式为 true 表达式折叠为 ((A && B) && C) && D
+   *       如果是加法，则没有默认的值，必须写成 (0 + ... + scan(x))
+   *       scan 不返回 int 的原因是使用逻辑与运算符保证运算顺序
+   */
   template <typename... T>
   bool scan(T &...x) {
-    // ... 对于空逻辑与表达式为 true 表达式折叠为 ((A && B) && C) && D
-    // 如果是加法，则没有默认的值，必须写成 (0 + ... + scan(x))
-    // scan 不返回 int 的原因是使用逻辑与运算符保证运算顺序
     return (... && scan(x));
   }
 
@@ -112,7 +114,7 @@ public:
   template <typename T>
   std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, char> && std::is_unsigned_v<T>, void>
   print(T x) {
-    if (x == static_cast<T>(0)) return putchar('0');
+    if (x == static_cast<T>(0)) return this->putchar('0');
     do {
       T y     = x / static_cast<T>(10);
       *top_++ = x - y * static_cast<T>(10) + '0';
@@ -124,7 +126,6 @@ public:
 
   template <typename... T>
   void print(T... x) {
-    // ... 对于空逗号表达式为 void
     return (..., print(x));
   }
 

@@ -107,10 +107,10 @@ public:
   friend std::ostream &operator<<(std::ostream &os, const m64 &rhs) { return os << rhs.get(); }
 
   m64 pow(u64 y) const {
-    m64 res(1), x(*this);
-    for (; y != 0; y >>= 1, x *= x)
+    for (m64 res(1), x(*this);; x *= x) {
       if (y & 1) res *= x;
-    return res;
+      if ((y >>= 1) == 0) return res;
+    }
   }
 
 private:

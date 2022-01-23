@@ -166,12 +166,10 @@ std::vector<mod_t> semi_relaxed_convolve(int n, const std::vector<mod_t> &A, std
 
 template <typename mod_t>
 std::vector<mod_t> fps_inv(int n, const std::vector<mod_t> &x) {
-  std::vector<mod_t> res;
   mod_t iv = mod_t(1) / x[0];
-  lib::SemiRelaxedConvolution<mod_t> rc(
-      x, res, [&iv](int idx, const std::vector<mod_t> &c) { return idx == 0 ? iv : -c[idx] * iv; });
-  while (n--) rc.next();
-  return res;
+  lib::SemiRelaxedConvolution rc(
+      x, [&iv](int idx, const std::vector<mod_t> &c) { return idx == 0 ? iv : -c[idx] * iv; });
+  return rc.await(n).get_multiplier();
 }
 
 template <typename mod_t>
@@ -195,25 +193,21 @@ std::vector<mod_t> fps_integr(const std::vector<mod_t> &x, mod_t c = mod_t(0)) {
 
 template <typename mod_t>
 std::vector<mod_t> fps_exp(int n, const std::vector<mod_t> &x) {
-  std::vector<mod_t> x_cpy(x), res;
+  std::vector<mod_t> x_cpy(x);
   lib::PrimeBinomial<mod_t> bi(n);
-  lib::SemiRelaxedConvolution<mod_t> rc(
-      fps_deriv(x), res, [&bi](int idx, const std::vector<mod_t> &c) {
-        return idx == 0 ? mod_t(1) : c[idx - 1] * bi.inv_unsafe(idx);
-      });
-  while (n--) rc.next();
-  return res;
+  lib::SemiRelaxedConvolution rc(fps_deriv(x), [&bi](int idx, const std::vector<mod_t> &c) {
+    return idx == 0 ? mod_t(1) : c[idx - 1] * bi.inv_unsafe(idx);
+  });
+  return rc.await(n).get_multiplier();
 }
 
 template <typename mod_t>
 std::vector<mod_t> fps_quo(int n, const std::vector<mod_t> &x, const std::vector<mod_t> &y) {
-  std::vector<mod_t> res;
   mod_t iv = mod_t(1) / y[0];
-  lib::SemiRelaxedConvolution<mod_t> rc(y, res, [&iv, &x](int idx, const std::vector<mod_t> &c) {
+  lib::SemiRelaxedConvolution rc(y, [&iv, &x](int idx, const std::vector<mod_t> &c) {
     return (idx == 0 ? x[0] : (idx < static_cast<int>(x.size()) ? x[idx] : mod_t(0)) - c[idx]) * iv;
   });
-  while (n--) rc.next();
-  return res;
+  return rc.await(n).get_multiplier();
 }
 
 template <typename mod_t>
@@ -273,7 +267,7 @@ f^k&=\smallint \left(\mathfrak{D}(f)\cdot k\cdot f^k\cdot f^{-1}\right) \\
 \end{aligned}
 $$
 
-即得。这与先求一次对数再求一次指数是一样的，但是这告诉我们可以（半）在线的进行 $f^k$ 的求算了。
+即得。这与先求一次对数再求一次指数是一样的。
 
 ## 参考文献
 

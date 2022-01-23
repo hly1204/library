@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/exp_of_formal_power_series"
+#define PROBLEM "https://judge.yosupo.jp/problem/log_of_formal_power_series"
 
 #include <iostream>
 
@@ -19,7 +19,7 @@ int main() {
     std::cin >> v;
     return v;
   }),
-      pA(A.exp());
+      pA(A.log());
   for (int i = 0; i != n; ++i) std::cout << pA[i] << ' ';
   return 0;
 }

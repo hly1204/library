@@ -1,8 +1,10 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/exp_of_formal_power_series"
 
 #include <iostream>
+#include <vector>
 
-#include "math/formal_power_series/formal_power_series.hpp"
+#include "math/formal_power_series/prime_binomial.hpp"
+#include "math/formal_power_series/semi_relaxed_convolution.hpp"
 #include "modint/Montgomery_modint.hpp"
 
 int main() {
@@ -11,10 +13,17 @@ int main() {
 #endif
   std::ios::sync_with_stdio(false);
   std::cin.tie(0);
+  using mint = lib::MontModInt<998244353>;
   int n;
   std::cin >> n;
-  lib::FPS<lib::MontModInt<998244353>> A(n);
+  std::vector<mint> A(n);
   for (auto &i : A) std::cin >> i;
-  for (auto i : A.exp(n)) std::cout << i << ' ';
+  for (int i = 1; i < n; ++i) A[i - 1] = A[i] * i;
+  lib::PrimeBinomial<mint> bi(n);
+  lib::SemiRelaxedConvolution rc(A, [&bi](int idx, const std::vector<mint> &contri) {
+    if (idx == 0) return mint(1);
+    return contri[idx - 1] * bi.inv_unsafe(idx);
+  });
+  for (auto i : rc.await(n).get_multiplier()) std::cout << i << ' ';
   return 0;
 }

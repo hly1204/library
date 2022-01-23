@@ -35,13 +35,15 @@ int main() {
   B1.resize(ntt_len, mint1(0));
   A2.resize(ntt_len, mint2(0));
   B2.resize(ntt_len, mint2(0));
-  lib::NTT4<mint1>::dft(ntt_len, A1.data());
-  lib::NTT4<mint1>::dft(ntt_len, B1.data());
-  lib::NTT4<mint2>::dft(ntt_len, A2.data());
-  lib::NTT4<mint2>::dft(ntt_len, B2.data());
+  auto &ntt1 = lib::NTT4<mint1>::get_instance();
+  auto &ntt2 = lib::NTT4<mint2>::get_instance();
+  ntt1.dft(ntt_len, A1.data());
+  ntt1.dft(ntt_len, B1.data());
+  ntt2.dft(ntt_len, A2.data());
+  ntt2.dft(ntt_len, B2.data());
   for (int i = 0; i < ntt_len; ++i) A1[i] *= B1[i], A2[i] *= B2[i];
-  lib::NTT4<mint1>::idft(ntt_len, A1.data());
-  lib::NTT4<mint2>::idft(ntt_len, A2.data());
+  ntt1.idft(ntt_len, A1.data());
+  ntt2.idft(ntt_len, A2.data());
   for (int i = 0; i < res_len; ++i)
     std::cout << static_cast<decltype(mod)>(
                      (static_cast<u64>(A1[i]) +
