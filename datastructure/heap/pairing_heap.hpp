@@ -29,10 +29,10 @@ public:
 
   PairingHeap(Comp cmp) : rt_(nullptr), cmp_(cmp) {}
   PairingHeap() : PairingHeap(Comp()) {}
-  PairingHeap(const PairingHeap &rhs) = delete;
+  PairingHeap(const PairingHeap &) = delete;
   ~PairingHeap() { delete rt_; }
 
-  PairingHeap &operator=(const PairingHeap &rhs) = delete; // 赋值和复制构造都不实现
+  PairingHeap &operator=(const PairingHeap &) = delete;
   PairingHeap &meld(PairingHeap &h) {
     if (&h != this) rt_ = meld(rt_, h.rt_), h.rt_ = nullptr;
     return *this;
