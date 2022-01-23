@@ -180,6 +180,7 @@ public:
     auto res       = (*this) * compute_accurate(rhs_p) >> offset;
     return operator=((*this) - res * rhs < rhs ? res : res + 1);
   }
+  BigInt &operator%=(const BigInt &rhs) { return operator=((*this) - (*this) / rhs * rhs); }
   BigInt abs() const {
     BigInt res(*this);
     res.is_neg_ = false;
@@ -190,6 +191,7 @@ public:
   friend BigInt operator-(const BigInt &lhs, const BigInt &rhs) { return BigInt(lhs) -= rhs; }
   friend BigInt operator*(const BigInt &lhs, const BigInt &rhs) { return BigInt(lhs) *= rhs; }
   friend BigInt operator/(const BigInt &lhs, const BigInt &rhs) { return BigInt(lhs) /= rhs; }
+  friend BigInt operator%(const BigInt &lhs, const BigInt &rhs) { return BigInt(lhs) %= rhs; }
 
   friend int abs_cmp(const BigInt &lhs, const BigInt &rhs) {
     // lhs < rhs => -1, lhs == rhs => 0, lhs > rhs => 1
