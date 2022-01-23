@@ -168,8 +168,14 @@ public:
     return *this;
   }
   BigInt &operator/=(const BigInt &rhs) {
+    if (is_zero()) return *this;
+    if (abs() < rhs.abs()) {
+      rep_    = {0};
+      is_neg_ = false;
+      return *this;
+    }
     int m = count_digit(), n = rhs.count_digit();
-    BigInt rhs_p(rhs);
+    BigInt rhs_p(rhs.abs());
     int offset;
     if (m <= n << 1) {
       offset = n << 1;
@@ -177,8 +183,11 @@ public:
       offset = m + n;
       rhs_p <<= m - n;
     }
-    auto res       = (*this) * compute_accurate(rhs_p) >> offset;
-    return operator=((*this) - res * rhs < rhs ? res : res + 1);
+    auto res = abs() * compute_accurate(rhs_p) >> offset;
+    bool f   = (is_neg_ != rhs.is_neg_);
+    operator =(abs() - res * rhs.abs() < rhs.abs() ? res : res + 1);
+    is_neg_  = f;
+    return *this;
   }
   BigInt &operator%=(const BigInt &rhs) { return operator=((*this) - (*this) / rhs * rhs); }
   BigInt abs() const {
