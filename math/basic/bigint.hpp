@@ -67,8 +67,7 @@ public:
   BigInt &operator>>=(int s) {
     if (!is_zero()) {
       if (s >= count_digit()) {
-        rep_    = {0};
-        is_neg_ = false;
+        rep_ = {0}, is_neg_ = false;
       } else {
         rep_.erase(rep_.begin(), rep_.begin() + s);
       }
@@ -159,21 +158,14 @@ public:
   BigInt &operator-=(const BigInt &rhs) { return operator+=(-rhs); }
   BigInt &operator*=(const BigInt &rhs) {
     if (is_zero()) return *this;
-    if (rhs.is_zero()) {
-      rep_ = {0}, is_neg_ = false;
-      return *this;
-    }
+    if (rhs.is_zero()) return clear();
     norm(rep_ = mul(rep_, rhs.rep_));
     is_neg_ = (is_neg_ != rhs.is_neg_);
     return *this;
   }
   BigInt &operator/=(const BigInt &rhs) {
     if (is_zero()) return *this;
-    if (abs() < rhs.abs()) {
-      rep_    = {0};
-      is_neg_ = false;
-      return *this;
-    }
+    if (abs_cmp(*this, rhs) == -1) return clear();
     int m = count_digit(), n = rhs.count_digit();
     BigInt rhs_p(rhs.abs());
     int offset;
@@ -259,11 +251,8 @@ public:
   bool is_negative() const { return is_neg_; }
   int count_digit() const { return static_cast<int>(rep_.size()); }
   u32 at_digit(int d) const { return d < static_cast<int>(rep_.size()) ? rep_[d] : 0; }
-  void set_digit(int d, int v) {
-    if (v != 0 && d < static_cast<int>(rep_.size())) rep_.resize(d + 1, 0);
-    if ((rep_[d] = v) == 0) shrink();
-  }
   u32 operator[](int d) const { return at_digit(d); }
+  BigInt &clear() { return rep_ = {0}, is_neg_ = false, *this; }
 
   std::string to_string() const {
     std::string res;
