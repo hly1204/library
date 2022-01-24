@@ -283,15 +283,11 @@ private:
     std::vector<BigInt> t(7);
     t[0] = a;
     for (int i = 1; i != 7; ++i) t[i] = t[i - 1] + t[i - 1];
-    auto res  = compute(a);
-    int n     = a.count_digit();
-    auto diff = (BigInt(1) << n * 2) - a * res;
+    int n = a.count_digit(), err = 0;
+    auto res = compute(a), diff = (BigInt(1) << n * 2) - a * res;
     for (int i = 6; i >= 0; --i)
-      if (diff >= t[i]) {
-        diff -= t[i];
-        res += 1 << i;
-      }
-    return res;
+      if (diff >= t[i]) diff -= t[i], err |= 1 << i;
+    return res + err;
   }
   static BigInt compute(const BigInt &a) {
     int n = a.count_digit();
