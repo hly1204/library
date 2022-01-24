@@ -60,7 +60,7 @@ $$
 &{}\frac{10^{2n}}{A}-1\lt A'\leq \frac{10^{2n}}{A}\\
 \iff &\frac{10^{2n}B}{A}-B\lt A'B\leq \frac{10^{2n}B}{A}\\
 \iff &\frac{B}{A}-\frac{B}{10^{2n}}\lt \frac{A'B}{10^{2n}}\leq \frac{B}{A}\\
-\iff &\frac{B}{A}-1\lt \frac{A'B}{10^{2n}}\leq \frac{B}{A}\quad \left(\because \frac{B}{10^{2n}}\lt 1\right)
+\implies &\frac{B}{A}-1\lt \frac{A'B}{10^{2n}}\leq \frac{B}{A}\quad \left(\because \frac{B}{10^{2n}}\lt 1\right)
 \end{aligned}
 $$
 
