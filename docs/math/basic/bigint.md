@@ -1,3 +1,5 @@
+这篇文章经过一些修改和补充后发在 [洛谷](https://www.luogu.com.cn/blog/242973/solution-p5432) 。。。
+
 ## 大整数运算
 
 为了方便我只实现了十进制表示的大整数运算，并且使用数论变换作为快速算法。
@@ -38,7 +40,7 @@ $$
 
 整数的折半 Euclid 算法告诉我们商基本只和两个整数的高位相关，但是有进位所以需要一些误差分析和舍入。下面基本参考参考文献中的算法。
 
-倪泽堃指出，对于 $n$ 位的正整数 $A=a_0+a_1\cdot 10+\cdots +a _ {n-1}\cdot 10^{n-1}$ （其中整数 $0\leq a_i\lt 10$ ）除以 $m$ 位的正整数 $B$ ，可以计算 $A'=\left\lfloor 10^{2n}/A\right\rfloor$ 后计算 $\lfloor A'B/10^{2n}\rfloor$ 后进行调整可以得到 $\left\lfloor B/A\right\rfloor$ 。
+倪泽堃指出，对于 $n$ 位的正整数 $A=a_0+a_1\cdot 10+\cdots +a _ {n-1}\cdot 10^{n-1}$ （其中整数 $0\leq a_i\lt 10$ ）和 $m$ 位的正整数 $B$ ，可以计算 $A'=\left\lfloor 10^{2n}/A\right\rfloor$ 后计算 $\lfloor A'B/10^{2n}\rfloor$ 后进行调整可以得到 $\left\lfloor B/A\right\rfloor$ 。
 
 既然我们使用十进制表示，那么对于形如 $\lfloor A/10^t\rfloor$ 可以简单使用类似于位运算的移位，此时对于 Newton 法也改造为求 $A/10^{2n}$ 的倒数
 
