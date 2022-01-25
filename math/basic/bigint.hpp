@@ -27,11 +27,7 @@ public:
   template <typename T, std::enable_if_t<std::is_integral_v<T>> * = nullptr>
   BigInt(T v) : rep_(), is_neg_(v < 0) {
     if (v == 0) rep_.push_back(0);
-    for (; v != 0; v /= 10) {
-      int k = v % 10;
-      if (is_neg_) k = -k;
-      rep_.push_back(k);
-    }
+    for (; v != 0; v /= 10) rep_.push_back(is_neg_ ? -(v % 10) : (v % 10));
   }
   BigInt(const std::string &s) : rep_(), is_neg_(false) {
     if (s.empty()) {
@@ -39,14 +35,13 @@ public:
     } else {
       int idx = 0, n = s.size();
       if (s.front() == '-') {
-        is_neg_ = true;
-        ++idx;
+        is_neg_ = true, ++idx;
       } else if (s.front() == '+') {
         ++idx;
       }
       rep_.reserve(n);
       for (int i = n - 1; i != idx - 1; --i) rep_.push_back(s[i] - '0');
-      if (static_cast<int>(rep_.size()) == 1 && rep_.front() == 0) is_neg_ = false;
+      shrink();
     }
   }
   BigInt(const BigInt &) = default;
@@ -66,7 +61,7 @@ public:
   BigInt operator<<(int s) const { return BigInt(*this) <<= s; }
   BigInt &operator>>=(int s) {
     if (!is_zero()) {
-      if (s >= count_digit()) {
+      if (s >= digits()) {
         rep_ = {0}, is_neg_ = false;
       } else {
         rep_.erase(rep_.begin(), rep_.begin() + s);
@@ -166,19 +161,13 @@ public:
   BigInt &operator/=(const BigInt &rhs) {
     if (is_zero()) return *this;
     if (abs_cmp(*this, rhs) == -1) return clear();
-    int m = count_digit(), n = rhs.count_digit();
+    int m = digits(), n = rhs.digits();
     BigInt rhs_p(rhs.abs());
-    int offset;
-    if (m <= n << 1) {
-      offset = n << 1;
-    } else {
-      offset = m + n;
-      rhs_p <<= m - n;
-    }
-    auto res = abs() * compute_accurate(rhs_p) >> offset;
-    bool f   = (is_neg_ != rhs.is_neg_);
-    operator =(abs() - res * rhs.abs() < rhs.abs() ? res : res + 1);
-    is_neg_  = f;
+    int offset = (m <= n << 1) ? (n << 1) : (rhs_p <<= m - n, m + n);
+    auto res   = abs() * compute_accurate(rhs_p) >> offset;
+    bool f     = (is_neg_ != rhs.is_neg_);
+    operator   =(abs() - res * rhs.abs() < rhs.abs() ? res : res + 1);
+    is_neg_    = f;
     return *this;
   }
   BigInt &operator%=(const BigInt &rhs) { return operator=((*this) - (*this) / rhs * rhs); }
@@ -249,9 +238,8 @@ public:
     return !is_neg_ && static_cast<int>(rep_.size()) == 1 && rep_.front() == 0;
   }
   bool is_negative() const { return is_neg_; }
-  int count_digit() const { return static_cast<int>(rep_.size()); }
-  u32 at_digit(int d) const { return d < static_cast<int>(rep_.size()) ? rep_[d] : 0; }
-  u32 operator[](int d) const { return at_digit(d); }
+  int digits() const { return static_cast<int>(rep_.size()); }
+  u32 operator[](int d) const { return d < static_cast<int>(rep_.size()) ? rep_[d] : 0; }
   BigInt &clear() { return rep_ = {0}, is_neg_ = false, *this; }
 
   std::string to_string() const {
@@ -283,31 +271,24 @@ private:
     std::vector<BigInt> t(7);
     t[0] = a;
     for (int i = 1; i != 7; ++i) t[i] = t[i - 1] + t[i - 1];
-    int n = a.count_digit(), err = 0;
-    auto res = compute(a), diff = (BigInt(1) << n * 2) - a * res;
+    int err  = 0;
+    auto res = compute(a), diff = (BigInt(1) << a.digits() * 2) - a * res;
     for (int i = 6; i >= 0; --i)
       if (diff >= t[i]) diff -= t[i], err |= 1 << i;
     return res + err;
   }
   static BigInt compute(const BigInt &a) {
-    int n = a.count_digit();
-    if (n == 1) return BigInt(100 / a.at_digit(0));
-    if (n == 2) return BigInt(10000 / (a.at_digit(0) + a.at_digit(1) * 10));
+    int n = a.digits();
+    if (n == 1) return BigInt(100 / a[0]);
+    if (n == 2) return BigInt(10000 / (a[0] + a[1] * 10));
     int n_p = (n >> 1) + 1;
     auto q  = compute(a >> (n - n_p)) << (n - n_p);
     return q * ((BigInt(2) << n * 2) - q * a) >> n * 2; // 可展开 DFT 来优化
   }
   static void norm(std::vector<u32> &v) {
     u32 carry = 0;
-    for (int i = 0, ie = v.size(); i != ie; ++i) {
-      v[i] = (carry += v[i]) % 10;
-      carry /= 10;
-    }
-    while (carry != 0) {
-      u32 c = carry / 10;
-      v.push_back(carry - c * 10);
-      carry = c;
-    }
+    for (int i = 0, ie = v.size(); i != ie; ++i, carry /= 10) v[i] = (carry += v[i]) % 10;
+    for (u32 c; carry != 0; carry = c) v.push_back(carry - (c = carry / 10) * 10);
   }
   static std::vector<u32> mul(const std::vector<u32> &lhs, const std::vector<u32> &rhs) {
     using mint = MontModInt<998244353>;

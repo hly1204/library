@@ -3,7 +3,7 @@
 
 /**
  * @brief implicit series
- *
+ * @docs docs/math/formal_power_series/implicit_series.md
  */
 
 #include <functional>
