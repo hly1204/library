@@ -13,8 +13,8 @@
 #include <type_traits>
 #include <vector>
 
-#include "math/formal_power_series/convolution.hpp"
-#include "modint/Montgomery_modint.hpp"
+#include "../../modint/Montgomery_modint.hpp"
+#include "../formal_power_series/convolution.hpp"
 
 namespace lib {
 
