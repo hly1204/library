@@ -11,6 +11,7 @@
 #include <optional>
 #include <utility>
 
+#include "prime_binomial.hpp"
 #include "relaxed_convolution.hpp"
 
 namespace lib {
@@ -130,6 +131,47 @@ public:
              [handle = rhs.handle_](int i, const auto &) { return handle(i); })](int i) {
           return rc->await(i + 1).get_multiplicand()[i];
         });
+  }
+
+  ImplicitSeries Q() const { // Pólya 算子，对应集合的 Sequence 构造
+    return ImplicitSeries([handle = handle_](int i) { return i == 0 ? mod_t(1) : -handle(i); })
+        .inv();
+  }
+  ImplicitSeries Exp() const { // Pólya 算子，对应集合的 Multiset 构造
+    return ImplicitSeries(
+               [handle = handle_, cache = std::make_shared<std::vector<mod_t>>()](int i) {
+                 if (i == 0) return mod_t(0);
+                 if ((i & (i - 1)) == 0) {
+                   PrimeBinomial<mod_t> bi(i << 1);
+                   cache->resize(i << 1, mod_t(0));
+                   for (int j = 1; j < i; ++j) {
+                     mod_t hj = handle(j);
+                     for (int k = 2; j * k < i << 1; ++k)
+                       if (j * k >= i) cache->at(j * k) += hj * bi.inv_unsafe(k);
+                   }
+                 }
+                 return cache->at(i) += handle(i);
+               })
+        .exp();
+  }
+  ImplicitSeries Exp_m() const { // Pólya 算子，对应集合的 Powerset 构造
+    return ImplicitSeries(
+               [handle = handle_, cache = std::make_shared<std::vector<mod_t>>()](int i) {
+                 if (i == 0) return mod_t(0);
+                 if ((i & (i - 1)) == 0) {
+                   PrimeBinomial<mod_t> bi(i << 1);
+                   cache->resize(i << 1, mod_t(0));
+                   for (int j = 1; j < i; ++j) {
+                     mod_t hj = handle(j);
+                     for (int k = 2; j * k < i << 1; ++k)
+                       if (j * k >= i)
+                         (j & 1) == 1 ? (cache->at(j * k) += hj * bi.inv_unsafe(k))
+                                      : (cache->at(j * k) -= hj * bi.inv_unsafe(k));
+                   }
+                 }
+                 return cache->at(i) += handle(i);
+               })
+        .exp();
   }
 
 private:

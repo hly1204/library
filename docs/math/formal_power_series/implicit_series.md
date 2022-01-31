@@ -34,6 +34,27 @@ int main() {
 
 另外 Elegia 指出在线卷积也可以扩展到任意模数的二项卷积上，那么隐式级数的计算可能也可以扩展，但由于过于复杂我也不会！
 
+## Pólya 算子
+
+对于普通生成函数，下面要求 $f(0)=0$ ，此时四个算子为
+
+$$
+\begin{aligned}
+Q\lbrack f\rbrack &=\frac{1}{1-f},&\operatorname{Log}\lbrack f\rbrack &=\sum _ {k\geq 1}\frac{\varphi(k)}{k}\log\frac{1}{1-f(z^k)},\\
+\operatorname{Exp}\lbrack f\rbrack &=\exp\left(\sum _ {k\geq 1}\frac{f(z^k)}{k}\right),&\overline{\operatorname{Exp}}\lbrack f\rbrack &=\exp\left(\sum _ {k\geq 1}(-1)^{k-1}\frac{f(z^k)}{k}\right)
+\end{aligned}
+$$
+
+对于 $\operatorname{Log}$ 因为我还不懂所以不打算实现。
+
+### $\operatorname{Q}\lbrack f\rbrack$
+
+应用倒数即可。
+
+### $\operatorname{Exp}\lbrack f\rbrack$ 和 $\overline{\operatorname{Exp}}\lbrack f\rbrack$
+
+考虑维护 $\sum _ {k\geq 1}f(z^k)/k$ 。如果可以提前知道 $n$ 的大小，那么消耗时间大约为 $O(n\cdot H_n)$ 其中 $H_n=\sum _ {i=1}^{n}i^{-1}\approx \ln n+C$ 所以大概可以认为时间复杂度为 $O(n\log n)$ ，但是因为不知道所以我采用倍增的方法。
+
 ## 参考文献
 
 - Elegia. [《生成函数的一点进展》重置版](https://www.bilibili.com/video/BV1U5411N7Uc).
