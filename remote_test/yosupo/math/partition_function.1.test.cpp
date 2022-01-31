@@ -15,6 +15,6 @@ int main() {
   lib::ImplicitSeries<mint> A({0, 1}), B(A.Q().Exp());
   int n;
   std::cin >> n;
-  for (int i = 0; i <= n; ++i) std::cout << B[i] << '\n';
+  for (int i = 0; i <= n; ++i) std::cout << B[i] << ' ';
   return 0;
 }

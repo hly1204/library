@@ -107,7 +107,7 @@ public:
         if (k >= q) {
           res = 0;
         } else {
-          u32 pk          = lib::pow(p, k);
+          u32 pk          = ::lib::pow(p, k);
           u64 is_negative = 0;
           for (; n_t; n_t /= p, m_t /= p, r /= p) {
             res = res * fac[n_t % pq] % pq * ifac[m_t % pq] % pq * ifac[r % pq] % pq;

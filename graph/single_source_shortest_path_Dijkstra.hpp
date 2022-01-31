@@ -53,7 +53,7 @@ public:
     std::vector<DistType> dist(n_, INF);
     std::vector<int> pred(n_, -1);
     auto cmp = [&dist](int x, int y) -> bool { return dist[x] < dist[y]; };
-    lib::PriorityQueue<int, decltype(cmp)> pq(cmp);
+    PriorityQueue<int, decltype(cmp)> pq(cmp);
     std::vector<typename PriorityQueue<int, decltype(cmp)>::const_node_ptr_type> box(n_);
     dist[source] = 0;
     pq.insert(source);
