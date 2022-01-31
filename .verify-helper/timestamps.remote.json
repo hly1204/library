@@ -45,6 +45,7 @@
 "remote_test/yosupo/math/mod_sqrt.2.test.cpp": "2022-01-02 01:42:07 +0800",
 "remote_test/yosupo/math/multipoint_evaluation.0.test.cpp": "2021-11-03 22:21:20 +0800",
 "remote_test/yosupo/math/partition_function.0.test.cpp": "2021-11-03 22:21:20 +0800",
+"remote_test/yosupo/math/partition_function.1.test.cpp": "2022-02-01 04:19:16 +0800",
 "remote_test/yosupo/math/polynomial_interpolation.0.test.cpp": "2021-11-03 22:21:20 +0800",
 "remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp": "2021-11-03 22:21:20 +0800",
 "remote_test/yosupo/math/polynomial_taylor_shift.1.test.cpp": "2021-11-03 21:39:31 +0800",
