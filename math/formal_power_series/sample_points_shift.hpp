@@ -140,18 +140,16 @@ mod_t shift_sample_points_single(const std::vector<mod_t> &pts, mod_t c) {
   int n     = pts.size();
   u64 uc    = static_cast<u64>(c);
   if (uc < static_cast<u64>(n)) return pts[uc];
-  std::vector<mod_t> prefix(n), suffix(n);
-  const mod_t ONE(1);
-  mod_t pc(c), res(0);
-  std::for_each_n(prefix.begin(), n, [&pc, &ONE](mod_t &v) { v = pc, pc -= ONE; });
-  std::exclusive_scan(prefix.rbegin(), prefix.rend(), suffix.rbegin(), ONE, std::multiplies<>());
-  std::exclusive_scan(prefix.begin(), prefix.end(), prefix.begin(), ONE, std::multiplies<>());
   PrimeBinomial<mod_t> bi(n);
-  for (int i = 0; i < n; ++i)
-    if ((n - 1 - i) & 1)
-      res -= pts[i] * prefix[i] * suffix[i] * bi.ifac_unsafe(i) * bi.ifac_unsafe(n - 1 - i);
-    else
-      res += pts[i] * prefix[i] * suffix[i] * bi.ifac_unsafe(i) * bi.ifac_unsafe(n - 1 - i);
+  std::vector<mod_t> prefix(n);
+  const mod_t ONE(1);
+  mod_t pc(ONE);
+  prefix.front() = pts.front();
+  for (int i = 1; i < n; ++i) prefix[i] = pts[i] * (pc *= c - mod_t(i - 1)) * bi.ifac_unsafe(i);
+  mod_t res(prefix.back());
+  pc = ONE;
+  for (int i = n - 2; i >= 0; --i)
+    res += prefix[i] * (pc *= -(c - mod_t(i + 1))) * bi.ifac_unsafe(n - 1 - i);
   return res;
 }
 
