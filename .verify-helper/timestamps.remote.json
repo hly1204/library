@@ -51,7 +51,7 @@
 "remote_test/yosupo/math/polynomial_taylor_shift.1.test.cpp": "2021-11-03 21:39:31 +0800",
 "remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp": "2021-11-03 22:21:20 +0800",
 "remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp": "2022-02-01 04:32:06 +0800",
-"remote_test/yosupo/math/shift_of_sampling_points_of_polynomial.0.test.cpp": "2022-02-04 03:13:50 +0800",
+"remote_test/yosupo/math/shift_of_sampling_points_of_polynomial.0.test.cpp": "2022-02-04 03:17:05 +0800",
 "remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp": "2022-01-12 19:10:18 +0800",
 "remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp": "2021-11-03 22:21:20 +0800",
 "remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp": "2021-11-03 22:21:20 +0800",
@@ -66,5 +66,5 @@
 "remote_test/yosupo/sample/many_aplusb.0.test.cpp": "2021-10-10 12:20:10 +0800",
 "remote_test/yosupo/string/suffix_array.0.test.cpp": "2021-08-13 13:47:59 +0800",
 "remote_test/yosupo/string/z_algorithm.0.test.cpp": "2021-08-13 13:47:59 +0800",
-"remote_test/yuki/math/502.0.test.cpp": "2022-02-04 03:13:50 +0800"
+"remote_test/yuki/math/502.0.test.cpp": "2022-02-04 03:17:05 +0800"
 }
