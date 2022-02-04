@@ -170,9 +170,15 @@ public:
                    PrimeBinomial<mod_t> bi(i << 1);
                    cache->resize(i << 1, mod_t(0));
                    for (int j = 1; j < i; ++j) {
-                     mod_t hj = (j & 1) == 1 ? handle(j) : -handle(j);
+                     mod_t hj = handle(j);
                      for (int k = 2; j * k < i << 1; ++k)
-                       if (j * k >= i) cache->at(j * k) += hj * bi.inv_unsafe(k);
+                       if (j * k >= i) {
+                         if (k & 1) {
+                           cache->at(j * k) += hj * bi.inv_unsafe(k);
+                         } else {
+                           cache->at(j * k) -= hj * bi.inv_unsafe(k);
+                         }
+                       }
                    }
                  }
                  return cache->at(i) += handle(i);
