@@ -44,6 +44,14 @@ public:
     return res;
   }
   handle_type get_handle() const { return handle_; }
+  ImplicitSeries scale(int k) const {
+    return ImplicitSeries(
+        [handle = handle_, k](int i) { return i % k == 0 ? handle(i / k) : mod_t(0); });
+  }
+  ImplicitSeries shift(int k) const {
+    return ImplicitSeries(
+        [handle = handle_, k](int i) { return i - k < 0 ? mod_t(0) : handle(i - k); });
+  }
   ImplicitSeries deriv() const {
     return ImplicitSeries([handle = handle_](int i) { return handle(i + 1) * (i + 1); });
   }
@@ -170,6 +178,17 @@ public:
                  return cache->at(i) += handle(i);
                })
         .exp();
+  }
+
+  friend ImplicitSeries operator*(mod_t c, const ImplicitSeries &rhs) {
+    return ImplicitSeries([handle = rhs.get_handle(), c](int i) { return handle(i) * c; });
+  }
+  friend ImplicitSeries operator*(const ImplicitSeries &lhs, mod_t c) {
+    return ImplicitSeries([handle = lhs.get_handle(), c](int i) { return handle(i) * c; });
+  }
+  friend ImplicitSeries operator/(const ImplicitSeries &lhs, mod_t c) {
+    return ImplicitSeries(
+        [handle = lhs.get_handle(), ic = c.inv()](int i) { return handle(i) * ic; });
   }
 
 private:

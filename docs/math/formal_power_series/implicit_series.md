@@ -30,7 +30,7 @@ int main() {
 }
 ```
 
-隐式级数的快速计算可以直接解决 [LOJ 6538. 烷基计数 加强版 加强版](https://loj.ac/p/6538) 等问题，尽管在时间复杂度上并无优势。
+隐式级数的快速计算可以直接解决 [LOJ 6538. 烷基计数 加强版 加强版](https://loj.ac/p/6538) 等问题，尽管在时间复杂度上并无优势，见 [符号化方法](https://hly1204.github.io/library/symbolic_method.html) 。
 
 另外 Elegia 指出在线卷积也可以扩展到任意模数的二项卷积上，那么隐式级数的计算可能也可以扩展，但由于过于复杂我也不会！
 
@@ -47,7 +47,7 @@ $$
 
 对于 $\operatorname{Log}$ 因为我还不懂所以不打算实现。
 
-### $\operatorname{Q}\lbrack f\rbrack$
+### $Q\lbrack f\rbrack$
 
 应用倒数即可。
 
