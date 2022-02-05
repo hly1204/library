@@ -230,7 +230,7 @@ $$
 \end{aligned}
 $$
 
-其中 $\operatorname{Exp}$ 为 Pólya 指数。
+其中 $\operatorname{Exp}$ 为 Pólya 指数，也被称为 Euler 变换。
 
 可以观察到 $\operatorname{PSET}(\mathcal{A})\subset \operatorname{MSET}(\mathcal{A})$ 因为 powerset 构造不允许重复。
 
@@ -254,15 +254,23 @@ $$
 B(z)=\lbrack u^k\rbrack \exp\left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\frac{u^3}{3}A(z^3)+\cdots\right)
 $$
 
-这一限制很常见，例如烷基计数（根节点度数不超过 $3$ 其余节点度数不超过 $4$ 的有根非平面树）一题即
+这一限制很常见，例如 [烷基计数](https://loj.ac/p/6538) （根节点度数不超过 $3$ 其余节点度数不超过 $4$ 的有根非平面树）一题即
 
 $$
 \mathcal{G}=\mathcal{Z}\times \operatorname{MSET} _ {3}(\mathcal{G})
 $$
 
+另外我们注意 [分拆数](https://loj.ac/p/6268) 实际上就是完全背包问题，而这里 Multiset 的构造也正是解决了这一问题，分拆数的组合类为
+
+$$
+\operatorname{MSET}(\operatorname{SEQ} _ {\geq 1}(\mathcal{Z}))
+$$
+
+[P4389 付公主的背包](https://www.luogu.com.cn/problem/P4389) 也是可以一样理解。
+
 ### 集合的 Cycle
 
-这里我没看懂，仅摘抄公式，原文说
+这里我没看懂，仅摘抄公式
 
 $\operatorname{CYC}(\mathcal{A})$ 对应的生成函数为
 
@@ -271,6 +279,8 @@ $$
 $$
 
 要求 $\mathcal{A} _ 0=\emptyset$ ，其中 $\operatorname{Log}$ 为 Pólya 对数。
+
+我理解应该是轮换构造在 Cycle 中认为是等价的，与 Multiset 中不同，比如 Multiset 中认为 $\lbrace (a,b,c,d)\rbrace$ 的任意 $4!$ 种排列都是等价的，但是 Cycle 中只认为 $\lbrace (a,b,c,d)\rbrace$ 与 $\lbrace (b,c,d,a)\rbrace ,\lbrace (c,d,a,b)\rbrace ,\lbrace (d,a,b,c)\rbrace$ 是等价的，其他也是类似的，在 x义x 的博客中使用了 Burnside 引理来证明，而《解析组合》中使用了二元的生成函数来解释，包括三个限制构造的证明。
 
 限制构造为
 
@@ -283,6 +293,8 @@ $$
 $$
 B(z)=\lbrack u^k\rbrack \sum _ {i\geq 1}\frac{\varphi(i)}{i}\log\frac{1}{1-u^iA(z^i)}
 $$
+
+可以简单的注意到 $\operatorname{MSET} _ 2(\mathcal{A})\cong\operatorname{CYC} _ 2(\mathcal{A})$ 。
 
 ### 集合的 Pointing
 
@@ -312,6 +324,12 @@ $$
 
 TODO
 
+## Lagrange 反演公式
+
+TODO
+
 ## 参考文献
 
 - <https://ac.cs.princeton.edu/home/>
+- 叉义叉的博客 - [组合结构符号化学习笔记](https://www.luogu.com.cn/blog/zyxxs/zu-ge-jie-gou-fu-hao-hua-xue-xi-bi-ji)
+- command_block 的博客 - [多项式计数杂谈](https://www.luogu.com.cn/blog/command-block/sheng-cheng-han-shuo-za-tan)
