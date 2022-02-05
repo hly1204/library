@@ -8,8 +8,6 @@
 
 大小为 $0$ 的元素一般记为 $\epsilon$ ，而一个只包含这个元素的集合为 $\mathcal{E}$ 。如果两个组合结构在组合意义上是同构的记为 $\mathcal{A}=\mathcal{B}$ 或 $\mathcal{A}\cong\mathcal{B}$ 。
 
-除了 Sequence 的限制构造比较平凡，其余 Multiset 和 Powerset 以及 Cycle 的限制构造都需要证明，但是我还没理解，也有人说可以根据 Burnside 引理理解。
-
 ## 无标号体系
 
 对于普通生成函数可能简称为生成函数。
@@ -190,6 +188,8 @@ $$
 B(z)=\lbrack u^k\rbrack \exp\left(\frac{u}{1}A(z)-\frac{u^2}{2}A(z^2)+\frac{u^3}{3}A(z^3)-\cdots\right)
 $$
 
+注意限制构造并没有要求 $\mathcal{A} _ 0=\emptyset$ 。
+
 ### 集合的 Multiset
 
 Multiset 生成了所有子集且允许重复
@@ -254,10 +254,18 @@ $$
 B(z)=\lbrack u^k\rbrack \exp\left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\frac{u^3}{3}A(z^3)+\cdots\right)
 $$
 
+注意限制构造并没有要求 $\mathcal{A} _ 0=\emptyset$ 。
+
 这一限制很常见，例如 [烷基计数](https://loj.ac/p/6538) （根节点度数不超过 $3$ 其余节点度数不超过 $4$ 的有根非平面树）一题即
 
 $$
-\mathcal{G}=\mathcal{Z}\times \operatorname{MSET} _ {3}(\mathcal{G})
+\mathcal{G}=\lbrace \epsilon\rbrace +\mathcal{Z}\times \operatorname{MSET} _ {3}(\mathcal{G})
+$$
+
+注意这里 $\lbrace \epsilon\rbrace$ 的作用，如果没有空集，那么 $\widehat{\mathcal{G}}=\mathcal{G}\setminus \lbrace \epsilon\rbrace$ 有
+
+$$
+\widehat{\mathcal{G}}=\mathcal{Z}\times \operatorname{MSET} _ {0,1,2,3}(\widehat{\mathcal{G}})
 $$
 
 另外我们注意 [分拆数](https://loj.ac/p/6268) 实际上就是完全背包问题，而这里 Multiset 的构造也正是解决了这一问题，分拆数的组合类为
@@ -294,6 +302,8 @@ $$
 B(z)=\lbrack u^k\rbrack \sum _ {i\geq 1}\frac{\varphi(i)}{i}\log\frac{1}{1-u^iA(z^i)}
 $$
 
+注意限制构造并没有要求 $\mathcal{A} _ 0=\emptyset$ 。
+
 可以简单的注意到 $\operatorname{MSET} _ 2(\mathcal{A})\cong\operatorname{CYC} _ 2(\mathcal{A})$ 。
 
 ### 集合的 Pointing
@@ -320,16 +330,76 @@ $$
 \sum _ {i\geq 0}A_k\cdot B^k(z)=A(B(z))
 $$
 
+### 限制构造的举例和说明
+
+$$
+\begin{aligned}
+\operatorname{PSET} _ {2}(\mathcal{A})&:\quad \frac{A^2(z)}{2}-\frac{A(z^2)}{2}\\
+\operatorname{MSET} _ {2}(\mathcal{A})&:\quad \frac{A^2(z)}{2}+\frac{A(z^2)}{2}\\
+\operatorname{CYC} _ {2}(\mathcal{A})&:\quad \frac{A^2(z)}{2}+\frac{A(z^2)}{2}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\operatorname{PSET} _ {3}(\mathcal{A})&:\quad \frac{A^3(z)}{6}-\frac{A(z)A(z^2)}{2}+\frac{A(z^3)}{3}\\
+\operatorname{MSET} _ {3}(\mathcal{A})&:\quad \frac{A^3(z)}{6}+\frac{A(z)A(z^2)}{2}+\frac{A(z^3)}{3}\\
+\operatorname{CYC} _ {3}(\mathcal{A})&:\quad \frac{A^3(z)}{3}+\frac{2A(z^3)}{3}\\
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\operatorname{PSET} _ {4}(\mathcal{A})&:\quad \frac{A^4(z)}{24}-\frac{A^2(z)A(z^2)}{4}+\frac{A(z)A(z^3)}{3}+\frac{A^2(z^2)}{8}-\frac{A(z^4)}{4}\\
+\operatorname{MSET} _ {4}(\mathcal{A})&:\quad \frac{A^4(z)}{24}+\frac{A^2(z)A(z^2)}{4}+\frac{A(z)A(z^3)}{3}+\frac{A^2(z^2)}{8}+\frac{A(z^4)}{4}\\
+\operatorname{CYC} _ {4}(\mathcal{A})&:\quad \frac{A^4(z)}{4}+\frac{A^2(z^2)}{4}+\frac{A(z^4)}{2}\\
+\end{aligned}
+$$
+
+对于 $\operatorname{SEQ} _ k(\mathcal{A})$ 的理解是平凡的，即 $\lbrace (\alpha_1,\alpha_2,\dots ,\alpha_k)\mid \alpha_j\in\mathcal{A}\rbrace$ 。
+
+对于 $\operatorname{PSET} _ k(\mathcal{A})$ 可以理解为 $\lbrace (\alpha_1,\alpha_2,\dots ,\alpha_k)\mid \alpha_j\in\mathcal{A},\forall i\neq j:\alpha_i\neq \alpha_j\rbrace /\mathbf{R}$ ，其中 $\mathbf{R}$ 代表 $\alpha_1,\dots ,\alpha_k$ 的任意排列。
+
+对于 $\operatorname{MSET} _ k(\mathcal{A})$ 可以理解为 $\lbrace (\alpha_1,\alpha_2,\dots ,\alpha_k)\mid \alpha_j\in\mathcal{A}\rbrace /\mathbf{R}$ 。
+
+并且显然可以发现 $\operatorname{MSET} _ \Omega(\mathcal{A})=\sum _ {\omega\in\Omega}\operatorname{MSET} _ \omega(\mathcal{A})$ 和 $\operatorname{PSET} _ \Omega(\mathcal{A})=\sum _ {\omega\in\Omega}\operatorname{PSET} _ \omega(\mathcal{A})$ 。
+
+command_block 的博客中使用了 Burnside 引理来解释 $\operatorname{MSET}$ 的构造，而书中则推荐使用二元生成函数，额外使用一个变量来跟踪“组成部分的个数”。
+
+令 $\mathfrak{K}$ 为 $\operatorname{SEQ},\operatorname{CYC},\operatorname{MSET},\operatorname{PSET}$ 之一和 $\mathcal{A}=\mathfrak{K}(\mathcal{B})$ 并令 $\chi(\alpha)$ 对于 $\alpha\in\mathcal{A}$ 表示 $\alpha$ 由 $\mathcal{B}$ 中的多少部分组成，例如 $\alpha=(\beta_1,\beta_2)$ 那么显然 $\lvert \alpha\rvert =\lvert \beta_1\rvert+\lvert \beta_2\rvert$ 而 $\chi(\beta)=1$ 对于 $\beta\in\mathcal{B}$ 成立，所以 $\chi(\alpha)=2$ 。
+
+$$
+\begin{aligned}
+A _ {n,k}&=\operatorname{card}\left\lbrace \alpha\in\mathcal{A}\mid \lvert \alpha\rvert =n,\chi(\alpha)=k\right\rbrace\\
+A(z,u)&=\sum _ {n,k}A _ {n,k}u^kz^n=\sum _ {\alpha\in\mathcal{A}}z^{\lvert \alpha\rvert}u^{\chi(\alpha)}
+\end{aligned}
+$$
+
+然后我们只要提取出 $u^k$ 的系数即可得到相关的表达式。
+
+比如对于 $\operatorname{SEQ} _ k(\mathcal{B})$ 可以直接导出
+
+$$
+A(z,u)=\sum _ {k\geq 0}u^kB^k(z)=\frac{1}{1-uB(z)}
+$$
+
+而对于 $\operatorname{MSET} _ k(\mathcal{B})$ 和 $\operatorname{PSET} _ k(\mathcal{B})$ 先前已经有
+
+$$
+A(z,u)=\prod_n\left(1-uz^n\right)^{-b_n},\quad A(z,u)=\prod_n\left(1+uz^n\right)^{b_n}
+$$
+
 ## 有标号体系
 
 TODO
 
 ## Lagrange 反演公式
 
-TODO
+我还没有什么清晰的认识，先放着吧。。。不过好像可以用来对许多树的生成函数提取系数。
 
 ## 参考文献
 
 - <https://ac.cs.princeton.edu/home/>
 - 叉义叉的博客 - [组合结构符号化学习笔记](https://www.luogu.com.cn/blog/zyxxs/zu-ge-jie-gou-fu-hao-hua-xue-xi-bi-ji)
 - command_block 的博客 - [多项式计数杂谈](https://www.luogu.com.cn/blog/command-block/sheng-cheng-han-shuo-za-tan)
+- 一只 alpha1022 的小窝 - [浅谈多项式复合和拉格朗日反演](https://www.luogu.com.cn/blog/your-alpha1022/qian-tan-duo-xiang-shi-fu-ge-hu-la-ge-lang-ri-fan-yan)
