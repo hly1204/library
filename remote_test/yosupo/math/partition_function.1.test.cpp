@@ -12,7 +12,7 @@ int main() {
   std::ios::sync_with_stdio(false);
   std::cin.tie(0);
   using mint = lib::MontModInt<998244353>;
-  lib::ImplicitSeries<mint> A({0, 1}), B(A.Q().Exp());
+  lib::ImplicitSeries<mint> A({0, 1}), B((A.Q() - lib::ImplicitSeries<mint>(mint(1))).Exp());
   int n;
   std::cin >> n;
   for (int i = 0; i <= n; ++i) std::cout << B[i] << ' ';

@@ -69,8 +69,9 @@ Sequence 生成了所有可能的组合
 $$
 \begin{aligned}
 \operatorname{SEQ}(\lbrace a\rbrace)&=\lbrace \epsilon\rbrace +\lbrace a\rbrace +\lbrace (a,a)\rbrace +\lbrace (a,a,a)\rbrace +\cdots\\
-\operatorname{SEQ}(\lbrace a,b\rbrace)&=\lbrace \epsilon\rbrace +\lbrace a,b\rbrace +\lbrace (a,b),(b,a),(a,a),(b,b)\rbrace\\
-&+\lbrace (a,b,a),(a,b,b),(a,a,b),(b,b,a),(b,a,b),(b,b,b),(a,a,a),(b,a,a)\rbrace +\cdots
+\operatorname{SEQ}(\lbrace a,b\rbrace)&=\lbrace \epsilon\rbrace +\lbrace a,b\rbrace +\lbrace (a,b)\rbrace + \lbrace(b,a)\rbrace +\lbrace (a,a)\rbrace +\lbrace (b,b)\rbrace\\
+&+\lbrace (a,b,a)\rbrace +\lbrace (a,b,b)\rbrace +\lbrace (a,a,b)\rbrace +\lbrace (b,b,a)\rbrace +\lbrace (b,a,b)\rbrace +\lbrace (b,b,b)\rbrace +\lbrace (a,a,a)\rbrace +\lbrace (b,a,a)\rbrace\\
+&+\cdots
 \end{aligned}
 $$
 
@@ -276,6 +277,20 @@ $$
 
 [P4389 付公主的背包](https://www.luogu.com.cn/problem/P4389) 也是可以一样理解。
 
+[P5900 无标号无根树计数](https://www.luogu.com.cn/problem/P5900) 首先对于非平面（即不关心孩子的顺序）有根树 $\mathcal{T}$ 有
+
+$$
+\mathcal{T}=\mathcal{Z}\times \operatorname{MSET}(\mathcal{T})
+$$
+
+而根据 Richard Otter 的论文 [The Number of Trees](https://users.math.msu.edu/users/magyarp/Math482/Otter-Trees.pdf) 中的描述，对应无根树的生成函数为
+
+$$
+T(z)-\frac{1}{2}T^2(z)+\frac{1}{2}T(z^2)
+$$
+
+论文中额外提供了有限制度数的情况。
+
 ### 集合的 Cycle
 
 这里我没看懂，仅摘抄公式
@@ -391,7 +406,109 @@ $$
 
 ## 有标号体系
 
-TODO
+在有标号体系中会使用指数生成函数，即对于 $\mathcal{A}$ 的指数生成函数为
+
+$$
+A(z)=\sum _ {\alpha\in\mathcal{A}}\frac{z^{\lvert\alpha\rvert}}{\lvert\alpha\rvert !}=\sum _ {i\geq 0}\frac{a_i}{i!}z^i
+$$
+
+所以
+
+$$
+a_i=i!\lbrack z^i\rbrack A(z)
+$$
+
+而指数生成函数的乘法对应二项卷积。对于 $\mathcal{E}$ 和 $\mathcal{Z}$ 发现其与无标号体系中的是一致的，沿用定义。
+
+### 集合的并
+
+$$
+\begin{aligned}
+\mathcal{A}+\mathcal{B}\implies A(z)+B(z)&=\left(\sum _ {\alpha\in\mathcal{A}}\frac{z^{\lvert\alpha\rvert}}{\lvert\alpha\rvert !}\right)+\left(\sum _ {\beta\in\mathcal{B}}\frac{z^{\lvert\beta\rvert}}{\lvert\beta\rvert !}\right)\\
+&=\sum _ {i\geq 0}\frac{a_i+b_i}{i!}z^i
+\end{aligned}
+$$
+
+### 集合的有标号积
+
+有标号积（ labelled product ）又称为星积（ star product ），我们需要明确其对于集合而言具体的作用。
+
+例如集合 $\lbrace (1,2)\rbrace$ 满足 $\lvert \lbrace (1,2)\rbrace\rvert =2$ 和集合 $\lbrace (1,2,3)\rbrace$ 满足 $\lvert\lbrace (1,2,3)\rbrace\rvert =3$ 有
+
+$$
+\begin{aligned}
+\lbrace (1,2)\rbrace \star\lbrace (1,2,3)\rbrace &=\lbrace ((1,2),(3,4,5))\rbrace +\lbrace ((1,3),(2,4,5))\rbrace +\lbrace ((1,4),(2,3,5))\rbrace \\
+&+\lbrace ((1,5),(2,3,4))\rbrace +\lbrace ((2,3),(1,4,5))\rbrace +\lbrace ((2,4)(1,3,5))\rbrace\\
+&+\lbrace ((2,5),(1,3,4))\rbrace +\lbrace ((3,4),(1,2,5))\rbrace +\lbrace ((3,5),(1,2,4))\rbrace\\
+&+\lbrace ((4,5),(1,2,3))\rbrace
+\end{aligned}
+$$
+
+共 $\binom{5}{2}=10$ 个，其对应的指数生成函数运算为
+
+$$
+\left( \frac{1}{2!}z^2\right)\left(\frac{1}{3!}z^3\right)=\frac{10}{5!}z^5
+$$
+
+我们注意有标号积虽然会对生成的集合中的对象重新标号并且限制标号的区间为 $1$ 到对象大小的闭区间范围内，但其相对顺序依然是与之前的相对顺序一致的。
+
+由此我们定义集合上的有标号积的运算对应指数生成函数 $A(z)$ 和 $B(z)$ 的（二项）卷积
+
+$$
+\begin{aligned}
+\mathcal{A}\star\mathcal{B}\implies A(z)B(z)&=\left(\sum _ {\alpha\in\mathcal{A}}\frac{z^{\lvert\alpha\rvert}}{\lvert\alpha\rvert !}\right)\left(\sum _ {\beta\in\mathcal{B}}\frac{z^{\lvert\beta\rvert}}{\lvert\beta\rvert !}\right)\\
+&=\sum _ {\alpha\in\mathcal{A}}\sum _ {\beta\in\mathcal{B}}\binom{\lvert \alpha\rvert +\lvert\beta\rvert}{\lvert \alpha\rvert ,\lvert\beta\rvert}\frac{z^{\lvert \alpha\rvert +\lvert\beta\rvert}}{(\lvert \alpha\rvert +\lvert\beta\rvert)!}\\
+&=\sum _ {i\geq 0}\sum _ {j\geq 0}\binom{i+j}{i}a_ib_jz^{i+j}
+\end{aligned}
+$$
+
+其中
+
+$$
+\binom{a}{b_1,b_2,\dots ,b_n}=\frac{a!}{b_1! b_2! \cdots b_n!}\implies \binom{i+j}{i}=\binom{i+j}{j}
+$$
+
+也有 $\mathcal{A}\star(\mathcal{B}\star\mathcal{C})\cong (\mathcal{A}\star\mathcal{B})\star\mathcal{C}$ 。
+
+来观察指数生成函数 $A^k(z)$ 的意义
+
+$$
+\begin{aligned}
+A^k(z)&=\sum _ {N\geq 0}\lbrace \text{\# }k\text{-sequences of size }N\rbrace \frac{z^N}{N!}\\
+&=k\sum _ {N\geq 0}\lbrace \text{\# }k\text{-cycles of size }N\rbrace \frac{z^N}{N!}\\
+&=k!\sum _ {N\geq 0}\lbrace \text{\# }k\text{-sets of size }N\rbrace \frac{z^N}{N!}
+\end{aligned}
+$$
+
+这些都是对应的限制构造，组合意义上是显然的。下面我们考察对于 $\mathcal{A} _ 0=\emptyset$ 的构造。
+
+### 集合的 Sequence
+
+$$
+\operatorname{SEQ}(\mathcal{A})=\mathcal{E}+\mathcal{A}+(\mathcal{A}\star\mathcal{A})+(\mathcal{A}\star\mathcal{A}\star\mathcal{A})+\cdots \implies \frac{1}{1-A(z)}
+$$
+
+其中 $A(z)$ 为指数生成函数。
+
+一个排列是 $\operatorname{SEQ}(\mathcal{Z})$ ，有 $n!\lbrack z^n\rbrack \frac{1}{1-z}=n!$ 符合我们对 $n$ 个元素排列的认知。
+
+### 集合的 Cycle
+
+$$
+\operatorname{CYC}(\mathcal{A})=\mathcal{A}+\operatorname{CYC} _ 2(\mathcal{A})+\cdots\implies \log\frac{1}{1-A(z)}
+$$
+
+其中 $A(z)$ 为指数生成函数。
+
+### 集合的 Set
+
+$$
+\operatorname{SET}(\mathcal{A})=\mathcal{E}+\mathcal{A}+\operatorname{SET} _ 2(\mathcal{A})+\cdots\implies \exp(A(z))
+$$
+
+其中 $A(z)$ 为指数生成函数。
+
+有标号生成函数的部分有些仓促，先将概念写完，例子以后再补充吧。
 
 ## Lagrange 反演公式
 
