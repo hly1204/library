@@ -8,6 +8,8 @@
 
 大小为 $0$ 的元素一般记为 $\epsilon$ ，而一个只包含这个元素的集合为 $\mathcal{E}$ 。如果两个组合结构在组合意义上是同构的记为 $\mathcal{A}=\mathcal{B}$ 或 $\mathcal{A}\cong\mathcal{B}$ 。
 
+置换的意思是按顺序对所有进行排列？
+
 ## 无标号体系
 
 对于普通生成函数可能简称为生成函数。
@@ -289,8 +291,6 @@ $$
 T(z)-\frac{1}{2}T^2(z)+\frac{1}{2}T(z^2)
 $$
 
-论文中额外提供了有限制度数的情况。
-
 ### 集合的 Cycle
 
 这里我没看懂，仅摘抄公式
@@ -303,7 +303,7 @@ $$
 
 要求 $\mathcal{A} _ 0=\emptyset$ ，其中 $\operatorname{Log}$ 为 Pólya 对数。
 
-我理解应该是轮换构造在 Cycle 中认为是等价的，与 Multiset 中不同，比如 Multiset 中认为 $\lbrace (a,b,c,d)\rbrace$ 的任意 $4!$ 种排列都是等价的，但是 Cycle 中只认为 $\lbrace (a,b,c,d)\rbrace$ 与 $\lbrace (b,c,d,a)\rbrace ,\lbrace (c,d,a,b)\rbrace ,\lbrace (d,a,b,c)\rbrace$ 是等价的，其他也是类似的，在 x义x 的博客中使用了 Burnside 引理来证明，而《解析组合》中使用了二元的生成函数来解释，包括三个限制构造的证明。
+我理解应该是轮换构造在 Cycle 中认为是等价的，与 Multiset 中不同，比如 Multiset 中认为 $\lbrace (a,b,c,d)\rbrace$ 的任意 $4!$ 种置换都是等价的，但是 Cycle 中只认为 $\lbrace (a,b,c,d)\rbrace$ 与 $\lbrace (b,c,d,a)\rbrace ,\lbrace (c,d,a,b)\rbrace ,\lbrace (d,a,b,c)\rbrace$ 是等价的，其他也是类似的，在 x义x 的博客中使用了 Burnside 引理来证明，而《解析组合》中使用了二元的生成函数来解释，包括三个限制构造的证明。
 
 限制构造为
 
@@ -404,6 +404,55 @@ $$
 A(z,u)=\prod_n\left(1-uz^n\right)^{-b_n},\quad A(z,u)=\prod_n\left(1+uz^n\right)^{b_n}
 $$
 
+我们不妨用给出的方法来模拟计算一下 $\operatorname{MSET} _ 3(\mathcal{A})$
+
+$$
+\begin{aligned}
+\lbrack u^3\rbrack &= \frac{1}{0!}\left(\lbrack u^3\rbrack 1\right)+\frac{1}{1!}\left(\lbrack u^3\rbrack \left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\frac{u^3}{3}A(z^3)+\cdots \right)\right)\\
+&+\frac{1}{2!}\left(\lbrack u^3\rbrack \left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\cdots \right)^2\right)\\
+&+\frac{1}{3!}\left(\lbrack u^3\rbrack \left(\frac{u}{1}A(z)+\cdots \right)^3\right)\\
+&=\frac{A(z^3)}{3}+\frac{A(z)A(z^2)}{2}+\frac{A^3(z)}{6}
+\end{aligned}
+$$
+
+而 $\operatorname{MSET} _ 4(\mathcal{A})$
+
+$$
+\begin{aligned}
+\lbrack u^4\rbrack &= \frac{1}{0!}\left(\lbrack u^4\rbrack 1\right)+\frac{1}{1!}\left(\lbrack u^4\rbrack \left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\frac{u^3}{3}A(z^3)+\frac{u^4}{4}A(z^4)+\cdots \right)\right)\\
+&+\frac{1}{2!}\left(\lbrack u^4\rbrack \left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\frac{u^3}{3}A(z^3)+\cdots \right)^2\right)\\
+&+\frac{1}{3!}\left(\lbrack u^4\rbrack \left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\cdots \right)^3\right)\\
+&+\frac{1}{4!}\left(\lbrack u^4\rbrack \left(\frac{u}{1}A(z)+\cdots \right)^4\right)\\
+&=\frac{A(z^4)}{4}+\frac{1}{2!}\left(\frac{A^2(z^2)}{4}+\frac{2A(z)A(z^3)}{3}\right)+\frac{1}{3!}\left(\frac{3A^2(z)A(z^2)}{2}\right)+\frac{A^4(z)}{4!}
+\end{aligned}
+$$
+
+与刚刚给出的表格是一致的。
+
+存在更通用的计算方法，即 Pólya 计数法（ Pólya enumeration theorem ）也就是 command\_block 博客中使用的方法，形式化的，令 $A$ 为一个置换群阶为 $m$ 且度数为 $d$ （有 $m$ 个元素且一个置换都包含于整数集合 $\lbrack d\rbrack = \lbrace 1,2,\dots, d\rbrace$ ，不过一般来说我们考虑的基本都只是 $m=d$ 的情况？）。
+
+对于每个 $\alpha\in A$ 都可以分解成不相交的环，令 $j_1(\alpha)$ 表示长度为 $1$ 的环，以此类推，然后引入一些变量 $\lbrace a_k\rbrace _ {k=1}^d$ ，一个置换就可以用这样一个变量的序列表示，令 $a_k$ 的指数表示 $\alpha$ 中长度为 $k$ 的环的数量，那么循环多项式（ cycle polynomial ） $Z(A)$ 为
+
+$$
+Z(A)=\frac{1}{\lvert A\rvert}\sum _ {\alpha\in A}\prod _ {k=1}^da_k^{j_k(\alpha)}
+$$
+
+比如循环群 $C_3=\lbrace (1,2,3),(2,3,1),(3,1,2)\rbrace$ ，考虑将 $(1,2,3)$ 分别映射到 $C_3$ 中的每个元素，那么 $(1,2,3)$ 到 $(1,2,3)$ 显然只能 $1$ 映射到 $1$ ， $2$ 映射到 $2$ ， $3$ 映射到 $3$ 故有 $3$ 个长度为 $1$ 的环，而 $(1,2,3)$ 映射到 $(2,3,1)$ 则是将 $1$ 映射到 $2$ ，将 $2$ 映射到 $3$ 再将 $3$ 映射到 $1$ 是一个长度为 $3$ 的环，最后那种映射也是长度为 $3$ 的环，故
+
+$$
+Z(C_3)=\frac{1}{3}(a_1^3+2a_3)
+$$
+
+这实际上就是 $\operatorname{CYC} _ 3$ ，于是简单的机械化的计算方法就是我们生成这些所有的群然后建图后计算环的大小和数量。
+
+对于组合类 $\mathcal{C}$ 和一个度数为 $d$ 的置换群 $A$ ，我们希望计算 $\mathcal{C}$ 中的对象放到 $d$ 个桶中的方案数，两种方案是等价的当且仅当可以根据某个 $\alpha\in\mathcal{A}$ 然后将桶进行置换得到。
+
+令 $D(z)$ 为等价类的普通生成函数，那么 $\lbrack z^n\rbrack D(z)$ 也就是大小为 $n$ 的等价类的数量。我们有
+
+$$
+D(z)=\left.Z(A)\right| _ {a_1=C(z),a_2=C(z^2),\dots ,a_d=C(z^d)}
+$$
+
 ## 有标号体系
 
 在有标号体系中会使用指数生成函数，即对于 $\mathcal{A}$ 的指数生成函数为
@@ -490,7 +539,7 @@ $$
 
 其中 $A(z)$ 为指数生成函数。
 
-一个排列是 $\operatorname{SEQ}(\mathcal{Z})$ ，有 $n!\lbrack z^n\rbrack \frac{1}{1-z}=n!$ 符合我们对 $n$ 个元素排列的认知。
+一个置换是 $\operatorname{SEQ}(\mathcal{Z})$ ，有 $n!\lbrack z^n\rbrack \frac{1}{1-z}=n!$ 符合我们对 $n$ 个元素置换的认知。
 
 ### 集合的 Cycle
 
@@ -518,5 +567,5 @@ $$
 
 - <https://ac.cs.princeton.edu/home/>
 - 叉义叉的博客 - [组合结构符号化学习笔记](https://www.luogu.com.cn/blog/zyxxs/zu-ge-jie-gou-fu-hao-hua-xue-xi-bi-ji)
-- command_block 的博客 - [多项式计数杂谈](https://www.luogu.com.cn/blog/command-block/sheng-cheng-han-shuo-za-tan)
+- command\_block 的博客 - [多项式计数杂谈](https://www.luogu.com.cn/blog/command-block/sheng-cheng-han-shuo-za-tan)
 - 一只 alpha1022 的小窝 - [浅谈多项式复合和拉格朗日反演](https://www.luogu.com.cn/blog/your-alpha1022/qian-tan-duo-xiang-shi-fu-ge-hu-la-ge-lang-ri-fan-yan)
