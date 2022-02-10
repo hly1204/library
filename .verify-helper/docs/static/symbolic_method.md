@@ -10,6 +10,8 @@
 
 置换的意思是按顺序对所有进行排列？
 
+这篇文章可能有很多错误，但不一定会修正了。。。
+
 ## 无标号体系
 
 对于普通生成函数可能简称为生成函数。
@@ -408,7 +410,7 @@ $$
 
 $$
 \begin{aligned}
-\lbrack u^3\rbrack &= \frac{1}{0!}\left(\lbrack u^3\rbrack 1\right)+\frac{1}{1!}\left(\lbrack u^3\rbrack \left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\frac{u^3}{3}A(z^3)+\cdots \right)\right)\\
+\lbrack u^3\rbrack A(z,u)&= \frac{1}{0!}\left(\lbrack u^3\rbrack 1\right)+\frac{1}{1!}\left(\lbrack u^3\rbrack \left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\frac{u^3}{3}A(z^3)+\cdots \right)\right)\\
 &+\frac{1}{2!}\left(\lbrack u^3\rbrack \left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\cdots \right)^2\right)\\
 &+\frac{1}{3!}\left(\lbrack u^3\rbrack \left(\frac{u}{1}A(z)+\cdots \right)^3\right)\\
 &=\frac{A(z^3)}{3}+\frac{A(z)A(z^2)}{2}+\frac{A^3(z)}{6}
@@ -419,7 +421,7 @@ $$
 
 $$
 \begin{aligned}
-\lbrack u^4\rbrack &= \frac{1}{0!}\left(\lbrack u^4\rbrack 1\right)+\frac{1}{1!}\left(\lbrack u^4\rbrack \left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\frac{u^3}{3}A(z^3)+\frac{u^4}{4}A(z^4)+\cdots \right)\right)\\
+\lbrack u^4\rbrack A(z,u)&= \frac{1}{0!}\left(\lbrack u^4\rbrack 1\right)+\frac{1}{1!}\left(\lbrack u^4\rbrack \left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\frac{u^3}{3}A(z^3)+\frac{u^4}{4}A(z^4)+\cdots \right)\right)\\
 &+\frac{1}{2!}\left(\lbrack u^4\rbrack \left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\frac{u^3}{3}A(z^3)+\cdots \right)^2\right)\\
 &+\frac{1}{3!}\left(\lbrack u^4\rbrack \left(\frac{u}{1}A(z)+\frac{u^2}{2}A(z^2)+\cdots \right)^3\right)\\
 &+\frac{1}{4!}\left(\lbrack u^4\rbrack \left(\frac{u}{1}A(z)+\cdots \right)^4\right)\\

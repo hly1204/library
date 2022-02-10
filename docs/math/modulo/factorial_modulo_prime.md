@@ -384,8 +384,48 @@ int main() {
 }
 ```
 
+## P-recursive 序列
+
+上面的说法可能不太正确， Bostan 等的论文解决的是多项式为系数的线性递推
+
+$$
+u _ {n+d}=c _ {d-1}(n)u _ {n+d-1}+\cdots +c_0(n)u_n
+$$
+
+其中 $c_0(x),\dots ,c _ {d-1}(x)$ 都是在环 $R(x)$ 上的有理函数（当然，我们依然是只考虑有限域 $\mathbb{F} _ {p}(x)$ 且 $p$ 为足够大的素数），这样的线性递推序列被称为 holonomic （或 P-recursive ）序列，而 Bostan-Mori 算法解决的为 C-recursive 的线性递推序列。我们思考如何解决上式，首先模仿在 [常系数其次线性递推](https://oi-wiki.org/math/linear-recurrence/) 中对矩阵的构造，记 $c_i(x)=P_i(x)/Q_i(x)$ 我们有
+
+$$
+\underbrace{
+\begin{bmatrix}
+u _ {n+1}\\
+u _ {n+2}\\
+\vdots\\
+u _ {n+d}
+\end{bmatrix}} _ {v _ {n+1}}
+=\underbrace{\begin{bmatrix}
+&1&&\\
+&&\ddots&\\
+&&&1\\
+\dfrac{P_0(n)}{Q_0(n)}&\dfrac{P_1(n)}{Q_1(n)}&\cdots &\dfrac{P _ {d-1}(n)}{Q _ {d-1}(n)}
+\end{bmatrix}} _ {\mathbf{M} _ n}
+\underbrace{
+\begin{bmatrix}
+u_n\\
+u _ {n+1}\\
+\vdots\\
+u _ {n+d-1}
+\end{bmatrix}} _ {v_n}
+$$
+
+如果 $Q_i(x)=1$ 的话可以类比上述倍增的方法，但是这种会不会造成必须通分的情况导致分子分母的次数太大难以维护呢？
+
+## 微分方程
+
+EI 指出一些简单的微分有限的生成函数（包含复合某些代数函数）可以表为微分方程，也可以表为 P-recursive 序列，使用上述算法，但证明和过程过于复杂我还没理解！
+
 ## 参考文献
 
 - ZZQ 的[博客](https://www.cnblogs.com/zzqsblog/p/8408691.html)
 - Min\_25 的[博客](http://min-25.hatenablog.com/entry/2017/04/10/215046)（已被删除）
 - Alin Bostan, Pierrick Gaudry, and Eric Schost. Linear recurrences with polynomial coefficients and application to integer factorization and Cartier-Manin operator.
+- Entropy Increaser. [关于整式递推机械化的尝试](https://blog.csdn.net/EI_Captain/article/details/108930959).
