@@ -129,12 +129,11 @@ public:
     int len2         = get_ntt_len(rem_size);
     int mask         = len2 - 1;
     int max_quo_size = rem_size;
-#define MODIFY_POLY(t)                                                  \
-  {                                                                     \
-    for (int i = len2, ie = t.size(); i < ie; ++i) t[i & mask] += t[i]; \
-    t.resize(len2);                                                     \
-  }
-    MODIFY_POLY(mod_cpy);
+    auto modify      = [len2, mask](poly &t) {
+      for (int i = len2, ie = t.size(); i < ie; ++i) t[i & mask] += t[i];
+      t.resize(len2);
+    };
+    modify(mod_cpy);
     dft(len2, mod_cpy.data());
     poly rev_mod_inv(rev_mod.inv(max_quo_size));
     rev_mod_inv.resize(len, mod_t(0));
@@ -160,8 +159,8 @@ public:
           idft(len, rev_res.data());
           rev_res.resize(quo_size_res);
           std::reverse(rev_res.begin(), rev_res.end());
-          MODIFY_POLY(res);
-          MODIFY_POLY(rev_res);
+          modify(res);
+          modify(rev_res);
           dft(len2, rev_res.data());
           for (int i = 0; i != len2; ++i) rev_res[i] *= mod_cpy[i];
           idft(len2, rev_res.data());
@@ -186,15 +185,14 @@ public:
         idft(len, rev_cpy.data());
         rev_cpy.resize(quo_size_cpy);
         std::reverse(rev_cpy.begin(), rev_cpy.end());
-        MODIFY_POLY(cpy);
-        MODIFY_POLY(rev_cpy);
+        modify(cpy);
+        modify(rev_cpy);
         dft(len2, rev_cpy.data());
         for (int i = 0; i != len2; ++i) rev_cpy[i] *= mod_cpy[i];
         idft(len2, rev_cpy.data());
         for (int i = 0; i != len2; ++i) cpy[i] -= rev_cpy[i];
       }
     }
-#undef MODIFY_POLY
   }
 
   poly shift(mod_t c) const {

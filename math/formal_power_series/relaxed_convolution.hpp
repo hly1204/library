@@ -50,8 +50,8 @@ public:
       contribution_[2] = A_.back() * B_.back();
       break;
     case 2:
-      contribution_[2] += A_.emplace_back(handle_A_(2, contribution_)) * B_[0] +
-                          A_[0] * B_.emplace_back(handle_B_(2, contribution_));
+      contribution_[2] += A_.emplace_back(handle_A_(2, contribution_)) * B_.front() +
+                          A_.front() * B_.emplace_back(handle_B_(2, contribution_));
       contribution_[3] = A_.back() * B_[1] + A_[1] * B_.back();
       break;
     default:
