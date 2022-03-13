@@ -1,5 +1,5 @@
 ---
-title: Subproduct Tree
+title: Multipoint Evaluation and Interpolation
 documentation_of: ./subproduct_tree.hpp
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: Discrete Logarithm (Shanks's Baby Step-Giant Step algorithm)
+title: Discrete Logarithm (Shanks' Baby Step-Giant Step algorithm)
 documentation_of: ./discrete_log_BSGS.hpp
 ---
 
