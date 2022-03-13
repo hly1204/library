@@ -15,26 +15,6 @@ $$
 
 右侧是闭形式可以使用形式幂级数简单的计算，左侧就是隐式的形式了。隐式级数一般容易找到，而找到闭形式有可能比较困难（或者不一定存在？）。
 
-```cpp
-#include <functional>
-#include <iostream>
-
-#include "math/formal_power_series/implicit_series.hpp"
-#include "modint/Montgomery_modint.hpp"
-
-int main() {
-#ifdef LOCAL
-  std::freopen("in", "r", stdin), std::freopen("out", "w", stdout);
-#endif
-  using mint = lib::MontModInt<998244353>;
-  std::function<mint(int)> f;
-  lib::ImplicitSeries<mint> T([&f](int i) { return i == 0 ? 1 : f(i); });
-  f = [TT = T * T](int i) { return TT[i - 1]; };
-  for (int i = 0; i < 10; ++i) std::cout << T[i] << ' ';
-  return 0;
-}
-```
-
 隐式级数的快速计算可以直接解决 [LOJ 6538. 烷基计数 加强版 加强版](https://loj.ac/p/6538) 等问题，尽管在时间复杂度上并无优势，见 [符号化方法](https://hly1204.github.io/library/symbolic_method.html) 。
 
 另外 Elegia 指出在线卷积也可以扩展到任意模数的二项卷积上，那么隐式级数的计算可能也可以扩展，但由于过于复杂我也不会！

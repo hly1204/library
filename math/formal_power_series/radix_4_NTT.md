@@ -89,8 +89,6 @@ f_Z
 \end{bmatrix}
 $$
 
-逆矩阵为原矩阵转置后并对所有 entries 取逆元。
-
 该算法为 classical radix-4 NTT 而 twisted radix-4 NTT 也是类似的，但是最内层循环中需要用到“更多的”单位根，故无法在实践中采用。
 
 ## 预处理单位根的手法

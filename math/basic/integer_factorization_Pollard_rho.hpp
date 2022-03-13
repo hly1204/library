@@ -10,7 +10,7 @@
 
 namespace lib::internal {
 
-// Pollard-rho 算法
+// Pollard 的 rho 算法
 // 一个不平凡的因子
 std::uint64_t rho(std::uint64_t n) {
   using u64 = std::uint64_t;

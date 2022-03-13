@@ -49,16 +49,7 @@ $$
 
 显然为整数。且因为 $0\leq T\lt RN,0\leq m\lt R$ 所以 $0\leq (T+mN)/R\lt 2N$ 。 $\square$
 
-而在实践中通常选取 $R=2^{32}$ ，那么可以写下如下 C++ 代码
-
-```cpp
-typedef std::uint32_t u32;
-typedef std::uint64_t u64;
-// 预处理 N_p 作为 N' ，类型为 u32 ，模数 N 为奇数
-u32 REDC(u64 T) { return T + u64(u32(T) * N_p) * N >> 32; }
-```
-
-其中我们没有处理 $t\geq N$ 的情况，这是因为假设选取的 $N\lt 2^{30}$ 此时返回值在 $[0,2N)$ 中，如果我们将两个 $T_{1},T_{2}$ 相乘再进行 REDC ，那么注意 REDC 的输入参数只要求 $[0,RN)$ 中即可，这样可以惰性的进行伪代码最后一步的“修正”过程。
+而在实践中通常选取 $R=2^{32}$ 且不立即处理 $t\geq N$ 的情况，这是因为假设选取的 $N\lt 2^{30}$ 此时返回值在 $[0,2N)$ 中，如果我们将两个 $T_{1},T_{2}$ 相乘再进行 REDC ，那么注意 REDC 的输入参数只要求 $[0,RN)$ 中即可，这样可以惰性的进行伪代码最后一步的“修正”过程。
 
 假设我们需要在模奇数 $N$ 意义下对 $0\leq x\lt N$ 和 $0\leq y\lt N$ 计算 $xy\bmod N$，那么通过 $\operatorname{REDC}(x(R^{2}\bmod N))$ 计算 $xR\bmod N$ 再计算 $\operatorname{REDC}(xRy)$ 即可。这提示我们预处理 $R^{2}\bmod N$ 和 $N'$ 即可。
 
@@ -87,4 +78,3 @@ $$
 - Peter L. Montgomery. Modular Multiplication Without Trial Division, 1985.
 - Richard P. Brent and Paul Zimmermann, Modern Computer Arithmetic, Cambridge Monographs on Computational and Applied Mathematics (No. 18), Cambridge University Press, November 2010, 236 pages
 - Nyaan 的[博客](https://nyaannyaan.github.io/docs/modulo/montgomery/)
-

@@ -31,33 +31,6 @@ $$
 
 我们提前计算所有 $a^{np}$ 并存储在类似于 `std::map<int, int>` 的容器中，以 $a^{np}$ 为关键字，值为 $np$ 后枚举 $ba^q$ 计算即可，但因我们希望找到 **最小** 的 $x$ 满足 $a^x\equiv b\pmod{m}$ ，所以提前计算所有的 $ba^q$ 后枚举 $a^{np}$ ，可以通过 `std::unordered_map<int, int>` 来避免平衡树/二分查找所需的额外时间。我们希望让 $p$ 和 $q$ 的枚举都尽可能小，所以选择 $n=\left\lceil \sqrt{m}\right\rceil$ 。其中枚举 $q$ 的过程称为 Baby-Step 而枚举 $p$ 的过程称为 Giant-Step 。
 
-```cpp
-#include <cassert>
-#include <cmath>
-#include <unordered_map>
-#include <numeric>
-
-int discrete_log_coprime(int a, int b, int m) {
-  assert(std::gcd(a, m) == 1);
-  a %= m, b %= m;
-  int n = static_cast<int>(std::ceil(std::sqrt(m)));
-  std::unordered_map<int, int> mp;
-  for (int q = 0; q <= n; ++q) {
-    // 枚举 q 计算 ba^q
-    mp[b] = q;
-    b = static_cast<long long>(b) * a % m;
-  }
-  int an = 1;
-  for (int i = 0; i < n; ++i) an = static_cast<long long>(an) * a % m;
-  for (int p = 1, cur = 1; p <= n; ++p) {
-    // 枚举 p 计算 a^(np)
-    cur = static_cast<long long>(cur) * an % m;
-    if (mp.find(cur) != mp.end()) return n * p - mp[cur];
-  }
-  return -1;
-}
-```
-
 考虑 $a\equiv b\equiv 1\pmod{m}$ 的情况，此时 `std::unordered_map<int, int>` 中其实只有一个值为 $n$ ，然后在枚举 $p$ 时返回为零，也就是说如果对于所有 $ba^q$ 有相同值时在哈希表中会保留 $q$ 较大的值，因为我们是减去 $q$ 所以这样是正确的，当然，这也提示我们可以用 `std::unordered_map<int, std::vector<int>>` 来保留所有可能的结果。
 
 ## $\gcd(a,m)\neq 1$ 时

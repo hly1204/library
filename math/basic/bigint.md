@@ -85,29 +85,6 @@ $$
 
 在第三步时我们取 $A$ 的高 $n'$ 位为 $A_0$ 计算 $q\approx \left\lfloor \dfrac{10^{2n'}}{A_0}\right\rfloor \cdot 10^{n-n'}\approx \left\lfloor\dfrac{10^{2n}}{A}\right\rfloor$ 后面为一次 Newton 迭代，我不会分析误差，个人猜测最坏的情况即 $A_0=\underbrace{10\dots 0} _ {n'\text{ digits}}$ 而 $A=\underbrace{10\dots 0} _ {n'\text{ digits}}\underbrace{9\dots 9} _ {n-n'\text{ digits}}$ 此时 Newton 迭代时误差最大，那么结果的误差看起来似乎也是最大的。
 
-```py
-def count_digit(a):
-    cnt = 0
-    while a != 0:
-        a //= 10
-        cnt += 1
-    return cnt
-
-def compute(a):
-    da = count_digit(a)
-    print(da, a)
-    if da <= 2:
-        return (10 ** (da * 2)) // a
-    da0 = da // 2 + 1
-    r = compute(a // (10 ** (da - da0))) * 10 ** (da - da0)
-    print(r)
-    return r * (2 * 10 ** (da * 2) - r * a) // 10 ** (da * 2)
-
-a = 1000000000000000999999999999999
-da = count_digit(a)
-print(10 ** (da * 2) // a - compute(a))
-```
-
 最后输出的误差为 `99` ，原文中为“不超过 `100` ”，这里不清楚我的猜测是否正确，但我仍然使用了自己的猜测。另外测试发现似乎不依赖于最后一层递归给出当前准确的解，也是可以存在误差的。
 
 这篇文章经过一些修改和补充后发在 [洛谷](https://www.luogu.com.cn/blog/242973/solution-p5432) 。。。
