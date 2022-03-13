@@ -82,14 +82,6 @@ public:
   };
 
   template <typename Type>
-  std::vector<Type> &shrink(std::vector<Type> &x) {
-    Type ZERO(0);
-    while (x.back() == ZERO) x.pop_back();
-    if (x.empty()) x.emplace_back(ZERO);
-    return x;
-  }
-
-  template <typename Type>
   std::vector<Type> binom_convolve(const std::vector<Type> &x, const std::vector<Type> &y) {
     int n = x.size(), m = y.size();
     std::vector<u32> x_cpy(n), y_cpy(m);

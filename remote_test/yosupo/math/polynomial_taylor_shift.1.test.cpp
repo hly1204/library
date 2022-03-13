@@ -11,7 +11,8 @@ int main() {
 #endif
   std::ios::sync_with_stdio(false);
   std::cin.tie(0);
-  int n, m, mod = 998244353;
+  int n;
+  constexpr int mod = 998244353;
   unsigned long long c, uc = 1;
   std::cin >> n >> c;
   lib::EGF egf(mod);
