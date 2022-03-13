@@ -1,11 +1,6 @@
 #ifndef POLYNOMIAL_GCD_HEADER_HPP
 #define POLYNOMIAL_GCD_HEADER_HPP
 
-/**
- * @brief polynomial Euclidean algorithm
- * @docs docs/math/formal_power_series/poly_gcd.md
- */
-
 #include <algorithm>
 #include <cassert>
 #include <optional>
@@ -17,11 +12,9 @@ template <typename PolyType>
 struct PolyGCDMat {
 public:
   PolyType m00, m01, m10, m11;
-  /*
-   * 2×2 的矩阵形如
-   * [m00 m01]
-   * [m10 m11]
-   */
+  // 2×2 的矩阵形如
+  // [m00 m01]
+  // [m10 m11]
   PolyGCDMat(const PolyType &m00, const PolyType &m01, const PolyType &m10, const PolyType &m11)
       : m00(m00), m01(m01), m10(m10), m11(m11) {}
   ~PolyGCDMat()                  = default;

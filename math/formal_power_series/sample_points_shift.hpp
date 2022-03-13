@@ -1,11 +1,6 @@
 #ifndef SAMPLE_POINTS_SHIFT_HEADER_HPP
 #define SAMPLE_POINTS_SHIFT_HEADER_HPP
 
-/**
- * @brief sample points shift
- * @docs docs/math/formal_power_series/sample_points_shift.md
- */
-
 #include <cassert>
 #include <cstdint>
 #include <functional>
@@ -18,17 +13,7 @@
 
 namespace lib::internal {
 
-/**
- * @brief 样本点平移（通过拉格朗日插值公式）
- * @note 不安全的算法
- * @tparam mod_t 素数模数且点数不能超过模数！
- * @tparam ConvolveCyclicFuncType
- * @param n 返回值的点数
- * @param pts f(0), f(1), …, f(k-1) 确定一个唯一的度数小于 k 的多项式
- * @param m 平移距离 f(x) => f(x+m)
- * @param f 循环卷积函数
- * @return std::vector<mod_t> f(m), f(m+1), …, f(m+n-1)
- */
+// deg(f) < k 且 f(0), f(1), …, f(k-1) => f(m), f(m+1), …, f(m+n-1)
 template <typename mod_t, typename ConvolveCyclicFuncType>
 std::vector<mod_t> shift_sample_points_unsafe(int n, const std::vector<mod_t> &pts, mod_t m,
                                               ConvolveCyclicFuncType &&f) {
@@ -128,12 +113,7 @@ std::vector<mod_t> shift_sample_points(const std::vector<mod_t> &pts, mod_t m,
   return shift_sample_points(pts.size(), pts, m, f);
 }
 
-/**
- * @brief 线性时间连续点值（特殊点值）的单点插值
- * @param pts f(0), f(1), …, f(k-1) 确定一个唯一的度数小于 k 的多项式
- * @param c
- * @return mod_t f(c)
- */
+// deg(f) < k 且 f(0), f(1), …, f(k-1) => f(c)
 template <typename mod_t>
 mod_t shift_sample_points_single(const std::vector<mod_t> &pts, mod_t c) {
   using u64 = std::uint64_t;

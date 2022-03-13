@@ -1,11 +1,6 @@
 #ifndef BINOMIAL_COEFFICIENT_MOD_HEADER_HPP
 #define BINOMIAL_COEFFICIENT_MOD_HEADER_HPP
 
-/**
- * @brief binomial coefficient mod
- *
- */
-
 #include <cassert>
 #include <cstdint>
 #include <tuple>
@@ -22,10 +17,7 @@ public:
   using u32 = std::uint32_t;
   using u64 = std::uint64_t;
 
-  /**
-   * @brief 二项式系数取模
-   * @param mod 素因数分解后所有素数幂次的因数和不能太大
-   */
+  // mod 素因数分解后所有素数幂次的因数和不能太大
   BinomialCoefficientModSmall(u32 mod) {
     for (u32 i = 2; i * i <= mod; ++i) {
       if (mod % i == 0) {
@@ -77,13 +69,7 @@ public:
 
   ~BinomialCoefficientModSmall() = default;
 
-  /**
-   * @brief 返回 nCm 对 mod 取模
-   * @todo 注意这里 n 这个上指标可以为负数，但我并未实现
-   * @param n
-   * @param m
-   * @return u32
-   */
+  // 返回 nCm 对 mod 取模，注意这里 n 这个上指标可以为负数，但我并未实现
   u32 operator()(u64 n, u64 m) const {
     if (n < m) return 0;
     std::vector<u32> v;

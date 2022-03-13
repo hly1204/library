@@ -1,22 +1,11 @@
 #ifndef CHARACTERISTIC_POLYNOMIAL_HEADER_HPP
 #define CHARACTERISTIC_POLYNOMIAL_HEADER_HPP
 
-/**
- * @brief characteristic polynomial
- *
- */
-
 #include <vector>
 
 namespace lib {
 
-/**
- * @brief 获取方阵的特征多项式
- * @note 特征多项式 det(xI-m) 而非 det(m-xI)
- * @tparam Type 方阵中的元素
- * @param m 方阵 m
- * @return std::vector<Type>
- */
+// 获取方阵的特征多项式 det(xI-m)
 template <typename MatType, typename Type = typename MatType::value_type>
 std::vector<Type> get_charpoly(const MatType &m) {
   auto h = m.to_upper_Hessenberg();

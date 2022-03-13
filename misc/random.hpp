@@ -1,31 +1,21 @@
 #ifndef RANDOM_XOSHIRO256STARSTAR_HEADER_HPP
 #define RANDOM_XOSHIRO256STARSTAR_HEADER_HPP
 
-/**
- * @brief pseudo random generator
- *
- */
-
 #include <cassert>
 #include <cstdint>
 #include <type_traits>
 
 namespace lib {
 
-/**
- * @brief xoshiro256starstar
- * @see https://prng.di.unimi.it/xoshiro256starstar.c
- */
+// xoshiro256starstar
+// 参见：https://prng.di.unimi.it/xoshiro256starstar.c
 class Random {
 private:
   using u64 = std::uint64_t;
 
 public:
-  /**
-   * @brief 创建一个新的随机数对象，共用同一个种子
-   * @param x 种子
-   * @see https://prng.di.unimi.it/splitmix64.c
-   */
+  // 创建一个新的随机数对象，共用同一个种子
+  // 参见：https://prng.di.unimi.it/splitmix64.c
   Random(u64 x = 0) {
     for (int i = 0; i < 4; ++i) {
       u64 z = (x += 0x9e3779b97f4a7c15);
@@ -36,12 +26,7 @@ public:
   }
   ~Random() = default;
 
-  /**
-   * @brief 返回 [0, upper] 中均匀分布的一个整数
-   * @tparam T
-   * @param upper 上界，可以取到
-   * @return std::enable_if_t<std::is_integral_v<T>, T>
-   */
+  // 返回 [0, upper] 中均匀分布的一个整数
   template <typename T>
   std::enable_if_t<std::is_integral_v<T>, T> uniform_int(T upper) {
     assert(upper > 0);
@@ -58,14 +43,8 @@ public:
     }
   }
 
-  /**
-   * @brief 返回 [lower, upper] 中均匀分布的一个整数
-   * @note 输入可能会越界，但这里不处理
-   * @tparam T
-   * @param lower 下界，可以取到
-   * @param upper 上界，可以取到
-   * @return std::enable_if_t<std::is_integral_v<T>, T>
-   */
+  // 返回 [lower, upper] 中均匀分布的一个整数
+  // 输入可能会越界，但这里不处理
   template <typename T>
   std::enable_if_t<std::is_integral_v<T>, T> uniform_int(T lower, T upper) { // [lower, upper]
     assert(upper > lower);

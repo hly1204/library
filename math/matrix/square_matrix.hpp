@@ -1,11 +1,6 @@
 #ifndef SQUARE_MATRIX_HEADER_HPP
 #define SQUARE_MATRIX_HEADER_HPP
 
-/**
- * @brief square matrix
- *
- */
-
 #include <optional>
 
 #include "math/matrix/matrix_base.hpp"
@@ -18,11 +13,7 @@ public:
   SquareMatrix(int r, const Type &v = Type()) : Matrix<Type>(r, r, v) {}
   virtual ~SquareMatrix() = default;
 
-  /**
-   * @brief 域上的方阵逆元
-   * @note 使用 Gauss-Jordan 消元，有除法，所以元素需要属于域
-   * @return std::optional<SquareMatrix>
-   */
+  // 域上的方阵逆元，使用 Gauss-Jordan 消元，有除法，所以元素需要属于域
   virtual std::optional<SquareMatrix> inv() const {
     int n = this->row();
     assert(this->col() == n);
@@ -30,12 +21,10 @@ public:
     SquareMatrix res(n, n); // aug 即 augmented matrix 增广矩阵
     for (int i = 0; i < n; ++i) std::copy(this->row_begin(i), this->row_end(i), aug.row_begin(i));
     for (int i = 0; i < n; ++i) aug.at(i, i + n) = Type(1);
-    /*
-      [ x x x x | 1 0 0 0 ] => [ 1 0 0 0 | x x x x ]
-      [ x x x x | 0 1 0 0 ] => [ 0 1 0 0 | x x x x ]
-      [ x x x x | 0 0 1 0 ] => [ 0 0 1 0 | x x x x ]
-      [ x x x x | 0 0 0 1 ] => [ 0 0 0 1 | x x x x ]
-    */
+    // [ x x x x | 1 0 0 0 ] => [ 1 0 0 0 | x x x x ]
+    // [ x x x x | 0 1 0 0 ] => [ 0 1 0 0 | x x x x ]
+    // [ x x x x | 0 0 1 0 ] => [ 0 0 1 0 | x x x x ]
+    // [ x x x x | 0 0 0 1 ] => [ 0 0 0 1 | x x x x ]
     // 先将左边矩阵消元为上三角矩阵且主对角线为 1 再下面往上将该矩阵消为 diag(1,1,1 ...)
     {
       for (int i = 0; i < n; ++i) {    // 第一阶段
@@ -71,11 +60,7 @@ public:
     return res;
   }
 
-  /**
-   * @brief 方阵的行列式
-   * @note 使用 Gauss 消元，有除法，所以元素需要属于域
-   * @return Type
-   */
+  // 方阵的行列式，使用 Gauss 消元，有除法，所以元素需要属于域
   virtual Type det() const {
     int n = this->row();
     assert(this->col() == n);
@@ -105,11 +90,7 @@ public:
     return odd ? -res : res;
   }
 
-  /**
-   * @brief 矩阵的秩
-   * @note 使用 Gauss 消元，有除法，所以元素需要属于域
-   * @return int
-   */
+  // 矩阵的秩，使用 Gauss 消元，有除法，所以元素需要属于域
   virtual int rank() const {
     int n = this->row(), res = 0;
     assert(this->col() == n);
@@ -135,11 +116,7 @@ public:
     return res;
   }
 
-  /**
-   * @brief 相似变换为上 Hessenberg 方阵
-   * @note 使用 Gauss 消元，有除法，所以元素需要属于域
-   * @return SquareMatrix
-   */
+  // 相似变换为上 Hessenberg 方阵，使用 Gauss 消元，有除法，所以元素需要属于域
   SquareMatrix to_upper_Hessenberg() const {
     int n = this->row();
     assert(this->col() == n);

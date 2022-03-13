@@ -1,11 +1,6 @@
 #ifndef FACTORIAL_MODULO_PRIME_HEADER_HPP
 #define FACTORIAL_MODULO_PRIME_HEADER_HPP
 
-/**
- * @brief factorial modulo prime
- * @docs docs/math/modulo/factorial_modulo_prime.md
- */
-
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
@@ -19,11 +14,8 @@
 
 namespace lib {
 
-/**
- * @brief 素数模数的阶乘计算
- * @note 在 O(p^{1/2}\log p) 时间预处理，单次询问 O(p^{1/2})
- * @tparam mod_t 素数模数
- */
+// 素数模数的阶乘计算
+// 在 O(p^{1/2}log p) 时间预处理，单次询问 O(p^{1/2})
 template <typename mod_t>
 class FactorialModPrime {
 public:

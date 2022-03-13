@@ -1,11 +1,6 @@
 #ifndef DEBRUIJN_HEADER_HPP
 #define DEBRUIJN_HEADER_HPP
 
-/**
- * @brief de Bruijn sequence
- *
- */
-
 #include <cstdint>
 
 namespace lib {

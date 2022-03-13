@@ -1,11 +1,6 @@
 #ifndef IMPLICIT_SERIES_HEADER_HPP
 #define IMPLICIT_SERIES_HEADER_HPP
 
-/**
- * @brief implicit series
- * @docs docs/math/formal_power_series/implicit_series.md
- */
-
 #include <functional>
 #include <memory>
 #include <optional>

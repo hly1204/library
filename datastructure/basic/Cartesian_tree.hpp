@@ -1,11 +1,6 @@
 #ifndef CARTESIAN_TREE_HEADER_HPP
 #define CARTESIAN_TREE_HEADER_HPP
 
-/**
- * @brief Cartesian tree
- *
- */
-
 #include <functional>
 #include <stack>
 #include <tuple>
@@ -13,9 +8,7 @@
 
 namespace lib {
 
-/**
- * @brief 计算笛卡尔树，空节点为 -1
- */
+// 计算笛卡尔树，空节点为 -1
 template <typename Type, typename Comp = std::less<>>
 std::tuple<std::vector<int>, std::vector<int>, std::vector<int>>
 build_Cartesian_tree(const std::vector<Type> &a) {

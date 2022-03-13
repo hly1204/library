@@ -1,11 +1,6 @@
 #ifndef SPARSE_MATRIX_BASE_HEADER_HPP
 #define SPARSE_MATRIX_BASE_HEADER_HPP
 
-/**
- * @brief sparse matrix base
- *
- */
-
 #include <cassert>
 #include <utility>
 #include <vector>

@@ -1,11 +1,6 @@
 #ifndef TYPE_TRAITS_HEADER_HPP
 #define TYPE_TRAITS_HEADER_HPP
 
-/**
- * @brief type traits
- *
- */
-
 #include <cstdint>
 #include <type_traits>
 

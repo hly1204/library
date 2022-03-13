@@ -1,11 +1,6 @@
 #ifndef SQRT_MOD_HEADER_HPP
 #define SQRT_MOD_HEADER_HPP
 
-/**
- * @brief square root mod
- * @docs docs/math/modulo/sqrt_mod.md
- */
-
 #include <cassert>
 #include <random>
 #include <tuple>
@@ -56,12 +51,6 @@ std::vector<mod_t> sqrt_mod_prime(const mod_t x) {
 
 namespace lib {
 
-/**
- * @brief 模平方根
- * @param x [0, p-1] 中的一个值
- * @param p 素数
- * @return std::vector<T>
- */
 template <typename T>
 std::enable_if_t<std::is_integral_v<T>, std::vector<T>> sqrt_mod_prime(T x, T p) {
   using m32 = RuntimeMontModInt<-1>;

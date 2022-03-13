@@ -1,11 +1,6 @@
 #ifndef MODINT_TRAITS_HEADER_HPP
 #define MODINT_TRAITS_HEADER_HPP
 
-/**
- * @brief modint traits
- *
- */
-
 namespace lib {
 
 template <typename mod_t>

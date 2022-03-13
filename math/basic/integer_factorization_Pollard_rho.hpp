@@ -1,11 +1,6 @@
 #ifndef INTEGER_FACTORIZATION_POLLARD_RHO_HEADER_HPP
 #define INTEGER_FACTORIZATION_POLLARD_RHO_HEADER_HPP
 
-/**
- * @brief integer factorization Pollard's rho
- *
- */
-
 #include <cstdint>
 #include <map>
 #include <numeric>
@@ -15,11 +10,8 @@
 
 namespace lib::internal {
 
-/**
- * @brief Pollard-rho 算法
- * @param n
- * @return std::uint64_t 一个（素）因数？
- */
+// Pollard-rho 算法
+// 一个不平凡的因子
 std::uint64_t rho(std::uint64_t n) {
   using u64 = std::uint64_t;
   using m64 = RuntimeLongMontModInt<-1>;
@@ -50,10 +42,8 @@ std::uint64_t rho(std::uint64_t n) {
 
 namespace lib {
 
-/**
- * @brief Miller-Rabin 素性测试
- * @note 假设广义黎曼假设成立
- */
+// Miller-Rabin 素性测试
+// 假设广义黎曼假设成立
 bool is_prime(std::uint64_t n) {
   if (n <= 2) return n == 2;
   if ((n & 1) == 0) return false;

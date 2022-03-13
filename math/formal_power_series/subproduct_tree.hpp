@@ -1,11 +1,6 @@
 #ifndef SUBPRODUCT_TREE_HEADER_HPP
 #define SUBPRODUCT_TREE_HEADER_HPP
 
-/**
- * @brief multi-point evaluation & interpolation
- * @docs docs/math/formal_power_series/subproduct_tree.md
- */
-
 #include <cassert>
 #include <functional>
 #include <numeric>

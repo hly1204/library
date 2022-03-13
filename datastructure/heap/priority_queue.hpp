@@ -1,11 +1,6 @@
 #ifndef PRIORITY_QUEUE_HEADER_HPP
 #define PRIORITY_QUEUE_HEADER_HPP
 
-/**
- * @brief priority queue
- *
- */
-
 #include <functional>
 
 #include "pairing_heap.hpp"

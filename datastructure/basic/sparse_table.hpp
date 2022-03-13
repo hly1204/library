@@ -1,11 +1,6 @@
 #ifndef SPARSE_TABLE_HEADER_HPP
 #define SPARSE_TABLE_HEADER_HPP
 
-/**
- * @brief sparse table
- *
- */
-
 #include <algorithm>
 #include <cassert>
 #include <cstdint>

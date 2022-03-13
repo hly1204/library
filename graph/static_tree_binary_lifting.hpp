@@ -1,11 +1,6 @@
 #ifndef STATIC_TREE_BINARY_LIFTING_HEADER_HPP
 #define STATIC_TREE_BINARY_LIFTING_HEADER_HPP
 
-/**
- * @brief static tree binary lifting
- *
- */
-
 #include <cassert>
 #include <numeric>
 #include <queue>
@@ -13,15 +8,10 @@
 
 namespace lib {
 
-/**
- * @brief 静态树 LCA 和 LA 的回答，每次在 O(\log n) 时间，需要 O(n\log n) 时间预处理
- *
- */
+// 静态树 LCA 和 LA 的回答，每次在 O(log n) 时间，需要 O(nlog n) 时间预处理
 class StaticTreeBinaryLifting {
 public:
-  /**
-   * @param parent 注意设置 parent[root]=-1
-   */
+  // 注意设置 parent[root]=-1
   StaticTreeBinaryLifting(const std::vector<int> &parent) : depth_(parent.size(), -1) {
     int n = parent.size(), root, lg2_n = 0;
     assert(n > 0);

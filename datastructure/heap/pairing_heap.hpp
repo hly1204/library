@@ -1,11 +1,6 @@
 #ifndef PAIRING_HEAP_HEADER_HPP
 #define PAIRING_HEAP_HEADER_HPP
 
-/**
- * @brief pairing heap
- *
- */
-
 #include <utility>
 
 namespace lib {

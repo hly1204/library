@@ -1,22 +1,14 @@
 #ifndef DISCRETE_LOG_BSGS_HEADER_HPP
 #define DISCRETE_LOG_BSGS_HEADER_HPP
 
-/**
- * @brief discrete logarithm BSGS
- * @docs docs/math/modulo/discrete_log_BSGS.md
- */
-
 #include <cmath>
 #include <numeric>
 #include <unordered_map>
 
 namespace lib {
 
-/**
- * @brief 离散对数，计算最小的 x 满足 a^x=b (mod m)
- * @note 若无解则返回 -1
- * @see https://cp-algorithms.com/algebra/discrete-log.html
- */
+// 离散对数，计算最小的 x 满足 a^x=b (mod m) ，若无解则返回 -1
+// 参见：https://cp-algorithms.com/algebra/discrete-log.html
 int discrete_log(int a, int b, int m) {
   a %= m, b %= m;
   int add = 0, k = 1, g;

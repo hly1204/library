@@ -1,11 +1,6 @@
 #ifndef MATRIX_BASE_HEADER_HPP
 #define MATRIX_BASE_HEADER_HPP
 
-/**
- * @brief matrix base
- *
- */
-
 #include <algorithm>
 #include <cassert>
 #include <iostream>
@@ -19,13 +14,6 @@ class Matrix {
 public:
   using value_type = Type;
 
-  /**
-   * @brief Matrix 类
-   *
-   * @param r 行
-   * @param c 列
-   * @param v 初值
-   */
   Matrix(int r, int c, const Type &v = Type()) : row_(r), col_(c), mat_(row_ * col_, v) {}
   virtual ~Matrix()      = default;
   Matrix(const Matrix &) = default;
@@ -74,11 +62,7 @@ public:
     return res;
   }
 
-  /**
-   * @brief 返回矩阵和列向量 x 的积
-   * @param x 列向量 x 满足 x 的行数等于矩阵的列数
-   * @return std::vector<Type>
-   */
+  // 返回矩阵和列向量 x 的积
   virtual std::vector<Type> apply(const std::vector<Type> &x) const {
     assert(col() == x.size());
     int n = row();
@@ -88,11 +72,6 @@ public:
     return res;
   }
 
-  /**
-   * @brief 矩阵乘法
-   * @param rhs 右乘的矩阵
-   * @return Matrix&
-   */
   virtual Matrix &operator*=(const Matrix &rhs) {
     int n = row(), m = rhs.col(), l = col();
     assert(l == rhs.row());

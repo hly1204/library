@@ -1,11 +1,6 @@
 #ifndef BERNOULLI_NUMBERS_HEADER_HPP
 #define BERNOULLI_NUMBERS_HEADER_HPP
 
-/**
- * @brief Bernoulli number
- * @docs docs/math/famous_sequence/Bernoulli_numbers.md
- */
-
 #include "../formal_power_series/prime_binomial.hpp"
 
 namespace lib {

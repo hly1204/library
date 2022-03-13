@@ -1,11 +1,6 @@
 #ifndef FORMAL_POWER_SERIES_HEADER_HPP
 #define FORMAL_POWER_SERIES_HEADER_HPP
 
-/**
- * @brief basic operations of formal power series
- * @docs docs/math/formal_power_series/formal_power_series.md
- */
-
 #include <algorithm>
 #include <cassert>
 #include <numeric>
@@ -20,14 +15,11 @@
 
 namespace lib {
 
-/**
- * @note 必须使用 NTT 友好的模数！！！
- *       在使用模板类继承时，对于继承来的 public 成员函数，要么使用 using 来声明，要么使用域限定符
- *       要么使用 this 指针，这样在第一次扫描时不会处理，第二次才会分析基类中的函数，
- *       否则不能通过编译。MSVC 因为有扩展的原因可以通过编译，但标准规定是这样。
- *       若不是模板类继承则没有这样的问题。
- *
- */
+// 必须使用 NTT 友好的模数！！！
+// 在使用模板类继承时，对于继承来的 public 成员函数，要么使用 using 来声明，要么使用域限定符
+// 要么使用 this 指针，这样在第一次扫描时不会处理，第二次才会分析基类中的函数，
+// 否则不能通过编译。 MSVC 因为有扩展的原因可以通过编译，但标准规定是这样。
+// 若不是模板类继承则没有这样的问题。
 template <typename mod_t>
 class FormalPowerSeries : public std::vector<mod_t> {
 private:
@@ -38,11 +30,8 @@ public:
   using std::vector<mod_t>::vector;
   using value_type = mod_t;
 
-  /**
-   * @brief 获取度数
-   * @note 特例为 deg(0)=-1
-   * @return int
-   */
+  // 获取度数
+  // 特例为 deg(0)=-1
   int deg() const {
     static constexpr mod_t Z = 0;
     int n                    = int(this->size()) - 1;
@@ -50,18 +39,12 @@ public:
     return n;
   }
 
-  /**
-   * @brief 获取最高次项的系数
-   * @return mod_t
-   */
   mod_t leading_coeff() const {
     int d = deg();
     return d == -1 ? mod_t(0) : this->operator[](d);
   }
 
-  /**
-   * @brief 去除尾 0 ，但如果只有一个 0 则会保留
-   */
+  // 去除尾 0 ，但如果只有一个 0 则会保留
   void shrink() { this->resize(std::max(deg() + 1, 1)); }
   fps slice() const { return fps(*this); }
   fps slice(int n) const {

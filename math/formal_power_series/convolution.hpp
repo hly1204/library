@@ -1,11 +1,6 @@
 #ifndef CONVOLUTION_HEADER_HPP
 #define CONVOLUTION_HEADER_HPP
 
-/**
- * @brief convolution
- *
- */
-
 #include <cassert>
 #include <memory>
 #include <vector>
@@ -14,10 +9,7 @@
 
 namespace lib {
 
-/**
- * @brief NTT 模数卷积
- * @tparam mod_t NTT 友好的模数类
- */
+// NTT 模数卷积
 template <typename mod_t>
 std::vector<mod_t> convolve(const std::vector<mod_t> &x, const std::vector<mod_t> &y) {
   int n = x.size(), m = y.size();
@@ -44,13 +36,8 @@ std::vector<mod_t> convolve(const std::vector<mod_t> &x, const std::vector<mod_t
   return res;
 }
 
-/**
- * @brief NTT 模数循环卷积
- * @param x
- * @param y
- * @param cyclen 必须为 2 的幂次！
- * @return std::vector<mod_t> convolve(x, y) mod (x^cyclen - 1)
- */
+// NTT 模数循环卷积
+// cyclen 必须为 2 的幂次！
 template <typename mod_t>
 std::vector<mod_t> convolve_cyclic(const std::vector<mod_t> &x, const std::vector<mod_t> &y,
                                    int cyclen) {

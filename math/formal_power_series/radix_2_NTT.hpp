@@ -1,11 +1,6 @@
 #ifndef RADIX_2_NTT_HEADER_HPP
 #define RADIX_2_NTT_HEADER_HPP
 
-/**
- * @brief radix-2 NTT
- * @docs docs/math/formal_power_series/radix_2_NTT.md
- */
-
 #include <algorithm>
 #include <array>
 #include <cassert>
@@ -16,9 +11,7 @@
 
 namespace lib {
 
-/**
- * @note 必须用 NTT 友好的模数！！！
- */
+// 必须用 NTT 友好的模数！！！
 template <typename mod_t>
 class NTT {
 private:
@@ -47,13 +40,9 @@ public:
     return ntt;
   }
 
-  /**
-   * @brief 返回二进制中尾零的个数，若为零也会返回零
-   * @see https://docs.microsoft.com/en-us/cpp/intrinsics/bitscanforward-bitscanforward64
-   * @see https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html
-   * @param n
-   * @return int
-   */
+  // 返回二进制中尾零的个数，若为零也会返回零
+  // 参见：https://docs.microsoft.com/en-us/cpp/intrinsics/bitscanforward-bitscanforward64
+  // 参见：https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html
   static constexpr int bsf(std::uint64_t n) {
     constexpr int convert[64] = {0,  1,  2,  53, 3,  7,  54, 27, 4,  38, 41, 8,  34, 55, 48, 28,
                                  62, 5,  39, 46, 44, 42, 22, 9,  24, 35, 59, 56, 49, 18, 29, 11,
@@ -139,24 +128,14 @@ std::uint32_t get_ntt_len(std::uint32_t n) {
   return (n | n >> 16) + 1;
 }
 
-/**
- * @brief 接收一个多项式，返回二进制翻转后的 DFT 序列，即 x(1), x(-1) 等，
- *        对于下标 i 和 i^1 必然是两个互为相反数的点值
- * @tparam mod_t
- * @param n
- * @param x
- */
+// 接收一个多项式，返回二进制翻转后的 DFT 序列，即 x(1), x(-1) 等，
+// 对于下标 i 和 i^1 必然是两个互为相反数的点值
 template <typename mod_t>
 void dft(int n, mod_t *x) {
   NTT<mod_t>::get_instance().dft(n, x);
 }
 
-/**
- * @brief 接收二进制翻转后的 DFT 序列，返回多项式序列 mod (x^n - 1)
- * @tparam mod_t
- * @param n
- * @param x
- */
+// 接收二进制翻转后的 DFT 序列，返回多项式序列 mod (x^n - 1)
 template <typename mod_t>
 void idft(int n, mod_t *x) {
   NTT<mod_t>::get_instance().idft(n, x);

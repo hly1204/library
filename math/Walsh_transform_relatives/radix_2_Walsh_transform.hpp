@@ -1,11 +1,6 @@
 #ifndef RADIX_2_WALSH_TRANSFORM_HEADER_HPP
 #define RADIX_2_WALSH_TRANSFORM_HEADER_HPP
 
-/**
- * @brief radix-2 Walsh transform
- * @docs docs/math/Walsh_transform_relatives/radix_2_Walsh_transform.md
- */
-
 #include <algorithm>
 #include <vector>
 
@@ -36,9 +31,7 @@ void Walsh_itrans(int n, mod_t *x) {
   }
 }
 
-/**
- * @brief XOR 卷积
- */
+// XOR 卷积
 template <typename mod_t>
 std::vector<mod_t> dyadic_convolve(const std::vector<mod_t> &x, const std::vector<mod_t> &y) {
   int len = 1, mlen = std::max(x.size(), y.size());

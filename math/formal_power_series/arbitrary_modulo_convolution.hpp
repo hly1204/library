@@ -1,11 +1,6 @@
 #ifndef ARBITRARY_CONVOLUTION_HEADER_HPP
 #define ARBITRARY_CONVOLUTION_HEADER_HPP
 
-/**
- * @brief arbitrary modulo convolution
- *
- */
-
 #include <cstdint>
 #include <type_traits>
 #include <vector>
@@ -16,10 +11,8 @@
 
 namespace lib {
 
-/**
- * @brief 任意模数卷积
- * @note 只适用于模数为 32 位
- */
+// 任意模数卷积
+// 只适用于模数为 32 位
 template <typename Int>
 std::vector<Int> convolve_mod(const std::vector<Int> &x, const std::vector<Int> &y,
                               std::uint32_t mod) {

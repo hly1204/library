@@ -1,11 +1,6 @@
 #ifndef NTT_CRT_HEADER_HPP
 #define NTT_CRT_HEADER_HPP
 
-/**
- * @brief NTT prime crt
- *
- */
-
 #include <cstdint>
 #include <type_traits>
 

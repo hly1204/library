@@ -1,11 +1,6 @@
 #ifndef SINGLE_SOURCE_SHORTEST_PATH_DIJKSTRA_HEADER_HPP
 #define SINGLE_SOURCE_SHORTEST_PATH_DIJKSTRA_HEADER_HPP
 
-/**
- * @brief single source shortest path Dijkstra
- *
- */
-
 #include <algorithm>
 #include <limits>
 #include <numeric>

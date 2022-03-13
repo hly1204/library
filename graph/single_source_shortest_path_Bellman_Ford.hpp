@@ -1,11 +1,6 @@
 #ifndef SINGLE_SOURCE_SHORTEST_PATH_BELLMAN_FORD_HEADER_HPP
 #define SINGLE_SOURCE_SHORTEST_PATH_BELLMAN_FORD_HEADER_HPP
 
-/**
- * @brief single source shortest path Bellman-Ford
- *
- */
-
 #include <algorithm>
 #include <limits>
 #include <numeric>
@@ -37,12 +32,7 @@ public:
     input_edge_.emplace_back(from, to, dist);
   }
 
-  /**
-   * @brief 获取最短路
-   * @ref R. E. Tarjan. Data Structures and Network Algorithms. Page 93.
-   * @param source 起点
-   * @return std::pair<std::vector<DistType>, std::vector<int>>
-   */
+  // 参考文献：R. E. Tarjan. Data Structures and Network Algorithms. Page 93.
   std::pair<std::vector<DistType>, std::vector<int>>
   get_sssp(int source, const DistType INF = std::numeric_limits<DistType>::max()) const {
     std::vector<int> idx(n_ + 1, 0);

@@ -1,11 +1,6 @@
 #ifndef SPARSE_SQUARE_MATRIX_BASE_HEADER_HPP
 #define SPARSE_SQUARE_MATRIX_BASE_HEADER_HPP
 
-/**
- * @brief sparse square matrix
- *
- */
-
 #include "sparse_matrix_base.hpp"
 
 namespace lib {

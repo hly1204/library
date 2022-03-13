@@ -1,11 +1,6 @@
 #ifndef EXTENDED_EUCLIDEAN_HEADER_HPP
 #define EXTENDED_EUCLIDEAN_HEADER_HPP
 
-/**
- * @brief extended Euclidean algorithm
- *
- */
-
 #include <cassert>
 #include <tuple>
 #include <type_traits>

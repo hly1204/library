@@ -1,26 +1,16 @@
 #ifndef SUFFIX_ARRAY_SAIS_HEADER_HPP
 #define SUFFIX_ARRAY_SAIS_HEADER_HPP
 
-/**
- * @brief suffix array SA-IS
- * @docs docs/string/suffix_array_sais.md
- */
-
 #include <algorithm>
 #include <string>
 #include <vector>
 
 namespace lib::internal {
 
-/**
- * @brief 诱导排序
- * @ref Ge Nong, Sen Zhang and Wai Hong Chan.
- *      Linear Suffix Array Construction by Almost Pure Induced-Sorting.
- *
- * @param s 字符串数组，必须保证末尾为 0 且 0 是整个字符串数组中只出现在末尾的最小字符！
- * @param K 字符串数组的值域，由 [0, K)
- * @return std::vector<int>
- */
+// 参见：Ge Nong, Sen Zhang and Wai Hong Chan.
+//      Linear Suffix Array Construction by Almost Pure Induced-Sorting.
+// s 字符串数组，必须保证末尾为 0 且 0 是整个字符串数组中只出现在末尾的最小字符！
+// K 字符串数组的值域，由 [0, K)
 std::vector<int> SA_IS(const std::vector<int> &s, int K) {
   const int n = s.size();
   std::vector<bool> t(n);
@@ -83,11 +73,6 @@ std::vector<int> SA_IS(const std::vector<int> &s, int K) {
 
 namespace lib {
 
-/**
- * @brief 获取后缀数组（ 0-indexed ）
- * @param s 字符串，一般为 string 或 std::vector<int>
- * @return std::vector<int> 后缀数组
- */
 template <typename Container>
 std::vector<int> get_sa(const Container &s) {
   std::vector<int> s_cpy(s.size() + 1);
@@ -98,12 +83,6 @@ std::vector<int> get_sa(const Container &s) {
   return SA;
 }
 
-/**
- * @brief 获取后缀数组（ 0-indexed ）的特化
- * @note 容器为 std::string 时特化！
- * @param s 字符串
- * @return std::vector<int>
- */
 template <>
 std::vector<int> get_sa<std::string>(const std::string &s) {
   std::vector<int> s_cpy(s.size() + 1);
@@ -114,13 +93,7 @@ std::vector<int> get_sa<std::string>(const std::string &s) {
   return SA;
 }
 
-/**
- * @brief 获取 LCP 数组
- * @see https://cp-algorithms.com/string/suffix-array.html
- * @param s 字符串
- * @param SA 计算完毕的 s 的后缀数组（ 0-indexed ）
- * @return std::vector<int> LCP 数组
- */
+// 参见：https://cp-algorithms.com/string/suffix-array.html
 template <typename Container>
 std::vector<int> get_lcp(const Container &s, const std::vector<int> &SA) {
   int n = s.size();

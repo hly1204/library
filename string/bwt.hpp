@@ -1,11 +1,6 @@
 #ifndef BURROWS_WHEELER_TRANSFORMATION_HEADER_HPP
 #define BURROWS_WHEELER_TRANSFORMATION_HEADER_HPP
 
-/**
- * @brief Burrows-Wheeler trasformation
- * @docs docs/string/bwt.md
- */
-
 #include <algorithm>
 #include <cassert>
 #include <string>
@@ -15,11 +10,7 @@
 
 namespace lib {
 
-/**
- * @brief 获取 BWT 数组（字符串）
- * @param v 字符串数组，必须保证 0 是未出现的最小值
- * @param SA v 的后缀数组
- */
+// 获取 BWT 数组（字符串）
 template <typename Container>
 Container bwt(const Container &v, const std::vector<int> &SA) {
   int n = v.size();
@@ -30,21 +21,15 @@ Container bwt(const Container &v, const std::vector<int> &SA) {
   return res;
 }
 
-/**
- * @brief 获取 BWT 数组（字符串）
- * @param v 字符串数组，必须保证 0 是未出现的最小值
- */
+// 获取 BWT 数组（字符串）
+// v 字符串数组，必须保证 0 是未出现的最小值
 template <typename Container>
 Container bwt(const Container &v) {
   return bwt(v, get_sa(v));
 }
 
-/**
- * @brief 从 BWT 数组计算原数组（字符串）
- * @ref M. Burrows and D. J. Wheeler. A block-sorting lossless data compression algorithm.
- *      Technical Report 124, Digital Equipment Corporation, Palo Alto, California, 1994.
- * @param v BWT 数组，其中必有一个 0
- */
+// 参见：M. Burrows and D. J. Wheeler. A block-sorting lossless data compression algorithm.
+//      Technical Report 124, Digital Equipment Corporation, Palo Alto, California, 1994.
 template <typename Container>
 Container ibwt(const Container &v) {
   int n = v.size();
@@ -65,9 +50,7 @@ Container ibwt(const Container &v) {
   return res;
 }
 
-/**
- * @brief 从 BWT 数组计算原数组（字符串）的特化
- */
+// 从 BWT 数组计算原数组（字符串）的特化
 template <>
 std::string ibwt<std::string>(const std::string &v) {
   int n = v.size();

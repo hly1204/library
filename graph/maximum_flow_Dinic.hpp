@@ -1,11 +1,6 @@
 #ifndef MAXIMUM_FLOW_DINIC_HEADER_HPP
 #define MAXIMUM_FLOW_DINIC_HEADER_HPP
 
-/**
- * @brief maximum flow Dinic
- *
- */
-
 #include <algorithm>
 #include <limits>
 #include <numeric>

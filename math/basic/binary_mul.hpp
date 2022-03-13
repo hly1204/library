@@ -1,11 +1,6 @@
 #ifndef BINARY_MUL_HEADER_HPP
 #define BINARY_MUL_HEADER_HPP
 
-/**
- * @brief binary multiplication
- *
- */
-
 #include <type_traits>
 
 #include "../../traits/base.hpp"

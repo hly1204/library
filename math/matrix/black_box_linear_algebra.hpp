@@ -1,11 +1,6 @@
 #ifndef BLACK_BOX_LINEAR_ALGEBRA_HEADER_HPP
 #define BLACK_BOX_LINEAR_ALGEBRA_HEADER_HPP
 
-/**
- * @brief black box linear algebra
- * @docs docs/math/matrix/black_box_linear_algebra.md
- */
-
 #include <algorithm>
 #include <cassert>
 #include <functional>
@@ -24,12 +19,9 @@ std::vector<T> get_rand_vec(int s, GenFunc &gen) {
   return res;
 }
 
-/**
- * @brief 获取矩阵的最小多项式（随机化算法）
- * @note 必须为有限域
- * @ref Douglas H. Wiedemann (1986). Solving Sparse Linear Equations Over Finite Fields.
- * @return std::vector<Type> 首一多项式
- */
+// 获取矩阵的最小多项式（随机化算法）必须为有限域
+// 参见：Douglas H. Wiedemann (1986). Solving Sparse Linear Equations Over Finite Fields.
+// 返回首一多项式
 template <typename MatType, typename Type = typename MatType::value_type>
 std::vector<Type> black_box_minpoly(const MatType &m) {
 
@@ -55,11 +47,8 @@ std::vector<Type> black_box_minpoly(const MatType &m) {
   return res;
 }
 
-/**
- * @brief 获取矩阵的行列式（随机化算法）
- * @note 必须为有限域
- * @ref Douglas H. Wiedemann (1986). Solving Sparse Linear Equations Over Finite Fields.
- */
+// 获取矩阵的行列式（随机化算法）必须为有限域
+// 参见：Douglas H. Wiedemann (1986). Solving Sparse Linear Equations Over Finite Fields.
 template <typename MatType, typename Type = typename MatType::value_type>
 Type black_box_det(const MatType &m) {
 

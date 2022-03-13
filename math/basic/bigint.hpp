@@ -1,11 +1,6 @@
 #ifndef BIGINT_HEADER_HPP
 #define BIGINT_HEADER_HPP
 
-/**
- * @brief bigint
- * @docs docs/math/basic/bigint.md
- */
-
 #include <cassert>
 #include <cstdint>
 #include <iostream>

@@ -1,23 +1,15 @@
 #ifndef POLYNOMIAL_HEADER_HPP
 #define POLYNOMIAL_HEADER_HPP
 
-/**
- * @brief polynomial
- * @docs docs/math/formal_power_series/polynomial.md
- */
-
 #include "formal_power_series.hpp"
 #include "prime_binomial.hpp"
 
 namespace lib {
 
-/**
- * @brief 多项式类
- * @note 基类 FormalPowerSeries 中函数都没有使用 virtual
- *       所以在该类中有定义相同的函数则会阻止调用基类的函数
- *       这被称为隐藏（ hide ）。
- *       而如果使用了 virtual 则被称为覆盖（ override ），而覆盖会导出多态。
- */
+// 基类 FormalPowerSeries 中函数都没有使用 virtual
+// 所以在该类中有定义相同的函数则会阻止调用基类的函数
+// 这被称为隐藏（ hide ）。
+// 而如果使用了 virtual 则被称为覆盖（ override ），而覆盖会导出多态。
 template <typename mod_t>
 class Polynomial : public FormalPowerSeries<mod_t> {
 private:

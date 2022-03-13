@@ -1,11 +1,6 @@
 #ifndef RUNTIME_LONG_MONTGOMERY_MODINT_HEADER_HPP
 #define RUNTIME_LONG_MONTGOMERY_MODINT_HEADER_HPP
 
-/**
- * @brief runtime long Montgomery modint
- *
- */
-
 #include <cassert>
 #include <cstdint>
 #include <iostream>
@@ -18,12 +13,7 @@
 
 namespace lib {
 
-/**
- * @brief 运行时长整型 Montgomery 取模类
- * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
- * @author Nyaan
- * @note 约定不使用模板中 int 为负数的对象
- */
+// 参见：https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
 template <int>
 class RuntimeLongMontgomeryModInt {
 public:

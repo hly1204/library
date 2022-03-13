@@ -1,11 +1,6 @@
 #ifndef BINARY_POW_HEADER_HPP
 #define BINARY_POW_HEADER_HPP
 
-/**
- * @brief binary exponentiation
- *
- */
-
 #include <cassert>
 #include <type_traits>
 

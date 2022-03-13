@@ -1,18 +1,11 @@
 #ifndef PARTITION_FUNCTION_P_HEADER_HPP
 #define PARTITION_FUNCTION_P_HEADER_HPP
 
-/**
- * @brief partition function P
- *
- */
-
 namespace lib {
 
-/**
- * @brief 前 n 个分拆数
- * @see http://oeis.org/A000041
- * @see https://mathworld.wolfram.com/PartitionFunctionP.html
- */
+// 前 n 个分拆数
+// 参见 http://oeis.org/A000041
+// 参见 https://mathworld.wolfram.com/PartitionFunctionP.html
 template <typename PolyType>
 void partition_function_P(int n, PolyType &res) {
   if (n == 0) {

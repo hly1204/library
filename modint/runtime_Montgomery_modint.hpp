@@ -1,23 +1,13 @@
 #ifndef RUNTIME_MONTGOMERY_MODINT_HEADER_HPP
 #define RUNTIME_MONTGOMERY_MODINT_HEADER_HPP
 
-/**
- * @brief runtime Montgomery modint
- *
- */
-
 #include <cstdint>
 #include <iostream>
 #include <type_traits>
 
 namespace lib {
 
-/**
- * @brief 运行时 Montgomery 取模类
- * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
- * @author Nyaan
- * @note 约定不使用模板中 int 为负数的对象
- */
+// 参见：https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
 template <int>
 class RuntimeMontgomeryModInt {
 public:

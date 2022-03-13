@@ -1,11 +1,6 @@
 #ifndef RUNTIME_MODINT_HEADER_HPP
 #define RUNTIME_MODINT_HEADER_HPP
 
-/**
- * @brief runtime modint
- *
- */
-
 #include <cstdint>
 #include <iostream>
 #include <type_traits>

@@ -1,11 +1,6 @@
 #ifndef RELAXED_CONVOLUTION_HEADER_HPP
 #define RELAXED_CONVOLUTION_HEADER_HPP
 
-/**
- * @brief relaxed convolution
- * @docs docs/math/formal_power_series/relaxed_convolution.md
- */
-
 #include <algorithm>
 #include <functional>
 #include <utility>

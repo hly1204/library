@@ -1,11 +1,6 @@
 #ifndef ROLLBACKABLE_DISJOINT_SET_HEADER_HPP
 #define ROLLBACKABLE_DISJOINT_SET_HEADER_HPP
 
-/**
- * @brief rollbackable disjoint set
- *
- */
-
 #include <stack>
 #include <vector>
 
@@ -41,10 +36,8 @@ public:
 
   int get_component_size(int u) const { return sz_[find(u)]; }
 
-  /**
-   * @brief 撤销上一次成功的 unite
-   * @note 只能撤销成功的 unite 如果不成功是不能撤销的
-   */
+  // 撤销上一次成功的 unite
+  // 只能撤销成功的 unite 如果不成功是不能撤销的
   void undo() {
     int u = stk_.top(); // 取出小树，修改小树的 parent
     stk_.pop();

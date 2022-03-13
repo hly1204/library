@@ -1,11 +1,6 @@
 #ifndef LONG_MONTGOMERY_MODINT_HEADER_HPP
 #define LONG_MONTGOMERY_MODINT_HEADER_HPP
 
-/**
- * @brief long Montgomery modint
- * @docs docs/modint/long_Montgomery_modint.md
- */
-
 #include <cstdint>
 #include <iostream>
 #include <tuple>
@@ -13,12 +8,8 @@
 
 namespace lib {
 
-/**
- * @brief 长整型 Montgomery 取模类
- * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
- * @author Nyaan
- * @tparam mod 为奇数且大于 1
- */
+// 参见：https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
+// mod 为奇数且大于 1
 template <std::uint64_t mod>
 class LongMontgomeryModInt {
 public:

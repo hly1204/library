@@ -1,11 +1,6 @@
 #ifndef CHINESE_REMAINDER_THEOREM_HEADER_HPP
 #define CHINESE_REMAINDER_THEOREM_HEADER_HPP
 
-/**
- * @brief Chinese remainder theorem
- * @docs docs/math/basic/crt.md
- */
-
 #include <cassert>
 #include <cstdint>
 #include <optional>
@@ -16,10 +11,8 @@
 
 namespace lib {
 
-/**
- * @brief 中国剩余定理合并模数互素的同余式（ Garner 算法）
- * @note 如果多次合并同样模数的可以预处理
- */
+// 中国剩余定理合并模数互素的同余式（ Garner 算法）
+// 如果多次合并同样模数的可以预处理
 template <typename T>
 class CoprimeCRT {
 public:
@@ -27,9 +20,7 @@ public:
 
   CoprimeCRT() = default;
 
-  /**
-   * @note 假设 m 数组中所有元素的乘积在 std::int64_t 表示范围内
-   */
+  // 假设 m 数组中所有元素的乘积在 std::int64_t 表示范围内
   CoprimeCRT(const std::vector<T> &m) : m_(m), C_(m.size()) {
     int n    = m_.size();
     u64 prod = 1;
@@ -86,15 +77,8 @@ std::optional<std::pair<std::uint64_t, std::uint64_t>> crt2(T a1, T m1, T a2, T 
   return std::make_pair(static_cast<u64>(k1) * m1 + a1, static_cast<u64>(m1) * m2_d);
 }
 
-/**
- * @brief 中国剩余定理合并同余式
- *
- * @tparam T 元素类型
- * @param v 余数
- * @param m 模数
- * @return std::optional<std::pair<std::uint64_t, std::uint64_t>>
- *         若无解则返回 std::nullopt 否则返回 (remainder, modulo)
- */
+// v 余数 m 模数
+// 若无解则返回 std::nullopt 否则返回 (remainder, modular)
 template <typename T>
 std::optional<std::pair<std::uint64_t, std::uint64_t>> crt(const std::vector<T> &v,
                                                            const std::vector<T> &m) {

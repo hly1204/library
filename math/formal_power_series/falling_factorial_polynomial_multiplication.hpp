@@ -1,11 +1,6 @@
 #ifndef FALLING_FACTORIAL_POLYNOMIAL_MULTIPLICATION_HEADER_HPP
 #define FALLING_FACTORIAL_POLYNOMIAL_MULTIPLICATION_HEADER_HPP
 
-/**
- * @brief falling factorial polynomial multiplication
- * @docs docs/math/formal_power_series/falling_factorial_polynomial_multiplication.md
- */
-
 #include <algorithm>
 #include <cassert>
 #include <vector>
@@ -14,15 +9,7 @@
 
 namespace lib {
 
-/**
- * @brief 样本点转换为下降幂多项式
- *
- * @tparam mod_t 素数模数且点数不能超过模数！
- * @tparam ConvolveFuncType
- * @param pts f(0), f(1), …, f(n-1)
- * @param f 卷积函数
- * @return std::vector<mod_t> 下降幂多项式系数
- */
+// f(0), f(1), …, f(n-1) => 下降幂多项式系数
 template <typename mod_t, typename ConvolveFuncType>
 std::vector<mod_t> sample_points_to_FFP(const std::vector<mod_t> &pts, ConvolveFuncType &&f) {
   int n = pts.size();
@@ -38,16 +25,8 @@ std::vector<mod_t> sample_points_to_FFP(const std::vector<mod_t> &pts, ConvolveF
   return pts_egf;
 }
 
-/**
- * @brief 下降幂多项式转换为样本点
- *
- * @tparam mod_t 素数模数且多项式度数小于模数！
- * @tparam ConvolveFuncType
- * @param n
- * @param ffp 下降幂多项式
- * @param f 卷积函数
- * @return std::vector<mod_t> f(0), f(1), …, f(n-1)
- */
+// 下降幂多项式系数 => f(0), f(1), …, f(n-1)
+// 素数模数且多项式度数小于模数！
 template <typename mod_t, typename ConvolveFuncType>
 std::vector<mod_t> FFP_to_sample_points(int n, const std::vector<mod_t> &ffp,
                                         ConvolveFuncType &&f) {
@@ -63,9 +42,7 @@ std::vector<mod_t> FFP_to_sample_points(int n, const std::vector<mod_t> &ffp,
   return ex;
 }
 
-/**
- * @brief 下降幂多项式乘法
- */
+// 下降幂多项式乘法
 template <typename mod_t, typename ConvolveFuncType>
 std::vector<mod_t> convolve_FFP(const std::vector<mod_t> &lhs, const std::vector<mod_t> &rhs,
                                 ConvolveFuncType &&f) {
@@ -76,9 +53,7 @@ std::vector<mod_t> convolve_FFP(const std::vector<mod_t> &lhs, const std::vector
   return sample_points_to_FFP(lhs_pts, f);
 }
 
-/**
- * @brief 下降幂多项式平移
- */
+// 下降幂多项式平移
 template <typename mod_t, typename ConvolveFuncType>
 std::vector<mod_t> shift_FFP(const std::vector<mod_t> &ffp, mod_t c, ConvolveFuncType &&f) {
   assert(ffp.size() <= mod_t::get_mod());

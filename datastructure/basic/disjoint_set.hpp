@@ -1,11 +1,6 @@
 #ifndef DISJOINT_SET_HEADER_HPP
 #define DISJOINT_SET_HEADER_HPP
 
-/**
- * @brief disjoint set
- *
- */
-
 #include <vector>
 
 namespace lib {

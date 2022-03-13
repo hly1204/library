@@ -1,11 +1,6 @@
 #ifndef LINEARLY_RECURRENT_SEQUENCE_BOSTAN_MORI_HEADER_HPP
 #define LINEARLY_RECURRENT_SEQUENCE_BOSTAN_MORI_HEADER_HPP
 
-/**
- * @brief linearly recurrent sequence Bostan-Mori
- *
- */
-
 #include <numeric>
 
 #include "radix_2_NTT.hpp"
@@ -15,12 +10,9 @@ namespace lib {
 template <typename mod_t>
 class LinearlyRecurrentSequence {
 public:
-  /**
-   * @brief 线性递推序列
-   * @param rec_seq 递推式 rec_seq = {c_0, c_1, c_2, ..., c_{d-1}}
-   * @param init_val 初值 init_val = {u_0, u_1, u_2, ..., u_{d-1}}
-   * @note d 阶的递推 u_d = c_0u_0 + c_1u_1 + ... + c_{d-1}u_{d-1}
-   */
+  // 递推式 rec_seq = {c_0, c_1, c_2, ..., c_{d-1}}
+  // 初值 init_val = {u_0, u_1, u_2, ..., u_{d-1}}
+  // u_d = c_0u_0 + c_1u_1 + ... + c_{d-1}u_{d-1}
   LinearlyRecurrentSequence(const std::vector<mod_t> &rec_seq, const std::vector<mod_t> &init_val)
       : p_(init_val) {
     int d = rec_seq.size();
@@ -39,11 +31,7 @@ public:
   }
   ~LinearlyRecurrentSequence() = default;
 
-  /**
-   * @brief 幂级数展开的第 n 项
-   * @param n
-   * @return mod_t [x^n]p(x)/q(x)
-   */
+  // 计算 [x^n]p(x)/q(x)
   mod_t operator[](unsigned long long n) const {
     if (n == 0) return p_[0];
     std::vector<mod_t> p_cpy(p_), q_cpy(q_);

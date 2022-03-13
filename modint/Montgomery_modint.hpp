@@ -1,23 +1,14 @@
 #ifndef MONTGOMERY_MODINT_HEADER_HPP
 #define MONTGOMERY_MODINT_HEADER_HPP
 
-/**
- * @brief Montgomery modint
- * @docs docs/modint/Montgomery_modint.md
- */
-
 #include <cstdint>
 #include <iostream>
 #include <type_traits>
 
 namespace lib {
 
-/**
- * @brief Montgomery 取模类
- * @see https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
- * @author Nyaan
- * @tparam mod 为奇数且大于 1
- */
+// 参见：https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
+// mod 为奇数且大于 1
 template <std::uint32_t mod>
 class MontgomeryModInt {
 public:

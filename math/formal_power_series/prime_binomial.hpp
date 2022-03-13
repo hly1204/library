@@ -1,11 +1,6 @@
 #ifndef PRIME_BINOMIAL_HEADER_HPP
 #define PRIME_BINOMIAL_HEADER_HPP
 
-/**
- * @brief prime binomial
- *
- */
-
 #include <cstdint>
 #include <vector>
 
@@ -29,9 +24,7 @@ public:
   }
   ~PrimeBinomial() = default;
 
-  /**
-   * @brief 预处理 [0, n) 的阶乘和其逆元
-   */
+  // 预处理 [0, n) 的阶乘和其逆元
   static void init(int n) {
     if (static_cast<int>(fac_table.size()) < n) {
       int old_size = fac_table.size();
@@ -47,10 +40,8 @@ public:
   mod_t ifac_unsafe(int n) const { return ifac_table[n]; }
   mod_t inv_unsafe(int n) const { return ifac_table[n] * fac_table[n - 1]; }
 
-  /**
-   * @return mod_t 返回 binom{n}{k}
-   * @warning 注意上指标可以为负数但这里并未实现！
-   */
+  // 返回 binom{n}{k}
+  // 注意上指标可以为负数但这里并未实现！
   mod_t binom_unsafe(int n, int k) const {
     return n >= k ? fac_table[n] * ifac_table[k] * ifac_table[n - k] : mod_t(0);
   }

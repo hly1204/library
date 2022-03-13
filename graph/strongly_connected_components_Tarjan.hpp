@@ -1,11 +1,6 @@
 #ifndef STRONGLY_CONNECTED_COMPONENTS_TARJAN_HEADER_HPP
 #define STRONGLY_CONNECTED_COMPONENTS_TARJAN_HEADER_HPP
 
-/**
- * @brief strongly connected components Tarjan
- *
- */
-
 #include <algorithm>
 #include <functional>
 #include <numeric>

@@ -1,11 +1,6 @@
 #ifndef CHIRP_Z_HEADER_HPP
 #define CHIRP_Z_HEADER_HPP
 
-/**
- * @brief chirp z transform
- * @docs docs/math/formal_power_series/chirp_z.md
- */
-
 #include <algorithm>
 #include <cassert>
 #include <functional>
@@ -15,14 +10,8 @@
 
 namespace lib {
 
-/**
- * @brief chirp z 变换
- * @tparam mod_t 为 NTT 友好的模数
- * @param n czt 的长度
- * @param A 多项式
- * @param c
- * @return std::vector<mod_t> A(1), A(c), A(c^2), …, A(c^{n-1})
- */
+// chirp z 变换
+// A(x) => A(1), A(c), A(c^2), …, A(c^{n-1})
 template <typename mod_t>
 std::vector<mod_t> czt(int n, const std::vector<mod_t> &A, mod_t c) {
   const mod_t ZERO(0);

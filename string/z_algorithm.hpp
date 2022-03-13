@@ -1,23 +1,12 @@
 #ifndef Z_ALGORITHM_HEADER_HPP
 #define Z_ALGORITHM_HEADER_HPP
 
-/**
- * @brief Z algorithm
- *
- */
-
 #include <algorithm>
 #include <vector>
 
 namespace lib {
 
-/**
- * @brief 获取 z 数组
- * @note z[i] 为 s 从 i 开始的后缀与 s 的最长公共前缀的长度
- * @tparam Container 容器
- * @param s 字符串
- * @return std::vector<int>
- */
+// z[i] 为 s 从 i 开始的后缀与 s 的最长公共前缀的长度
 template <typename Container>
 std::vector<int> get_z(const Container &s) {
   int n = s.size();
