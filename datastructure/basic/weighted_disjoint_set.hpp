@@ -23,9 +23,11 @@ public:
     for (int i = 0; i <= n; ++i) p_[i] = i;
   }
 
+  int find(int u) { return find_pair(u).first; }
+
   bool relate(int u, int v, Type w) { // 假设 Type 满足交换律，令 val(v) - val(u) = w
-    auto [uf, ud] = find(u);
-    auto [vf, vd] = find(v);
+    auto [uf, ud] = find_pair(u);
+    auto [vf, vd] = find_pair(v);
     if (uf == vf) return vd - ud == w;
     if (sz_[uf] < sz_[vf]) {
       sz_[p_[uf] = vf] += sz_[uf];
@@ -37,22 +39,25 @@ public:
     return true;
   }
 
-  bool is_related(int u, int v) { return find(u).first == find(v).first; }
+  bool is_related(int u, int v) { return find(u) == find(v); }
   bool is_related(int u, int v, Type w) {
-    auto [uf, ud] = find(u);
-    auto [vf, vd] = find(v);
+    auto [uf, ud] = find_pair(u);
+    auto [vf, vd] = find_pair(v);
     return uf == vf && vd - ud == w;
   }
   std::optional<Type> diff(int u, int v) { // 求出 val(v) - val(u)
-    auto [uf, ud] = find(u);
-    auto [vf, vd] = find(v);
+    auto [uf, ud] = find_pair(u);
+    auto [vf, vd] = find_pair(v);
     return uf == vf ? std::make_optional<Type>(vd - ud) : std::optional<Type>();
   }
+
+  int get_component_size(int u) { return sz_[find(u)]; }
 
 private:
   std::vector<int> p_, sz_;
   std::vector<Type> diff_;
-  std::pair<int, Type> find(int u) {
+
+  std::pair<int, Type> find_pair(int u) {
     Type d = diff_[u];
     while (p_[u] != p_[p_[u]]) {
       diff_[u] += diff_[p_[u]];
