@@ -29,20 +29,19 @@ public:
   int unite(int u, int v) {
     u = find(u), v = find(v);
     if (u == v) return u;
-    return link(u, v);
+    if (sz_[u] < sz_[v]) {
+      sz_[v] += sz_[u];
+      return p_[u] = v;
+    } else {
+      sz_[u] += sz_[v];
+      return p_[v] = u;
+    }
   }
 
   int get_component_size(int u) { return sz_[find(u)]; }
 
 private:
   std::vector<int> p_, sz_;
-  int link(int u, int v) {
-    if (sz_[u] > sz_[v]) return link(v, u);
-    // u 是小树， v 是大树，把小树接到大树上
-    sz_[v] += sz_[u];
-    // sz_[u] = 0;
-    return p_[u] = v;
-  }
 };
 
 } // namespace lib
