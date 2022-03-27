@@ -35,7 +35,7 @@ $$
 \texttt{nana0ba}\\
 $$
 
-我们取其末尾的字符为 $\operatorname{BWT}(s)=\texttt{annb0aa}$ 。
+我们取其末尾的字符为 $\operatorname{BWT}(s)=\texttt{annb0aa}$。
 
 注意这里需要这个末尾的字符 $\texttt{0}$ 作为“哨兵”表示文本串的结尾，其必须在文本串中没有出现过且为字典序最小的字符，如此一来我们可以通过后缀数组来进行构建，有
 
@@ -47,7 +47,7 @@ s _ {\operatorname{SA}_i(s)-1}&\text{if }\operatorname{SA}_i(s)\gt 0\\
 \end{cases}
 $$
 
-不难发现这是正确的。如果没有“哨兵”字符，我们需要将串拷贝一份拼接在后面再求其后缀数组，例如 [P4051 [JSOI2007]字符加密](https://www.luogu.com.cn/problem/P4051) 如果我们使用倍增法求 SA ，不难在过程中改为其循环串的 SA 。但这也不符合 BWT 的定义了。
+不难发现这是正确的。如果没有“哨兵”字符，我们需要将串拷贝一份拼接在后面再求其后缀数组，例如 [P4051 [JSOI2007]字符加密](https://www.luogu.com.cn/problem/P4051) 如果我们使用倍增法求 SA，不难在过程中改为其循环串的 SA。但这也不符合 BWT 的定义了。
 
 BWT 在计算过程中没有丢失信息，这也意味着 BWT 是可逆的。
 
@@ -65,7 +65,7 @@ $$
 \texttt{\textcolor{red}{n}ana0b\textcolor{red}{a}}\\
 $$
 
-我们注意 First 即第一列是其 SA 中按照排名的后缀的首个字符且 Last 即 BWT 中的第 $i$ 个 $\texttt{a}$ 也对应 SA 中的第 $i$ 个 $\texttt{a}$ ，以此类推。
+我们注意 First 即第一列是其 SA 中按照排名的后缀的首个字符且 Last 即 BWT 中的第 $i$ 个 $\texttt{a}$ 也对应 SA 中的第 $i$ 个 $\texttt{a}$，以此类推。
 
 ## FM-index
 

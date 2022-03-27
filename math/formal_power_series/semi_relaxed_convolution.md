@@ -25,7 +25,7 @@ $$
 T(n)=B\cdot T(n/B)+B\cdot M(n/B)+B\cdot n
 $$
 
-第二项为计算 $B$ 块 $n/B$ 大小的 FFT/NTT 的时间，注意逆变换也同样需要这么多次，那么常数我们忽略。而第三项为朴素计算 FFT/NTT block 之间乘法的时间，有 $B$ 块所以需要 $B^2$ 次块与块之间的乘法（ Hadamard 积），那么 $B^2\cdot \frac{n}{B}=n\cdot B$ 。如果我们取 $B=\log n$ 那么
+第二项为计算 $B$ 块 $n/B$ 大小的 FFT/NTT 的时间，注意逆变换也同样需要这么多次，那么常数我们忽略。而第三项为朴素计算 FFT/NTT block 之间乘法的时间，有 $B$ 块所以需要 $B^2$ 次块与块之间的乘法（Hadamard 积），那么 $B^2\cdot \frac{n}{B}=n\cdot B$。如果我们取 $B=\log n$ 那么
 
 $$
 \begin{aligned}
@@ -36,7 +36,7 @@ $$
 
 显然是比分治 FFT 的 $\Theta(n\log ^2n)$ 快的，但我不会算（或许是考虑递归树的树高？如果只考虑这一点的话，我们可以令 $T(n)=T(n/\log n)+1$ 如同 [stackoverflow](https://stackoverflow.com/questions/30826040/calculating-the-recurrence-relation-tn-tn-log-n-%CE%981/) 提到的一样，这个解为 $T(n)=\Theta(\log n/\log \log n)$ 但是证明需要用另一个上界来等价替换），参考文献三和四给出了这个时间。在 Hoeven 的论文中给出了另外的时间和证明。
 
-但是我们在实现时一般也不取 $B=\log n$ 而是近似的 $B\in\lbrace 4,8,16,32\rbrace$ 。
+但是我们在实现时一般也不取 $B=\log n$ 而是近似的 $B\in\lbrace 4,8,16,32\rbrace$。
 
 **补充**：对于二叉分治半在线卷积有
 
@@ -116,6 +116,6 @@ $$
 - van der Hoeven, J., 2003a. [New algorithms for relaxed multiplication](http://www.texmacs.org/joris/newrelax/newrelax.html). Tech. Rep. 2003–44, Universit´e Paris-Sud, Orsay, France.
 - J. van der Hoeven. Relax, but don't be too lazy. JSC, 34:479–542, 2002.
 - Elegia and Athekatelan. 信息学竞赛中的⽣成函数计算理论框架.
-- Elegia 的讲课[视频](https://www.bilibili.com/video/BV1kA41187dQ). （约 50 分钟左右，半在线卷积的具体实现及常见幂级数算法表示为半在线卷积， $O\left(\frac{n\log ^2n}{\log \log n}\right)$ ）
+- Elegia 的讲课[视频](https://www.bilibili.com/video/BV1kA41187dQ).（约 50 分钟左右，半在线卷积的具体实现及常见幂级数算法表示为半在线卷积，$O\left(\frac{n\log ^2n}{\log \log n}\right)$）
 - fjzzq2002. [一个更好的多项式模板](https://fjzzq2002.blog.uoj.ac/blog/7281).
 - van der Hoeven, J., August 2003b. Relaxed multiplication using the middle product. In: Bronstein, M. (Ed.), Proc. ISSAC’03. Philadelphia, USA, pp. 143–147.

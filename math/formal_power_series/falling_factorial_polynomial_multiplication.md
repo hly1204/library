@@ -11,7 +11,7 @@ $$
 f=\sum _ {i=0}^nf_ix^{\underline{i}},\quad x^{\underline{k}}=x(x-1)\cdots (x-k+1)=\frac{x!}{(x-k)!}
 $$
 
-的多项式，且对于 $\forall j\gt n$ 令 $f_j=0$ ，其中 $x^{\underline{0}}=1$ 。
+的多项式，且对于 $\forall j\gt n$ 令 $f_j=0$，其中 $x^{\underline{0}}=1$。
 
 我们知道
 
@@ -43,7 +43,7 @@ $$
 
 ## 下降幂多项式平移
 
-考虑下降幂的二项式定理 $(n+m)^{\underline{k}}=\sum _ {i=0}^k\binom{k}{i}n^{\underline{i}}m^{\underline{k-i}}$ ，参考 [stackexchange](https://math.stackexchange.com/questions/1271688/combinatorial-proof-of-falling-factorial-and-binomial-theorem) 不妨考虑其组合意义，从 $n$ 个不同的黑球和 $m$ 个不同的白球中取出 $k$ 个球有
+考虑下降幂的二项式定理 $(n+m)^{\underline{k}}=\sum _ {i=0}^k\binom{k}{i}n^{\underline{i}}m^{\underline{k-i}}$，参考 [StackExchange](https://math.stackexchange.com/questions/1271688/combinatorial-proof-of-falling-factorial-and-binomial-theorem) 不妨考虑其组合意义，从 $n$ 个不同的黑球和 $m$ 个不同的白球中取出 $k$ 个球有
 
 $$
 (n+m)^{\underline{k}}

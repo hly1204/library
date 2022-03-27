@@ -11,7 +11,7 @@ $$
 A(x)=\sum _ {i\geq 0}\frac{a_i}{i!}x^i
 $$
 
-易发现 $\mathrm{e}^x$ 为数列 $\langle 1,1,\dots \rangle$ 的 EGF 。
+易发现 $\mathrm{e}^x$ 为数列 $\langle 1,1,\dots \rangle$ 的 EGF。
 
 ## 二项卷积
 
@@ -37,7 +37,7 @@ $$
 \end{aligned}
 $$
 
-我们知道 $k!/p^{\nu_p(k!)}$ 在模 $p^q$ 意义下一定存在逆元，而在模 NTT 模数 $N$ 意义下 $p^{-\nu_p(i!)}$ 存在，不妨假设 $N$ 足够大，那么在计算出 $c_k/k!$ 后乘以 $p^{\nu_p(k!)}$ 后右边 $p$ 的次数一定大于等于零可以抵消之前乘的逆元，得到了 $\hat{c} _ k$ 再在模 $p^q$ 意义下乘以 $k!/p^{\nu_p(k!)}$ 即得。换句话说，我们需要使得 $\hat{c} _ k$ 在不取模的意义下是正确的，这就是前面假设 $N$ 足够大的原因。 Kummer 定理告诉我们 $\binom{k}{i}$ 中含有的 $p$ 的次数为 $i$ 和 $k-i$ 在 $p$ 进制下相加所需要的进位次数。那么 $\nu_p(k!)-\nu_p((k-i)!)-\nu_p(i!)\leq \log_pk$ 那么 $p^{\nu_p(k!)-\nu_p((k-i)!)-\nu_p(i!)}\leq k$ 那么 $\hat{c} _ k\leq k\cdot k(p^q)^2$ ， Elegia 提出使用四模数的 NTT 可以使得 $\hat{c} _ k$ 的精度足够。可以解决 [LOJ 174. 二项卷积](https://loj.ac/p/174) 。
+我们知道 $k!/p^{\nu_p(k!)}$ 在模 $p^q$ 意义下一定存在逆元，而在模 NTT 模数 $N$ 意义下 $p^{-\nu_p(i!)}$ 存在，不妨假设 $N$ 足够大，那么在计算出 $c_k/k!$ 后乘以 $p^{\nu_p(k!)}$ 后右边 $p$ 的次数一定大于等于零可以抵消之前乘的逆元，得到了 $\hat{c} _ k$ 再在模 $p^q$ 意义下乘以 $k!/p^{\nu_p(k!)}$ 即得。换句话说，我们需要使得 $\hat{c} _ k$ 在不取模的意义下是正确的，这就是前面假设 $N$ 足够大的原因。Kummer 定理告诉我们 $\binom{k}{i}$ 中含有的 $p$ 的次数为 $i$ 和 $k-i$ 在 $p$ 进制下相加所需要的进位次数。那么 $\nu_p(k!)-\nu_p((k-i)!)-\nu_p(i!)\leq \log_pk$ 那么 $p^{\nu_p(k!)-\nu_p((k-i)!)-\nu_p(i!)}\leq k$ 那么 $\hat{c} _ k\leq k\cdot k(p^q)^2$，Elegia 提出使用四模数的 NTT 可以使得 $\hat{c} _ k$ 的精度足够。可以解决 [LOJ 174. 二项卷积](https://loj.ac/p/174)。
 
 ## 二项卷积的应用
 
@@ -62,7 +62,7 @@ $$
 
 即得。
 
-论文中指出，考虑 $f(x)\mapsto f(x+c)$ 就是计算 $\mathrm{e}^{c\mathrm{D}}\cdot f(x)$ 。
+论文中指出，考虑 $f(x)\mapsto f(x+c)$ 就是计算 $\mathrm{e}^{c\mathrm{D}}\cdot f(x)$。
 
 具体的，令
 

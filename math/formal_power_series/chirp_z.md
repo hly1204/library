@@ -7,7 +7,7 @@ documentation_of: ./chirp_z.hpp
 
 也被称为 Bluestein 算法，我们使用标题的称呼。
 
-对于 $A(x)=\sum _ {i=0}^na_ix^i\in\mathbb{F} _ p\lbrack x\rbrack$ 。我们希望得到 $A(1),A(c^2),A(c^4),\dots$ 其中 $c\in\mathbb{F} _ p^\times$ 那么可以通过将 $A_0(x)=\sum _ {i\geq 0}a_ic^{i^2}x^i$ （对于 $\forall j\gt n$ 令 $a_j=0$ ）与 $B_0(x)=\sum _ {i\geq 0}c^{-(i-n)^2}x^i$ 相乘得到，有
+对于 $A(x)=\sum _ {i=0}^na_ix^i\in\mathbb{F} _ p\lbrack x\rbrack$。我们希望得到 $A(1),A(c^2),A(c^4),\dots$ 其中 $c\in\mathbb{F} _ p^\times$ 那么可以通过将 $A_0(x)=\sum _ {i\geq 0}a_ic^{i^2}x^i$（对于 $\forall j\gt n$ 令 $a_j=0$）与 $B_0(x)=\sum _ {i\geq 0}c^{-(i-n)^2}x^i$ 相乘得到，有
 
 $$
 \begin{aligned}
@@ -42,7 +42,7 @@ $$
 A(c^k)=c^{-\binom{k}{2}}\sum _ {i=0}^n\left(a_ic^{-\binom{i}{2}}\right)\left(c^{\binom{i+k}{2}}\right)
 $$
 
-是一个“减法卷积”，那么构造 $A_0(x)=\sum _ {i}a_{n-i}c^{-\binom{n-i}{2}}x^i$ （对于 $\forall j\gt n\lor j\lt 0$ 令 $a_j=0$ ）和 $B_0(x)=\sum _ {i\geq 0}c^{\binom{i}{2}}x^i$ 那么对于 $t\geq 0$ 有
+是一个“减法卷积”，那么构造 $A_0(x)=\sum _ {i}a_{n-i}c^{-\binom{n-i}{2}}x^i$（对于 $\forall j\gt n\lor j\lt 0$ 令 $a_j=0$）和 $B_0(x)=\sum _ {i\geq 0}c^{\binom{i}{2}}x^i$ 那么对于 $t\geq 0$ 有
 
 $$
 \begin{aligned}
@@ -53,4 +53,4 @@ $$
 \end{aligned}
 $$
 
-可以用一次多项式乘法完成。另外 $\forall i\geq 0$ 有 $c^{\binom{i+1}{2}}=c^{\binom{i}{2}}\cdot c^i$ 。
+可以用一次多项式乘法完成。另外 $\forall i\geq 0$ 有 $c^{\binom{i+1}{2}}=c^{\binom{i}{2}}\cdot c^i$。

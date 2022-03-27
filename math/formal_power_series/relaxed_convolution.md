@@ -7,7 +7,7 @@ documentation_of: ./relaxed_convolution.hpp
 
 对于幂级数 $f,g$ 在能使用 FFT/NTT 的环上，但我只考虑 $\mathbb{F} _ p\lbrack \lbrack z\rbrack \rbrack$ 上的运算。
 
-考虑朴素的在线卷积 $O(n^2)$ 的算法，对于 $f_i$ 和 $g_j$ 给出后，其对于 $(fg) _ {i+j}$ 的贡献是要等到 $f _ {i+j}$ 和 $g _ {i+j}$ 给出后才计算的，我们说直到需要才计算那么这个算法就是惰性（ lazy ）的，而快速算法虽然也是惰性，但不完全是惰性，这也可能是 Hoeven 论文标题的由来？
+考虑朴素的在线卷积 $O(n^2)$ 的算法，对于 $f_i$ 和 $g_j$ 给出后，其对于 $(fg) _ {i+j}$ 的贡献是要等到 $f _ {i+j}$ 和 $g _ {i+j}$ 给出后才计算的，我们说直到需要才计算那么这个算法就是惰性（lazy）的，而快速算法虽然也是惰性，但不完全是惰性，这也可能是 Hoeven 论文标题的由来？
 
 Hoeven 的论文中提出对于 $i,j,p\in\mathbb{N}$ 定义
 
@@ -18,7 +18,7 @@ $$
 \end{aligned}
 $$
 
-快速算法基于以下观察，在第 $2^{p+1}-1$ 个 $f$ 和 $g$ 的系数给出后， $\Pi _ {1,1,p}$ 对于 $fg$ 的贡献可以由任何离线算法计算。可推广为在前 $n=k2^p-1$ 个 $f$ 和 $g$ 的系数给出后，对于奇数 $k\geq 3$ 和 $p\geq 1$ 我们可以计算贡献 $\Pi _ {1,k-1,p}$ 和 $\Pi _ {k-1,1,p}$ 。
+快速算法基于以下观察，在第 $2^{p+1}-1$ 个 $f$ 和 $g$ 的系数给出后，$\Pi _ {1,1,p}$ 对于 $fg$ 的贡献可以由任何离线算法计算。可推广为在前 $n=k2^p-1$ 个 $f$ 和 $g$ 的系数给出后，对于奇数 $k\geq 3$ 和 $p\geq 1$ 我们可以计算贡献 $\Pi _ {1,k-1,p}$ 和 $\Pi _ {k-1,1,p}$。
 
 | $\times$ | $f_0$ | $f_1$ | $f_2$ | $f_3$ | $f_4$ | $f_5$ | $f_6$ | $f_7$ |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
@@ -45,7 +45,7 @@ $$
 
 我们注意如 $g_2f_2$ 的贡献，在得到 $g_2$ 和 $f_2$ 后就计算完毕了，而 $f_3g_1$ 的贡献则与朴素算法在同一阶段执行，如果观察原论文中的更直观的表格会发现我们将整个矩形分成了大大小小的正方形，每一个正方形代表一次卷积（乘法）。
 
-另外注意，我们在传统的分治 FFT 算法中使用到了循环卷积，这也正是 middle product （第三篇）论文中相关的，在一些论文中认为使用 middle product 进行半在线卷积减少了常数，虽然我觉得好像差不太多，但是实现难度更高，我没有尝试。
+另外注意，我们在传统的分治 FFT 算法中使用到了循环卷积，这也正是 middle product（第三篇）论文中相关的，在一些论文中认为使用 middle product 进行半在线卷积减少了常数，虽然我觉得好像差不太多，但是实现难度更高，我没有尝试。
 
 ## 参考文献
 
@@ -54,5 +54,5 @@ $$
 - van der Hoeven, J., August 2003b. Relaxed multiplication using the middle product. In: Bronstein, M. (Ed.), Proc.
 ISSAC’03. Philadelphia, USA, pp. 143–147.
 - Elegia and Athekatelan. 信息学竞赛中的⽣成函数计算理论框架.
-- Elegia 的讲课[视频](https://www.bilibili.com/video/BV1kA41187dQ). （约 50 分钟左右，半在线卷积的具体实现及常见幂级数算法表示为半在线卷积， $O\left(\frac{n\log ^2n}{\log \log n}\right)$ ）
+- Elegia 的讲课[视频](https://www.bilibili.com/video/BV1kA41187dQ).（约 50 分钟左右，半在线卷积的具体实现及常见幂级数算法表示为半在线卷积，$O\left(\frac{n\log ^2n}{\log \log n}\right)$）
 - fjzzq2002. [一个更好的多项式模板](https://fjzzq2002.blog.uoj.ac/blog/7281).

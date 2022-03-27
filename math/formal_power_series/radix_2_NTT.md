@@ -5,11 +5,11 @@ documentation_of: ./radix_2_NTT.hpp
 
 ## 常用 NTT 友好的模数
 
-我们知道 NTT 友好的模数 $p$ 是素数且 $-1\bmod{p}$ 一定是二次剩余。在 $\mathbb{C}$ 中的 FFT 依靠的就是幂次为 $1$ 的元素即单位根，而在 NTT 中我们可以知道也存在阶为 $2$ 的幂次的元素，于是可以做 radix-2 NTT ，但 FFT 显然更灵活。
+我们知道 NTT 友好的模数 $p$ 是素数且 $-1\bmod{p}$ 一定是二次剩余。在 $\mathbb{C}$ 中的 FFT 依靠的就是幂次为 $1$ 的元素即单位根，而在 NTT 中我们可以知道也存在阶为 $2$ 的幂次的元素，于是可以做 radix-2 NTT，但 FFT 显然更灵活。
 
-根据 Legendre 符号我们知道当 $p$ 为奇素数时， $\left(\frac{-1}{p}\right)\equiv (-1)^{(p-1)/2}\pmod{p}$ 若 $\left(\frac{-1}{p}\right)\equiv 1\pmod{p}$ 则为二次剩余，那么意味着 $p\bmod 4=1$ 。
+根据 Legendre 符号我们知道当 $p$ 为奇素数时，$\left(\frac{-1}{p}\right)\equiv (-1)^{(p-1)/2}\pmod{p}$ 若 $\left(\frac{-1}{p}\right)\equiv 1\pmod{p}$ 则为二次剩余，那么意味着 $p\bmod 4=1$。
 
-NTT 模数是容易得到的，假设我们需要处理 $2^{23}$ 长的 NTT ，意味着需要其有阶为 $2^{23}$ 的元素，而 $\varphi(p)=p-1=2^{23}\cdot t$ 其中 $t\bmod 2=1$ 此时其中一定有元素的阶整除 $2^{23}$ ，我们枚举 $t$ 并依次进行素性测试即可。
+NTT 模数是容易得到的，假设我们需要处理 $2^{23}$ 长的 NTT，意味着需要其有阶为 $2^{23}$ 的元素，而 $\varphi(p)=p-1=2^{23}\cdot t$ 其中 $t\bmod 2=1$ 此时其中一定有元素的阶整除 $2^{23}$，我们枚举 $t$ 并依次进行素性测试即可。
 
 | 素数 $p$ | 周期 |
 | :----: | :----: |
@@ -22,7 +22,7 @@ NTT 模数是容易得到的，假设我们需要处理 $2^{23}$ 长的 NTT ，�
 
 ## radix-2 NTT 的简单描述
 
-在参考文献中该算法被称为 original radix-2 NTT 或 classical radix-2 NTT ，最早由 Fiduccia 发现可以表示为
+在参考文献中该算法被称为 original radix-2 NTT 或 classical radix-2 NTT，最早由 Fiduccia 发现可以表示为
 
 $$
 \begin{aligned}
@@ -31,7 +31,7 @@ $$
 \end{aligned}
 $$
 
-输入 $f\bmod (x^{2m}-b^2)$ 计算 $f_Y=f\bmod (x^m-b)$ 和 $f_Z=f\bmod (x^m+b)$ 。令 $f\bmod (x^{2m}-b^2)=f_B+f_A\cdot x^m$ 其中 $f_B=(f\bmod{(x^{2m}-b^2)})\bmod{x^m}$ 那么
+输入 $f\bmod (x^{2m}-b^2)$ 计算 $f_Y=f\bmod (x^m-b)$ 和 $f_Z=f\bmod (x^m+b)$。令 $f\bmod (x^{2m}-b^2)=f_B+f_A\cdot x^m$ 其中 $f_B=(f\bmod{(x^{2m}-b^2)})\bmod{x^m}$ 那么
 
 $$
 \begin{aligned}
@@ -59,7 +59,7 @@ f_B
 \end{aligned}
 $$
 
-当 $2b$ 可逆时该算法可逆，所以一般应用于特征不为 $2$ 的域，而 radix-3 NTT 则适用于特征为 $2$ 的域（如 $\chi (\mathbb{F} _ {2^n})=2$ ）。
+当 $2b$ 可逆时该算法可逆，所以一般应用于特征不为 $2$ 的域，而 radix-3 NTT 则适用于特征为 $2$ 的域（如 $\chi (\mathbb{F} _ {2^n})=2$）。
 
 该算法的逆运算可表示为
 
@@ -96,7 +96,7 @@ $$
 
 ## 预处理单位根的手法
 
-令 $\zeta_n\in\mathbb{F} _ p$ 表示 $\operatorname{ord}(\zeta_n)=n$ 的某个数，且 $\zeta _ {2n}^2=\zeta_n$ ，使用 $\mathrm{i}\in\mathbb{F} _ p$ 表示 $\mathrm{i}^2\equiv -1\pmod{p}$ 的某个数（一般存在两个，但这里一直指代某一个而不是任意一个）。
+令 $\zeta_n\in\mathbb{F} _ p$ 表示 $\operatorname{ord}(\zeta_n)=n$ 的某个数，且 $\zeta _ {2n}^2=\zeta_n$，使用 $\mathrm{i}\in\mathbb{F} _ p$ 表示 $\mathrm{i}^2\equiv -1\pmod{p}$ 的某个数（一般存在两个，但这里一直指代某一个而不是任意一个）。
 
 | 单位根 | 二进制 |
 | :-: | :-: |
@@ -150,7 +150,7 @@ $$
 \end{cases}
 $$
 
-我们可以做到在线性时空预处理，但仍不够满意，令 $\operatorname{bsf}(i)$ 表示 bit scan forward ，即二进制表示中末尾零的数量，考虑
+我们可以做到在线性时空预处理，但仍不够满意，令 $\operatorname{bsf}(i)$ 表示 bit scan forward，即二进制表示中末尾零的数量，考虑
 
 $$
 \mathrm{ROOT} _ i=
@@ -175,7 +175,7 @@ $$
 
 在 2021/10/4 测试时，上述预处理仍然因为多次重复的计算导致整个算法变慢，所以我以为目前容易写且优秀的仍然是全部预处理。
 
-我们假设使用 $998244353$ 来进行 $2^{23}$ 长的 NTT 计算，那么需要用 DW 数组去推出 $2^{22}$ 个单位根，而在到 $2^{22}$ 之前的任意一个非零下标的二进制末尾最多只有 $21$ 个零，所以 DW 数组中的 $k=21$ 。
+我们假设使用 $998244353$ 来进行 $2^{23}$ 长的 NTT 计算，那么需要用 DW 数组去推出 $2^{22}$ 个单位根，而在到 $2^{22}$ 之前的任意一个非零下标的二进制末尾最多只有 $21$ 个零，所以 DW 数组中的 $k=21$。
 
 ## 参考文献
 

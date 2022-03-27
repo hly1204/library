@@ -5,7 +5,7 @@ documentation_of: ./sample_points_shift.hpp
 
 ## 样本点平移
 
-给出 $f(0),f(1),\dots f(n)$ 求出 $f(c),f(c+1),\dots f(c+n)$ ，其中 $f\in\mathbb{F} _ p\lbrack x\rbrack,c\in\mathbb{F} _ p\setminus \lbrace 0\rbrace ,\deg(f)\leq n$ 。发现可使用下降幂多项式的平移完成，我们考虑拉格朗日插值公式，有
+给出 $f(0),f(1),\dots f(n)$ 求出 $f(c),f(c+1),\dots f(c+n)$，其中 $f\in\mathbb{F} _ p\lbrack x\rbrack,c\in\mathbb{F} _ p\setminus \lbrace 0\rbrace ,\deg(f)\leq n$。发现可使用下降幂多项式的平移完成，我们考虑拉格朗日插值公式，有
 
 $$
 \begin{aligned}
@@ -39,14 +39,14 @@ $$
 k_i=\frac{f(i)}{i!}\prod _ {0\leq j\lt i}(x-j)
 $$
 
-此时循环为从 $0$ 到 $n$ ，第二次倒过来将上式中缺失的部分补全即可，也就是计算
+此时循环为从 $0$ 到 $n$，第二次倒过来将上式中缺失的部分补全即可，也就是计算
 
 $$
 f(x)=\sum _ {0\leq i\leq n}k_i\cdot\frac{(-1)^{n-i}}{(n-i)!}\prod _ {i\lt j\leq n}(x-j)
 $$
 
-如果从 $n$ 到 $0$ 枚举，那么 $-1$ 的指数一定是从 $0$ 开始，那么维护一个变量每次乘以 $-1$ 。
+如果从 $n$ 到 $0$ 枚举，那么 $-1$ 的指数一定是从 $0$ 开始，那么维护一个变量每次乘以 $-1$。
 
 ## 等差数列
 
-沿用上述问题，对于 $k\in\mathbb{F} _ p^{\times}$ 和 $d\in\mathbb{F} _ p$ 给出 $f(d),f(d+k),\dots ,f(d+nk)$ 求出 $f(c+d),f(c+d+k),\dots ,f(c+d+nk)$ 也是类似的，可视作平移 $g(x)=f(d+kx)$ 的点值 $g(0),g(1),\dots ,g(n)$ 为 $g\left(\frac{c}{k}\right),g\left(\frac{c}{k}+1\right),\dots ,g\left(\frac{c}{k}+n\right)$ 。
+沿用上述问题，对于 $k\in\mathbb{F} _ p^{\times}$ 和 $d\in\mathbb{F} _ p$ 给出 $f(d),f(d+k),\dots ,f(d+nk)$ 求出 $f(c+d),f(c+d+k),\dots ,f(c+d+nk)$ 也是类似的，可视作平移 $g(x)=f(d+kx)$ 的点值 $g(0),g(1),\dots ,g(n)$ 为 $g\left(\frac{c}{k}\right),g\left(\frac{c}{k}+1\right),\dots ,g\left(\frac{c}{k}+n\right)$。

@@ -14,7 +14,7 @@ x\equiv a_2\pmod{m_2}
 \end{cases}
 $$
 
-有 $x=k_1m_1+a_1=k_2m_2+a_2$ 其中 $k_1,k_2\in\mathbb{Z}$ ，我们假设 $\gcd(m_1,m_2)=1$ 那么
+有 $x=k_1m_1+a_1=k_2m_2+a_2$ 其中 $k_1,k_2\in\mathbb{Z}$，我们假设 $\gcd(m_1,m_2)=1$ 那么
 
 $$
 k_1\equiv (a_2-a_1)\cdot m_1^{-1}\pmod{m_2}
@@ -32,7 +32,7 @@ $$
 sm_1+tm_2=d
 $$
 
-对比系数后可以得到 $k_1$ 和 $k_2$ 。
+对比系数后可以得到 $k_1$ 和 $k_2$。
 
 ### Garner 算法
 
@@ -52,7 +52,7 @@ $$
 \end{array}
 $$
 
-我们发现对 Garner 算法进行简单的修改即可使其支持求出 $\left(x\bmod{\prod_i m_i}\right)\bmod{p}$ 。
+我们发现对 Garner 算法进行简单的修改即可使其支持求出 $\left(x\bmod{\prod_i m_i}\right)\bmod{p}$。
 
 $$
 \begin{array}{ll}
@@ -79,4 +79,4 @@ $$
 ## 参考文献
 
 - Alfred J. Menezes, Paul C. van Oorschot and Scott A. Vanstone. Handbook of Applied Cryptography.
-- math314のブログ - [任意modでの畳み込み演算をO(n log(n))で](https://math314.hateblo.jp/entry/2015/05/07/014908).
+- math314のブログ. [任意modでの畳み込み演算をO(n log(n))で](https://math314.hateblo.jp/entry/2015/05/07/014908).

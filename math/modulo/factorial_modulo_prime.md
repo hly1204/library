@@ -7,7 +7,7 @@ documentation_of: ./factorial_modulo_prime.hpp
 
 此文译自参考文献！
 
-令 $p$ 为素数模数，若省略同余符号，也认为在同余 $p$ 意义下运算。定义多项式 $f(x)=\prod _ {i=1}^n(x+i)$ 那么 $n!=f(0)$ ，令 $v=\left\lfloor \sqrt{n}\right\rfloor$ 和 $g(x)=\prod _ {i=1}^v(x+i)$ 那么
+令 $p$ 为素数模数，若省略同余符号，也认为在同余 $p$ 意义下运算。定义多项式 $f(x)=\prod _ {i=1}^n(x+i)$ 那么 $n!=f(0)$，令 $v=\left\lfloor \sqrt{n}\right\rfloor$ 和 $g(x)=\prod _ {i=1}^v(x+i)$ 那么
 
 $$
 n! =\left(\prod _ {i=0}^{v-1}g(vi)\right)\cdot \prod _ {i=v^2+1}^ni
@@ -21,9 +21,9 @@ $$
 
 ### $O(p^{1/2}\log p)$ 计算的方法
 
-$g(x)$ 的根为 $-1,-2,\dots ,-v$ 为等差数列，且我们希望对 $g(x)$ 求的点值 $0,v,\dots ,v(v-1)$ 也是等差数列。在这里使用拉格朗日插值公式可以使计算量下降 $\log p$ 。
+$g(x)$ 的根为 $-1,-2,\dots ,-v$ 为等差数列，且我们希望对 $g(x)$ 求的点值 $0,v,\dots ,v(v-1)$ 也是等差数列。在这里使用拉格朗日插值公式可以使计算量下降 $\log p$。
 
-对于 $d$ 次多项式 $g_d(x)=\prod _ {i=1}^d(x+i)$ 计算 $g_d(0),g_d(v),\dots ,g_d(dv)$ 。此时可以通过 $O(d\log d)$ 的计算量求出 $g_{2d}(0),g_{2d}(v),\dots ,g_{2d}(2dv)$ 。
+对于 $d$ 次多项式 $g_d(x)=\prod _ {i=1}^d(x+i)$ 计算 $g_d(0),g_d(v),\dots ,g_d(dv)$。此时可以通过 $O(d\log d)$ 的计算量求出 $g_{2d}(0),g_{2d}(v),\dots ,g_{2d}(2dv)$。
 
 首先有 $g_{2d}(x)=g_d(x)\cdot g_d(x+d)$ 我们令 $G_d(i)=(g_d(i),g_d(v+i),\dots ,g_d(dv+i))$ 如果我们能从 $G_d(0)$ 计算 $G_d(d),G_d(dv),G_d(dv+d)$ 三组询问的话就可以解决了，在这里使用拉格朗日插值公式。
 
@@ -35,9 +35,9 @@ $g(x)$ 的根为 $-1,-2,\dots ,-v$ 为等差数列，且我们希望对 $g(x)$ �
 
 同样，已知 $h(0),h(1),h(2)$ 求 $h\left(\frac{1}{v}\right)=g_1(1),h\left(\frac{1}{v}+1\right)=g_1(v+1),h\left(\frac{1}{v}+2\right)=g_1(2v+1)$ 即得。
 
-那么 $g_2(0)=g_1(0)g_1(1),g_2(v)=g_1(v)g_1(v+1),g_2(2v)=g_1(2v)g_1(2v+1)$ 。
+那么 $g_2(0)=g_1(0)g_1(1),g_2(v)=g_1(v)g_1(v+1),g_2(2v)=g_1(2v)g_1(2v+1)$。
 
-在这里我们采取一种更简单的方法即令 $v=2^{\lceil \log_2\sqrt{n}\rceil}$ ，这样我们只需要倍增即可，无需额外的调整，最差时 $v\approx 2\sqrt{n}$ ；若需要多次询问，那么我们令 $v=\lfloor \sqrt{p}\rfloor$ 。
+在这里我们采取一种更简单的方法即令 $v=2^{\lceil \log_2\sqrt{n}\rceil}$，这样我们只需要倍增即可，无需额外的调整，最差时 $v\approx 2\sqrt{n}$ ；若需要多次询问，那么我们令 $v=\lfloor \sqrt{p}\rfloor$。
 
 若考虑从 $g_d(0),g_d(v),\dots ,g_d(dv)$ 推出 $g_{d+1}(0),g_{d+1}(v),\dots ,g_{d+1}(dv+v)$ 显然可在线性时间做到（额外的一项暴力计算即可），这样我们可以求出任意的 $d$ 对应的点值，而不用在二的幂次处。在 [EntropyIncreaser 的提交记录](https://loj.ac/s/1110094) 中使用了不同的技术使得 DFT 的次数减少，具体的我们在刚开始维护 $g_1(0),g_1(1)$ 后计算 $g_1(2),g_1(3),g_1(4),g_1(5)$ 后得到 $g_2(0),g_2(2),g_2(4)$ 以此类推。
 
@@ -45,7 +45,7 @@ $g(x)$ 的根为 $-1,-2,\dots ,-v$ 为等差数列，且我们希望对 $g(x)$ �
 
 ## 某种线性递推序列
 
-对于某种线性递推序列 $\lbrace a_i\rbrace _ {i=0}^\infty$ 我们认为其初值为一个向量 $\mathbf{v} _ 0$ 后有某个其中元素为度数至多为一的多项式的矩阵 $\mathbf{M}$ 满足 $\mathbf{v} _ {i+1}=\mathbf{M}\mathbf{v} _ {i}$ 。在这里我们可以将计算阶乘考虑为矩阵
+对于某种线性递推序列 $\lbrace a_i\rbrace _ {i=0}^\infty$ 我们认为其初值为一个向量 $\mathbf{v} _ 0$ 后有某个其中元素为度数至多为一的多项式的矩阵 $\mathbf{M}$ 满足 $\mathbf{v} _ {i+1}=\mathbf{M}\mathbf{v} _ {i}$。在这里我们可以将计算阶乘考虑为矩阵
 
 $$
 \begin{bmatrix}
@@ -155,7 +155,7 @@ $$
 
 全部摘自 Min\_25 的博客！
 
-我对求调和数比较感兴趣，记 $H_n=\sum _ {k=1}^n\frac{1}{k}$ ，阅读了这篇 [文章](https://www.luogu.com.cn/blog/NaCly-Fish-blog/ji-yu-bei-zeng-wei-hu-duo-xiang-shi-dian-zhi-di-ji-suan) 但是其中的表记不是矩阵形式，而我们也可以将其改写为矩阵的形式如
+我对求调和数比较感兴趣，记 $H_n=\sum _ {k=1}^n\frac{1}{k}$，阅读了这篇 [文章](https://www.luogu.com.cn/blog/NaCly-Fish-blog/ji-yu-bei-zeng-wei-hu-duo-xiang-shi-dian-zhi-di-ji-suan) 但是其中的表记不是矩阵形式，而我们也可以将其改写为矩阵的形式如
 
 $$
 \begin{bmatrix}
@@ -230,7 +230,7 @@ $$
 
 ## 例题
 
-[LOJ 6386 组合数前缀和](https://loj.ac/p/6386) 求 $\sum _ {i=0}^m\binom{n}{i}\bmod 998244353$ ，考虑维护矩阵
+[LOJ 6386 组合数前缀和](https://loj.ac/p/6386) 求 $\sum _ {i=0}^m\binom{n}{i}\bmod 998244353$，考虑维护矩阵
 
 $$
 \begin{aligned}
@@ -325,13 +325,13 @@ $$
 
 ## P-recursive 序列
 
-上面的说法可能不太正确， Bostan 等的论文解决的是多项式为系数的线性递推
+上面的说法可能不太正确，Bostan 等的论文解决的是多项式为系数的线性递推
 
 $$
 u _ {n+d}=c _ {d-1}(n)u _ {n+d-1}+\cdots +c_0(n)u_n
 $$
 
-其中 $c_0(x),\dots ,c _ {d-1}(x)$ 都是在环 $R(x)$ 上的有理函数（当然，我们依然是只考虑有限域 $\mathbb{F} _ {p}(x)$ 且 $p$ 为足够大的素数），这样的线性递推序列被称为 holonomic （或 P-recursive ）序列，而 Bostan-Mori 算法解决的为 C-recursive 的线性递推序列。我们思考如何解决上式，首先模仿在 [常系数其次线性递推](https://oi-wiki.org/math/linear-recurrence/) 中对矩阵的构造，记 $c_i(x)=P_i(x)/Q_i(x)$ 我们有
+其中 $c_0(x),\dots ,c _ {d-1}(x)$ 都是在环 $R(x)$ 上的有理函数（当然，我们依然是只考虑有限域 $\mathbb{F} _ {p}(x)$ 且 $p$ 为足够大的素数），这样的线性递推序列被称为 holonomic（或 P-recursive）序列，而 Bostan-Mori 算法解决的为 C-recursive 的线性递推序列。我们思考如何解决上式，首先模仿在 [常系数其次线性递推](https://oi-wiki.org/math/linear-recurrence/) 中对矩阵的构造，记 $c_i(x)=P_i(x)/Q_i(x)$ 我们有
 
 $$
 \underbrace{
