@@ -21,7 +21,7 @@ documentation_of: ./Montgomery_modint.hpp
 
 ## Montgomery reduction
 
-> 定义：对于 $N\gt 1$ 选择一个基数 $R$ 与 $N$ 互素且 $R\gt N$。令 $R^{-1}$ 和 $N'$ 满足 $0\lt R^{-1}\lt N$ 且 $0\lt N'\lt R$ 且 $RR^{-1}-NN'=1$。对于 $T$ 满足 $0\leq T\lt RN$，我们将一种快速计算 $TR^{-1}\bmod{N}$ 的算法称为 Montgomery reduction。
+定义：对于 $N\gt 1$ 选择一个基数 $R$ 与 $N$ 互素且 $R\gt N$。令 $R^{-1}$ 和 $N'$ 满足 $0\lt R^{-1}\lt N$ 且 $0\lt N'\lt R$ 且 $RR^{-1}-NN'=1$。对于 $T$ 满足 $0\leq T\lt RN$，我们将一种快速计算 $TR^{-1}\bmod{N}$ 的算法称为 Montgomery reduction。
 
 Bézout 等式 $RR^{-1}-NN'=1$ 告诉我们 $N'\equiv -N^{-1}\pmod{R}$。
 
