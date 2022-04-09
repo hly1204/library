@@ -70,8 +70,7 @@ std::optional<PolyType> poly_inv(const PolyType &A, const PolyType &mod) {
   auto M         = cogcd<PolyType>(mod, A_mod);
   auto gcd_A_mod = M.m00 * mod + M.m01 * A_mod;
   if (gcd_A_mod.deg() != 0) return {};
-  auto t = gcd_A_mod[0].inv();
-  std::for_each(M.m01.begin(), M.m01.end(), [&t](auto &v) { v *= t; });
+  std::for_each(M.m01.begin(), M.m01.end(), [t = gcd_A_mod[0].inv()](auto &v) { v *= t; });
   return M.m01;
 }
 

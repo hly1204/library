@@ -39,11 +39,13 @@ std::vector<mod_t> sqrt_mod_prime(const mod_t x) {
   mod_t k0(ONE), k1(ZERO), k2(-t), k3(x);
 
   for (auto e = (p + 1) >> 1;;) {
-    if (e & 1) k0 = k1 - k0 * k2, k1 *= k3;
-    else
+    if (e & 1) {
+      k0 = k1 - k0 * k2, k1 *= k3;
+    } else {
       k1 = k0 * k3 - k1 * k2;
-    k2 = k3 + k3 - k2 * k2, k3 *= k3;
+    }
     if ((e >>= 1) == 0) return {k0, -k0};
+    k2 = k3 + k3 - k2 * k2, k3 *= k3;
   }
 }
 
