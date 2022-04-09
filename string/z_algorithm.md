@@ -33,12 +33,19 @@ $$
 1. 当 $k\gt r$ 时，即当前位置（索引）不在 Z-box 中，那么直接比较，如果 $Z_k\gt 0$ 则更新 $l,r$；
 
 2. 当 $k\leq r$ 时：
+
    1. 当 $Z _ {k-l}\lt r-k+1$ 时，$Z_k=Z _ {k-l}$；
    2. 否则 $Z_k$ 至少为 $r-k+1$，并直接比较，更新 $l,r$。
    
 有一个较具体的例子，如果 $k=121$，那么 $Z_2$ 到 $Z _ {120}$ 都已经计算完毕，且 $l _ {120}=100,r _ {120}=130$ 这意味着 $S\lbrack 100..130\rbrack =S\lbrack 1..31\rbrack$ 那么 $S\lbrack 121..130\rbrack =S\lbrack 22..31\rbrack$，这样 $Z _ {22}$ 对于计算 $Z _ {121}$ 就非常有帮助，如果 $Z _ {22}=3$，那么 $Z _ {121}=3$（这是情况 2.1）。
 
 注意到直接比较本身是 $O(\lvert S\rvert)$ 的，而且需要执行 $O(\lvert S\rvert)$ 次，但是因为每个字符的成功匹配都会令 $r$ 增加 $1$，而 $r$ 最大可能为 $\lvert S\rvert$，可以说总时间为线性。
+
+### Dan. Gusfield 的习题
+
+若 $Z_2=q\gt 0$，那么 $Z_3,\dots ,Z_{q+2}$ 都不需要字符的比较即可得到，证实这一断论并给出细节。
+
+因为 $q\gt 0$ 所以显然 $S\lbrack 2\rbrack = S\lbrack 1\rbrack$ 且 $S\lbrack 3\rbrack = \lbrack 2\rbrack$ 等等，也就是只有前面都是同一个字母才可能，显然 $Z_3=q-1,\dots ,Z _ {q+2}=0$，因此我们也知道经过的所有 Z-box 的最右末端点不可能超过 $S\lbrack q+2\rbrack$，所以无需更新。
 
 ## KMP 算法
 
