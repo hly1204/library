@@ -230,7 +230,7 @@ $$
 \begin{array}{ll}
 &\textbf{Algorithm Polynomial }\operatorname{min-poly}(A)\text{:}\\
 &\textbf{Input}\text{: }A(x)=\sum _ {i=0}^{n-1}a_ix^i\in\mathbb{F} _ p\lbrack x\rbrack\text{.}\\
-&\textbf{Output}\text{: A monic polynomial }B(x)=\sum _ {i=0}^{m-1}b_ix^i\text{ such that }\sum _ {i=0}^{m-1}a_ib_i=0\text{ and }m\text{ is minimized.}\\
+&\textbf{Output}\text{: A monic polynomial }B(x)=\sum _ {i=0}^{m-1}b_ix^i\in\mathbb{F} _ p\lbrack x\rbrack\text{ s.t. }\forall j\text{ we have } \sum _ {i=0}^{m-1}a_{i+j}b_i=0\text{ and }m\text{ is minimized.}\\
 1&\textbf{if }A(x)=0\textbf{ then return }\left(1\right)\text{;}\\
 2&\begin{bmatrix}C&D\\ E&F\end{bmatrix}\gets\begin{bmatrix}0&x^n\\ 1&x^{n-1}A\left(x^{-1}\right)\end{bmatrix}\text{;}\\
 3&\textbf{repeat forever}\\
