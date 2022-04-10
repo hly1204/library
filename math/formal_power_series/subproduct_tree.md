@@ -7,7 +7,7 @@ documentation_of: ./subproduct_tree.hpp
 
 多点求值即 $\operatorname{eval}:\mathbb{F} _ p\lbrack x\rbrack\to \mathbb{F} _ p^n,f\mapsto (f(x_0),f(x_1),\dots ,f(x_{n-1}))$ 我们假设多项式 $f\in\mathbb{F} _ p\lbrack x\rbrack$ 有 $O(\deg (f))=O(n)$。我们可以通过分治取模的来计算。建立一棵 subproduct 树，树的叶子为 $x-x_i$ 而其余节点为叶子的乘积，而 FFT 的思想显然与此相同，为了简便可以使用线段树的递归建树方式。其中 $f(x_i)=f\bmod(x-x_i)$ 显然。
 
-## 拉格朗日插值
+## Lagrange 插值
 
 插值即解同余方程组
 

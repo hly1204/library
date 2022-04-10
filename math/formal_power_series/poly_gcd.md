@@ -5,17 +5,17 @@ documentation_of: ./poly_gcd.hpp
 
 ## 有限域多项式 GCD 算法
 
-对于两个有限域多项式 $f,g\in\mathbb{F} _ p\lbrack x\rbrack$ 且 $\deg(f),\deg(g)\lt p$ 且 $p$ 为素数，可以使用辗转相除来计算 $\gcd(f,g)$，因为多项式环 $\mathbb{F} _ p\lbrack x\rbrack$ 是欧几里得整环。
+对于两个有限域多项式 $f,g\in\mathbb{F} _ p\lbrack x\rbrack$ 且 $\deg(f),\deg(g)\lt p$ 且 $p$ 为素数，可以使用辗转相除来计算 $\gcd(f,g)$，因为多项式环 $\mathbb{F} _ p\lbrack x\rbrack$ 是 Euclid 整环。
 
-在参考文献中的三篇论文都描述了该算法，但个人更偏爱第一篇 Yap 的论文。但是我们需要对 Yap 论文中的算法稍作修改。下文主要译自一篇没有署名的 PDF（是对 Yap 论文的简化）。对于欧几里得商数和欧几里得余数，后文可能简称商数或余数。
+在参考文献中的三篇论文都描述了该算法，但个人更偏爱第一篇 Yap 的论文。但是我们需要对 Yap 论文中的算法稍作修改。下文主要译自一篇没有署名的 PDF（是对 Yap 论文的简化）。对于 Euclid 商数和 Euclid 余数，后文可能简称商数或余数。
 
-考虑两个多项式 $P_0,P_1\in\mathbb{F} _ p\lbrack x\rbrack$ 且 $\deg(P_0)\gt \deg(P_1)\geq 0$。那么欧几里得余数序列为 $P_0,P_1,\dots ,P_k$ 且 $k\geq 1$，且我们有递推式
+考虑两个多项式 $P_0,P_1\in\mathbb{F} _ p\lbrack x\rbrack$ 且 $\deg(P_0)\gt \deg(P_1)\geq 0$。那么 Euclid 余数序列为 $P_0,P_1,\dots ,P_k$ 且 $k\geq 1$，且我们有递推式
 
 $$
 P _ {i+1}=P_{i-1}-Q_iP_i
 $$
 
-其中 $\deg(P _ {i+1})\lt \deg(P_i)$ 且 $P_k\mid P _ {k-1}$。然后就是我们非常熟悉的欧几里得算法 $P_k=\gcd(P_0,P_1)$ 的辗转相除
+其中 $\deg(P _ {i+1})\lt \deg(P_i)$ 且 $P_k\mid P _ {k-1}$。然后就是我们非常熟悉的 Euclid 算法 $P_k=\gcd(P_0,P_1)$ 的辗转相除
 
 $$
 \gcd(P _ {i-1},P_i)=\gcd(P_i,P _ {i+1})
@@ -60,7 +60,7 @@ $$
 
 那么使用朴素算法计算 $\gcd(P_0,P_1)$ 需要约 $O(n_0^2)$，因为 $\forall i$ 计算 $Q_i$ 所消耗总时间为 $O(n_0)$（假设余数序列为 normal ），而对某个 $i$ 计算 $P _ {i+1}=P _ {i-1}-Q_iP_i$ 需要 $O(\deg(Q_i)n_i)$ 时间。
 
-另外，对于 $0\lt i\lt k$ 若 $P_i-P _ {i+1}=1$ 那么说这个欧几里得余数序列是 normal 的。在随机情况下这两个多项式的余数序列为 normal 的可能性很大，若需要构造 abnormal 的情况可考虑反向进行欧几里得算法去构造（该 [提交记录](https://loj.ac/s/1124308) 是一个简单的测试是否 normal 的代码）。
+另外，对于 $0\lt i\lt k$ 若 $P_i-P _ {i+1}=1$ 那么说这个 Euclid 余数序列是 normal 的。在随机情况下这两个多项式的余数序列为 normal 的可能性很大，若需要构造 abnormal 的情况可考虑反向进行 Euclid 算法去构造（该 [提交记录](https://loj.ac/s/1124308) 是一个简单的测试是否 normal 的代码）。
 
 首先给出 co-GCD 算法的递归伪代码，其中调用的函数 HGCD 将在后文给出。
 
@@ -108,7 +108,7 @@ C\bmod D
 \end{array}
 $$
 
-令 $G(n)$ 为 co-GCD 算法的复杂度，$\mathsf{M}(n)$ 为多项式乘法/欧几里得除法的复杂度，而 $H(n)$ 为 HGCD 算法的复杂度，那么有
+令 $G(n)$ 为 co-GCD 算法的复杂度，$\mathsf{M}(n)$ 为多项式乘法/Euclid 除法的复杂度，而 $H(n)$ 为 HGCD 算法的复杂度，那么有
 
 $$
 G(n)=H(n)+O(\mathsf{M}(n))+G(n/2)

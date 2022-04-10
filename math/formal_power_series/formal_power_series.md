@@ -31,11 +31,11 @@ $$
 
 观察上式，发现 $1-fg_0$ 的前 $n$ 项系数都为零，而对 $f$ 和 $g_0$ 都做 $2n$ 长 DFT 后点值相乘再 IDFT 可以求出 $fg_0\bmod (x^{2n}-1)$，溢出的项恰好会出现在前 $n$ 项里（我们没有必要做更长的 DFT），而我们只需要后 $n$ 项即可还原出 $1-fg_0$。这也是一个基础技巧，会在以后的文中用到。
 
-## 牛顿法
+## Newton 法
 
-定义算子 $\mathfrak{D}$ 作用于函数 $f(x)$ 为其关于 $x$ 的导数。
+定义导子 $\mathfrak{D}$ 作用于函数 $f(x)$ 为其关于 $x$ 的导数（对于形式幂级数而言，其导数一般指形式导数（formal derivative））。
 
-给出 $f_0=f\bmod{x^n}$，我们求出 $f$ 满足 $A(f)=0$，其中 $A(f)$ 可以是某个函数，例：假设给出 $g$ 要求 $g^{-1}$ 那么可设 $A(f)=f^{-1}-g$。我们观察 $A(f)$ 在 $f_0$ 处的泰勒公式
+给出 $f_0=f\bmod{x^n}$，我们求出 $f$ 满足 $A(f)=0$，其中 $A(f)$ 可以是某个函数，例：假设给出 $g$ 要求 $g^{-1}$ 那么可设 $A(f)=f^{-1}-g$。我们观察 $A(f)$ 在 $f_0$ 处的 Taylor 公式
 
 $$
 A(f)=A(f_0)+\frac{\mathfrak{D}(A(f_0))(f-f_0)}{1!}+\frac{\mathfrak{D}^2(A(f_0))(f-f_0)^2}{2!}+\cdots
@@ -59,9 +59,9 @@ $$
 
 令 $F _ n^{-1}(F _ n(f)F _ n(g))=fg\bmod{(x^n-1)}$。若 $c$ 为某个常数，那么 $F _ n(c)$ 只需要消耗线性时间。
 
-### 麦克劳林公式
+### Maclaurin 公式
 
-对于幂级数 $f$ 的指数我们可以通过麦克劳林公式如
+对于幂级数 $f$ 的指数我们可以通过 Maclaurin 公式如
 
 $$
 \exp(f)=1+f+\frac{f^2}{2!}+\cdots =\sum _ {i\geq 0}\frac{f^i}{i!}
@@ -75,7 +75,7 @@ $$
 \log\left(\sum _ {i\geq 0}\frac{f^i}{i!}\right)=f
 $$
 
-我们知道 $\mathfrak{D}(\log(x))=1/x$ 而 $\mathfrak{D}(\log(f))=\mathfrak{D}(f)/f$ 那么 $\log(f)=\int (\mathfrak{D}(f)/f)$，这里使用 $\int ax^b=a/(b+1)x^{b+1}$ 其中 $b\geq 0$。省略 $\mathrm{d}x$ 使更简洁。
+我们知道 $\mathfrak{D}(\log(x))=1/x$ 而 $\mathfrak{D}(\log(f))=\mathfrak{D}(f)/f$ 那么 $\log(f)=\int (\mathfrak{D}(f)/f)$，这里使用 $\int ax^b=a/(b+1)x^{b+1}$ 其中 $b\geq 0$。省略 $\mathrm{d}x$ 使更简洁。实际上，可能将指数和对数理解为复合可能更合适。
 
 ### 逆元
 

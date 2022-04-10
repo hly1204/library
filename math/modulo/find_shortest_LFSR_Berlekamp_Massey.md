@@ -224,6 +224,23 @@ $$
 
 我们可以发现关系多项式这样定义实际是为了方便，不需要在数组的开头进行插入操作，而其翻转实际上就是最小多项式了（零化这个序列）。
 
+## Euclid 算法
+
+$$
+\begin{array}{ll}
+&\textbf{Algorithm Polynomial }\operatorname{min-poly}(A)\text{:}\\
+&\textbf{Input}\text{: }A(x)=\sum _ {i=0}^{n-1}a_ix^i\in\mathbb{F} _ p\lbrack x\rbrack\text{.}\\
+&\textbf{Output}\text{: A monic polynomial }B(x)=\sum _ {i=0}^{m-1}b_ix^i\text{ such that }\sum _ {i=0}^{m-1}a_ib_i=0\text{ and }m\text{ is minimized.}\\
+1&\textbf{if }A(x)=0\textbf{ then return }\left(1\right)\text{;}\\
+2&\begin{bmatrix}C&D\\ E&F\end{bmatrix}\gets\begin{bmatrix}0&x^n\\ 1&x^{n-1}A\left(x^{-1}\right)\end{bmatrix}\text{;}\\
+3&\textbf{repeat forever}\\
+4&\qquad \begin{bmatrix}C&D\\ E&F\end{bmatrix}\gets\begin{bmatrix}0&1\\ 1&-D\operatorname{div}F\end{bmatrix}\begin{bmatrix}C&D\\ E&F\end{bmatrix}\text{;}\\
+5&\qquad \textbf{if }\deg(F)\lt\deg(E)\textbf{ then return } \left(E/\operatorname{lc}(E)\right)\text{;}
+\end{array}
+$$
+
+其中 $\operatorname{lc}(f)$ 为 $f$ 的首项系数（leading coefficient）。
+
 ## 参考文献
 
 - J.L. Massey, Shift register synthesis and BCH decoding, IEEE Trans. Inform. Theory, vol. IT-15,
