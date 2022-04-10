@@ -239,7 +239,7 @@ $$
 \end{array}
 $$
 
-其中 $\operatorname{lc}(f)$ 为 $f$ 的首项系数（leading coefficient）。
+其中 $\operatorname{lc}(f)$ 为 $f$ 的首项系数（leading coefficient）。该算法被称为有理函数重建，见 Elegia 的 [博客](https://blog.csdn.net/EI_Captain/article/details/115840021)，及参考文献 4 第 429 页。
 
 ## 参考文献
 
@@ -248,3 +248,4 @@ $$
 - J.L. Dornstetter, On the equivalence Between Berlekamp’s and Euclid’s Algorithm, IEEE Trans.
 Inform. Theory, vol. IT-33, no 3,428–431 (1987).
 - Y. Sugiyama, M. Kasahara, H. Hirasawa, and T. Namekawa, “A method for solving key equation for decoding Goppa codes,” Inform. Contr., vol. 27, pp. 87-99, 1975.
+- Victor Shoup. [A Computational Introduction to Number Theory and Algebra (Version 1)](https://www.cambridge.org/core/books/computational-introduction-to-number-theory-and-algebra/6DBE79226210EB629448E57A1C65E985).
