@@ -40,7 +40,7 @@ template <typename PolyType>
 PolyGCDMat<PolyType> hgcd(const PolyType &A, const PolyType &B) {
   assert(A.deg() > B.deg());
   assert(B.deg() >= 0);
-  int m = ((A.deg() - 1) >> 1) + 1;
+  int m = (A.deg() + 1) >> 1;
   if (B.deg() < m) return PolyGCDMat<PolyType>({1}, {0}, {0}, {1});
   auto R      = hgcd<PolyType>(PolyType(A.begin() + m, A.end()), PolyType(B.begin() + m, B.end()));
   auto [C, D] = R * std::make_pair(A, B);

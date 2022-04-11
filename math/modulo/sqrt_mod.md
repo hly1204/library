@@ -5,11 +5,11 @@ documentation_of: ./sqrt_mod.hpp
 
 ## Euler 判别准则
 
-> Euler 判别准则： 设 $p$ 为奇素数，$n$ 为正整数，$\gcd(a,p)=1$，则 $a$ 是一个 $n$ 次剩余当且仅当 $a^{(p-1)/\delta}\equiv 1\pmod{p}$，其中 $\delta =\gcd(p-1,n)$。
+Euler 判别准则：设 $p$ 为奇素数，$n$ 为正整数，$\gcd(a,p)=1$，则 $a$ 是一个 $n$ 次剩余当且仅当 $a^{(p-1)/\delta}\equiv 1\pmod{p}$，其中 $\delta =\gcd(p-1,n)$。
 
 ## 元素的阶
 
-> 定义：在模正整数 $m$ 意义下，对于一个正整数 $x$ 与 $m$ 互素，我们说 $x$ 的阶为 $t$，记作 $\operatorname{ord}_{m}(x)=t$，其中 $t$ 为满足 $x^{t}\equiv 1\pmod{m}$ 的最小 **正** 整数。
+定义：在模正整数 $m$ 意义下，对于一个正整数 $x$ 与 $m$ 互素，我们说 $x$ 的阶为 $t$，记作 $\operatorname{ord}_{m}(x)=t$，其中 $t$ 为满足 $x^{t}\equiv 1\pmod{m}$ 的最小 **正** 整数。
 
 当模数明确时，也简记为 $\operatorname{ord}(x)$，而当 $x$ 与 $m$ 不互素时，则为未定义。
 
