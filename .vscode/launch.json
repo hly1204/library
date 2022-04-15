@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "cl.exe 编译并运行",
+      "name": "cl.exe Od 编译并运行",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}\\temp\\${fileBasenameNoExtension}.exe",

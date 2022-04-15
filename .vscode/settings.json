@@ -1,6 +1,7 @@
 {
   "editor.tabSize": 2,
-  "editor.fontFamily": "'JetBrains Mono', 'Courier New', '微软雅黑'",
+  "editor.fontFamily": "'Consolas', 'Courier New', '微软雅黑'",
+  "editor.fontSize": 14,
   "editor.defaultFormatter": "xaver.clang-format",
   "editor.smoothScrolling": true,
   "editor.cursorBlinking": "expand",
@@ -8,7 +9,7 @@
   "editor.cursorStyle": "underline",
   "editor.snippetSuggestions": "top",
   "editor.wordWrap": "on",
-  "editor.codeLensFontFamily": "'JetBrains Mono', 'Courier New', '微软雅黑'",
+  "editor.codeLensFontFamily": "'Consolas', 'Courier New', '微软雅黑'",
   "editor.minimap.enabled": false,
   "editor.bracketPairColorization.enabled": true,
   "[markdown]": {

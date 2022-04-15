@@ -1,15 +1,9 @@
-# 过滤 in out 文件
-/temp
-
 # 过滤编译后的文件
 *.exe
 *.obj
 
 # 过滤 bundle 后的文件
 *.bundled.cpp
-
-# 过滤 local_test 文件夹
-/local_test
 
 # 过滤 .idea 文件夹
 /.idea
