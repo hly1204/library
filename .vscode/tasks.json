@@ -6,7 +6,6 @@
       "label": "C/C++: bundle",
       "command": "oj-bundle",
       "args": [
-        "-I src",
         "${file}",
         ">${fileDirname}\\${fileBasenameNoExtension}.bundled.cpp"
       ],
@@ -28,7 +27,7 @@
         "/Od",
         "/EHsc",
         "/utf-8",
-        "/I\"${workspaceFolder}\\src\"",
+        "/I\"${workspaceFolder}\"",
         "/Fe:${workspaceFolder}\\temp\\${fileBasenameNoExtension}.exe",
         "${file}"
       ],
@@ -55,7 +54,7 @@
         "/O2",
         "/EHsc",
         "/utf-8",
-        "/I\"${workspaceFolder}\\src\"",
+        "/I\"${workspaceFolder}\"",
         "/Fe:${workspaceFolder}\\temp\\${fileBasenameNoExtension}.exe",
         "${file}"
       ],
