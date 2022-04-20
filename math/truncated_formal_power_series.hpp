@@ -5,6 +5,7 @@
 #include "radix2_ntt.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <iostream>
 #include <iterator>
 #include <type_traits>
@@ -89,11 +90,16 @@ public:
   }
 };
 
+template <typename IterT>
+truncated_formal_power_series(IterT, IterT)
+    -> truncated_formal_power_series<typename std::iterator_traits<IterT>::value_type>;
+
 template <typename ModIntT>
 using tfps = truncated_formal_power_series<ModIntT>;
 
 template <typename ModIntT>
 tfps<ModIntT> &tfps<ModIntT>::operator*=(const tfps<ModIntT> &rhs) {
+  // 6E
   int n = static_cast<int>(this->size()), m = static_cast<int>(rhs.size());
   if (n == 0 || m == 0) {
     this->clear();
@@ -114,6 +120,33 @@ tfps<ModIntT> &tfps<ModIntT>::operator*=(const tfps<ModIntT> &rhs) {
   idft_n(this->begin(), len);
   this->resize(n + m - 1);
   return *this;
+}
+
+template <typename ModIntT>
+tfps<ModIntT> tfps<ModIntT>::inv(int n) const {
+  // 10E
+  assert(n > 0);
+  assert(!this->front().is_zero());
+  if (n == 1) return tfps<ModIntT>{this->front().inv()};
+  int len = ntt_len(n);
+  tfps<ModIntT> res(len), temp0(len), temp1(len), cpy(len);
+  std::copy(this->cbegin(), this->cend(), cpy.begin());
+  res.front() = this->front().inv();
+  for (int i = 2; i <= len; i <<= 1) {
+    std::copy_n(cpy.cbegin(), i, temp0.begin());
+    dft_n(temp0.begin(), i); // 2E
+    std::copy_n(res.cbegin(), i, temp1.begin());
+    dft_n(temp1.begin(), i); // 2E
+    for (int j = 0; j != i; ++j) temp0[j] *= temp1[j];
+    idft_n(temp0.begin(), i); // 2E
+    std::fill_n(temp0.begin(), i >> 1, ModIntT());
+    dft_n(temp0.begin(), i); // 2E
+    for (int j = 0; j != i; ++j) temp0[j] *= temp1[j];
+    idft_n(temp0.begin(), i); // 2E
+    for (int j = i >> 1; j != i; ++j) res[j] = -temp0[j];
+  }
+  res.resize(n);
+  return res;
 }
 
 LIB_END
