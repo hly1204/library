@@ -1,7 +1,7 @@
 #ifndef MONTGOMERY_MODINT_HPP
 #define MONTGOMERY_MODINT_HPP
 
-#include "common.hpp"
+#include "../common.hpp"
 
 #ifdef LIB_DEBUG
   #include <exception>
@@ -124,8 +124,8 @@ public:
   }
 };
 
-template <std::uint32_t MOD>
-using mm30 = montgomery_modint30<MOD>;
+template <std::uint32_t ModT>
+using mm30 = montgomery_modint30<ModT>;
 
 LIB_END
 

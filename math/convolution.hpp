@@ -1,7 +1,7 @@
 #ifndef CONVOLUTION_HPP
 #define CONVOLUTION_HPP
 
-#include "common.hpp"
+#include "../common.hpp"
 #include "radix2_ntt.hpp"
 
 #include <algorithm>

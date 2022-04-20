@@ -1,7 +1,7 @@
 #ifndef RADIX2_NTT_HPP
 #define RADIX2_NTT_HPP
 
-#include "common.hpp"
+#include "../common.hpp"
 
 #include <array>
 #include <cassert>
