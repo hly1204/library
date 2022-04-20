@@ -18,7 +18,7 @@ class montgomery_modint30 {
   using u32 = std::uint32_t;
   using u64 = std::uint64_t;
 
-  u32 v_;
+  u32 v_{};
 
   static constexpr u32 get_r() {
     u32 t = 2, iv = MOD * (t - MOD * MOD);
@@ -30,7 +30,7 @@ class montgomery_modint30 {
   }
   static constexpr u32 norm(u32 x) { return x - (MOD & -((MOD - 1 - x) >> 31)); }
 
-  enum : u32 { MOD = ModT, MOD2 = MOD * 2, R = get_r(), R2 = -static_cast<u64>(MOD) % MOD };
+  enum : u32 { MOD = ModT, MOD2 = MOD << 1, R = get_r(), R2 = -static_cast<u64>(MOD) % MOD };
   enum : i32 { SMOD = MOD };
 
   static_assert(MOD & 1);
@@ -41,9 +41,9 @@ class montgomery_modint30 {
 public:
   static constexpr u32 mod() { return MOD; }
   static constexpr i32 smod() { return SMOD; }
-  constexpr montgomery_modint30() : v_() {}
-  template <typename Int, std::enable_if_t<std::is_integral_v<Int>, int> = 0>
-  constexpr montgomery_modint30(Int v) : v_(redc(static_cast<u64>(v % SMOD + SMOD) * R2)) {}
+  constexpr montgomery_modint30() {}
+  template <typename IntT, std::enable_if_t<std::is_integral_v<IntT>, int> = 0>
+  constexpr montgomery_modint30(IntT v) : v_(redc(static_cast<u64>(v % SMOD + SMOD) * R2)) {}
   constexpr u32 val() const { return norm(redc(v_)); }
   constexpr i32 sval() const { return norm(redc(v_)); }
   constexpr bool is_zero() const { return norm(v_) == 0; }

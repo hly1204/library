@@ -131,6 +131,16 @@ void idft_n(IterT a, int n) {
   }
 }
 
+template <typename ContainerT>
+void dft(ContainerT &a) {
+  dft_n(a.begin(), a.size());
+}
+
+template <typename ContainerT>
+void idft(ContainerT &a) {
+  idft_n(a.begin(), a.size());
+}
+
 LIB_END
 
 #endif
