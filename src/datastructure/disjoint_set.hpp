@@ -1,10 +1,10 @@
 #ifndef DISJOINT_SET_HPP
 #define DISJOINT_SET_HPP
 
+#include "common.hpp"
+
 #include <numeric>
 #include <vector>
-
-#include "common.hpp"
 
 LIB_BEGIN
 

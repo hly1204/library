@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/unionfind"
 
-#include "datastructure/basic/disjoint_set.hpp"
+#include "datastructure/disjoint_set.hpp"
 
 #include <iostream>
 
