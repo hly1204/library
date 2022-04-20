@@ -4,7 +4,7 @@
 #include "../common.hpp"
 
 #ifdef LIB_DEBUG
-  #include <exception>
+  #include <stdexcept>
 #endif
 #include <cstdint>
 #include <iostream>
@@ -46,6 +46,7 @@ public:
   constexpr montgomery_modint30(Int v) : v_(redc(static_cast<u64>(v % SMOD + SMOD) * R2)) {}
   constexpr u32 val() const { return norm(redc(v_)); }
   constexpr i32 sval() const { return norm(redc(v_)); }
+  constexpr bool is_zero() const { return norm(v_) == 0; }
   template <typename IntT, std::enable_if_t<std::is_integral_v<IntT>, int> = 0>
   explicit constexpr operator IntT() const {
     return static_cast<IntT>(val());
