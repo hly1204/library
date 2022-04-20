@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/unionfind"
 
-#include "datastructure/basic/disjoint_set.hpp"
+#include "datastructure/disjoint_set.hpp"
 
 #include <iostream>
 
@@ -9,17 +9,17 @@ int main() {
   std::freopen("in", "r", stdin), std::freopen("out", "w", stdout);
 #endif
   std::ios::sync_with_stdio(false);
-  std::cin.tie(0);
+  std::cin.tie(nullptr);
   int n, q;
   std::cin >> n >> q;
-  lib::DisjointSet ds(n);
+  lib::disjoint_set ds(n);
   while (q--) {
     int cmd, u, v;
     std::cin >> cmd >> u >> v;
     if (cmd == 0) {
       ds.unite(u, v);
     } else {
-      std::cout << int(ds.same(u, v)) << '\n';
+      std::cout << static_cast<int>(ds.is_same(u, v)) << '\n';
     }
   }
   return 0;

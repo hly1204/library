@@ -1,24 +1,24 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/convolution_mod"
 
-#include <iostream>
-#include <vector>
+#include "math/convolution.hpp"
+#include "modint/montgomery_modint.hpp"
 
-#include "math/formal_power_series/formal_power_series.hpp"
-#include "modint/Montgomery_modint.hpp"
+#include <iostream>
+#include <iterator>
 
 int main() {
 #ifdef LOCAL
   std::freopen("in", "r", stdin), std::freopen("out", "w", stdout);
 #endif
   std::ios::sync_with_stdio(false);
-  std::cin.tie(0);
-  using mint = lib::MontModInt<998244353>;
+  std::cin.tie(nullptr);
   int n, m;
   std::cin >> n >> m;
-  lib::FPS<mint> a(n), b(m);
-  for (auto &i : a) std::cin >> i;
-  for (auto &i : b) std::cin >> i;
-  auto c = a * b;
-  for (auto i : c) std::cout << i << ' ';
+  using mint = lib::mm30<998244353>;
+  std::vector<mint> a, b;
+  std::copy_n(std::istream_iterator<mint>(std::cin), n, std::back_inserter(a));
+  std::copy_n(std::istream_iterator<mint>(std::cin), m, std::back_inserter(b));
+  auto res = lib::convolution(a, b);
+  std::copy_n(res.begin(), n + m - 1, std::ostream_iterator<mint>(std::cout, " "));
   return 0;
 }
