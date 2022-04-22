@@ -45,7 +45,6 @@ public:
 template <typename ModIntT, typename FnT>
 ModIntT semi_relaxed_convolution<ModIntT, FnT>::next() {
   {
-    // FIXME: do some optimization!
     // enlarge space
     int len = ntt_len(n_ << 1 | 1);
     if (static_cast<int>(c_.size()) < len) c_.resize(len);
@@ -55,7 +54,7 @@ ModIntT semi_relaxed_convolution<ModIntT, FnT>::next() {
     for (int t = n_ / BASE_CASE_SIZE, block_size = BASE_CASE_SIZE, lv = 0; t != 0;
          t >>= LOG_BLOCK, block_size <<= LOG_BLOCK, ++lv) {
       if (int i = t & MASK, block_size2 = block_size << 1, l = n_ - block_size; i != 0) {
-        if (n_ - block_size * i == 0) {
+        if (block_size * i == n_) {
           if (static_cast<int>(dft_A_cache_.size()) == lv) {
             dft_A_cache_.emplace_back();
             dft_B_cache_.emplace_back(BLOCK - 1);
@@ -69,7 +68,7 @@ ModIntT semi_relaxed_convolution<ModIntT, FnT>::next() {
                     ModIntT());
         dft(B_cache[i - 1]);
         std::vector<ModIntT> temp_sum(block_size2);
-        for (int j = 0; j < i; ++j)
+        for (int j = 0; j != i; ++j)
           for (int k = 0; k != block_size2; ++k)
             temp_sum[k] += dft_A_cache_[lv][i - 1 - j][k] * B_cache[j][k];
         idft(temp_sum);

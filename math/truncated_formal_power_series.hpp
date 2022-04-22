@@ -125,7 +125,8 @@ tfps<ModIntT> &tfps<ModIntT>::operator*=(const tfps<ModIntT> &rhs) {
 template <typename ModIntT>
 tfps<ModIntT> tfps<ModIntT>::inv(int n) const {
   // 10E
-  assert(n > 0);
+  assert(n >= 0);
+  if (n == 0) return tfps<ModIntT>{};
   assert(!this->front().is_zero());
   if (n == 1) return tfps<ModIntT>{this->front().inv()};
   int len = ntt_len(n);
