@@ -28,7 +28,7 @@ constexpr ModIntT quadratic_nonresidue_prime() {
 }
 
 template <typename ModIntT>
-constexpr ModIntT gen_of_sylow2subgroup() {
+constexpr ModIntT gen_of_sylow_2_subgroup() {
   auto mod = ModIntT::mod();
   return quadratic_nonresidue_prime<ModIntT>().pow(mod >> bsf(mod - 1));
 }
@@ -36,7 +36,7 @@ constexpr ModIntT gen_of_sylow2subgroup() {
 template <typename ModIntT>
 constexpr std::array<ModIntT, bsf(ModIntT::mod() - 1) - 1> root() {
   std::array<ModIntT, bsf(ModIntT::mod() - 1) - 1> rt; // order(`rt[i]`) = 2^(i + 2).
-  rt.back() = gen_of_sylow2subgroup<ModIntT>();
+  rt.back() = gen_of_sylow_2_subgroup<ModIntT>();
   for (int i = bsf(ModIntT::mod() - 1) - 3; i >= 0; --i) rt[i] = rt[i + 1] * rt[i + 1];
   return rt;
 }
@@ -44,7 +44,7 @@ constexpr std::array<ModIntT, bsf(ModIntT::mod() - 1) - 1> root() {
 template <typename ModIntT>
 constexpr std::array<ModIntT, bsf(ModIntT::mod() - 1) - 1> iroot() {
   std::array<ModIntT, bsf(ModIntT::mod() - 1) - 1> irt;
-  irt.back() = gen_of_sylow2subgroup<ModIntT>().inv();
+  irt.back() = gen_of_sylow_2_subgroup<ModIntT>().inv();
   for (int i = bsf(ModIntT::mod() - 1) - 3; i >= 0; --i) irt[i] = irt[i + 1] * irt[i + 1];
   return irt;
 }

@@ -83,7 +83,7 @@ public:
     for (auto &&i : rhs) {
       lhs << i;
       if (s >= 1) lhs << 'x';
-      if (s > 1) lhs << '^' << s;
+      if (s > 1) lhs << "^(" << s << ')';
       if (++s != e) lhs << " + ";
     }
     return lhs << ']';

@@ -30,8 +30,11 @@ class montgomery_modint30 {
   }
   static constexpr u32 norm(u32 x) { return x - (MOD & -((MOD - 1 - x) >> 31)); }
 
-  enum : u32 { MOD = ModT, MOD2 = MOD << 1, R = get_r(), R2 = -static_cast<u64>(MOD) % MOD };
-  enum : i32 { SMOD = MOD };
+  static constexpr u32 MOD  = ModT;
+  static constexpr u32 MOD2 = MOD << 1;
+  static constexpr u32 R    = get_r();
+  static constexpr u32 R2   = -static_cast<u64>(MOD) % MOD;
+  static constexpr i32 SMOD = static_cast<i32>(MOD);
 
   static_assert(MOD & 1);
   static_assert(-R * MOD == 1);

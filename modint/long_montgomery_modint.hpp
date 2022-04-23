@@ -34,7 +34,8 @@ class montgomery_modint63 {
   static constexpr u64 mul_high(u64 x, u64 y) {
     u64 a = x >> 32, b = static_cast<u32>(x), c = y >> 32, d = static_cast<u32>(y), ad = a * d,
         bc = b * c;
-    return a * c + (ad >> 32) + (bc >> 32) + (((ad & MASK) + (bc & MASK) + (b * d >> 32)) >> 32);
+    return a * c + (ad >> 32) + (bc >> 32) +
+           (((ad & 0xFFFFFFFF) + (bc & 0xFFFFFFFF) + (b * d >> 32)) >> 32);
   }
   static constexpr u64 redc_mul(u64 x, u64 y) {
     u64 res = mul_high(x, y) - mul_high(x * y * R, MOD);
@@ -42,8 +43,10 @@ class montgomery_modint63 {
   }
   static constexpr u64 norm(i64 x) { return x + (MOD & -(x < 0)); }
 
-  enum : u64 { MOD = ModT, R = get_r(), R2 = get_r2(), MASK = 0xFFFFFFFF };
-  enum : i64 { SMOD = MOD };
+  static constexpr u64 MOD  = ModT;
+  static constexpr u64 R    = get_r();
+  static constexpr u64 R2   = get_r2();
+  static constexpr i64 SMOD = static_cast<i64>(MOD);
 
   static_assert(MOD & 1);
   static_assert(R * MOD == 1);
