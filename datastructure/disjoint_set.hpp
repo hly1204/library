@@ -13,7 +13,7 @@ class disjoint_set {
   std::vector<int> s_{};         // size
 
 public:
-  disjoint_set() = default;
+  disjoint_set() {}
   explicit disjoint_set(int n) : p_(n), s_(n, 1) { std::iota(p_.begin(), p_.end(), 0); }
   void make_set(int n) {
     p_.resize(n);

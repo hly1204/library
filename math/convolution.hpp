@@ -47,8 +47,8 @@ convolution_mod(const std::vector<IntT> &lhs, const std::vector<IntT> &rhs, cons
   std::vector<IntT> res(n);
   //    a mod m_0 = a_0, a mod m_1 = a_1
   // -> a_0 + k_0m_0 = a_1 + k_1m_1
-  // -> a_0 - a_1 = k_1m_1 (mod m_0)
-  // -> k_1 = (a_0 - a_1) / m_1 (mod m_0)
+  // -> a_0 - a_1 ≡ k_1m_1 (mod m_0)
+  // -> k_1 ≡ (a_0 - a_1) / m_1 (mod m_0)
   static constexpr mint0 im1_mod_m0(mint0(mint1::mod()).inv());
   const IntT m1_mod_modular = mint1::mod() % modular;
   for (int i = 0; i != n; ++i) {
