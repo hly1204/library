@@ -46,7 +46,7 @@ public:
   constexpr montgomery_modint30(IntT v) : v_(redc(static_cast<u64>(v % SMOD + SMOD) * R2)) {}
   constexpr u32 val() const { return norm(redc(v_)); }
   constexpr i32 sval() const { return norm(redc(v_)); }
-  constexpr bool is_zero() const { return norm(v_) == 0; }
+  constexpr bool is_zero() const { return v_ == 0 || v_ == MOD; }
   template <typename IntT, std::enable_if_t<std::is_integral_v<IntT>, int> = 0>
   explicit constexpr operator IntT() const {
     return static_cast<IntT>(val());
@@ -83,13 +83,13 @@ public:
     return operator*=(rhs.inv());
   }
   constexpr montgomery_modint30 pow(u64 e) const {
-    for (montgomery_modint30 res(1u), x(*this);; x *= x) {
+    for (montgomery_modint30 res(1), x(*this);; x *= x) {
       if (e & 1) res *= x;
       if ((e >>= 1) == 0) return res;
     }
   }
   constexpr void swap(montgomery_modint30 &rhs) {
-    u32 v = v_;
+    auto v = v_;
     v_ = rhs.v_, rhs.v_ = v;
   }
   friend constexpr montgomery_modint30 operator+(const montgomery_modint30 &lhs,

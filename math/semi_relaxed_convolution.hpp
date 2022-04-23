@@ -13,7 +13,7 @@ LIB_BEGIN
 
 template <typename ModIntT, typename FnT>
 class semi_relaxed_convolution {
-  std::vector<ModIntT> fixed_A_{}, B_{}, c_;
+  std::vector<ModIntT> fixed_A_{}, B_{}, c_{};
   std::vector<std::vector<std::vector<ModIntT>>> dft_A_cache_{}, dft_B_cache_{};
   int n_{};
   FnT handle_;
