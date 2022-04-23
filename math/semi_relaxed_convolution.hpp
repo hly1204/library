@@ -27,7 +27,6 @@ class semi_relaxed_convolution {
 public:
   semi_relaxed_convolution(const std::vector<ModIntT> &A, FnT &&handle)
       : fixed_A_(A), c_(1024), handle_(std::forward<FnT>(handle)) {}
-
   const std::vector<ModIntT> &get_multiplier() const { return B_; }
   const std::vector<ModIntT> &get_multiplicand() const { return fixed_A_; }
   semi_relaxed_convolution &await(int k) {
@@ -59,12 +58,12 @@ ModIntT semi_relaxed_convolution<ModIntT, FnT>::next() {
             dft_A_cache_.emplace_back();
             dft_B_cache_.emplace_back(BLOCK - 1);
           }
-          dft(dft_A_cache_[lv].emplace_back(fixed_A_.begin() + (i - 1) * block_size,
-                                            fixed_A_.begin() + (i + 1) * block_size));
+          dft(dft_A_cache_[lv].emplace_back(fixed_A_.cbegin() + (i - 1) * block_size,
+                                            fixed_A_.cbegin() + (i + 1) * block_size));
         }
         auto &B_cache = dft_B_cache_[lv];
         B_cache[i - 1].resize(block_size2);
-        std::fill_n(std::copy_n(B_.begin() + l, block_size, B_cache[i - 1].begin()), block_size,
+        std::fill_n(std::copy_n(B_.cbegin() + l, block_size, B_cache[i - 1].begin()), block_size,
                     ModIntT());
         dft(B_cache[i - 1]);
         std::vector<ModIntT> temp_sum(block_size2);
