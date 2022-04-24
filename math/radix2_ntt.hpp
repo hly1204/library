@@ -3,6 +3,7 @@
 
 #include "../common.hpp"
 
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <type_traits>
@@ -131,9 +132,9 @@ template <typename IterT> void dft(IterT beg, IterT end) { dft_n(beg, end - beg)
 template <typename IterT> void idft(IterT beg, IterT end) { idft_n(beg, end - beg); }
 // clang-format on
 
-template <typename T>
-void dft_doubling(const std::vector<T> &a, std::vector<T> &dft_a) {
-  static constexpr auto rt = detail::root<T>();
+template <typename ModIntT>
+void dft_doubling(const std::vector<ModIntT> &a, std::vector<ModIntT> &dft_a) {
+  static constexpr auto rt = detail::root<ModIntT>();
   int as = static_cast<int>(a.size()), n = static_cast<int>(dft_a.size());
   // `dft_a` = dft_n(`a` mod (x^n - 1))
   // doubling `dft_a` is just computing dft_n((`a` mod (x^n + 1))(ζ^(2n))).
@@ -143,7 +144,20 @@ void dft_doubling(const std::vector<T> &a, std::vector<T> &dft_a) {
     if ((j = i & (n - 1)) == 0) is_even ^= 1;
     it[j] += is_even ? a[i] : -a[i];
   }
-  T r(n == 1 ? T(-1) : rt[detail::bsf(n) - 1]), v(1);
+  ModIntT r(n == 1 ? ModIntT(-1) : rt[detail::bsf(n) - 1]), v(1);
+  for (int i = 0; i != n; ++i) it[i] *= v, v *= r;
+  dft_n(it, n);
+}
+
+template <typename ModIntT>
+void dft_doubling(std::vector<ModIntT> &dft_a) {
+  static constexpr auto rt = detail::root<ModIntT>();
+  int n                    = static_cast<int>(dft_a.size());
+  dft_a.resize(n << 1);
+  auto it = dft_a.begin() + n;
+  std::copy_n(dft_a.cbegin(), n, it);
+  idft_n(it, n);
+  ModIntT r(n == 1 ? ModIntT(-1) : rt[detail::bsf(n) - 1]), v(1);
   for (int i = 0; i != n; ++i) it[i] *= v, v *= r;
   dft_n(it, n);
 }
