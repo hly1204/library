@@ -55,10 +55,7 @@ constexpr std::array<ModIntT, bsf(ModIntT::mod() - 1) - 1> iroot() {
 // Output: 2^(⌈log_2(`n`)⌉).
 int ntt_len(int n) {
   --n;
-  n |= n >> 1;
-  n |= n >> 2;
-  n |= n >> 4;
-  n |= n >> 8;
+  n |= n >> 1, n |= n >> 2, n |= n >> 4, n |= n >> 8;
   return (n | n >> 16) + 1;
 }
 
@@ -72,10 +69,9 @@ void dft_n(IterT a, int n) {
   static std::vector<T> root(1);
   if (int s = static_cast<int>(root.size()); s << 1 < n) {
     root.resize(n >> 1);
-    for (int i = detail::bsf(s); (1 << i) < (n >> 1); ++i) {
-      int j   = 1 << i;
-      root[j] = rt[i];
-      for (int k = j + 1; k < (j << 1); ++k) root[k] = root[k - j] * root[j];
+    for (int i = detail::bsf(s), j; 1 << i < n >> 1; ++i) {
+      root[j = 1 << i] = rt[i];
+      for (int k = j + 1; k < j << 1; ++k) root[k] = root[k - j] * root[j];
     }
   }
   for (int j = 0, l = n >> 1; j != l; ++j) {
@@ -87,12 +83,11 @@ void dft_n(IterT a, int n) {
       T u(a[j]), v(a[j + l]);
       a[j] = u + v, a[j + l] = u - v;
     }
-    for (int j = i, l = i >> 1, m = 1; j != n; j += i, ++m) {
+    for (int j = i, l = i >> 1, m = 1; j != n; j += i, ++m)
       for (int k = j; k != j + l; ++k) {
         T u(a[k]), v(a[k + l] * root[m]);
         a[k] = u + v, a[k + l] = u - v;
       }
-    }
   }
 }
 
@@ -106,10 +101,9 @@ void idft_n(IterT a, int n) {
   static std::vector<T> root(1);
   if (int s = static_cast<int>(root.size()); s << 1 < n) {
     root.resize(n >> 1);
-    for (int i = detail::bsf(s); (1 << i) < (n >> 1); ++i) {
-      int j   = 1 << i;
-      root[j] = rt[i];
-      for (int k = j + 1; k < (j << 1); ++k) root[k] = root[k - j] * root[j];
+    for (int i = detail::bsf(s), j; 1 << i < n >> 1; ++i) {
+      root[j = 1 << i] = rt[i];
+      for (int k = j + 1; k < j << 1; ++k) root[k] = root[k - j] * root[j];
     }
   }
   for (int i = 2; i < n; i <<= 1) {
@@ -117,12 +111,11 @@ void idft_n(IterT a, int n) {
       T u(a[j]), v(a[j + l]);
       a[j] = u + v, a[j + l] = u - v;
     }
-    for (int j = i, l = i >> 1, m = 1; j != n; j += i, ++m) {
+    for (int j = i, l = i >> 1, m = 1; j != n; j += i, ++m)
       for (int k = j; k != j + l; ++k) {
         T u(a[k]), v(a[k + l]);
         a[k] = u + v, a[k + l] = (u - v) * root[m];
       }
-    }
   }
   const T iv(T::mod() - T::mod() / n);
   for (int j = 0, l = n >> 1; j != l; ++j) {
@@ -131,14 +124,28 @@ void idft_n(IterT a, int n) {
   }
 }
 
-template <typename ContainerT>
-void dft(ContainerT &a) {
-  dft_n(a.begin(), a.size());
-}
+// clang-format off
+template <typename ContainerT> void dft(ContainerT &&a) { dft_n(a.begin(), a.size()); }
+template <typename ContainerT> void idft(ContainerT &&a) { idft_n(a.begin(), a.size()); }
+template <typename IterT> void dft(IterT beg, IterT end) { dft_n(beg, end - beg); }
+template <typename IterT> void idft(IterT beg, IterT end) { idft_n(beg, end - beg); }
+// clang-format on
 
-template <typename ContainerT>
-void idft(ContainerT &a) {
-  idft_n(a.begin(), a.size());
+template <typename T>
+void dft_doubling(const std::vector<T> &a, std::vector<T> &dft_a) {
+  static constexpr auto rt = detail::root<T>();
+  int as = static_cast<int>(a.size()), n = static_cast<int>(dft_a.size());
+  // `dft_a` = `dft_n`(`a` mod (x^n - 1))
+  // doubling `dft_a` is just computing dft_n((`a` mod (x^n + 1))(ζ^(2n))).
+  dft_a.resize(n << 1);
+  auto it = dft_a.begin() + n;
+  for (int i = 0, is_even = 0, j; i != as; ++i) {
+    if ((j = i & (n - 1)) == 0) is_even ^= 1;
+    it[j] += is_even ? a[i] : -a[i];
+  }
+  T r(n == 1 ? T(-1) : rt[detail::bsf(n) - 1]), v(1);
+  for (int i = 0; i != n; ++i) it[i] *= v, v *= r;
+  dft_n(it, n);
 }
 
 LIB_END

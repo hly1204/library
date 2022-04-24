@@ -49,9 +49,9 @@ ModIntT semi_relaxed_convolution<ModIntT, FnT>::next() {
     if (static_cast<int>(c_.size()) < len) c_.resize(len);
     if (static_cast<int>(fixed_A_.size()) < len) fixed_A_.resize(len);
   }
-  if ((n_ & (BASE_CASE_SIZE - 1)) == 0) {
+  if ((n_ & (BASE_CASE_SIZE - 1)) == 0)
     for (int t = n_ / BASE_CASE_SIZE, block_size = BASE_CASE_SIZE, lv = 0; t != 0;
-         t >>= LOG_BLOCK, block_size <<= LOG_BLOCK, ++lv) {
+         t >>= LOG_BLOCK, block_size <<= LOG_BLOCK, ++lv)
       if (int i = t & MASK, block_size2 = block_size << 1, l = n_ - block_size; i != 0) {
         if (block_size * i == n_) {
           if (static_cast<int>(dft_A_cache_.size()) == lv) {
@@ -74,15 +74,14 @@ ModIntT semi_relaxed_convolution<ModIntT, FnT>::next() {
         for (int j = block_size; j != block_size2; ++j) c_[j + n_ - block_size] += temp_sum[j];
         break;
       }
-    }
-  }
   for (int i = 0, l = n_ & ~(BASE_CASE_SIZE - 1); i < n_ - l; ++i)
     c_[n_] += fixed_A_[n_ - l - i] * B_[l + i];
-  if constexpr (std::is_invocable_r_v<ModIntT, FnT, int, const std::vector<ModIntT> &>) {
+  // clang-format off
+  if constexpr (std::is_invocable_r_v<ModIntT, FnT, int, const std::vector<ModIntT> &>)
     c_[n_] += fixed_A_.front() * B_.emplace_back(handle_(n_, c_));
-  } else {
+  else
     c_[n_] += fixed_A_.front() * B_.emplace_back(handle_(n_));
-  }
+  // clang-format on
   return c_[n_++];
 }
 
