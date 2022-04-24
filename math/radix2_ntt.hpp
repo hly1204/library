@@ -135,7 +135,7 @@ template <typename T>
 void dft_doubling(const std::vector<T> &a, std::vector<T> &dft_a) {
   static constexpr auto rt = detail::root<T>();
   int as = static_cast<int>(a.size()), n = static_cast<int>(dft_a.size());
-  // `dft_a` = `dft_n`(`a` mod (x^n - 1))
+  // `dft_a` = dft_n(`a` mod (x^n - 1))
   // doubling `dft_a` is just computing dft_n((`a` mod (x^n + 1))(ζ^(2n))).
   dft_a.resize(n << 1);
   auto it = dft_a.begin() + n;

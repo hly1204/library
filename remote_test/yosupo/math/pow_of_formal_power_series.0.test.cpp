@@ -15,9 +15,8 @@ int main() {
   int n, m;
   std::cin >> n >> m;
   using mint = lib::mm30<998244353>;
-  lib::formal_power_series<mint> fps(
-      [it = std::istream_iterator<mint>(std::cin)](int) mutable { return *it++; });
-  auto iv = fps.pow(m);
+  lib::fps<mint> f([it = std::istream_iterator<mint>(std::cin)](int) mutable { return *it++; });
+  auto iv = f.pow(m);
   for (int i = 0; i != n; ++i) std::cout << iv[i] << ' ';
   return 0;
 }
