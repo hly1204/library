@@ -34,7 +34,7 @@ public:
   // degree
   int deg() const {
     // treat formal power series like polynomials
-    int n = static_cast<int>(this->size());
+    int n = static_cast<int>(this->size()) - 1;
     while (n >= 0 && this->operator[](n).is_zero()) --n;
     return n == -1 ? NEGATIVE_INFINITY : n;
   }
