@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/inv_of_formal_power_series"
+#define PROBLEM "https://judge.yosupo.jp/problem/log_of_formal_power_series"
 
 #include "math/truncated_formal_power_series.hpp"
 #include "modint/montgomery_modint.hpp"
@@ -17,7 +17,7 @@ int main() {
   using mint = lib::mm30<998244353>;
   lib::tfps<mint> a;
   std::copy_n(std::istream_iterator<mint>(std::cin), n, std::back_inserter(a));
-  auto ia = a.inv(n);
+  auto ia = a.log(n);
   std::copy(ia.cbegin(), ia.cend(), std::ostream_iterator<mint>(std::cout, " "));
   return 0;
 }

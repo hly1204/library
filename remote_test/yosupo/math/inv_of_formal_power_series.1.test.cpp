@@ -1,11 +1,10 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/inv_of_formal_power_series"
 
-#include "math/semi_relaxed_convolution.hpp"
+#include "math/formal_power_series.hpp"
 #include "modint/montgomery_modint.hpp"
 
 #include <iostream>
 #include <iterator>
-#include <vector>
 
 int main() {
 #ifdef LOCAL
@@ -16,12 +15,8 @@ int main() {
   int n;
   std::cin >> n;
   using mint = lib::mm30<998244353>;
-  std::vector<mint> a;
-  std::copy_n(std::istream_iterator<mint>(std::cin), n, std::back_inserter(a));
-  lib::semi_relaxed_convolution src(a, [iv = a.front().inv()](int n, const std::vector<mint> &c) {
-    return n == 0 ? iv : -c[n] * iv;
-  });
-  std::copy_n(src.await(n).get_multiplier().begin(), n,
-              std::ostream_iterator<mint>(std::cout, " "));
+  lib::fps<mint> f([it = std::istream_iterator<mint>(std::cin)](int) mutable { return *it++; });
+  auto iv = f.inv();
+  for (int i = 0; i != n; ++i) std::cout << iv[i] << ' ';
   return 0;
 }

@@ -2,6 +2,7 @@
 #define FORMAL_POWER_SERIES
 
 #include "../common.hpp"
+#include "extended_gcd.hpp"
 #include "radix2_ntt.hpp"
 #include "relaxed_convolution.hpp"
 
@@ -11,31 +12,6 @@
 #include <vector>
 
 LIB_BEGIN
-
-namespace detail {
-
-template <typename ModIntT>
-class modular_inverse {
-  std::vector<ModIntT> ivs{ModIntT()};
-
-public:
-  modular_inverse() {}
-  ModIntT operator()(int k) {
-    // preprocess modular inverse from 1 to k
-    if (int n = static_cast<int>(ivs.size()); n <= k) {
-      int nn = n;
-      while (nn <= k) nn <<= 1;
-      ivs.resize(nn);
-      ModIntT v(1);
-      for (int i = n; i != nn; ++i) ivs[i] = v, v *= ModIntT(i);
-      v = v.inv();
-      for (int i = nn - 1; i >= n; --i) ivs[i] *= v, v *= ModIntT(i);
-    }
-    return ivs[k];
-  }
-};
-
-} // namespace detail
 
 template <typename ModIntT>
 class formal_power_series {
@@ -185,7 +161,7 @@ template <typename ModIntT>
 using fps = formal_power_series<ModIntT>;
 
 template <typename ModIntT>
-detail::modular_inverse<ModIntT> fps<ModIntT>::invs;
+typename detail::modular_inverse<ModIntT> fps<ModIntT>::invs;
 
 LIB_END
 
