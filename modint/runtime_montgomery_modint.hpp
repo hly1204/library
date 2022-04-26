@@ -38,7 +38,7 @@ public:
     }
     // compute R2
     R2   = -static_cast<u64>(MOD) % MOD;
-    SMOD = static_cast<u32>(MOD);
+    SMOD = static_cast<i32>(MOD);
     return true;
   }
   static u32 mod() { return MOD; }

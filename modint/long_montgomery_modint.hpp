@@ -26,7 +26,7 @@ class montgomery_modint63 {
     return iv * (t - MOD * iv);
   }
   static constexpr u64 get_r2() {
-    u64 iv = -u64(MOD) % MOD;
+    u64 iv = -MOD % MOD;
     for (int i = 0; i != 64; ++i)
       if ((iv <<= 1) >= MOD) iv -= MOD;
     return iv;

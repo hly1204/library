@@ -1,6 +1,6 @@
 ---
-title: Montgomery ModInt
-documentation_of: ./montgomery_modint.hpp
+title: Runtime Long Montgomery ModInt
+documentation_of: ./runtime_long_montgomery_modint.hpp
 ---
 
 ## Reference
