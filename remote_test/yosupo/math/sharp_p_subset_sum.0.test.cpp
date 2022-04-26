@@ -4,6 +4,7 @@
 #include "modint/montgomery_modint.hpp"
 
 #include <iostream>
+#include <vector>
 
 int main() {
 #ifdef LOCAL

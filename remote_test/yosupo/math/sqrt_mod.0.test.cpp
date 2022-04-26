@@ -5,7 +5,6 @@
 
 #include <cassert>
 #include <iostream>
-#include <iterator>
 
 int main() {
 #ifdef LOCAL
