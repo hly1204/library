@@ -163,7 +163,7 @@ tfps<ModIntT> tfps<ModIntT>::exp(int n) const {
   if (n <= 0) return tfps<ModIntT>{};
   auto &&d = deriv();
   std::vector dv(d.cbegin(), d.cend());
-  semi_relaxed_convolution src(dv, [this](int n, const std::vector<ModIntT> &c) {
+  semi_relaxed_convolution src(dv, [](int n, const std::vector<ModIntT> &c) {
     return n == 0 ? ModIntT(1) : c[n - 1] * invs(n);
   });
   auto &&multiplier = src.await(n).get_multiplier();
