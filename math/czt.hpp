@@ -17,7 +17,7 @@ LIB_BEGIN
 template <typename ModIntT>
 std::vector<ModIntT> czt(const std::vector<ModIntT> &a, const ModIntT &c, int n) {
   assert(n >= 0);
-  if (n == 0) return std::vector<ModIntT>{};
+  if (n == 0) return {};
   int m = static_cast<int>(a.size());
   while (m > 0 && a[m - 1].is_zero()) --m;
   if (m == 0) return std::vector<ModIntT>(n);

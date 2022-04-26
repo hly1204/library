@@ -15,7 +15,7 @@ LIB_BEGIN
 template <typename ModIntT>
 std::vector<ModIntT> convolution(const std::vector<ModIntT> &lhs, const std::vector<ModIntT> &rhs) {
   int n = static_cast<int>(lhs.size()), m = static_cast<int>(rhs.size());
-  if (n == 0 || m == 0) return std::vector<ModIntT>{};
+  if (n == 0 || m == 0) return {};
   if (std::min(n, m) <= 32) {
     std::vector<ModIntT> res(n + m - 1);
     for (int i = 0; i != n; ++i)

@@ -109,13 +109,12 @@ public:
         [h = rhs.h_](int i) { return h(i); });
     return formal_power_series([rc](int i) { return rc->next(), rc->get_multiplicand()[i]; });
   }
-  /*------------------- Pólya operators begin -------------------*/
-  // SEQUENCE(SEQ)
+  // Pólya operator Q = SEQUENCE(SEQ)
   formal_power_series Q() const {
     // `h_(0) != 0` is not allowed.
     return formal_power_series([h = h_](int i) { return i == 0 ? ModIntT(1) : -h(i); }).inv();
   }
-  // MULTISET(MSET)
+  // Pólya operator Exp = MULTISET(MSET)
   formal_power_series Exp() const {
     // `h_(0) != 0` is not allowed.
     formal_power_series res([h = h_, cache = std::make_shared<std::vector<ModIntT>>()](int i) {
@@ -132,7 +131,7 @@ public:
     });
     return res.exp();
   }
-  // POWERSET(PSET)
+  // Pólya operator Exp(modified) = POWERSET(PSET)
   formal_power_series Exp_m() const {
     // `h_(0) != 0` is not allowed.
     formal_power_series res([h = h_, cache = std::make_shared<std::vector<ModIntT>>()](int i) {
@@ -158,10 +157,10 @@ public:
 };
 
 template <typename ModIntT>
-using fps = formal_power_series<ModIntT>;
+typename detail::modular_inverse<ModIntT> formal_power_series<ModIntT>::invs;
 
 template <typename ModIntT>
-typename detail::modular_inverse<ModIntT> fps<ModIntT>::invs;
+using fps = formal_power_series<ModIntT>;
 
 LIB_END
 

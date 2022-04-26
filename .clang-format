@@ -2,10 +2,10 @@ BasedOnStyle: LLVM
 Standard: c++17
 Language: Cpp
 
-# 用法：`find . -regex '.*\.\(cpp\|hpp\|cc\|cxx\)' -exec clang-format -i {} \;`
+# usage: `find . -regex '.*\.\(cpp\|hpp\|cc\|cxx\)' -exec clang-format -i {} \;`
 
 PointerAlignment: Right # e.g., int *f
-AlignAfterOpenBracket: Align # 长函数名的参数对齐
+AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: Consecutive
 AlignConsecutiveDeclarations: None
 AlignConsecutiveMacros: None
