@@ -199,7 +199,7 @@ truncated_formal_power_series<ModIntT> truncated_formal_power_series<ModIntT>::p
   if (o == NEGATIVE_INFINITY || zs >= n) return truncated_formal_power_series<ModIntT>(n);
   const int nn = n - static_cast<int>(zs);
   const ModIntT c(this->operator[](o)), ic(c.inv()), ce(c.pow(e)), me(e);
-  truncated_formal_power_series<ModIntT> cpy(this->begin() + o, this->end()); // optimize?
+  truncated_formal_power_series<ModIntT> cpy(this->cbegin() + o, this->cend()); // optimize?
   for (auto &&i : cpy) i *= ic;
   cpy = cpy.log(nn);
   for (auto &&i : cpy) i *= me;
@@ -216,7 +216,7 @@ truncated_formal_power_series<ModIntT>::sqrt_hint(int n, ModIntT c) const {
   const int o = ord();
   if (o == NEGATIVE_INFINITY) return truncated_formal_power_series<ModIntT>(n);
   if ((o & 1) || c * c != this->operator[](o)) return {};
-  truncated_formal_power_series<ModIntT> cpy(this->begin() + o, this->end());
+  truncated_formal_power_series<ModIntT> cpy(this->cbegin() + o, this->cend());
   const ModIntT iv(cpy.front().inv());
   for (auto &&i : cpy) i *= iv;
   cpy = cpy.pow(n - (o >> 1), static_cast<int>(ModIntT(2).inv()));
