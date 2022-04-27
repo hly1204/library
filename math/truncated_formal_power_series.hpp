@@ -5,11 +5,13 @@
 #include "extended_gcd.hpp"
 #include "radix2_ntt.hpp"
 #include "semi_relaxed_convolution.hpp"
+#include "sqrt_mod.hpp"
 
 #include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <iterator>
+#include <optional>
 #include <type_traits>
 #include <vector>
 
@@ -39,7 +41,12 @@ public:
     return n == -1 ? NEGATIVE_INFINITY : n;
   }
   // order
-  int ord() const;
+  int ord() const {
+    int d = deg();
+    if (d == NEGATIVE_INFINITY) return NEGATIVE_INFINITY;
+    for (int i = 0;; ++i)
+      if (!this->operator[](i).is_zero()) return i;
+  }
   bool is_zero() const { return deg() == NEGATIVE_INFINITY; }
   void shrink() { this->resize(deg() + 1); }
   truncated_formal_power_series operator-() {
@@ -77,7 +84,9 @@ public:
   truncated_formal_power_series log(int n) const { return deriv().div(*this, n - 1).integr(); }
   truncated_formal_power_series exp(int n) const;
   truncated_formal_power_series div(const truncated_formal_power_series &rhs, int n) const;
-  truncated_formal_power_series pow(int n, long long e) const;
+  truncated_formal_power_series pow(int n, int e) const;
+  std::optional<truncated_formal_power_series> sqrt_hint(int n, ModIntT c) const;
+  std::optional<truncated_formal_power_series> sqrt(int n) const;
 
   friend truncated_formal_power_series operator+(const truncated_formal_power_series &lhs,
                                                  const truncated_formal_power_series &rhs) {
@@ -180,6 +189,52 @@ truncated_formal_power_series<ModIntT>::div(const truncated_formal_power_series 
       });
   auto &&multiplier = src.await(n).get_multiplier();
   return truncated_formal_power_series<ModIntT>(multiplier.cbegin(), multiplier.cend());
+}
+
+template <typename ModIntT>
+truncated_formal_power_series<ModIntT> truncated_formal_power_series<ModIntT>::pow(int n,
+                                                                                   int e) const {
+  const int o        = ord();
+  const long long zs = static_cast<long long>(o) * e; // count zeros
+  if (o == NEGATIVE_INFINITY || zs >= n) return truncated_formal_power_series<ModIntT>(n);
+  const int nn = n - static_cast<int>(zs);
+  const ModIntT c(this->operator[](o)), ic(c.inv()), ce(c.pow(e)), me(e);
+  truncated_formal_power_series<ModIntT> cpy(this->begin() + o, this->end()); // optimize?
+  for (auto &&i : cpy) i *= ic;
+  cpy = cpy.log(nn);
+  for (auto &&i : cpy) i *= me;
+  cpy = cpy.exp(nn);
+  for (auto &&i : cpy) i *= ce;
+  cpy.insert(cpy.begin(), zs, ModIntT());
+  return cpy;
+}
+
+template <typename ModIntT>
+std::optional<truncated_formal_power_series<ModIntT>>
+truncated_formal_power_series<ModIntT>::sqrt_hint(int n, ModIntT c) const {
+  if (this->empty()) return {};
+  const int o = ord();
+  if (o == NEGATIVE_INFINITY) return truncated_formal_power_series<ModIntT>(n);
+  if ((o & 1) || c * c != this->operator[](o)) return {};
+  truncated_formal_power_series<ModIntT> cpy(this->begin() + o, this->end());
+  const ModIntT iv(cpy.front().inv());
+  for (auto &&i : cpy) i *= iv;
+  cpy = cpy.pow(n - (o >> 1), static_cast<int>(ModIntT(2).inv()));
+  for (auto &&i : cpy) i *= c;
+  cpy.insert(cpy.begin(), o >> 1, ModIntT());
+  return cpy;
+}
+
+template <typename ModIntT>
+std::optional<truncated_formal_power_series<ModIntT>>
+truncated_formal_power_series<ModIntT>::sqrt(int n) const {
+  if (this->empty()) return {};
+  const int o = ord();
+  if (o == NEGATIVE_INFINITY) return truncated_formal_power_series<ModIntT>(n);
+  if (o & 1) return {};
+  auto res = sqrt_mod_prime(this->operator[](o));
+  if (res.empty()) return {};
+  return sqrt_hint(n, res.front());
 }
 
 template <typename ModIntT>
