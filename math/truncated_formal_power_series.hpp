@@ -138,13 +138,13 @@ truncated_formal_power_series<ModIntT> &truncated_formal_power_series<ModIntT>::
     return *this;
   }
   if (std::min(n, m) <= 32) {
-    truncated_formal_power_series<ModIntT> res(n + m - 1);
+    truncated_formal_power_series res(n + m - 1);
     for (int i = 0; i != n; ++i)
       for (int j = 0; j != m; ++j) res[i + j] += this->operator[](i) * rhs[j];
     return this->operator=(res);
   }
   int len = ntt_len(n + m - 1);
-  truncated_formal_power_series<ModIntT> rhs_cpy(len);
+  truncated_formal_power_series rhs_cpy(len);
   std::copy_n(rhs.cbegin(), m, rhs_cpy.begin());
   this->resize(len);
   dft_n(this->begin(), len), dft_n(rhs_cpy.begin(), len);
@@ -162,7 +162,7 @@ truncated_formal_power_series<ModIntT> truncated_formal_power_series<ModIntT>::i
     return n == 0 ? iv : -c[n] * iv;
   });
   auto &&multiplier = src.await(n).get_multiplier();
-  return truncated_formal_power_series<ModIntT>(multiplier.cbegin(), multiplier.cend());
+  return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());
 }
 
 template <typename ModIntT>
@@ -174,7 +174,7 @@ truncated_formal_power_series<ModIntT> truncated_formal_power_series<ModIntT>::e
     return n == 0 ? ModIntT(1) : c[n - 1] * invs(n);
   });
   auto &&multiplier = src.await(n).get_multiplier();
-  return truncated_formal_power_series<ModIntT>(multiplier.cbegin(), multiplier.cend());
+  return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());
 }
 
 template <typename ModIntT>
@@ -188,7 +188,7 @@ truncated_formal_power_series<ModIntT>::div(const truncated_formal_power_series 
         return ((n < static_cast<int>(this->size()) ? this->operator[](n) : ModIntT()) - c[n]) * iv;
       });
   auto &&multiplier = src.await(n).get_multiplier();
-  return truncated_formal_power_series<ModIntT>(multiplier.cbegin(), multiplier.cend());
+  return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());
 }
 
 template <typename ModIntT>
@@ -196,10 +196,10 @@ truncated_formal_power_series<ModIntT> truncated_formal_power_series<ModIntT>::p
                                                                                    int e) const {
   const int o        = ord();
   const long long zs = static_cast<long long>(o) * e; // count zeros
-  if (o == NEGATIVE_INFINITY || zs >= n) return truncated_formal_power_series<ModIntT>(n);
+  if (o == NEGATIVE_INFINITY || zs >= n) return truncated_formal_power_series(n);
   const int nn = n - static_cast<int>(zs);
   const ModIntT c(this->operator[](o)), ic(c.inv()), ce(c.pow(e)), me(e);
-  truncated_formal_power_series<ModIntT> cpy(this->cbegin() + o, this->cend()); // optimize?
+  truncated_formal_power_series cpy(this->cbegin() + o, this->cend()); // optimize?
   for (auto &&i : cpy) i *= ic;
   cpy = cpy.log(nn);
   for (auto &&i : cpy) i *= me;
@@ -214,9 +214,9 @@ std::optional<truncated_formal_power_series<ModIntT>>
 truncated_formal_power_series<ModIntT>::sqrt_hint(int n, ModIntT c) const {
   if (this->empty()) return {};
   const int o = ord();
-  if (o == NEGATIVE_INFINITY) return truncated_formal_power_series<ModIntT>(n);
+  if (o == NEGATIVE_INFINITY) return truncated_formal_power_series(n);
   if ((o & 1) || c * c != this->operator[](o)) return {};
-  truncated_formal_power_series<ModIntT> cpy(this->cbegin() + o, this->cend());
+  truncated_formal_power_series cpy(this->cbegin() + o, this->cend());
   const ModIntT iv(cpy.front().inv());
   for (auto &&i : cpy) i *= iv;
   cpy = cpy.pow(n - (o >> 1), static_cast<int>(ModIntT(2).inv()));
@@ -230,7 +230,7 @@ std::optional<truncated_formal_power_series<ModIntT>>
 truncated_formal_power_series<ModIntT>::sqrt(int n) const {
   if (this->empty()) return {};
   const int o = ord();
-  if (o == NEGATIVE_INFINITY) return truncated_formal_power_series<ModIntT>(n);
+  if (o == NEGATIVE_INFINITY) return truncated_formal_power_series(n);
   if (o & 1) return {};
   auto res = sqrt_mod_prime(this->operator[](o));
   if (res.empty()) return {};
