@@ -6,6 +6,7 @@
 
 #include <functional>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 LIB_BEGIN
@@ -14,7 +15,7 @@ template <typename ModIntT>
 class relaxed_convolution {                       // O(n log^2 n) impl
   std::vector<ModIntT> a_{}, b_{}, c_{};          // `a_ * b_` = `c_`
   std::vector<std::vector<ModIntT>> ac_{}, bc_{}; // cached DFTs
-  std::function<ModIntT()> ha_{}, hb_{};          // handle for `a` and `b`
+  std::function<ModIntT()> ha_{}, hb_{};          // handle for `a_` and `b_`
   int n_{};                                       // counter
 
   template <typename FnT>
@@ -46,7 +47,8 @@ public:
   // `h0` multiplicand, `h1` multiplier
   template <typename Fn0T, typename Fn1T>
   relaxed_convolution(Fn0T &&h0, Fn1T &&h1)
-      : c_(4), ha_(wrap(h0, n_, c_, a_)), hb_(wrap(h1, n_, c_, b_)) {}
+      : c_(4), ha_(wrap(std::forward<Fn0T>(h0), n_, c_, a_)),
+        hb_(wrap(std::forward<Fn1T>(h1), n_, c_, b_)) {}
   const std::vector<ModIntT> &get_multiplier() const { return b_; }
   const std::vector<ModIntT> &get_multiplicand() const { return a_; }
   relaxed_convolution &await(int k) {
