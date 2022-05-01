@@ -16,7 +16,8 @@ void tft(ContainerT &&a) {
   using T                  = typename Container::value_type;
   static constexpr auto rt = detail::root<T>();
   static std::vector<T> root(1);
-  const int n   = static_cast<int>(a.size());
+  const int n = static_cast<int>(a.size());
+  if ((n & (n - 1)) == 0) return dft(std::forward<ContainerT>(a));
   const int len = ntt_len(n);
   if (int s = static_cast<int>(root.size()); s << 1 < len) {
     root.resize(len >> 1);
@@ -65,35 +66,29 @@ void itft(ContainerT &&a) {
   }
   a.resize(len);
   struct itft_rec {
-    itft_rec(Container &a) : a_(a), i2_(T(2).inv()), p_(detail::bsf(a.size())) {}
+    itft_rec(Container &a) : a_(a), i2_(T(2).inv()) {}
     // [`head`, `tail`), [`tail`, `last`)
     void run(int head, int tail, int last) {
       if (head >= tail) return;
       if (int mid = (last - head) / 2 + head, len = mid - head; mid <= tail) {
-        {
-          // pull up [`head`, `mid`)
-          T i2p(1);
-          for (int i = 1; i != len; i <<= 1, i2p *= i2_)
-            for (int j = head, m = head / (i << 1); j != mid; j += i << 1, ++m)
-              for (int k = j; k != j + i; ++k) {
-                T u(a_[k]), v(a_[k + i]);
-                a_[k] = u + v, a_[k + i] = (u - v) * iroot[m];
-              }
-          for (int i = head; i != mid; ++i) a_[i] *= i2p;
-        }
-        {
-          // push down [`tail`, `last`)
-          T r(root[head / (len << 1)] * 2);
-          for (int i = tail; i != last; ++i) a_[i] = a_[i - len] - a_[i] * r;
-        }
+        // pull up [`head`, `mid`)
+        T i2p(1);
+        for (int i = 1; i != len; i <<= 1, i2p *= i2_)
+          for (int j = head, m = head / (i << 1); j != mid; j += i << 1, ++m)
+            for (int k = j; k != j + i; ++k) {
+              T u(a_[k]), v(a_[k + i]);
+              a_[k] = u + v, a_[k + i] = (u - v) * iroot[m];
+            }
+        for (int i = head; i != mid; ++i) a_[i] *= i2p;
+        // push down [`tail`, `last`)
+        T r(root[head / (len << 1)] * 2);
+        for (int i = tail; i != last; ++i) a_[i] = a_[i - len] - a_[i] * r;
         run(mid, tail, last);
-        {
-          // pull up [`head`, `last`)
-          T r(iroot[head / (len << 1)] * i2_);
-          for (int i = head; i != mid; ++i) {
-            T u(a_[i]), v(a_[i + len]);
-            a_[i] = (u + v) * i2_, a_[i + len] = (u - v) * r;
-          }
+        // pull up [`head`, `last`)
+        r = iroot[head / (len << 1)] * i2_;
+        for (int i = head; i != mid; ++i) {
+          T u(a_[i]), v(a_[i + len]);
+          a_[i] = (u + v) * i2_, a_[i + len] = (u - v) * r;
         }
       } else {
         T r(root[head / (len << 1)]);
@@ -106,7 +101,6 @@ void itft(ContainerT &&a) {
     }
     Container &a_;
     const T i2_;
-    const int p_;
   } rec(a);
   rec.run(0, n, len);
   a.resize(n);
