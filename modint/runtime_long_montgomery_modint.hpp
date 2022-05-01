@@ -20,7 +20,6 @@ class runtime_montgomery_modint63 {
 
   u64 v_{};
 
-  static u64 get_r2() {}
   static u64 mul_high(u64 x, u64 y) {
     u64 a = x >> 32, b = static_cast<u32>(x), c = y >> 32, d = static_cast<u32>(y), ad = a * d,
         bc = b * c;
