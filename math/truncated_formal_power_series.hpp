@@ -3,9 +3,9 @@
 
 #include "../common.hpp"
 #include "extended_gcd.hpp"
-#include "radix2_ntt.hpp"
 #include "semi_relaxed_convolution.hpp"
 #include "sqrt_mod.hpp"
+#include "truncated_fourier_transform.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -19,8 +19,8 @@ LIB_BEGIN
 
 template <typename ModIntT>
 class truncated_formal_power_series : public std::vector<ModIntT> {
-  static_assert(std::is_same_v<typename std::vector<ModIntT>::value_type, ModIntT>);
-
+  using MyBase = std::vector<ModIntT>;
+  static_assert(std::is_same_v<typename MyBase::value_type, ModIntT>);
   static typename detail::modular_inverse<ModIntT> invs;
 
 public:
@@ -143,14 +143,13 @@ truncated_formal_power_series<ModIntT> &truncated_formal_power_series<ModIntT>::
       for (int j = 0; j != m; ++j) res[i + j] += this->operator[](i) * rhs[j];
     return this->operator=(res);
   }
-  int len = ntt_len(n + m - 1);
+  int len = n + m - 1;
   truncated_formal_power_series rhs_cpy(len);
   std::copy_n(rhs.cbegin(), m, rhs_cpy.begin());
   this->resize(len);
-  dft_n(this->begin(), len), dft_n(rhs_cpy.begin(), len);
+  tft(*this), tft(rhs_cpy);
   for (int i = 0; i != len; ++i) this->operator[](i) *= rhs_cpy[i];
-  idft_n(this->begin(), len);
-  this->resize(n + m - 1);
+  itft(*this);
   return *this;
 }
 

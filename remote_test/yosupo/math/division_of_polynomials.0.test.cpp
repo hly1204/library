@@ -1,6 +1,6 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/convolution_mod"
+#define PROBLEM "https://judge.yosupo.jp/problem/division_of_polynomials"
 
-#include "math/truncated_fourier_transform.hpp"
+#include "math/polynomial.hpp"
 #include "modint/montgomery_modint.hpp"
 
 #include <iostream>
@@ -15,16 +15,13 @@ int main() {
   int n, m;
   std::cin >> n >> m;
   using mint = lib::mm30<998244353>;
-  std::vector<mint> a, b;
+  lib::polynomial<mint> a, b;
   std::copy_n(std::istream_iterator<mint>(std::cin), n, std::back_inserter(a));
   std::copy_n(std::istream_iterator<mint>(std::cin), m, std::back_inserter(b));
-  int len = n + m - 1;
-  a.resize(len);
-  b.resize(len);
-  lib::tft(a);
-  lib::tft(b);
-  for (int i = 0; i != len; ++i) a[i] *= b[i];
-  lib::itft(a);
-  std::copy(a.begin(), a.end(), std::ostream_iterator<mint>(std::cout, " "));
+  auto [q, r] = a.div_with_rem(b);
+  std::cout << q.deg() + 1 << ' ' << r.deg() + 1 << '\n';
+  std::copy(q.cbegin(), q.cend(), std::ostream_iterator<mint>(std::cout, " "));
+  std::cout << '\n';
+  std::copy(r.cbegin(), r.cend(), std::ostream_iterator<mint>(std::cout, " "));
   return 0;
 }

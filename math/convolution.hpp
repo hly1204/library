@@ -3,7 +3,7 @@
 
 #include "../common.hpp"
 #include "../modint/long_montgomery_modint.hpp"
-#include "radix2_ntt.hpp"
+#include "truncated_fourier_transform.hpp"
 
 #include <algorithm>
 #include <cstdint>
@@ -22,14 +22,13 @@ std::vector<ModIntT> convolution(const std::vector<ModIntT> &lhs, const std::vec
       for (int j = 0; j != m; ++j) res[i + j] += lhs[i] * rhs[j];
     return res;
   }
-  int len = ntt_len(n + m - 1);
+  int len = n + m - 1;
   std::vector<ModIntT> lhs_cpy(len), rhs_cpy(len);
   std::copy_n(lhs.cbegin(), n, lhs_cpy.begin());
   std::copy_n(rhs.cbegin(), m, rhs_cpy.begin());
-  dft_n(lhs_cpy.begin(), len), dft_n(rhs_cpy.begin(), len);
+  tft(lhs_cpy), tft(rhs_cpy);
   for (int i = 0; i != len; ++i) lhs_cpy[i] *= rhs_cpy[i];
-  idft_n(lhs_cpy.begin(), len);
-  lhs_cpy.resize(n + m - 1);
+  itft(lhs_cpy);
   return lhs_cpy;
 }
 
