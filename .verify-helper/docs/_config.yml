@@ -1,0 +1,8 @@
+title: hly1204's library
+lang: en
+timezone: Asia/Beijing
+author:
+  name: hly1204
+exclude: [dev]
+plugins:
+  - jemoji
