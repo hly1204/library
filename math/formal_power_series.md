@@ -1,5 +1,5 @@
 ---
-title: Formal Power Series
+title: Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
 documentation_of: ./formal_power_series.hpp
 ---
 

@@ -1,10 +1,10 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/convolution_mod_1000000007"
 
-#include "math/convolution.hpp"
-#include "modint/long_montgomery_modint.hpp"
+#include "math/convolution_mod.hpp"
 
 #include <iostream>
 #include <iterator>
+#include <vector>
 
 int main() {
 #ifdef LOCAL

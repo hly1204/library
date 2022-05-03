@@ -1,5 +1,5 @@
 ---
-title: Square Roots in Finite Fields
+title: Square Roots (in $\mathbb{F} _ p$)
 documentation_of: ./sqrt_mod.hpp
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: Shift Sample Points (Single)
+title: Shift Sample Points (Single) (in $\mathbb{F} _ p \lbrack z \rbrack$)
 documentation_of: ./shift_sample_points_single.hpp
 ---
 
