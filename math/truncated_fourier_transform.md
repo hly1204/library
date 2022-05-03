@@ -1,5 +1,5 @@
 ---
-title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$)
+title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
 documentation_of: ./truncated_fourier_transform.hpp
 ---
 
