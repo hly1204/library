@@ -4,6 +4,7 @@
 #include "math/radix2_ntt.hpp"
 #include "modint/montgomery_modint.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <iterator>
 #include <vector>

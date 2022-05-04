@@ -2,6 +2,7 @@
 
 #include "math/convolution_mod.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <iterator>
 #include <vector>

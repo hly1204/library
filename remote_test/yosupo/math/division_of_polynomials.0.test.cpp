@@ -3,6 +3,7 @@
 #include "math/polynomial.hpp"
 #include "modint/montgomery_modint.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <iterator>
 

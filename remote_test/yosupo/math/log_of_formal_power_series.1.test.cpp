@@ -3,6 +3,7 @@
 #include "math/truncated_formal_power_series.hpp"
 #include "modint/montgomery_modint.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <iterator>
 

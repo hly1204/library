@@ -3,6 +3,7 @@
 #include "math/relaxed_convolution.hpp"
 #include "modint/montgomery_modint.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <iterator>
 #include <vector>
