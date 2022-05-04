@@ -18,7 +18,7 @@ public:
   void preprocess(int n) const {
     if (int nn = static_cast<int>(factorial_.size()); nn <= n) {
       int k = nn;
-      while (k <= n) k <<= n;
+      while (k <= n) k <<= 1;
       factorial_.resize(k);
       invfactorial_.resize(k);
       for (int i = nn; i != k; ++i) factorial_[i] = factorial_[i - 1] * i;
