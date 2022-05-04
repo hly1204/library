@@ -5,6 +5,7 @@
 #include "truncated_fourier_transform.hpp"
 
 #include <algorithm>
+#include <memory>
 #include <vector>
 
 LIB_BEGIN
@@ -20,11 +21,17 @@ std::vector<ModIntT> convolution(const std::vector<ModIntT> &lhs, const std::vec
     return res;
   }
   int len = n + m - 1;
-  std::vector<ModIntT> lhs_cpy(len), rhs_cpy(len);
+  std::vector<ModIntT> lhs_cpy(len);
   std::copy_n(lhs.cbegin(), n, lhs_cpy.begin());
-  std::copy_n(rhs.cbegin(), m, rhs_cpy.begin());
-  tft(lhs_cpy), tft(rhs_cpy);
-  for (int i = 0; i != len; ++i) lhs_cpy[i] *= rhs_cpy[i];
+  tft(lhs_cpy);
+  if (std::addressof(lhs) != std::addressof(rhs)) {
+    std::vector<ModIntT> rhs_cpy(len);
+    std::copy_n(rhs.cbegin(), m, rhs_cpy.begin());
+    tft(rhs_cpy);
+    for (int i = 0; i != len; ++i) lhs_cpy[i] *= rhs_cpy[i];
+  } else {
+    for (int i = 0; i != len; ++i) lhs_cpy[i] *= lhs_cpy[i];
+  }
   itft(lhs_cpy);
   return lhs_cpy;
 }

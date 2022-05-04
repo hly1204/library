@@ -59,6 +59,8 @@ $$
 
 for all $i, j$ as lexicographical encoding. Which means we could assign $a_i$ to $z^i t^{\chi (i) \bmod d}$. Time complexity is $O\left( dn \log n \right)$ where $n := \prod_i n_i$.
 
+This algorithm may too hard for me. The remaining question is that how Elegia's mind works?
+
 ## Reference
 
 1. J. van der Hoeven. [Notes on the Truncated Fourier Transform](https://www.texmacs.org/joris/tft/tft.pdf).
