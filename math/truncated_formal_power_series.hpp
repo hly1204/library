@@ -129,8 +129,8 @@ template <typename ModIntT>
 typename detail::modular_inverse<ModIntT> truncated_formal_power_series<ModIntT>::invs;
 
 template <typename ModIntT>
-truncated_formal_power_series<ModIntT> &truncated_formal_power_series<ModIntT>::operator*=(
-    const truncated_formal_power_series<ModIntT> &rhs) {
+truncated_formal_power_series<ModIntT> &
+truncated_formal_power_series<ModIntT>::operator*=(const truncated_formal_power_series &rhs) {
   // 6E
   int n = static_cast<int>(this->size()), m = static_cast<int>(rhs.size());
   if (n == 0 || m == 0) {
