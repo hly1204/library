@@ -1,6 +1,6 @@
 ---
 title: Binomial Convolution (in $\mathbb{Z} / m \mathbb{Z}$)
-documentation_of: ./binomial.hpp
+documentation_of: ./binomial_convolution.hpp
 ---
 
 ## Reference

@@ -71,7 +71,8 @@ class binomial_convolution {
 
   std::vector<u32> convolution(const std::vector<u32> &a, const std::vector<u32> &b,
                                const factor_info &info) const;
-
+  std::vector<u32> convolutionT(const std::vector<u32> &a, const std::vector<u32> &b,
+                                const factor_info &info) const;
   const u32 modular_;
   std::vector<factor_info> info_;
 
@@ -90,6 +91,11 @@ public:
   template <typename IntT>
   std::enable_if_t<std::is_integral_v<IntT>, std::vector<IntT>>
   operator()(const std::vector<IntT> &a, const std::vector<IntT> &b) const;
+
+  // apply Borel transform to `a` and then apply B(`a`)(D) to `b` where D = d/dx.
+  template <typename IntT>
+  std::enable_if_t<std::is_integral_v<IntT>, std::vector<IntT>>
+  bapply(const std::vector<IntT> &a, const std::vector<IntT> &b) const;
 };
 
 std::vector<typename binomial_convolution::u32>
@@ -127,6 +133,42 @@ binomial_convolution::convolution(const std::vector<u32> &a, const std::vector<u
   return res;
 }
 
+std::vector<typename binomial_convolution::u32>
+binomial_convolution::convolutionT(const std::vector<u32> &a, const std::vector<u32> &b,
+                                   const factor_info &info) const {
+  const int n = static_cast<int>(a.size()), m = static_cast<int>(b.size()), len = n + m - 1;
+  info.preprocess(m);
+  std::vector<mint0> a0(len), b0(len);
+  std::vector<mint1> a1(len), b1(len);
+  const auto pe = info.pe_;
+  for (int i = 0; i != n; ++i) {
+    u64 a_hat = static_cast<u64>(a[i]) * info.ifact_[i] % pe;
+    auto j    = info.nu_[i];
+    a0[i] = a_hat * info.ipp0_[j], a1[i] = a_hat * info.ipp1_[j];
+  }
+  for (int i = 0; i != m; ++i) {
+    u64 b_hat     = static_cast<u64>(b[i]) * info.fact_[i] % pe;
+    auto j        = info.nu_[i];
+    b0[m - 1 - i] = b_hat * info.pp0_[j], b1[m - 1 - i] = b_hat * info.pp1_[j];
+  }
+  tft(a0), tft(b0), tft(a1), tft(b1);
+  for (int i = 0; i != len; ++i) a0[i] *= b0[i], a1[i] *= b1[i];
+  itft(a0), itft(a1);
+  // Chinese remainder algorithm
+  auto cra = [pe, ip1 = mint0(mint1::mod()).inv(), p1_mod_pe = mint1::mod() % pe](mint0 a,
+                                                                                  mint1 b) -> u64 {
+    auto bv = b.val();
+    return (static_cast<u64>((a - bv) * ip1) % pe * p1_mod_pe + bv) % pe;
+  };
+  std::vector<u32> res(m);
+  for (int i = 0; i != m; ++i) {
+    int j = info.nu_[i];
+    res[i] =
+        cra(a0[m - 1 - i] * info.ipp0_[j], a1[m - 1 - i] * info.ipp1_[j]) * info.ifact_[i] % pe;
+  }
+  return res;
+}
+
 template <typename IntT>
 std::enable_if_t<std::is_integral_v<IntT>, std::vector<IntT>>
 binomial_convolution::operator()(const std::vector<IntT> &a, const std::vector<IntT> &b) const {
@@ -149,6 +191,33 @@ binomial_convolution::operator()(const std::vector<IntT> &a, const std::vector<I
       m *= m0;
     };
     for (auto &&i : info_) cra(res, modular, convolution(a_cpy, b_cpy, i), i.pe_);
+  }
+  return std::vector<IntT>(res.cbegin(), res.cend());
+}
+
+template <typename IntT>
+std::enable_if_t<std::is_integral_v<IntT>, std::vector<IntT>>
+binomial_convolution::bapply(const std::vector<IntT> &a, const std::vector<IntT> &b) const {
+  const int n = static_cast<int>(a.size()), m = static_cast<int>(b.size()), minnm = n < m ? n : m,
+            len = m;
+  std::vector<u32> a_cpy(minnm), b_cpy(m);
+  for (int i = 0; i != minnm; ++i) a_cpy[i] = static_cast<u32>(a[i]);
+  for (int i = 0; i != m; ++i) b_cpy[i] = static_cast<u32>(b[i]);
+  u32 modular = 1;
+  std::vector<u32> res(len);
+  {
+    auto cra = [len](std::vector<u32> &a, u32 &m, const std::vector<u32> &b, u32 m0) {
+      auto im_mod_m0 = [](u32 a, u32 b) -> i64 {
+        auto v = inv_gcd(a, b).first /* % b */;
+        return v < 0 ? v + b : v;
+      }(m, m0);
+      for (int i = 0; i != len; ++i) {
+        auto v = static_cast<i32>((static_cast<i64>(b[i]) - a[i]) * im_mod_m0 % m0);
+        a[i] += (v < 0 ? v + m0 : v) * m;
+      }
+      m *= m0;
+    };
+    for (auto &&i : info_) cra(res, modular, convolutionT(a_cpy, b_cpy, i), i.pe_);
   }
   return std::vector<IntT>(res.cbegin(), res.cend());
 }
