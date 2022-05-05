@@ -1,5 +1,5 @@
-#ifndef BINOMIAL_PRIME
-#define BINOMIAL_PRIME
+#ifndef BINOMIAL_HPP
+#define BINOMIAL_HPP
 
 #include "../common.hpp"
 

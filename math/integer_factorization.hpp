@@ -48,13 +48,15 @@ bool is_prime(std::uint64_t n) {
   if ((n & 1) == 0) return false;
   if (n < 8) return true;
   using mint = rmm63<-1>;
-  bool okay  = mint::set_mod(n);
-  assert(okay);
+  {
+    bool okay = mint::set_mod(n);
+    assert(okay);
+  }
   int t           = 0;
   std::uint64_t u = n - 1;
   do { u >>= 1, ++t; } while ((u & 1) == 0);
   for (int i : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {
-    if (n == i) return true;
+    if (n == static_cast<std::uint64_t>(i)) return true;
     mint x = mint(i).pow(u);
     for (int j = 0; j != t && x != 1; ++j) {
       mint y = x * x;
