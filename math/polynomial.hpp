@@ -21,6 +21,11 @@ public:
   using truncated_formal_power_series<ModIntT>::truncated_formal_power_series;
 
   explicit polynomial(const MyBase &rhs) : MyBase(rhs) {}
+  ModIntT operator()(ModIntT c) const {
+    ModIntT res;
+    for (int i = this->deg(); i >= 0; --i) res = res * c + this->operator[](i);
+    return res;
+  }
   polynomial operator-() { return MyBase::operator-(); }
   polynomial &operator+=(const polynomial &rhs) {
     MyBase::operator+=(rhs);
@@ -84,7 +89,7 @@ public:
     return lhs;
   }
   friend std::ostream &operator<<(std::ostream &lhs, const polynomial &rhs) {
-    return lhs << MyBase(rhs.begin(), rhs.end()); // debug only
+    return lhs << MyBase(rhs.begin(), rhs.end()); // debug only (SLOW)
   }
 };
 

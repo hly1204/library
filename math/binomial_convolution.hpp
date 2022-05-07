@@ -69,10 +69,10 @@ class binomial_convolution {
     }
   };
 
-  std::vector<u32> convolution(const std::vector<u32> &a, const std::vector<u32> &b,
-                               const factor_info &info) const;
-  std::vector<u32> convolutionT(const std::vector<u32> &a, const std::vector<u32> &b,
-                                const factor_info &info) const;
+  static std::vector<u32> convolution(const std::vector<u32> &a, const std::vector<u32> &b,
+                                      const factor_info &info);
+  static std::vector<u32> convolutionT(const std::vector<u32> &a, const std::vector<u32> &b,
+                                       const factor_info &info);
   const u32 modular_;
   std::vector<factor_info> info_;
 
@@ -100,7 +100,7 @@ public:
 
 std::vector<typename binomial_convolution::u32>
 binomial_convolution::convolution(const std::vector<u32> &a, const std::vector<u32> &b,
-                                  const factor_info &info) const {
+                                  const factor_info &info) {
   const int n = static_cast<int>(a.size()), m = static_cast<int>(b.size()), len = n + m - 1;
   info.preprocess(len);
   std::vector<mint0> a0(len), b0(len);
@@ -135,7 +135,7 @@ binomial_convolution::convolution(const std::vector<u32> &a, const std::vector<u
 
 std::vector<typename binomial_convolution::u32>
 binomial_convolution::convolutionT(const std::vector<u32> &a, const std::vector<u32> &b,
-                                   const factor_info &info) const {
+                                   const factor_info &info) {
   const int n = static_cast<int>(a.size()), m = static_cast<int>(b.size()), len = n + m - 1;
   info.preprocess(m);
   std::vector<mint0> a0(len), b0(len);
