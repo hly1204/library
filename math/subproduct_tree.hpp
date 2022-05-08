@@ -129,9 +129,13 @@ PolyT subproduct_tree<PolyT>::interpolate(const std::vector<T> &y) const {
       auto &r = t->at(i + 1).cached_dft_;
       dft_doubling(resp[i]);
       const int len = static_cast<int>(l.size());
-      while (static_cast<int>(resp[i + 1].size()) < len) dft_doubling(resp[i + 1]);
-      auto &rr = res.emplace_back(len);
-      for (int j = 0; j != len; ++j) rr[j] = resp[i][j] * r[j] + resp[i + 1][j] * l[j];
+      {
+        auto respi1 = resp[i + 1];
+        idft(respi1);
+        while (static_cast<int>(resp[i + 1].size()) < len) dft_doubling(respi1, resp[i + 1]);
+      }
+      auto &rr = res.emplace_back(std::move(resp[i]));
+      for (int j = 0; j != len; ++j) rr[j] = rr[j] * r[j] + resp[i + 1][j] * l[j];
     }
     if (t->size() & 1) res.emplace_back(std::move(resp.back()));
     resp.swap(res);
