@@ -20,7 +20,7 @@ class polynomial : public truncated_formal_power_series<ModIntT> {
 public:
   using truncated_formal_power_series<ModIntT>::truncated_formal_power_series;
 
-  explicit polynomial(const MyBase &rhs) : MyBase(rhs) {}
+  polynomial(const MyBase &rhs) : MyBase(rhs) {}
   ModIntT operator()(ModIntT c) const {
     ModIntT res;
     for (int i = this->deg(); i >= 0; --i) res = res * c + this->operator[](i);

@@ -4,6 +4,7 @@
 #include "../common.hpp"
 #include "radix2_ntt.hpp"
 
+#include <cassert>
 #include <utility>
 #include <vector>
 
@@ -78,8 +79,8 @@ std::vector<typename PolyT::value_type> subproduct_tree<PolyT>::evaluate(const P
       const int ts = static_cast<int>(t->size());
       for (int i = 0, ie = static_cast<int>(resp.size()); i != ie; ++i)
         if ((i << 1 | 1) < ts) {
-          auto &l       = t->operator[](i << 1);
-          auto &r       = t->operator[](i << 1 | 1);
+          auto &l       = t->at(i << 1);
+          auto &r       = t->at(i << 1 | 1);
           const int len = static_cast<int>(l.cached_dft_.size());
           resp[i].resize(len);
           dft(resp[i]);
@@ -106,9 +107,49 @@ std::vector<typename PolyT::value_type> subproduct_tree<PolyT>::evaluate(const P
 }
 
 template <typename PolyT>
+PolyT subproduct_tree<PolyT>::interpolate(const std::vector<T> &y) const {
+  assert(y.size() == tree_.front().size());
+  const int n = static_cast<int>(y.size());
+  auto yp     = evaluate(tree_.back().front().poly_.deriv());
+  std::vector<T> iyp(yp.size());
+  {
+    T v(1);
+    for (int i = 0; i != n; ++i) iyp[i] = v, v *= yp[i];
+    v = v.inv();
+    for (int i = n - 1; i >= 0; --i) iyp[i] *= v, v *= yp[i];
+  }
+  std::vector<PolyT> resp;
+  resp.reserve(n);
+  for (int i = 0; i != n; ++i) resp.emplace_back(PolyT{y[i] * iyp[i]});
+  for (auto t = tree_.begin(); resp.size() != 1; ++t) {
+    assert(t->size() == resp.size());
+    std::vector<PolyT> res;
+    for (int i = 0, ie = static_cast<int>(resp.size()); i + 1 < ie; i += 2) {
+      auto &l = t->at(i).cached_dft_;
+      auto &r = t->at(i + 1).cached_dft_;
+      dft_doubling(resp[i]);
+      const int len = static_cast<int>(l.size());
+      while (static_cast<int>(resp[i + 1].size()) < len) dft_doubling(resp[i + 1]);
+      auto &rr = res.emplace_back(len);
+      for (int j = 0; j != len; ++j) rr[j] = resp[i][j] * r[j] + resp[i + 1][j] * l[j];
+    }
+    if (t->size() & 1) res.emplace_back(std::move(resp.back()));
+    resp.swap(res);
+  }
+  idft(resp.front());
+  resp.front().shrink();
+  return resp.front();
+}
+
+template <typename PolyT>
 std::vector<typename PolyT::value_type>
 evaluation(const PolyT &a, const std::vector<typename PolyT::value_type> &x) {
   return subproduct_tree<PolyT>(x).evaluate(a);
+}
+
+template <template <typename> typename PolyT, typename ModIntT>
+PolyT<ModIntT> interpolation(const std::vector<ModIntT> &x, const std::vector<ModIntT> &y) {
+  return subproduct_tree<PolyT<ModIntT>>(x).interpolate(y);
 }
 
 LIB_END
