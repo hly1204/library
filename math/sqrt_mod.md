@@ -5,7 +5,7 @@ documentation_of: ./sqrt_mod.hpp
 
 ## A Simple and Fast Algorithm
 
-I think this algorithm is identical to Bostan-Mori's algorithm. I omit the details here.
+I think this algorithm is identical to Bostan--Mori's algorithm. I omit the details here.
 
 ## Reference
 

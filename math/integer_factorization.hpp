@@ -5,7 +5,6 @@
 #include "../modint/runtime_long_montgomery_modint.hpp"
 
 #include <cassert>
-#include <cstdint>
 #include <map>
 #include <numeric>
 #include <random>
@@ -15,12 +14,12 @@ LIB_BEGIN
 namespace detail {
 
 template <template <int /* IdT */> typename ModIntT>
-std::uint64_t rho(std::uint64_t n) {
+unsigned long long rho(unsigned long long n) {
   using mint = ModIntT<-1>;
-  using u64  = std::uint64_t;
+  using u64  = unsigned long long;
   std::mt19937 gen(std::random_device{}());
   std::uniform_int_distribution<u64> dis(2, n - 1);
-  if (mint::mod() != n) mint::set_mod(n);
+  if (static_cast<u64>(mint::mod()) != n) mint::set_mod(n);
   auto f = [R = mint(dis(gen))](mint x) { return x * x + R; };
   mint x, y(dis(gen)), ys, q(1);
   u64 g       = 1;
@@ -34,16 +33,17 @@ std::uint64_t rho(std::uint64_t n) {
       g = std::gcd(static_cast<u64>(q), n);
     }
   }
-  if (g == n) {
+  // clang-format off
+  if (g == n)
     do { g = std::gcd(static_cast<u64>(x - (ys = f(ys))), n); } while (g == 1);
-  }
+  // clang-format on
   return g == n ? rho<ModIntT>(n) : g;
 }
 
 } // namespace detail
 
-bool is_prime(std::uint64_t n) {
-  // Miller-Rabin test
+bool is_prime(unsigned long long n) {
+  // Miller--Rabin test
   if (n <= 2) return n == 2;
   if ((n & 1) == 0) return false;
   if (n < 8) return true;
@@ -52,11 +52,11 @@ bool is_prime(std::uint64_t n) {
     bool okay = mint::set_mod(n);
     assert(okay);
   }
-  int t           = 0;
-  std::uint64_t u = n - 1;
+  int t                = 0;
+  unsigned long long u = n - 1;
   do { u >>= 1, ++t; } while ((u & 1) == 0);
   for (int i : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {
-    if (n == static_cast<std::uint64_t>(i)) return true;
+    if (n == static_cast<unsigned long long>(i)) return true;
     mint x = mint(i).pow(u);
     for (int j = 0; j != t && x != 1; ++j) {
       mint y = x * x;
@@ -70,7 +70,7 @@ bool is_prime(std::uint64_t n) {
 
 namespace detail {
 
-void factorize_odd(std::uint64_t n, std::map<std::uint64_t, int> &mp) {
+void factorize_odd(unsigned long long n, std::map<unsigned long long, int> &mp) {
   if (n < 2) return;
   if (is_prime(n)) {
     ++mp[n];
@@ -82,8 +82,8 @@ void factorize_odd(std::uint64_t n, std::map<std::uint64_t, int> &mp) {
 
 } // namespace detail
 
-std::map<std::uint64_t, int> factorization(std::uint64_t n) {
-  std::map<std::uint64_t, int> res;
+std::map<unsigned long long, int> factorization(unsigned long long n) {
+  std::map<unsigned long long, int> res;
   if (n < 2) return res;
   int t = 0;
   while ((n & 1) == 0) n >>= 1, ++t;
