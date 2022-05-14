@@ -36,7 +36,7 @@ std::optional<std::pair<long long, long long>> cra(const std::vector<long long> 
   assert(a.size() == m.size());
   auto safe_mod = [](long long a, long long m) { return a %= m, (a < 0 ? a + m : a); };
   long long A = 0, M = 1;
-  for (int i = 0; i < n; ++i) {
+  for (int i = 0; i != n; ++i) {
     auto res = detail::cra2(safe_mod(a[i], m[i]), m[i], A, M);
     if (!res) return {};
     std::tie(A, M) = res.value();
@@ -48,10 +48,7 @@ std::optional<std::pair<int, int>> cra_mod(const std::vector<int> &a, const std:
                                            const int modular) {
   const int n = static_cast<int>(a.size());
   assert(a.size() == m.size());
-  auto safe_mod = [](int a, int m) {
-    if ((a %= m) < 0) a += m;
-    return a;
-  };
+  auto safe_mod = [](int a, int m) { return a %= m, (a < 0 ? a + m : a); };
   std::vector<int> m_cpy(m);
   // check conflicts and make coprime
   for (int i = 0; i != n; ++i) {
@@ -62,8 +59,7 @@ std::optional<std::pair<int, int>> cra_mod(const std::vector<int> &a, const std:
       if (d == 1) continue;
       if (safe_mod(a[i], d) != safe_mod(a[j], d)) return {};
       mi /= d, mj /= d;
-      auto k = std::gcd(mi, d);
-      if (k != 1)
+      if (auto k = std::gcd(mi, d); k != 1)
         while (d % k == 0) mi *= k, d /= k;
       mj *= d;
     }
@@ -71,7 +67,7 @@ std::optional<std::pair<int, int>> cra_mod(const std::vector<int> &a, const std:
   m_cpy.push_back(modular);
   std::vector<int> pp(n + 1, 1), res(n + 1);
   for (int i = 0; i != n; ++i) {
-    auto u = (a[i] - res[i]) * inv_gcd(pp[i], m_cpy[i]).first % m_cpy[i];
+    auto u = (safe_mod(a[i], m_cpy[i]) - res[i]) * inv_gcd(pp[i], m_cpy[i]).first % m_cpy[i];
     if (u < 0) u += m_cpy[i];
     for (int j = i + 1; j <= n; ++j)
       res[j] = (res[j] + u * pp[j]) % m_cpy[j],
