@@ -58,7 +58,7 @@ public:
   polynomial &operator%=(const polynomial &rhs) {
     return this->operator=(div_with_rem(rhs).second);
   }
-  std::pair<polynomial, polynomial> div_with_rem(const polynomial &rhs) {
+  std::pair<polynomial, polynomial> div_with_rem(const polynomial &rhs) const {
     const int n = this->deg(), m = rhs.deg();
     if (n < m) return std::make_pair(polynomial(), *this);
     auto q    = *this / rhs;
