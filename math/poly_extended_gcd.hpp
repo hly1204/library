@@ -7,6 +7,7 @@
 #include <array>
 #include <cassert>
 #include <optional>
+#include <tuple>
 #include <utility>
 
 LIB_BEGIN
@@ -50,7 +51,7 @@ polynomial_gcd_matrix<PolyT> hgcd(const PolyT &A, const PolyT &B) {
 }
 
 template <typename PolyT>
-polynomial_gcd_matrix<PolyT> cogcd(const PolyT &A, const PolyT &B) {
+std::pair<polynomial_gcd_matrix<PolyT>, PolyT> cogcd(const PolyT &A, const PolyT &B) {
   assert(A.deg() > B.deg());
   assert(!B.is_zero());
   polynomial_gcd_matrix<PolyT> M({1}, {}, {}, {1});
@@ -58,10 +59,10 @@ polynomial_gcd_matrix<PolyT> cogcd(const PolyT &A, const PolyT &B) {
   for (;;) {
     auto M0     = hgcd(A_cpy, B_cpy);
     auto [C, D] = M0 * std::array<PolyT, 2>{A_cpy, B_cpy};
-    if (D.is_zero()) return M0 * M;
+    if (D.is_zero()) return std::make_pair(M0 * M, C);
     auto [Q, E] = C.div_with_rem(D);
     M0          = polynomial_gcd_matrix<PolyT>({}, {1}, {1}, -Q) * M0;
-    if (E.is_zero()) return M0 * M;
+    if (E.is_zero()) return std::make_pair(M0 * M, D);
     A_cpy.swap(D), B_cpy.swap(E);
     M = M0 * M;
   }
@@ -70,21 +71,30 @@ polynomial_gcd_matrix<PolyT> cogcd(const PolyT &A, const PolyT &B) {
 } // namespace detail
 
 template <typename PolyT>
-polynomial_gcd_matrix<PolyT> poly_ext_gcd(const PolyT &A, const PolyT &B) {
-  if (B.is_zero()) return polynomial_gcd_matrix<PolyT>({1}, {}, {}, {1});
-  if (A.is_zero()) return polynomial_gcd_matrix<PolyT>({}, {1}, {1}, {});
-  auto [Q, R] = A.div_with_rem(B);
-  polynomial_gcd_matrix<PolyT> M({}, {1}, {1}, -Q);
-  return R.is_zero() ? M : detail::cogcd(B, R) * M;
+std::tuple<PolyT, PolyT, PolyT> poly_ext_gcd(const PolyT &A, const PolyT &B) {
+  if (B.is_zero()) return std::make_tuple(PolyT{1}, PolyT{}, A);
+  if (A.is_zero()) return std::make_tuple(PolyT{}, PolyT{1}, B);
+  if (A.deg() > B.deg()) {
+    auto [M, d] = detail::cogcd(A, B);
+    return std::make_tuple(M[0][0], M[0][1], d);
+  } else if (A.deg() < B.deg()) {
+    auto [M, d] = detail::cogcd(B, A);
+    return std::make_tuple(M[0][1], M[0][0], d);
+  } else {
+    auto [Q, R] = A.div_with_rem(B);
+    if (R.is_zero()) return std::make_tuple(PolyT{}, PolyT{1}, B);
+    auto [M, d] = detail::cogcd(B, R);
+    M           = M * polynomial_gcd_matrix<PolyT>({}, {1}, {1}, -Q);
+    return std::make_tuple(M[0][0], M[0][1], d);
+  }
 }
 
 template <typename PolyT>
 std::optional<PolyT> poly_inv(const PolyT &A, const PolyT &modular) {
-  auto M = poly_ext_gcd(A, modular);
-  auto d = M[0][0] * A + M[0][1] * modular;
+  auto [x, y, d] = poly_ext_gcd(A, modular);
   if (d.deg() != 0) return {};
-  std::for_each(M[0][0].begin(), M[0][0].end(), [iv = d.front().inv()](auto &v) { v *= iv; });
-  return M[0][0];
+  std::for_each(x.begin(), x.end(), [iv = d.front().inv()](auto &v) { v *= iv; });
+  return x;
 }
 
 LIB_END
