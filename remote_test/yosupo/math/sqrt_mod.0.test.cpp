@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sqrt_mod"
 
 #include "math/sqrt_mod.hpp"
-#include "modint/runtime_montgomery_modint.hpp"
+#include "modint/runtime_modint.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -17,17 +17,13 @@ int main() {
   while (t--) {
     int k, p;
     std::cin >> k >> p;
-    if (p == 2) {
-      std::cout << k << '\n';
+    bool ok = lib::rm31<-1>::set_mod(p);
+    assert(ok);
+    auto res = lib::sqrt_mod_prime<lib::rm31<-1>>(k);
+    if (res.empty()) {
+      std::cout << "-1\n";
     } else {
-      bool ok = lib::rmm30<-1>::set_mod(p);
-      assert(ok);
-      auto res = lib::sqrt_mod_prime<lib::rmm30<-1>>(k);
-      if (res.empty()) {
-        std::cout << "-1\n";
-      } else {
-        std::cout << res.front() << '\n';
-      }
+      std::cout << res.front() << '\n';
     }
   }
   return 0;

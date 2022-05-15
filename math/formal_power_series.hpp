@@ -9,6 +9,7 @@
 #include <functional>
 #include <memory>
 #include <optional>
+#include <type_traits>
 #include <vector>
 
 LIB_BEGIN
@@ -75,7 +76,9 @@ public:
           return zero_cnt == 0 ? (*s)(i) : ModIntT();
         });
   }
-  formal_power_series sqrt(std::function<ModIntT(ModIntT)> f) const {
+  template <typename SqrtFuncT,
+            typename std::enable_if_t<std::is_invocable_r_v<ModIntT, SqrtFuncT, ModIntT>, int> = 0>
+  formal_power_series sqrt(SqrtFuncT &&f) const {
     // `h_(0) == 0` is not allowed.
     auto t = [h = h_, f, i2 = ModIntT()](int i, auto const &c) mutable {
       if (i != 0) return (h(i) - c[i]) * i2;

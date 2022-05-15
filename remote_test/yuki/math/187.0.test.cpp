@@ -24,7 +24,7 @@ int main() {
       std::cout << res->first << '\n';
     }
   } else {
-    std::cout << -1 << '\n';
+    std::cout << "-1\n";
   }
   return 0;
 }

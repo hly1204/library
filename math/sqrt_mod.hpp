@@ -13,8 +13,8 @@ LIB_BEGIN
 template <typename ModIntT>
 std::vector<ModIntT> sqrt_mod_prime(ModIntT a) {
   // Bostan--Mori's algorithm
-  if (a.is_zero()) return {a};
   const auto p = ModIntT::mod();
+  if (p == 2 || a.is_zero()) return {a};
   if (a.pow(p >> 1) == -1) return {};
   if ((p & 3) == 3) {
     ModIntT b(a.pow((p + 1) >> 2));
