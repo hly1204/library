@@ -34,22 +34,13 @@ $$
 so
 
 $$
-k_0 = s\cdot \frac{a_1 - a_0}{d}.
+k_0 = s \cdot \frac{a_1 - a_0}{d}.
 $$
 
 and
 
 $$
 x \equiv a_0 + k_0m_0 \pmod{\operatorname{lcm}(m_0, m_1)}.
-$$
-
-Another view is that
-
-$$
-\begin{aligned}
-&{} k_0 \cdot \frac{m_0}{d} - k_1 \cdot \frac{m_1}{d} = \frac{a_1 - a_0}{d} \\
-\implies &{} k_0 \equiv (a_1 - a_0) m_0^{-1}\pmod{(m_1 / d)}.
-\end{aligned}
 $$
 
 ## Reference
