@@ -3,6 +3,7 @@
 
 #include "../common.hpp"
 #include "../modint/runtime_long_montgomery_modint.hpp"
+#include "random.hpp"
 
 #include <cassert>
 #include <map>
@@ -17,7 +18,7 @@ template <template <int /* IdT */> typename ModIntT>
 unsigned long long rho(unsigned long long n) {
   using mint = ModIntT<-1>;
   using u64  = unsigned long long;
-  std::mt19937 gen(std::random_device{}());
+  xoshiro256starstar gen(std::random_device{}());
   std::uniform_int_distribution<u64> dis(2, n - 1);
   if (static_cast<u64>(mint::mod()) != n) mint::set_mod(n);
   auto f = [R = mint(dis(gen))](mint x) { return x * x + R; };

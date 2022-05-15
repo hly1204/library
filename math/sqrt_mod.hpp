@@ -2,6 +2,7 @@
 #define SQRT_MOD_HPP
 
 #include "../common.hpp"
+#include "random.hpp"
 
 #include <random>
 #include <type_traits>
@@ -19,7 +20,7 @@ std::vector<ModIntT> sqrt_mod_prime(ModIntT a) {
     ModIntT b(a.pow((p + 1) >> 2));
     return {b, -b};
   }
-  std::mt19937 gen(std::random_device{}());
+  xoshiro256starstar gen(std::random_device{}());
   std::uniform_int_distribution<std::remove_cv_t<decltype(p)>> dis(2, p - 1);
   ModIntT t;
   do { t = dis(gen); } while ((t * t - 4 * a).pow(p >> 1) != -1);
