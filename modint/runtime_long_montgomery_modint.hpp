@@ -20,23 +20,23 @@ class runtime_montgomery_modint63 {
 
   u64 v_{};
 
-  static u64 mul_high(u64 x, u64 y) {
+  static inline u64 mul_high(u64 x, u64 y) {
     u64 a = x >> 32, b = static_cast<u32>(x), c = y >> 32, d = static_cast<u32>(y), ad = a * d,
         bc = b * c;
     return a * c + (ad >> 32) + (bc >> 32) +
            (((ad & 0xFFFFFFFF) + (bc & 0xFFFFFFFF) + (b * d >> 32)) >> 32);
   }
-  static u64 redc_mul(u64 x, u64 y) {
+  static inline u64 redc_mul(u64 x, u64 y) {
     u64 res = mul_high(x, y) - mul_high(x * y * R, MOD);
     return res + (MOD & -(res >> 63));
   }
-  static u64 norm(i64 x) { return x + (MOD & -(x < 0)); }
+  static inline u64 norm(i64 x) { return x + (MOD & -(x < 0)); }
 
   static u64 MOD, R, R2;
   static i64 SMOD;
 
 public:
-  static bool set_mod(u64 m) {
+  static inline bool set_mod(u64 m) {
     if ((m & 1) == 0 || m == 1 || m >> 63 != 0) return false;
     MOD = m;
     {
@@ -54,8 +54,8 @@ public:
     SMOD = static_cast<i64>(MOD);
     return true;
   }
-  static u64 mod() { return MOD; }
-  static i64 smod() { return SMOD; }
+  static inline u64 mod() { return MOD; }
+  static inline i64 smod() { return SMOD; }
   runtime_montgomery_modint63() {}
   template <typename IntT, std::enable_if_t<std::is_integral_v<IntT>, int> = 0>
   runtime_montgomery_modint63(IntT v) : v_(redc_mul(norm(v % SMOD), R2)) {}

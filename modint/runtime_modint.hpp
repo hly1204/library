@@ -20,18 +20,20 @@ class runtime_modint31 {
 
   u32 v_{};
 
-  static u32 norm(i32 x) { return x + (-(x < 0) & MOD); }
-  static u32 redc(u64 x) {
+  static inline u32 norm(i32 x) { return x + (-(x < 0) & MOD); }
+  static inline u32 redc(u64 x) {
     u32 t = (x + static_cast<u64>(static_cast<u32>(x) * R) * MOD_ODD) >> 32;
     return t - (MOD_ODD & -((MOD_ODD - 1 - t) >> 31));
   }
-  static u32 tsf(u32 x) { return (static_cast<u64>(x % MOD_ODD) * R2) << OFFSET | (x & MASK); }
+  static inline u32 tsf(u32 x) {
+    return redc(static_cast<u64>(x % MOD_ODD) * R2) << OFFSET | (x & MASK);
+  }
 
   static u32 R, R2, MOD, MOD_ODD, OFFSET, MASK;
   static i32 SMOD;
 
 public:
-  static bool set_mod(u32 m) {
+  static inline bool set_mod(u32 m) {
     if (m == 1 || m >> 31 != 0) return false;
     for (MOD = MOD_ODD = m, OFFSET = 0; (MOD_ODD & 1) == 0; ++OFFSET, MOD_ODD >>= 1) {}
     MASK = (1 << OFFSET) - 1, SMOD = static_cast<i32>(MOD);
@@ -45,8 +47,8 @@ public:
     R2 = -static_cast<u64>(MOD_ODD) % MOD_ODD;
     return true;
   }
-  static u32 mod() { return MOD; }
-  static i32 smod() { return SMOD; }
+  static inline u32 mod() { return MOD; }
+  static inline i32 smod() { return SMOD; }
   runtime_modint31() {}
   template <typename IntT, std::enable_if_t<std::is_integral_v<IntT>, int> = 0>
   runtime_modint31(IntT v) : v_(tsf(norm(v % SMOD))) {}
@@ -57,7 +59,7 @@ public:
   i32 sval() const { return val(); }
   bool is_zero() const { return v_ == 0; }
   template <typename IntT, std::enable_if_t<std::is_integral_v<IntT>, int> = 0>
-  explicit constexpr operator IntT() const {
+  explicit operator IntT() const {
     return static_cast<IntT>(val());
   }
   runtime_modint31 operator-() const {

@@ -20,14 +20,16 @@ class runtime_montgomery_modint30 {
 
   u32 v_{};
 
-  static u32 redc(u64 x) { return (x + static_cast<u64>(static_cast<u32>(x) * R) * MOD) >> 32; }
-  static u32 norm(u32 x) { return x - (MOD & -((MOD - 1 - x) >> 31)); }
+  static inline u32 redc(u64 x) {
+    return (x + static_cast<u64>(static_cast<u32>(x) * R) * MOD) >> 32;
+  }
+  static inline u32 norm(u32 x) { return x - (MOD & -((MOD - 1 - x) >> 31)); }
 
   static u32 MOD, MOD2, R, R2;
   static i32 SMOD;
 
 public:
-  static bool set_mod(u32 m) {
+  static inline bool set_mod(u32 m) {
     if ((m & 1) == 0 || m == 1 || m >> 30 != 0) return false;
     MOD = m, MOD2 = MOD << 1;
     {
@@ -41,8 +43,8 @@ public:
     SMOD = static_cast<i32>(MOD);
     return true;
   }
-  static u32 mod() { return MOD; }
-  static i32 smod() { return SMOD; }
+  static inline u32 mod() { return MOD; }
+  static inline i32 smod() { return SMOD; }
   runtime_montgomery_modint30() {}
   template <typename IntT, std::enable_if_t<std::is_integral_v<IntT>, int> = 0>
   runtime_montgomery_modint30(IntT v) : v_(redc(static_cast<u64>(v % SMOD + SMOD) * R2)) {}
