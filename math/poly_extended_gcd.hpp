@@ -56,13 +56,14 @@ polynomial_gcd_matrix<PolyT> cogcd(const PolyT &A, const PolyT &B) {
   polynomial_gcd_matrix<PolyT> M({1}, {}, {}, {1});
   PolyT A_cpy(A), B_cpy(B);
   for (;;) {
-    M           = hgcd(A_cpy, B_cpy) * M;
-    auto [C, D] = M * std::array<PolyT, 2>{A_cpy, B_cpy};
-    if (D.is_zero()) return M;
+    auto M0     = hgcd(A_cpy, B_cpy);
+    auto [C, D] = M0 * std::array<PolyT, 2>{A_cpy, B_cpy};
+    if (D.is_zero()) return M0 * M;
     auto [Q, E] = C.div_with_rem(D);
-    M           = polynomial_gcd_matrix<PolyT>({}, {1}, {1}, -Q) * M;
-    if (E.is_zero()) return M;
+    M0          = polynomial_gcd_matrix<PolyT>({}, {1}, {1}, -Q) * M0;
+    if (E.is_zero()) return M0 * M;
     A_cpy.swap(D), B_cpy.swap(E);
+    M = M0 * M;
   }
 }
 
