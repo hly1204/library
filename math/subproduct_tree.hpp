@@ -25,37 +25,43 @@ class subproduct_tree {
   std::vector<std::vector<poly_info>> tree_{};
 
 public:
-  explicit subproduct_tree(const std::vector<T> &x) {
-    if (x.empty()) return;
-    auto &&l0 = tree_.emplace_back();
-    for (auto &&i : x) l0.emplace_back(PolyT{-i, T(1)}, PolyT{1 - i});
-    while (tree_.back().size() != 1) {
-      auto &a     = tree_.back();
-      const int n = static_cast<int>(a.size());
-      std::vector<poly_info> b;
-      for (int i = 0; i + 1 < n; i += 2) {
-        auto &&aif  = a[i].poly_;
-        auto &&ais  = a[i].cached_dft_;
-        auto &&ai1f = a[i + 1].poly_;
-        auto &&ai1s = a[i + 1].cached_dft_;
-        dft_doubling(aif, ais);
-        while (ai1s.size() < ais.size()) dft_doubling(ai1f, ai1s);
-        auto v = ais;
-        for (int j = 0, je = static_cast<int>(v.size()); j != je; ++j) v[j] *= ai1s[j];
-        auto dv = v;
-        idft(v);
-        auto vs = aif.size() + ai1f.size() - 1;
-        if (v.size() < vs) v.front() -= v.emplace_back(1);
-        v.resize(vs);
-        b.emplace_back(std::move(v), std::move(dv));
-      }
-      if (n & 1) b.emplace_back(a.back());
-      tree_.emplace_back(std::move(b));
-    }
-  }
+  explicit subproduct_tree(const std::vector<T> &x);
   std::vector<T> evaluate(const PolyT &a) const;
   PolyT interpolate(const std::vector<T> &y) const;
 };
+
+template <typename PolyT>
+subproduct_tree<PolyT>::subproduct_tree(const std::vector<T> &x) {
+  if (x.empty()) return;
+  auto &&l0 = tree_.emplace_back();
+  for (auto &&i : x) l0.emplace_back(PolyT{-i, T(1)}, PolyT{1 - i});
+  while (tree_.back().size() != 1) {
+    auto &&a    = tree_.back();
+    const int n = static_cast<int>(a.size());
+    std::vector<poly_info> b;
+    for (int i = 0; i + 1 < n; i += 2) {
+      auto &&aif  = a[i].poly_;
+      auto &&ais  = a[i].cached_dft_;
+      auto &&ai1f = a[i + 1].poly_;
+      auto &&ai1s = a[i + 1].cached_dft_;
+      dft_doubling(aif, ais);
+      while (ai1s.size() < ais.size()) dft_doubling(ai1f, ai1s);
+      auto v = ais;
+      for (int j = 0, je = static_cast<int>(v.size()); j != je; ++j) v[j] *= ai1s[j];
+      auto dv = v;
+      idft(v);
+      auto vs = aif.size() + ai1f.size() - 1;
+      if (v.size() < vs) {
+        v.emplace_back(1);
+        v.front() -= v.back();
+      }
+      v.resize(vs);
+      b.emplace_back(std::move(v), std::move(dv));
+    }
+    if (n & 1) b.emplace_back(a.back());
+    tree_.emplace_back(std::move(b));
+  }
+}
 
 template <typename PolyT>
 std::vector<typename PolyT::value_type> subproduct_tree<PolyT>::evaluate(const PolyT &a) const {
