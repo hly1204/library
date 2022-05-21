@@ -1,7 +1,7 @@
 {
   "editor.tabSize": 2,
-  "editor.fontFamily": "'Consolas', 'Courier New', '微软雅黑'",
-  "editor.fontSize": 14,
+  "editor.fontFamily": "'Comic Mono', 'Consolas', '微软雅黑'",
+  "editor.fontSize": 15,
   "editor.defaultFormatter": "xaver.clang-format",
   "editor.smoothScrolling": true,
   "editor.cursorBlinking": "expand",
@@ -9,7 +9,7 @@
   "editor.cursorStyle": "underline",
   "editor.snippetSuggestions": "top",
   "editor.wordWrap": "on",
-  "editor.codeLensFontFamily": "'Consolas', 'Courier New', '微软雅黑'",
+  "editor.codeLensFontFamily": "'Comic Mono', 'Consolas', '微软雅黑'",
   "editor.minimap.enabled": false,
   "editor.bracketPairColorization.enabled": true,
   "[markdown]": {
@@ -18,7 +18,7 @@
   "[cpp]":{
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
-    "editor.autoIndent": "advanced"
+    "editor.autoIndent": "full"
   },
   "[python]": {
     "editor.defaultFormatter": "ms-python.python",

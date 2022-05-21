@@ -7,7 +7,7 @@
       "command": "oj-bundle",
       "args": [
         "${file}",
-        ">${fileDirname}\\${fileBasenameNoExtension}.bundled.cpp"
+        ">${fileDirname}/${fileBasenameNoExtension}.bundled.cpp"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -28,11 +28,11 @@
         "/EHsc",
         "/utf-8",
         "/I\"${workspaceFolder}\"",
-        "/Fe:${workspaceFolder}\\temp\\${fileBasenameNoExtension}.exe",
+        "/Fe:${workspaceFolder}/temp/${fileBasenameNoExtension}.exe",
         "${file}"
       ],
       "options": {
-        "cwd": "${workspaceFolder}\\temp"
+        "cwd": "${workspaceFolder}/temp"
       },
       "problemMatcher": [
         "$msCompile"
@@ -55,11 +55,11 @@
         "/EHsc",
         "/utf-8",
         "/I\"${workspaceFolder}\"",
-        "/Fe:${workspaceFolder}\\temp\\${fileBasenameNoExtension}.exe",
+        "/Fe:${workspaceFolder}/temp/${fileBasenameNoExtension}.exe",
         "${file}"
       ],
       "options": {
-        "cwd": "${workspaceFolder}\\temp"
+        "cwd": "${workspaceFolder}/temp"
       },
       "problemMatcher": [
         "$msCompile"

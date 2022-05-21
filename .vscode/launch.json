@@ -5,10 +5,10 @@
       "name": "cl.exe Od 编译并运行",
       "type": "cppvsdbg",
       "request": "launch",
-      "program": "${workspaceFolder}\\temp\\${fileBasenameNoExtension}.exe",
+      "program": "${workspaceFolder}/temp/${fileBasenameNoExtension}.exe",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "${workspaceFolder}\\temp",
+      "cwd": "${workspaceFolder}/temp",
       "environment": [],
       "console": "newExternalWindow",
       "preLaunchTask": "C/C++: cl.exe Od 编译"
