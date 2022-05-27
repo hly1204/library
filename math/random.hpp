@@ -27,6 +27,7 @@ class xoshiro256starstar {
 
 public:
   // see https://prng.di.unimi.it/splitmix64.c
+  // original license CC0 1.0
   explicit xoshiro256starstar(u64 seed) {
     for (int i = 0; i != 4; ++i) {
       u64 z = (seed += 0x9e3779b97f4a7c15);
@@ -37,8 +38,8 @@ public:
   }
   // see https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator
   using result_type = u64;
-  static inline u64 min() { return std::numeric_limits<u64>::min(); }
-  static inline u64 max() { return std::numeric_limits<u64>::max(); }
+  static constexpr u64 min() { return std::numeric_limits<u64>::min(); }
+  static constexpr u64 max() { return std::numeric_limits<u64>::max(); }
   u64 operator()() { return next(); }
 };
 
