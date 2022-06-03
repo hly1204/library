@@ -35,7 +35,7 @@ std::vector<ModIntT> pow_table(int e, int n) {
       p.push_back(i);
       res[i] = ModIntT(i).pow(e);
     }
-    for (int j = 0, je = p.size(); j < je && i * p[j] < n; ++j) {
+    for (int j = 0, je = static_cast<int>(p.size()); j < je && i * p[j] < n; ++j) {
       is_comp[i * p[j]] = true;
       res[i * p[j]]     = res[i] * res[p[j]];
       if (i % p[j] == 0) break;
