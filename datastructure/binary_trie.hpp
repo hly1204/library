@@ -46,7 +46,7 @@ public:
 
   bool exists(value_type a) const {
     for (int i = BitT - 1; i >= 0; --i)
-      if (!(s_[i] = s_[i + 1]->ch_[(a >> i) & 1])) return false;
+      if ((s_[i] = s_[i + 1]->ch_[(a >> i) & 1]) == nullptr) return false;
     return true;
   }
 
@@ -69,7 +69,7 @@ public:
     for (int i = BitT - 1; i >= 0; --i) {
       auto j = (a >> i) & 1;
       r <<= 1;
-      if (c->ch_[j ^ 1]) {
+      if (c->ch_[j ^ 1] != nullptr) {
         c = c->ch_[j ^ 1], r |= 1;
       } else {
         c = c->ch_[j];
@@ -85,7 +85,7 @@ public:
     for (int i = BitT - 1; i >= 0; --i) {
       auto j = (a >> i) & 1;
       r <<= 1;
-      if (c->ch_[j]) {
+      if (c->ch_[j] != nullptr) {
         c = c->ch_[j];
       } else {
         c = c->ch_[j ^ 1], r |= 1;
