@@ -1,7 +1,7 @@
 {
   "editor.tabSize": 2,
-  "editor.fontFamily": "'Comic Mono', 'Source Han Sans'",
-  "editor.fontSize": 15,
+  "editor.fontFamily": "'Fira Code', 'Source Han Sans'",
+  "editor.fontSize": 14,
   "editor.defaultFormatter": "xaver.clang-format",
   "editor.smoothScrolling": true,
   "editor.cursorBlinking": "expand",

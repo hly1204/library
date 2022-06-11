@@ -3,6 +3,7 @@
 
 #include "../common.hpp"
 
+#include <algorithm>
 #include <cassert>
 #include <cstdint>
 #include <functional>
@@ -94,20 +95,56 @@ public:
     return wrapper(p);
   }
   T find_min() const { return root_->value_; }
-  T extract(wrapper wp); // TODO
+  T extract(wrapper wp) {
+    node *p = const_cast<node *>(wp.data()), *pp = p->parent_;
+    if (p->left_ != nullptr) {
+      p->left_->parent_ = nullptr;
+      if (p->right_ != nullptr) p->right_->parent_ = nullptr;
+    }
+    if (pp != nullptr) {
+      if (pp->left_ == p) {
+        if ((pp->left_ = meld(p->left_, p->right_)) != nullptr) pp->left_->parent_ = pp;
+      } else {
+        if ((pp->right_ = meld(p->left_, p->right_)) != nullptr) pp->right_->parent_ = pp;
+      }
+      // Only could be done with height-based variant?
+      for (; pp != nullptr; pp = pp->parent_) {
+        if (s(pp->left_) < s(pp->right_)) std::swap(pp->left_, pp->right_);
+        if (pp->rank_ != s(pp->right_) + 1) {
+          pp->rank_ = s(pp->right_) + 1;
+        } else {
+          break;
+        }
+      }
+    } else {
+      root_ = meld(p->left_, p->right_);
+    }
+    T res(p->value_);
+    p->left_ = p->right_ = nullptr;
+    delete p;
+    --size_;
+    return res;
+  }
   T extract_min() {
     assert(!empty());
     node *p = root_;
     T res(p->value_);
-    if (p->left_) {
+    if (p->left_ != nullptr) {
       p->left_->parent_ = nullptr;
-      if (p->right_) p->right_->parent_ = nullptr;
+      if (p->right_ != nullptr) p->right_->parent_ = nullptr;
     }
     root_    = meld(p->left_, p->right_);
     p->left_ = p->right_ = nullptr;
     delete p;
     --size_;
     return res;
+  }
+  min_height_based_leftist_tree &meld(min_height_based_leftist_tree &rhs) {
+    size_ += rhs.size_;
+    root_     = meld(root_, rhs.root_);
+    rhs.root_ = nullptr;
+    rhs.size_ = 0;
+    return *this;
   }
 };
 
