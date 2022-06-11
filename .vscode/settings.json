@@ -1,6 +1,6 @@
 {
   "editor.tabSize": 2,
-  "editor.fontFamily": "'Comic Mono', 'Consolas', '微软雅黑'",
+  "editor.fontFamily": "'Comic Mono', 'Source Han Sans'",
   "editor.fontSize": 15,
   "editor.defaultFormatter": "xaver.clang-format",
   "editor.smoothScrolling": true,
@@ -9,24 +9,15 @@
   "editor.cursorStyle": "underline",
   "editor.snippetSuggestions": "top",
   "editor.wordWrap": "on",
-  "editor.codeLensFontFamily": "'Comic Mono', 'Consolas', '微软雅黑'",
-  "editor.minimap.enabled": false,
+  "editor.codeLensFontFamily": "'Fira Code', 'Source Han Sans'",
+  "editor.minimap.enabled": true,
   "editor.bracketPairColorization.enabled": true,
-  "[markdown]": {
-    "editor.tabSize": 4
-  },
-  "[cpp]":{
-    "editor.insertSpaces": true,
-    "editor.tabSize": 2,
-    "editor.autoIndent": "full"
-  },
-  "[python]": {
-    "editor.defaultFormatter": "ms-python.python",
-    "editor.tabSize": 4
-  },
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.acceptSuggestionOnEnter": "smart",
+  "workbench.list.smoothScrolling": true,
+  "editor.fontWeight": "normal",
+  "editor.fontLigatures": true,
   "files.associations": {
     "algorithm": "cpp",
     "array": "cpp",
@@ -94,4 +85,16 @@
     "fstream": "cpp",
     "sstream": "cpp"
   },
+  "[markdown]": {
+    "editor.tabSize": 4
+  },
+  "[cpp]":{
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "full"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python",
+    "editor.tabSize": 4
+  }
 }
