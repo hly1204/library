@@ -2,7 +2,6 @@
 
 #include "datastructure/min_height_based_leftist_tree.hpp"
 
-#include <functional>
 #include <iostream>
 
 int main() {
