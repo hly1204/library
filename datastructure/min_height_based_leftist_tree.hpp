@@ -15,6 +15,8 @@ LIB_BEGIN
 
 template <typename T, typename CmpT = std::less<>>
 class min_height_based_leftist_tree {
+  static_assert(std::is_copy_constructible_v<T>);
+
   class node {
   public:
     node *left_{}, *right_{}, *parent_{};
@@ -65,21 +67,24 @@ public:
       typename IterT,
       std::enable_if_t<std::is_convertible_v<typename std::iterator_traits<IterT>::value_type, T>,
                        int> = 0>
-  min_height_based_leftist_tree(IterT begin, IterT end) {
+  min_height_based_leftist_tree(IterT begin, IterT end, CmpT cmp = CmpT())
+      : cmp_(cmp), size_(end - begin) {
     std::queue<node *> q;
     for (; begin != end; ++begin) q.push(new node(*begin));
     while (q.size() > 1) {
-      node *a = q.top();
+      node *a = q.front();
       q.pop();
-      node *b = q.top();
+      node *b = q.front();
       q.pop();
       q.push(meld(a, b));
     }
-    if (!q.empty()) root_ = q.top(), size_ = end - begin;
+    if (!q.empty()) root_ = q.front();
   }
+  min_height_based_leftist_tree(const min_height_based_leftist_tree &) = delete;
   ~min_height_based_leftist_tree() { delete root_; }
+  min_height_based_leftist_tree &operator=(const min_height_based_leftist_tree &) = delete;
 
-  bool empty() const { return size() == 0; }
+  bool empty() const { return root_ == nullptr; }
   std::size_t size() const { return size_; }
   std::make_signed_t<std::size_t> ssize() const { return size_; }
   wrapper insert(const T &value) {
