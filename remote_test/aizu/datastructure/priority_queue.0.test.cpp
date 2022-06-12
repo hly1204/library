@@ -18,9 +18,9 @@ int main() {
     if (cmd[2] == 's') {
       long long v;
       std::cin >> v;
-      h.insert(v);
+      h.push(v);
     } else if (cmd[2] == 't') {
-      std::cout << h.extract_min() << '\n';
+      std::cout << h.pop() << '\n';
     } else {
       break;
     }

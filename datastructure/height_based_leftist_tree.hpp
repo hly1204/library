@@ -89,14 +89,14 @@ public:
   bool empty() const { return root_ == nullptr; }
   std::size_t size() const { return size_; }
   std::make_signed_t<std::size_t> ssize() const { return size_; }
-  wrapper insert(const T &value) {
+  wrapper push(const T &value) {
     node *p = new node(value);
     root_   = meld(root_, p);
     ++size_;
     return wrapper(p);
   }
-  T find_min() const { return root_->value_; }
-  T extract(wrapper wp) {
+  T top() const { return root_->value_; }
+  T pop(wrapper wp) {
     node *p = const_cast<node *>(wp.data()), *pp = p->parent_;
     if (p->left_ != nullptr) {
       p->left_->parent_ = nullptr;
@@ -126,7 +126,7 @@ public:
     --size_;
     return res;
   }
-  T extract_min() {
+  T pop() {
     assert(!empty());
     node *p = root_;
     T res(p->value_);
