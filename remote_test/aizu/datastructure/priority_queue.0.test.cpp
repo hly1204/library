@@ -1,6 +1,6 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/courses/lesson/1/ALDS1/all/ALDS1_9_C"
 
-#include "datastructure/min_height_based_leftist_tree.hpp"
+#include "datastructure/height_based_leftist_tree.hpp"
 
 #include <iostream>
 
@@ -11,7 +11,7 @@ int main() {
   std::ios::sync_with_stdio(false);
   std::cin.tie(nullptr);
   auto cmp = [](long long a, long long b) { return a > b; };
-  lib::min_hblt<long long, decltype(cmp)> h(cmp);
+  lib::hblt<long long, decltype(cmp)> h(cmp);
   for (;;) {
     char cmd[20];
     std::cin >> cmd;

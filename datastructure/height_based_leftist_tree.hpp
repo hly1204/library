@@ -1,5 +1,5 @@
-#ifndef MIN_HEIGHT_BASED_LEFTIST_TREE_HPP
-#define MIN_HEIGHT_BASED_LEFTIST_TREE_HPP
+#ifndef HEIGHT_BASED_LEFTIST_TREE_HPP
+#define HEIGHT_BASED_LEFTIST_TREE_HPP
 
 #include "../common.hpp"
 
@@ -14,8 +14,9 @@
 
 LIB_BEGIN
 
+// Min Heap
 template <typename T, typename CmpT = std::less<>>
-class min_height_based_leftist_tree {
+class height_based_leftist_tree {
   static_assert(std::is_copy_constructible_v<T>);
 
   class node {
@@ -63,12 +64,12 @@ public:
     const node *data() const { return p_; }
   };
 
-  min_height_based_leftist_tree(CmpT cmp = CmpT()) : cmp_(cmp) {}
+  height_based_leftist_tree(CmpT cmp = CmpT()) : cmp_(cmp) {}
   template <
       typename IterT,
       std::enable_if_t<std::is_convertible_v<typename std::iterator_traits<IterT>::value_type, T>,
                        int> = 0>
-  min_height_based_leftist_tree(IterT begin, IterT end, CmpT cmp = CmpT())
+  height_based_leftist_tree(IterT begin, IterT end, CmpT cmp = CmpT())
       : cmp_(cmp), size_(end - begin) {
     std::queue<node *> q;
     for (; begin != end; ++begin) q.push(new node(*begin));
@@ -81,9 +82,9 @@ public:
     }
     if (!q.empty()) root_ = q.front();
   }
-  min_height_based_leftist_tree(const min_height_based_leftist_tree &) = delete;
-  ~min_height_based_leftist_tree() { delete root_; }
-  min_height_based_leftist_tree &operator=(const min_height_based_leftist_tree &) = delete;
+  height_based_leftist_tree(const height_based_leftist_tree &) = delete;
+  ~height_based_leftist_tree() { delete root_; }
+  height_based_leftist_tree &operator=(const height_based_leftist_tree &) = delete;
 
   bool empty() const { return root_ == nullptr; }
   std::size_t size() const { return size_; }
@@ -139,7 +140,7 @@ public:
     --size_;
     return res;
   }
-  min_height_based_leftist_tree &meld(min_height_based_leftist_tree &rhs) {
+  height_based_leftist_tree &meld(height_based_leftist_tree &rhs) {
     size_ += rhs.size_;
     root_     = meld(root_, rhs.root_);
     rhs.root_ = nullptr;
@@ -149,7 +150,7 @@ public:
 };
 
 template <typename T, typename CmpT>
-using min_hblt = min_height_based_leftist_tree<T, CmpT>;
+using hblt = height_based_leftist_tree<T, CmpT>;
 
 LIB_END
 
