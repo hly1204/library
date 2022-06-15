@@ -15,7 +15,7 @@
 LIB_BEGIN
 
 // Min Heap
-template <typename T, typename CmpT = std::less<>>
+template <typename T, typename CmpT>
 class height_based_leftist_tree {
   static_assert(std::is_copy_constructible_v<T>);
 
@@ -33,7 +33,7 @@ class height_based_leftist_tree {
   CmpT cmp_;
   std::size_t size_{};
 
-  static std::size_t s(node *a) { return a ? a->rank_ : 0; }
+  static std::size_t s(node *a) { return a != nullptr ? a->rank_ : 0; }
 
   node *meld(node *a, node *b) {
     if (a == nullptr) return b;
@@ -64,7 +64,7 @@ public:
     const node *data() const { return p_; }
   };
 
-  height_based_leftist_tree(CmpT cmp = CmpT()) : cmp_(cmp) {}
+  explicit height_based_leftist_tree(CmpT cmp = CmpT()) : cmp_(cmp) {}
   template <
       typename IterT,
       std::enable_if_t<std::is_convertible_v<typename std::iterator_traits<IterT>::value_type, T>,
@@ -149,7 +149,7 @@ public:
   }
 };
 
-template <typename T, typename CmpT>
+template <typename T, typename CmpT = std::less<>>
 using hblt = height_based_leftist_tree<T, CmpT>;
 
 LIB_END
