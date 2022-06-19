@@ -2,7 +2,7 @@ name: verify
 
 on:
   push:
-    branch:
+    branches:
       - master
 
 jobs:
