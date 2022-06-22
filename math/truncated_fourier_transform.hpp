@@ -12,7 +12,7 @@ LIB_BEGIN
 
 template <typename ContainerT>
 void tft(ContainerT &&a) {
-  using Container          = std::remove_cv_t<std::remove_reference_t<ContainerT>>;
+  using Container          = std::decay_t<ContainerT>;
   using T                  = typename Container::value_type;
   static constexpr auto rt = detail::root<T>();
   static std::vector<T> root(1);
@@ -47,7 +47,7 @@ void tft(ContainerT &&a) {
 
 template <typename ContainerT>
 void itft(ContainerT &&a) {
-  using Container           = std::remove_cv_t<std::remove_reference_t<ContainerT>>;
+  using Container           = std::decay_t<ContainerT>;
   using T                   = typename Container::value_type;
   static constexpr auto rt  = detail::root<T>();
   static constexpr auto irt = detail::iroot<T>();
