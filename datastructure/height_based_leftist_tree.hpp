@@ -39,7 +39,7 @@ class height_based_leftist_tree {
     if (a == nullptr) return b;
     if (b == nullptr) return a;
     if (!cmp_(a->value_, b->value_)) std::swap(a, b);
-    if (a->right_) a->right_->parent_ = nullptr;
+    if (a->right_ != nullptr) a->right_->parent_ = nullptr;
     if (((a->right_ = meld(a->right_, b))->parent_ = a)->left_ == nullptr ||
         a->left_->rank_ < a->right_->rank_)
       std::swap(a->left_, a->right_);
