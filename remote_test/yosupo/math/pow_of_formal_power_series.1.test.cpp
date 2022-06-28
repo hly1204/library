@@ -13,7 +13,8 @@ int main() {
 #endif
   std::ios::sync_with_stdio(false);
   std::cin.tie(nullptr);
-  int n, m;
+  int n;
+  long long m;
   std::cin >> n >> m;
   using mint = lib::mm30<998244353>;
   lib::tfps<mint> a;

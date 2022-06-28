@@ -84,7 +84,7 @@ public:
   truncated_formal_power_series log(int n) const { return deriv().div(*this, n - 1).integr(); }
   truncated_formal_power_series exp(int n) const;
   truncated_formal_power_series div(const truncated_formal_power_series &rhs, int n) const;
-  truncated_formal_power_series pow(int n, int e) const;
+  truncated_formal_power_series pow(int n, long long e) const;
   std::optional<truncated_formal_power_series> sqrt_hint(int n, ModIntT c) const;
   std::optional<truncated_formal_power_series> sqrt(int n) const;
 
@@ -191,12 +191,18 @@ truncated_formal_power_series<ModIntT>::div(const truncated_formal_power_series 
 }
 
 template <typename ModIntT>
-truncated_formal_power_series<ModIntT> truncated_formal_power_series<ModIntT>::pow(int n,
-                                                                                   int e) const {
-  const int o        = ord();
+truncated_formal_power_series<ModIntT>
+truncated_formal_power_series<ModIntT>::pow(int n, long long e) const {
+  if (e == 0) {
+    truncated_formal_power_series res{1};
+    res.resize(n);
+    return res;
+  }
+  const int o = ord();
+  if (o == NEGATIVE_INFINITY || (o > n / e || (o == n / e && n % e == 0)))
+    return truncated_formal_power_series(n);
   const long long zs = static_cast<long long>(o) * e; // count zeros
-  if (o == NEGATIVE_INFINITY || zs >= n) return truncated_formal_power_series(n);
-  const int nn = n - static_cast<int>(zs);
+  const int nn       = n - static_cast<int>(zs);
   const ModIntT c(this->operator[](o)), ic(c.inv()), ce(c.pow(e)), me(e);
   truncated_formal_power_series cpy(this->cbegin() + o, this->cend()); // optimize?
   for (auto &&i : cpy) i *= ic;
