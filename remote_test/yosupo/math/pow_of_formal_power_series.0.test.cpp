@@ -1,5 +1,5 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/pow_of_formal_power_series"
-#define ERROR
+#define IGNORE // I don't want to deal with the case that `m` is too large.
 
 #include "math/formal_power_series.hpp"
 #include "modint/montgomery_modint.hpp"
@@ -14,7 +14,7 @@ int main() {
   std::ios::sync_with_stdio(false);
   std::cin.tie(nullptr);
   int n;
-  long long m; // I don't want to deal with the case that `m` is too large.
+  long long m;
   std::cin >> n >> m;
   using mint = lib::mm30<998244353>;
   lib::fps<mint> f([it = std::istream_iterator<mint>(std::cin)](int) mutable { return *it++; });
