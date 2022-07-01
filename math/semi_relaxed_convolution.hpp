@@ -45,7 +45,7 @@ template <typename ModIntT, typename FnT>
 ModIntT semi_relaxed_convolution<ModIntT, FnT>::next() {
   {
     // enlarge space
-    int len = ntt_len(n_ << 1 | 1);
+    const int len = ntt_len(n_ << 1 | 1);
     if (static_cast<int>(c_.size()) < len) c_.resize(len);
     if (static_cast<int>(fixed_A_.size()) < len) fixed_A_.resize(len);
   }
@@ -61,7 +61,7 @@ ModIntT semi_relaxed_convolution<ModIntT, FnT>::next() {
           dft(dft_A_cache_[lv].emplace_back(fixed_A_.cbegin() + (i - 1) * block_size,
                                             fixed_A_.cbegin() + (i + 1) * block_size));
         }
-        auto &B_cache = dft_B_cache_[lv];
+        auto &&B_cache = dft_B_cache_[lv];
         B_cache[i - 1].resize(block_size2);
         std::fill_n(std::copy_n(B_.cbegin() + l, block_size, B_cache[i - 1].begin()), block_size,
                     ModIntT());

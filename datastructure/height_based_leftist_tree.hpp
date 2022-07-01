@@ -24,7 +24,7 @@ class height_based_leftist_tree {
     node *left_{}, *right_{}, *parent_{};
     int rank_{1}; // a.k.a. s value
     T value_;
-    node(const T &value) : value_(value) {}
+    explicit node(const T &value) : value_(value) {}
     ~node() {
       delete left_;
       delete right_;

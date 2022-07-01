@@ -77,35 +77,31 @@ std::vector<typename PolyT::value_type> subproduct_tree<PolyT>::evaluate(const P
   aix.erase(aix.begin(), aix.begin() + m);
   aix.resize(n);
   std::vector<PolyT> resp{aix};
-  {
-    auto t  = tree_.rbegin() + 1;
-    auto te = tree_.rend();
-    for (; t != te; ++t) {
-      std::vector<PolyT> res;
-      const int ts = static_cast<int>(t->size());
-      for (int i = 0, ie = static_cast<int>(resp.size()); i != ie; ++i)
-        if ((i << 1 | 1) < ts) {
-          auto &&l      = t->at(i << 1);
-          auto &&r      = t->at(i << 1 | 1);
-          const int len = static_cast<int>(l.cached_dft_.size());
-          resp[i].resize(len);
-          dft(resp[i]);
-          auto respi_cpy = resp[i];
-          for (int j = 0; j != len; ++j)
-            resp[i][j] *= r.cached_dft_[j], respi_cpy[j] *= l.cached_dft_[j];
-          res.emplace_back(std::move(resp[i]));
-          auto &&rr = res.emplace_back(std::move(respi_cpy));
-          auto &&lr = *(res.rbegin() + 1);
-          idft(lr), idft(rr);
-          lr.erase(lr.begin(), lr.begin() + r.poly_.deg());
-          lr.resize(l.poly_.deg());
-          rr.erase(rr.begin(), rr.begin() + l.poly_.deg());
-          rr.resize(r.poly_.deg());
-        } else {
-          res.emplace_back(std::move(resp[i]));
-        }
-      resp.swap(res);
-    }
+  for (auto t = tree_.rbegin() + 1, te = tree_.rend(); t != te; ++t) {
+    std::vector<PolyT> res;
+    const int ts = static_cast<int>(t->size());
+    for (int i = 0, ie = static_cast<int>(resp.size()); i != ie; ++i)
+      if ((i << 1 | 1) < ts) {
+        auto &&l      = t->at(i << 1);
+        auto &&r      = t->at(i << 1 | 1);
+        const int len = static_cast<int>(l.cached_dft_.size());
+        resp[i].resize(len);
+        dft(resp[i]);
+        auto respi_cpy = resp[i];
+        for (int j = 0; j != len; ++j)
+          resp[i][j] *= r.cached_dft_[j], respi_cpy[j] *= l.cached_dft_[j];
+        res.emplace_back(std::move(resp[i]));
+        auto &&rr = res.emplace_back(std::move(respi_cpy));
+        auto &&lr = *(res.rbegin() + 1);
+        idft(lr), idft(rr);
+        lr.erase(lr.begin(), lr.begin() + r.poly_.deg());
+        lr.resize(l.poly_.deg());
+        rr.erase(rr.begin(), rr.begin() + l.poly_.deg());
+        rr.resize(r.poly_.deg());
+      } else {
+        res.emplace_back(std::move(resp[i]));
+      }
+    resp.swap(res);
   }
   std::vector<T> res(n);
   for (int i = 0; i != n; ++i) res[i] = resp[i].front();
