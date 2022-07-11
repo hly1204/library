@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <functional>
 #include <iterator>
+#include <memory>
 #include <queue>
 #include <type_traits>
 #include <utility>
@@ -141,10 +142,12 @@ public:
     return res;
   }
   height_based_leftist_tree &meld(height_based_leftist_tree &rhs) {
-    size_ += rhs.size_;
-    root_     = meld(root_, rhs.root_);
-    rhs.root_ = nullptr;
-    rhs.size_ = 0;
+    if (this != std::addressof(rhs)) {
+      size_ += rhs.size_;
+      root_     = meld(root_, rhs.root_);
+      rhs.root_ = nullptr;
+      rhs.size_ = 0;
+    }
     return *this;
   }
 };

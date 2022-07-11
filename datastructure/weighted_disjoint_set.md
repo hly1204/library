@@ -1,4 +1,4 @@
 ---
-title: Weighted Disjoint Set
+title: Weighted Disjoint Set (Abelian)
 documentation_of: ./weighted_disjoint_set.hpp
 ---
