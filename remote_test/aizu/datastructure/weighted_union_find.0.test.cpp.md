@@ -6,7 +6,7 @@ data:
     title: common.hpp
   - icon: ':heavy_check_mark:'
     path: datastructure/weighted_disjoint_set.hpp
-    title: Weighted Disjoint Set
+    title: Weighted Disjoint Set (Abelian)
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false

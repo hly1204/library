@@ -16,7 +16,7 @@ data:
     title: Height-Based Leftist Tree
   - icon: ':heavy_check_mark:'
     path: datastructure/weighted_disjoint_set.hpp
-    title: Weighted Disjoint Set
+    title: Weighted Disjoint Set (Abelian)
   - icon: ':heavy_check_mark:'
     path: math/binomial.hpp
     title: Binomial Coefficient (in $\mathbb{F} _ p$)

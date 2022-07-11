@@ -78,5 +78,5 @@ data:
   - remote_test/aizu/datastructure/weighted_union_find.0.test.cpp
 documentation_of: datastructure/weighted_disjoint_set.hpp
 layout: document
-title: Weighted Disjoint Set
+title: Weighted Disjoint Set (Abelian)
 ---

@@ -22,7 +22,7 @@ data:
       title: Height-Based Leftist Tree
     - icon: ':heavy_check_mark:'
       path: datastructure/weighted_disjoint_set.hpp
-      title: Weighted Disjoint Set
+      title: Weighted Disjoint Set (Abelian)
   - name: math
     pages:
     - icon: ':heavy_check_mark:'
