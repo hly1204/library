@@ -10,31 +10,31 @@ data:
   - icon: ':question:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/polynomial.hpp
     title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   - icon: ':question:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/semi_relaxed_convolution.hpp
     title: Semi-Relaxed Convolution (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT
       prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/sqrt_mod.hpp
     title: Square Roots (in $\mathbb{F} _ p$)
   - icon: ':heavy_check_mark:'
     path: math/subproduct_tree.hpp
     title: Multipoint Evaluation and Interpolation (in $\mathbb{F} _ p$ for FFT prime
       $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/truncated_formal_power_series.hpp
     title: Truncated Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/truncated_fourier_transform.hpp
     title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for
       FFT prime $p$)
@@ -330,42 +330,45 @@ data:
     \ tft(rhs_cpy);\n  for (int i = 0; i != len; ++i) this->operator[](i) *= rhs_cpy[i];\n\
     \  itft(*this);\n  return *this;\n}\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\
     \ truncated_formal_power_series<ModIntT>::inv(int n) const {\n  if (n <= 0) return\
-    \ {};\n  const std::vector a(this->cbegin(), this->cend());\n  semi_relaxed_convolution\
-    \ src(a, [iv = a.front().inv()](int n, const std::vector<ModIntT> &c) {\n    return\
-    \ n == 0 ? iv : -c[n] * iv;\n  });\n  auto &&multiplier = src.await(n).get_multiplier();\n\
+    \ {};\n  semi_relaxed_convolution src(static_cast<MyBase>(*this),\n          \
+    \                     [iv = this->front().inv()](int n, const std::vector<ModIntT>\
+    \ &c) {\n                                 return n == 0 ? iv : -c[n] * iv;\n \
+    \                              });\n  auto &&multiplier = src.await(n).get_multiplier();\n\
     \  return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());\n\
     }\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT> truncated_formal_power_series<ModIntT>::exp(int\
-    \ n) const {\n  if (n <= 0) return {};\n  auto &&d = deriv();\n  std::vector dv(d.cbegin(),\
-    \ d.cend());\n  semi_relaxed_convolution src(dv, [](int n, const std::vector<ModIntT>\
-    \ &c) {\n    return n == 0 ? ModIntT(1) : c[n - 1] * invs(n);\n  });\n  auto &&multiplier\
+    \ n) const {\n  if (n <= 0) return {};\n  semi_relaxed_convolution src(static_cast<MyBase>(deriv()),\n\
+    \                               [](int n, const std::vector<ModIntT> &c) {\n \
+    \                                return n == 0 ? ModIntT(1) : c[n - 1] * invs(n);\n\
+    \                               });\n  auto &&multiplier = src.await(n).get_multiplier();\n\
+    \  return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());\n\
+    }\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\ntruncated_formal_power_series<ModIntT>::div(const\
+    \ truncated_formal_power_series &rhs, int n) const {\n  assert(!rhs.is_zero());\n\
+    \  if (n <= 0) return {};\n  semi_relaxed_convolution src(static_cast<MyBase>(rhs),\n\
+    \                               [this, sz = static_cast<int>(this->size()),\n\
+    \                                iv = rhs.front().inv()](int n, const std::vector<ModIntT>\
+    \ &c) {\n                                 return ((n < sz ? this->operator[](n)\
+    \ : ModIntT()) - c[n]) * iv;\n                               });\n  auto &&multiplier\
     \ = src.await(n).get_multiplier();\n  return truncated_formal_power_series(multiplier.cbegin(),\
     \ multiplier.cend());\n}\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\n\
-    truncated_formal_power_series<ModIntT>::div(const truncated_formal_power_series\
-    \ &rhs, int n) const {\n  assert(!rhs.is_zero());\n  if (n <= 0) return {};\n\
-    \  const std::vector a(rhs.cbegin(), rhs.cend());\n  semi_relaxed_convolution\
-    \ src(\n      a, [this, iv = a.front().inv()](int n, const std::vector<ModIntT>\
-    \ &c) {\n        return ((n < static_cast<int>(this->size()) ? this->operator[](n)\
-    \ : ModIntT()) - c[n]) * iv;\n      });\n  auto &&multiplier = src.await(n).get_multiplier();\n\
-    \  return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());\n\
-    }\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\ntruncated_formal_power_series<ModIntT>::pow(int\
-    \ n, long long e) const {\n  if (e == 0) {\n    truncated_formal_power_series\
-    \ res{1};\n    res.resize(n);\n    return res;\n  }\n  const int o = ord();\n\
-    \  if (o == NEGATIVE_INFINITY || (o > n / e || (o == n / e && n % e == 0)))\n\
-    \    return truncated_formal_power_series(n);\n  const long long zs = static_cast<long\
-    \ long>(o) * e; // count zeros\n  const int nn       = n - static_cast<int>(zs);\n\
-    \  const ModIntT c(this->operator[](o)), ic(c.inv()), ce(c.pow(e)), me(e);\n \
-    \ truncated_formal_power_series cpy(this->cbegin() + o, this->cend()); // optimize?\n\
-    \  for (auto &&i : cpy) i *= ic;\n  cpy = cpy.log(nn);\n  for (auto &&i : cpy)\
-    \ i *= me;\n  cpy = cpy.exp(nn);\n  for (auto &&i : cpy) i *= ce;\n  cpy.insert(cpy.begin(),\
-    \ zs, ModIntT());\n  return cpy;\n}\n\ntemplate <typename ModIntT>\nstd::optional<truncated_formal_power_series<ModIntT>>\n\
+    truncated_formal_power_series<ModIntT>::pow(int n, long long e) const {\n  if\
+    \ (e == 0) {\n    truncated_formal_power_series res{1};\n    res.resize(n);\n\
+    \    return res;\n  }\n  const int o = ord();\n  if (o == NEGATIVE_INFINITY ||\
+    \ (o > n / e || (o == n / e && n % e == 0)))\n    return truncated_formal_power_series(n);\n\
+    \  const long long zs = static_cast<long long>(o) * e; // count zeros\n  const\
+    \ int nn       = n - static_cast<int>(zs);\n  const ModIntT c(this->operator[](o)),\
+    \ ic(c.inv()), ce(c.pow(e)), me(e);\n  truncated_formal_power_series cpy(this->cbegin()\
+    \ + o, this->cend()); // optimize?\n  for (auto &&i : cpy) i *= ic;\n  cpy = cpy.log(nn);\n\
+    \  for (auto &&i : cpy) i *= me;\n  cpy = cpy.exp(nn);\n  for (auto &&i : cpy)\
+    \ i *= ce;\n  cpy.insert(cpy.begin(), zs, ModIntT());\n  return cpy;\n}\n\ntemplate\
+    \ <typename ModIntT>\nstd::optional<truncated_formal_power_series<ModIntT>>\n\
     truncated_formal_power_series<ModIntT>::sqrt_hint(int n, ModIntT c) const {\n\
     \  if (this->empty()) return {};\n  const int o = ord();\n  if (o == NEGATIVE_INFINITY)\
     \ return truncated_formal_power_series(n);\n  if ((o & 1) || c * c != this->operator[](o))\
     \ return {};\n  truncated_formal_power_series cpy(this->cbegin() + o, this->cend());\n\
     \  const ModIntT iv(cpy.front().inv());\n  for (auto &&i : cpy) i *= iv;\n  cpy\
-    \ = cpy.pow(n - (o >> 1), static_cast<int>(ModIntT(2).inv()));\n  for (auto &&i\
-    \ : cpy) i *= c;\n  cpy.insert(cpy.begin(), o >> 1, ModIntT());\n  return cpy;\n\
-    }\n\ntemplate <typename ModIntT>\nstd::optional<truncated_formal_power_series<ModIntT>>\n\
+    \ = cpy.pow(n - (o >> 1), static_cast<long long>(ModIntT(2).inv()));\n  for (auto\
+    \ &&i : cpy) i *= c;\n  cpy.insert(cpy.begin(), o >> 1, ModIntT());\n  return\
+    \ cpy;\n}\n\ntemplate <typename ModIntT>\nstd::optional<truncated_formal_power_series<ModIntT>>\n\
     truncated_formal_power_series<ModIntT>::sqrt(int n) const {\n  if (this->empty())\
     \ return {};\n  const int o = ord();\n  if (o == NEGATIVE_INFINITY) return truncated_formal_power_series(n);\n\
     \  if (o & 1) return {};\n  auto res = sqrt_mod_prime(this->operator[](o));\n\
@@ -405,19 +408,19 @@ data:
     \ polynomial &lhs, const polynomial &rhs) {\n    return polynomial(lhs) %= rhs;\n\
     \  }\n  friend std::istream &operator>>(std::istream &lhs, polynomial &rhs) {\n\
     \    for (auto &&i : rhs) lhs >> i;\n    return lhs;\n  }\n  friend std::ostream\
-    \ &operator<<(std::ostream &lhs, const polynomial &rhs) {\n    return lhs << MyBase(rhs.begin(),\
-    \ rhs.end()); // debug only (SLOW)\n  }\n};\n\ntemplate <typename IterT>\npolynomial(IterT,\
-    \ IterT) -> polynomial<typename std::iterator_traits<IterT>::value_type>;\n\n\
-    LIB_END\n\n\n#line 1 \"math/subproduct_tree.hpp\"\n\n\n\n#line 6 \"math/subproduct_tree.hpp\"\
-    \n\n#line 10 \"math/subproduct_tree.hpp\"\n\nLIB_BEGIN\n\ntemplate <typename PolyT>\n\
-    class subproduct_tree {\n  using T = typename PolyT::value_type;\n\n  struct poly_info\
-    \ {\n    PolyT poly_, cached_dft_;\n    poly_info(PolyT &&poly, PolyT &&cached_dft)\n\
-    \        : poly_(std::move(poly)), cached_dft_(std::move(cached_dft)) {}\n   \
-    \ poly_info(const PolyT &poly, const PolyT &cached_dft) : poly_(poly), cached_dft_(cached_dft)\
-    \ {}\n    explicit poly_info(const poly_info &) = default;\n  };\n\n  std::vector<std::vector<poly_info>>\
-    \ tree_{};\n\npublic:\n  explicit subproduct_tree(const std::vector<T> &x);\n\
-    \  std::vector<T> evaluate(const PolyT &a) const;\n  PolyT interpolate(const std::vector<T>\
-    \ &y) const;\n};\n\ntemplate <typename PolyT>\nsubproduct_tree<PolyT>::subproduct_tree(const\
+    \ &operator<<(std::ostream &lhs, const polynomial &rhs) {\n    return lhs << static_cast<MyBase>(rhs);\n\
+    \  }\n};\n\ntemplate <typename IterT>\npolynomial(IterT, IterT) -> polynomial<typename\
+    \ std::iterator_traits<IterT>::value_type>;\n\nLIB_END\n\n\n#line 1 \"math/subproduct_tree.hpp\"\
+    \n\n\n\n#line 6 \"math/subproduct_tree.hpp\"\n\n#line 10 \"math/subproduct_tree.hpp\"\
+    \n\nLIB_BEGIN\n\ntemplate <typename PolyT>\nclass subproduct_tree {\n  using T\
+    \ = typename PolyT::value_type;\n\n  struct poly_info {\n    PolyT poly_, cached_dft_;\n\
+    \    poly_info(PolyT &&poly, PolyT &&cached_dft)\n        : poly_(std::move(poly)),\
+    \ cached_dft_(std::move(cached_dft)) {}\n    poly_info(const PolyT &poly, const\
+    \ PolyT &cached_dft) : poly_(poly), cached_dft_(cached_dft) {}\n    explicit poly_info(const\
+    \ poly_info &) = default;\n  };\n\n  std::vector<std::vector<poly_info>> tree_{};\n\
+    \npublic:\n  explicit subproduct_tree(const std::vector<T> &x);\n  std::vector<T>\
+    \ evaluate(const PolyT &a) const;\n  PolyT interpolate(const std::vector<T> &y)\
+    \ const;\n};\n\ntemplate <typename PolyT>\nsubproduct_tree<PolyT>::subproduct_tree(const\
     \ std::vector<T> &x) {\n  if (x.empty()) return;\n  auto &&l0 = tree_.emplace_back();\n\
     \  for (auto &&i : x) l0.emplace_back(PolyT{-i, T(1)}, PolyT{1 - i});\n  while\
     \ (tree_.back().size() != 1) {\n    auto &&a    = tree_.back();\n    const int\
@@ -568,7 +571,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
   requiredBy: []
-  timestamp: '2022-07-02 07:42:02+08:00'
+  timestamp: '2022-09-24 12:10:07+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp

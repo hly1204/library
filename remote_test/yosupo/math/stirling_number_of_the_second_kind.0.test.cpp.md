@@ -7,42 +7,42 @@ data:
   - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/binomial.hpp
     title: Binomial Coefficient (in $\mathbb{F} _ p$)
   - icon: ':question:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/linear_sieve.hpp
     title: Linear Sieve
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/polynomial.hpp
     title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   - icon: ':question:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/semi_relaxed_convolution.hpp
     title: Semi-Relaxed Convolution (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT
       prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/sqrt_mod.hpp
     title: Square Roots (in $\mathbb{F} _ p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/stirling_numbers.hpp
     title: Stirling Numbers (in $\mathbb{F} _ p$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/taylor_shift.hpp
     title: Polynomial Taylor Shift (in $\mathbb{F} _ p$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/truncated_formal_power_series.hpp
     title: Truncated Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/truncated_fourier_transform.hpp
     title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for
       FFT prime $p$)
@@ -51,9 +51,9 @@ data:
     title: Montgomery ModInt
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind
@@ -338,42 +338,45 @@ data:
     \ tft(rhs_cpy);\n  for (int i = 0; i != len; ++i) this->operator[](i) *= rhs_cpy[i];\n\
     \  itft(*this);\n  return *this;\n}\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\
     \ truncated_formal_power_series<ModIntT>::inv(int n) const {\n  if (n <= 0) return\
-    \ {};\n  const std::vector a(this->cbegin(), this->cend());\n  semi_relaxed_convolution\
-    \ src(a, [iv = a.front().inv()](int n, const std::vector<ModIntT> &c) {\n    return\
-    \ n == 0 ? iv : -c[n] * iv;\n  });\n  auto &&multiplier = src.await(n).get_multiplier();\n\
+    \ {};\n  semi_relaxed_convolution src(static_cast<MyBase>(*this),\n          \
+    \                     [iv = this->front().inv()](int n, const std::vector<ModIntT>\
+    \ &c) {\n                                 return n == 0 ? iv : -c[n] * iv;\n \
+    \                              });\n  auto &&multiplier = src.await(n).get_multiplier();\n\
     \  return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());\n\
     }\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT> truncated_formal_power_series<ModIntT>::exp(int\
-    \ n) const {\n  if (n <= 0) return {};\n  auto &&d = deriv();\n  std::vector dv(d.cbegin(),\
-    \ d.cend());\n  semi_relaxed_convolution src(dv, [](int n, const std::vector<ModIntT>\
-    \ &c) {\n    return n == 0 ? ModIntT(1) : c[n - 1] * invs(n);\n  });\n  auto &&multiplier\
+    \ n) const {\n  if (n <= 0) return {};\n  semi_relaxed_convolution src(static_cast<MyBase>(deriv()),\n\
+    \                               [](int n, const std::vector<ModIntT> &c) {\n \
+    \                                return n == 0 ? ModIntT(1) : c[n - 1] * invs(n);\n\
+    \                               });\n  auto &&multiplier = src.await(n).get_multiplier();\n\
+    \  return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());\n\
+    }\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\ntruncated_formal_power_series<ModIntT>::div(const\
+    \ truncated_formal_power_series &rhs, int n) const {\n  assert(!rhs.is_zero());\n\
+    \  if (n <= 0) return {};\n  semi_relaxed_convolution src(static_cast<MyBase>(rhs),\n\
+    \                               [this, sz = static_cast<int>(this->size()),\n\
+    \                                iv = rhs.front().inv()](int n, const std::vector<ModIntT>\
+    \ &c) {\n                                 return ((n < sz ? this->operator[](n)\
+    \ : ModIntT()) - c[n]) * iv;\n                               });\n  auto &&multiplier\
     \ = src.await(n).get_multiplier();\n  return truncated_formal_power_series(multiplier.cbegin(),\
     \ multiplier.cend());\n}\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\n\
-    truncated_formal_power_series<ModIntT>::div(const truncated_formal_power_series\
-    \ &rhs, int n) const {\n  assert(!rhs.is_zero());\n  if (n <= 0) return {};\n\
-    \  const std::vector a(rhs.cbegin(), rhs.cend());\n  semi_relaxed_convolution\
-    \ src(\n      a, [this, iv = a.front().inv()](int n, const std::vector<ModIntT>\
-    \ &c) {\n        return ((n < static_cast<int>(this->size()) ? this->operator[](n)\
-    \ : ModIntT()) - c[n]) * iv;\n      });\n  auto &&multiplier = src.await(n).get_multiplier();\n\
-    \  return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());\n\
-    }\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\ntruncated_formal_power_series<ModIntT>::pow(int\
-    \ n, long long e) const {\n  if (e == 0) {\n    truncated_formal_power_series\
-    \ res{1};\n    res.resize(n);\n    return res;\n  }\n  const int o = ord();\n\
-    \  if (o == NEGATIVE_INFINITY || (o > n / e || (o == n / e && n % e == 0)))\n\
-    \    return truncated_formal_power_series(n);\n  const long long zs = static_cast<long\
-    \ long>(o) * e; // count zeros\n  const int nn       = n - static_cast<int>(zs);\n\
-    \  const ModIntT c(this->operator[](o)), ic(c.inv()), ce(c.pow(e)), me(e);\n \
-    \ truncated_formal_power_series cpy(this->cbegin() + o, this->cend()); // optimize?\n\
-    \  for (auto &&i : cpy) i *= ic;\n  cpy = cpy.log(nn);\n  for (auto &&i : cpy)\
-    \ i *= me;\n  cpy = cpy.exp(nn);\n  for (auto &&i : cpy) i *= ce;\n  cpy.insert(cpy.begin(),\
-    \ zs, ModIntT());\n  return cpy;\n}\n\ntemplate <typename ModIntT>\nstd::optional<truncated_formal_power_series<ModIntT>>\n\
+    truncated_formal_power_series<ModIntT>::pow(int n, long long e) const {\n  if\
+    \ (e == 0) {\n    truncated_formal_power_series res{1};\n    res.resize(n);\n\
+    \    return res;\n  }\n  const int o = ord();\n  if (o == NEGATIVE_INFINITY ||\
+    \ (o > n / e || (o == n / e && n % e == 0)))\n    return truncated_formal_power_series(n);\n\
+    \  const long long zs = static_cast<long long>(o) * e; // count zeros\n  const\
+    \ int nn       = n - static_cast<int>(zs);\n  const ModIntT c(this->operator[](o)),\
+    \ ic(c.inv()), ce(c.pow(e)), me(e);\n  truncated_formal_power_series cpy(this->cbegin()\
+    \ + o, this->cend()); // optimize?\n  for (auto &&i : cpy) i *= ic;\n  cpy = cpy.log(nn);\n\
+    \  for (auto &&i : cpy) i *= me;\n  cpy = cpy.exp(nn);\n  for (auto &&i : cpy)\
+    \ i *= ce;\n  cpy.insert(cpy.begin(), zs, ModIntT());\n  return cpy;\n}\n\ntemplate\
+    \ <typename ModIntT>\nstd::optional<truncated_formal_power_series<ModIntT>>\n\
     truncated_formal_power_series<ModIntT>::sqrt_hint(int n, ModIntT c) const {\n\
     \  if (this->empty()) return {};\n  const int o = ord();\n  if (o == NEGATIVE_INFINITY)\
     \ return truncated_formal_power_series(n);\n  if ((o & 1) || c * c != this->operator[](o))\
     \ return {};\n  truncated_formal_power_series cpy(this->cbegin() + o, this->cend());\n\
     \  const ModIntT iv(cpy.front().inv());\n  for (auto &&i : cpy) i *= iv;\n  cpy\
-    \ = cpy.pow(n - (o >> 1), static_cast<int>(ModIntT(2).inv()));\n  for (auto &&i\
-    \ : cpy) i *= c;\n  cpy.insert(cpy.begin(), o >> 1, ModIntT());\n  return cpy;\n\
-    }\n\ntemplate <typename ModIntT>\nstd::optional<truncated_formal_power_series<ModIntT>>\n\
+    \ = cpy.pow(n - (o >> 1), static_cast<long long>(ModIntT(2).inv()));\n  for (auto\
+    \ &&i : cpy) i *= c;\n  cpy.insert(cpy.begin(), o >> 1, ModIntT());\n  return\
+    \ cpy;\n}\n\ntemplate <typename ModIntT>\nstd::optional<truncated_formal_power_series<ModIntT>>\n\
     truncated_formal_power_series<ModIntT>::sqrt(int n) const {\n  if (this->empty())\
     \ return {};\n  const int o = ord();\n  if (o == NEGATIVE_INFINITY) return truncated_formal_power_series(n);\n\
     \  if (o & 1) return {};\n  auto res = sqrt_mod_prime(this->operator[](o));\n\
@@ -413,30 +416,29 @@ data:
     \ polynomial &lhs, const polynomial &rhs) {\n    return polynomial(lhs) %= rhs;\n\
     \  }\n  friend std::istream &operator>>(std::istream &lhs, polynomial &rhs) {\n\
     \    for (auto &&i : rhs) lhs >> i;\n    return lhs;\n  }\n  friend std::ostream\
-    \ &operator<<(std::ostream &lhs, const polynomial &rhs) {\n    return lhs << MyBase(rhs.begin(),\
-    \ rhs.end()); // debug only (SLOW)\n  }\n};\n\ntemplate <typename IterT>\npolynomial(IterT,\
-    \ IterT) -> polynomial<typename std::iterator_traits<IterT>::value_type>;\n\n\
-    LIB_END\n\n\n#line 1 \"math/stirling_numbers.hpp\"\n\n\n\n#line 1 \"math/binomial.hpp\"\
-    \n\n\n\n#line 5 \"math/binomial.hpp\"\n\n#line 7 \"math/binomial.hpp\"\n\nLIB_BEGIN\n\
-    \n// helper class for precomputation of factorials and multiplicative inverse\
-    \ of them.\ntemplate <typename ModIntT>\nclass binomial {\n  mutable std::vector<ModIntT>\
-    \ factorial_{ModIntT(1)}, invfactorial_{ModIntT(1)};\n\npublic:\n  explicit binomial(int\
-    \ n) { preprocess(n); }\n  binomial() {}\n  void preprocess(int n) const {\n \
-    \   if (int nn = static_cast<int>(factorial_.size()); nn <= n) {\n      int k\
-    \ = nn;\n      while (k <= n) k <<= 1;\n      factorial_.resize(k);\n      invfactorial_.resize(k);\n\
-    \      for (int i = nn; i != k; ++i) factorial_[i] = factorial_[i - 1] * i;\n\
-    \      invfactorial_.back() = factorial_.back().inv();\n      for (int i = k -\
-    \ 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n    }\n\
-    \  }\n  // binomial coefficient `n`C`m`\n  ModIntT binom(int n, int m) const {\n\
-    \    return n < m ? ModIntT()\n                 : (preprocess(n), factorial_[n]\
-    \ * invfactorial_[m] * invfactorial_[n - m]);\n  }\n  ModIntT inv(int n) const\
-    \ { return preprocess(n), factorial_[n - 1] * invfactorial_[n]; }\n  ModIntT factorial(int\
-    \ n) const { return preprocess(n), factorial_[n]; }\n  ModIntT inv_factorial(int\
-    \ n) const { return preprocess(n), invfactorial_[n]; }\n};\n\nLIB_END\n\n\n#line\
-    \ 1 \"math/linear_sieve.hpp\"\n\n\n\n#line 5 \"math/linear_sieve.hpp\"\n\n#line\
-    \ 7 \"math/linear_sieve.hpp\"\n\nLIB_BEGIN\n\n// Output: primes in [0, `n`) (sorted).\n\
-    std::vector<int> prime_table(int n) {\n  std::vector<bool> is_comp(n, false);\n\
-    \  std::vector<int> res;\n  for (int i = 2; i < n; ++i) {\n    if (!is_comp[i])\
+    \ &operator<<(std::ostream &lhs, const polynomial &rhs) {\n    return lhs << static_cast<MyBase>(rhs);\n\
+    \  }\n};\n\ntemplate <typename IterT>\npolynomial(IterT, IterT) -> polynomial<typename\
+    \ std::iterator_traits<IterT>::value_type>;\n\nLIB_END\n\n\n#line 1 \"math/stirling_numbers.hpp\"\
+    \n\n\n\n#line 1 \"math/binomial.hpp\"\n\n\n\n#line 5 \"math/binomial.hpp\"\n\n\
+    #line 7 \"math/binomial.hpp\"\n\nLIB_BEGIN\n\n// helper class for precomputation\
+    \ of factorials and multiplicative inverse of them.\ntemplate <typename ModIntT>\n\
+    class binomial {\n  mutable std::vector<ModIntT> factorial_{ModIntT(1)}, invfactorial_{ModIntT(1)};\n\
+    \npublic:\n  explicit binomial(int n) { preprocess(n); }\n  binomial() {}\n  void\
+    \ preprocess(int n) const {\n    if (int nn = static_cast<int>(factorial_.size());\
+    \ nn <= n) {\n      int k = nn;\n      while (k <= n) k <<= 1;\n      factorial_.resize(k);\n\
+    \      invfactorial_.resize(k);\n      for (int i = nn; i != k; ++i) factorial_[i]\
+    \ = factorial_[i - 1] * i;\n      invfactorial_.back() = factorial_.back().inv();\n\
+    \      for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i +\
+    \ 1] * (i + 1);\n    }\n  }\n  // binomial coefficient `n`C`m`\n  ModIntT binom(int\
+    \ n, int m) const {\n    return n < m ? ModIntT()\n                 : (preprocess(n),\
+    \ factorial_[n] * invfactorial_[m] * invfactorial_[n - m]);\n  }\n  ModIntT inv(int\
+    \ n) const { return preprocess(n), factorial_[n - 1] * invfactorial_[n]; }\n \
+    \ ModIntT factorial(int n) const { return preprocess(n), factorial_[n]; }\n  ModIntT\
+    \ inv_factorial(int n) const { return preprocess(n), invfactorial_[n]; }\n};\n\
+    \nLIB_END\n\n\n#line 1 \"math/linear_sieve.hpp\"\n\n\n\n#line 5 \"math/linear_sieve.hpp\"\
+    \n\n#line 7 \"math/linear_sieve.hpp\"\n\nLIB_BEGIN\n\n// Output: primes in [0,\
+    \ `n`) (sorted).\nstd::vector<int> prime_table(int n) {\n  std::vector<bool> is_comp(n,\
+    \ false);\n  std::vector<int> res;\n  for (int i = 2; i < n; ++i) {\n    if (!is_comp[i])\
     \ res.push_back(i);\n    for (int j = 0, je = res.size(); j < je && i * res[j]\
     \ < n; ++j) {\n      is_comp[i * res[j]] = true;\n      if (i % res[j] == 0) break;\n\
     \    }\n  }\n  return res;\n}\n\ntemplate <typename ModIntT>\nstd::vector<ModIntT>\
@@ -558,8 +560,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
   requiredBy: []
-  timestamp: '2022-07-02 07:42:02+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2022-09-24 12:10:07+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
 layout: document
