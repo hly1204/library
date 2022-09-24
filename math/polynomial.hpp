@@ -89,7 +89,7 @@ public:
     return lhs;
   }
   friend std::ostream &operator<<(std::ostream &lhs, const polynomial &rhs) {
-    return lhs << MyBase(rhs.begin(), rhs.end()); // debug only (SLOW)
+    return lhs << static_cast<MyBase>(rhs);
   }
 };
 

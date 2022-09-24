@@ -156,10 +156,10 @@ truncated_formal_power_series<ModIntT>::operator*=(const truncated_formal_power_
 template <typename ModIntT>
 truncated_formal_power_series<ModIntT> truncated_formal_power_series<ModIntT>::inv(int n) const {
   if (n <= 0) return {};
-  const std::vector a(this->cbegin(), this->cend());
-  semi_relaxed_convolution src(a, [iv = a.front().inv()](int n, const std::vector<ModIntT> &c) {
-    return n == 0 ? iv : -c[n] * iv;
-  });
+  semi_relaxed_convolution src(static_cast<MyBase>(*this),
+                               [iv = this->front().inv()](int n, const std::vector<ModIntT> &c) {
+                                 return n == 0 ? iv : -c[n] * iv;
+                               });
   auto &&multiplier = src.await(n).get_multiplier();
   return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());
 }
@@ -167,11 +167,10 @@ truncated_formal_power_series<ModIntT> truncated_formal_power_series<ModIntT>::i
 template <typename ModIntT>
 truncated_formal_power_series<ModIntT> truncated_formal_power_series<ModIntT>::exp(int n) const {
   if (n <= 0) return {};
-  auto &&d = deriv();
-  std::vector dv(d.cbegin(), d.cend());
-  semi_relaxed_convolution src(dv, [](int n, const std::vector<ModIntT> &c) {
-    return n == 0 ? ModIntT(1) : c[n - 1] * invs(n);
-  });
+  semi_relaxed_convolution src(static_cast<MyBase>(deriv()),
+                               [](int n, const std::vector<ModIntT> &c) {
+                                 return n == 0 ? ModIntT(1) : c[n - 1] * invs(n);
+                               });
   auto &&multiplier = src.await(n).get_multiplier();
   return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());
 }
@@ -181,11 +180,11 @@ truncated_formal_power_series<ModIntT>
 truncated_formal_power_series<ModIntT>::div(const truncated_formal_power_series &rhs, int n) const {
   assert(!rhs.is_zero());
   if (n <= 0) return {};
-  const std::vector a(rhs.cbegin(), rhs.cend());
-  semi_relaxed_convolution src(
-      a, [this, iv = a.front().inv()](int n, const std::vector<ModIntT> &c) {
-        return ((n < static_cast<int>(this->size()) ? this->operator[](n) : ModIntT()) - c[n]) * iv;
-      });
+  semi_relaxed_convolution src(static_cast<MyBase>(rhs),
+                               [this, sz = static_cast<int>(this->size()),
+                                iv = rhs.front().inv()](int n, const std::vector<ModIntT> &c) {
+                                 return ((n < sz ? this->operator[](n) : ModIntT()) - c[n]) * iv;
+                               });
   auto &&multiplier = src.await(n).get_multiplier();
   return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());
 }
@@ -224,7 +223,7 @@ truncated_formal_power_series<ModIntT>::sqrt_hint(int n, ModIntT c) const {
   truncated_formal_power_series cpy(this->cbegin() + o, this->cend());
   const ModIntT iv(cpy.front().inv());
   for (auto &&i : cpy) i *= iv;
-  cpy = cpy.pow(n - (o >> 1), static_cast<int>(ModIntT(2).inv()));
+  cpy = cpy.pow(n - (o >> 1), static_cast<long long>(ModIntT(2).inv()));
   for (auto &&i : cpy) i *= c;
   cpy.insert(cpy.begin(), o >> 1, ModIntT());
   return cpy;
