@@ -73,8 +73,8 @@ data:
   timestamp: '2022-05-05 22:58:57+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
   - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
+  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
   - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
 documentation_of: math/taylor_shift.hpp
 layout: document

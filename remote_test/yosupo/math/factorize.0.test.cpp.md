@@ -147,19 +147,19 @@ data:
     \nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n\
     \  int Q;\n  std::cin >> Q;\n  while (Q--) {\n    long long a;\n    std::cin >>\
-    \ a;\n    std::vector<long long> factor;\n    auto mp = lib::factorization(a);\n\
-    \    for (auto i : mp) {\n      for (int j = i.second; j > 0; --j) factor.push_back(i.first);\n\
-    \    }\n    std::cout << factor.size() << ' ';\n    for (auto &&i : factor) std::cout\
-    \ << i << ' ';\n    std::cout << '\\n';\n  }\n  return 0;\n}\n"
+    \ a;\n    std::vector<long long> factor;\n    for (auto &&[k, v] : lib::factorization(a))\
+    \ factor.insert(factor.end(), v, k);\n    std::cout << factor.size() << ' ';\n\
+    \    for (auto &&i : factor) std::cout << i << ' ';\n    std::cout << '\\n';\n\
+    \  }\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/factorize\"\n\n#include\
     \ \"math/integer_factorization.hpp\"\n\n#include <iostream>\n#include <vector>\n\
     \nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n\
     \  int Q;\n  std::cin >> Q;\n  while (Q--) {\n    long long a;\n    std::cin >>\
-    \ a;\n    std::vector<long long> factor;\n    auto mp = lib::factorization(a);\n\
-    \    for (auto i : mp) {\n      for (int j = i.second; j > 0; --j) factor.push_back(i.first);\n\
-    \    }\n    std::cout << factor.size() << ' ';\n    for (auto &&i : factor) std::cout\
-    \ << i << ' ';\n    std::cout << '\\n';\n  }\n  return 0;\n}"
+    \ a;\n    std::vector<long long> factor;\n    for (auto &&[k, v] : lib::factorization(a))\
+    \ factor.insert(factor.end(), v, k);\n    std::cout << factor.size() << ' ';\n\
+    \    for (auto &&i : factor) std::cout << i << ' ';\n    std::cout << '\\n';\n\
+    \  }\n  return 0;\n}"
   dependsOn:
   - math/integer_factorization.hpp
   - common.hpp
@@ -169,7 +169,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/factorize.0.test.cpp
   requiredBy: []
-  timestamp: '2022-05-27 06:01:13+00:00'
+  timestamp: '2022-09-30 21:22:09+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/factorize.0.test.cpp
