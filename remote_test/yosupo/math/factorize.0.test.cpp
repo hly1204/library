@@ -17,10 +17,7 @@ int main() {
     long long a;
     std::cin >> a;
     std::vector<long long> factor;
-    auto mp = lib::factorization(a);
-    for (auto i : mp) {
-      for (int j = i.second; j > 0; --j) factor.push_back(i.first);
-    }
+    for (auto &&[k, v] : lib::factorization(a)) factor.insert(factor.end(), v, k);
     std::cout << factor.size() << ' ';
     for (auto &&i : factor) std::cout << i << ' ';
     std::cout << '\n';
