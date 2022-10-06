@@ -50,29 +50,30 @@ data:
     \ { return root_ == nullptr; }\n  std::size_t size() const { return size_; }\n\
     \  std::make_signed_t<std::size_t> ssize() const { return size_; }\n  wrapper\
     \ push(const T &value) {\n    node *p = new node(value);\n    root_   = meld(root_,\
-    \ p);\n    ++size_;\n    return wrapper(p);\n  }\n  T top() const { return root_->value_;\
-    \ }\n  T pop(wrapper wp) {\n    node *p = const_cast<node *>(wp.data()), *pp =\
-    \ p->parent_;\n    if (p->left_ != nullptr) {\n      p->left_->parent_ = nullptr;\n\
-    \      if (p->right_ != nullptr) p->right_->parent_ = nullptr;\n    }\n    if\
-    \ (pp != nullptr) {\n      if (pp->left_ == p) {\n        if ((pp->left_ = meld(p->left_,\
-    \ p->right_)) != nullptr) pp->left_->parent_ = pp;\n      } else {\n        if\
-    \ ((pp->right_ = meld(p->left_, p->right_)) != nullptr) pp->right_->parent_ =\
-    \ pp;\n      }\n      // Only could be done with height-based variant?\n     \
-    \ for (; pp != nullptr; pp = pp->parent_) {\n        if (s(pp->left_) < s(pp->right_))\
+    \ p);\n    ++size_;\n    return wrapper(p);\n  }\n  const T &top() const { return\
+    \ root_->value_; }\n  T pop(wrapper wp) {\n    node *p = const_cast<node *>(wp.data()),\
+    \ *pp = p->parent_;\n    if (p->left_ != nullptr) {\n      p->left_->parent_ =\
+    \ nullptr;\n      if (p->right_ != nullptr) p->right_->parent_ = nullptr;\n  \
+    \  }\n    if (pp != nullptr) {\n      if (pp->left_ == p) {\n        if ((pp->left_\
+    \ = meld(p->left_, p->right_)) != nullptr) pp->left_->parent_ = pp;\n      } else\
+    \ {\n        if ((pp->right_ = meld(p->left_, p->right_)) != nullptr) pp->right_->parent_\
+    \ = pp;\n      }\n      // Only could be done with height-based variant?\n   \
+    \   for (; pp != nullptr; pp = pp->parent_) {\n        if (s(pp->left_) < s(pp->right_))\
     \ std::swap(pp->left_, pp->right_);\n        if (pp->rank_ != s(pp->right_) +\
     \ 1) {\n          pp->rank_ = s(pp->right_) + 1;\n        } else {\n         \
     \ break;\n        }\n      }\n    } else {\n      root_ = meld(p->left_, p->right_);\n\
-    \    }\n    T res(p->value_);\n    p->left_ = p->right_ = nullptr;\n    delete\
-    \ p;\n    --size_;\n    return res;\n  }\n  T pop() {\n    assert(!empty());\n\
-    \    node *p = root_;\n    T res(p->value_);\n    if (p->left_ != nullptr) {\n\
-    \      p->left_->parent_ = nullptr;\n      if (p->right_ != nullptr) p->right_->parent_\
-    \ = nullptr;\n    }\n    root_    = meld(p->left_, p->right_);\n    p->left_ =\
-    \ p->right_ = nullptr;\n    delete p;\n    --size_;\n    return res;\n  }\n  height_based_leftist_tree\
-    \ &meld(height_based_leftist_tree &rhs) {\n    if (this != std::addressof(rhs))\
-    \ {\n      size_ += rhs.size_;\n      root_     = meld(root_, rhs.root_);\n  \
-    \    rhs.root_ = nullptr;\n      rhs.size_ = 0;\n    }\n    return *this;\n  }\n\
-    };\n\ntemplate <typename T, typename CmpT = std::less<>>\nusing hblt = height_based_leftist_tree<T,\
-    \ CmpT>;\n\nLIB_END\n\n\n"
+    \    }\n    T res(p->value_); // TODO: How about using `T res(std::move(p->value_));`?\n\
+    \    p->left_ = p->right_ = nullptr;\n    delete p;\n    --size_;\n    return\
+    \ res;\n  }\n  T pop() {\n    assert(!empty());\n    node *p = root_;\n    T res(p->value_);\n\
+    \    if (p->left_ != nullptr) {\n      p->left_->parent_ = nullptr;\n      if\
+    \ (p->right_ != nullptr) p->right_->parent_ = nullptr;\n    }\n    root_    =\
+    \ meld(p->left_, p->right_);\n    p->left_ = p->right_ = nullptr;\n    delete\
+    \ p;\n    --size_;\n    return res;\n  }\n  height_based_leftist_tree &meld(height_based_leftist_tree\
+    \ &rhs) {\n    if (this != std::addressof(rhs)) {\n      size_ += rhs.size_;\n\
+    \      root_     = meld(root_, rhs.root_);\n      rhs.root_ = nullptr;\n     \
+    \ rhs.size_ = 0;\n    }\n    return *this;\n  }\n};\n\ntemplate <typename T, typename\
+    \ CmpT = std::less<>>\nusing hblt = height_based_leftist_tree<T, CmpT>;\n\nLIB_END\n\
+    \n\n"
   code: "#ifndef HEIGHT_BASED_LEFTIST_TREE_HPP\n#define HEIGHT_BASED_LEFTIST_TREE_HPP\n\
     \n#include \"../common.hpp\"\n\n#include <algorithm>\n#include <cassert>\n#include\
     \ <cstdint>\n#include <functional>\n#include <iterator>\n#include <memory>\n#include\
@@ -107,35 +108,36 @@ data:
     \ { return root_ == nullptr; }\n  std::size_t size() const { return size_; }\n\
     \  std::make_signed_t<std::size_t> ssize() const { return size_; }\n  wrapper\
     \ push(const T &value) {\n    node *p = new node(value);\n    root_   = meld(root_,\
-    \ p);\n    ++size_;\n    return wrapper(p);\n  }\n  T top() const { return root_->value_;\
-    \ }\n  T pop(wrapper wp) {\n    node *p = const_cast<node *>(wp.data()), *pp =\
-    \ p->parent_;\n    if (p->left_ != nullptr) {\n      p->left_->parent_ = nullptr;\n\
-    \      if (p->right_ != nullptr) p->right_->parent_ = nullptr;\n    }\n    if\
-    \ (pp != nullptr) {\n      if (pp->left_ == p) {\n        if ((pp->left_ = meld(p->left_,\
-    \ p->right_)) != nullptr) pp->left_->parent_ = pp;\n      } else {\n        if\
-    \ ((pp->right_ = meld(p->left_, p->right_)) != nullptr) pp->right_->parent_ =\
-    \ pp;\n      }\n      // Only could be done with height-based variant?\n     \
-    \ for (; pp != nullptr; pp = pp->parent_) {\n        if (s(pp->left_) < s(pp->right_))\
+    \ p);\n    ++size_;\n    return wrapper(p);\n  }\n  const T &top() const { return\
+    \ root_->value_; }\n  T pop(wrapper wp) {\n    node *p = const_cast<node *>(wp.data()),\
+    \ *pp = p->parent_;\n    if (p->left_ != nullptr) {\n      p->left_->parent_ =\
+    \ nullptr;\n      if (p->right_ != nullptr) p->right_->parent_ = nullptr;\n  \
+    \  }\n    if (pp != nullptr) {\n      if (pp->left_ == p) {\n        if ((pp->left_\
+    \ = meld(p->left_, p->right_)) != nullptr) pp->left_->parent_ = pp;\n      } else\
+    \ {\n        if ((pp->right_ = meld(p->left_, p->right_)) != nullptr) pp->right_->parent_\
+    \ = pp;\n      }\n      // Only could be done with height-based variant?\n   \
+    \   for (; pp != nullptr; pp = pp->parent_) {\n        if (s(pp->left_) < s(pp->right_))\
     \ std::swap(pp->left_, pp->right_);\n        if (pp->rank_ != s(pp->right_) +\
     \ 1) {\n          pp->rank_ = s(pp->right_) + 1;\n        } else {\n         \
     \ break;\n        }\n      }\n    } else {\n      root_ = meld(p->left_, p->right_);\n\
-    \    }\n    T res(p->value_);\n    p->left_ = p->right_ = nullptr;\n    delete\
-    \ p;\n    --size_;\n    return res;\n  }\n  T pop() {\n    assert(!empty());\n\
-    \    node *p = root_;\n    T res(p->value_);\n    if (p->left_ != nullptr) {\n\
-    \      p->left_->parent_ = nullptr;\n      if (p->right_ != nullptr) p->right_->parent_\
-    \ = nullptr;\n    }\n    root_    = meld(p->left_, p->right_);\n    p->left_ =\
-    \ p->right_ = nullptr;\n    delete p;\n    --size_;\n    return res;\n  }\n  height_based_leftist_tree\
-    \ &meld(height_based_leftist_tree &rhs) {\n    if (this != std::addressof(rhs))\
-    \ {\n      size_ += rhs.size_;\n      root_     = meld(root_, rhs.root_);\n  \
-    \    rhs.root_ = nullptr;\n      rhs.size_ = 0;\n    }\n    return *this;\n  }\n\
-    };\n\ntemplate <typename T, typename CmpT = std::less<>>\nusing hblt = height_based_leftist_tree<T,\
-    \ CmpT>;\n\nLIB_END\n\n#endif"
+    \    }\n    T res(p->value_); // TODO: How about using `T res(std::move(p->value_));`?\n\
+    \    p->left_ = p->right_ = nullptr;\n    delete p;\n    --size_;\n    return\
+    \ res;\n  }\n  T pop() {\n    assert(!empty());\n    node *p = root_;\n    T res(p->value_);\n\
+    \    if (p->left_ != nullptr) {\n      p->left_->parent_ = nullptr;\n      if\
+    \ (p->right_ != nullptr) p->right_->parent_ = nullptr;\n    }\n    root_    =\
+    \ meld(p->left_, p->right_);\n    p->left_ = p->right_ = nullptr;\n    delete\
+    \ p;\n    --size_;\n    return res;\n  }\n  height_based_leftist_tree &meld(height_based_leftist_tree\
+    \ &rhs) {\n    if (this != std::addressof(rhs)) {\n      size_ += rhs.size_;\n\
+    \      root_     = meld(root_, rhs.root_);\n      rhs.root_ = nullptr;\n     \
+    \ rhs.size_ = 0;\n    }\n    return *this;\n  }\n};\n\ntemplate <typename T, typename\
+    \ CmpT = std::less<>>\nusing hblt = height_based_leftist_tree<T, CmpT>;\n\nLIB_END\n\
+    \n#endif"
   dependsOn:
   - common.hpp
   isVerificationFile: false
   path: datastructure/height_based_leftist_tree.hpp
   requiredBy: []
-  timestamp: '2022-07-11 21:13:24+08:00'
+  timestamp: '2022-10-06 19:19:28+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizu/datastructure/priority_queue.0.test.cpp

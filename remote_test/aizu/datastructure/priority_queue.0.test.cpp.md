@@ -55,31 +55,32 @@ data:
     \ { return root_ == nullptr; }\n  std::size_t size() const { return size_; }\n\
     \  std::make_signed_t<std::size_t> ssize() const { return size_; }\n  wrapper\
     \ push(const T &value) {\n    node *p = new node(value);\n    root_   = meld(root_,\
-    \ p);\n    ++size_;\n    return wrapper(p);\n  }\n  T top() const { return root_->value_;\
-    \ }\n  T pop(wrapper wp) {\n    node *p = const_cast<node *>(wp.data()), *pp =\
-    \ p->parent_;\n    if (p->left_ != nullptr) {\n      p->left_->parent_ = nullptr;\n\
-    \      if (p->right_ != nullptr) p->right_->parent_ = nullptr;\n    }\n    if\
-    \ (pp != nullptr) {\n      if (pp->left_ == p) {\n        if ((pp->left_ = meld(p->left_,\
-    \ p->right_)) != nullptr) pp->left_->parent_ = pp;\n      } else {\n        if\
-    \ ((pp->right_ = meld(p->left_, p->right_)) != nullptr) pp->right_->parent_ =\
-    \ pp;\n      }\n      // Only could be done with height-based variant?\n     \
-    \ for (; pp != nullptr; pp = pp->parent_) {\n        if (s(pp->left_) < s(pp->right_))\
+    \ p);\n    ++size_;\n    return wrapper(p);\n  }\n  const T &top() const { return\
+    \ root_->value_; }\n  T pop(wrapper wp) {\n    node *p = const_cast<node *>(wp.data()),\
+    \ *pp = p->parent_;\n    if (p->left_ != nullptr) {\n      p->left_->parent_ =\
+    \ nullptr;\n      if (p->right_ != nullptr) p->right_->parent_ = nullptr;\n  \
+    \  }\n    if (pp != nullptr) {\n      if (pp->left_ == p) {\n        if ((pp->left_\
+    \ = meld(p->left_, p->right_)) != nullptr) pp->left_->parent_ = pp;\n      } else\
+    \ {\n        if ((pp->right_ = meld(p->left_, p->right_)) != nullptr) pp->right_->parent_\
+    \ = pp;\n      }\n      // Only could be done with height-based variant?\n   \
+    \   for (; pp != nullptr; pp = pp->parent_) {\n        if (s(pp->left_) < s(pp->right_))\
     \ std::swap(pp->left_, pp->right_);\n        if (pp->rank_ != s(pp->right_) +\
     \ 1) {\n          pp->rank_ = s(pp->right_) + 1;\n        } else {\n         \
     \ break;\n        }\n      }\n    } else {\n      root_ = meld(p->left_, p->right_);\n\
-    \    }\n    T res(p->value_);\n    p->left_ = p->right_ = nullptr;\n    delete\
-    \ p;\n    --size_;\n    return res;\n  }\n  T pop() {\n    assert(!empty());\n\
-    \    node *p = root_;\n    T res(p->value_);\n    if (p->left_ != nullptr) {\n\
-    \      p->left_->parent_ = nullptr;\n      if (p->right_ != nullptr) p->right_->parent_\
-    \ = nullptr;\n    }\n    root_    = meld(p->left_, p->right_);\n    p->left_ =\
-    \ p->right_ = nullptr;\n    delete p;\n    --size_;\n    return res;\n  }\n  height_based_leftist_tree\
-    \ &meld(height_based_leftist_tree &rhs) {\n    if (this != std::addressof(rhs))\
-    \ {\n      size_ += rhs.size_;\n      root_     = meld(root_, rhs.root_);\n  \
-    \    rhs.root_ = nullptr;\n      rhs.size_ = 0;\n    }\n    return *this;\n  }\n\
-    };\n\ntemplate <typename T, typename CmpT = std::less<>>\nusing hblt = height_based_leftist_tree<T,\
-    \ CmpT>;\n\nLIB_END\n\n\n#line 4 \"remote_test/aizu/datastructure/priority_queue.0.test.cpp\"\
-    \n\n#include <iostream>\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\",\
-    \ \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
+    \    }\n    T res(p->value_); // TODO: How about using `T res(std::move(p->value_));`?\n\
+    \    p->left_ = p->right_ = nullptr;\n    delete p;\n    --size_;\n    return\
+    \ res;\n  }\n  T pop() {\n    assert(!empty());\n    node *p = root_;\n    T res(p->value_);\n\
+    \    if (p->left_ != nullptr) {\n      p->left_->parent_ = nullptr;\n      if\
+    \ (p->right_ != nullptr) p->right_->parent_ = nullptr;\n    }\n    root_    =\
+    \ meld(p->left_, p->right_);\n    p->left_ = p->right_ = nullptr;\n    delete\
+    \ p;\n    --size_;\n    return res;\n  }\n  height_based_leftist_tree &meld(height_based_leftist_tree\
+    \ &rhs) {\n    if (this != std::addressof(rhs)) {\n      size_ += rhs.size_;\n\
+    \      root_     = meld(root_, rhs.root_);\n      rhs.root_ = nullptr;\n     \
+    \ rhs.size_ = 0;\n    }\n    return *this;\n  }\n};\n\ntemplate <typename T, typename\
+    \ CmpT = std::less<>>\nusing hblt = height_based_leftist_tree<T, CmpT>;\n\nLIB_END\n\
+    \n\n#line 4 \"remote_test/aizu/datastructure/priority_queue.0.test.cpp\"\n\n#include\
+    \ <iostream>\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin),\
+    \ std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
     \  std::cin.tie(nullptr);\n  auto cmp = [](long long a, long long b) { return\
     \ a > b; };\n  lib::hblt<long long, decltype(cmp)> h(cmp);\n  for (;;) {\n   \
     \ char cmd[20];\n    std::cin >> cmd;\n    if (cmd[2] == 's') {\n      long long\
@@ -101,7 +102,7 @@ data:
   isVerificationFile: true
   path: remote_test/aizu/datastructure/priority_queue.0.test.cpp
   requiredBy: []
-  timestamp: '2022-07-11 21:13:24+08:00'
+  timestamp: '2022-10-06 19:19:28+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/aizu/datastructure/priority_queue.0.test.cpp
