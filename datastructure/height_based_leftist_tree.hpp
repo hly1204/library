@@ -96,7 +96,7 @@ public:
     ++size_;
     return wrapper(p);
   }
-  T top() const { return root_->value_; }
+  const T &top() const { return root_->value_; }
   T pop(wrapper wp) {
     node *p = const_cast<node *>(wp.data()), *pp = p->parent_;
     if (p->left_ != nullptr) {
@@ -121,7 +121,7 @@ public:
     } else {
       root_ = meld(p->left_, p->right_);
     }
-    T res(p->value_);
+    T res(p->value_); // TODO: How about using `T res(std::move(p->value_));`?
     p->left_ = p->right_ = nullptr;
     delete p;
     --size_;
