@@ -49,7 +49,7 @@ public:
   }
   bool is_zero() const { return deg() == NEGATIVE_INFINITY; }
   void shrink() { this->resize(deg() + 1); }
-  truncated_formal_power_series operator-() {
+  truncated_formal_power_series operator-() const {
     truncated_formal_power_series res(*this);
     for (auto &&i : res) i = -i;
     return res;
