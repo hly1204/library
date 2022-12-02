@@ -10,22 +10,22 @@ data:
   - icon: ':question:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/semi_relaxed_convolution.hpp
     title: Semi-Relaxed Convolution (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT
       prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/sqrt_mod.hpp
     title: Square Roots (in $\mathbb{F} _ p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/truncated_fourier_transform.hpp
     title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for
       FFT prime $p$)
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/polynomial.hpp
     title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   _extendedVerifiedWith:
@@ -56,21 +56,21 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
     title: remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
     title: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/truncated_formal_power_series.hpp\"\n\n\n\n#line 1\
@@ -298,11 +298,11 @@ data:
     \ const {\n    int d = deg();\n    if (d == NEGATIVE_INFINITY) return NEGATIVE_INFINITY;\n\
     \    for (int i = 0;; ++i)\n      if (!this->operator[](i).is_zero()) return i;\n\
     \  }\n  bool is_zero() const { return deg() == NEGATIVE_INFINITY; }\n  void shrink()\
-    \ { this->resize(deg() + 1); }\n  truncated_formal_power_series operator-() {\n\
-    \    truncated_formal_power_series res(*this);\n    for (auto &&i : res) i = -i;\n\
-    \    return res;\n  }\n\n  truncated_formal_power_series &operator+=(const truncated_formal_power_series\
-    \ &rhs) {\n    if (this->size() < rhs.size()) this->resize(rhs.size());\n    for\
-    \ (int i = 0, e = static_cast<int>(rhs.size()); i != e; ++i) this->operator[](i)\
+    \ { this->resize(deg() + 1); }\n  truncated_formal_power_series operator-() const\
+    \ {\n    truncated_formal_power_series res(*this);\n    for (auto &&i : res) i\
+    \ = -i;\n    return res;\n  }\n\n  truncated_formal_power_series &operator+=(const\
+    \ truncated_formal_power_series &rhs) {\n    if (this->size() < rhs.size()) this->resize(rhs.size());\n\
+    \    for (int i = 0, e = static_cast<int>(rhs.size()); i != e; ++i) this->operator[](i)\
     \ += rhs[i];\n    return *this;\n  }\n  truncated_formal_power_series &operator-=(const\
     \ truncated_formal_power_series &rhs) {\n    if (this->size() < rhs.size()) this->resize(rhs.size());\n\
     \    for (int i = 0, e = static_cast<int>(rhs.size()); i != e; ++i) this->operator[](i)\
@@ -412,11 +412,11 @@ data:
     \ const {\n    int d = deg();\n    if (d == NEGATIVE_INFINITY) return NEGATIVE_INFINITY;\n\
     \    for (int i = 0;; ++i)\n      if (!this->operator[](i).is_zero()) return i;\n\
     \  }\n  bool is_zero() const { return deg() == NEGATIVE_INFINITY; }\n  void shrink()\
-    \ { this->resize(deg() + 1); }\n  truncated_formal_power_series operator-() {\n\
-    \    truncated_formal_power_series res(*this);\n    for (auto &&i : res) i = -i;\n\
-    \    return res;\n  }\n\n  truncated_formal_power_series &operator+=(const truncated_formal_power_series\
-    \ &rhs) {\n    if (this->size() < rhs.size()) this->resize(rhs.size());\n    for\
-    \ (int i = 0, e = static_cast<int>(rhs.size()); i != e; ++i) this->operator[](i)\
+    \ { this->resize(deg() + 1); }\n  truncated_formal_power_series operator-() const\
+    \ {\n    truncated_formal_power_series res(*this);\n    for (auto &&i : res) i\
+    \ = -i;\n    return res;\n  }\n\n  truncated_formal_power_series &operator+=(const\
+    \ truncated_formal_power_series &rhs) {\n    if (this->size() < rhs.size()) this->resize(rhs.size());\n\
+    \    for (int i = 0, e = static_cast<int>(rhs.size()); i != e; ++i) this->operator[](i)\
     \ += rhs[i];\n    return *this;\n  }\n  truncated_formal_power_series &operator-=(const\
     \ truncated_formal_power_series &rhs) {\n    if (this->size() < rhs.size()) this->resize(rhs.size());\n\
     \    for (int i = 0, e = static_cast<int>(rhs.size()); i != e; ++i) this->operator[](i)\
@@ -508,7 +508,7 @@ data:
     \  if (o & 1) return {};\n  auto res = sqrt_mod_prime(this->operator[](o));\n\
     \  if (res.empty()) return {};\n  return sqrt_hint(n, res.front());\n}\n\ntemplate\
     \ <typename ModIntT>\nusing tfps = truncated_formal_power_series<ModIntT>;\n\n\
-    LIB_END\n\n#endif"
+    LIB_END\n\n#endif\n"
   dependsOn:
   - common.hpp
   - math/extended_gcd.hpp
@@ -521,22 +521,22 @@ data:
   path: math/truncated_formal_power_series.hpp
   requiredBy:
   - math/polynomial.hpp
-  timestamp: '2022-09-24 12:10:07+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2022-12-02 21:43:24+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
-  - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
   - remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
-  - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
-  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
-  - remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
-  - remote_test/yosupo/math/convolution_mod.1.test.cpp
-  - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
-  - remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
-  - remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
   - remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
+  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
+  - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
   - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
+  - remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/convolution_mod.1.test.cpp
+  - remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
+  - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
+  - remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
+  - remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
 documentation_of: math/truncated_formal_power_series.hpp
 layout: document
 title: Truncated Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
