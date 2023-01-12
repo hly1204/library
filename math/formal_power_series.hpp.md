@@ -371,12 +371,12 @@ data:
   timestamp: '2022-05-15 15:19:08+08:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
-  - remote_test/yosupo/math/partition_function.0.test.cpp
   - remote_test/yosupo/math/exp_of_formal_power_series.0.test.cpp
-  - remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
-  - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
   - remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
   - remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
+  - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/partition_function.0.test.cpp
+  - remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
 documentation_of: math/formal_power_series.hpp
 layout: document
 title: Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$

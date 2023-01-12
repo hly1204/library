@@ -28,11 +28,11 @@ data:
     \ s_.back()->ch_[1]; }\n\n  void insert(value_type a) {\n    auto c = s_.back();\n\
     \    for (int i = BitT - 1; i >= 0; --i) {\n      auto j = (a >> i) & 1;\n   \
     \   if (c->ch_[j] == nullptr) c->ch_[j] = new node;\n      c = c->ch_[j];\n  \
-    \  }\n    ++c->cnt_;\n  }\n\n  bool exists(value_type a) const {\n    for (int\
+    \  }\n    ++c->cnt_;\n  }\n\n  bool contains(value_type a) const {\n    for (int\
     \ i = BitT - 1; i >= 0; --i)\n      if ((s_[i] = s_[i + 1]->ch_[(a >> i) & 1])\
     \ == nullptr) return false;\n    return true;\n  }\n\n  bool erase(value_type\
-    \ a) {\n    if (!exists(a)) return false;\n    --s_.front()->cnt_;\n    for (int\
-    \ i = 0; i != BitT; ++i) {\n      if (s_[i]->cnt_ || !s_[i]->is_leaf()) break;\n\
+    \ a) {\n    if (!contains(a)) return false;\n    --s_.front()->cnt_;\n    for\
+    \ (int i = 0; i != BitT; ++i) {\n      if (s_[i]->cnt_ || !s_[i]->is_leaf()) break;\n\
     \      auto p                             = s_[i + 1];\n      p->ch_[p->ch_[0]\
     \ == s_[i] ? 0 : 1] = nullptr;\n      delete s_[i];\n    }\n    return true;\n\
     \  }\n\n  value_type xor_max(value_type a) const {\n    assert(!empty());\n  \
@@ -57,11 +57,11 @@ data:
     \ s_.back()->ch_[1]; }\n\n  void insert(value_type a) {\n    auto c = s_.back();\n\
     \    for (int i = BitT - 1; i >= 0; --i) {\n      auto j = (a >> i) & 1;\n   \
     \   if (c->ch_[j] == nullptr) c->ch_[j] = new node;\n      c = c->ch_[j];\n  \
-    \  }\n    ++c->cnt_;\n  }\n\n  bool exists(value_type a) const {\n    for (int\
+    \  }\n    ++c->cnt_;\n  }\n\n  bool contains(value_type a) const {\n    for (int\
     \ i = BitT - 1; i >= 0; --i)\n      if ((s_[i] = s_[i + 1]->ch_[(a >> i) & 1])\
     \ == nullptr) return false;\n    return true;\n  }\n\n  bool erase(value_type\
-    \ a) {\n    if (!exists(a)) return false;\n    --s_.front()->cnt_;\n    for (int\
-    \ i = 0; i != BitT; ++i) {\n      if (s_[i]->cnt_ || !s_[i]->is_leaf()) break;\n\
+    \ a) {\n    if (!contains(a)) return false;\n    --s_.front()->cnt_;\n    for\
+    \ (int i = 0; i != BitT; ++i) {\n      if (s_[i]->cnt_ || !s_[i]->is_leaf()) break;\n\
     \      auto p                             = s_[i + 1];\n      p->ch_[p->ch_[0]\
     \ == s_[i] ? 0 : 1] = nullptr;\n      delete s_[i];\n    }\n    return true;\n\
     \  }\n\n  value_type xor_max(value_type a) const {\n    assert(!empty());\n  \
@@ -73,13 +73,13 @@ data:
     \ s_.back();\n    for (int i = BitT - 1; i >= 0; --i) {\n      auto j = (a >>\
     \ i) & 1;\n      r <<= 1;\n      if (c->ch_[j] != nullptr) {\n        c = c->ch_[j];\n\
     \      } else {\n        c = c->ch_[j ^ 1], r |= 1;\n      }\n    }\n    return\
-    \ r;\n  }\n};\n\nLIB_END\n\n#endif"
+    \ r;\n  }\n};\n\nLIB_END\n\n#endif\n"
   dependsOn:
   - common.hpp
   isVerificationFile: false
   path: datastructure/binary_trie.hpp
   requiredBy: []
-  timestamp: '2022-06-12 00:29:06+08:00'
+  timestamp: '2023-01-13 00:30:26+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/datastructure/set_xor_min.0.test.cpp
