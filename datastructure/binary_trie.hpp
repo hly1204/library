@@ -44,14 +44,14 @@ public:
     ++c->cnt_;
   }
 
-  bool exists(value_type a) const {
+  bool contains(value_type a) const {
     for (int i = BitT - 1; i >= 0; --i)
       if ((s_[i] = s_[i + 1]->ch_[(a >> i) & 1]) == nullptr) return false;
     return true;
   }
 
   bool erase(value_type a) {
-    if (!exists(a)) return false;
+    if (!contains(a)) return false;
     --s_.front()->cnt_;
     for (int i = 0; i != BitT; ++i) {
       if (s_[i]->cnt_ || !s_[i]->is_leaf()) break;

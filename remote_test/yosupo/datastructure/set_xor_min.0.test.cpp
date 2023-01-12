@@ -17,7 +17,7 @@ int main() {
     int cmd, x;
     std::cin >> cmd >> x;
     if (cmd == 0) {
-      if (!t.exists(x)) t.insert(x);
+      if (!t.contains(x)) t.insert(x);
     } else if (cmd == 1) {
       t.erase(x);
     } else {
