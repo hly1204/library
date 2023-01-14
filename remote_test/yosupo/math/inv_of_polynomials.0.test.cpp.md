@@ -99,9 +99,9 @@ data:
     \    return std::make_tuple(M[0][0], M[0][1], d);\n  }\n}\n\ntemplate <typename\
     \ PolyT>\nstd::optional<PolyT> poly_inv(const PolyT &A, const PolyT &modular)\
     \ {\n  auto [x, y, d] = poly_ext_gcd(A, modular);\n  if (d.deg() != 0) return\
-    \ {};\n  std::for_each(x.begin(), x.end(), [iv = d.front().inv()](auto &v) { v\
-    \ *= iv; });\n  return x;\n}\n\nLIB_END\n\n\n#line 1 \"math/polynomial.hpp\"\n\
-    \n\n\n#line 1 \"math/truncated_formal_power_series.hpp\"\n\n\n\n#line 1 \"math/extended_gcd.hpp\"\
+    \ {};\n  std::for_each(x.begin(), x.end(), [iv = d.front().inv()](auto &&v) {\
+    \ v *= iv; });\n  return x;\n}\n\nLIB_END\n\n\n#line 1 \"math/polynomial.hpp\"\
+    \n\n\n\n#line 1 \"math/truncated_formal_power_series.hpp\"\n\n\n\n#line 1 \"math/extended_gcd.hpp\"\
     \n\n\n\n#line 5 \"math/extended_gcd.hpp\"\n\n#line 8 \"math/extended_gcd.hpp\"\
     \n#include <vector>\n\nLIB_BEGIN\n\n// Input:  integer `a` and `b`.\n// Output:\
     \ (x, y, z) such that `a`x + `b`y = z = gcd(`a`, `b`).\n[[deprecated]] std::tuple<long\
@@ -548,7 +548,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
   requiredBy: []
-  timestamp: '2022-12-02 21:43:24+08:00'
+  timestamp: '2023-01-14 11:55:02+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp

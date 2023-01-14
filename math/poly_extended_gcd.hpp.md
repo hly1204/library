@@ -60,8 +60,8 @@ data:
     \    return std::make_tuple(M[0][0], M[0][1], d);\n  }\n}\n\ntemplate <typename\
     \ PolyT>\nstd::optional<PolyT> poly_inv(const PolyT &A, const PolyT &modular)\
     \ {\n  auto [x, y, d] = poly_ext_gcd(A, modular);\n  if (d.deg() != 0) return\
-    \ {};\n  std::for_each(x.begin(), x.end(), [iv = d.front().inv()](auto &v) { v\
-    \ *= iv; });\n  return x;\n}\n\nLIB_END\n\n\n"
+    \ {};\n  std::for_each(x.begin(), x.end(), [iv = d.front().inv()](auto &&v) {\
+    \ v *= iv; });\n  return x;\n}\n\nLIB_END\n\n\n"
   code: "#ifndef POLY_EXTENDED_GCD_HPP\n#define POLY_EXTENDED_GCD_HPP\n\n#include\
     \ \"../common.hpp\"\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n\
     #include <optional>\n#include <tuple>\n#include <utility>\n\nLIB_BEGIN\n\n// helper\
@@ -106,14 +106,14 @@ data:
     \    return std::make_tuple(M[0][0], M[0][1], d);\n  }\n}\n\ntemplate <typename\
     \ PolyT>\nstd::optional<PolyT> poly_inv(const PolyT &A, const PolyT &modular)\
     \ {\n  auto [x, y, d] = poly_ext_gcd(A, modular);\n  if (d.deg() != 0) return\
-    \ {};\n  std::for_each(x.begin(), x.end(), [iv = d.front().inv()](auto &v) { v\
-    \ *= iv; });\n  return x;\n}\n\nLIB_END\n\n#endif"
+    \ {};\n  std::for_each(x.begin(), x.end(), [iv = d.front().inv()](auto &&v) {\
+    \ v *= iv; });\n  return x;\n}\n\nLIB_END\n\n#endif\n"
   dependsOn:
   - common.hpp
   isVerificationFile: false
   path: math/poly_extended_gcd.hpp
   requiredBy: []
-  timestamp: '2022-05-16 00:56:12+08:00'
+  timestamp: '2023-01-14 11:55:02+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
