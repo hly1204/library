@@ -93,7 +93,7 @@ template <typename PolyT>
 std::optional<PolyT> poly_inv(const PolyT &A, const PolyT &modular) {
   auto [x, y, d] = poly_ext_gcd(A, modular);
   if (d.deg() != 0) return {};
-  std::for_each(x.begin(), x.end(), [iv = d.front().inv()](auto &v) { v *= iv; });
+  std::for_each(x.begin(), x.end(), [iv = d.front().inv()](auto &&v) { v *= iv; });
   return x;
 }
 
