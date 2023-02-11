@@ -7,6 +7,7 @@
 #include "relaxed_convolution.hpp"
 
 #include <functional>
+#include <limits>
 #include <memory>
 #include <optional>
 #include <type_traits>
@@ -32,7 +33,8 @@ public:
       : h_([cache = std::make_shared<std::vector<ModIntT>>(coeff)](int k) {
           return k < static_cast<int>(cache->size()) ? ModIntT(cache->at(k)) : ModIntT();
         }) {}
-  formal_power_series(ModIntT v) : h_([v](int k) { return k == 0 ? v : ModIntT(); }) {}
+  /* explicit */ formal_power_series(ModIntT v)
+      : h_([v](int k) { return k == 0 ? v : ModIntT(); }) {}
   F handle() const { return h_; }
   ModIntT operator[](int k) const { return h_(k); }
   formal_power_series scale(int k) const {
@@ -63,18 +65,23 @@ public:
         [rc](int i) { return i == 0 ? ModIntT(1) : rc->at(i - 1) * invs(i); });
   }
   formal_power_series log() const { return (deriv() / (*this)).integr(); }
-  formal_power_series pow(int k) const {
-    return formal_power_series(
-        [h = h_, kk = ModIntT(k), k, zero_cnt = 0ull, s = std::optional<F>()](int i) mutable {
-          if (s) return i < zero_cnt ? ModIntT() : (*s)(i - zero_cnt);
-          ModIntT v(h(i));
-          if (v.is_zero()) return ++zero_cnt, ModIntT();
-          zero_cnt *= k;
-          formal_power_series t0([os = i, iv = v.inv(), h](int i) { return h(i + os) * iv; });
-          formal_power_series t1([h0 = t0.log().handle(), kk](int i) { return h0(i) * kk; });
-          s.emplace([vk = v.pow(k), h1 = t1.exp().handle()](int i) { return h1(i) * vk; });
-          return zero_cnt == 0 ? (*s)(i) : ModIntT();
-        });
+  formal_power_series pow(long long k) const {
+    if (k == 0) return ModIntT(1);
+    return formal_power_series([h = h_, kk = ModIntT(k), k, zero_cnt = 0ull,
+                                s = std::optional<F>()](int i) mutable {
+      if (s)
+        return static_cast<unsigned long long>(i) < zero_cnt ? ModIntT()
+                                                             : (*s)(static_cast<int>(i - zero_cnt));
+      ModIntT v(h(i));
+      if (v.is_zero()) return ++zero_cnt, ModIntT();
+      if (zero_cnt != 0 && k > static_cast<long long>(std::numeric_limits<int>::max()))
+        return zero_cnt = 0, s.emplace([](int) { return ModIntT(); })(0);
+      zero_cnt *= k;
+      formal_power_series t0([os = i, iv = v.inv(), h](int i) { return h(i + os) * iv; });
+      formal_power_series t1([h0 = t0.log().handle(), kk](int i) { return h0(i) * kk; });
+      s.emplace([vk = v.pow(k), h1 = t1.exp().handle()](int i) { return h1(i) * vk; });
+      return zero_cnt == 0 ? (*s)(i) : ModIntT();
+    });
   }
   template <typename SqrtFuncT,
             typename std::enable_if_t<std::is_invocable_r_v<ModIntT, SqrtFuncT, ModIntT>, int> = 0>
@@ -83,7 +90,7 @@ public:
     auto t = [h = h_, f, i2 = ModIntT()](int i, auto const &c) mutable {
       if (i != 0) return (h(i) - c[i]) * i2;
       ModIntT fi(f(h(i)));
-      i2 = (fi * ModIntT(2)).inv();
+      i2 = (fi + fi).inv();
       return fi;
     };
     auto rc = std::make_shared<relaxed_convolution<ModIntT>>(t, t);

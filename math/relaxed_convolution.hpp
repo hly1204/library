@@ -4,6 +4,7 @@
 #include "../common.hpp"
 #include "radix2_ntt.hpp"
 
+#include <exception>
 #include <functional>
 #include <type_traits>
 #include <utility>
@@ -11,6 +12,7 @@
 
 LIB_BEGIN
 
+// This implementation is NOT optimal and NOT lazy enough so IT IS SLOW.
 template <typename ModIntT>
 class relaxed_convolution {                       // O(n log^2 n) impl
   std::vector<ModIntT> a_{}, b_{}, c_{};          // `a_ * b_` = `c_`
@@ -18,25 +20,20 @@ class relaxed_convolution {                       // O(n log^2 n) impl
   std::function<ModIntT()> ha_{}, hb_{};          // handle for `a_` and `b_`
   int n_{};                                       // counter
 
-  template <typename FnT>
+  template <typename FnT,
+            typename std::enable_if_t<
+                std::is_invocable_r_v<ModIntT, FnT, int, const std::vector<ModIntT> &>, int> = 0>
   static auto wrap(FnT &&f, int &n, const std::vector<ModIntT> &c, std::vector<ModIntT> &e) {
-    if constexpr (std::is_invocable_r_v<ModIntT, FnT, int, const std::vector<ModIntT> &>) {
-      return std::bind(
-          [f](int n, const std::vector<ModIntT> &c, std::vector<ModIntT> &e) mutable {
-            return ModIntT(e.emplace_back(f(n, c)));
-          },
-          std::cref(n), std::cref(c), std::ref(e));
-    } else if constexpr (std::is_invocable_r_v<ModIntT, FnT, int>) {
-      return std::bind(
-          [f](int n, std::vector<ModIntT> &e) mutable { return ModIntT(e.emplace_back(f(n))); },
-          std::cref(n), std::ref(e));
-    } else if constexpr (std::is_invocable_r_v<ModIntT, FnT>) {
-      return std::bind(
-          [f](std::vector<ModIntT> &e) mutable { return ModIntT(e.emplace_back(f())); },
-          std::ref(e));
-    } else {
-      throw;
-    }
+    return [f, &n, &c, &e]() mutable { return e.emplace_back(f(n, c)); };
+  }
+  template <typename FnT,
+            typename std::enable_if_t<std::is_invocable_r_v<ModIntT, FnT, int>, int> = 0>
+  static auto wrap(FnT &&f, int &n, const std::vector<ModIntT> &, std::vector<ModIntT> &e) {
+    return [f, &n, &e]() mutable { return e.emplace_back(f(n)); };
+  }
+  template <typename FnT, typename std::enable_if_t<std::is_invocable_r_v<ModIntT, FnT>, int> = 0>
+  static auto wrap(FnT &&f, int &, const std::vector<ModIntT> &, std::vector<ModIntT> &e) {
+    return [f, &e]() mutable { return e.emplace_back(f()); };
   }
 
   enum : int { BASE_CASE_SIZE = 32 };
