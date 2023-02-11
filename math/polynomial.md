@@ -13,7 +13,7 @@ Recall what we do for computing such $q, r$ if both $a, b$ are positive integers
 
 We could do this to polynomials similarly. I omit the details.
 
-## Reference
+## Bibliography
 
 1. V. Shoup. [A Computational Introduction to Number Theory and Algebra (Version 2)](https://www.shoup.net/ntb/).
 2. D. J. Bernstein. [Scaled remainder trees](https://cr.yp.to/papers.html#scaledmod).

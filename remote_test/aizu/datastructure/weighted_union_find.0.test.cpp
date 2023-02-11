@@ -20,7 +20,7 @@ int main() {
       std::cin >> z;
       ds.relate(x, y, z);
     } else {
-      if (auto res = ds.diff(x, y); res) {
+      if (auto res = ds.diff(x, y)) {
         std::cout << *res << '\n';
       } else {
         std::cout << "?\n";

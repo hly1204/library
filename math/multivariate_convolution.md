@@ -61,7 +61,7 @@ for all $i, j$ as lexicographical encoding. Which means we could assign $a_i$ to
 
 This algorithm may too hard for me. The remaining question is that how Elegia's mind works?
 
-## Reference
+## Bibliography
 
 1. J. van der Hoeven. [Notes on the Truncated Fourier Transform](https://www.texmacs.org/joris/tft/tft.pdf).
 2. Elegia. [Hello, multivariate multiplication](https://blog.csdn.net/EI_Captain/article/details/112400493).
