@@ -1,14 +1,14 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   _extendedRequiredBy:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series.hpp
     title: Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
       for FFT prime $p$)
@@ -28,15 +28,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/partition_function.0.test.cpp
     title: remote_test/yosupo/math/partition_function.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
     title: remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/relaxed_convolution.hpp\"\n\n\n\n#line 1 \"common.hpp\"\
@@ -230,7 +230,7 @@ data:
   requiredBy:
   - math/formal_power_series.hpp
   timestamp: '2023-02-11 14:43:28+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
   - remote_test/yosupo/math/convolution_mod.3.test.cpp
@@ -244,3 +244,10 @@ layout: document
 title: Relaxed Convolution (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
   for FFT prime $p$)
 ---
+
+My implementation is NOT optimal. One may want to use the "middle product" trick and divide the problem into more subproblems to improve the efficiency. I don't want to improve my implementation.
+
+## Bibliography
+
+1. Romain Lebreton, Éric Schost. [A simple and fast online power series multiplication and its analysis](https://www.sciencedirect.com/science/article/pii/S0747717115000176).
+2. J. van der Hoeven. [New algorithms for relaxed multiplication](http://www.texmacs.org/joris/newrelax/newrelax.html).

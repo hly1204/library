@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
   _extendedRequiredBy: []
@@ -108,6 +108,6 @@ layout: document
 title: Suffix Array (SA-IS)
 ---
 
-## Reference
+## Bibliography
 
 1. Ge Nong, Sen Zhang and Wai Hong Chan. Linear Suffix Array Construction by Almost Pure Induced-Sorting.

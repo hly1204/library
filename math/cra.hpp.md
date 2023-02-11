@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
   _extendedRequiredBy: []
@@ -162,6 +162,6 @@ $$
 x \equiv a_0 + k_0m_0 \pmod{\operatorname{lcm}(m_0, m_1)}.
 $$
 
-## Reference
+## Bibliography
 
 1. math314のブログ. [任意modでの畳み込み演算をO(n log(n))で](https://math314.hateblo.jp/entry/2015/05/07/014908).

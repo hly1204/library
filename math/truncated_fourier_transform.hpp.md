@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   _extendedRequiredBy:
@@ -297,7 +297,7 @@ title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for FF
 
 A very interesting algorithm. The recursion steps are elegant.
 
-## Reference
+## Bibliography
 
 1. J. van der Hoeven. The Truncated Fourier Transform and Applications.
 2. Li Zhang. Implementation Techniques for the Truncated Fourier Transform.

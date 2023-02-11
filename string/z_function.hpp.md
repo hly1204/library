@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
   _extendedRequiredBy: []
@@ -53,6 +53,6 @@ layout: document
 title: Z Function
 ---
 
-## Reference
+## Bibliography
 
 1. Dan Gusfield. [Algorithms on Strings, Trees, and Sequences: Computer Science and Computational Biology](https://www.amazon.com/Algorithms-Strings-Trees-Sequences-Computational/dp/0521585198).

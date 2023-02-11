@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
   - icon: ':heavy_check_mark:'
@@ -51,9 +51,9 @@ data:
     \  std::cin.tie(nullptr);\n  int n, q;\n  std::cin >> n >> q;\n  lib::weighted_disjoint_set<int>\
     \ ds(n);\n  while (q--) {\n    int op, x, y, z;\n    std::cin >> op >> x >> y;\n\
     \    if (op == 0) {\n      std::cin >> z;\n      ds.relate(x, y, z);\n    } else\
-    \ {\n      if (auto res = ds.diff(x, y); res) {\n        std::cout << *res <<\
-    \ '\\n';\n      } else {\n        std::cout << \"?\\n\";\n      }\n    }\n  }\n\
-    \  return 0;\n}\n"
+    \ {\n      if (auto res = ds.diff(x, y)) {\n        std::cout << *res << '\\n';\n\
+    \      } else {\n        std::cout << \"?\\n\";\n      }\n    }\n  }\n  return\
+    \ 0;\n}\n"
   code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/1/DSL_1_B\"\
     \n\n#include \"datastructure/weighted_disjoint_set.hpp\"\n\n#include <iostream>\n\
     \nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
@@ -61,16 +61,16 @@ data:
     \  int n, q;\n  std::cin >> n >> q;\n  lib::weighted_disjoint_set<int> ds(n);\n\
     \  while (q--) {\n    int op, x, y, z;\n    std::cin >> op >> x >> y;\n    if\
     \ (op == 0) {\n      std::cin >> z;\n      ds.relate(x, y, z);\n    } else {\n\
-    \      if (auto res = ds.diff(x, y); res) {\n        std::cout << *res << '\\\
-    n';\n      } else {\n        std::cout << \"?\\n\";\n      }\n    }\n  }\n  return\
-    \ 0;\n}"
+    \      if (auto res = ds.diff(x, y)) {\n        std::cout << *res << '\\n';\n\
+    \      } else {\n        std::cout << \"?\\n\";\n      }\n    }\n  }\n  return\
+    \ 0;\n}\n"
   dependsOn:
   - datastructure/weighted_disjoint_set.hpp
   - common.hpp
   isVerificationFile: true
   path: remote_test/aizu/datastructure/weighted_union_find.0.test.cpp
   requiredBy: []
-  timestamp: '2022-04-23 15:43:11+08:00'
+  timestamp: '2023-02-11 14:57:58+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/aizu/datastructure/weighted_union_find.0.test.cpp

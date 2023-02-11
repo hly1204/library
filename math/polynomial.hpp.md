@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
@@ -490,7 +490,7 @@ Recall what we do for computing such $q, r$ if both $a, b$ are positive integers
 
 We could do this to polynomials similarly. I omit the details.
 
-## Reference
+## Bibliography
 
 1. V. Shoup. [A Computational Introduction to Number Theory and Algebra (Version 2)](https://www.shoup.net/ntb/).
 2. D. J. Bernstein. [Scaled remainder trees](https://cr.yp.to/papers.html#scaledmod).

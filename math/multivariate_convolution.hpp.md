@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
@@ -259,7 +259,7 @@ for all $i, j$ as lexicographical encoding. Which means we could assign $a_i$ to
 
 This algorithm may too hard for me. The remaining question is that how Elegia's mind works?
 
-## Reference
+## Bibliography
 
 1. J. van der Hoeven. [Notes on the Truncated Fourier Transform](https://www.texmacs.org/joris/tft/tft.pdf).
 2. Elegia. [Hello, multivariate multiplication](https://blog.csdn.net/EI_Captain/article/details/112400493).

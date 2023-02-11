@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
   _extendedRequiredBy:
@@ -170,6 +170,6 @@ layout: document
 title: Runtime Long Montgomery ModInt
 ---
 
-## Reference
+## Bibliography
 
 1. [Nyaan's Library](https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp).
