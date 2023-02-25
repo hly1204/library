@@ -34,7 +34,7 @@ class height_based_leftist_tree {
   CmpT cmp_;
   std::size_t size_{};
 
-  static std::size_t s(node *a) { return a != nullptr ? a->rank_ : 0; }
+  static std::size_t s(const node *a) { return a != nullptr ? a->rank_ : 0; }
 
   node *meld(node *a, node *b) {
     if (a == nullptr) return b;
