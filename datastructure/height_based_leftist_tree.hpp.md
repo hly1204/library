@@ -25,15 +25,15 @@ data:
     \ rank_{1}; // a.k.a. s value\n    T value_;\n    explicit node(const T &value)\
     \ : value_(value) {}\n    ~node() {\n      delete left_;\n      delete right_;\n\
     \    }\n  } * root_{};\n  CmpT cmp_;\n  std::size_t size_{};\n\n  static std::size_t\
-    \ s(node *a) { return a != nullptr ? a->rank_ : 0; }\n\n  node *meld(node *a,\
-    \ node *b) {\n    if (a == nullptr) return b;\n    if (b == nullptr) return a;\n\
-    \    if (!cmp_(a->value_, b->value_)) std::swap(a, b);\n    if (a->right_ != nullptr)\
-    \ a->right_->parent_ = nullptr;\n    if (((a->right_ = meld(a->right_, b))->parent_\
-    \ = a)->left_ == nullptr ||\n        a->left_->rank_ < a->right_->rank_)\n   \
-    \   std::swap(a->left_, a->right_);\n    a->rank_ = s(a->right_) + 1;\n    return\
-    \ a;\n  }\n\npublic:\n  using value_type       = T;\n  using pointer         \
-    \ = node *;\n  using const_pointer    = const node *;\n  using size_type     \
-    \   = std::size_t;\n  using signed_size_type = std::make_signed_t<std::size_t>;\n\
+    \ s(const node *a) { return a != nullptr ? a->rank_ : 0; }\n\n  node *meld(node\
+    \ *a, node *b) {\n    if (a == nullptr) return b;\n    if (b == nullptr) return\
+    \ a;\n    if (!cmp_(a->value_, b->value_)) std::swap(a, b);\n    if (a->right_\
+    \ != nullptr) a->right_->parent_ = nullptr;\n    if (((a->right_ = meld(a->right_,\
+    \ b))->parent_ = a)->left_ == nullptr ||\n        a->left_->rank_ < a->right_->rank_)\n\
+    \      std::swap(a->left_, a->right_);\n    a->rank_ = s(a->right_) + 1;\n   \
+    \ return a;\n  }\n\npublic:\n  using value_type       = T;\n  using pointer  \
+    \        = node *;\n  using const_pointer    = const node *;\n  using size_type\
+    \        = std::size_t;\n  using signed_size_type = std::make_signed_t<std::size_t>;\n\
     \n  class wrapper {\n    const node *p_{};\n\n  public:\n    wrapper() = default;\n\
     \    wrapper(const node *p) : p_(p) {}\n    const T &operator*() const { return\
     \ *p_; }\n    const node *data() const { return p_; }\n  };\n\n  explicit height_based_leftist_tree(CmpT\
@@ -83,15 +83,15 @@ data:
     \ rank_{1}; // a.k.a. s value\n    T value_;\n    explicit node(const T &value)\
     \ : value_(value) {}\n    ~node() {\n      delete left_;\n      delete right_;\n\
     \    }\n  } * root_{};\n  CmpT cmp_;\n  std::size_t size_{};\n\n  static std::size_t\
-    \ s(node *a) { return a != nullptr ? a->rank_ : 0; }\n\n  node *meld(node *a,\
-    \ node *b) {\n    if (a == nullptr) return b;\n    if (b == nullptr) return a;\n\
-    \    if (!cmp_(a->value_, b->value_)) std::swap(a, b);\n    if (a->right_ != nullptr)\
-    \ a->right_->parent_ = nullptr;\n    if (((a->right_ = meld(a->right_, b))->parent_\
-    \ = a)->left_ == nullptr ||\n        a->left_->rank_ < a->right_->rank_)\n   \
-    \   std::swap(a->left_, a->right_);\n    a->rank_ = s(a->right_) + 1;\n    return\
-    \ a;\n  }\n\npublic:\n  using value_type       = T;\n  using pointer         \
-    \ = node *;\n  using const_pointer    = const node *;\n  using size_type     \
-    \   = std::size_t;\n  using signed_size_type = std::make_signed_t<std::size_t>;\n\
+    \ s(const node *a) { return a != nullptr ? a->rank_ : 0; }\n\n  node *meld(node\
+    \ *a, node *b) {\n    if (a == nullptr) return b;\n    if (b == nullptr) return\
+    \ a;\n    if (!cmp_(a->value_, b->value_)) std::swap(a, b);\n    if (a->right_\
+    \ != nullptr) a->right_->parent_ = nullptr;\n    if (((a->right_ = meld(a->right_,\
+    \ b))->parent_ = a)->left_ == nullptr ||\n        a->left_->rank_ < a->right_->rank_)\n\
+    \      std::swap(a->left_, a->right_);\n    a->rank_ = s(a->right_) + 1;\n   \
+    \ return a;\n  }\n\npublic:\n  using value_type       = T;\n  using pointer  \
+    \        = node *;\n  using const_pointer    = const node *;\n  using size_type\
+    \        = std::size_t;\n  using signed_size_type = std::make_signed_t<std::size_t>;\n\
     \n  class wrapper {\n    const node *p_{};\n\n  public:\n    wrapper() = default;\n\
     \    wrapper(const node *p) : p_(p) {}\n    const T &operator*() const { return\
     \ *p_; }\n    const node *data() const { return p_; }\n  };\n\n  explicit height_based_leftist_tree(CmpT\
@@ -131,13 +131,13 @@ data:
     \      root_     = meld(root_, rhs.root_);\n      rhs.root_ = nullptr;\n     \
     \ rhs.size_ = 0;\n    }\n    return *this;\n  }\n};\n\ntemplate <typename T, typename\
     \ CmpT = std::less<>>\nusing hblt = height_based_leftist_tree<T, CmpT>;\n\nLIB_END\n\
-    \n#endif"
+    \n#endif\n"
   dependsOn:
   - common.hpp
   isVerificationFile: false
   path: datastructure/height_based_leftist_tree.hpp
   requiredBy: []
-  timestamp: '2022-10-06 19:19:28+08:00'
+  timestamp: '2023-02-25 23:27:26+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizu/datastructure/priority_queue.0.test.cpp
