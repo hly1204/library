@@ -21,7 +21,7 @@ public:
     std::iota(p_.begin(), p_.end(), 0);
   }
   int find(int u) const {
-    // path havling
+    // path halving
     while (p_[u] != p_[p_[u]]) u = p_[u] = p_[p_[u]];
     return p_[u];
   }
