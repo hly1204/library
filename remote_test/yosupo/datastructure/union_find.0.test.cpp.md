@@ -27,7 +27,7 @@ data:
     \ {}\n  explicit disjoint_set(int n) : p_(n), s_(n, 1) { std::iota(p_.begin(),\
     \ p_.end(), 0); }\n  void make_set(int n) {\n    p_.resize(n);\n    s_.assign(n,\
     \ 1);\n    std::iota(p_.begin(), p_.end(), 0);\n  }\n  int find(int u) const {\n\
-    \    // path havling\n    while (p_[u] != p_[p_[u]]) u = p_[u] = p_[p_[u]];\n\
+    \    // path halving\n    while (p_[u] != p_[p_[u]]) u = p_[u] = p_[p_[u]];\n\
     \    return p_[u];\n  }\n  bool is_same(int u, int v) const { return find(u) ==\
     \ find(v); }\n  int unite(int u, int v) {\n    u = find(u), v = find(v);\n   \
     \ if (u == v) return u;\n    if (s_[u] < s_[v]) {\n      s_[v] += s_[u];\n   \
@@ -54,7 +54,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/datastructure/union_find.0.test.cpp
   requiredBy: []
-  timestamp: '2022-04-23 15:43:11+08:00'
+  timestamp: '2023-04-01 14:17:57+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/datastructure/union_find.0.test.cpp

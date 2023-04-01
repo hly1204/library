@@ -232,13 +232,13 @@ data:
   timestamp: '2023-02-11 14:43:28+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-  - remote_test/yosupo/math/convolution_mod.3.test.cpp
-  - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
   - remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
-  - remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
-  - remote_test/yosupo/math/exp_of_formal_power_series.0.test.cpp
   - remote_test/yosupo/math/partition_function.0.test.cpp
+  - remote_test/yosupo/math/convolution_mod.3.test.cpp
+  - remote_test/yosupo/math/exp_of_formal_power_series.0.test.cpp
+  - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
+  - remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
 documentation_of: math/relaxed_convolution.hpp
 layout: document
 title: Relaxed Convolution (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
