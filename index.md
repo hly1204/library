@@ -211,6 +211,9 @@ data:
       path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
       title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
     - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+      title: remote_test/yosupo/math/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/multivariate_convolution.0.test.cpp
       title: remote_test/yosupo/math/multivariate_convolution.0.test.cpp
     - icon: ':heavy_check_mark:'

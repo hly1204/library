@@ -12,6 +12,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.2.test.cpp
     title: remote_test/yosupo/math/convolution_mod.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+    title: remote_test/yosupo/math/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -140,6 +143,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/convolution_mod.2.test.cpp
+  - remote_test/yosupo/math/multipoint_evaluation_on_geometric_sequence.0.test.cpp
 documentation_of: math/czt.hpp
 layout: document
 title: Chirp Z-transform (Bluestein's algorithm) (in $\mathbb{F} _ p \lbrack z \rbrack$
