@@ -30,6 +30,7 @@
 "remote_test/yosupo/math/polynomial_taylor_shift.1.test.cpp": "2022-06-22 23:05:33 +0800",
 "remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp": "2023-02-11 14:43:28 +0800",
 "remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp": "2022-12-02 21:43:24 +0800",
+"remote_test/yosupo/math/primality_test.0.test.cpp": "2023-06-04 13:42:40 +0800",
 "remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp": "2023-02-11 14:43:28 +0800",
 "remote_test/yosupo/math/sqrt_mod.0.test.cpp": "2022-06-22 23:05:33 +0800",
 "remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp": "2022-12-02 21:43:24 +0800",
