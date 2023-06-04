@@ -8,27 +8,28 @@ data:
     path: common.hpp
     title: common.hpp
   - icon: ':heavy_check_mark:'
+    path: math/integer_factorization.hpp
+    title: Integer Factorization (Pollard's rho algorithm) (in $\mathbb{Z}$)
+  - icon: ':heavy_check_mark:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
   - icon: ':heavy_check_mark:'
     path: modint/runtime_long_montgomery_modint.hpp
     title: Runtime Long Montgomery ModInt
   _extendedRequiredBy: []
-  _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/factorize.0.test.cpp
-    title: remote_test/yosupo/math/factorize.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/primality_test.0.test.cpp
-    title: remote_test/yosupo/math/primality_test.0.test.cpp
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
-  _pathExtension: hpp
+  _pathExtension: cpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    links: []
-  bundledCode: "#line 1 \"math/integer_factorization.hpp\"\n\n\n\n#line 1 \"common.hpp\"\
-    \n\n\n\n#define LIB_DEBUG\n\n#define LIB_BEGIN namespace lib {\n#define LIB_END\
-    \ }\n#define LIB ::lib::\n\n\n#line 1 \"modint/runtime_long_montgomery_modint.hpp\"\
+    '*NOT_SPECIAL_COMMENTS*': ''
+    PROBLEM: https://judge.yosupo.jp/problem/primality_test
+    links:
+    - https://judge.yosupo.jp/problem/primality_test
+  bundledCode: "#line 1 \"remote_test/yosupo/math/primality_test.0.test.cpp\"\n#define\
+    \ PROBLEM \"https://judge.yosupo.jp/problem/primality_test\"\n\n#line 1 \"math/integer_factorization.hpp\"\
+    \n\n\n\n#line 1 \"common.hpp\"\n\n\n\n#define LIB_DEBUG\n\n#define LIB_BEGIN namespace\
+    \ lib {\n#define LIB_END }\n#define LIB ::lib::\n\n\n#line 1 \"modint/runtime_long_montgomery_modint.hpp\"\
     \n\n\n\n#line 5 \"modint/runtime_long_montgomery_modint.hpp\"\n\n#ifdef LIB_DEBUG\n\
     \  #include <stdexcept>\n#endif\n#include <cstdint>\n#include <iostream>\n#include\
     \ <type_traits>\n\nLIB_BEGIN\n\ntemplate <int /* IdT */>\nclass runtime_montgomery_modint63\
@@ -141,53 +142,36 @@ data:
     \nstd::map<unsigned long long, int> factorization(unsigned long long n) {\n  std::map<unsigned\
     \ long long, int> res;\n  if (n < 2) return res;\n  int t = 0;\n  while ((n &\
     \ 1) == 0) n >>= 1, ++t;\n  if (t) res[2] = t;\n  detail::factorize_odd(n, res);\n\
-    \  return res;\n}\n\nLIB_END\n\n\n"
-  code: "#ifndef INTEGER_FACTORIZATION_HPP\n#define INTEGER_FACTORIZATION_HPP\n\n\
-    #include \"../common.hpp\"\n#include \"../modint/runtime_long_montgomery_modint.hpp\"\
-    \n#include \"random.hpp\"\n\n#include <cassert>\n#include <map>\n#include <numeric>\n\
-    #include <random>\n\nLIB_BEGIN\n\nnamespace detail {\n\ntemplate <template <int\
-    \ /* IdT */> typename ModIntT>\nunsigned long long rho(unsigned long long n) {\n\
-    \  using mint = ModIntT<-1>;\n  using u64  = unsigned long long;\n  xoshiro256starstar\
-    \ gen(std::random_device{}());\n  std::uniform_int_distribution<u64> dis(2, n\
-    \ - 1);\n  if (static_cast<u64>(mint::mod()) != n) mint::set_mod(n);\n  auto f\
-    \ = [R = mint(dis(gen))](mint x) { return x * x + R; };\n  mint x, y(dis(gen)),\
-    \ ys, q(1);\n  u64 g       = 1;\n  const int m = 128;\n  for (int r = 1; g ==\
-    \ 1; r <<= 1) {\n    x = y;\n    for (int i = 0; i < r; ++i) y = f(y);\n    for\
-    \ (int k = 0; g == 1 && k < r; k += m) {\n      ys = y;\n      for (int i = 0;\
-    \ i < m && i < r - k; ++i) q *= x - (y = f(y));\n      g = std::gcd(static_cast<u64>(q),\
-    \ n);\n    }\n  }\n  // clang-format off\n  if (g == n)\n    do { g = std::gcd(static_cast<u64>(x\
-    \ - (ys = f(ys))), n); } while (g == 1);\n  // clang-format on\n  return g ==\
-    \ n ? rho<ModIntT>(n) : g;\n}\n\n} // namespace detail\n\nbool is_prime(unsigned\
-    \ long long n) {\n  // Miller--Rabin test\n  if (n <= 2) return n == 2;\n  if\
-    \ ((n & 1) == 0) return false;\n  if (n < 8) return true;\n  using mint = rmm63<-1>;\n\
-    \  {\n    bool okay = mint::set_mod(n);\n    assert(okay);\n  }\n  int t     \
-    \           = 0;\n  unsigned long long u = n - 1;\n  do { u >>= 1, ++t; } while\
-    \ ((u & 1) == 0);\n  for (int i : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37})\
-    \ {\n    if (n == static_cast<unsigned long long>(i)) return true;\n    mint x\
-    \ = mint(i).pow(u);\n    for (int j = 0; j != t && x != 1; ++j) {\n      mint\
-    \ y = x * x;\n      if (x != -1 && y == 1) return false;\n      x = y;\n    }\n\
-    \    if (x != 1) return false;\n  }\n  return true;\n}\n\nnamespace detail {\n\
-    \nvoid factorize_odd(unsigned long long n, std::map<unsigned long long, int> &mp)\
-    \ {\n  if (n < 2) return;\n  if (is_prime(n)) {\n    ++mp[n];\n    return;\n \
-    \ }\n  auto g = rho<rmm63>(n);\n  factorize_odd(n / g, mp), factorize_odd(g, mp);\n\
-    }\n\n} // namespace detail\n\nstd::map<unsigned long long, int> factorization(unsigned\
-    \ long long n) {\n  std::map<unsigned long long, int> res;\n  if (n < 2) return\
-    \ res;\n  int t = 0;\n  while ((n & 1) == 0) n >>= 1, ++t;\n  if (t) res[2] =\
-    \ t;\n  detail::factorize_odd(n, res);\n  return res;\n}\n\nLIB_END\n\n#endif"
+    \  return res;\n}\n\nLIB_END\n\n\n#line 4 \"remote_test/yosupo/math/primality_test.0.test.cpp\"\
+    \n\n#line 6 \"remote_test/yosupo/math/primality_test.0.test.cpp\"\n\nint main()\
+    \ {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\"\
+    , \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n\
+    \  int Q;\n  std::cin >> Q;\n  while (Q--) {\n    long long a;\n    std::cin >>\
+    \ a;\n    std::cout << (lib::is_prime(a) ? \"Yes\\n\" : \"No\\n\");\n  }\n  return\
+    \ 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/primality_test\"\n\n#include\
+    \ \"math/integer_factorization.hpp\"\n\n#include <iostream>\n\nint main() {\n\
+    #ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\", \"w\"\
+    , stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n\
+    \  int Q;\n  std::cin >> Q;\n  while (Q--) {\n    long long a;\n    std::cin >>\
+    \ a;\n    std::cout << (lib::is_prime(a) ? \"Yes\\n\" : \"No\\n\");\n  }\n  return\
+    \ 0;\n}\n"
   dependsOn:
+  - math/integer_factorization.hpp
   - common.hpp
   - modint/runtime_long_montgomery_modint.hpp
   - common.hpp
   - math/random.hpp
-  isVerificationFile: false
-  path: math/integer_factorization.hpp
+  isVerificationFile: true
+  path: remote_test/yosupo/math/primality_test.0.test.cpp
   requiredBy: []
-  timestamp: '2022-05-27 06:01:13+00:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - remote_test/yosupo/math/primality_test.0.test.cpp
-  - remote_test/yosupo/math/factorize.0.test.cpp
-documentation_of: math/integer_factorization.hpp
+  timestamp: '2023-06-04 13:42:40+08:00'
+  verificationStatus: TEST_ACCEPTED
+  verifiedWith: []
+documentation_of: remote_test/yosupo/math/primality_test.0.test.cpp
 layout: document
-title: Integer Factorization (Pollard's rho algorithm) (in $\mathbb{Z}$)
+redirect_from:
+- /verify/remote_test/yosupo/math/primality_test.0.test.cpp
+- /verify/remote_test/yosupo/math/primality_test.0.test.cpp.html
+title: remote_test/yosupo/math/primality_test.0.test.cpp
 ---
