@@ -66,8 +66,8 @@ data:
   isVerificationFile: false
   path: math/binomial.hpp
   requiredBy:
-  - math/taylor_shift.hpp
   - math/stirling_numbers.hpp
+  - math/taylor_shift.hpp
   timestamp: '2022-05-05 22:58:57+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
