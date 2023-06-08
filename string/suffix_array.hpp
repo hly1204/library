@@ -28,7 +28,7 @@ std::vector<int> SA_IS(const std::vector<int> &s, int K) {
   std::reverse(p1.begin(), p1.end());
   const int n1 = static_cast<int>(p1.size());
   for (int i = 0; i != n; ++i) ++bkt[s[i]];
-  for (int i = 0, sum = 0; i != K; ++i) sum += bkt[i], bkt_r[i] = sum, bkt_l[i] = sum - bkt[i];
+  for (int i = 0, sum = 0; i != K; ++i) bkt_l[i] = sum, bkt_r[i] = (sum += bkt[i]);
   std::vector<int> s1(n1), SA1(n1);
   std::fill_n(SA.begin(), n, -1);
   std::copy_n(bkt_r.begin(), K, bkt.begin());
