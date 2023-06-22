@@ -157,8 +157,8 @@ data:
   isVerificationFile: false
   path: modint/long_montgomery_modint.hpp
   requiredBy:
-  - math/binomial_convolution.hpp
   - math/convolution_mod.hpp
+  - math/binomial_convolution.hpp
   timestamp: '2022-04-26 20:45:46+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

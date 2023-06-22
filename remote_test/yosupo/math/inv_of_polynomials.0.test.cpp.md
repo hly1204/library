@@ -10,7 +10,7 @@ data:
   - icon: ':question:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/poly_extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{F} _ p \lbrack z \rbrack$ for
       FFT prime $p$)
@@ -43,9 +43,9 @@ data:
     title: Montgomery ModInt
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/inv_of_polynomials
@@ -376,8 +376,8 @@ data:
     \ tft(rhs_cpy);\n  for (int i = 0; i != len; ++i) this->operator[](i) *= rhs_cpy[i];\n\
     \  itft(*this);\n  return *this;\n}\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\
     \ truncated_formal_power_series<ModIntT>::inv(int n) const {\n  if (n <= 0) return\
-    \ {};\n  semi_relaxed_convolution src(static_cast<MyBase &>(*this),\n        \
-    \                       [iv = this->front().inv()](int n, const std::vector<ModIntT>\
+    \ {};\n  semi_relaxed_convolution src(static_cast<const MyBase &>(*this),\n  \
+    \                             [iv = this->front().inv()](int n, const std::vector<ModIntT>\
     \ &c) {\n                                 return n == 0 ? iv : -c[n] * iv;\n \
     \                              });\n  auto &&multiplier = src.await(n).get_multiplier();\n\
     \  return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());\n\
@@ -548,8 +548,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
   requiredBy: []
-  timestamp: '2023-06-22 10:59:10+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2023-06-22 11:15:26+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
 layout: document
