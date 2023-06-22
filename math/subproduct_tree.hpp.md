@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   _extendedRequiredBy: []
@@ -243,8 +243,8 @@ data:
   timestamp: '2022-07-02 07:42:02+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
   - remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
+  - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
 documentation_of: math/subproduct_tree.hpp
 layout: document
 title: Multipoint Evaluation and Interpolation (in $\mathbb{F} _ p$ for FFT prime

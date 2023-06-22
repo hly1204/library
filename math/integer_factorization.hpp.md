@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
   - icon: ':heavy_check_mark:'
@@ -185,8 +185,8 @@ data:
   timestamp: '2022-05-27 06:01:13+00:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/primality_test.0.test.cpp
   - remote_test/yosupo/math/factorize.0.test.cpp
+  - remote_test/yosupo/math/primality_test.0.test.cpp
 documentation_of: math/integer_factorization.hpp
 layout: document
 title: Integer Factorization (Pollard's rho algorithm) (in $\mathbb{Z}$)
