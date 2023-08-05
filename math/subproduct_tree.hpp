@@ -19,7 +19,6 @@ class subproduct_tree {
     poly_info(PolyT &&poly, PolyT &&cached_dft)
         : poly_(std::move(poly)), cached_dft_(std::move(cached_dft)) {}
     poly_info(const PolyT &poly, const PolyT &cached_dft) : poly_(poly), cached_dft_(cached_dft) {}
-    explicit poly_info(const poly_info &) = default;
   };
 
   std::vector<std::vector<poly_info>> tree_{};

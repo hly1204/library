@@ -28,7 +28,7 @@ class weighted_disjoint_set {
   }
 
 public:
-  weighted_disjoint_set() {}
+  weighted_disjoint_set() = default;
   explicit weighted_disjoint_set(int n) : p_(n), s_(n, 1), d_(n) {
     std::iota(p_.begin(), p_.end(), 0);
   }

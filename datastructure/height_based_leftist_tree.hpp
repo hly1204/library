@@ -30,7 +30,7 @@ class height_based_leftist_tree {
       delete left_;
       delete right_;
     }
-  } * root_{};
+  } *root_{};
   CmpT cmp_;
   std::size_t size_{};
 
@@ -60,7 +60,7 @@ public:
 
   public:
     wrapper() = default;
-    wrapper(const node *p) : p_(p) {}
+    explicit wrapper(const node *p) : p_(p) {}
     const T &operator*() const { return *p_; }
     const node *data() const { return p_; }
   };
