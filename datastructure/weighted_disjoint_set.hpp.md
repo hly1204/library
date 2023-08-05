@@ -24,8 +24,8 @@ data:
     \ d_{}; // difference\n\n  std::pair<int, TypeT> find_pair(int u) const {\n  \
     \  TypeT d = d_[u];\n    while (p_[u] != p_[p_[u]]) {\n      d_[u] += d_[p_[u]];\n\
     \      d += d_[p_[u]];\n      d += d_[u = p_[u] = p_[p_[u]]];\n    }\n    return\
-    \ std::make_pair(p_[u], d);\n  }\n\npublic:\n  weighted_disjoint_set() {}\n  explicit\
-    \ weighted_disjoint_set(int n) : p_(n), s_(n, 1), d_(n) {\n    std::iota(p_.begin(),\
+    \ std::make_pair(p_[u], d);\n  }\n\npublic:\n  weighted_disjoint_set() = default;\n\
+    \  explicit weighted_disjoint_set(int n) : p_(n), s_(n, 1), d_(n) {\n    std::iota(p_.begin(),\
     \ p_.end(), 0);\n  }\n  void make_set(int n) {\n    p_.resize(n);\n    s_.assign(n,\
     \ 1);\n    d_.assign(n, TypeT());\n    std::iota(p_.begin(), p_.end(), 0);\n \
     \ }\n  int find(int u) const { return find_pair(u).first; }\n  bool relate(int\
@@ -50,7 +50,7 @@ data:
     \  std::pair<int, TypeT> find_pair(int u) const {\n    TypeT d = d_[u];\n    while\
     \ (p_[u] != p_[p_[u]]) {\n      d_[u] += d_[p_[u]];\n      d += d_[p_[u]];\n \
     \     d += d_[u = p_[u] = p_[p_[u]]];\n    }\n    return std::make_pair(p_[u],\
-    \ d);\n  }\n\npublic:\n  weighted_disjoint_set() {}\n  explicit weighted_disjoint_set(int\
+    \ d);\n  }\n\npublic:\n  weighted_disjoint_set() = default;\n  explicit weighted_disjoint_set(int\
     \ n) : p_(n), s_(n, 1), d_(n) {\n    std::iota(p_.begin(), p_.end(), 0);\n  }\n\
     \  void make_set(int n) {\n    p_.resize(n);\n    s_.assign(n, 1);\n    d_.assign(n,\
     \ TypeT());\n    std::iota(p_.begin(), p_.end(), 0);\n  }\n  int find(int u) const\
@@ -66,13 +66,13 @@ data:
     \ diff(int u, int v) const {\n    auto [uf, ud] = find_pair(u);\n    auto [vf,\
     \ vd] = find_pair(v);\n    return uf == vf ? std::make_optional<TypeT>(vd - ud)\
     \ : std::optional<TypeT>();\n  }\n  int get_component_size(int u) const { return\
-    \ s_[find(u)]; }\n};\n\nLIB_END\n\n#endif"
+    \ s_[find(u)]; }\n};\n\nLIB_END\n\n#endif\n"
   dependsOn:
   - common.hpp
   isVerificationFile: false
   path: datastructure/weighted_disjoint_set.hpp
   requiredBy: []
-  timestamp: '2022-04-23 15:43:11+08:00'
+  timestamp: '2023-08-05 09:04:07+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizu/datastructure/weighted_union_find.0.test.cpp

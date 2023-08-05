@@ -24,7 +24,7 @@ data:
     \n  class node {\n  public:\n    node *left_{}, *right_{}, *parent_{};\n    int\
     \ rank_{1}; // a.k.a. s value\n    T value_;\n    explicit node(const T &value)\
     \ : value_(value) {}\n    ~node() {\n      delete left_;\n      delete right_;\n\
-    \    }\n  } * root_{};\n  CmpT cmp_;\n  std::size_t size_{};\n\n  static std::size_t\
+    \    }\n  } *root_{};\n  CmpT cmp_;\n  std::size_t size_{};\n\n  static std::size_t\
     \ s(const node *a) { return a != nullptr ? a->rank_ : 0; }\n\n  node *meld(node\
     \ *a, node *b) {\n    if (a == nullptr) return b;\n    if (b == nullptr) return\
     \ a;\n    if (!cmp_(a->value_, b->value_)) std::swap(a, b);\n    if (a->right_\
@@ -35,9 +35,10 @@ data:
     \        = node *;\n  using const_pointer    = const node *;\n  using size_type\
     \        = std::size_t;\n  using signed_size_type = std::make_signed_t<std::size_t>;\n\
     \n  class wrapper {\n    const node *p_{};\n\n  public:\n    wrapper() = default;\n\
-    \    wrapper(const node *p) : p_(p) {}\n    const T &operator*() const { return\
-    \ *p_; }\n    const node *data() const { return p_; }\n  };\n\n  explicit height_based_leftist_tree(CmpT\
-    \ cmp = CmpT()) : cmp_(cmp) {}\n  template <\n      typename IterT,\n      std::enable_if_t<std::is_convertible_v<typename\
+    \    explicit wrapper(const node *p) : p_(p) {}\n    const T &operator*() const\
+    \ { return *p_; }\n    const node *data() const { return p_; }\n  };\n\n  explicit\
+    \ height_based_leftist_tree(CmpT cmp = CmpT()) : cmp_(cmp) {}\n  template <\n\
+    \      typename IterT,\n      std::enable_if_t<std::is_convertible_v<typename\
     \ std::iterator_traits<IterT>::value_type, T>,\n                       int> =\
     \ 0>\n  height_based_leftist_tree(IterT begin, IterT end, CmpT cmp = CmpT())\n\
     \      : cmp_(cmp), size_(end - begin) {\n    std::queue<node *> q;\n    for (;\
@@ -82,7 +83,7 @@ data:
     \n  class node {\n  public:\n    node *left_{}, *right_{}, *parent_{};\n    int\
     \ rank_{1}; // a.k.a. s value\n    T value_;\n    explicit node(const T &value)\
     \ : value_(value) {}\n    ~node() {\n      delete left_;\n      delete right_;\n\
-    \    }\n  } * root_{};\n  CmpT cmp_;\n  std::size_t size_{};\n\n  static std::size_t\
+    \    }\n  } *root_{};\n  CmpT cmp_;\n  std::size_t size_{};\n\n  static std::size_t\
     \ s(const node *a) { return a != nullptr ? a->rank_ : 0; }\n\n  node *meld(node\
     \ *a, node *b) {\n    if (a == nullptr) return b;\n    if (b == nullptr) return\
     \ a;\n    if (!cmp_(a->value_, b->value_)) std::swap(a, b);\n    if (a->right_\
@@ -93,9 +94,10 @@ data:
     \        = node *;\n  using const_pointer    = const node *;\n  using size_type\
     \        = std::size_t;\n  using signed_size_type = std::make_signed_t<std::size_t>;\n\
     \n  class wrapper {\n    const node *p_{};\n\n  public:\n    wrapper() = default;\n\
-    \    wrapper(const node *p) : p_(p) {}\n    const T &operator*() const { return\
-    \ *p_; }\n    const node *data() const { return p_; }\n  };\n\n  explicit height_based_leftist_tree(CmpT\
-    \ cmp = CmpT()) : cmp_(cmp) {}\n  template <\n      typename IterT,\n      std::enable_if_t<std::is_convertible_v<typename\
+    \    explicit wrapper(const node *p) : p_(p) {}\n    const T &operator*() const\
+    \ { return *p_; }\n    const node *data() const { return p_; }\n  };\n\n  explicit\
+    \ height_based_leftist_tree(CmpT cmp = CmpT()) : cmp_(cmp) {}\n  template <\n\
+    \      typename IterT,\n      std::enable_if_t<std::is_convertible_v<typename\
     \ std::iterator_traits<IterT>::value_type, T>,\n                       int> =\
     \ 0>\n  height_based_leftist_tree(IterT begin, IterT end, CmpT cmp = CmpT())\n\
     \      : cmp_(cmp), size_(end - begin) {\n    std::queue<node *> q;\n    for (;\
@@ -137,7 +139,7 @@ data:
   isVerificationFile: false
   path: datastructure/height_based_leftist_tree.hpp
   requiredBy: []
-  timestamp: '2023-02-25 23:27:26+08:00'
+  timestamp: '2023-08-05 09:04:07+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizu/datastructure/priority_queue.0.test.cpp

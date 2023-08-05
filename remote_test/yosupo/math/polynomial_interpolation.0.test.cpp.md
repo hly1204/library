@@ -416,11 +416,10 @@ data:
     \ = typename PolyT::value_type;\n\n  struct poly_info {\n    PolyT poly_, cached_dft_;\n\
     \    poly_info(PolyT &&poly, PolyT &&cached_dft)\n        : poly_(std::move(poly)),\
     \ cached_dft_(std::move(cached_dft)) {}\n    poly_info(const PolyT &poly, const\
-    \ PolyT &cached_dft) : poly_(poly), cached_dft_(cached_dft) {}\n    explicit poly_info(const\
-    \ poly_info &) = default;\n  };\n\n  std::vector<std::vector<poly_info>> tree_{};\n\
-    \npublic:\n  explicit subproduct_tree(const std::vector<T> &x);\n  std::vector<T>\
-    \ evaluate(const PolyT &a) const;\n  PolyT interpolate(const std::vector<T> &y)\
-    \ const;\n};\n\ntemplate <typename PolyT>\nsubproduct_tree<PolyT>::subproduct_tree(const\
+    \ PolyT &cached_dft) : poly_(poly), cached_dft_(cached_dft) {}\n  };\n\n  std::vector<std::vector<poly_info>>\
+    \ tree_{};\n\npublic:\n  explicit subproduct_tree(const std::vector<T> &x);\n\
+    \  std::vector<T> evaluate(const PolyT &a) const;\n  PolyT interpolate(const std::vector<T>\
+    \ &y) const;\n};\n\ntemplate <typename PolyT>\nsubproduct_tree<PolyT>::subproduct_tree(const\
     \ std::vector<T> &x) {\n  if (x.empty()) return;\n  auto &&l0 = tree_.emplace_back();\n\
     \  for (auto &&i : x) l0.emplace_back(PolyT{-i, T(1)}, PolyT{1 - i});\n  while\
     \ (tree_.back().size() != 1) {\n    auto &&a    = tree_.back();\n    const int\
@@ -573,7 +572,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
   requiredBy: []
-  timestamp: '2023-06-22 11:15:26+08:00'
+  timestamp: '2023-08-05 09:04:07+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp

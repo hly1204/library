@@ -29,8 +29,8 @@ data:
     \ d_{}; // difference\n\n  std::pair<int, TypeT> find_pair(int u) const {\n  \
     \  TypeT d = d_[u];\n    while (p_[u] != p_[p_[u]]) {\n      d_[u] += d_[p_[u]];\n\
     \      d += d_[p_[u]];\n      d += d_[u = p_[u] = p_[p_[u]]];\n    }\n    return\
-    \ std::make_pair(p_[u], d);\n  }\n\npublic:\n  weighted_disjoint_set() {}\n  explicit\
-    \ weighted_disjoint_set(int n) : p_(n), s_(n, 1), d_(n) {\n    std::iota(p_.begin(),\
+    \ std::make_pair(p_[u], d);\n  }\n\npublic:\n  weighted_disjoint_set() = default;\n\
+    \  explicit weighted_disjoint_set(int n) : p_(n), s_(n, 1), d_(n) {\n    std::iota(p_.begin(),\
     \ p_.end(), 0);\n  }\n  void make_set(int n) {\n    p_.resize(n);\n    s_.assign(n,\
     \ 1);\n    d_.assign(n, TypeT());\n    std::iota(p_.begin(), p_.end(), 0);\n \
     \ }\n  int find(int u) const { return find_pair(u).first; }\n  bool relate(int\
@@ -70,7 +70,7 @@ data:
   isVerificationFile: true
   path: remote_test/aizu/datastructure/weighted_union_find.0.test.cpp
   requiredBy: []
-  timestamp: '2023-02-11 14:57:58+08:00'
+  timestamp: '2023-08-05 09:04:07+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/aizu/datastructure/weighted_union_find.0.test.cpp

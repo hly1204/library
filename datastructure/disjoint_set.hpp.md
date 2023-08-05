@@ -19,22 +19,22 @@ data:
     \ }\n#define LIB ::lib::\n\n\n#line 5 \"datastructure/disjoint_set.hpp\"\n\n#include\
     \ <numeric>\n#include <vector>\n\nLIB_BEGIN\n\nclass disjoint_set {\n  mutable\
     \ std::vector<int> p_{}; // parent\n  std::vector<int> s_{};         // size\n\
-    \npublic:\n  disjoint_set() {}\n  explicit disjoint_set(int n) : p_(n), s_(n,\
-    \ 1) { std::iota(p_.begin(), p_.end(), 0); }\n  void make_set(int n) {\n    p_.resize(n);\n\
-    \    s_.assign(n, 1);\n    std::iota(p_.begin(), p_.end(), 0);\n  }\n  int find(int\
-    \ u) const {\n    // path halving\n    while (p_[u] != p_[p_[u]]) u = p_[u] =\
-    \ p_[p_[u]];\n    return p_[u];\n  }\n  bool is_same(int u, int v) const { return\
-    \ find(u) == find(v); }\n  int unite(int u, int v) {\n    u = find(u), v = find(v);\n\
-    \    if (u == v) return u;\n    if (s_[u] < s_[v]) {\n      s_[v] += s_[u];\n\
-    \      return p_[u] = v;\n    } else {\n      s_[u] += s_[v];\n      return p_[v]\
-    \ = u;\n    }\n  }\n  int get_component_size(int u) const { return s_[find(u)];\
-    \ }\n};\n\nLIB_END\n\n\n"
+    \npublic:\n  disjoint_set() = default;\n  explicit disjoint_set(int n) : p_(n),\
+    \ s_(n, 1) { std::iota(p_.begin(), p_.end(), 0); }\n  void make_set(int n) {\n\
+    \    p_.resize(n);\n    s_.assign(n, 1);\n    std::iota(p_.begin(), p_.end(),\
+    \ 0);\n  }\n  int find(int u) const {\n    // path halving\n    while (p_[u] !=\
+    \ p_[p_[u]]) u = p_[u] = p_[p_[u]];\n    return p_[u];\n  }\n  bool is_same(int\
+    \ u, int v) const { return find(u) == find(v); }\n  int unite(int u, int v) {\n\
+    \    u = find(u), v = find(v);\n    if (u == v) return u;\n    if (s_[u] < s_[v])\
+    \ {\n      s_[v] += s_[u];\n      return p_[u] = v;\n    } else {\n      s_[u]\
+    \ += s_[v];\n      return p_[v] = u;\n    }\n  }\n  int get_component_size(int\
+    \ u) const { return s_[find(u)]; }\n};\n\nLIB_END\n\n\n"
   code: "#ifndef DISJOINT_SET_HPP\n#define DISJOINT_SET_HPP\n\n#include \"../common.hpp\"\
     \n\n#include <numeric>\n#include <vector>\n\nLIB_BEGIN\n\nclass disjoint_set {\n\
     \  mutable std::vector<int> p_{}; // parent\n  std::vector<int> s_{};        \
-    \ // size\n\npublic:\n  disjoint_set() {}\n  explicit disjoint_set(int n) : p_(n),\
-    \ s_(n, 1) { std::iota(p_.begin(), p_.end(), 0); }\n  void make_set(int n) {\n\
-    \    p_.resize(n);\n    s_.assign(n, 1);\n    std::iota(p_.begin(), p_.end(),\
+    \ // size\n\npublic:\n  disjoint_set() = default;\n  explicit disjoint_set(int\
+    \ n) : p_(n), s_(n, 1) { std::iota(p_.begin(), p_.end(), 0); }\n  void make_set(int\
+    \ n) {\n    p_.resize(n);\n    s_.assign(n, 1);\n    std::iota(p_.begin(), p_.end(),\
     \ 0);\n  }\n  int find(int u) const {\n    // path halving\n    while (p_[u] !=\
     \ p_[p_[u]]) u = p_[u] = p_[p_[u]];\n    return p_[u];\n  }\n  bool is_same(int\
     \ u, int v) const { return find(u) == find(v); }\n  int unite(int u, int v) {\n\
@@ -47,7 +47,7 @@ data:
   isVerificationFile: false
   path: datastructure/disjoint_set.hpp
   requiredBy: []
-  timestamp: '2023-04-01 14:17:57+08:00'
+  timestamp: '2023-08-05 09:04:07+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/datastructure/union_find.0.test.cpp
