@@ -13,6 +13,7 @@
 #include <iterator>
 #include <optional>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 LIB_BEGIN
@@ -25,6 +26,9 @@ class truncated_formal_power_series : public std::vector<ModIntT> {
 
 public:
   using std::vector<ModIntT>::vector;
+
+  truncated_formal_power_series(const std::vector<ModIntT> &v) : std::vector<ModIntT>(v) {}
+  truncated_formal_power_series(std::vector<ModIntT> &&v) : std::vector<ModIntT>(std::move(v)) {}
 
   enum : int { NEGATIVE_INFINITY = -1 };
 
