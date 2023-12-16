@@ -18,7 +18,7 @@ LIB_BEGIN
 template <typename ModIntT>
 class formal_power_series {
   using F = std::function<ModIntT(int)>;
-  F h_;
+  F h_; // TODO: Fix a bug that cause a lot of copy of `h_` which is not intend to
 
   static typename detail::modular_inverse<ModIntT> invs;
 

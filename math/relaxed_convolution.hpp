@@ -23,17 +23,17 @@ class relaxed_convolution {                       // O(n log^2 n) impl
   template <typename FnT,
             typename std::enable_if_t<
                 std::is_invocable_r_v<ModIntT, FnT, int, const std::vector<ModIntT> &>, int> = 0>
-  static auto wrap(FnT &&f, int &n, const std::vector<ModIntT> &c, std::vector<ModIntT> &e) {
-    return [f, &n, &c, &e]() mutable { return e.emplace_back(f(n, c)); };
+  static auto wrap(FnT f, int &n, const std::vector<ModIntT> &c, std::vector<ModIntT> &e) {
+    return [ff = std::move(f), &n, &c, &e]() mutable { return e.emplace_back(ff(n, c)); };
   }
   template <typename FnT,
             typename std::enable_if_t<std::is_invocable_r_v<ModIntT, FnT, int>, int> = 0>
-  static auto wrap(FnT &&f, int &n, const std::vector<ModIntT> &, std::vector<ModIntT> &e) {
-    return [f, &n, &e]() mutable { return e.emplace_back(f(n)); };
+  static auto wrap(FnT f, int &n, const std::vector<ModIntT> &, std::vector<ModIntT> &e) {
+    return [ff = std::move(f), &n, &e]() mutable { return e.emplace_back(ff(n)); };
   }
   template <typename FnT, typename std::enable_if_t<std::is_invocable_r_v<ModIntT, FnT>, int> = 0>
-  static auto wrap(FnT &&f, int &, const std::vector<ModIntT> &, std::vector<ModIntT> &e) {
-    return [f, &e]() mutable { return e.emplace_back(f()); };
+  static auto wrap(FnT f, int &, const std::vector<ModIntT> &, std::vector<ModIntT> &e) {
+    return [ff = std::move(f), &e]() mutable { return e.emplace_back(ff()); };
   }
 
   enum : int { BASE_CASE_SIZE = 32 };
@@ -48,6 +48,8 @@ public:
         hb_(wrap(std::forward<Fn1T>(h1), n_, c_, b_)) {}
   const std::vector<ModIntT> &get_multiplier() const { return b_; }
   const std::vector<ModIntT> &get_multiplicand() const { return a_; }
+  const std::vector<ModIntT> &get_lhs() const { return get_multiplicand(); }
+  const std::vector<ModIntT> &get_rhs() const { return get_multiplier(); }
   relaxed_convolution &await(int k) {
     while (n_ < k) next();
     return *this;

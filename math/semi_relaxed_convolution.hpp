@@ -25,10 +25,12 @@ class semi_relaxed_convolution {
                 std::is_invocable_r_v<ModIntT, FnT, int>);
 
 public:
-  semi_relaxed_convolution(const std::vector<ModIntT> &A, FnT &&handle)
-      : fixed_A_(A), c_(1024), handle_(std::forward<FnT>(handle)) {}
+  semi_relaxed_convolution(const std::vector<ModIntT> &A, FnT handle)
+      : fixed_A_(A), c_(1024), handle_(std::move(handle)) {}
   const std::vector<ModIntT> &get_multiplier() const { return B_; }
   const std::vector<ModIntT> &get_multiplicand() const { return fixed_A_; }
+  const std::vector<ModIntT> &get_lhs() const { return get_multiplicand(); }
+  const std::vector<ModIntT> &get_rhs() const { return get_multiplier(); }
   semi_relaxed_convolution &await(int k) {
     while (n_ < k) next();
     return *this;
