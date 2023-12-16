@@ -1,59 +1,59 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/semi_relaxed_convolution.hpp
     title: Semi-Relaxed Convolution (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT
       prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/sqrt_mod.hpp
     title: Square Roots (in $\mathbb{F} _ p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/truncated_formal_power_series.hpp
     title: Truncated Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/truncated_fourier_transform.hpp
     title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for
       FFT prime $p$)
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
     title: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
     title: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
     title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
     title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
     title: remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
     title: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/polynomial.hpp\"\n\n\n\n#line 1 \"common.hpp\"\n\n\n\
@@ -162,9 +162,11 @@ data:
     \ 1 };\n\n  static_assert((BASE_CASE_SIZE & (BASE_CASE_SIZE - 1)) == 0);\n  static_assert(std::is_invocable_r_v<ModIntT,\
     \ FnT, int, const std::vector<ModIntT> &> ||\n                std::is_invocable_r_v<ModIntT,\
     \ FnT, int>);\n\npublic:\n  semi_relaxed_convolution(const std::vector<ModIntT>\
-    \ &A, FnT &&handle)\n      : fixed_A_(A), c_(1024), handle_(std::forward<FnT>(handle))\
-    \ {}\n  const std::vector<ModIntT> &get_multiplier() const { return B_; }\n  const\
-    \ std::vector<ModIntT> &get_multiplicand() const { return fixed_A_; }\n  semi_relaxed_convolution\
+    \ &A, FnT handle)\n      : fixed_A_(A), c_(1024), handle_(std::move(handle)) {}\n\
+    \  const std::vector<ModIntT> &get_multiplier() const { return B_; }\n  const\
+    \ std::vector<ModIntT> &get_multiplicand() const { return fixed_A_; }\n  const\
+    \ std::vector<ModIntT> &get_lhs() const { return get_multiplicand(); }\n  const\
+    \ std::vector<ModIntT> &get_rhs() const { return get_multiplier(); }\n  semi_relaxed_convolution\
     \ &await(int k) {\n    while (n_ < k) next();\n    return *this;\n  }\n  ModIntT\
     \ at(int k) {\n    while (n_ <= k) next();\n    return c_[k];\n  }\n  ModIntT\
     \ operator[](int k) { return at(k); }\n  ModIntT next();\n};\n\ntemplate <typename\
@@ -332,27 +334,23 @@ data:
     \  std::copy_n(rhs.cbegin(), m, rhs_cpy.begin());\n  this->resize(len);\n  tft(*this),\
     \ tft(rhs_cpy);\n  for (int i = 0; i != len; ++i) this->operator[](i) *= rhs_cpy[i];\n\
     \  itft(*this);\n  return *this;\n}\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\
-    \ truncated_formal_power_series<ModIntT>::inv(int n) const {\n  if (n <= 0) return\
-    \ {};\n  semi_relaxed_convolution src(static_cast<const MyBase &>(*this),\n  \
-    \                             [iv = this->front().inv()](int n, const std::vector<ModIntT>\
-    \ &c) {\n                                 return n == 0 ? iv : -c[n] * iv;\n \
-    \                              });\n  auto &&multiplier = src.await(n).get_multiplier();\n\
-    \  return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());\n\
-    }\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT> truncated_formal_power_series<ModIntT>::exp(int\
-    \ n) const {\n  if (n <= 0) return {};\n  semi_relaxed_convolution src(static_cast<MyBase>(deriv()),\n\
-    \                               [](int n, const std::vector<ModIntT> &c) {\n \
-    \                                return n == 0 ? ModIntT(1) : c[n - 1] * invs(n);\n\
-    \                               });\n  auto &&multiplier = src.await(n).get_multiplier();\n\
-    \  return truncated_formal_power_series(multiplier.cbegin(), multiplier.cend());\n\
-    }\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\ntruncated_formal_power_series<ModIntT>::div(const\
+    \ truncated_formal_power_series<ModIntT>::inv(int n) const {\n  return semi_relaxed_convolution(static_cast<const\
+    \ MyBase &>(*this),\n                                  [iv = this->front().inv()](int\
+    \ n, const std::vector<ModIntT> &c) {\n                                    return\
+    \ n == 0 ? iv : -c[n] * iv;\n                                  })\n      .await(n)\n\
+    \      .get_rhs();\n}\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\
+    \ truncated_formal_power_series<ModIntT>::exp(int n) const {\n  return semi_relaxed_convolution(static_cast<MyBase>(deriv()),\n\
+    \                                  [](int n, const std::vector<ModIntT> &c) {\n\
+    \                                    return n == 0 ? ModIntT(1) : c[n - 1] * invs(n);\n\
+    \                                  })\n      .await(n)\n      .get_rhs();\n}\n\
+    \ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\ntruncated_formal_power_series<ModIntT>::div(const\
     \ truncated_formal_power_series &rhs, int n) const {\n  assert(!rhs.is_zero());\n\
-    \  if (n <= 0) return {};\n  semi_relaxed_convolution src(static_cast<const MyBase\
-    \ &>(rhs),\n                               [this, sz = static_cast<int>(this->size()),\n\
-    \                                iv = rhs.front().inv()](int n, const std::vector<ModIntT>\
-    \ &c) {\n                                 return ((n < sz ? this->operator[](n)\
-    \ : ModIntT()) - c[n]) * iv;\n                               });\n  auto &&multiplier\
-    \ = src.await(n).get_multiplier();\n  return truncated_formal_power_series(multiplier.cbegin(),\
-    \ multiplier.cend());\n}\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\n\
+    \  return semi_relaxed_convolution(static_cast<const MyBase &>(rhs),\n       \
+    \                           [this, sz = static_cast<int>(this->size()),\n    \
+    \                               iv = rhs.front().inv()](int n, const std::vector<ModIntT>\
+    \ &c) {\n                                    return ((n < sz ? this->operator[](n)\
+    \ : ModIntT()) - c[n]) * iv;\n                                  })\n      .await(n)\n\
+    \      .get_rhs();\n}\n\ntemplate <typename ModIntT>\ntruncated_formal_power_series<ModIntT>\n\
     truncated_formal_power_series<ModIntT>::pow(int n, long long e) const {\n  if\
     \ (e == 0) {\n    truncated_formal_power_series res{1};\n    res.resize(n);\n\
     \    return res;\n  }\n  const int o = ord();\n  if (o == NEGATIVE_INFINITY ||\
@@ -465,16 +463,16 @@ data:
   isVerificationFile: false
   path: math/polynomial.hpp
   requiredBy: []
-  timestamp: '2023-06-22 11:15:26+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2023-12-16 21:39:17+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
-  - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
+  - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
+  - remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
   - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
   - remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-  - remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
+  - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
   - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
 documentation_of: math/polynomial.hpp
 layout: document
 title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)

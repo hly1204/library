@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
     title: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/poly_extended_gcd.hpp\"\n\n\n\n#line 1 \"common.hpp\"\
@@ -114,7 +114,7 @@ data:
   path: math/poly_extended_gcd.hpp
   requiredBy: []
   timestamp: '2023-01-14 11:55:02+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
 documentation_of: math/poly_extended_gcd.hpp

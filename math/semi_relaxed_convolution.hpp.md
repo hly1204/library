@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/polynomial.hpp
     title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/truncated_formal_power_series.hpp
     title: Truncated Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
@@ -19,45 +19,45 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.1.test.cpp
     title: remote_test/yosupo/math/convolution_mod.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
     title: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
     title: remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
     title: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
     title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
     title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
     title: remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
     title: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/semi_relaxed_convolution.hpp\"\n\n\n\n#line 1 \"common.hpp\"\
@@ -144,9 +144,11 @@ data:
     \ 1 };\n\n  static_assert((BASE_CASE_SIZE & (BASE_CASE_SIZE - 1)) == 0);\n  static_assert(std::is_invocable_r_v<ModIntT,\
     \ FnT, int, const std::vector<ModIntT> &> ||\n                std::is_invocable_r_v<ModIntT,\
     \ FnT, int>);\n\npublic:\n  semi_relaxed_convolution(const std::vector<ModIntT>\
-    \ &A, FnT &&handle)\n      : fixed_A_(A), c_(1024), handle_(std::forward<FnT>(handle))\
-    \ {}\n  const std::vector<ModIntT> &get_multiplier() const { return B_; }\n  const\
-    \ std::vector<ModIntT> &get_multiplicand() const { return fixed_A_; }\n  semi_relaxed_convolution\
+    \ &A, FnT handle)\n      : fixed_A_(A), c_(1024), handle_(std::move(handle)) {}\n\
+    \  const std::vector<ModIntT> &get_multiplier() const { return B_; }\n  const\
+    \ std::vector<ModIntT> &get_multiplicand() const { return fixed_A_; }\n  const\
+    \ std::vector<ModIntT> &get_lhs() const { return get_multiplicand(); }\n  const\
+    \ std::vector<ModIntT> &get_rhs() const { return get_multiplier(); }\n  semi_relaxed_convolution\
     \ &await(int k) {\n    while (n_ < k) next();\n    return *this;\n  }\n  ModIntT\
     \ at(int k) {\n    while (n_ <= k) next();\n    return c_[k];\n  }\n  ModIntT\
     \ operator[](int k) { return at(k); }\n  ModIntT next();\n};\n\ntemplate <typename\
@@ -184,9 +186,11 @@ data:
     \ 1 };\n\n  static_assert((BASE_CASE_SIZE & (BASE_CASE_SIZE - 1)) == 0);\n  static_assert(std::is_invocable_r_v<ModIntT,\
     \ FnT, int, const std::vector<ModIntT> &> ||\n                std::is_invocable_r_v<ModIntT,\
     \ FnT, int>);\n\npublic:\n  semi_relaxed_convolution(const std::vector<ModIntT>\
-    \ &A, FnT &&handle)\n      : fixed_A_(A), c_(1024), handle_(std::forward<FnT>(handle))\
-    \ {}\n  const std::vector<ModIntT> &get_multiplier() const { return B_; }\n  const\
-    \ std::vector<ModIntT> &get_multiplicand() const { return fixed_A_; }\n  semi_relaxed_convolution\
+    \ &A, FnT handle)\n      : fixed_A_(A), c_(1024), handle_(std::move(handle)) {}\n\
+    \  const std::vector<ModIntT> &get_multiplier() const { return B_; }\n  const\
+    \ std::vector<ModIntT> &get_multiplicand() const { return fixed_A_; }\n  const\
+    \ std::vector<ModIntT> &get_lhs() const { return get_multiplicand(); }\n  const\
+    \ std::vector<ModIntT> &get_rhs() const { return get_multiplier(); }\n  semi_relaxed_convolution\
     \ &await(int k) {\n    while (n_ < k) next();\n    return *this;\n  }\n  ModIntT\
     \ at(int k) {\n    while (n_ <= k) next();\n    return c_[k];\n  }\n  ModIntT\
     \ operator[](int k) { return at(k); }\n  ModIntT next();\n};\n\ntemplate <typename\
@@ -213,7 +217,7 @@ data:
     \ - l - i] * B_[l + i];\n  // clang-format off\n  if constexpr (std::is_invocable_r_v<ModIntT,\
     \ FnT, int, const std::vector<ModIntT> &>)\n    c_[n_] += fixed_A_.front() * B_.emplace_back(handle_(n_,\
     \ c_));\n  else\n    c_[n_] += fixed_A_.front() * B_.emplace_back(handle_(n_));\n\
-    \  // clang-format on\n  return c_[n_++];\n}\n\nLIB_END\n\n#endif"
+    \  // clang-format on\n  return c_[n_++];\n}\n\nLIB_END\n\n#endif\n"
   dependsOn:
   - common.hpp
   - math/radix2_ntt.hpp
@@ -222,22 +226,22 @@ data:
   requiredBy:
   - math/polynomial.hpp
   - math/truncated_formal_power_series.hpp
-  timestamp: '2022-07-02 07:42:02+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2023-12-16 21:39:17+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
+  - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
   - remote_test/yosupo/math/convolution_mod.1.test.cpp
-  - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
+  - remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
+  - remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
   - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
   - remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-  - remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
-  - remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
-  - remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
-  - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
-  - remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
   - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
+  - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
 documentation_of: math/semi_relaxed_convolution.hpp
 layout: document
 title: Semi-Relaxed Convolution (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime

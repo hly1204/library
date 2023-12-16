@@ -1,16 +1,16 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/relaxed_convolution.hpp
     title: Relaxed Convolution (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
       for FFT prime $p$)
@@ -31,12 +31,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
     title: remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/formal_power_series.hpp\"\n\n\n\n#line 1 \"common.hpp\"\
@@ -147,34 +147,38 @@ data:
     \ for `a_` and `b_`\n  int n_{};                                       // counter\n\
     \n  template <typename FnT,\n            typename std::enable_if_t<\n        \
     \        std::is_invocable_r_v<ModIntT, FnT, int, const std::vector<ModIntT> &>,\
-    \ int> = 0>\n  static auto wrap(FnT &&f, int &n, const std::vector<ModIntT> &c,\
-    \ std::vector<ModIntT> &e) {\n    return [f, &n, &c, &e]() mutable { return e.emplace_back(f(n,\
-    \ c)); };\n  }\n  template <typename FnT,\n            typename std::enable_if_t<std::is_invocable_r_v<ModIntT,\
-    \ FnT, int>, int> = 0>\n  static auto wrap(FnT &&f, int &n, const std::vector<ModIntT>\
-    \ &, std::vector<ModIntT> &e) {\n    return [f, &n, &e]() mutable { return e.emplace_back(f(n));\
+    \ int> = 0>\n  static auto wrap(FnT f, int &n, const std::vector<ModIntT> &c,\
+    \ std::vector<ModIntT> &e) {\n    return [ff = std::move(f), &n, &c, &e]() mutable\
+    \ { return e.emplace_back(ff(n, c)); };\n  }\n  template <typename FnT,\n    \
+    \        typename std::enable_if_t<std::is_invocable_r_v<ModIntT, FnT, int>, int>\
+    \ = 0>\n  static auto wrap(FnT f, int &n, const std::vector<ModIntT> &, std::vector<ModIntT>\
+    \ &e) {\n    return [ff = std::move(f), &n, &e]() mutable { return e.emplace_back(ff(n));\
     \ };\n  }\n  template <typename FnT, typename std::enable_if_t<std::is_invocable_r_v<ModIntT,\
-    \ FnT>, int> = 0>\n  static auto wrap(FnT &&f, int &, const std::vector<ModIntT>\
-    \ &, std::vector<ModIntT> &e) {\n    return [f, &e]() mutable { return e.emplace_back(f());\
-    \ };\n  }\n\n  enum : int { BASE_CASE_SIZE = 32 };\n\n  static_assert((BASE_CASE_SIZE\
-    \ & (BASE_CASE_SIZE - 1)) == 0);\n\npublic:\n  // `h0` multiplicand, `h1` multiplier\n\
-    \  template <typename Fn0T, typename Fn1T>\n  relaxed_convolution(Fn0T &&h0, Fn1T\
-    \ &&h1)\n      : c_(4), ha_(wrap(std::forward<Fn0T>(h0), n_, c_, a_)),\n     \
-    \   hb_(wrap(std::forward<Fn1T>(h1), n_, c_, b_)) {}\n  const std::vector<ModIntT>\
-    \ &get_multiplier() const { return b_; }\n  const std::vector<ModIntT> &get_multiplicand()\
-    \ const { return a_; }\n  relaxed_convolution &await(int k) {\n    while (n_ <\
-    \ k) next();\n    return *this;\n  }\n  ModIntT at(int k) {\n    while (n_ <=\
-    \ k) next();\n    return c_[k];\n  }\n  ModIntT operator[](int k) { return at(k);\
-    \ }\n  ModIntT next();\n};\n\ntemplate <typename ModIntT>\nModIntT relaxed_convolution<ModIntT>::next()\
-    \ {\n  {\n    // enlarge space\n    int len = ntt_len(n_ << 1 | 1);\n    if (static_cast<int>(c_.size())\
-    \ < len) c_.resize(len);\n  }\n  switch (n_) {\n  case 0: c_[0] = ha_() * hb_();\
-    \ break;\n  case 1:\n    c_[1] = ha_() * b_.front() + a_.front() * hb_();\n  \
-    \  c_[2] = a_[1] * b_[1];\n    break;\n  case 2:\n    c_[2] += ha_() * b_.front()\
-    \ + a_.front() * hb_();\n    c_[3] = a_[2] * b_[1] + a_[1] * b_[2];\n    break;\n\
-    \  default:\n    if ((n_ & (n_ - 1)) == 0) {\n      auto &&c0 = ac_.emplace_back(n_);\n\
-    \      auto &&c1 = bc_.emplace_back(n_);\n      std::copy_n(a_.cbegin() + (n_\
-    \ >> 1), n_ >> 1, c0.begin());\n      std::copy_n(b_.cbegin() + (n_ >> 1), n_\
-    \ >> 1, c1.begin());\n      dft(c0), dft(c1);\n      std::vector c0_cpy(c0);\n\
-    \      for (int i = 0; i != n_; ++i) c0_cpy[i] *= c1[i];\n      idft(c0_cpy);\n\
+    \ FnT>, int> = 0>\n  static auto wrap(FnT f, int &, const std::vector<ModIntT>\
+    \ &, std::vector<ModIntT> &e) {\n    return [ff = std::move(f), &e]() mutable\
+    \ { return e.emplace_back(ff()); };\n  }\n\n  enum : int { BASE_CASE_SIZE = 32\
+    \ };\n\n  static_assert((BASE_CASE_SIZE & (BASE_CASE_SIZE - 1)) == 0);\n\npublic:\n\
+    \  // `h0` multiplicand, `h1` multiplier\n  template <typename Fn0T, typename\
+    \ Fn1T>\n  relaxed_convolution(Fn0T &&h0, Fn1T &&h1)\n      : c_(4), ha_(wrap(std::forward<Fn0T>(h0),\
+    \ n_, c_, a_)),\n        hb_(wrap(std::forward<Fn1T>(h1), n_, c_, b_)) {}\n  const\
+    \ std::vector<ModIntT> &get_multiplier() const { return b_; }\n  const std::vector<ModIntT>\
+    \ &get_multiplicand() const { return a_; }\n  const std::vector<ModIntT> &get_lhs()\
+    \ const { return get_multiplicand(); }\n  const std::vector<ModIntT> &get_rhs()\
+    \ const { return get_multiplier(); }\n  relaxed_convolution &await(int k) {\n\
+    \    while (n_ < k) next();\n    return *this;\n  }\n  ModIntT at(int k) {\n \
+    \   while (n_ <= k) next();\n    return c_[k];\n  }\n  ModIntT operator[](int\
+    \ k) { return at(k); }\n  ModIntT next();\n};\n\ntemplate <typename ModIntT>\n\
+    ModIntT relaxed_convolution<ModIntT>::next() {\n  {\n    // enlarge space\n  \
+    \  int len = ntt_len(n_ << 1 | 1);\n    if (static_cast<int>(c_.size()) < len)\
+    \ c_.resize(len);\n  }\n  switch (n_) {\n  case 0: c_[0] = ha_() * hb_(); break;\n\
+    \  case 1:\n    c_[1] = ha_() * b_.front() + a_.front() * hb_();\n    c_[2] =\
+    \ a_[1] * b_[1];\n    break;\n  case 2:\n    c_[2] += ha_() * b_.front() + a_.front()\
+    \ * hb_();\n    c_[3] = a_[2] * b_[1] + a_[1] * b_[2];\n    break;\n  default:\n\
+    \    if ((n_ & (n_ - 1)) == 0) {\n      auto &&c0 = ac_.emplace_back(n_);\n  \
+    \    auto &&c1 = bc_.emplace_back(n_);\n      std::copy_n(a_.cbegin() + (n_ >>\
+    \ 1), n_ >> 1, c0.begin());\n      std::copy_n(b_.cbegin() + (n_ >> 1), n_ >>\
+    \ 1, c1.begin());\n      dft(c0), dft(c1);\n      std::vector c0_cpy(c0);\n  \
+    \    for (int i = 0; i != n_; ++i) c0_cpy[i] *= c1[i];\n      idft(c0_cpy);\n\
     \      for (int i = 0; i != n_ - 1; ++i) c_[n_ + i] += c0_cpy[i];\n    }\n   \
     \ c_[n_] += ha_() * b_.front() + a_.front() * hb_();\n    c_[n_ + 1] += a_[1]\
     \ * b_.back() + a_.back() * b_[1];\n    for (int sft = 1, offset = ntt_len(n_\
@@ -192,7 +196,8 @@ data:
     LIB_END\n\n\n#line 8 \"math/formal_power_series.hpp\"\n\n#line 10 \"math/formal_power_series.hpp\"\
     \n#include <limits>\n#include <memory>\n#include <optional>\n#line 15 \"math/formal_power_series.hpp\"\
     \n\nLIB_BEGIN\n\ntemplate <typename ModIntT>\nclass formal_power_series {\n  using\
-    \ F = std::function<ModIntT(int)>;\n  F h_;\n\n  static typename detail::modular_inverse<ModIntT>\
+    \ F = std::function<ModIntT(int)>;\n  F h_; // TODO: Fix a bug that cause a lot\
+    \ of copy of `h_` which is not intend to\n\n  static typename detail::modular_inverse<ModIntT>\
     \ invs;\n\npublic:\n  formal_power_series() : h_([](int) { return ModIntT(); })\
     \ {}\n  explicit formal_power_series(F f)\n      : h_([f, cache = std::make_shared<std::vector<ModIntT>>()](int\
     \ k) {\n          for (int i = static_cast<int>(cache->size()); i <= k; ++i) cache->emplace_back(f(i));\n\
@@ -282,7 +287,8 @@ data:
     \n#include \"extended_gcd.hpp\"\n#include \"radix2_ntt.hpp\"\n#include \"relaxed_convolution.hpp\"\
     \n\n#include <functional>\n#include <limits>\n#include <memory>\n#include <optional>\n\
     #include <type_traits>\n#include <vector>\n\nLIB_BEGIN\n\ntemplate <typename ModIntT>\n\
-    class formal_power_series {\n  using F = std::function<ModIntT(int)>;\n  F h_;\n\
+    class formal_power_series {\n  using F = std::function<ModIntT(int)>;\n  F h_;\
+    \ // TODO: Fix a bug that cause a lot of copy of `h_` which is not intend to\n\
     \n  static typename detail::modular_inverse<ModIntT> invs;\n\npublic:\n  formal_power_series()\
     \ : h_([](int) { return ModIntT(); }) {}\n  explicit formal_power_series(F f)\n\
     \      : h_([f, cache = std::make_shared<std::vector<ModIntT>>()](int k) {\n \
@@ -377,15 +383,15 @@ data:
   isVerificationFile: false
   path: math/formal_power_series.hpp
   requiredBy: []
-  timestamp: '2023-02-11 14:43:28+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2023-12-16 21:39:17+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
-  - remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-  - remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
-  - remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
-  - remote_test/yosupo/math/partition_function.0.test.cpp
+  - remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
   - remote_test/yosupo/math/exp_of_formal_power_series.0.test.cpp
+  - remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
+  - remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
+  - remote_test/yosupo/math/partition_function.0.test.cpp
 documentation_of: math/formal_power_series.hpp
 layout: document
 title: Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
