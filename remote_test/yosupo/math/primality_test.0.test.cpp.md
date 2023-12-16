@@ -1,16 +1,16 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
   - icon: ':heavy_check_mark:'
     path: math/integer_factorization.hpp
     title: Integer Factorization (Pollard's rho algorithm) (in $\mathbb{Z}$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
   - icon: ':heavy_check_mark:'
