@@ -84,8 +84,21 @@ public:
     if (!q.empty()) root_ = q.front();
   }
   height_based_leftist_tree(const height_based_leftist_tree &) = delete;
+  height_based_leftist_tree(height_based_leftist_tree &&a)
+      : root_(a.root_), cmp_(std::move(a.cmp_)), size_(a.size_) {
+    a.root_ = nullptr;
+  }
   ~height_based_leftist_tree() { delete root_; }
   height_based_leftist_tree &operator=(const height_based_leftist_tree &) = delete;
+  height_based_leftist_tree &operator=(height_based_leftist_tree &&rhs) {
+    if (this != std::addressof(rhs)) {
+      root_     = rhs.root_;
+      rhs.root_ = nullptr;
+      cmp_      = std::move(rhs.cmp_);
+      size_     = rhs.size_;
+    }
+    return *this;
+  }
 
   bool empty() const { return root_ == nullptr; }
   std::size_t size() const { return size_; }

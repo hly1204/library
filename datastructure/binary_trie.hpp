@@ -30,7 +30,11 @@ public:
   using value_type = std::conditional_t<BitT <= 32, std::uint32_t, std::uint64_t>;
 
   binary_trie() { s_.back() = new node; }
+  binary_trie(const binary_trie &) = delete;
+  binary_trie(binary_trie &&)      = delete;
   ~binary_trie() { delete s_.back(); }
+  binary_trie &operator=(const binary_trie &) = delete;
+  binary_trie &operator=(binary_trie &&)      = delete;
 
   bool empty() const { return s_.back()->ch_[0] == s_.back()->ch_[1]; }
 
