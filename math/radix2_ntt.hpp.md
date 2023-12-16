@@ -18,7 +18,7 @@ data:
     path: math/czt.hpp
     title: Chirp Z-transform (Bluestein's algorithm) (in $\mathbb{F} _ p \lbrack z
       \rbrack$ for FFT prime $p$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series.hpp
     title: Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
       for FFT prime $p$)
@@ -29,7 +29,7 @@ data:
   - icon: ':question:'
     path: math/polynomial.hpp
     title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/relaxed_convolution.hpp
     title: Relaxed Convolution (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
       for FFT prime $p$)
@@ -37,7 +37,7 @@ data:
     path: math/semi_relaxed_convolution.hpp
     title: Semi-Relaxed Convolution (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT
       prime $p$)
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/subproduct_tree.hpp
     title: Multipoint Evaluation and Interpolation (in $\mathbb{F} _ p$ for FFT prime
       $p$)
@@ -65,13 +65,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
     title: remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
     title: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/exp_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/exp_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -80,19 +80,19 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
     title: remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
     title: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
     title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -104,7 +104,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/partition_function.0.test.cpp
     title: remote_test/yosupo/math/partition_function.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
     title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -116,10 +116,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
     title: remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
   - icon: ':x:'

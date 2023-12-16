@@ -36,9 +36,9 @@ data:
     title: Montgomery ModInt
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/inv_of_formal_power_series
@@ -260,11 +260,13 @@ data:
     \ -= a_[i + len] * r;\n      }\n    }\n    Container &a_;\n    const T i2_;\n\
     \  } rec(a);\n  rec.run(0, n, len);\n  a.resize(n);\n}\n\nLIB_END\n\n\n#line 9\
     \ \"math/truncated_formal_power_series.hpp\"\n\n#line 12 \"math/truncated_formal_power_series.hpp\"\
-    \n#include <iostream>\n#include <iterator>\n#include <optional>\n#line 17 \"math/truncated_formal_power_series.hpp\"\
+    \n#include <iostream>\n#include <iterator>\n#include <optional>\n#line 18 \"math/truncated_formal_power_series.hpp\"\
     \n\nLIB_BEGIN\n\ntemplate <typename ModIntT>\nclass truncated_formal_power_series\
     \ : public std::vector<ModIntT> {\n  using MyBase = std::vector<ModIntT>;\n  static_assert(std::is_same_v<typename\
     \ MyBase::value_type, ModIntT>);\n  static typename detail::modular_inverse<ModIntT>\
-    \ invs;\n\npublic:\n  using std::vector<ModIntT>::vector;\n\n  enum : int { NEGATIVE_INFINITY\
+    \ invs;\n\npublic:\n  using std::vector<ModIntT>::vector;\n\n  truncated_formal_power_series(const\
+    \ std::vector<ModIntT> &v) : std::vector<ModIntT>(v) {}\n  truncated_formal_power_series(std::vector<ModIntT>\
+    \ &&v) : std::vector<ModIntT>(std::move(v)) {}\n\n  enum : int { NEGATIVE_INFINITY\
     \ = -1 };\n\n  // leading coefficient\n  ModIntT lc() const {\n    int d = deg();\n\
     \    return d == NEGATIVE_INFINITY ? ModIntT() : this->operator[](d);\n  }\n \
     \ // degree\n  int deg() const {\n    // treat formal power series like polynomials\n\
@@ -453,8 +455,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
   requiredBy: []
-  timestamp: '2023-12-16 21:39:17+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2023-12-16 21:56:53+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
 layout: document

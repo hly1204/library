@@ -10,7 +10,7 @@ data:
   - icon: ':question:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/relaxed_convolution.hpp
     title: Relaxed Convolution (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
       for FFT prime $p$)
@@ -31,12 +31,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
     title: remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/formal_power_series.hpp\"\n\n\n\n#line 1 \"common.hpp\"\
@@ -384,7 +384,7 @@ data:
   path: math/formal_power_series.hpp
   requiredBy: []
   timestamp: '2023-12-16 21:39:17+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp
   - remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
