@@ -15,6 +15,17 @@
 
 LIB_BEGIN
 
+namespace detail {
+
+template <typename ModIntT, typename Closure0T, typename Closure1T>
+auto make_shared_relaxed_convolution(Closure0T &&f0, Closure1T &&f1) -> std::shared_ptr<
+    relaxed_convolution<ModIntT, std::decay_t<Closure0T>, std::decay_t<Closure1T>>> {
+  return std::make_shared<
+      relaxed_convolution<ModIntT, std::decay_t<Closure0T>, std::decay_t<Closure1T>>>(f0, f1);
+}
+
+} // namespace detail
+
 template <typename ModIntT>
 class formal_power_series {
   using F = std::function<ModIntT(int)>;
@@ -50,7 +61,7 @@ public:
     return formal_power_series([h = h_, c](int i) { return i == 0 ? c : h(i - 1) * invs(i); });
   }
   formal_power_series inv() const {
-    auto rc = std::make_shared<relaxed_convolution<ModIntT>>(
+    auto rc = detail::make_shared_relaxed_convolution<ModIntT>(
         [h = h_](int i) { return h(i); },
         [h = h_, iv = ModIntT()](int i, const auto &c) mutable {
           return i == 0 ? ModIntT(iv = h(0).inv()) : -(c[i] + h(i) * iv) * iv;
@@ -58,7 +69,7 @@ public:
     return formal_power_series([rc](int i) { return rc->next(), rc->get_multiplier()[i]; });
   }
   formal_power_series exp() const {
-    auto rc = std::make_shared<relaxed_convolution<ModIntT>>(
+    auto rc = detail::make_shared_relaxed_convolution<ModIntT>(
         [h = h_](int i) { return h(i + 1) * (i + 1); },
         [](int i, const auto &c) { return i == 0 ? ModIntT(1) : c[i - 1] * invs(i); });
     return formal_power_series(
@@ -87,14 +98,15 @@ public:
             typename std::enable_if_t<std::is_invocable_r_v<ModIntT, SqrtFuncT, ModIntT>, int> = 0>
   formal_power_series sqrt(SqrtFuncT &&f) const {
     // `h_(0) == 0` is not allowed.
-    auto t = [h = h_, f, i2 = ModIntT()](int i, auto const &c) mutable {
+    auto t = [h = h_, ff = std::decay_t<SqrtFuncT>(std::forward<SqrtFuncT>(f)),
+              i2 = ModIntT()](int i, auto const &c) mutable {
       if (i != 0) return (h(i) - c[i]) * i2;
-      ModIntT fi(f(h(i)));
+      ModIntT fi(ff(h(i)));
       i2 = (fi + fi).inv();
       return fi;
     };
-    auto rc = std::make_shared<relaxed_convolution<ModIntT>>(t, t);
-    return formal_power_series([rc](int i) { return rc->next(), rc->get_multiplier()[i]; });
+    return formal_power_series([rc = detail::make_shared_relaxed_convolution<ModIntT>(t, t)](
+                                   int i) { return rc->next(), rc->get_multiplier()[i]; });
   }
   formal_power_series operator+(const formal_power_series &rhs) const {
     return formal_power_series([h0 = h_, h1 = rhs.h_](int i) { return h0(i) + h1(i); });
@@ -106,12 +118,12 @@ public:
     return formal_power_series([h = h_](int i) { return -h(i); });
   }
   formal_power_series operator*(const formal_power_series &rhs) const {
-    auto rc = std::make_shared<relaxed_convolution<ModIntT>>([h = h_](int i) { return h(i); },
-                                                             [h = rhs.h_](int i) { return h(i); });
+    auto rc = detail::make_shared_relaxed_convolution<ModIntT>(
+        [h = h_](int i) { return h(i); }, [h = rhs.h_](int i) { return h(i); });
     return formal_power_series([rc](int) { return rc->next(); });
   }
   formal_power_series operator/(const formal_power_series &rhs) const {
-    auto rc = std::make_shared<relaxed_convolution<ModIntT>>(
+    auto rc = detail::make_shared_relaxed_convolution<ModIntT>(
         [h0 = h_, h1 = rhs.h_, iv = ModIntT(), t0 = ModIntT()](int i, const auto &c) mutable {
           if (i == 0) t0 = h0(0) * (iv = h1(0).inv());
           return i == 0 ? t0 : (h0(i) - h1(i) * t0 - c[i]) * iv;

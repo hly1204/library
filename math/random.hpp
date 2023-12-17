@@ -20,8 +20,12 @@ class xoshiro256starstar {
   u64 next() {
     const u64 res = rotl(s_[1] * 5, 7) * 9;
     const u64 t   = s_[1] << 17;
-    s_[2] ^= s_[0], s_[3] ^= s_[1], s_[1] ^= s_[2], s_[0] ^= s_[3], s_[2] ^= t,
-        s_[3] = rotl(s_[3], 45);
+    s_[2] ^= s_[0];
+    s_[3] ^= s_[1];
+    s_[1] ^= s_[2];
+    s_[0] ^= s_[3];
+    s_[2] ^= t;
+    s_[3] = rotl(s_[3], 45);
     return res;
   }
 
