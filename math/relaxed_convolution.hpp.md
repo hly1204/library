@@ -1,14 +1,14 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/formal_power_series.hpp
     title: Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
       for FFT prime $p$)
@@ -25,18 +25,18 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/partition_function.0.test.cpp
     title: remote_test/yosupo/math/partition_function.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
     title: remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/relaxed_convolution.hpp\"\n\n\n\n#line 1 \"common.hpp\"\
@@ -117,118 +117,119 @@ data:
     \n\n#line 6 \"math/relaxed_convolution.hpp\"\n\n#include <exception>\n#include\
     \ <functional>\n#line 10 \"math/relaxed_convolution.hpp\"\n#include <utility>\n\
     #line 12 \"math/relaxed_convolution.hpp\"\n\nLIB_BEGIN\n\n// This implementation\
-    \ is NOT optimal and NOT lazy enough so IT IS SLOW.\ntemplate <typename ModIntT>\n\
-    class relaxed_convolution {                       // O(n log^2 n) impl\n  std::vector<ModIntT>\
-    \ a_{}, b_{}, c_{};          // `a_ * b_` = `c_`\n  std::vector<std::vector<ModIntT>>\
-    \ ac_{}, bc_{}; // cached DFTs\n  std::function<ModIntT()> ha_{}, hb_{};     \
-    \     // handle for `a_` and `b_`\n  int n_{};                               \
-    \        // counter\n\n  template <typename FnT,\n            typename std::enable_if_t<\n\
-    \                std::is_invocable_r_v<ModIntT, FnT, int, const std::vector<ModIntT>\
-    \ &>, int> = 0>\n  static auto wrap(FnT f, int &n, const std::vector<ModIntT>\
-    \ &c, std::vector<ModIntT> &e) {\n    return [ff = std::move(f), &n, &c, &e]()\
-    \ mutable { return e.emplace_back(ff(n, c)); };\n  }\n  template <typename FnT,\n\
-    \            typename std::enable_if_t<std::is_invocable_r_v<ModIntT, FnT, int>,\
-    \ int> = 0>\n  static auto wrap(FnT f, int &n, const std::vector<ModIntT> &, std::vector<ModIntT>\
-    \ &e) {\n    return [ff = std::move(f), &n, &e]() mutable { return e.emplace_back(ff(n));\
-    \ };\n  }\n  template <typename FnT, typename std::enable_if_t<std::is_invocable_r_v<ModIntT,\
-    \ FnT>, int> = 0>\n  static auto wrap(FnT f, int &, const std::vector<ModIntT>\
-    \ &, std::vector<ModIntT> &e) {\n    return [ff = std::move(f), &e]() mutable\
-    \ { return e.emplace_back(ff()); };\n  }\n\n  enum : int { BASE_CASE_SIZE = 32\
-    \ };\n\n  static_assert((BASE_CASE_SIZE & (BASE_CASE_SIZE - 1)) == 0);\n\npublic:\n\
-    \  // `h0` multiplicand, `h1` multiplier\n  template <typename Fn0T, typename\
-    \ Fn1T>\n  relaxed_convolution(Fn0T &&h0, Fn1T &&h1)\n      : c_(4), ha_(wrap(std::forward<Fn0T>(h0),\
-    \ n_, c_, a_)),\n        hb_(wrap(std::forward<Fn1T>(h1), n_, c_, b_)) {}\n  const\
-    \ std::vector<ModIntT> &get_multiplier() const { return b_; }\n  const std::vector<ModIntT>\
-    \ &get_multiplicand() const { return a_; }\n  const std::vector<ModIntT> &get_lhs()\
-    \ const { return get_multiplicand(); }\n  const std::vector<ModIntT> &get_rhs()\
-    \ const { return get_multiplier(); }\n  relaxed_convolution &await(int k) {\n\
-    \    while (n_ < k) next();\n    return *this;\n  }\n  ModIntT at(int k) {\n \
-    \   while (n_ <= k) next();\n    return c_[k];\n  }\n  ModIntT operator[](int\
-    \ k) { return at(k); }\n  ModIntT next();\n};\n\ntemplate <typename ModIntT>\n\
-    ModIntT relaxed_convolution<ModIntT>::next() {\n  {\n    // enlarge space\n  \
-    \  int len = ntt_len(n_ << 1 | 1);\n    if (static_cast<int>(c_.size()) < len)\
-    \ c_.resize(len);\n  }\n  switch (n_) {\n  case 0: c_[0] = ha_() * hb_(); break;\n\
-    \  case 1:\n    c_[1] = ha_() * b_.front() + a_.front() * hb_();\n    c_[2] =\
-    \ a_[1] * b_[1];\n    break;\n  case 2:\n    c_[2] += ha_() * b_.front() + a_.front()\
-    \ * hb_();\n    c_[3] = a_[2] * b_[1] + a_[1] * b_[2];\n    break;\n  default:\n\
-    \    if ((n_ & (n_ - 1)) == 0) {\n      auto &&c0 = ac_.emplace_back(n_);\n  \
-    \    auto &&c1 = bc_.emplace_back(n_);\n      std::copy_n(a_.cbegin() + (n_ >>\
-    \ 1), n_ >> 1, c0.begin());\n      std::copy_n(b_.cbegin() + (n_ >> 1), n_ >>\
-    \ 1, c1.begin());\n      dft(c0), dft(c1);\n      std::vector c0_cpy(c0);\n  \
-    \    for (int i = 0; i != n_; ++i) c0_cpy[i] *= c1[i];\n      idft(c0_cpy);\n\
-    \      for (int i = 0; i != n_ - 1; ++i) c_[n_ + i] += c0_cpy[i];\n    }\n   \
-    \ c_[n_] += ha_() * b_.front() + a_.front() * hb_();\n    c_[n_ + 1] += a_[1]\
-    \ * b_.back() + a_.back() * b_[1];\n    for (int sft = 1, offset = ntt_len(n_\
-    \ + 1) >> 1, t = n_ + 1 - offset;\n         (t & 1) == 0 && 1 << sft < offset;\
-    \ ++sft, t >>= 1)\n      if (1 << sft <= BASE_CASE_SIZE) {\n        for (int i\
-    \ = 0, m = n_ + 1 - (1 << sft); i != 1 << sft; ++i)\n          for (int j = 0;\
-    \ j != 1 << sft; ++j)\n            c_[n_ + 1 + i + j] += a_[m + i] * b_[j + (1\
-    \ << sft)] + a_[j + (1 << sft)] * b_[m + i];\n      } else {\n        std::vector<ModIntT>\
-    \ c0(2 << sft), c1(2 << sft);\n        std::copy_n(a_.cbegin() + n_ + 1 - (1 <<\
-    \ sft), 1 << sft, c0.begin());\n        std::copy_n(b_.cbegin() + n_ + 1 - (1\
-    \ << sft), 1 << sft, c1.begin());\n        dft(c0), dft(c1);\n        for (int\
-    \ i = 0; i != 2 << sft; ++i)\n          c0[i] = c0[i] * bc_[sft - 1][i] + c1[i]\
-    \ * ac_[sft - 1][i];\n        idft(c0);\n        for (int i = 0; i != (2 << sft)\
-    \ - 1; ++i) c_[n_ + 1 + i] += c0[i];\n      }\n  }\n  return c_[n_++];\n}\n\n\
-    LIB_END\n\n\n"
+    \ is NOT optimal and NOT lazy enough so IT IS SLOW.\ntemplate <typename ModIntT,\
+    \ typename Fn0, typename Fn1>\nclass relaxed_convolution {                   \
+    \    // O(n log^2 n) impl\n  std::vector<ModIntT> a_{}, b_{}, c_{};          //\
+    \ `a_ * b_` = `c_`\n  std::vector<std::vector<ModIntT>> ac_{}, bc_{}; // cached\
+    \ DFTs\n  Fn0 ha_;\n  Fn1 hb_;\n  int n_{}; // counter\n\n  enum : int { BASE_CASE_SIZE\
+    \ = 32 };\n  static_assert((BASE_CASE_SIZE & (BASE_CASE_SIZE - 1)) == 0);\n\n\
+    \  template <typename>\n  static constexpr bool relaxed_convolution_false = false;\n\
+    \n  template <typename FnT>\n  ModIntT get_next_coeff(FnT &&f, std::vector<ModIntT>\
+    \ &e) {\n    if constexpr (std::is_invocable_r_v<ModIntT, FnT, int, const std::vector<ModIntT>\
+    \ &>) {\n      return e.emplace_back(f(n_, c_));\n    } else if constexpr (std::is_invocable_r_v<ModIntT,\
+    \ FnT, int>) {\n      return e.emplace_back(f(n_));\n    } else if constexpr (std::is_invocable_r_v<ModIntT,\
+    \ FnT>) {\n      return e.emplace_back(f());\n    } else {\n      static_assert(relaxed_convolution_false<FnT>);\n\
+    \      return ModIntT();\n    }\n  }\n\npublic:\n  template <typename, typename\
+    \ Closure0T, typename Closure1T>\n  friend auto make_relaxed_convolution(Closure0T\
+    \ &&, Closure1T &&);\n  // `h0` multiplicand, `h1` multiplier\n  template <typename\
+    \ Closure0T, typename Closure1T>\n  relaxed_convolution(Closure0T &&h0, Closure1T\
+    \ &&h1)\n      : c_(4), ha_(std::forward<Closure0T>(h0)), hb_(std::forward<Closure1T>(h1))\
+    \ {}\n  const std::vector<ModIntT> &get_multiplier() const { return b_; }\n  const\
+    \ std::vector<ModIntT> &get_multiplicand() const { return a_; }\n  const std::vector<ModIntT>\
+    \ &get_lhs() const { return get_multiplicand(); }\n  const std::vector<ModIntT>\
+    \ &get_rhs() const { return get_multiplier(); }\n  relaxed_convolution &await(int\
+    \ k) {\n    while (n_ < k) next();\n    return *this;\n  }\n  ModIntT at(int k)\
+    \ {\n    while (n_ <= k) next();\n    return c_[k];\n  }\n  ModIntT operator[](int\
+    \ k) { return at(k); }\n  ModIntT next() {\n    {\n      // enlarge space\n  \
+    \    int len = ntt_len(n_ << 1 | 1);\n      if (static_cast<int>(c_.size()) <\
+    \ len) c_.resize(len);\n    }\n\n    switch (n_) {\n    case 0: c_[0] = get_next_coeff(ha_,\
+    \ a_) * get_next_coeff(hb_, b_); break;\n    case 1:\n      c_[1] = get_next_coeff(ha_,\
+    \ a_) * b_.front() + a_.front() * get_next_coeff(hb_, b_);\n      c_[2] = a_[1]\
+    \ * b_[1];\n      break;\n    case 2:\n      c_[2] += get_next_coeff(ha_, a_)\
+    \ * b_.front() + a_.front() * get_next_coeff(hb_, b_);\n      c_[3] = a_[2] *\
+    \ b_[1] + a_[1] * b_[2];\n      break;\n    default:\n      if ((n_ & (n_ - 1))\
+    \ == 0) {\n        auto &&c0 = ac_.emplace_back(n_);\n        auto &&c1 = bc_.emplace_back(n_);\n\
+    \        std::copy_n(a_.cbegin() + (n_ >> 1), n_ >> 1, c0.begin());\n        std::copy_n(b_.cbegin()\
+    \ + (n_ >> 1), n_ >> 1, c1.begin());\n        dft(c0), dft(c1);\n        std::vector\
+    \ c0_cpy(c0);\n        for (int i = 0; i != n_; ++i) c0_cpy[i] *= c1[i];\n   \
+    \     idft(c0_cpy);\n        for (int i = 0; i != n_ - 1; ++i) c_[n_ + i] += c0_cpy[i];\n\
+    \      }\n      c_[n_] += get_next_coeff(ha_, a_) * b_.front() + a_.front() *\
+    \ get_next_coeff(hb_, b_);\n      c_[n_ + 1] += a_[1] * b_.back() + a_.back()\
+    \ * b_[1];\n      for (int sft = 1, offset = ntt_len(n_ + 1) >> 1, t = n_ + 1\
+    \ - offset;\n           (t & 1) == 0 && 1 << sft < offset; ++sft, t >>= 1)\n \
+    \       if (1 << sft <= BASE_CASE_SIZE) {\n          for (int i = 0, m = n_ +\
+    \ 1 - (1 << sft); i != 1 << sft; ++i)\n            for (int j = 0; j != 1 << sft;\
+    \ ++j)\n              c_[n_ + 1 + i + j] += a_[m + i] * b_[j + (1 << sft)] + a_[j\
+    \ + (1 << sft)] * b_[m + i];\n        } else {\n          std::vector<ModIntT>\
+    \ c0(2 << sft), c1(2 << sft);\n          std::copy_n(a_.cbegin() + n_ + 1 - (1\
+    \ << sft), 1 << sft, c0.begin());\n          std::copy_n(b_.cbegin() + n_ + 1\
+    \ - (1 << sft), 1 << sft, c1.begin());\n          dft(c0), dft(c1);\n        \
+    \  for (int i = 0; i != 2 << sft; ++i)\n            c0[i] = c0[i] * bc_[sft -\
+    \ 1][i] + c1[i] * ac_[sft - 1][i];\n          idft(c0);\n          for (int i\
+    \ = 0; i != (2 << sft) - 1; ++i) c_[n_ + 1 + i] += c0[i];\n        }\n    }\n\
+    \    return c_[n_++];\n  }\n};\n\ntemplate <typename ModIntT, typename Closure0T,\
+    \ typename Closure1T>\nauto make_relaxed_convolution(Closure0T &&f0, Closure1T\
+    \ &&f1)\n    -> relaxed_convolution<ModIntT, std::decay_t<Closure0T>, std::decay_t<Closure1T>>\
+    \ {\n  return relaxed_convolution<ModIntT, std::decay_t<Closure0T>, std::decay_t<Closure1T>>(f0,\
+    \ f1);\n}\n\nLIB_END\n\n\n"
   code: "#ifndef RELAXED_CONVOLUTION_HPP\n#define RELAXED_CONVOLUTION_HPP\n\n#include\
     \ \"../common.hpp\"\n#include \"radix2_ntt.hpp\"\n\n#include <exception>\n#include\
     \ <functional>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
     \nLIB_BEGIN\n\n// This implementation is NOT optimal and NOT lazy enough so IT\
-    \ IS SLOW.\ntemplate <typename ModIntT>\nclass relaxed_convolution {         \
-    \              // O(n log^2 n) impl\n  std::vector<ModIntT> a_{}, b_{}, c_{};\
-    \          // `a_ * b_` = `c_`\n  std::vector<std::vector<ModIntT>> ac_{}, bc_{};\
-    \ // cached DFTs\n  std::function<ModIntT()> ha_{}, hb_{};          // handle\
-    \ for `a_` and `b_`\n  int n_{};                                       // counter\n\
-    \n  template <typename FnT,\n            typename std::enable_if_t<\n        \
-    \        std::is_invocable_r_v<ModIntT, FnT, int, const std::vector<ModIntT> &>,\
-    \ int> = 0>\n  static auto wrap(FnT f, int &n, const std::vector<ModIntT> &c,\
-    \ std::vector<ModIntT> &e) {\n    return [ff = std::move(f), &n, &c, &e]() mutable\
-    \ { return e.emplace_back(ff(n, c)); };\n  }\n  template <typename FnT,\n    \
-    \        typename std::enable_if_t<std::is_invocable_r_v<ModIntT, FnT, int>, int>\
-    \ = 0>\n  static auto wrap(FnT f, int &n, const std::vector<ModIntT> &, std::vector<ModIntT>\
-    \ &e) {\n    return [ff = std::move(f), &n, &e]() mutable { return e.emplace_back(ff(n));\
-    \ };\n  }\n  template <typename FnT, typename std::enable_if_t<std::is_invocable_r_v<ModIntT,\
-    \ FnT>, int> = 0>\n  static auto wrap(FnT f, int &, const std::vector<ModIntT>\
-    \ &, std::vector<ModIntT> &e) {\n    return [ff = std::move(f), &e]() mutable\
-    \ { return e.emplace_back(ff()); };\n  }\n\n  enum : int { BASE_CASE_SIZE = 32\
-    \ };\n\n  static_assert((BASE_CASE_SIZE & (BASE_CASE_SIZE - 1)) == 0);\n\npublic:\n\
-    \  // `h0` multiplicand, `h1` multiplier\n  template <typename Fn0T, typename\
-    \ Fn1T>\n  relaxed_convolution(Fn0T &&h0, Fn1T &&h1)\n      : c_(4), ha_(wrap(std::forward<Fn0T>(h0),\
-    \ n_, c_, a_)),\n        hb_(wrap(std::forward<Fn1T>(h1), n_, c_, b_)) {}\n  const\
-    \ std::vector<ModIntT> &get_multiplier() const { return b_; }\n  const std::vector<ModIntT>\
-    \ &get_multiplicand() const { return a_; }\n  const std::vector<ModIntT> &get_lhs()\
-    \ const { return get_multiplicand(); }\n  const std::vector<ModIntT> &get_rhs()\
-    \ const { return get_multiplier(); }\n  relaxed_convolution &await(int k) {\n\
-    \    while (n_ < k) next();\n    return *this;\n  }\n  ModIntT at(int k) {\n \
-    \   while (n_ <= k) next();\n    return c_[k];\n  }\n  ModIntT operator[](int\
-    \ k) { return at(k); }\n  ModIntT next();\n};\n\ntemplate <typename ModIntT>\n\
-    ModIntT relaxed_convolution<ModIntT>::next() {\n  {\n    // enlarge space\n  \
-    \  int len = ntt_len(n_ << 1 | 1);\n    if (static_cast<int>(c_.size()) < len)\
-    \ c_.resize(len);\n  }\n  switch (n_) {\n  case 0: c_[0] = ha_() * hb_(); break;\n\
-    \  case 1:\n    c_[1] = ha_() * b_.front() + a_.front() * hb_();\n    c_[2] =\
-    \ a_[1] * b_[1];\n    break;\n  case 2:\n    c_[2] += ha_() * b_.front() + a_.front()\
-    \ * hb_();\n    c_[3] = a_[2] * b_[1] + a_[1] * b_[2];\n    break;\n  default:\n\
-    \    if ((n_ & (n_ - 1)) == 0) {\n      auto &&c0 = ac_.emplace_back(n_);\n  \
-    \    auto &&c1 = bc_.emplace_back(n_);\n      std::copy_n(a_.cbegin() + (n_ >>\
-    \ 1), n_ >> 1, c0.begin());\n      std::copy_n(b_.cbegin() + (n_ >> 1), n_ >>\
-    \ 1, c1.begin());\n      dft(c0), dft(c1);\n      std::vector c0_cpy(c0);\n  \
-    \    for (int i = 0; i != n_; ++i) c0_cpy[i] *= c1[i];\n      idft(c0_cpy);\n\
-    \      for (int i = 0; i != n_ - 1; ++i) c_[n_ + i] += c0_cpy[i];\n    }\n   \
-    \ c_[n_] += ha_() * b_.front() + a_.front() * hb_();\n    c_[n_ + 1] += a_[1]\
-    \ * b_.back() + a_.back() * b_[1];\n    for (int sft = 1, offset = ntt_len(n_\
-    \ + 1) >> 1, t = n_ + 1 - offset;\n         (t & 1) == 0 && 1 << sft < offset;\
-    \ ++sft, t >>= 1)\n      if (1 << sft <= BASE_CASE_SIZE) {\n        for (int i\
-    \ = 0, m = n_ + 1 - (1 << sft); i != 1 << sft; ++i)\n          for (int j = 0;\
-    \ j != 1 << sft; ++j)\n            c_[n_ + 1 + i + j] += a_[m + i] * b_[j + (1\
-    \ << sft)] + a_[j + (1 << sft)] * b_[m + i];\n      } else {\n        std::vector<ModIntT>\
-    \ c0(2 << sft), c1(2 << sft);\n        std::copy_n(a_.cbegin() + n_ + 1 - (1 <<\
-    \ sft), 1 << sft, c0.begin());\n        std::copy_n(b_.cbegin() + n_ + 1 - (1\
-    \ << sft), 1 << sft, c1.begin());\n        dft(c0), dft(c1);\n        for (int\
-    \ i = 0; i != 2 << sft; ++i)\n          c0[i] = c0[i] * bc_[sft - 1][i] + c1[i]\
-    \ * ac_[sft - 1][i];\n        idft(c0);\n        for (int i = 0; i != (2 << sft)\
-    \ - 1; ++i) c_[n_ + 1 + i] += c0[i];\n      }\n  }\n  return c_[n_++];\n}\n\n\
-    LIB_END\n\n#endif\n"
+    \ IS SLOW.\ntemplate <typename ModIntT, typename Fn0, typename Fn1>\nclass relaxed_convolution\
+    \ {                       // O(n log^2 n) impl\n  std::vector<ModIntT> a_{}, b_{},\
+    \ c_{};          // `a_ * b_` = `c_`\n  std::vector<std::vector<ModIntT>> ac_{},\
+    \ bc_{}; // cached DFTs\n  Fn0 ha_;\n  Fn1 hb_;\n  int n_{}; // counter\n\n  enum\
+    \ : int { BASE_CASE_SIZE = 32 };\n  static_assert((BASE_CASE_SIZE & (BASE_CASE_SIZE\
+    \ - 1)) == 0);\n\n  template <typename>\n  static constexpr bool relaxed_convolution_false\
+    \ = false;\n\n  template <typename FnT>\n  ModIntT get_next_coeff(FnT &&f, std::vector<ModIntT>\
+    \ &e) {\n    if constexpr (std::is_invocable_r_v<ModIntT, FnT, int, const std::vector<ModIntT>\
+    \ &>) {\n      return e.emplace_back(f(n_, c_));\n    } else if constexpr (std::is_invocable_r_v<ModIntT,\
+    \ FnT, int>) {\n      return e.emplace_back(f(n_));\n    } else if constexpr (std::is_invocable_r_v<ModIntT,\
+    \ FnT>) {\n      return e.emplace_back(f());\n    } else {\n      static_assert(relaxed_convolution_false<FnT>);\n\
+    \      return ModIntT();\n    }\n  }\n\npublic:\n  template <typename, typename\
+    \ Closure0T, typename Closure1T>\n  friend auto make_relaxed_convolution(Closure0T\
+    \ &&, Closure1T &&);\n  // `h0` multiplicand, `h1` multiplier\n  template <typename\
+    \ Closure0T, typename Closure1T>\n  relaxed_convolution(Closure0T &&h0, Closure1T\
+    \ &&h1)\n      : c_(4), ha_(std::forward<Closure0T>(h0)), hb_(std::forward<Closure1T>(h1))\
+    \ {}\n  const std::vector<ModIntT> &get_multiplier() const { return b_; }\n  const\
+    \ std::vector<ModIntT> &get_multiplicand() const { return a_; }\n  const std::vector<ModIntT>\
+    \ &get_lhs() const { return get_multiplicand(); }\n  const std::vector<ModIntT>\
+    \ &get_rhs() const { return get_multiplier(); }\n  relaxed_convolution &await(int\
+    \ k) {\n    while (n_ < k) next();\n    return *this;\n  }\n  ModIntT at(int k)\
+    \ {\n    while (n_ <= k) next();\n    return c_[k];\n  }\n  ModIntT operator[](int\
+    \ k) { return at(k); }\n  ModIntT next() {\n    {\n      // enlarge space\n  \
+    \    int len = ntt_len(n_ << 1 | 1);\n      if (static_cast<int>(c_.size()) <\
+    \ len) c_.resize(len);\n    }\n\n    switch (n_) {\n    case 0: c_[0] = get_next_coeff(ha_,\
+    \ a_) * get_next_coeff(hb_, b_); break;\n    case 1:\n      c_[1] = get_next_coeff(ha_,\
+    \ a_) * b_.front() + a_.front() * get_next_coeff(hb_, b_);\n      c_[2] = a_[1]\
+    \ * b_[1];\n      break;\n    case 2:\n      c_[2] += get_next_coeff(ha_, a_)\
+    \ * b_.front() + a_.front() * get_next_coeff(hb_, b_);\n      c_[3] = a_[2] *\
+    \ b_[1] + a_[1] * b_[2];\n      break;\n    default:\n      if ((n_ & (n_ - 1))\
+    \ == 0) {\n        auto &&c0 = ac_.emplace_back(n_);\n        auto &&c1 = bc_.emplace_back(n_);\n\
+    \        std::copy_n(a_.cbegin() + (n_ >> 1), n_ >> 1, c0.begin());\n        std::copy_n(b_.cbegin()\
+    \ + (n_ >> 1), n_ >> 1, c1.begin());\n        dft(c0), dft(c1);\n        std::vector\
+    \ c0_cpy(c0);\n        for (int i = 0; i != n_; ++i) c0_cpy[i] *= c1[i];\n   \
+    \     idft(c0_cpy);\n        for (int i = 0; i != n_ - 1; ++i) c_[n_ + i] += c0_cpy[i];\n\
+    \      }\n      c_[n_] += get_next_coeff(ha_, a_) * b_.front() + a_.front() *\
+    \ get_next_coeff(hb_, b_);\n      c_[n_ + 1] += a_[1] * b_.back() + a_.back()\
+    \ * b_[1];\n      for (int sft = 1, offset = ntt_len(n_ + 1) >> 1, t = n_ + 1\
+    \ - offset;\n           (t & 1) == 0 && 1 << sft < offset; ++sft, t >>= 1)\n \
+    \       if (1 << sft <= BASE_CASE_SIZE) {\n          for (int i = 0, m = n_ +\
+    \ 1 - (1 << sft); i != 1 << sft; ++i)\n            for (int j = 0; j != 1 << sft;\
+    \ ++j)\n              c_[n_ + 1 + i + j] += a_[m + i] * b_[j + (1 << sft)] + a_[j\
+    \ + (1 << sft)] * b_[m + i];\n        } else {\n          std::vector<ModIntT>\
+    \ c0(2 << sft), c1(2 << sft);\n          std::copy_n(a_.cbegin() + n_ + 1 - (1\
+    \ << sft), 1 << sft, c0.begin());\n          std::copy_n(b_.cbegin() + n_ + 1\
+    \ - (1 << sft), 1 << sft, c1.begin());\n          dft(c0), dft(c1);\n        \
+    \  for (int i = 0; i != 2 << sft; ++i)\n            c0[i] = c0[i] * bc_[sft -\
+    \ 1][i] + c1[i] * ac_[sft - 1][i];\n          idft(c0);\n          for (int i\
+    \ = 0; i != (2 << sft) - 1; ++i) c_[n_ + 1 + i] += c0[i];\n        }\n    }\n\
+    \    return c_[n_++];\n  }\n};\n\ntemplate <typename ModIntT, typename Closure0T,\
+    \ typename Closure1T>\nauto make_relaxed_convolution(Closure0T &&f0, Closure1T\
+    \ &&f1)\n    -> relaxed_convolution<ModIntT, std::decay_t<Closure0T>, std::decay_t<Closure1T>>\
+    \ {\n  return relaxed_convolution<ModIntT, std::decay_t<Closure0T>, std::decay_t<Closure1T>>(f0,\
+    \ f1);\n}\n\nLIB_END\n\n#endif\n"
   dependsOn:
   - common.hpp
   - math/radix2_ntt.hpp
@@ -236,8 +237,8 @@ data:
   path: math/relaxed_convolution.hpp
   requiredBy:
   - math/formal_power_series.hpp
-  timestamp: '2023-12-16 21:39:17+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2023-12-17 11:51:45+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/convolution_mod.3.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.1.test.cpp

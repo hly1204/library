@@ -1,16 +1,16 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/runtime_long_montgomery_modint.hpp
     title: Runtime Long Montgomery ModInt
   _extendedRequiredBy: []
@@ -18,12 +18,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/factorize.0.test.cpp
     title: remote_test/yosupo/math/factorize.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: remote_test/yosupo/math/primality_test.0.test.cpp
     title: remote_test/yosupo/math/primality_test.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/integer_factorization.hpp\"\n\n\n\n#line 1 \"common.hpp\"\
@@ -101,9 +101,9 @@ data:
     \ license CC0 1.0\nclass xoshiro256starstar {\n  using u64 = std::uint64_t;\n\n\
     \  static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64 -\
     \ k)); }\n\n  u64 s_[4];\n\n  u64 next() {\n    const u64 res = rotl(s_[1] * 5,\
-    \ 7) * 9;\n    const u64 t   = s_[1] << 17;\n    s_[2] ^= s_[0], s_[3] ^= s_[1],\
-    \ s_[1] ^= s_[2], s_[0] ^= s_[3], s_[2] ^= t,\n        s_[3] = rotl(s_[3], 45);\n\
-    \    return res;\n  }\n\npublic:\n  // see https://prng.di.unimi.it/splitmix64.c\n\
+    \ 7) * 9;\n    const u64 t   = s_[1] << 17;\n    s_[2] ^= s_[0];\n    s_[3] ^=\
+    \ s_[1];\n    s_[1] ^= s_[2];\n    s_[0] ^= s_[3];\n    s_[2] ^= t;\n    s_[3]\
+    \ = rotl(s_[3], 45);\n    return res;\n  }\n\npublic:\n  // see https://prng.di.unimi.it/splitmix64.c\n\
     \  // original license CC0 1.0\n  explicit xoshiro256starstar(u64 seed) {\n  \
     \  for (int i = 0; i != 4; ++i) {\n      u64 z = (seed += 0x9e3779b97f4a7c15);\n\
     \      z     = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n      z     = (z ^ (z >>\
@@ -182,8 +182,8 @@ data:
   isVerificationFile: false
   path: math/integer_factorization.hpp
   requiredBy: []
-  timestamp: '2022-05-27 06:01:13+00:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2023-12-17 11:51:45+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/primality_test.0.test.cpp
   - remote_test/yosupo/math/factorize.0.test.cpp

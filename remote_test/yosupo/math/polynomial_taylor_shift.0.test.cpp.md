@@ -1,53 +1,53 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/binomial.hpp
     title: Binomial Coefficient (in $\mathbb{F} _ p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/polynomial.hpp
     title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/semi_relaxed_convolution.hpp
     title: Semi-Relaxed Convolution (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT
       prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/sqrt_mod.hpp
     title: Square Roots (in $\mathbb{F} _ p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: math/taylor_shift.hpp
     title: Polynomial Taylor Shift (in $\mathbb{F} _ p$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/truncated_formal_power_series.hpp
     title: Truncated Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/truncated_fourier_transform.hpp
     title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for
       FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint/montgomery_modint.hpp
     title: Montgomery ModInt
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/polynomial_taylor_shift
@@ -158,49 +158,53 @@ data:
     \ {\n  std::vector<ModIntT> fixed_A_{}, B_{}, c_{};\n  std::vector<std::vector<std::vector<ModIntT>>>\
     \ dft_A_cache_{}, dft_B_cache_{};\n  int n_{};\n  FnT handle_;\n\n  enum : int\
     \ { BASE_CASE_SIZE = 32, LOG_BLOCK = 4, BLOCK = 1 << LOG_BLOCK, MASK = BLOCK -\
-    \ 1 };\n\n  static_assert((BASE_CASE_SIZE & (BASE_CASE_SIZE - 1)) == 0);\n  static_assert(std::is_invocable_r_v<ModIntT,\
-    \ FnT, int, const std::vector<ModIntT> &> ||\n                std::is_invocable_r_v<ModIntT,\
-    \ FnT, int>);\n\npublic:\n  semi_relaxed_convolution(const std::vector<ModIntT>\
-    \ &A, FnT handle)\n      : fixed_A_(A), c_(1024), handle_(std::move(handle)) {}\n\
-    \  const std::vector<ModIntT> &get_multiplier() const { return B_; }\n  const\
-    \ std::vector<ModIntT> &get_multiplicand() const { return fixed_A_; }\n  const\
-    \ std::vector<ModIntT> &get_lhs() const { return get_multiplicand(); }\n  const\
-    \ std::vector<ModIntT> &get_rhs() const { return get_multiplier(); }\n  semi_relaxed_convolution\
-    \ &await(int k) {\n    while (n_ < k) next();\n    return *this;\n  }\n  ModIntT\
-    \ at(int k) {\n    while (n_ <= k) next();\n    return c_[k];\n  }\n  ModIntT\
-    \ operator[](int k) { return at(k); }\n  ModIntT next();\n};\n\ntemplate <typename\
-    \ ModIntT, typename FnT>\nModIntT semi_relaxed_convolution<ModIntT, FnT>::next()\
-    \ {\n  {\n    // enlarge space\n    const int len = ntt_len(n_ << 1 | 1);\n  \
-    \  if (static_cast<int>(c_.size()) < len) c_.resize(len);\n    if (static_cast<int>(fixed_A_.size())\
-    \ < len) fixed_A_.resize(len);\n  }\n  if ((n_ & (BASE_CASE_SIZE - 1)) == 0)\n\
-    \    for (int t = n_ / BASE_CASE_SIZE, block_size = BASE_CASE_SIZE, lv = 0; t\
-    \ != 0;\n         t >>= LOG_BLOCK, block_size <<= LOG_BLOCK, ++lv)\n      if (int\
-    \ i = t & MASK, block_size2 = block_size << 1, l = n_ - block_size; i != 0) {\n\
-    \        if (block_size * i == n_) {\n          if (static_cast<int>(dft_A_cache_.size())\
-    \ == lv) {\n            dft_A_cache_.emplace_back();\n            dft_B_cache_.emplace_back(BLOCK\
-    \ - 1);\n          }\n          dft(dft_A_cache_[lv].emplace_back(fixed_A_.cbegin()\
-    \ + (i - 1) * block_size,\n                                            fixed_A_.cbegin()\
-    \ + (i + 1) * block_size));\n        }\n        auto &&B_cache = dft_B_cache_[lv];\n\
-    \        B_cache[i - 1].resize(block_size2);\n        std::fill_n(std::copy_n(B_.cbegin()\
-    \ + l, block_size, B_cache[i - 1].begin()), block_size,\n                    ModIntT());\n\
-    \        dft(B_cache[i - 1]);\n        std::vector<ModIntT> temp_sum(block_size2);\n\
-    \        for (int j = 0; j != i; ++j)\n          for (int k = 0; k != block_size2;\
-    \ ++k)\n            temp_sum[k] += dft_A_cache_[lv][i - 1 - j][k] * B_cache[j][k];\n\
-    \        idft(temp_sum);\n        for (int j = block_size; j != block_size2; ++j)\
-    \ c_[j + n_ - block_size] += temp_sum[j];\n        break;\n      }\n  for (int\
-    \ i = 0, l = n_ & ~(BASE_CASE_SIZE - 1); i < n_ - l; ++i)\n    c_[n_] += fixed_A_[n_\
-    \ - l - i] * B_[l + i];\n  // clang-format off\n  if constexpr (std::is_invocable_r_v<ModIntT,\
-    \ FnT, int, const std::vector<ModIntT> &>)\n    c_[n_] += fixed_A_.front() * B_.emplace_back(handle_(n_,\
-    \ c_));\n  else\n    c_[n_] += fixed_A_.front() * B_.emplace_back(handle_(n_));\n\
-    \  // clang-format on\n  return c_[n_++];\n}\n\nLIB_END\n\n\n#line 1 \"math/sqrt_mod.hpp\"\
+    \ 1 };\n\n  static_assert((BASE_CASE_SIZE & (BASE_CASE_SIZE - 1)) == 0);\n\n \
+    \ template <typename>\n  static constexpr bool semi_relaxed_convolution_false\
+    \ = false;\n\npublic:\n  template <typename ClosureT>\n  semi_relaxed_convolution(const\
+    \ std::vector<ModIntT> &A, ClosureT &&handle)\n      : fixed_A_(A), c_(1024),\
+    \ handle_(std::forward<ClosureT>(handle)) {}\n  const std::vector<ModIntT> &get_multiplier()\
+    \ const { return B_; }\n  const std::vector<ModIntT> &get_multiplicand() const\
+    \ { return fixed_A_; }\n  const std::vector<ModIntT> &get_lhs() const { return\
+    \ get_multiplicand(); }\n  const std::vector<ModIntT> &get_rhs() const { return\
+    \ get_multiplier(); }\n  semi_relaxed_convolution &await(int k) {\n    while (n_\
+    \ < k) next();\n    return *this;\n  }\n  ModIntT at(int k) {\n    while (n_ <=\
+    \ k) next();\n    return c_[k];\n  }\n  ModIntT operator[](int k) { return at(k);\
+    \ }\n  ModIntT next() {\n    {\n      // enlarge space\n      const int len =\
+    \ ntt_len(n_ << 1 | 1);\n      if (static_cast<int>(c_.size()) < len) c_.resize(len);\n\
+    \      if (static_cast<int>(fixed_A_.size()) < len) fixed_A_.resize(len);\n  \
+    \  }\n    if ((n_ & (BASE_CASE_SIZE - 1)) == 0)\n      for (int t = n_ / BASE_CASE_SIZE,\
+    \ block_size = BASE_CASE_SIZE, lv = 0; t != 0;\n           t >>= LOG_BLOCK, block_size\
+    \ <<= LOG_BLOCK, ++lv)\n        if (int i = t & MASK, block_size2 = block_size\
+    \ << 1, l = n_ - block_size; i != 0) {\n          if (block_size * i == n_) {\n\
+    \            if (static_cast<int>(dft_A_cache_.size()) == lv) {\n            \
+    \  dft_A_cache_.emplace_back();\n              dft_B_cache_.emplace_back(BLOCK\
+    \ - 1);\n            }\n            dft(dft_A_cache_[lv].emplace_back(fixed_A_.cbegin()\
+    \ + (i - 1) * block_size,\n                                              fixed_A_.cbegin()\
+    \ + (i + 1) * block_size));\n          }\n          auto &&B_cache = dft_B_cache_[lv];\n\
+    \          B_cache[i - 1].resize(block_size2);\n          std::fill_n(std::copy_n(B_.cbegin()\
+    \ + l, block_size, B_cache[i - 1].begin()), block_size,\n                    \
+    \  ModIntT());\n          dft(B_cache[i - 1]);\n          std::vector<ModIntT>\
+    \ temp_sum(block_size2);\n          for (int j = 0; j != i; ++j)\n           \
+    \ for (int k = 0; k != block_size2; ++k)\n              temp_sum[k] += dft_A_cache_[lv][i\
+    \ - 1 - j][k] * B_cache[j][k];\n          idft(temp_sum);\n          for (int\
+    \ j = block_size; j != block_size2; ++j) c_[j + n_ - block_size] += temp_sum[j];\n\
+    \          break;\n        }\n    for (int i = 0, l = n_ & ~(BASE_CASE_SIZE -\
+    \ 1); i < n_ - l; ++i)\n      c_[n_] += fixed_A_[n_ - l - i] * B_[l + i];\n  \
+    \  if constexpr (std::is_invocable_r_v<ModIntT, FnT, int, const std::vector<ModIntT>\
+    \ &>) {\n      c_[n_] += fixed_A_.front() * B_.emplace_back(handle_(n_, c_));\n\
+    \    } else if constexpr (std::is_invocable_r_v<ModIntT, FnT, int>) {\n      c_[n_]\
+    \ += fixed_A_.front() * B_.emplace_back(handle_(n_));\n    } else {\n      static_assert(semi_relaxed_convolution_false<FnT>);\n\
+    \    }\n    return c_[n_++];\n  }\n};\n\ntemplate <typename VectorT, typename\
+    \ ClosureT>\nsemi_relaxed_convolution(VectorT, ClosureT)\n    -> semi_relaxed_convolution<typename\
+    \ VectorT::value_type, std::decay_t<ClosureT>>;\n\nLIB_END\n\n\n#line 1 \"math/sqrt_mod.hpp\"\
     \n\n\n\n#line 1 \"math/random.hpp\"\n\n\n\n#line 5 \"math/random.hpp\"\n\n#include\
     \ <cstdint>\n#include <limits>\n\nLIB_BEGIN\n\n// see https://prng.di.unimi.it/xoshiro256starstar.c\n\
     // original license CC0 1.0\nclass xoshiro256starstar {\n  using u64 = std::uint64_t;\n\
     \n  static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64 -\
     \ k)); }\n\n  u64 s_[4];\n\n  u64 next() {\n    const u64 res = rotl(s_[1] * 5,\
-    \ 7) * 9;\n    const u64 t   = s_[1] << 17;\n    s_[2] ^= s_[0], s_[3] ^= s_[1],\
-    \ s_[1] ^= s_[2], s_[0] ^= s_[3], s_[2] ^= t,\n        s_[3] = rotl(s_[3], 45);\n\
-    \    return res;\n  }\n\npublic:\n  // see https://prng.di.unimi.it/splitmix64.c\n\
+    \ 7) * 9;\n    const u64 t   = s_[1] << 17;\n    s_[2] ^= s_[0];\n    s_[3] ^=\
+    \ s_[1];\n    s_[1] ^= s_[2];\n    s_[0] ^= s_[3];\n    s_[2] ^= t;\n    s_[3]\
+    \ = rotl(s_[3], 45);\n    return res;\n  }\n\npublic:\n  // see https://prng.di.unimi.it/splitmix64.c\n\
     \  // original license CC0 1.0\n  explicit xoshiro256starstar(u64 seed) {\n  \
     \  for (int i = 0; i != 4; ++i) {\n      u64 z = (seed += 0x9e3779b97f4a7c15);\n\
     \      z     = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n      z     = (z ^ (z >>\
@@ -528,8 +532,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   requiredBy: []
-  timestamp: '2023-12-16 21:56:53+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2023-12-17 11:51:45+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
 layout: document

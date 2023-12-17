@@ -1,26 +1,26 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/sqrt_mod.hpp
     title: Square Roots (in $\mathbb{F} _ p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: modint/runtime_modint.hpp
     title: Runtime ModInt
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/sqrt_mod
@@ -35,9 +35,9 @@ data:
     \ license CC0 1.0\nclass xoshiro256starstar {\n  using u64 = std::uint64_t;\n\n\
     \  static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64 -\
     \ k)); }\n\n  u64 s_[4];\n\n  u64 next() {\n    const u64 res = rotl(s_[1] * 5,\
-    \ 7) * 9;\n    const u64 t   = s_[1] << 17;\n    s_[2] ^= s_[0], s_[3] ^= s_[1],\
-    \ s_[1] ^= s_[2], s_[0] ^= s_[3], s_[2] ^= t,\n        s_[3] = rotl(s_[3], 45);\n\
-    \    return res;\n  }\n\npublic:\n  // see https://prng.di.unimi.it/splitmix64.c\n\
+    \ 7) * 9;\n    const u64 t   = s_[1] << 17;\n    s_[2] ^= s_[0];\n    s_[3] ^=\
+    \ s_[1];\n    s_[1] ^= s_[2];\n    s_[0] ^= s_[3];\n    s_[2] ^= t;\n    s_[3]\
+    \ = rotl(s_[3], 45);\n    return res;\n  }\n\npublic:\n  // see https://prng.di.unimi.it/splitmix64.c\n\
     \  // original license CC0 1.0\n  explicit xoshiro256starstar(u64 seed) {\n  \
     \  for (int i = 0; i != 4; ++i) {\n      u64 z = (seed += 0x9e3779b97f4a7c15);\n\
     \      z     = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n      z     = (z ^ (z >>\
@@ -148,8 +148,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/sqrt_mod.0.test.cpp
   requiredBy: []
-  timestamp: '2022-06-22 23:05:33+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2023-12-17 11:51:45+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/sqrt_mod.0.test.cpp
 layout: document
