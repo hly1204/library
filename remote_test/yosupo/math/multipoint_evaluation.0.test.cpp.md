@@ -26,7 +26,7 @@ data:
   - icon: ':question:'
     path: math/sqrt_mod.hpp
     title: Square Roots (in $\mathbb{F} _ p$)
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/subproduct_tree.hpp
     title: Multipoint Evaluation and Interpolation (in $\mathbb{F} _ p$ for FFT prime
       $p$)
@@ -43,9 +43,9 @@ data:
     title: Montgomery ModInt
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/multipoint_evaluation
@@ -575,7 +575,7 @@ data:
   path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
   requiredBy: []
   timestamp: '2023-12-17 11:51:45+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
 layout: document

@@ -10,14 +10,14 @@ data:
   - icon: ':question:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series.hpp
     title: Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
       for FFT prime $p$)
   - icon: ':question:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/relaxed_convolution.hpp
     title: Relaxed Convolution (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
       for FFT prime $p$)

@@ -5,7 +5,7 @@ data:
     path: common.hpp
     title: common.hpp
   _extendedRequiredBy:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/integer_factorization.hpp
     title: Integer Factorization (Pollard's rho algorithm) (in $\mathbb{Z}$)
   - icon: ':question:'
@@ -37,22 +37,22 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
     title: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
     title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
     title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/primality_test.0.test.cpp
     title: remote_test/yosupo/math/primality_test.0.test.cpp
   - icon: ':x:'

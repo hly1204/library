@@ -4,13 +4,13 @@ data:
   - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/binomial.hpp
     title: Binomial Coefficient (in $\mathbb{F} _ p$)
   - icon: ':x:'
     path: math/linear_sieve.hpp
     title: Linear Sieve
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/taylor_shift.hpp
     title: Polynomial Taylor Shift (in $\mathbb{F} _ p$ for FFT prime $p$)
   _extendedRequiredBy: []

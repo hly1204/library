@@ -10,7 +10,7 @@ data:
   - icon: ':question:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/runtime_long_montgomery_modint.hpp
     title: Runtime Long Montgomery ModInt
   _extendedRequiredBy: []
@@ -18,12 +18,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/factorize.0.test.cpp
     title: remote_test/yosupo/math/factorize.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/primality_test.0.test.cpp
     title: remote_test/yosupo/math/primality_test.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/integer_factorization.hpp\"\n\n\n\n#line 1 \"common.hpp\"\
@@ -183,7 +183,7 @@ data:
   path: math/integer_factorization.hpp
   requiredBy: []
   timestamp: '2023-12-17 11:51:45+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/primality_test.0.test.cpp
   - remote_test/yosupo/math/factorize.0.test.cpp

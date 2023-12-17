@@ -7,7 +7,7 @@ data:
   - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/binomial.hpp
     title: Binomial Coefficient (in $\mathbb{F} _ p$)
   - icon: ':question:'
@@ -29,7 +29,7 @@ data:
   - icon: ':question:'
     path: math/sqrt_mod.hpp
     title: Square Roots (in $\mathbb{F} _ p$)
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/taylor_shift.hpp
     title: Polynomial Taylor Shift (in $\mathbb{F} _ p$ for FFT prime $p$)
   - icon: ':question:'
@@ -45,9 +45,9 @@ data:
     title: Montgomery ModInt
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/polynomial_taylor_shift
@@ -533,7 +533,7 @@ data:
   path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   requiredBy: []
   timestamp: '2023-12-17 11:51:45+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
 layout: document

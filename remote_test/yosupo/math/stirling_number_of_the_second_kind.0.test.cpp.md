@@ -7,7 +7,7 @@ data:
   - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/binomial.hpp
     title: Binomial Coefficient (in $\mathbb{F} _ p$)
   - icon: ':question:'
@@ -35,7 +35,7 @@ data:
   - icon: ':x:'
     path: math/stirling_numbers.hpp
     title: Stirling Numbers (in $\mathbb{F} _ p$ for FFT prime $p$)
-  - icon: ':x:'
+  - icon: ':question:'
     path: math/taylor_shift.hpp
     title: Polynomial Taylor Shift (in $\mathbb{F} _ p$ for FFT prime $p$)
   - icon: ':question:'

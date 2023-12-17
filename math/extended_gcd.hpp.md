@@ -11,7 +11,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/cra.hpp
     title: Chinese Remainder Algorithm (in $\mathbb{Z} / m \mathbb{Z}$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series.hpp
     title: Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
       for FFT prime $p$)
@@ -50,31 +50,31 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
     title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/partition_function.0.test.cpp
     title: remote_test/yosupo/math/partition_function.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
     title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.1.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/pow_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
     title: remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
   - icon: ':x:'

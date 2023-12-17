@@ -7,13 +7,13 @@ data:
   - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/integer_factorization.hpp
     title: Integer Factorization (Pollard's rho algorithm) (in $\mathbb{Z}$)
   - icon: ':question:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/runtime_long_montgomery_modint.hpp
     title: Runtime Long Montgomery ModInt
   _extendedRequiredBy: []
