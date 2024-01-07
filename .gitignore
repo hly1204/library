@@ -1,8 +1,3 @@
 .idea/
 .vscode/
-local_test/
-temp/
-
-*.exe
-*.obj
-*.bundled.cpp
+.cache/
