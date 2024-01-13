@@ -15,6 +15,9 @@ data:
     path: datastructure/height_based_leftist_tree.hpp
     title: Height-Based Leftist Tree
   - icon: ':heavy_check_mark:'
+    path: datastructure/sliding_window_aggregator.hpp
+    title: Sliding Window Aggregator (FIFO)
+  - icon: ':heavy_check_mark:'
     path: datastructure/weighted_disjoint_set.hpp
     title: Weighted Disjoint Set (Abelian)
   - icon: ':heavy_check_mark:'
@@ -144,6 +147,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/datastructure/cartesian_tree.0.test.cpp
     title: remote_test/yosupo/datastructure/cartesian_tree.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/datastructure/queue_operate_all_composite.0.test.cpp
+    title: remote_test/yosupo/datastructure/queue_operate_all_composite.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/datastructure/queue_operate_all_composite.0.test.cpp
+    title: remote_test/yosupo/datastructure/queue_operate_all_composite.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/datastructure/set_xor_min.0.test.cpp
     title: remote_test/yosupo/datastructure/set_xor_min.0.test.cpp
@@ -411,6 +420,7 @@ data:
   - datastructure/height_based_leftist_tree.hpp
   - datastructure/disjoint_set.hpp
   - datastructure/cartesian_tree.hpp
+  - datastructure/sliding_window_aggregator.hpp
   - datastructure/weighted_disjoint_set.hpp
   - datastructure/binary_trie.hpp
   - modint/runtime_montgomery_modint.hpp
@@ -489,6 +499,8 @@ data:
   - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
   - remote_test/yosupo/datastructure/union_find.0.test.cpp
   - remote_test/yosupo/datastructure/cartesian_tree.0.test.cpp
+  - remote_test/yosupo/datastructure/queue_operate_all_composite.0.test.cpp
+  - remote_test/yosupo/datastructure/queue_operate_all_composite.0.test.cpp
   - remote_test/yosupo/datastructure/set_xor_min.0.test.cpp
   - remote_test/yosupo/string/suffix_array.0.test.cpp
   - remote_test/yosupo/string/z_algorithm.0.test.cpp

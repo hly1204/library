@@ -21,6 +21,9 @@ data:
       path: datastructure/height_based_leftist_tree.hpp
       title: Height-Based Leftist Tree
     - icon: ':heavy_check_mark:'
+      path: datastructure/sliding_window_aggregator.hpp
+      title: Sliding Window Aggregator (FIFO)
+    - icon: ':heavy_check_mark:'
       path: datastructure/weighted_disjoint_set.hpp
       title: Weighted Disjoint Set (Abelian)
   - name: math
@@ -154,6 +157,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/datastructure/cartesian_tree.0.test.cpp
       title: remote_test/yosupo/datastructure/cartesian_tree.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/datastructure/queue_operate_all_composite.0.test.cpp
+      title: remote_test/yosupo/datastructure/queue_operate_all_composite.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/datastructure/set_xor_min.0.test.cpp
       title: remote_test/yosupo/datastructure/set_xor_min.0.test.cpp
