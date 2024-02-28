@@ -19,6 +19,6 @@ int main() {
   std::copy_n(std::istream_iterator<mint>(std::cin), 1 << n, std::back_inserter(x));
   std::copy_n(std::istream_iterator<mint>(std::cin), 1 << n, std::back_inserter(y));
   auto xy = lib::set_power_series::subset_convolution(x, y);
-  std::copy_n(xy, 1 << n, std::ostream_iterator<mint>(std::cout));
+  std::copy(xy.begin(), xy.end(), std::ostream_iterator<int>(std::cout, " "));
   return 0;
 }
