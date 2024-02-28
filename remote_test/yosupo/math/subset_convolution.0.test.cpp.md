@@ -215,8 +215,8 @@ data:
     \ >> n;\n  std::vector<mint> x, y;\n  std::copy_n(std::istream_iterator<mint>(std::cin),\
     \ 1 << n, std::back_inserter(x));\n  std::copy_n(std::istream_iterator<mint>(std::cin),\
     \ 1 << n, std::back_inserter(y));\n  auto xy = lib::set_power_series::subset_convolution(x,\
-    \ y);\n  std::copy_n(xy, 1 << n, std::ostream_iterator<mint>(std::cout));\n  return\
-    \ 0;\n}\n"
+    \ y);\n  std::copy(xy.begin(), xy.end(), std::ostream_iterator<int>(std::cout,\
+    \ \" \"));\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/subset_convolution\"\n\n\
     #include \"math/set_power_series.hpp\"\n#include \"modint/montgomery_modint.hpp\"\
     \n\n#include <iostream>\n#include <iterator>\n\nint main() {\n#ifdef LOCAL\n \
@@ -225,8 +225,8 @@ data:
     \ mint = lib::mm30<998244353>;\n  int n;\n  std::cin >> n;\n  std::vector<mint>\
     \ x, y;\n  std::copy_n(std::istream_iterator<mint>(std::cin), 1 << n, std::back_inserter(x));\n\
     \  std::copy_n(std::istream_iterator<mint>(std::cin), 1 << n, std::back_inserter(y));\n\
-    \  auto xy = lib::set_power_series::subset_convolution(x, y);\n  std::copy_n(xy,\
-    \ 1 << n, std::ostream_iterator<mint>(std::cout));\n  return 0;\n}\n"
+    \  auto xy = lib::set_power_series::subset_convolution(x, y);\n  std::copy(xy.begin(),\
+    \ xy.end(), std::ostream_iterator<int>(std::cout, \" \"));\n  return 0;\n}\n"
   dependsOn:
   - math/set_power_series.hpp
   - common.hpp
@@ -237,7 +237,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/subset_convolution.0.test.cpp
   requiredBy: []
-  timestamp: '2024-02-28 21:27:40+08:00'
+  timestamp: '2024-02-28 21:30:44+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/subset_convolution.0.test.cpp
