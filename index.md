@@ -3,7 +3,7 @@ data:
   libraryCategories:
   - name: .
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: common.hpp
       title: common.hpp
   - name: datastructure
@@ -72,7 +72,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: math/polynomial.hpp
       title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: math/radix2_ntt.hpp
       title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
     - icon: ':heavy_check_mark:'
@@ -86,6 +86,9 @@ data:
       path: math/semi_relaxed_convolution.hpp
       title: Semi-Relaxed Convolution (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT
         prime $p$)
+    - icon: ':x:'
+      path: math/set_power_series.hpp
+      title: Set Power Series
     - icon: ':warning:'
       path: math/shift_sample_points_single.hpp
       title: Shift Sample Points (Single) (in $\mathbb{F} _ p \lbrack z \rbrack$)
@@ -110,12 +113,15 @@ data:
       path: math/truncated_fourier_transform.hpp
       title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for
         FFT prime $p$)
+    - icon: ':x:'
+      path: math/zeta_transform.hpp
+      title: Zeta Transform
   - name: modint
     pages:
     - icon: ':heavy_check_mark:'
       path: modint/long_montgomery_modint.hpp
       title: Long Montgomery ModInt
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint/montgomery_modint.hpp
       title: Montgomery ModInt
     - icon: ':heavy_check_mark:'
@@ -258,6 +264,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
       title: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
+    - icon: ':x:'
+      path: remote_test/yosupo/math/subset_convolution.0.test.cpp
+      title: remote_test/yosupo/math/subset_convolution.0.test.cpp
   - name: remote_test/yosupo/string
     pages:
     - icon: ':heavy_check_mark:'

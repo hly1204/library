@@ -10,42 +10,44 @@ data:
   - icon: ':question:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
-    path: math/relaxed_convolution.hpp
-    title: Relaxed Convolution (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
-      for FFT prime $p$)
+  - icon: ':x:'
+    path: math/set_power_series.hpp
+    title: Set Power Series
+  - icon: ':x:'
+    path: math/zeta_transform.hpp
+    title: Zeta Transform
   - icon: ':question:'
     path: modint/montgomery_modint.hpp
     title: Montgomery ModInt
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/convolution_mod
+    PROBLEM: https://judge.yosupo.jp/problem/subset_convolution
     links:
-    - https://judge.yosupo.jp/problem/convolution_mod
-  bundledCode: "#line 1 \"remote_test/yosupo/math/convolution_mod.3.test.cpp\"\n#define\
-    \ PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod\"\n\n#line 1 \"math/relaxed_convolution.hpp\"\
-    \n\n\n\n#line 1 \"common.hpp\"\n\n\n\n#define LIB_DEBUG\n\n#define LIB_BEGIN namespace\
-    \ lib {\n#define LIB_END }\n#define LIB ::lib::\n\n\n#line 1 \"math/radix2_ntt.hpp\"\
-    \n\n\n\n#line 5 \"math/radix2_ntt.hpp\"\n\n#include <algorithm>\n#include <array>\n\
-    #include <cassert>\n#include <type_traits>\n#include <vector>\n\nLIB_BEGIN\n\n\
-    namespace detail {\n\ntemplate <typename IntT>\nconstexpr std::enable_if_t<std::is_integral_v<IntT>,\
-    \ int> bsf(IntT v) {\n  if (static_cast<std::make_signed_t<IntT>>(v) <= 0) return\
-    \ -1;\n  int res = 0;\n  for (; (v & 1) == 0; ++res) v >>= 1;\n  return res;\n\
-    }\n\ntemplate <typename ModIntT>\nconstexpr ModIntT quadratic_nonresidue_prime()\
-    \ {\n  auto mod = ModIntT::mod();\n  for (int i = 2;; ++i)\n    if (ModIntT(i).pow(mod\
-    \ >> 1) == mod - 1) return ModIntT(i);\n}\n\ntemplate <typename ModIntT>\nconstexpr\
-    \ ModIntT gen_of_sylow_2_subgroup() {\n  auto mod = ModIntT::mod();\n  return\
-    \ quadratic_nonresidue_prime<ModIntT>().pow(mod >> bsf(mod - 1));\n}\n\ntemplate\
-    \ <typename ModIntT>\nconstexpr std::array<ModIntT, bsf(ModIntT::mod() - 1) -\
-    \ 1> root() {\n  std::array<ModIntT, bsf(ModIntT::mod() - 1) - 1> rt; // order(`rt[i]`)\
-    \ = 2^(i + 2).\n  rt.back() = gen_of_sylow_2_subgroup<ModIntT>();\n  for (int\
-    \ i = bsf(ModIntT::mod() - 1) - 3; i >= 0; --i) rt[i] = rt[i + 1] * rt[i + 1];\n\
-    \  return rt;\n}\n\ntemplate <typename ModIntT>\nconstexpr std::array<ModIntT,\
+    - https://judge.yosupo.jp/problem/subset_convolution
+  bundledCode: "#line 1 \"remote_test/yosupo/math/subset_convolution.0.test.cpp\"\n\
+    #define PROBLEM \"https://judge.yosupo.jp/problem/subset_convolution\"\n\n#line\
+    \ 1 \"math/set_power_series.hpp\"\n\n\n\n#line 1 \"common.hpp\"\n\n\n\n#define\
+    \ LIB_DEBUG\n\n#define LIB_BEGIN namespace lib {\n#define LIB_END }\n#define LIB\
+    \ ::lib::\n\n\n#line 1 \"math/radix2_ntt.hpp\"\n\n\n\n#line 5 \"math/radix2_ntt.hpp\"\
+    \n\n#include <algorithm>\n#include <array>\n#include <cassert>\n#include <type_traits>\n\
+    #include <vector>\n\nLIB_BEGIN\n\nnamespace detail {\n\ntemplate <typename IntT>\n\
+    constexpr std::enable_if_t<std::is_integral_v<IntT>, int> bsf(IntT v) {\n  if\
+    \ (static_cast<std::make_signed_t<IntT>>(v) <= 0) return -1;\n  int res = 0;\n\
+    \  for (; (v & 1) == 0; ++res) v >>= 1;\n  return res;\n}\n\ntemplate <typename\
+    \ ModIntT>\nconstexpr ModIntT quadratic_nonresidue_prime() {\n  auto mod = ModIntT::mod();\n\
+    \  for (int i = 2;; ++i)\n    if (ModIntT(i).pow(mod >> 1) == mod - 1) return\
+    \ ModIntT(i);\n}\n\ntemplate <typename ModIntT>\nconstexpr ModIntT gen_of_sylow_2_subgroup()\
+    \ {\n  auto mod = ModIntT::mod();\n  return quadratic_nonresidue_prime<ModIntT>().pow(mod\
+    \ >> bsf(mod - 1));\n}\n\ntemplate <typename ModIntT>\nconstexpr std::array<ModIntT,\
+    \ bsf(ModIntT::mod() - 1) - 1> root() {\n  std::array<ModIntT, bsf(ModIntT::mod()\
+    \ - 1) - 1> rt; // order(`rt[i]`) = 2^(i + 2).\n  rt.back() = gen_of_sylow_2_subgroup<ModIntT>();\n\
+    \  for (int i = bsf(ModIntT::mod() - 1) - 3; i >= 0; --i) rt[i] = rt[i + 1] *\
+    \ rt[i + 1];\n  return rt;\n}\n\ntemplate <typename ModIntT>\nconstexpr std::array<ModIntT,\
     \ bsf(ModIntT::mod() - 1) - 1> iroot() {\n  std::array<ModIntT, bsf(ModIntT::mod()\
     \ - 1) - 1> irt;\n  irt.back() = gen_of_sylow_2_subgroup<ModIntT>().inv();\n \
     \ for (int i = bsf(ModIntT::mod() - 1) - 3; i >= 0; --i) irt[i] = irt[i + 1] *\
@@ -103,66 +105,53 @@ data:
     \  auto it = dft_a.begin() + n;\n  std::copy_n(dft_a.cbegin(), n, it);\n  idft_n(it,\
     \ n);\n  ModIntT r(n == 1 ? ModIntT(-1) : rt[detail::bsf(n) - 1]), v(1);\n  for\
     \ (int i = 0; i != n; ++i) it[i] *= v, v *= r;\n  dft_n(it, n);\n}\n\nLIB_END\n\
-    \n\n#line 6 \"math/relaxed_convolution.hpp\"\n\n#include <exception>\n#include\
-    \ <functional>\n#line 10 \"math/relaxed_convolution.hpp\"\n#include <utility>\n\
-    #line 12 \"math/relaxed_convolution.hpp\"\n\nLIB_BEGIN\n\n// This implementation\
-    \ is NOT optimal and NOT lazy enough so IT IS SLOW.\ntemplate <typename ModIntT,\
-    \ typename Fn0, typename Fn1>\nclass relaxed_convolution {                   \
-    \    // O(n log^2 n) impl\n  std::vector<ModIntT> a_{}, b_{}, c_{};          //\
-    \ `a_ * b_` = `c_`\n  std::vector<std::vector<ModIntT>> ac_{}, bc_{}; // cached\
-    \ DFTs\n  Fn0 ha_;\n  Fn1 hb_;\n  int n_{}; // counter\n\n  enum : int { BASE_CASE_SIZE\
-    \ = 32 };\n  static_assert((BASE_CASE_SIZE & (BASE_CASE_SIZE - 1)) == 0);\n\n\
-    \  template <typename>\n  static constexpr bool relaxed_convolution_false = false;\n\
-    \n  template <typename FnT>\n  ModIntT get_next_coeff(FnT &&f, std::vector<ModIntT>\
-    \ &e) {\n    if constexpr (std::is_invocable_r_v<ModIntT, FnT, int, const std::vector<ModIntT>\
-    \ &>) {\n      return e.emplace_back(f(n_, c_));\n    } else if constexpr (std::is_invocable_r_v<ModIntT,\
-    \ FnT, int>) {\n      return e.emplace_back(f(n_));\n    } else if constexpr (std::is_invocable_r_v<ModIntT,\
-    \ FnT>) {\n      return e.emplace_back(f());\n    } else {\n      static_assert(relaxed_convolution_false<FnT>);\n\
-    \      return ModIntT();\n    }\n  }\n\npublic:\n  template <typename, typename\
-    \ Closure0T, typename Closure1T>\n  friend auto make_relaxed_convolution(Closure0T\
-    \ &&, Closure1T &&);\n  // `h0` multiplicand, `h1` multiplier\n  template <typename\
-    \ Closure0T, typename Closure1T>\n  relaxed_convolution(Closure0T &&h0, Closure1T\
-    \ &&h1)\n      : c_(4), ha_(std::forward<Closure0T>(h0)), hb_(std::forward<Closure1T>(h1))\
-    \ {}\n  const std::vector<ModIntT> &get_multiplier() const { return b_; }\n  const\
-    \ std::vector<ModIntT> &get_multiplicand() const { return a_; }\n  const std::vector<ModIntT>\
-    \ &get_lhs() const { return get_multiplicand(); }\n  const std::vector<ModIntT>\
-    \ &get_rhs() const { return get_multiplier(); }\n  relaxed_convolution &await(int\
-    \ k) {\n    while (n_ < k) next();\n    return *this;\n  }\n  ModIntT at(int k)\
-    \ {\n    while (n_ <= k) next();\n    return c_[k];\n  }\n  ModIntT operator[](int\
-    \ k) { return at(k); }\n  ModIntT next() {\n    {\n      // enlarge space\n  \
-    \    int len = ntt_len(n_ << 1 | 1);\n      if (static_cast<int>(c_.size()) <\
-    \ len) c_.resize(len);\n    }\n\n    switch (n_) {\n    case 0: c_[0] = get_next_coeff(ha_,\
-    \ a_) * get_next_coeff(hb_, b_); break;\n    case 1:\n      c_[1] = get_next_coeff(ha_,\
-    \ a_) * b_.front() + a_.front() * get_next_coeff(hb_, b_);\n      c_[2] = a_[1]\
-    \ * b_[1];\n      break;\n    case 2:\n      c_[2] += get_next_coeff(ha_, a_)\
-    \ * b_.front() + a_.front() * get_next_coeff(hb_, b_);\n      c_[3] = a_[2] *\
-    \ b_[1] + a_[1] * b_[2];\n      break;\n    default:\n      if ((n_ & (n_ - 1))\
-    \ == 0) {\n        auto &&c0 = ac_.emplace_back(n_);\n        auto &&c1 = bc_.emplace_back(n_);\n\
-    \        std::copy_n(a_.cbegin() + (n_ >> 1), n_ >> 1, c0.begin());\n        std::copy_n(b_.cbegin()\
-    \ + (n_ >> 1), n_ >> 1, c1.begin());\n        dft(c0), dft(c1);\n        std::vector\
-    \ c0_cpy(c0);\n        for (int i = 0; i != n_; ++i) c0_cpy[i] *= c1[i];\n   \
-    \     idft(c0_cpy);\n        for (int i = 0; i != n_ - 1; ++i) c_[n_ + i] += c0_cpy[i];\n\
-    \      }\n      c_[n_] += get_next_coeff(ha_, a_) * b_.front() + a_.front() *\
-    \ get_next_coeff(hb_, b_);\n      c_[n_ + 1] += a_[1] * b_.back() + a_.back()\
-    \ * b_[1];\n      for (int sft = 1, offset = ntt_len(n_ + 1) >> 1, t = n_ + 1\
-    \ - offset;\n           (t & 1) == 0 && 1 << sft < offset; ++sft, t >>= 1)\n \
-    \       if (1 << sft <= BASE_CASE_SIZE) {\n          for (int i = 0, m = n_ +\
-    \ 1 - (1 << sft); i != 1 << sft; ++i)\n            for (int j = 0; j != 1 << sft;\
-    \ ++j)\n              c_[n_ + 1 + i + j] += a_[m + i] * b_[j + (1 << sft)] + a_[j\
-    \ + (1 << sft)] * b_[m + i];\n        } else {\n          std::vector<ModIntT>\
-    \ c0(2 << sft), c1(2 << sft);\n          std::copy_n(a_.cbegin() + n_ + 1 - (1\
-    \ << sft), 1 << sft, c0.begin());\n          std::copy_n(b_.cbegin() + n_ + 1\
-    \ - (1 << sft), 1 << sft, c1.begin());\n          dft(c0), dft(c1);\n        \
-    \  for (int i = 0; i != 2 << sft; ++i)\n            c0[i] = c0[i] * bc_[sft -\
-    \ 1][i] + c1[i] * ac_[sft - 1][i];\n          idft(c0);\n          for (int i\
-    \ = 0; i != (2 << sft) - 1; ++i) c_[n_ + 1 + i] += c0[i];\n        }\n    }\n\
-    \    return c_[n_++];\n  }\n};\n\ntemplate <typename ModIntT, typename Closure0T,\
-    \ typename Closure1T>\nauto make_relaxed_convolution(Closure0T &&f0, Closure1T\
-    \ &&f1)\n    -> relaxed_convolution<ModIntT, std::decay_t<Closure0T>, std::decay_t<Closure1T>>\
-    \ {\n  return relaxed_convolution<ModIntT, std::decay_t<Closure0T>, std::decay_t<Closure1T>>(f0,\
-    \ f1);\n}\n\nLIB_END\n\n\n#line 1 \"modint/montgomery_modint.hpp\"\n\n\n\n#line\
-    \ 5 \"modint/montgomery_modint.hpp\"\n\n#ifdef LIB_DEBUG\n  #include <stdexcept>\n\
-    #endif\n#include <cstdint>\n#include <iostream>\n#line 12 \"modint/montgomery_modint.hpp\"\
+    \n\n#line 1 \"math/zeta_transform.hpp\"\n\n\n\n#line 5 \"math/zeta_transform.hpp\"\
+    \n\n#line 8 \"math/zeta_transform.hpp\"\n\n#ifdef _MSC_VER\n  #include <intrin.h>\n\
+    #endif\n\nLIB_BEGIN\n\nint popcount(unsigned int c) {\n#ifdef _MSC_VER\n  return\
+    \ __popcnt(c);\n#else\n  return __builtin_popcount(c);\n#endif\n}\n\nint popcount(unsigned\
+    \ long c) {\n#ifdef _MSC_VER\n  return sizeof(unsigned long) == 8 ? __popcnt64(c)\
+    \ : __popcnt(c);\n#else\n  return __builtin_popcountl(c);\n#endif\n}\n\nint popcount(unsigned\
+    \ long long c) {\n#ifdef _MSC_VER\n  return __popcnt64(c);\n#else\n  return __builtin_popcountll(c);\n\
+    #endif\n}\n\n// Input:           f(x) = `a[0]` + `a[1]`x_1 + ... + `a[n - 1]`x_1...x_n.\n\
+    // Output(inplace): [f mod (x_1,...,x_n), f mod (x_1-1,x_2,...,x_n), ..., f mod\
+    \ (x_1-1,...,x_n-1)].\ntemplate <typename ModIntT>\nvoid zeta_transform(std::vector<ModIntT>\
+    \ &x) {\n  const int n = static_cast<int>(x.size());\n  assert((n & (n - 1)) ==\
+    \ 0);\n  // assume a + b = b + a\n  for (int i = 1; i < n; i <<= 1)\n    for (int\
+    \ j = i; j < n; j = (j + 1) | i) x[j] += x[j ^ i];\n}\n\n// Input:           [f\
+    \ mod (x_1,...,x_n), f mod (x_1-1,x_2,...,x_n), ..., f mod (x_1-1,...,x_n-1)].\n\
+    // Output(inplace): f(x) = `a[0]` + `a[1]`x_1 + ... + `a[n - 1]`x_1...x_n.\ntemplate\
+    \ <typename ModIntT>\nvoid moebius_transform(std::vector<ModIntT> &x) {\n  const\
+    \ int n = static_cast<int>(x.size());\n  assert((n & (n - 1)) == 0);\n  // assume\
+    \ a + b = b + a\n  for (int i = n >> 1; i != 0; i >>= 1)\n    for (int j = i;\
+    \ j < n; j = (j + 1) | i) x[j] -= x[j ^ i];\n}\n\nLIB_END\n\n\n#line 7 \"math/set_power_series.hpp\"\
+    \n\n#line 10 \"math/set_power_series.hpp\"\n\nLIB_BEGIN\n\nstruct set_power_series\
+    \ {\n  set_power_series() = delete;\n\n  template <typename ModIntT>\n  static\
+    \ std::vector<std::vector<ModIntT>> add_rank(const std::vector<ModIntT> &x) {\n\
+    \    const int n = static_cast<int>(x.size());\n    assert((n & (n - 1)) == 0);\n\
+    \    const int rank = detail::bsf(x.size()) + 1;\n    std::vector rz(rank, std::vector<ModIntT>(x.size()));\n\
+    \    for (int i = 0; i != n; ++i) rz[popcount(static_cast<unsigned>(i))][i] =\
+    \ x[i];\n    return rz;\n  }\n\n  template <typename ModIntT>\n  static std::vector<ModIntT>\
+    \ remove_rank(const std::vector<std::vector<ModIntT>> &x) {\n    const int rank\
+    \ = static_cast<int>(x.size());\n    assert(rank != 0);\n    const int n = static_cast<int>(x.front().size());\n\
+    \    assert((n & (n - 1)) == 0);\n    std::vector<ModIntT> z(n);\n    for (int\
+    \ i = 0; i != n; ++i) z[i] = x[popcount(static_cast<unsigned>(i))][i];\n    return\
+    \ z;\n  }\n\n  template <typename ModIntT>\n  static std::vector<ModIntT> subset_convolution(const\
+    \ std::vector<ModIntT> &x,\n                                                 const\
+    \ std::vector<ModIntT> &y) {\n    // https://codeforces.com/blog/entry/126418\n\
+    \    // 0 -> 1 -> 3 -> 7 -> 15\n    // 2 -> 5 -> 11\n    // ...\n    static const\
+    \ int map[] = {0, 0, 1, 0, 2, 1, 3, 0, 4,  2, 5,  1,\n                       \
+    \       6, 3, 7, 0, 8, 4, 9, 2, 10, 5, 11, 1};\n\n    const int n = static_cast<int>(x.size());\n\
+    \n    assert(static_cast<int>(y.size()) == n);\n    auto rx        = add_rank(x);\n\
+    \    auto ry        = add_rank(y);\n    const int rank = static_cast<int>(rx.size());\n\
+    \    for (auto &&i : rx) zeta_transform(i);\n    for (auto &&i : ry) zeta_transform(i);\n\
+    \n    std::vector<std::vector<ModIntT>> rxy(rank / 2 + 1, std::vector<ModIntT>(x.size()));\n\
+    \n    for (int i = 0; i != rank; ++i)\n      for (int j = i; j >= 0; --j)\n  \
+    \      for (int k = 0; k != n; ++k) rxy[map[i]][k] += rx[i][k] * ry[i - j][k];\n\
+    \n    for (auto &&i : rxy) moebius_transform(i);\n    std::vector<ModIntT> res(n);\n\
+    \    for (int i = 0; i != n; ++i) res[i] = rxy[map[popcount(static_cast<unsigned>(i))]][i];\n\
+    \    return res;\n  }\n};\n\nLIB_END\n\n\n#line 1 \"modint/montgomery_modint.hpp\"\
+    \n\n\n\n#line 5 \"modint/montgomery_modint.hpp\"\n\n#ifdef LIB_DEBUG\n  #include\
+    \ <stdexcept>\n#endif\n#include <cstdint>\n#include <iostream>\n#line 12 \"modint/montgomery_modint.hpp\"\
     \n\nLIB_BEGIN\n\ntemplate <std::uint32_t ModT>\nclass montgomery_modint30 {\n\
     \  using i32 = std::int32_t;\n  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\
     \n  u32 v_{};\n\n  static constexpr u32 get_r() {\n    u32 t = 2, iv = MOD * (t\
@@ -218,46 +207,43 @@ data:
     \ {\n    i32 x;\n    is >> x;\n    rhs = montgomery_modint30(x);\n    return is;\n\
     \  }\n  friend std::ostream &operator<<(std::ostream &os, const montgomery_modint30\
     \ &rhs) {\n    return os << rhs.val();\n  }\n};\n\ntemplate <std::uint32_t ModT>\n\
-    using mm30 = montgomery_modint30<ModT>;\n\nLIB_END\n\n\n#line 5 \"remote_test/yosupo/math/convolution_mod.3.test.cpp\"\
-    \n\n#line 8 \"remote_test/yosupo/math/convolution_mod.3.test.cpp\"\n#include <iterator>\n\
-    #line 10 \"remote_test/yosupo/math/convolution_mod.3.test.cpp\"\n\nint main()\
-    \ {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\"\
-    , \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n\
-    \  int n, m;\n  std::cin >> n >> m;\n  using mint = lib::mm30<998244353>;\n  std::vector<mint>\
-    \ a, b;\n  std::copy_n(std::istream_iterator<mint>(std::cin), n, std::back_inserter(a));\n\
-    \  std::copy_n(std::istream_iterator<mint>(std::cin), m, std::back_inserter(b));\n\
-    \  auto rc = lib::make_relaxed_convolution<mint>(\n      [&a](int n) { return\
-    \ n < static_cast<int>(a.size()) ? a[n] : mint(); },\n      [&b](int n) { return\
-    \ n < static_cast<int>(b.size()) ? b[n] : mint(); });\n  for (int i = 0; i !=\
-    \ n + m - 1; ++i) std::cout << rc[i] << ' ';\n  return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod\"\n\n#include\
-    \ \"math/relaxed_convolution.hpp\"\n#include \"modint/montgomery_modint.hpp\"\n\
-    \n#include <algorithm>\n#include <iostream>\n#include <iterator>\n#include <vector>\n\
-    \nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
-    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n\
-    \  int n, m;\n  std::cin >> n >> m;\n  using mint = lib::mm30<998244353>;\n  std::vector<mint>\
-    \ a, b;\n  std::copy_n(std::istream_iterator<mint>(std::cin), n, std::back_inserter(a));\n\
-    \  std::copy_n(std::istream_iterator<mint>(std::cin), m, std::back_inserter(b));\n\
-    \  auto rc = lib::make_relaxed_convolution<mint>(\n      [&a](int n) { return\
-    \ n < static_cast<int>(a.size()) ? a[n] : mint(); },\n      [&b](int n) { return\
-    \ n < static_cast<int>(b.size()) ? b[n] : mint(); });\n  for (int i = 0; i !=\
-    \ n + m - 1; ++i) std::cout << rc[i] << ' ';\n  return 0;\n}\n"
+    using mm30 = montgomery_modint30<ModT>;\n\nLIB_END\n\n\n#line 5 \"remote_test/yosupo/math/subset_convolution.0.test.cpp\"\
+    \n\n#line 7 \"remote_test/yosupo/math/subset_convolution.0.test.cpp\"\n#include\
+    \ <iterator>\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin),\
+    \ std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
+    \  std::cin.tie(nullptr);\n  using mint = lib::mm30<998244353>;\n  int n;\n  std::cin\
+    \ >> n;\n  std::vector<mint> x, y;\n  std::copy_n(std::istream_iterator<mint>(std::cin),\
+    \ 1 << n, std::back_inserter(x));\n  std::copy_n(std::istream_iterator<mint>(std::cin),\
+    \ 1 << n, std::back_inserter(y));\n  auto xy = lib::set_power_series::subset_convolution(x,\
+    \ y);\n  std::copy_n(xy, 1 << n, std::ostream_iterator<mint>(std::cout));\n  return\
+    \ 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/subset_convolution\"\n\n\
+    #include \"math/set_power_series.hpp\"\n#include \"modint/montgomery_modint.hpp\"\
+    \n\n#include <iostream>\n#include <iterator>\n\nint main() {\n#ifdef LOCAL\n \
+    \ std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n\
+    #endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n  using\
+    \ mint = lib::mm30<998244353>;\n  int n;\n  std::cin >> n;\n  std::vector<mint>\
+    \ x, y;\n  std::copy_n(std::istream_iterator<mint>(std::cin), 1 << n, std::back_inserter(x));\n\
+    \  std::copy_n(std::istream_iterator<mint>(std::cin), 1 << n, std::back_inserter(y));\n\
+    \  auto xy = lib::set_power_series::subset_convolution(x, y);\n  std::copy_n(xy,\
+    \ 1 << n, std::ostream_iterator<mint>(std::cout));\n  return 0;\n}\n"
   dependsOn:
-  - math/relaxed_convolution.hpp
+  - math/set_power_series.hpp
   - common.hpp
   - math/radix2_ntt.hpp
+  - math/zeta_transform.hpp
   - modint/montgomery_modint.hpp
   - common.hpp
   isVerificationFile: true
-  path: remote_test/yosupo/math/convolution_mod.3.test.cpp
+  path: remote_test/yosupo/math/subset_convolution.0.test.cpp
   requiredBy: []
-  timestamp: '2023-12-17 11:51:45+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-02-28 21:27:40+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: remote_test/yosupo/math/convolution_mod.3.test.cpp
+documentation_of: remote_test/yosupo/math/subset_convolution.0.test.cpp
 layout: document
 redirect_from:
-- /verify/remote_test/yosupo/math/convolution_mod.3.test.cpp
-- /verify/remote_test/yosupo/math/convolution_mod.3.test.cpp.html
-title: remote_test/yosupo/math/convolution_mod.3.test.cpp
+- /verify/remote_test/yosupo/math/subset_convolution.0.test.cpp
+- /verify/remote_test/yosupo/math/subset_convolution.0.test.cpp.html
+title: remote_test/yosupo/math/subset_convolution.0.test.cpp
 ---

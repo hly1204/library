@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
   - icon: ':heavy_check_mark:'
@@ -185,8 +185,8 @@ data:
   timestamp: '2023-12-17 11:51:45+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/primality_test.0.test.cpp
   - remote_test/yosupo/math/factorize.0.test.cpp
+  - remote_test/yosupo/math/primality_test.0.test.cpp
 documentation_of: math/integer_factorization.hpp
 layout: document
 title: Integer Factorization (Pollard's rho algorithm) (in $\mathbb{Z}$)

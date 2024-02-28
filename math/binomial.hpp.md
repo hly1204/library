@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
   _extendedRequiredBy:
@@ -66,14 +66,14 @@ data:
   isVerificationFile: false
   path: math/binomial.hpp
   requiredBy:
-  - math/stirling_numbers.hpp
   - math/taylor_shift.hpp
+  - math/stirling_numbers.hpp
   timestamp: '2022-05-05 22:58:57+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
   - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
-  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
 documentation_of: math/binomial.hpp
 layout: document
 title: Binomial Coefficient (in $\mathbb{F} _ p$)
