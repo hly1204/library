@@ -57,7 +57,7 @@ struct set_power_series {
 
     for (int i = 0; i != rank; ++i)
       for (int j = i; j >= 0; --j)
-        for (int k = 0; k != n; ++k) rxy[map[i]][k] += rx[i][k] * ry[i - j][k];
+        for (int k = 0; k != n; ++k) rxy[map[i]][k] += rx[j][k] * ry[i - j][k];
 
     for (auto &&i : rxy) moebius_transform(i);
     std::vector<ModIntT> res(n);
