@@ -1,23 +1,23 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/zeta_transform.hpp
     title: Zeta Transform
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/subset_convolution.0.test.cpp
     title: remote_test/yosupo/math/subset_convolution.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://codeforces.com/blog/entry/126418
@@ -137,7 +137,7 @@ data:
     \    for (auto &&i : rx) zeta_transform(i);\n    for (auto &&i : ry) zeta_transform(i);\n\
     \n    std::vector<std::vector<ModIntT>> rxy(rank / 2 + 1, std::vector<ModIntT>(x.size()));\n\
     \n    for (int i = 0; i != rank; ++i)\n      for (int j = i; j >= 0; --j)\n  \
-    \      for (int k = 0; k != n; ++k) rxy[map[i]][k] += rx[i][k] * ry[i - j][k];\n\
+    \      for (int k = 0; k != n; ++k) rxy[map[i]][k] += rx[j][k] * ry[i - j][k];\n\
     \n    for (auto &&i : rxy) moebius_transform(i);\n    std::vector<ModIntT> res(n);\n\
     \    for (int i = 0; i != n; ++i) res[i] = rxy[map[popcount(static_cast<unsigned>(i))]][i];\n\
     \    return res;\n  }\n};\n\nLIB_END\n\n\n"
@@ -165,7 +165,7 @@ data:
     \    for (auto &&i : rx) zeta_transform(i);\n    for (auto &&i : ry) zeta_transform(i);\n\
     \n    std::vector<std::vector<ModIntT>> rxy(rank / 2 + 1, std::vector<ModIntT>(x.size()));\n\
     \n    for (int i = 0; i != rank; ++i)\n      for (int j = i; j >= 0; --j)\n  \
-    \      for (int k = 0; k != n; ++k) rxy[map[i]][k] += rx[i][k] * ry[i - j][k];\n\
+    \      for (int k = 0; k != n; ++k) rxy[map[i]][k] += rx[j][k] * ry[i - j][k];\n\
     \n    for (auto &&i : rxy) moebius_transform(i);\n    std::vector<ModIntT> res(n);\n\
     \    for (int i = 0; i != n; ++i) res[i] = rxy[map[popcount(static_cast<unsigned>(i))]][i];\n\
     \    return res;\n  }\n};\n\nLIB_END\n\n#endif\n"
@@ -176,8 +176,8 @@ data:
   isVerificationFile: false
   path: math/set_power_series.hpp
   requiredBy: []
-  timestamp: '2024-02-28 21:27:40+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2024-02-28 21:37:45+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/yosupo/math/subset_convolution.0.test.cpp
 documentation_of: math/set_power_series.hpp

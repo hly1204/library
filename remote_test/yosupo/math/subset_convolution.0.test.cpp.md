@@ -1,29 +1,29 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/set_power_series.hpp
     title: Set Power Series
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/zeta_transform.hpp
     title: Zeta Transform
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/montgomery_modint.hpp
     title: Montgomery ModInt
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/subset_convolution
@@ -146,7 +146,7 @@ data:
     \    for (auto &&i : rx) zeta_transform(i);\n    for (auto &&i : ry) zeta_transform(i);\n\
     \n    std::vector<std::vector<ModIntT>> rxy(rank / 2 + 1, std::vector<ModIntT>(x.size()));\n\
     \n    for (int i = 0; i != rank; ++i)\n      for (int j = i; j >= 0; --j)\n  \
-    \      for (int k = 0; k != n; ++k) rxy[map[i]][k] += rx[i][k] * ry[i - j][k];\n\
+    \      for (int k = 0; k != n; ++k) rxy[map[i]][k] += rx[j][k] * ry[i - j][k];\n\
     \n    for (auto &&i : rxy) moebius_transform(i);\n    std::vector<ModIntT> res(n);\n\
     \    for (int i = 0; i != n; ++i) res[i] = rxy[map[popcount(static_cast<unsigned>(i))]][i];\n\
     \    return res;\n  }\n};\n\nLIB_END\n\n\n#line 1 \"modint/montgomery_modint.hpp\"\
@@ -237,8 +237,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/subset_convolution.0.test.cpp
   requiredBy: []
-  timestamp: '2024-02-28 21:32:38+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-02-28 21:37:45+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/subset_convolution.0.test.cpp
 layout: document

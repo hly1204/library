@@ -72,7 +72,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/polynomial.hpp
     title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
@@ -86,7 +86,7 @@ data:
     path: math/semi_relaxed_convolution.hpp
     title: Semi-Relaxed Convolution (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT
       prime $p$)
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/set_power_series.hpp
     title: Set Power Series
   - icon: ':warning:'
@@ -113,13 +113,13 @@ data:
     path: math/truncated_fourier_transform.hpp
     title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for
       FFT prime $p$)
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: math/zeta_transform.hpp
     title: Zeta Transform
   - icon: ':heavy_check_mark:'
     path: modint/long_montgomery_modint.hpp
     title: Long Montgomery ModInt
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint/montgomery_modint.hpp
     title: Montgomery ModInt
   - icon: ':heavy_check_mark:'
@@ -345,10 +345,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
     title: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/subset_convolution.0.test.cpp
     title: remote_test/yosupo/math/subset_convolution.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/subset_convolution.0.test.cpp
     title: remote_test/yosupo/math/subset_convolution.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -360,9 +360,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yuki/math/187.0.test.cpp
     title: remote_test/yuki/math/187.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: '#line 1 "common.hpp"
@@ -445,7 +445,7 @@ data:
   - modint/runtime_long_montgomery_modint.hpp
   - modint/runtime_montgomery_modint.hpp
   timestamp: '2022-04-20 11:49:11+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - remote_test/aizu/number_theory/extended_euclidean_algorithm.0.test.cpp
   - remote_test/aizu/number_theory/binary_pow.0.test.cpp
