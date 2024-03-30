@@ -38,16 +38,17 @@ tfps<ModIntT> composition(const tfps<ModIntT> &f, const tfps<ModIntT> &g, int n)
         std::copy_n(Q.begin() + i * (n + 1), n + 1, dftQ.begin() + i * ((n + 1) << 1));
       dft(dftQ);
       // apply dft trick from Bostan&Mori's paper
-      for (int i = 0, j = 0; j != len; j += 2) VV[i++] = dftQ[j] * dftQ[j + 1];
+      for (int i = 0; i != len; i += 2) VV[i >> 1] = dftQ[i] * dftQ[i + 1];
       idft(VV);
       for (int i = 0; i <= d << 1; ++i)
         for (int j = 0; j <= n >> 1; ++j) V[i * ((n >> 1) + 1) + j] = VV[i * (n + 1) + j];
       const auto TT = run(V, d << 1, n >> 1);
+      VV.assign(len >> 1, ModIntT());
       for (int i = 0; i != d << 1; ++i)
-        for (int j = 0; j <= n >> 1; ++j)
-          T[i * ((n + 1) << 1) + (j << 1)] = TT[i * ((n >> 1) + 1) + j];
-      dft(T);
-      for (int i = 0; i != len; ++i) T[i] *= dftQ[i ^ 1];
+        for (int j = 0; j <= n >> 1; ++j) VV[i * (n + 1) + j] = TT[i * ((n >> 1) + 1) + j];
+      dft(VV);
+      // apply dft trick from Bostan&Mori's paper
+      for (int i = 0; i != len; ++i) T[i] = VV[i >> 1] * dftQ[i ^ 1];
       idft(T);
       // [y^(-d+1..0)]T => [y^(d..2d-1)]T
       for (int i = 0; i != d; ++i)
