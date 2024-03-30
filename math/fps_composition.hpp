@@ -21,7 +21,7 @@ tfps<ModIntT> composition(const tfps<ModIntT> &f, const tfps<ModIntT> &g, int n)
   const auto c = g.front();
   struct composition_rec {
     composition_rec(tfps<ModIntT> &&P) : P_(std::move(P)) {}
-    tfps<ModIntT> run(tfps<ModIntT> Q, int d, int n) {
+    tfps<ModIntT> run(const tfps<ModIntT> &Q, int d, int n) {
       // [0,n] => [y^0]Q, [n+1,2n+1] => [y^1]Q, ...
       assert(static_cast<int>(Q.size()) == (d + 1) * (n + 1));
       if (n == 0) {
