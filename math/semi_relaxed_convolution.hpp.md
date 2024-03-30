@@ -9,6 +9,10 @@ data:
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: math/fps_composition.hpp
+    title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
+      \rbrack$ for FFT prime $p$)
+  - icon: ':heavy_check_mark:'
     path: math/polynomial.hpp
     title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
@@ -16,6 +20,9 @@ data:
     title: Truncated Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+    title: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.1.test.cpp
     title: remote_test/yosupo/math/convolution_mod.1.test.cpp
@@ -232,24 +239,26 @@ data:
   isVerificationFile: false
   path: math/semi_relaxed_convolution.hpp
   requiredBy:
-  - math/polynomial.hpp
+  - math/fps_composition.hpp
   - math/truncated_formal_power_series.hpp
+  - math/polynomial.hpp
   timestamp: '2023-12-17 11:51:45+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - remote_test/yosupo/math/convolution_mod.1.test.cpp
+  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
+  - remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+  - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
-  - remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
-  - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
   - remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
   - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
+  - remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
   - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
-  - remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
-  - remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
-  - remote_test/yosupo/math/convolution_mod.1.test.cpp
+  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   - remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
-  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
+  - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
 documentation_of: math/semi_relaxed_convolution.hpp
 layout: document
 title: Semi-Relaxed Convolution (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime

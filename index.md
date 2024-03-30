@@ -55,6 +55,10 @@ data:
       title: Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
         for FFT prime $p$)
     - icon: ':heavy_check_mark:'
+      path: math/fps_composition.hpp
+      title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z
+        \rbrack \rbrack$ for FFT prime $p$)
+    - icon: ':heavy_check_mark:'
       path: math/integer_factorization.hpp
       title: Integer Factorization (Pollard's rho algorithm) (in $\mathbb{Z}$)
     - icon: ':heavy_check_mark:'
@@ -174,6 +178,9 @@ data:
       title: remote_test/yosupo/datastructure/union_find.0.test.cpp
   - name: remote_test/yosupo/math
     pages:
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+      title: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/convolution_mod.0.test.cpp
       title: remote_test/yosupo/math/convolution_mod.0.test.cpp

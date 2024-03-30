@@ -5,8 +5,18 @@ data:
     path: common.hpp
     title: common.hpp
   - icon: ':heavy_check_mark:'
+    path: common.hpp
+    title: common.hpp
+  - icon: ':heavy_check_mark:'
+    path: math/binomial.hpp
+    title: Binomial Coefficient (in $\mathbb{F} _ p$)
+  - icon: ':heavy_check_mark:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
+  - icon: ':heavy_check_mark:'
+    path: math/fps_composition.hpp
+    title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
+      \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
@@ -21,6 +31,9 @@ data:
     path: math/sqrt_mod.hpp
     title: Square Roots (in $\mathbb{F} _ p$)
   - icon: ':heavy_check_mark:'
+    path: math/taylor_shift.hpp
+    title: Polynomial Taylor Shift (in $\mathbb{F} _ p$ for FFT prime $p$)
+  - icon: ':heavy_check_mark:'
     path: math/truncated_formal_power_series.hpp
     title: Truncated Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
@@ -28,41 +41,53 @@ data:
     path: math/truncated_fourier_transform.hpp
     title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for
       FFT prime $p$)
+  - icon: ':heavy_check_mark:'
+    path: modint/montgomery_modint.hpp
+    title: Montgomery ModInt
   _extendedRequiredBy: []
-  _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
-    title: remote_test/yosupo/math/division_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
-    title: remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-    title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-    title: remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-    title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
-    title: remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
-    title: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
-  _pathExtension: hpp
+  _pathExtension: cpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    links: []
-  bundledCode: "#line 1 \"math/polynomial.hpp\"\n\n\n\n#line 1 \"common.hpp\"\n\n\n\
-    \n#define LIB_DEBUG\n\n#define LIB_BEGIN namespace lib {\n#define LIB_END }\n\
-    #define LIB ::lib::\n\n\n#line 1 \"math/truncated_formal_power_series.hpp\"\n\n\
-    \n\n#line 1 \"math/extended_gcd.hpp\"\n\n\n\n#line 5 \"math/extended_gcd.hpp\"\
-    \n\n#include <tuple>\n#include <utility>\n#include <vector>\n\nLIB_BEGIN\n\n//\
-    \ Input:  integer `a` and `b`.\n// Output: (x, y, z) such that `a`x + `b`y = z\
-    \ = gcd(`a`, `b`).\n[[deprecated]] std::tuple<long long, long long, long long>\
+    '*NOT_SPECIAL_COMMENTS*': ''
+    PROBLEM: https://judge.yosupo.jp/problem/composition_of_formal_power_series_large
+    links:
+    - https://judge.yosupo.jp/problem/composition_of_formal_power_series_large
+  bundledCode: "#line 1 \"remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/composition_of_formal_power_series_large\"\
+    \n\n#line 1 \"math/fps_composition.hpp\"\n\n\n\n#line 1 \"common.hpp\"\n\n\n\n\
+    #define LIB_DEBUG\n\n#define LIB_BEGIN namespace lib {\n#define LIB_END }\n#define\
+    \ LIB ::lib::\n\n\n#line 1 \"math/taylor_shift.hpp\"\n\n\n\n#line 1 \"math/binomial.hpp\"\
+    \n\n\n\n#line 5 \"math/binomial.hpp\"\n\n#include <vector>\n\nLIB_BEGIN\n\n//\
+    \ helper class for precomputation of factorials and multiplicative inverse of\
+    \ them.\ntemplate <typename ModIntT>\nclass binomial {\n  mutable std::vector<ModIntT>\
+    \ factorial_{ModIntT(1)}, invfactorial_{ModIntT(1)};\n\npublic:\n  explicit binomial(int\
+    \ n) { preprocess(n); }\n  binomial() {}\n  void preprocess(int n) const {\n \
+    \   if (int nn = static_cast<int>(factorial_.size()); nn <= n) {\n      int k\
+    \ = nn;\n      while (k <= n) k <<= 1;\n      factorial_.resize(k);\n      invfactorial_.resize(k);\n\
+    \      for (int i = nn; i != k; ++i) factorial_[i] = factorial_[i - 1] * i;\n\
+    \      invfactorial_.back() = factorial_.back().inv();\n      for (int i = k -\
+    \ 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n    }\n\
+    \  }\n  // binomial coefficient `n`C`m`\n  ModIntT binom(int n, int m) const {\n\
+    \    return n < m ? ModIntT()\n                 : (preprocess(n), factorial_[n]\
+    \ * invfactorial_[m] * invfactorial_[n - m]);\n  }\n  ModIntT inv(int n) const\
+    \ { return preprocess(n), factorial_[n - 1] * invfactorial_[n]; }\n  ModIntT factorial(int\
+    \ n) const { return preprocess(n), factorial_[n]; }\n  ModIntT inv_factorial(int\
+    \ n) const { return preprocess(n), invfactorial_[n]; }\n};\n\nLIB_END\n\n\n#line\
+    \ 6 \"math/taylor_shift.hpp\"\n\n#include <algorithm>\n\nLIB_BEGIN\n\ntemplate\
+    \ <typename PolyT>\nPolyT taylor_shift(const PolyT &a, typename PolyT::value_type\
+    \ c) {\n  using T     = typename PolyT::value_type;\n  const int n = static_cast<int>(a.size());\n\
+    \  binomial<T> b(n);\n  PolyT rev_a_cpy(n), pc(n);\n  for (int i = 0; i != n;\
+    \ ++i) rev_a_cpy[n - 1 - i] = a[i] * b.factorial(i);\n  T cc(1);\n  for (int i\
+    \ = 0; i != n; ++i) pc[i] = cc * b.inv_factorial(i), cc *= c;\n  (rev_a_cpy *=\
+    \ pc).resize(n);\n  std::reverse(rev_a_cpy.begin(), rev_a_cpy.end());\n  for (int\
+    \ i = 0; i != n; ++i) rev_a_cpy[i] *= b.inv_factorial(i);\n  return rev_a_cpy;\n\
+    }\n\nLIB_END\n\n\n#line 1 \"math/truncated_formal_power_series.hpp\"\n\n\n\n#line\
+    \ 1 \"math/extended_gcd.hpp\"\n\n\n\n#line 5 \"math/extended_gcd.hpp\"\n\n#include\
+    \ <tuple>\n#include <utility>\n#line 9 \"math/extended_gcd.hpp\"\n\nLIB_BEGIN\n\
+    \n// Input:  integer `a` and `b`.\n// Output: (x, y, z) such that `a`x + `b`y\
+    \ = z = gcd(`a`, `b`).\n[[deprecated]] std::tuple<long long, long long, long long>\
     \ ext_gcd(long long a, long long b) {\n  long long x11 = 1, x12 = 0, x21 = 0,\
     \ x22 = 1;\n  while (b != 0) {\n    long long q = a / b, x11_cpy = x11, x12_cpy\
     \ = x12, a_cpy = a;\n    x11 = x21, x21 = x11_cpy - q * x21;\n    x12 = x22, x22\
@@ -82,9 +107,9 @@ data:
     \      v = v.inv();\n      for (int i = nn - 1; i >= n; --i) ivs[i] *= v, v *=\
     \ ModIntT(i);\n    }\n    return ivs[k];\n  }\n};\n\n} // namespace detail\n\n\
     LIB_END\n\n\n#line 1 \"math/semi_relaxed_convolution.hpp\"\n\n\n\n#line 1 \"math/radix2_ntt.hpp\"\
-    \n\n\n\n#line 5 \"math/radix2_ntt.hpp\"\n\n#include <algorithm>\n#include <array>\n\
-    #include <cassert>\n#include <type_traits>\n#line 11 \"math/radix2_ntt.hpp\"\n\
-    \nLIB_BEGIN\n\nnamespace detail {\n\ntemplate <typename IntT>\nconstexpr std::enable_if_t<std::is_integral_v<IntT>,\
+    \n\n\n\n#line 5 \"math/radix2_ntt.hpp\"\n\n#line 7 \"math/radix2_ntt.hpp\"\n#include\
+    \ <array>\n#include <cassert>\n#include <type_traits>\n#line 11 \"math/radix2_ntt.hpp\"\
+    \n\nLIB_BEGIN\n\nnamespace detail {\n\ntemplate <typename IntT>\nconstexpr std::enable_if_t<std::is_integral_v<IntT>,\
     \ int> bsf(IntT v) {\n  if (static_cast<std::make_signed_t<IntT>>(v) <= 0) return\
     \ -1;\n  int res = 0;\n  for (; (v & 1) == 0; ++res) v >>= 1;\n  return res;\n\
     }\n\ntemplate <typename ModIntT>\nconstexpr ModIntT quadratic_nonresidue_prime()\
@@ -381,84 +406,112 @@ data:
     \  if (o & 1) return {};\n  auto res = sqrt_mod_prime(this->operator[](o));\n\
     \  if (res.empty()) return {};\n  return sqrt_hint(n, res.front());\n}\n\ntemplate\
     \ <typename ModIntT>\nusing tfps = truncated_formal_power_series<ModIntT>;\n\n\
-    LIB_END\n\n\n#line 6 \"math/polynomial.hpp\"\n\n#line 12 \"math/polynomial.hpp\"\
-    \n\nLIB_BEGIN\n\ntemplate <typename ModIntT>\nclass polynomial : public truncated_formal_power_series<ModIntT>\
-    \ {\n  using MyBase = truncated_formal_power_series<ModIntT>;\n  static_assert(std::is_same_v<typename\
-    \ MyBase::value_type, ModIntT>);\n\npublic:\n  using truncated_formal_power_series<ModIntT>::truncated_formal_power_series;\n\
-    \n  polynomial(const MyBase &rhs) : MyBase(rhs) {}\n  ModIntT operator()(ModIntT\
-    \ c) const {\n    ModIntT res;\n    for (int i = this->deg(); i >= 0; --i) res\
-    \ = res * c + this->operator[](i);\n    return res;\n  }\n  polynomial operator-()\
-    \ { return MyBase::operator-(); }\n  polynomial &operator+=(const polynomial &rhs)\
-    \ {\n    MyBase::operator+=(rhs);\n    this->shrink();\n    return *this;\n  }\n\
-    \  polynomial &operator-=(const polynomial &rhs) {\n    MyBase::operator-=(rhs);\n\
-    \    this->shrink();\n    return *this;\n  }\n  polynomial &operator*=(const polynomial\
-    \ &rhs) {\n    MyBase::operator*=(rhs);\n    this->shrink();\n    return *this;\n\
-    \  }\n  polynomial &operator/=(const polynomial &rhs) {\n    const int n = this->deg(),\
-    \ m = rhs.deg();\n    assert(m != MyBase::NEGATIVE_INFINITY);\n    if (n < m)\
-    \ {\n      this->clear();\n      return *this;\n    }\n    auto irev_rhs = polynomial(rhs.crbegin()\
-    \ + (rhs.size() - m - 1), rhs.crend()).inv(n - m + 1);\n    auto lhsirhs  = *this\
-    \ * polynomial(irev_rhs.crbegin(), irev_rhs.crend());\n    this->resize(n - m\
-    \ + 1);\n    std::copy(lhsirhs.cbegin() + n, lhsirhs.cend(), this->begin());\n\
-    \    return *this;\n  }\n  polynomial &operator%=(const polynomial &rhs) {\n \
-    \   return this->operator=(div_with_rem(rhs).second);\n  }\n  std::pair<polynomial,\
-    \ polynomial> div_with_rem(const polynomial &rhs) const {\n    const int n = this->deg(),\
-    \ m = rhs.deg();\n    if (n < m) return std::make_pair(polynomial(), *this);\n\
-    \    auto q    = *this / rhs;\n    auto qrhs = q * rhs;\n    polynomial r(m);\n\
-    \    for (int i = 0; i != m; ++i) r[i] = this->operator[](i) - qrhs[i];\n    r.shrink();\n\
-    \    return std::make_pair(q, r);\n  }\n\n  friend polynomial operator+(const\
-    \ polynomial &lhs, const polynomial &rhs) {\n    return polynomial(lhs) += rhs;\n\
-    \  }\n  friend polynomial operator-(const polynomial &lhs, const polynomial &rhs)\
-    \ {\n    return polynomial(lhs) -= rhs;\n  }\n  friend polynomial operator*(const\
-    \ polynomial &lhs, const polynomial &rhs) {\n    return polynomial(lhs) *= rhs;\n\
-    \  }\n  friend polynomial operator/(const polynomial &lhs, const polynomial &rhs)\
-    \ {\n    return polynomial(lhs) /= rhs;\n  }\n  friend polynomial operator%(const\
-    \ polynomial &lhs, const polynomial &rhs) {\n    return polynomial(lhs) %= rhs;\n\
-    \  }\n  friend std::istream &operator>>(std::istream &lhs, polynomial &rhs) {\n\
-    \    for (auto &&i : rhs) lhs >> i;\n    return lhs;\n  }\n  friend std::ostream\
-    \ &operator<<(std::ostream &lhs, const polynomial &rhs) {\n    return lhs << static_cast<MyBase>(rhs);\n\
-    \  }\n};\n\ntemplate <typename IterT>\npolynomial(IterT, IterT) -> polynomial<typename\
-    \ std::iterator_traits<IterT>::value_type>;\n\nLIB_END\n\n\n"
-  code: "#ifndef POLYNOMIAL_HPP\n#define POLYNOMIAL_HPP\n\n#include \"../common.hpp\"\
-    \n#include \"truncated_formal_power_series.hpp\"\n\n#include <cassert>\n#include\
-    \ <iostream>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\n\
-    LIB_BEGIN\n\ntemplate <typename ModIntT>\nclass polynomial : public truncated_formal_power_series<ModIntT>\
-    \ {\n  using MyBase = truncated_formal_power_series<ModIntT>;\n  static_assert(std::is_same_v<typename\
-    \ MyBase::value_type, ModIntT>);\n\npublic:\n  using truncated_formal_power_series<ModIntT>::truncated_formal_power_series;\n\
-    \n  polynomial(const MyBase &rhs) : MyBase(rhs) {}\n  ModIntT operator()(ModIntT\
-    \ c) const {\n    ModIntT res;\n    for (int i = this->deg(); i >= 0; --i) res\
-    \ = res * c + this->operator[](i);\n    return res;\n  }\n  polynomial operator-()\
-    \ { return MyBase::operator-(); }\n  polynomial &operator+=(const polynomial &rhs)\
-    \ {\n    MyBase::operator+=(rhs);\n    this->shrink();\n    return *this;\n  }\n\
-    \  polynomial &operator-=(const polynomial &rhs) {\n    MyBase::operator-=(rhs);\n\
-    \    this->shrink();\n    return *this;\n  }\n  polynomial &operator*=(const polynomial\
-    \ &rhs) {\n    MyBase::operator*=(rhs);\n    this->shrink();\n    return *this;\n\
-    \  }\n  polynomial &operator/=(const polynomial &rhs) {\n    const int n = this->deg(),\
-    \ m = rhs.deg();\n    assert(m != MyBase::NEGATIVE_INFINITY);\n    if (n < m)\
-    \ {\n      this->clear();\n      return *this;\n    }\n    auto irev_rhs = polynomial(rhs.crbegin()\
-    \ + (rhs.size() - m - 1), rhs.crend()).inv(n - m + 1);\n    auto lhsirhs  = *this\
-    \ * polynomial(irev_rhs.crbegin(), irev_rhs.crend());\n    this->resize(n - m\
-    \ + 1);\n    std::copy(lhsirhs.cbegin() + n, lhsirhs.cend(), this->begin());\n\
-    \    return *this;\n  }\n  polynomial &operator%=(const polynomial &rhs) {\n \
-    \   return this->operator=(div_with_rem(rhs).second);\n  }\n  std::pair<polynomial,\
-    \ polynomial> div_with_rem(const polynomial &rhs) const {\n    const int n = this->deg(),\
-    \ m = rhs.deg();\n    if (n < m) return std::make_pair(polynomial(), *this);\n\
-    \    auto q    = *this / rhs;\n    auto qrhs = q * rhs;\n    polynomial r(m);\n\
-    \    for (int i = 0; i != m; ++i) r[i] = this->operator[](i) - qrhs[i];\n    r.shrink();\n\
-    \    return std::make_pair(q, r);\n  }\n\n  friend polynomial operator+(const\
-    \ polynomial &lhs, const polynomial &rhs) {\n    return polynomial(lhs) += rhs;\n\
-    \  }\n  friend polynomial operator-(const polynomial &lhs, const polynomial &rhs)\
-    \ {\n    return polynomial(lhs) -= rhs;\n  }\n  friend polynomial operator*(const\
-    \ polynomial &lhs, const polynomial &rhs) {\n    return polynomial(lhs) *= rhs;\n\
-    \  }\n  friend polynomial operator/(const polynomial &lhs, const polynomial &rhs)\
-    \ {\n    return polynomial(lhs) /= rhs;\n  }\n  friend polynomial operator%(const\
-    \ polynomial &lhs, const polynomial &rhs) {\n    return polynomial(lhs) %= rhs;\n\
-    \  }\n  friend std::istream &operator>>(std::istream &lhs, polynomial &rhs) {\n\
-    \    for (auto &&i : rhs) lhs >> i;\n    return lhs;\n  }\n  friend std::ostream\
-    \ &operator<<(std::ostream &lhs, const polynomial &rhs) {\n    return lhs << static_cast<MyBase>(rhs);\n\
-    \  }\n};\n\ntemplate <typename IterT>\npolynomial(IterT, IterT) -> polynomial<typename\
-    \ std::iterator_traits<IterT>::value_type>;\n\nLIB_END\n\n#endif"
+    LIB_END\n\n\n#line 7 \"math/fps_composition.hpp\"\n\n#line 11 \"math/fps_composition.hpp\"\
+    \n\nLIB_BEGIN\n\n// returns f(g) mod x^n\n// reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
+    // for detailed definition of this code check pseudo code written by me:\n// https://codeforces.com/blog/entry/127674\n\
+    template <typename ModIntT>\ntfps<ModIntT> composition(const tfps<ModIntT> &f,\
+    \ const tfps<ModIntT> &g, int n) {\n  if (g.empty() || n <= 0) return {};\n  const\
+    \ auto c = g.front();\n  struct composition_rec {\n    composition_rec(tfps<ModIntT>\
+    \ &&P) : P_(std::move(P)) {}\n    tfps<ModIntT> run(tfps<ModIntT> Q, int d, int\
+    \ n) {\n      // [0,n] => [y^0]Q, [n+1,2n+1] => [y^1]Q, ...\n      assert(static_cast<int>(Q.size())\
+    \ == (d + 1) * (n + 1));\n      if (n == 0) {\n        tfps<ModIntT> res(d);\n\
+    \        std::copy_n(P_.cbegin(), std::min(P_.size(), res.size()), res.rbegin());\n\
+    \        return res;\n      }\n      // let y=x^(2n+2) => [0,2n+2) = [y^0]Q, ...\n\
+    \      // y^0[0,2n+2), y^1[2n+2,4n+4), ..., y^(2d)[2d(2n+2),(2d+1)(2n+2)-1)\n\
+    \      const int len = ntt_len((d << 1 | 1) * ((n + 1) << 1) - 1);\n      tfps<ModIntT>\
+    \ dftQ(len), VV(len >> 1), V((d << 1 | 1) * ((n >> 1) + 1)), T(len),\n       \
+    \   U(d * (n + 1));\n      for (int i = 0; i <= d; ++i)\n        std::copy_n(Q.begin()\
+    \ + i * (n + 1), n + 1, dftQ.begin() + i * ((n + 1) << 1));\n      dft(dftQ);\n\
+    \      // apply dft trick from Bostan&Mori's paper\n      for (int i = 0, j =\
+    \ 0; j != len; j += 2) VV[i++] = dftQ[j] * dftQ[j + 1];\n      idft(VV);\n   \
+    \   for (int i = 0; i <= d << 1; ++i)\n        for (int j = 0; j <= n >> 1; ++j)\
+    \ V[i * ((n >> 1) + 1) + j] = VV[i * (n + 1) + j];\n      const auto TT = run(V,\
+    \ d << 1, n >> 1);\n      for (int i = 0; i != d << 1; ++i)\n        for (int\
+    \ j = 0; j <= n >> 1; ++j)\n          T[i * ((n + 1) << 1) + (j << 1)] = TT[i\
+    \ * ((n >> 1) + 1) + j];\n      dft(T);\n      for (int i = 0; i != len; ++i)\
+    \ T[i] *= dftQ[i ^ 1];\n      idft(T);\n      // [y^(-d+1..0)]T => [y^(d..2d-1)]T\n\
+    \      for (int i = 0; i != d; ++i)\n        for (int j = 0; j <= n; ++j) U[i\
+    \ * (n + 1) + j] = T[(i + d) * ((n + 1) << 1) + j];\n      return U;\n    }\n\n\
+    \  private:\n    const tfps<ModIntT> P_;\n  } a(taylor_shift(f, c));\n  tfps<ModIntT>\
+    \ Q(n << 1); // [0,n)=1, [n,2n)=-g\n  Q.front() = ModIntT(1);\n  for (int i =\
+    \ n + 1, s = static_cast<int>(g.size()); i - n < s && i != n << 1; ++i)\n    Q[i]\
+    \ = -g[i - n];\n  return a.run(Q, 1, n - 1);\n}\n\nLIB_END\n\n\n#line 1 \"modint/montgomery_modint.hpp\"\
+    \n\n\n\n#line 5 \"modint/montgomery_modint.hpp\"\n\n#ifdef LIB_DEBUG\n  #include\
+    \ <stdexcept>\n#endif\n#line 12 \"modint/montgomery_modint.hpp\"\n\nLIB_BEGIN\n\
+    \ntemplate <std::uint32_t ModT>\nclass montgomery_modint30 {\n  using i32 = std::int32_t;\n\
+    \  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\n  u32 v_{};\n\n\
+    \  static constexpr u32 get_r() {\n    u32 t = 2, iv = MOD * (t - MOD * MOD);\n\
+    \    iv *= t - MOD * iv, iv *= t - MOD * iv;\n    return iv * (MOD * iv - t);\n\
+    \  }\n  static constexpr u32 redc(u64 x) {\n    return (x + static_cast<u64>(static_cast<u32>(x)\
+    \ * R) * MOD) >> 32;\n  }\n  static constexpr u32 norm(u32 x) { return x - (MOD\
+    \ & -((MOD - 1 - x) >> 31)); }\n\n  static constexpr u32 MOD  = ModT;\n  static\
+    \ constexpr u32 MOD2 = MOD << 1;\n  static constexpr u32 R    = get_r();\n  static\
+    \ constexpr u32 R2   = -static_cast<u64>(MOD) % MOD;\n  static constexpr i32 SMOD\
+    \ = static_cast<i32>(MOD);\n\n  static_assert(MOD & 1);\n  static_assert(-R *\
+    \ MOD == 1);\n  static_assert((MOD >> 30) == 0);\n  static_assert(MOD != 1);\n\
+    \npublic:\n  static constexpr u32 mod() { return MOD; }\n  static constexpr i32\
+    \ smod() { return SMOD; }\n  constexpr montgomery_modint30() {}\n  template <typename\
+    \ IntT, std::enable_if_t<std::is_integral_v<IntT>, int> = 0>\n  constexpr montgomery_modint30(IntT\
+    \ v) : v_(redc(static_cast<u64>(v % SMOD + SMOD) * R2)) {}\n  constexpr u32 val()\
+    \ const { return norm(redc(v_)); }\n  constexpr i32 sval() const { return norm(redc(v_));\
+    \ }\n  constexpr bool is_zero() const { return v_ == 0 || v_ == MOD; }\n  template\
+    \ <typename IntT, std::enable_if_t<std::is_integral_v<IntT>, int> = 0>\n  explicit\
+    \ constexpr operator IntT() const {\n    return static_cast<IntT>(val());\n  }\n\
+    \  constexpr montgomery_modint30 operator-() const {\n    montgomery_modint30\
+    \ res;\n    res.v_ = (MOD2 & -(v_ != 0)) - v_;\n    return res;\n  }\n  constexpr\
+    \ montgomery_modint30 inv() const {\n    i32 x1 = 1, x3 = 0, a = sval(), b = SMOD;\n\
+    \    while (b != 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1\
+    \ = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;\n    }\n#ifdef LIB_DEBUG\n\
+    \    if (a != 1) throw std::runtime_error(\"modular inverse error\");\n#endif\n\
+    \    return montgomery_modint30(x1);\n  }\n  constexpr montgomery_modint30 &operator+=(const\
+    \ montgomery_modint30 &rhs) {\n    v_ += rhs.v_ - MOD2, v_ += MOD2 & -(v_ >> 31);\n\
+    \    return *this;\n  }\n  constexpr montgomery_modint30 &operator-=(const montgomery_modint30\
+    \ &rhs) {\n    v_ -= rhs.v_, v_ += MOD2 & -(v_ >> 31);\n    return *this;\n  }\n\
+    \  constexpr montgomery_modint30 &operator*=(const montgomery_modint30 &rhs) {\n\
+    \    v_ = redc(static_cast<u64>(v_) * rhs.v_);\n    return *this;\n  }\n  constexpr\
+    \ montgomery_modint30 &operator/=(const montgomery_modint30 &rhs) {\n    return\
+    \ operator*=(rhs.inv());\n  }\n  constexpr montgomery_modint30 pow(u64 e) const\
+    \ {\n    for (montgomery_modint30 res(1), x(*this);; x *= x) {\n      if (e &\
+    \ 1) res *= x;\n      if ((e >>= 1) == 0) return res;\n    }\n  }\n  constexpr\
+    \ void swap(montgomery_modint30 &rhs) {\n    auto v = v_;\n    v_ = rhs.v_, rhs.v_\
+    \ = v;\n  }\n  friend constexpr montgomery_modint30 operator+(const montgomery_modint30\
+    \ &lhs,\n                                                 const montgomery_modint30\
+    \ &rhs) {\n    return montgomery_modint30(lhs) += rhs;\n  }\n  friend constexpr\
+    \ montgomery_modint30 operator-(const montgomery_modint30 &lhs,\n            \
+    \                                     const montgomery_modint30 &rhs) {\n    return\
+    \ montgomery_modint30(lhs) -= rhs;\n  }\n  friend constexpr montgomery_modint30\
+    \ operator*(const montgomery_modint30 &lhs,\n                                \
+    \                 const montgomery_modint30 &rhs) {\n    return montgomery_modint30(lhs)\
+    \ *= rhs;\n  }\n  friend constexpr montgomery_modint30 operator/(const montgomery_modint30\
+    \ &lhs,\n                                                 const montgomery_modint30\
+    \ &rhs) {\n    return montgomery_modint30(lhs) /= rhs;\n  }\n  friend constexpr\
+    \ bool operator==(const montgomery_modint30 &lhs, const montgomery_modint30 &rhs)\
+    \ {\n    return norm(lhs.v_) == norm(rhs.v_);\n  }\n  friend constexpr bool operator!=(const\
+    \ montgomery_modint30 &lhs, const montgomery_modint30 &rhs) {\n    return norm(lhs.v_)\
+    \ != norm(rhs.v_);\n  }\n  friend std::istream &operator>>(std::istream &is, montgomery_modint30\
+    \ &rhs) {\n    i32 x;\n    is >> x;\n    rhs = montgomery_modint30(x);\n    return\
+    \ is;\n  }\n  friend std::ostream &operator<<(std::ostream &os, const montgomery_modint30\
+    \ &rhs) {\n    return os << rhs.val();\n  }\n};\n\ntemplate <std::uint32_t ModT>\n\
+    using mm30 = montgomery_modint30<ModT>;\n\nLIB_END\n\n\n#line 5 \"remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp\"\
+    \n\n#line 9 \"remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp\"\
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n\
+    \  int n;\n  std::cin >> n;\n  using mint = lib::mm30<998244353>;\n  lib::tfps<mint>\
+    \ f(n), g(n);\n  std::cin >> f >> g;\n  for (auto &&c : lib::composition(f, g,\
+    \ n)) std::cout << c << ' ';\n  return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/composition_of_formal_power_series_large\"\
+    \n\n#include \"math/fps_composition.hpp\"\n#include \"modint/montgomery_modint.hpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n#include <iterator>\n\nint main()\
+    \ {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"out\"\
+    , \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n\
+    \  int n;\n  std::cin >> n;\n  using mint = lib::mm30<998244353>;\n  lib::tfps<mint>\
+    \ f(n), g(n);\n  std::cin >> f >> g;\n  for (auto &&c : lib::composition(f, g,\
+    \ n)) std::cout << c << ' ';\n  return 0;\n}\n"
   dependsOn:
+  - math/fps_composition.hpp
   - common.hpp
+  - math/taylor_shift.hpp
+  - math/binomial.hpp
   - math/truncated_formal_power_series.hpp
   - math/extended_gcd.hpp
   - math/semi_relaxed_convolution.hpp
@@ -466,35 +519,18 @@ data:
   - math/sqrt_mod.hpp
   - math/random.hpp
   - math/truncated_fourier_transform.hpp
-  isVerificationFile: false
-  path: math/polynomial.hpp
+  - modint/montgomery_modint.hpp
+  - common.hpp
+  isVerificationFile: true
+  path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   requiredBy: []
-  timestamp: '2023-12-17 11:51:45+08:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
-  - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
-  - remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
-  - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
-  - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
-  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-documentation_of: math/polynomial.hpp
+  timestamp: '2024-03-30 19:23:50+08:00'
+  verificationStatus: TEST_ACCEPTED
+  verifiedWith: []
+documentation_of: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
 layout: document
-title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
+redirect_from:
+- /verify/remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+- /verify/remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp.html
+title: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
 ---
-
-## The Ring of Reversed Formal Laurent Series $R\left(\left( z^{-1} \right)\right)$
-
-Bernstein showed that division in $R \lbrack z \rbrack$ is division in $R\left(\left( z^{-1} \right)\right)$.
-
-**Problem**: Given polynomials $a, b \in R \lbrack z \rbrack$, find $q, r \in R \lbrack z \rbrack$ such that $a = qb + r$ and $\deg r \lt \deg b$.
-
-Recall what we do for computing such $q, r$ if both $a, b$ are positive integers. We compute $ab^{-1}$ in $\mathbb{Q}$ (which means we do the computation of $b^{-1}$ in $\mathbb{Q}$) and apply the floor function to $ab^{-1}$ to make the result in $\mathbb{Z}$.
-
-We could do this to polynomials similarly. I omit the details.
-
-## Bibliography
-
-1. V. Shoup. [A Computational Introduction to Number Theory and Algebra (Version 2)](https://www.shoup.net/ntb/).
-2. D. J. Bernstein. [Scaled remainder trees](https://cr.yp.to/papers.html#scaledmod).

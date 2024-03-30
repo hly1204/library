@@ -6,12 +6,19 @@ data:
     title: common.hpp
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: math/fps_composition.hpp
+    title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
+      \rbrack$ for FFT prime $p$)
+  - icon: ':heavy_check_mark:'
     path: math/stirling_numbers.hpp
     title: Stirling Numbers (in $\mathbb{F} _ p$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
     path: math/taylor_shift.hpp
     title: Polynomial Taylor Shift (in $\mathbb{F} _ p$ for FFT prime $p$)
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+    title: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
@@ -66,14 +73,16 @@ data:
   isVerificationFile: false
   path: math/binomial.hpp
   requiredBy:
+  - math/fps_composition.hpp
   - math/taylor_shift.hpp
   - math/stirling_numbers.hpp
   timestamp: '2022-05-05 22:58:57+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
   - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
+  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+  - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
+  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
 documentation_of: math/binomial.hpp
 layout: document
 title: Binomial Coefficient (in $\mathbb{F} _ p$)
