@@ -422,14 +422,15 @@ data:
     \ dftQ(len), VV(len >> 1), V((d << 1 | 1) * ((n >> 1) + 1)), T(len),\n       \
     \   U(d * (n + 1));\n      for (int i = 0; i <= d; ++i)\n        std::copy_n(Q.begin()\
     \ + i * (n + 1), n + 1, dftQ.begin() + i * ((n + 1) << 1));\n      dft(dftQ);\n\
-    \      // apply dft trick from Bostan&Mori's paper\n      for (int i = 0, j =\
-    \ 0; j != len; j += 2) VV[i++] = dftQ[j] * dftQ[j + 1];\n      idft(VV);\n   \
-    \   for (int i = 0; i <= d << 1; ++i)\n        for (int j = 0; j <= n >> 1; ++j)\
-    \ V[i * ((n >> 1) + 1) + j] = VV[i * (n + 1) + j];\n      const auto TT = run(V,\
-    \ d << 1, n >> 1);\n      for (int i = 0; i != d << 1; ++i)\n        for (int\
-    \ j = 0; j <= n >> 1; ++j)\n          T[i * ((n + 1) << 1) + (j << 1)] = TT[i\
-    \ * ((n >> 1) + 1) + j];\n      dft(T);\n      for (int i = 0; i != len; ++i)\
-    \ T[i] *= dftQ[i ^ 1];\n      idft(T);\n      // [y^(-d+1..0)]T => [y^(d..2d-1)]T\n\
+    \      // apply dft trick from Bostan&Mori's paper\n      for (int i = 0; i !=\
+    \ len; i += 2) VV[i >> 1] = dftQ[i] * dftQ[i + 1];\n      idft(VV);\n      for\
+    \ (int i = 0; i <= d << 1; ++i)\n        for (int j = 0; j <= n >> 1; ++j) V[i\
+    \ * ((n >> 1) + 1) + j] = VV[i * (n + 1) + j];\n      const auto TT = run(V, d\
+    \ << 1, n >> 1);\n      VV.assign(len >> 1, ModIntT());\n      for (int i = 0;\
+    \ i != d << 1; ++i)\n        for (int j = 0; j <= n >> 1; ++j) VV[i * (n + 1)\
+    \ + j] = TT[i * ((n >> 1) + 1) + j];\n      dft(VV);\n      // apply dft trick\
+    \ from Bostan&Mori's paper\n      for (int i = 0; i != len; ++i) T[i] = VV[i >>\
+    \ 1] * dftQ[i ^ 1];\n      idft(T);\n      // [y^(-d+1..0)]T => [y^(d..2d-1)]T\n\
     \      for (int i = 0; i != d; ++i)\n        for (int j = 0; j <= n; ++j) U[i\
     \ * (n + 1) + j] = T[(i + d) * ((n + 1) << 1) + j];\n      return U;\n    }\n\n\
     \  private:\n    const tfps<ModIntT> P_;\n  } a(taylor_shift(f, c));\n  tfps<ModIntT>\
@@ -524,7 +525,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   requiredBy: []
-  timestamp: '2024-03-30 19:36:00+08:00'
+  timestamp: '2024-03-30 20:02:19+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
