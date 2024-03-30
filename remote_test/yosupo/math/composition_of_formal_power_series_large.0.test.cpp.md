@@ -412,8 +412,8 @@ data:
     template <typename ModIntT>\ntfps<ModIntT> composition(const tfps<ModIntT> &f,\
     \ const tfps<ModIntT> &g, int n) {\n  if (g.empty() || n <= 0) return {};\n  const\
     \ auto c = g.front();\n  struct composition_rec {\n    composition_rec(tfps<ModIntT>\
-    \ &&P) : P_(std::move(P)) {}\n    tfps<ModIntT> run(tfps<ModIntT> Q, int d, int\
-    \ n) {\n      // [0,n] => [y^0]Q, [n+1,2n+1] => [y^1]Q, ...\n      assert(static_cast<int>(Q.size())\
+    \ &&P) : P_(std::move(P)) {}\n    tfps<ModIntT> run(const tfps<ModIntT> &Q, int\
+    \ d, int n) {\n      // [0,n] => [y^0]Q, [n+1,2n+1] => [y^1]Q, ...\n      assert(static_cast<int>(Q.size())\
     \ == (d + 1) * (n + 1));\n      if (n == 0) {\n        tfps<ModIntT> res(d);\n\
     \        std::copy_n(P_.cbegin(), std::min(P_.size(), res.size()), res.rbegin());\n\
     \        return res;\n      }\n      // let y=x^(2n+2) => [0,2n+2) = [y^0]Q, ...\n\
@@ -524,7 +524,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   requiredBy: []
-  timestamp: '2024-03-30 19:23:50+08:00'
+  timestamp: '2024-03-30 19:36:00+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
