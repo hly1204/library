@@ -408,90 +408,92 @@ data:
     \ <typename ModIntT>\nusing tfps = truncated_formal_power_series<ModIntT>;\n\n\
     LIB_END\n\n\n#line 7 \"math/fps_composition.hpp\"\n\n#line 11 \"math/fps_composition.hpp\"\
     \n\nLIB_BEGIN\n\n// returns f(g) mod x^n\n// reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
-    // for detailed definition of this code check pseudo code written by me:\n// https://codeforces.com/blog/entry/127674\n\
+    // for detailed definition of this code check pseudocode written by me:\n// https://codeforces.com/blog/entry/127674\n\
     template <typename ModIntT>\ntfps<ModIntT> composition(const tfps<ModIntT> &f,\
-    \ const tfps<ModIntT> &g, int n) {\n  if (g.empty() || n <= 0) return {};\n  const\
-    \ auto c = g.front();\n  struct composition_rec {\n    composition_rec(tfps<ModIntT>\
-    \ &&P) : P_(std::move(P)) {}\n    tfps<ModIntT> run(const tfps<ModIntT> &Q, int\
-    \ d, int n) {\n      // [0,n] => [y^0]Q, [n+1,2n+1] => [y^1]Q, ...\n      assert(static_cast<int>(Q.size())\
+    \ const tfps<ModIntT> &g, int n) {\n  if (g.empty() || n <= 0) return {};\n  struct\
+    \ composition_rec {\n    composition_rec(tfps<ModIntT> &&P) : P_(std::move(P))\
+    \ {}\n    tfps<ModIntT> run(const tfps<ModIntT> Q, int d, int n) {\n      // [0,n]\
+    \ => [y^0]Q, [n+1,2n+1] => [y^1]Q, ...\n      assert(static_cast<int>(Q.size())\
     \ == (d + 1) * (n + 1));\n      if (n == 0) {\n        tfps<ModIntT> res(d);\n\
     \        std::copy_n(P_.cbegin(), std::min(P_.size(), res.size()), res.rbegin());\n\
     \        return res;\n      }\n      // let y=x^(2n+2) => [0,2n+2) = [y^0]Q, ...\n\
     \      // y^0[0,2n+2), y^1[2n+2,4n+4), ..., y^(2d)[2d(2n+2),(2d+1)(2n+2)-1)\n\
     \      const int len = ntt_len((d << 1 | 1) * ((n + 1) << 1) - 1);\n      tfps<ModIntT>\
-    \ dftQ(len), VV(len >> 1), V((d << 1 | 1) * ((n >> 1) + 1)), T(len),\n       \
-    \   U(d * (n + 1));\n      for (int i = 0; i <= d; ++i)\n        std::copy_n(Q.begin()\
-    \ + i * (n + 1), n + 1, dftQ.begin() + i * ((n + 1) << 1));\n      dft(dftQ);\n\
-    \      // apply dft trick from Bostan&Mori's paper\n      for (int i = 0; i !=\
-    \ len; i += 2) VV[i >> 1] = dftQ[i] * dftQ[i + 1];\n      idft(VV);\n      for\
-    \ (int i = 0; i <= d << 1; ++i)\n        for (int j = 0; j <= n >> 1; ++j) V[i\
-    \ * ((n >> 1) + 1) + j] = VV[i * (n + 1) + j];\n      const auto TT = run(V, d\
-    \ << 1, n >> 1);\n      VV.assign(len >> 1, ModIntT());\n      for (int i = 0;\
-    \ i != d << 1; ++i)\n        for (int j = 0; j <= n >> 1; ++j) VV[i * (n + 1)\
-    \ + j] = TT[i * ((n >> 1) + 1) + j];\n      dft(VV);\n      // apply dft trick\
-    \ from Bostan&Mori's paper\n      for (int i = 0; i != len; ++i) T[i] = VV[i >>\
-    \ 1] * dftQ[i ^ 1];\n      idft(T);\n      // [y^(-d+1..0)]T => [y^(d..2d-1)]T\n\
-    \      for (int i = 0; i != d; ++i)\n        for (int j = 0; j <= n; ++j) U[i\
-    \ * (n + 1) + j] = T[(i + d) * ((n + 1) << 1) + j];\n      return U;\n    }\n\n\
-    \  private:\n    const tfps<ModIntT> P_;\n  } a(taylor_shift(f, c));\n  tfps<ModIntT>\
-    \ Q(n << 1); // [0,n)=1, [n,2n)=-g\n  Q.front() = ModIntT(1);\n  for (int i =\
-    \ n + 1, s = static_cast<int>(g.size()); i - n < s && i != n << 1; ++i)\n    Q[i]\
-    \ = -g[i - n];\n  return a.run(Q, 1, n - 1);\n}\n\nLIB_END\n\n\n#line 1 \"modint/montgomery_modint.hpp\"\
-    \n\n\n\n#line 5 \"modint/montgomery_modint.hpp\"\n\n#ifdef LIB_DEBUG\n  #include\
-    \ <stdexcept>\n#endif\n#line 12 \"modint/montgomery_modint.hpp\"\n\nLIB_BEGIN\n\
-    \ntemplate <std::uint32_t ModT>\nclass montgomery_modint30 {\n  using i32 = std::int32_t;\n\
-    \  using u32 = std::uint32_t;\n  using u64 = std::uint64_t;\n\n  u32 v_{};\n\n\
-    \  static constexpr u32 get_r() {\n    u32 t = 2, iv = MOD * (t - MOD * MOD);\n\
-    \    iv *= t - MOD * iv, iv *= t - MOD * iv;\n    return iv * (MOD * iv - t);\n\
-    \  }\n  static constexpr u32 redc(u64 x) {\n    return (x + static_cast<u64>(static_cast<u32>(x)\
-    \ * R) * MOD) >> 32;\n  }\n  static constexpr u32 norm(u32 x) { return x - (MOD\
-    \ & -((MOD - 1 - x) >> 31)); }\n\n  static constexpr u32 MOD  = ModT;\n  static\
-    \ constexpr u32 MOD2 = MOD << 1;\n  static constexpr u32 R    = get_r();\n  static\
-    \ constexpr u32 R2   = -static_cast<u64>(MOD) % MOD;\n  static constexpr i32 SMOD\
-    \ = static_cast<i32>(MOD);\n\n  static_assert(MOD & 1);\n  static_assert(-R *\
-    \ MOD == 1);\n  static_assert((MOD >> 30) == 0);\n  static_assert(MOD != 1);\n\
-    \npublic:\n  static constexpr u32 mod() { return MOD; }\n  static constexpr i32\
-    \ smod() { return SMOD; }\n  constexpr montgomery_modint30() {}\n  template <typename\
-    \ IntT, std::enable_if_t<std::is_integral_v<IntT>, int> = 0>\n  constexpr montgomery_modint30(IntT\
-    \ v) : v_(redc(static_cast<u64>(v % SMOD + SMOD) * R2)) {}\n  constexpr u32 val()\
-    \ const { return norm(redc(v_)); }\n  constexpr i32 sval() const { return norm(redc(v_));\
-    \ }\n  constexpr bool is_zero() const { return v_ == 0 || v_ == MOD; }\n  template\
-    \ <typename IntT, std::enable_if_t<std::is_integral_v<IntT>, int> = 0>\n  explicit\
-    \ constexpr operator IntT() const {\n    return static_cast<IntT>(val());\n  }\n\
-    \  constexpr montgomery_modint30 operator-() const {\n    montgomery_modint30\
-    \ res;\n    res.v_ = (MOD2 & -(v_ != 0)) - v_;\n    return res;\n  }\n  constexpr\
-    \ montgomery_modint30 inv() const {\n    i32 x1 = 1, x3 = 0, a = sval(), b = SMOD;\n\
-    \    while (b != 0) {\n      i32 q = a / b, x1_old = x1, a_old = a;\n      x1\
-    \ = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;\n    }\n#ifdef LIB_DEBUG\n\
-    \    if (a != 1) throw std::runtime_error(\"modular inverse error\");\n#endif\n\
-    \    return montgomery_modint30(x1);\n  }\n  constexpr montgomery_modint30 &operator+=(const\
-    \ montgomery_modint30 &rhs) {\n    v_ += rhs.v_ - MOD2, v_ += MOD2 & -(v_ >> 31);\n\
-    \    return *this;\n  }\n  constexpr montgomery_modint30 &operator-=(const montgomery_modint30\
-    \ &rhs) {\n    v_ -= rhs.v_, v_ += MOD2 & -(v_ >> 31);\n    return *this;\n  }\n\
-    \  constexpr montgomery_modint30 &operator*=(const montgomery_modint30 &rhs) {\n\
-    \    v_ = redc(static_cast<u64>(v_) * rhs.v_);\n    return *this;\n  }\n  constexpr\
-    \ montgomery_modint30 &operator/=(const montgomery_modint30 &rhs) {\n    return\
-    \ operator*=(rhs.inv());\n  }\n  constexpr montgomery_modint30 pow(u64 e) const\
-    \ {\n    for (montgomery_modint30 res(1), x(*this);; x *= x) {\n      if (e &\
-    \ 1) res *= x;\n      if ((e >>= 1) == 0) return res;\n    }\n  }\n  constexpr\
-    \ void swap(montgomery_modint30 &rhs) {\n    auto v = v_;\n    v_ = rhs.v_, rhs.v_\
-    \ = v;\n  }\n  friend constexpr montgomery_modint30 operator+(const montgomery_modint30\
-    \ &lhs,\n                                                 const montgomery_modint30\
-    \ &rhs) {\n    return montgomery_modint30(lhs) += rhs;\n  }\n  friend constexpr\
-    \ montgomery_modint30 operator-(const montgomery_modint30 &lhs,\n            \
-    \                                     const montgomery_modint30 &rhs) {\n    return\
-    \ montgomery_modint30(lhs) -= rhs;\n  }\n  friend constexpr montgomery_modint30\
-    \ operator*(const montgomery_modint30 &lhs,\n                                \
+    \ dftQ(len), VV(len >> 1), V((d << 1 | 1) * ((n >> 1) + 1));\n      for (int i\
+    \ = 0; i <= d; ++i)\n        std::copy_n(Q.cbegin() + i * (n + 1), n + 1, dftQ.begin()\
+    \ + i * ((n + 1) << 1));\n      dft(dftQ);\n      // apply dft trick from Bostan&Mori's\
+    \ paper\n      for (int i = 0; i != len; i += 2) VV[i >> 1] = dftQ[i] * dftQ[i\
+    \ + 1];\n      idft(VV);\n      for (int i = 0; i <= d << 1; ++i)\n        for\
+    \ (int j = 0; j <= n >> 1; ++j) V[i * ((n >> 1) + 1) + j] = VV[i * (n + 1) + j];\n\
+    \      const auto TT = run(std::move(V), d << 1, n >> 1);\n      VV.assign(len\
+    \ >> 1, ModIntT());\n      for (int i = 0; i != d << 1; ++i)\n        for (int\
+    \ j = 0; j <= n >> 1; ++j) VV[i * (n + 1) + j] = TT[i * ((n >> 1) + 1) + j];\n\
+    \      dft(VV);\n      auto &&T = dftQ;\n      // apply dft trick from Bostan&Mori's\
+    \ paper\n      for (int i = 0; i != len; i += 2) {\n        auto l = VV[i >> 1]\
+    \ * dftQ[i + 1], r = VV[i >> 1] * dftQ[i];\n        T[i] = l, T[i + 1] = r;\n\
+    \      }\n      idft(T);\n      auto &&U = VV;\n      U.assign(d * (n + 1), ModIntT());\n\
+    \      // [y^(-d+1..0)]T => [y^(d..2d-1)]T\n      for (int i = 0; i != d; ++i)\n\
+    \        for (int j = 0; j <= n; ++j) U[i * (n + 1) + j] = T[(i + d) * ((n + 1)\
+    \ << 1) + j];\n      return U;\n    }\n\n  private:\n    const tfps<ModIntT> P_;\n\
+    \  } a(taylor_shift(f, g.front()));\n  tfps<ModIntT> Q(n << 1); // [0,n)=1, [n,2n)=-g\n\
+    \  Q.front()   = ModIntT(1);\n  const int s = static_cast<int>(g.size());\n  for\
+    \ (int i = n + 1; i - n < s && i != n << 1; ++i) Q[i] = -g[i - n];\n  return a.run(std::move(Q),\
+    \ 1, n - 1);\n}\n\nLIB_END\n\n\n#line 1 \"modint/montgomery_modint.hpp\"\n\n\n\
+    \n#line 5 \"modint/montgomery_modint.hpp\"\n\n#ifdef LIB_DEBUG\n  #include <stdexcept>\n\
+    #endif\n#line 12 \"modint/montgomery_modint.hpp\"\n\nLIB_BEGIN\n\ntemplate <std::uint32_t\
+    \ ModT>\nclass montgomery_modint30 {\n  using i32 = std::int32_t;\n  using u32\
+    \ = std::uint32_t;\n  using u64 = std::uint64_t;\n\n  u32 v_{};\n\n  static constexpr\
+    \ u32 get_r() {\n    u32 t = 2, iv = MOD * (t - MOD * MOD);\n    iv *= t - MOD\
+    \ * iv, iv *= t - MOD * iv;\n    return iv * (MOD * iv - t);\n  }\n  static constexpr\
+    \ u32 redc(u64 x) {\n    return (x + static_cast<u64>(static_cast<u32>(x) * R)\
+    \ * MOD) >> 32;\n  }\n  static constexpr u32 norm(u32 x) { return x - (MOD & -((MOD\
+    \ - 1 - x) >> 31)); }\n\n  static constexpr u32 MOD  = ModT;\n  static constexpr\
+    \ u32 MOD2 = MOD << 1;\n  static constexpr u32 R    = get_r();\n  static constexpr\
+    \ u32 R2   = -static_cast<u64>(MOD) % MOD;\n  static constexpr i32 SMOD = static_cast<i32>(MOD);\n\
+    \n  static_assert(MOD & 1);\n  static_assert(-R * MOD == 1);\n  static_assert((MOD\
+    \ >> 30) == 0);\n  static_assert(MOD != 1);\n\npublic:\n  static constexpr u32\
+    \ mod() { return MOD; }\n  static constexpr i32 smod() { return SMOD; }\n  constexpr\
+    \ montgomery_modint30() {}\n  template <typename IntT, std::enable_if_t<std::is_integral_v<IntT>,\
+    \ int> = 0>\n  constexpr montgomery_modint30(IntT v) : v_(redc(static_cast<u64>(v\
+    \ % SMOD + SMOD) * R2)) {}\n  constexpr u32 val() const { return norm(redc(v_));\
+    \ }\n  constexpr i32 sval() const { return norm(redc(v_)); }\n  constexpr bool\
+    \ is_zero() const { return v_ == 0 || v_ == MOD; }\n  template <typename IntT,\
+    \ std::enable_if_t<std::is_integral_v<IntT>, int> = 0>\n  explicit constexpr operator\
+    \ IntT() const {\n    return static_cast<IntT>(val());\n  }\n  constexpr montgomery_modint30\
+    \ operator-() const {\n    montgomery_modint30 res;\n    res.v_ = (MOD2 & -(v_\
+    \ != 0)) - v_;\n    return res;\n  }\n  constexpr montgomery_modint30 inv() const\
+    \ {\n    i32 x1 = 1, x3 = 0, a = sval(), b = SMOD;\n    while (b != 0) {\n   \
+    \   i32 q = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3 = x1_old - x3 *\
+    \ q, a = b, b = a_old - b * q;\n    }\n#ifdef LIB_DEBUG\n    if (a != 1) throw\
+    \ std::runtime_error(\"modular inverse error\");\n#endif\n    return montgomery_modint30(x1);\n\
+    \  }\n  constexpr montgomery_modint30 &operator+=(const montgomery_modint30 &rhs)\
+    \ {\n    v_ += rhs.v_ - MOD2, v_ += MOD2 & -(v_ >> 31);\n    return *this;\n \
+    \ }\n  constexpr montgomery_modint30 &operator-=(const montgomery_modint30 &rhs)\
+    \ {\n    v_ -= rhs.v_, v_ += MOD2 & -(v_ >> 31);\n    return *this;\n  }\n  constexpr\
+    \ montgomery_modint30 &operator*=(const montgomery_modint30 &rhs) {\n    v_ =\
+    \ redc(static_cast<u64>(v_) * rhs.v_);\n    return *this;\n  }\n  constexpr montgomery_modint30\
+    \ &operator/=(const montgomery_modint30 &rhs) {\n    return operator*=(rhs.inv());\n\
+    \  }\n  constexpr montgomery_modint30 pow(u64 e) const {\n    for (montgomery_modint30\
+    \ res(1), x(*this);; x *= x) {\n      if (e & 1) res *= x;\n      if ((e >>= 1)\
+    \ == 0) return res;\n    }\n  }\n  constexpr void swap(montgomery_modint30 &rhs)\
+    \ {\n    auto v = v_;\n    v_ = rhs.v_, rhs.v_ = v;\n  }\n  friend constexpr montgomery_modint30\
+    \ operator+(const montgomery_modint30 &lhs,\n                                \
     \                 const montgomery_modint30 &rhs) {\n    return montgomery_modint30(lhs)\
-    \ *= rhs;\n  }\n  friend constexpr montgomery_modint30 operator/(const montgomery_modint30\
+    \ += rhs;\n  }\n  friend constexpr montgomery_modint30 operator-(const montgomery_modint30\
     \ &lhs,\n                                                 const montgomery_modint30\
-    \ &rhs) {\n    return montgomery_modint30(lhs) /= rhs;\n  }\n  friend constexpr\
-    \ bool operator==(const montgomery_modint30 &lhs, const montgomery_modint30 &rhs)\
-    \ {\n    return norm(lhs.v_) == norm(rhs.v_);\n  }\n  friend constexpr bool operator!=(const\
-    \ montgomery_modint30 &lhs, const montgomery_modint30 &rhs) {\n    return norm(lhs.v_)\
-    \ != norm(rhs.v_);\n  }\n  friend std::istream &operator>>(std::istream &is, montgomery_modint30\
-    \ &rhs) {\n    i32 x;\n    is >> x;\n    rhs = montgomery_modint30(x);\n    return\
-    \ is;\n  }\n  friend std::ostream &operator<<(std::ostream &os, const montgomery_modint30\
+    \ &rhs) {\n    return montgomery_modint30(lhs) -= rhs;\n  }\n  friend constexpr\
+    \ montgomery_modint30 operator*(const montgomery_modint30 &lhs,\n            \
+    \                                     const montgomery_modint30 &rhs) {\n    return\
+    \ montgomery_modint30(lhs) *= rhs;\n  }\n  friend constexpr montgomery_modint30\
+    \ operator/(const montgomery_modint30 &lhs,\n                                \
+    \                 const montgomery_modint30 &rhs) {\n    return montgomery_modint30(lhs)\
+    \ /= rhs;\n  }\n  friend constexpr bool operator==(const montgomery_modint30 &lhs,\
+    \ const montgomery_modint30 &rhs) {\n    return norm(lhs.v_) == norm(rhs.v_);\n\
+    \  }\n  friend constexpr bool operator!=(const montgomery_modint30 &lhs, const\
+    \ montgomery_modint30 &rhs) {\n    return norm(lhs.v_) != norm(rhs.v_);\n  }\n\
+    \  friend std::istream &operator>>(std::istream &is, montgomery_modint30 &rhs)\
+    \ {\n    i32 x;\n    is >> x;\n    rhs = montgomery_modint30(x);\n    return is;\n\
+    \  }\n  friend std::ostream &operator<<(std::ostream &os, const montgomery_modint30\
     \ &rhs) {\n    return os << rhs.val();\n  }\n};\n\ntemplate <std::uint32_t ModT>\n\
     using mm30 = montgomery_modint30<ModT>;\n\nLIB_END\n\n\n#line 5 \"remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp\"\
     \n\n#line 9 \"remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp\"\
@@ -525,7 +527,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   requiredBy: []
-  timestamp: '2024-03-30 20:02:19+08:00'
+  timestamp: '2024-03-31 22:44:03+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
