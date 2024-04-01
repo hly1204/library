@@ -7,8 +7,8 @@ data:
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: math/fps_composition.hpp
-    title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
-      \rbrack$ for FFT prime $p$)
+    title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
+      _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
     path: math/stirling_numbers.hpp
     title: Stirling Numbers (in $\mathbb{F} _ p$ for FFT prime $p$)
@@ -19,6 +19,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
     title: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+    title: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
     title: remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
@@ -83,6 +86,7 @@ data:
   - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
   - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
+  - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
 documentation_of: math/binomial.hpp
 layout: document
 title: Binomial Coefficient (in $\mathbb{F} _ p$)

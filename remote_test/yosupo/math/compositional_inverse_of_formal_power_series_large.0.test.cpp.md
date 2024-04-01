@@ -5,6 +5,9 @@ data:
     path: common.hpp
     title: common.hpp
   - icon: ':heavy_check_mark:'
+    path: common.hpp
+    title: common.hpp
+  - icon: ':heavy_check_mark:'
     path: math/binomial.hpp
     title: Binomial Coefficient (in $\mathbb{F} _ p$)
   - icon: ':heavy_check_mark:'
@@ -13,6 +16,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
+  - icon: ':heavy_check_mark:'
+    path: math/fps_composition.hpp
+    title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
+      _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
@@ -34,26 +41,27 @@ data:
     path: math/truncated_fourier_transform.hpp
     title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for
       FFT prime $p$)
+  - icon: ':heavy_check_mark:'
+    path: modint/montgomery_modint.hpp
+    title: Montgomery ModInt
   _extendedRequiredBy: []
-  _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
-    title: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
-    title: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
-  _pathExtension: hpp
+  _pathExtension: cpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
+    '*NOT_SPECIAL_COMMENTS*': ''
+    PROBLEM: https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large
     links:
-    - https://noshi91.hatenablog.com/entry/2024/03/16/224034
-  bundledCode: "#line 1 \"math/fps_composition.hpp\"\n\n\n\n#line 1 \"common.hpp\"\
-    \n\n\n\n#define LIB_DEBUG\n\n#define LIB_BEGIN namespace lib {\n#define LIB_END\
-    \ }\n#define LIB ::lib::\n\n\n#line 1 \"math/binomial.hpp\"\n\n\n\n#line 5 \"\
-    math/binomial.hpp\"\n\n#include <vector>\n\nLIB_BEGIN\n\n// helper class for precomputation\
-    \ of factorials and multiplicative inverse of them.\ntemplate <typename ModIntT>\n\
-    class binomial {\n  mutable std::vector<ModIntT> factorial_{ModIntT(1)}, invfactorial_{ModIntT(1)};\n\
+    - https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large
+  bundledCode: "#line 1 \"remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large\"\
+    \n\n#line 1 \"math/fps_composition.hpp\"\n\n\n\n#line 1 \"common.hpp\"\n\n\n\n\
+    #define LIB_DEBUG\n\n#define LIB_BEGIN namespace lib {\n#define LIB_END }\n#define\
+    \ LIB ::lib::\n\n\n#line 1 \"math/binomial.hpp\"\n\n\n\n#line 5 \"math/binomial.hpp\"\
+    \n\n#include <vector>\n\nLIB_BEGIN\n\n// helper class for precomputation of factorials\
+    \ and multiplicative inverse of them.\ntemplate <typename ModIntT>\nclass binomial\
+    \ {\n  mutable std::vector<ModIntT> factorial_{ModIntT(1)}, invfactorial_{ModIntT(1)};\n\
     \npublic:\n  explicit binomial(int n) { preprocess(n); }\n  binomial() {}\n  void\
     \ preprocess(int n) const {\n    if (int nn = static_cast<int>(factorial_.size());\
     \ nn <= n) {\n      int k = nn;\n      while (k <= n) k <<= 1;\n      factorial_.resize(k);\n\
@@ -471,23 +479,79 @@ data:
     \ {ModIntT(1)}, n - 1, n);\n  binomial<ModIntT> bin(n);\n  const ModIntT c(n -\
     \ 1);\n  for (int i = 1; i != n; ++i) a[i] *= c * bin.inv(i);\n  return tfps<ModIntT>(a.rbegin(),\
     \ a.rend() - 1).pow(n - 1, (-c.inv()).val()) *\n         tfps<ModIntT>{ModIntT(0),\
-    \ f1};\n}\n\nLIB_END\n\n\n"
-  code: "#ifndef FPS_COMPOSITION_HPP\n#define FPS_COMPOSITION_HPP\n\n#include \"../common.hpp\"\
-    \n#include \"binomial.hpp\"\n#include \"enum_kth_term_of_power.hpp\"\n#include\
-    \ \"truncated_formal_power_series.hpp\"\n\n#include <algorithm>\n\nLIB_BEGIN\n\
-    \n// returns f(g) mod x^n\n// reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
-    template <typename ModIntT>\ntfps<ModIntT> composition(tfps<ModIntT> f, const\
-    \ tfps<ModIntT> &g, int n) {\n  f.resize(n);\n  std::reverse(f.begin(), f.end());\n\
-    \  return enum_kth_term_of_power_y(g, f, n - 1, n);\n}\n\ntemplate <typename ModIntT>\n\
-    tfps<ModIntT> compositional_inverse(tfps<ModIntT> f, int n) {\n  if (n <= 0 ||\
-    \ f.size() < 2) return {};\n  const auto f1 = f[1].inv();\n  if (n == 1) return\
-    \ {ModIntT()};\n  f.resize(n);\n  {\n    f[1] *= f1;\n    auto c = f1;\n    for\
-    \ (int i = 2; i != n; ++i) f[i] *= c *= f1;\n  }\n  auto a = enum_kth_term_of_power_x(f,\
-    \ {ModIntT(1)}, n - 1, n);\n  binomial<ModIntT> bin(n);\n  const ModIntT c(n -\
-    \ 1);\n  for (int i = 1; i != n; ++i) a[i] *= c * bin.inv(i);\n  return tfps<ModIntT>(a.rbegin(),\
-    \ a.rend() - 1).pow(n - 1, (-c.inv()).val()) *\n         tfps<ModIntT>{ModIntT(0),\
-    \ f1};\n}\n\nLIB_END\n\n#endif\n"
+    \ f1};\n}\n\nLIB_END\n\n\n#line 1 \"modint/montgomery_modint.hpp\"\n\n\n\n#line\
+    \ 5 \"modint/montgomery_modint.hpp\"\n\n#ifdef LIB_DEBUG\n  #include <stdexcept>\n\
+    #endif\n#line 12 \"modint/montgomery_modint.hpp\"\n\nLIB_BEGIN\n\ntemplate <std::uint32_t\
+    \ ModT>\nclass montgomery_modint30 {\n  using i32 = std::int32_t;\n  using u32\
+    \ = std::uint32_t;\n  using u64 = std::uint64_t;\n\n  u32 v_{};\n\n  static constexpr\
+    \ u32 get_r() {\n    u32 t = 2, iv = MOD * (t - MOD * MOD);\n    iv *= t - MOD\
+    \ * iv, iv *= t - MOD * iv;\n    return iv * (MOD * iv - t);\n  }\n  static constexpr\
+    \ u32 redc(u64 x) {\n    return (x + static_cast<u64>(static_cast<u32>(x) * R)\
+    \ * MOD) >> 32;\n  }\n  static constexpr u32 norm(u32 x) { return x - (MOD & -((MOD\
+    \ - 1 - x) >> 31)); }\n\n  static constexpr u32 MOD  = ModT;\n  static constexpr\
+    \ u32 MOD2 = MOD << 1;\n  static constexpr u32 R    = get_r();\n  static constexpr\
+    \ u32 R2   = -static_cast<u64>(MOD) % MOD;\n  static constexpr i32 SMOD = static_cast<i32>(MOD);\n\
+    \n  static_assert(MOD & 1);\n  static_assert(-R * MOD == 1);\n  static_assert((MOD\
+    \ >> 30) == 0);\n  static_assert(MOD != 1);\n\npublic:\n  static constexpr u32\
+    \ mod() { return MOD; }\n  static constexpr i32 smod() { return SMOD; }\n  constexpr\
+    \ montgomery_modint30() {}\n  template <typename IntT, std::enable_if_t<std::is_integral_v<IntT>,\
+    \ int> = 0>\n  constexpr montgomery_modint30(IntT v) : v_(redc(static_cast<u64>(v\
+    \ % SMOD + SMOD) * R2)) {}\n  constexpr u32 val() const { return norm(redc(v_));\
+    \ }\n  constexpr i32 sval() const { return norm(redc(v_)); }\n  constexpr bool\
+    \ is_zero() const { return v_ == 0 || v_ == MOD; }\n  template <typename IntT,\
+    \ std::enable_if_t<std::is_integral_v<IntT>, int> = 0>\n  explicit constexpr operator\
+    \ IntT() const {\n    return static_cast<IntT>(val());\n  }\n  constexpr montgomery_modint30\
+    \ operator-() const {\n    montgomery_modint30 res;\n    res.v_ = (MOD2 & -(v_\
+    \ != 0)) - v_;\n    return res;\n  }\n  constexpr montgomery_modint30 inv() const\
+    \ {\n    i32 x1 = 1, x3 = 0, a = sval(), b = SMOD;\n    while (b != 0) {\n   \
+    \   i32 q = a / b, x1_old = x1, a_old = a;\n      x1 = x3, x3 = x1_old - x3 *\
+    \ q, a = b, b = a_old - b * q;\n    }\n#ifdef LIB_DEBUG\n    if (a != 1) throw\
+    \ std::runtime_error(\"modular inverse error\");\n#endif\n    return montgomery_modint30(x1);\n\
+    \  }\n  constexpr montgomery_modint30 &operator+=(const montgomery_modint30 &rhs)\
+    \ {\n    v_ += rhs.v_ - MOD2, v_ += MOD2 & -(v_ >> 31);\n    return *this;\n \
+    \ }\n  constexpr montgomery_modint30 &operator-=(const montgomery_modint30 &rhs)\
+    \ {\n    v_ -= rhs.v_, v_ += MOD2 & -(v_ >> 31);\n    return *this;\n  }\n  constexpr\
+    \ montgomery_modint30 &operator*=(const montgomery_modint30 &rhs) {\n    v_ =\
+    \ redc(static_cast<u64>(v_) * rhs.v_);\n    return *this;\n  }\n  constexpr montgomery_modint30\
+    \ &operator/=(const montgomery_modint30 &rhs) {\n    return operator*=(rhs.inv());\n\
+    \  }\n  constexpr montgomery_modint30 pow(u64 e) const {\n    for (montgomery_modint30\
+    \ res(1), x(*this);; x *= x) {\n      if (e & 1) res *= x;\n      if ((e >>= 1)\
+    \ == 0) return res;\n    }\n  }\n  constexpr void swap(montgomery_modint30 &rhs)\
+    \ {\n    auto v = v_;\n    v_ = rhs.v_, rhs.v_ = v;\n  }\n  friend constexpr montgomery_modint30\
+    \ operator+(const montgomery_modint30 &lhs,\n                                \
+    \                 const montgomery_modint30 &rhs) {\n    return montgomery_modint30(lhs)\
+    \ += rhs;\n  }\n  friend constexpr montgomery_modint30 operator-(const montgomery_modint30\
+    \ &lhs,\n                                                 const montgomery_modint30\
+    \ &rhs) {\n    return montgomery_modint30(lhs) -= rhs;\n  }\n  friend constexpr\
+    \ montgomery_modint30 operator*(const montgomery_modint30 &lhs,\n            \
+    \                                     const montgomery_modint30 &rhs) {\n    return\
+    \ montgomery_modint30(lhs) *= rhs;\n  }\n  friend constexpr montgomery_modint30\
+    \ operator/(const montgomery_modint30 &lhs,\n                                \
+    \                 const montgomery_modint30 &rhs) {\n    return montgomery_modint30(lhs)\
+    \ /= rhs;\n  }\n  friend constexpr bool operator==(const montgomery_modint30 &lhs,\
+    \ const montgomery_modint30 &rhs) {\n    return norm(lhs.v_) == norm(rhs.v_);\n\
+    \  }\n  friend constexpr bool operator!=(const montgomery_modint30 &lhs, const\
+    \ montgomery_modint30 &rhs) {\n    return norm(lhs.v_) != norm(rhs.v_);\n  }\n\
+    \  friend std::istream &operator>>(std::istream &is, montgomery_modint30 &rhs)\
+    \ {\n    i32 x;\n    is >> x;\n    rhs = montgomery_modint30(x);\n    return is;\n\
+    \  }\n  friend std::ostream &operator<<(std::ostream &os, const montgomery_modint30\
+    \ &rhs) {\n    return os << rhs.val();\n  }\n};\n\ntemplate <std::uint32_t ModT>\n\
+    using mm30 = montgomery_modint30<ModT>;\n\nLIB_END\n\n\n#line 5 \"remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp\"\
+    \n\n#line 7 \"remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp\"\
+    \n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
+    out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n\
+    \  int n;\n  std::cin >> n;\n  using mint = lib::mm30<998244353>;\n  lib::tfps<mint>\
+    \ f(n);\n  std::cin >> f;\n  for (auto &&c : lib::compositional_inverse(f, n))\
+    \ std::cout << c << ' ';\n  return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large\"\
+    \n\n#include \"math/fps_composition.hpp\"\n#include \"modint/montgomery_modint.hpp\"\
+    \n\n#include <iostream>\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\",\
+    \ \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
+    \  std::cin.tie(nullptr);\n  int n;\n  std::cin >> n;\n  using mint = lib::mm30<998244353>;\n\
+    \  lib::tfps<mint> f(n);\n  std::cin >> f;\n  for (auto &&c : lib::compositional_inverse(f,\
+    \ n)) std::cout << c << ' ';\n  return 0;\n}\n"
   dependsOn:
+  - math/fps_composition.hpp
   - common.hpp
   - math/binomial.hpp
   - math/enum_kth_term_of_power.hpp
@@ -498,20 +562,18 @@ data:
   - math/sqrt_mod.hpp
   - math/random.hpp
   - math/truncated_fourier_transform.hpp
-  isVerificationFile: false
-  path: math/fps_composition.hpp
+  - modint/montgomery_modint.hpp
+  - common.hpp
+  isVerificationFile: true
+  path: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
   requiredBy: []
   timestamp: '2024-04-01 21:12:25+08:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
-  - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
-documentation_of: math/fps_composition.hpp
+  verificationStatus: TEST_ACCEPTED
+  verifiedWith: []
+documentation_of: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
 layout: document
-title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
-  _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
+redirect_from:
+- /verify/remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+- /verify/remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp.html
+title: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
 ---
-
-## Bibliography
-
-1. noshi91. [FPS の合成と逆関数、冪乗の係数列挙 $\Theta(n(\log(n))^2)$](https://noshi91.hatenablog.com/entry/2024/03/16/224034).

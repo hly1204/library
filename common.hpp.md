@@ -46,6 +46,9 @@ data:
     title: Chirp Z-transform (Bluestein's algorithm) (in $\mathbb{F} _ p \lbrack z
       \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
+    path: math/enum_kth_term_of_power.hpp
+    title: math/enum_kth_term_of_power.hpp
+  - icon: ':heavy_check_mark:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
   - icon: ':heavy_check_mark:'
@@ -54,8 +57,8 @@ data:
       for FFT prime $p$)
   - icon: ':heavy_check_mark:'
     path: math/fps_composition.hpp
-    title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
-      \rbrack$ for FFT prime $p$)
+    title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
+      _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
     path: math/integer_factorization.hpp
     title: Integer Factorization (Pollard's rho algorithm) (in $\mathbb{Z}$)
@@ -175,6 +178,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
     title: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+    title: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+    title: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.0.test.cpp
     title: remote_test/yosupo/math/convolution_mod.0.test.cpp
@@ -435,6 +444,7 @@ data:
   - math/formal_power_series.hpp
   - math/convolution.hpp
   - math/relaxed_convolution.hpp
+  - math/enum_kth_term_of_power.hpp
   - math/extended_gcd.hpp
   - math/convolution_mod.hpp
   - math/convolution_mod.hpp
@@ -522,6 +532,8 @@ data:
   - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
   - remote_test/yosupo/math/factorize.0.test.cpp
   - remote_test/yosupo/math/factorize.0.test.cpp
+  - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - remote_test/yosupo/math/primality_test.0.test.cpp
   - remote_test/yosupo/math/primality_test.0.test.cpp
   - remote_test/yosupo/datastructure/queue_operate_all_composite.0.test.cpp

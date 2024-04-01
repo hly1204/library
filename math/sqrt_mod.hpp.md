@@ -9,9 +9,12 @@ data:
     title: Pseudo Random Number Generator
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: math/enum_kth_term_of_power.hpp
+    title: math/enum_kth_term_of_power.hpp
+  - icon: ':heavy_check_mark:'
     path: math/fps_composition.hpp
-    title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
-      \rbrack$ for FFT prime $p$)
+    title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
+      _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
     path: math/polynomial.hpp
     title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
@@ -23,6 +26,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
     title: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+    title: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.1.test.cpp
     title: remote_test/yosupo/math/convolution_mod.1.test.cpp
@@ -121,6 +127,7 @@ data:
   requiredBy:
   - math/fps_composition.hpp
   - math/truncated_formal_power_series.hpp
+  - math/enum_kth_term_of_power.hpp
   - math/polynomial.hpp
   timestamp: '2023-12-17 11:51:45+08:00'
   verificationStatus: LIBRARY_ALL_AC
@@ -140,6 +147,7 @@ data:
   - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   - remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
   - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
 documentation_of: math/sqrt_mod.hpp
 layout: document
 title: Square Roots (in $\mathbb{F} _ p$)

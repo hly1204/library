@@ -19,13 +19,16 @@ data:
     title: Chirp Z-transform (Bluestein's algorithm) (in $\mathbb{F} _ p \lbrack z
       \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
+    path: math/enum_kth_term_of_power.hpp
+    title: math/enum_kth_term_of_power.hpp
+  - icon: ':heavy_check_mark:'
     path: math/formal_power_series.hpp
     title: Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$
       for FFT prime $p$)
   - icon: ':heavy_check_mark:'
     path: math/fps_composition.hpp
-    title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
-      \rbrack$ for FFT prime $p$)
+    title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
+      _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
     path: math/multivariate_convolution.hpp
     title: Multivariate Convolution (in $\mathbb{F} _ p \lbrack z_1, \dots, z_d \rbrack
@@ -60,6 +63,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
     title: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+    title: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/convolution_mod.0.test.cpp
     title: remote_test/yosupo/math/convolution_mod.0.test.cpp
@@ -311,6 +317,7 @@ data:
   - math/formal_power_series.hpp
   - math/convolution.hpp
   - math/relaxed_convolution.hpp
+  - math/enum_kth_term_of_power.hpp
   - math/convolution_mod.hpp
   - math/semi_relaxed_convolution.hpp
   - math/polynomial.hpp
@@ -348,6 +355,7 @@ data:
   - remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
   - remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
   - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
 documentation_of: math/radix2_ntt.hpp
 layout: document
 title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)

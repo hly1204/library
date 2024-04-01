@@ -48,6 +48,9 @@ data:
       title: Chirp Z-transform (Bluestein's algorithm) (in $\mathbb{F} _ p \lbrack
         z \rbrack$ for FFT prime $p$)
     - icon: ':heavy_check_mark:'
+      path: math/enum_kth_term_of_power.hpp
+      title: math/enum_kth_term_of_power.hpp
+    - icon: ':heavy_check_mark:'
       path: math/extended_gcd.hpp
       title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
     - icon: ':heavy_check_mark:'
@@ -56,8 +59,8 @@ data:
         for FFT prime $p$)
     - icon: ':heavy_check_mark:'
       path: math/fps_composition.hpp
-      title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z
-        \rbrack \rbrack$ for FFT prime $p$)
+      title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
+        _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
     - icon: ':heavy_check_mark:'
       path: math/integer_factorization.hpp
       title: Integer Factorization (Pollard's rho algorithm) (in $\mathbb{Z}$)
@@ -181,6 +184,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
       title: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+      title: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: remote_test/yosupo/math/convolution_mod.0.test.cpp
       title: remote_test/yosupo/math/convolution_mod.0.test.cpp
