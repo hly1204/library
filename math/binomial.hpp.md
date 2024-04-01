@@ -7,8 +7,8 @@ data:
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: math/fps_composition.hpp
-    title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
-      _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
+    title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
+      \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
     path: math/stirling_numbers.hpp
     title: Stirling Numbers (in $\mathbb{F} _ p$ for FFT prime $p$)

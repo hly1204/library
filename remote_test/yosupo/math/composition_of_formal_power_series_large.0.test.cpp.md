@@ -12,14 +12,15 @@ data:
     title: Binomial Coefficient (in $\mathbb{F} _ p$)
   - icon: ':heavy_check_mark:'
     path: math/enum_kth_term_of_power.hpp
-    title: math/enum_kth_term_of_power.hpp
+    title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
+      _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
   - icon: ':heavy_check_mark:'
     path: math/fps_composition.hpp
-    title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
-      _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
+    title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
+      \rbrack$ for FFT prime $p$)
   - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)

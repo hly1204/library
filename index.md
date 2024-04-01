@@ -49,7 +49,8 @@ data:
         z \rbrack$ for FFT prime $p$)
     - icon: ':heavy_check_mark:'
       path: math/enum_kth_term_of_power.hpp
-      title: math/enum_kth_term_of_power.hpp
+      title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
+        _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
     - icon: ':heavy_check_mark:'
       path: math/extended_gcd.hpp
       title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
@@ -59,8 +60,8 @@ data:
         for FFT prime $p$)
     - icon: ':heavy_check_mark:'
       path: math/fps_composition.hpp
-      title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
-        _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
+      title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z
+        \rbrack \rbrack$ for FFT prime $p$)
     - icon: ':heavy_check_mark:'
       path: math/integer_factorization.hpp
       title: Integer Factorization (Pollard's rho algorithm) (in $\mathbb{Z}$)

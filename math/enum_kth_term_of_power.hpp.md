@@ -31,8 +31,8 @@ data:
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: math/fps_composition.hpp
-    title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
-      _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
+    title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
+      \rbrack$ for FFT prime $p$)
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
@@ -533,8 +533,10 @@ data:
   - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
 documentation_of: math/enum_kth_term_of_power.hpp
 layout: document
-redirect_from:
-- /library/math/enum_kth_term_of_power.hpp
-- /library/math/enum_kth_term_of_power.hpp.html
-title: math/enum_kth_term_of_power.hpp
+title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
+  _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
 ---
+
+## Bibliography
+
+1. noshi91. [FPS の合成と逆関数、冪乗の係数列挙 $\Theta(n(\log(n))^2)$](https://noshi91.hatenablog.com/entry/2024/03/16/224034).
