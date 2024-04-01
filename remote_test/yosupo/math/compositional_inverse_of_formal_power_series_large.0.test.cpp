@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/composition_of_formal_power_series_large"
+#define PROBLEM "https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large"
 
 #include "math/fps_composition.hpp"
 #include "modint/montgomery_modint.hpp"
@@ -14,8 +14,8 @@ int main() {
   int n;
   std::cin >> n;
   using mint = lib::mm30<998244353>;
-  lib::tfps<mint> f(n), g(n);
-  std::cin >> f >> g;
-  for (auto &&c : lib::composition(f, g, n)) std::cout << c << ' ';
+  lib::tfps<mint> f(n);
+  std::cin >> f;
+  for (auto &&c : lib::compositional_inverse(f, n)) std::cout << c << ' ';
   return 0;
 }
