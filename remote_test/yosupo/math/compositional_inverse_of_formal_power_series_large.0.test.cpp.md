@@ -433,17 +433,16 @@ data:
     \ >> 1) + 1)));\n    Q.assign((d << 1 | 1) * ((k >> 1) + 1), ModIntT());\n   \
     \ for (int i = 0; i <= d << 1; ++i)\n      std::copy_n(V.cbegin() + (i * (k +\
     \ 1)), (k >> 1) + 1, Q.begin() + (i * ((k >> 1) + 1)));\n  }\n\n  return tfps<ModIntT>(P).div(Q,\
-    \ n);\n}\n\n// returns [y^k]g(y), [y^k]g(y)f(x), ..., [y^k]g(y)f(x)^(n-1)\n//\
-    \ [y^k](g(y)/1-yf(x))\n// reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
+    \ n);\n}\n\n// returns [y^k](g(y)/1-yf(x)) = [y^k](1 + g(y)yf(x) + g(y)y^2f(x)^2\
+    \ + ...)\n// reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
     template <typename ModIntT>\nstd::vector<ModIntT> enum_kth_term_of_power_y(const\
     \ tfps<ModIntT> &f, const tfps<ModIntT> &g, int k,\n                         \
     \                     int n) {\n  if (k < 0 || n <= 0) return {};\n  // returns\
     \ [y^0](g(y^(-1))/1-yf(x))\n  struct coeff_of_y0_rec {\n    coeff_of_y0_rec(tfps<ModIntT>\
     \ &&P) : P_(std::move(P)) {}\n    tfps<ModIntT> run(const tfps<ModIntT> Q, int\
     \ d, int n) {\n      // [0,n] => [y^(-d+1)]Q, [n+1,2n+1] => [y^1]Q, ..., [y^0]Q\n\
-    \      assert(static_cast<int>(Q.size()) == (d + 1) * (n + 1));\n      if (n ==\
-    \ 0) {\n        // [-d+1,0] => [0,d-1]\n        tfps<ModIntT> res(d);\n      \
-    \  std::copy_n(P_.cbegin(), std::min(P_.size(), res.size()), res.rbegin());\n\
+    \      if (n == 0) {\n        // [-d+1,0] => [0,d-1]\n        tfps<ModIntT> res(d);\n\
+    \        std::copy_n(P_.cbegin(), std::min(P_.size(), res.size()), res.rbegin());\n\
     \        return res.div(Q, d);\n      }\n      // let y=x^(2n+2) => [0,2n+2) =\
     \ [y^0]Q, ...\n      // y^0[0,2n+2), y^1[2n+2,4n+4), ..., y^(2d)[2d(2n+2),(2d+1)(2n+2)-1)\n\
     \      const int len = ntt_len((d << 1 | 1) * ((n + 1) << 1) - 1);\n      tfps<ModIntT>\
@@ -568,7 +567,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
   requiredBy: []
-  timestamp: '2024-04-01 21:12:25+08:00'
+  timestamp: '2024-04-01 22:08:49+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
