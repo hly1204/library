@@ -74,8 +74,7 @@ std::vector<ModIntT> enum_kth_term_of_power_x(const tfps<ModIntT> &f, const tfps
   return tfps<ModIntT>(P).div(Q, n);
 }
 
-// returns [y^k]g(y), [y^k]g(y)f(x), ..., [y^k]g(y)f(x)^(n-1)
-// [y^k](g(y)/1-yf(x))
+// returns [y^k](g(y)/1-yf(x)) = [y^k](1 + g(y)yf(x) + g(y)y^2f(x)^2 + ...)
 // reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034
 template <typename ModIntT>
 std::vector<ModIntT> enum_kth_term_of_power_y(const tfps<ModIntT> &f, const tfps<ModIntT> &g, int k,
@@ -86,7 +85,6 @@ std::vector<ModIntT> enum_kth_term_of_power_y(const tfps<ModIntT> &f, const tfps
     coeff_of_y0_rec(tfps<ModIntT> &&P) : P_(std::move(P)) {}
     tfps<ModIntT> run(const tfps<ModIntT> Q, int d, int n) {
       // [0,n] => [y^(-d+1)]Q, [n+1,2n+1] => [y^1]Q, ..., [y^0]Q
-      assert(static_cast<int>(Q.size()) == (d + 1) * (n + 1));
       if (n == 0) {
         // [-d+1,0] => [0,d-1]
         tfps<ModIntT> res(d);
