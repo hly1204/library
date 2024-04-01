@@ -1,6 +1,6 @@
 ---
 title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
-documentation_of: ./fps_composition.hpp
+documentation_of: ./enum_kth_term_of_power.hpp
 ---
 
 ## Bibliography
