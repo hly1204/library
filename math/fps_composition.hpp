@@ -16,7 +16,7 @@ template <typename ModIntT>
 tfps<ModIntT> composition(tfps<ModIntT> f, const tfps<ModIntT> &g, int n) {
   f.resize(n);
   std::reverse(f.begin(), f.end());
-  return kth_term_of_y(g, f, n - 1, n);
+  return kth_term(g, f, n - 1, n);
 }
 
 template <typename ModIntT>
@@ -30,7 +30,7 @@ tfps<ModIntT> compositional_inverse(tfps<ModIntT> f, int n) {
     auto c = f1;
     for (int i = 2; i != n; ++i) f[i] *= c *= f1;
   }
-  auto a = kth_term_of_x(f, {ModIntT(1)}, n - 1, n);
+  auto a = enum_kth_term_of_power(f, {ModIntT(1)}, n - 1, n);
   binomial<ModIntT> bin(n);
   const ModIntT c(n - 1);
   for (int i = 1; i != n; ++i) a[i] *= c * bin.inv(i);

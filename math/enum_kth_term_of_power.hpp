@@ -14,7 +14,8 @@ LIB_BEGIN
 // [x^k](g(x)/(1-yf(x)))
 // reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034
 template <typename ModIntT>
-lib::tfps<ModIntT> kth_term_of_x(const tfps<ModIntT> &f, const tfps<ModIntT> &g, int k, int n) {
+lib::tfps<ModIntT> enum_kth_term_of_power(const tfps<ModIntT> &f, const tfps<ModIntT> &g, int k,
+                                          int n) {
   if (k < 0 || n <= 0) return {};
   lib::tfps<ModIntT> P(k + 1), Q((k + 1) << 1);
   std::copy_n(g.cbegin(), std::min(P.size(), g.size()), P.begin());
@@ -76,7 +77,7 @@ lib::tfps<ModIntT> kth_term_of_x(const tfps<ModIntT> &f, const tfps<ModIntT> &g,
 // returns [y^k](g(y)/1-yf(x)) = [y^k](1 + g(y)yf(x) + g(y)y^2f(x)^2 + ...)
 // reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034
 template <typename ModIntT>
-lib::tfps<ModIntT> kth_term_of_y(const tfps<ModIntT> &f, const tfps<ModIntT> &g, int k, int n) {
+lib::tfps<ModIntT> kth_term(const tfps<ModIntT> &f, const tfps<ModIntT> &g, int k, int n) {
   if (k < 0 || n <= 0) return {};
   // returns [y^0](g(y^(-1))/1-yf(x))
   struct coeff_of_y0_rec {
