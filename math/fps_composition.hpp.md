@@ -429,35 +429,36 @@ data:
     template <typename ModIntT>\nlib::tfps<ModIntT> kth_term_of_y(const tfps<ModIntT>\
     \ &f, const tfps<ModIntT> &g, int k, int n) {\n  if (k < 0 || n <= 0) return {};\n\
     \  // returns [y^0](g(y^(-1))/1-yf(x))\n  struct coeff_of_y0_rec {\n    coeff_of_y0_rec(tfps<ModIntT>\
-    \ &&P) : P_(std::move(P)) {}\n    tfps<ModIntT> run(const tfps<ModIntT> Q, int\
-    \ d, int n) {\n      // [0,n] => [y^(-d+1)]Q, [n+1,2n+1] => [y^1]Q, ..., [y^0]Q\n\
-    \      if (n == 0) {\n        // [-d+1,0] => [0,d-1]\n        tfps<ModIntT> res(d);\n\
-    \        std::copy_n(P_.cbegin(), std::min(P_.size(), res.size()), res.rbegin());\n\
-    \        return res.div(Q, d);\n      }\n      // let y=x^(2n+2) => [0,2n+2) =\
-    \ [y^0]Q, ...\n      // y^0[0,2n+2), y^1[2n+2,4n+4), ..., y^(2d)[2d(2n+2),(2d+1)(2n+2)-1)\n\
-    \      const int len = ntt_len((d << 1 | 1) * ((n + 1) << 1) - 1);\n      tfps<ModIntT>\
-    \ dftQ(len), VV(len >> 1), V((d << 1 | 1) * ((n >> 1) + 1));\n      for (int i\
-    \ = 0; i <= d; ++i)\n        std::copy_n(Q.cbegin() + i * (n + 1), n + 1, dftQ.begin()\
-    \ + i * ((n + 1) << 1));\n      dft(dftQ);\n      // apply dft trick from Bostan&Mori's\
-    \ paper\n      for (int i = 0; i != len; i += 2) VV[i >> 1] = dftQ[i] * dftQ[i\
-    \ + 1];\n      idft(VV);\n      for (int i = 0; i <= d << 1; ++i)\n        std::copy_n(VV.cbegin()\
-    \ + i * (n + 1), (n >> 1) + 1, V.begin() + i * ((n >> 1) + 1));\n      const auto\
-    \ TT = run(std::move(V), d << 1, n >> 1);\n      VV.assign(len >> 1, ModIntT());\n\
-    \      for (int i = 0; i != d << 1; ++i)\n        std::copy_n(TT.cbegin() + i\
-    \ * ((n >> 1) + 1), (n >> 1) + 1, VV.begin() + i * (n + 1));\n      dft(VV);\n\
-    \      auto &&T = dftQ;\n      // apply dft trick from Bostan&Mori's paper\n \
-    \     for (int i = 0; i != len; i += 2) {\n        auto l = VV[i >> 1] * dftQ[i\
-    \ + 1], r = VV[i >> 1] * dftQ[i];\n        T[i] = l, T[i + 1] = r;\n      }\n\
-    \      idft(T);\n      auto &&U = VV;\n      U.assign(d * (n + 1), ModIntT());\n\
-    \      // [y^(-d+1..0)]T => [y^(d..2d-1)]T\n      for (int i = 0; i != d; ++i)\n\
-    \        std::copy_n(T.cbegin() + (i + d) * ((n + 1) << 1), n + 1, U.begin() +\
-    \ i * (n + 1));\n      return U;\n    }\n\n  private:\n    const tfps<ModIntT>\
-    \ P_;\n  };\n\n  // [y^k](g(y)/1-yf(x)) => [y^0](y^(-k)g(y)/1-yf(x))\n  tfps<ModIntT>\
-    \ P(k + 1), Q(n << 1); // [0,n)=1, [n,2n)=-g\n  std::copy_n(g.cbegin(), std::min(P.size(),\
+    \ &&P, int k) : P_(std::move(P)), k_(k) {}\n    tfps<ModIntT> run(const tfps<ModIntT>\
+    \ Q, int d, int n) {\n      // [0,n] => [y^(-d+1)]Q, [n+1,2n+1] => [y^1]Q, ...,\
+    \ [y^0]Q\n      if (d > k_ && n == 0) {\n        // [-d+1,0] => [0,d-1]\n    \
+    \    tfps<ModIntT> res(d);\n        std::copy_n(P_.cbegin(), std::min(P_.size(),\
+    \ res.size()), res.rbegin());\n        return res.div(Q, d);\n      }\n      //\
+    \ let y=x^(2n+2) => [0,2n+2) = [y^0]Q, ...\n      // y^0[0,2n+2), y^1[2n+2,4n+4),\
+    \ ..., y^(2d)[2d(2n+2),(2d+1)(2n+2)-1)\n      const int len = ntt_len((d << 1\
+    \ | 1) * ((n + 1) << 1) - 1);\n      tfps<ModIntT> dftQ(len), VV(len >> 1), V((d\
+    \ << 1 | 1) * ((n >> 1) + 1));\n      for (int i = 0; i <= d; ++i)\n        std::copy_n(Q.cbegin()\
+    \ + i * (n + 1), n + 1, dftQ.begin() + i * ((n + 1) << 1));\n      dft(dftQ);\n\
+    \      // apply dft trick from Bostan&Mori's paper\n      for (int i = 0; i !=\
+    \ len; i += 2) VV[i >> 1] = dftQ[i] * dftQ[i + 1];\n      idft(VV);\n      for\
+    \ (int i = 0; i <= d << 1; ++i)\n        std::copy_n(VV.cbegin() + i * (n + 1),\
+    \ (n >> 1) + 1, V.begin() + i * ((n >> 1) + 1));\n      const auto TT = run(std::move(V),\
+    \ d << 1, n >> 1);\n      VV.assign(len >> 1, ModIntT());\n      for (int i =\
+    \ 0; i != d << 1; ++i)\n        std::copy_n(TT.cbegin() + i * ((n >> 1) + 1),\
+    \ (n >> 1) + 1, VV.begin() + i * (n + 1));\n      dft(VV);\n      auto &&T = dftQ;\n\
+    \      // apply dft trick from Bostan&Mori's paper\n      for (int i = 0; i !=\
+    \ len; i += 2) {\n        auto l = VV[i >> 1] * dftQ[i + 1], r = VV[i >> 1] *\
+    \ dftQ[i];\n        T[i] = l, T[i + 1] = r;\n      }\n      idft(T);\n      auto\
+    \ &&U = VV;\n      U.assign(d * (n + 1), ModIntT());\n      // [y^(-d+1..0)]T\
+    \ => [y^(d..2d-1)]T\n      for (int i = 0; i != d; ++i)\n        std::copy_n(T.cbegin()\
+    \ + (i + d) * ((n + 1) << 1), n + 1, U.begin() + i * (n + 1));\n      return U;\n\
+    \    }\n\n  private:\n    const tfps<ModIntT> P_;\n    const int k_;\n  };\n\n\
+    \  // [y^k](g(y)/1-yf(x)) => [y^0](y^(-k)g(y)/1-yf(x))\n  tfps<ModIntT> P(k +\
+    \ 1), Q(n << 1); // [0,n)=1, [n,2n)=-g\n  std::copy_n(g.cbegin(), std::min(P.size(),\
     \ g.size()), P.rbegin());\n  Q.front() = ModIntT(1);\n  if (const int s = static_cast<int>(f.size()))\n\
     \    for (int i = n, j = 0; j != s && i != n << 1;) Q[i++] = -f[j++];\n  return\
-    \ coeff_of_y0_rec(std::move(P)).run(std::move(Q), 1, n - 1);\n}\n\nLIB_END\n\n\
-    \n#line 8 \"math/fps_composition.hpp\"\n\n#line 10 \"math/fps_composition.hpp\"\
+    \ coeff_of_y0_rec(std::move(P), k).run(std::move(Q), 1, n - 1);\n}\n\nLIB_END\n\
+    \n\n#line 8 \"math/fps_composition.hpp\"\n\n#line 10 \"math/fps_composition.hpp\"\
     \n\nLIB_BEGIN\n\n// returns f(g) mod x^n\n// reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
     template <typename ModIntT>\ntfps<ModIntT> composition(tfps<ModIntT> f, const\
     \ tfps<ModIntT> &g, int n) {\n  f.resize(n);\n  std::reverse(f.begin(), f.end());\n\
@@ -499,11 +500,11 @@ data:
   isVerificationFile: false
   path: math/fps_composition.hpp
   requiredBy: []
-  timestamp: '2024-04-02 22:40:51+08:00'
+  timestamp: '2024-04-02 23:25:35+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
 documentation_of: math/fps_composition.hpp
 layout: document
 title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack

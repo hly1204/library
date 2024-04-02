@@ -190,8 +190,8 @@ data:
   isVerificationFile: false
   path: math/convolution.hpp
   requiredBy:
-  - math/convolution_mod.hpp
   - math/binomial_convolution.hpp
+  - math/convolution_mod.hpp
   timestamp: '2022-06-22 23:05:33+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

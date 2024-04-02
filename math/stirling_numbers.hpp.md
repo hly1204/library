@@ -104,8 +104,8 @@ data:
   timestamp: '2022-06-03 11:52:48+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
   - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
+  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
 documentation_of: math/stirling_numbers.hpp
 layout: document
 title: Stirling Numbers (in $\mathbb{F} _ p$ for FFT prime $p$)
