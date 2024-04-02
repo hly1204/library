@@ -402,29 +402,28 @@ data:
     LIB_END\n\n\n#line 6 \"math/enum_kth_term_of_power.hpp\"\n\n#line 10 \"math/enum_kth_term_of_power.hpp\"\
     \n\nLIB_BEGIN\n\n// returns [x^k]g(x), [x^k]g(x)f(x), ..., [x^k]g(x)f(x)^(n-1)\n\
     // [x^k](g(x)/(1-yf(x)))\n// reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
-    template <typename ModIntT>\nstd::vector<ModIntT> enum_kth_term_of_power_x(const\
-    \ tfps<ModIntT> &f, const tfps<ModIntT> &g, int k,\n                         \
-    \                     int n) {\n  if (k < 0 || n <= 0) return {};\n  std::vector<ModIntT>\
-    \ P(k + 1), Q((k + 1) << 1);\n  std::copy_n(g.cbegin(), std::min(P.size(), g.size()),\
-    \ P.begin());\n  Q.front() = ModIntT(1);\n  if (const int s = static_cast<int>(f.size()))\n\
-    \    for (int i = k + 1, j = 0; j < s && i < (k + 1) << 1;) Q[i++] = -f[j++];\n\
+    template <typename ModIntT>\nlib::tfps<ModIntT> kth_term_of_x(const tfps<ModIntT>\
+    \ &f, const tfps<ModIntT> &g, int k, int n) {\n  if (k < 0 || n <= 0) return {};\n\
+    \  lib::tfps<ModIntT> P(k + 1), Q((k + 1) << 1);\n  std::copy_n(g.cbegin(), std::min(P.size(),\
+    \ g.size()), P.begin());\n  Q.front() = ModIntT(1);\n  if (const int s = static_cast<int>(f.size()))\n\
+    \    for (int i = k + 1, j = 0; j != s && i != (k + 1) << 1;) Q[i++] = -f[j++];\n\
     \n  auto get_root_div_2 = [](int n) -> decltype(auto) {\n    // modified from\
     \ idft\n    static std::vector<ModIntT> root = {ModIntT(2).inv()};\n    static\
     \ constexpr auto rt         = detail::iroot<ModIntT>();\n    if (int s = static_cast<int>(root.size());\
     \ s < n) {\n      root.resize(n);\n      for (int i = detail::bsf(s), j; 1 <<\
     \ i < n; ++i) {\n        root[j = 1 << i] = rt[i];\n        for (int k = j + 1;\
     \ k < j << 1; ++k) root[k] = root[k - j] * root[j];\n        root[j] *= root.front();\n\
-    \      }\n    }\n    return (root);\n  };\n\n  for (int d = 1; d < n || k != 0;\
-    \ d <<= 1, k >>= 1) {\n    const int len = ntt_len((d << 1 | 1) * ((k + 1) <<\
-    \ 1) - 1);\n    std::vector<ModIntT> dftP(len), dftQ(len), U(len >> 1), V(len\
-    \ >> 1);\n    for (int i = 0; i != d; ++i)\n      std::copy_n(P.cbegin() + i *\
-    \ (k + 1), k + 1, dftP.begin() + i * ((k + 1) << 1));\n    for (int i = 0; i <=\
-    \ d; ++i)\n      std::copy_n(Q.cbegin() + i * (k + 1), k + 1, dftQ.begin() + i\
-    \ * ((k + 1) << 1));\n    dft(dftP);\n    dft(dftQ);\n    // apply dft trick from\
-    \ Bostan&Mori's paper\n    if (k & 1) {\n      auto &&root = get_root_div_2(len\
-    \ >> 1);\n      for (int i = 0; i != len; i += 2) {\n        U[i >> 1] = (dftP[i]\
-    \ * dftQ[i + 1] - dftP[i + 1] * dftQ[i]) * root[i >> 1];\n        V[i >> 1] =\
-    \ dftQ[i] * dftQ[i + 1];\n      }\n    } else {\n      auto &&root = get_root_div_2(1);\n\
+    \      }\n    }\n    return (root);\n  };\n\n  for (int d = 1; k != 0; d <<= 1,\
+    \ k >>= 1) {\n    const int len = ntt_len((d << 1 | 1) * ((k + 1) << 1) - 1);\n\
+    \    lib::tfps<ModIntT> dftP(len), dftQ(len), U(len >> 1), V(len >> 1);\n    for\
+    \ (int i = 0; i != d; ++i)\n      std::copy_n(P.cbegin() + i * (k + 1), k + 1,\
+    \ dftP.begin() + i * ((k + 1) << 1));\n    for (int i = 0; i <= d; ++i)\n    \
+    \  std::copy_n(Q.cbegin() + i * (k + 1), k + 1, dftQ.begin() + i * ((k + 1) <<\
+    \ 1));\n    dft(dftP);\n    dft(dftQ);\n    // apply dft trick from Bostan&Mori's\
+    \ paper\n    if (k & 1) {\n      auto &&root = get_root_div_2(len >> 1);\n   \
+    \   for (int i = 0; i != len; i += 2) {\n        U[i >> 1] = (dftP[i] * dftQ[i\
+    \ + 1] - dftP[i + 1] * dftQ[i]) * root[i >> 1];\n        V[i >> 1] = dftQ[i] *\
+    \ dftQ[i + 1];\n      }\n    } else {\n      auto &&root = get_root_div_2(1);\n\
     \      for (int i = 0; i != len; i += 2) {\n        U[i >> 1] = (dftP[i] * dftQ[i\
     \ + 1] + dftP[i + 1] * dftQ[i]) * root.front();\n        V[i >> 1] = dftQ[i] *\
     \ dftQ[i + 1];\n      }\n    }\n    idft(U);\n    idft(V);\n    P.assign((d <<\
@@ -432,13 +431,12 @@ data:
     \    std::copy_n(U.cbegin() + (i * (k + 1)), (k >> 1) + 1, P.begin() + (i * ((k\
     \ >> 1) + 1)));\n    Q.assign((d << 1 | 1) * ((k >> 1) + 1), ModIntT());\n   \
     \ for (int i = 0; i <= d << 1; ++i)\n      std::copy_n(V.cbegin() + (i * (k +\
-    \ 1)), (k >> 1) + 1, Q.begin() + (i * ((k >> 1) + 1)));\n  }\n\n  return tfps<ModIntT>(P).div(Q,\
+    \ 1)), (k >> 1) + 1, Q.begin() + (i * ((k >> 1) + 1)));\n  }\n\n  return P.div(Q,\
     \ n);\n}\n\n// returns [y^k](g(y)/1-yf(x)) = [y^k](1 + g(y)yf(x) + g(y)y^2f(x)^2\
     \ + ...)\n// reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
-    template <typename ModIntT>\nstd::vector<ModIntT> enum_kth_term_of_power_y(const\
-    \ tfps<ModIntT> &f, const tfps<ModIntT> &g, int k,\n                         \
-    \                     int n) {\n  if (k < 0 || n <= 0) return {};\n  // returns\
-    \ [y^0](g(y^(-1))/1-yf(x))\n  struct coeff_of_y0_rec {\n    coeff_of_y0_rec(tfps<ModIntT>\
+    template <typename ModIntT>\nlib::tfps<ModIntT> kth_term_of_y(const tfps<ModIntT>\
+    \ &f, const tfps<ModIntT> &g, int k, int n) {\n  if (k < 0 || n <= 0) return {};\n\
+    \  // returns [y^0](g(y^(-1))/1-yf(x))\n  struct coeff_of_y0_rec {\n    coeff_of_y0_rec(tfps<ModIntT>\
     \ &&P) : P_(std::move(P)) {}\n    tfps<ModIntT> run(const tfps<ModIntT> Q, int\
     \ d, int n) {\n      // [0,n] => [y^(-d+1)]Q, [n+1,2n+1] => [y^1]Q, ..., [y^0]Q\n\
     \      if (n == 0) {\n        // [-d+1,0] => [0,d-1]\n        tfps<ModIntT> res(d);\n\
@@ -464,20 +462,20 @@ data:
     \ i * (n + 1));\n      return U;\n    }\n\n  private:\n    const tfps<ModIntT>\
     \ P_;\n  };\n\n  // [y^k](g(y)/1-yf(x)) => [y^0](y^(-k)g(y)/1-yf(x))\n  tfps<ModIntT>\
     \ P(k + 1), Q(n << 1); // [0,n)=1, [n,2n)=-g\n  std::copy_n(g.cbegin(), std::min(P.size(),\
-    \ g.size()), P.rbegin());\n  Q.front()   = ModIntT(1);\n  const int s = static_cast<int>(f.size());\n\
-    \  for (int i = n; i - n < s && i != n << 1; ++i) Q[i] = -f[i - n];\n  return\
+    \ g.size()), P.rbegin());\n  Q.front() = ModIntT(1);\n  if (const int s = static_cast<int>(f.size()))\n\
+    \    for (int i = n, j = 0; j != s && i != n << 1;) Q[i++] = -f[j++];\n  return\
     \ coeff_of_y0_rec(std::move(P)).run(std::move(Q), 1, n - 1);\n}\n\nLIB_END\n\n\
     \n#line 8 \"math/fps_composition.hpp\"\n\n#line 10 \"math/fps_composition.hpp\"\
     \n\nLIB_BEGIN\n\n// returns f(g) mod x^n\n// reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
     template <typename ModIntT>\ntfps<ModIntT> composition(tfps<ModIntT> f, const\
     \ tfps<ModIntT> &g, int n) {\n  f.resize(n);\n  std::reverse(f.begin(), f.end());\n\
-    \  return enum_kth_term_of_power_y(g, f, n - 1, n);\n}\n\ntemplate <typename ModIntT>\n\
-    tfps<ModIntT> compositional_inverse(tfps<ModIntT> f, int n) {\n  if (n <= 0 ||\
-    \ f.size() < 2) return {};\n  const auto f1 = f[1].inv();\n  if (n == 1) return\
-    \ {ModIntT()};\n  f.resize(n);\n  {\n    f[1] *= f1;\n    auto c = f1;\n    for\
-    \ (int i = 2; i != n; ++i) f[i] *= c *= f1;\n  }\n  auto a = enum_kth_term_of_power_x(f,\
-    \ {ModIntT(1)}, n - 1, n);\n  binomial<ModIntT> bin(n);\n  const ModIntT c(n -\
-    \ 1);\n  for (int i = 1; i != n; ++i) a[i] *= c * bin.inv(i);\n  return tfps<ModIntT>(a.rbegin(),\
+    \  return kth_term_of_y(g, f, n - 1, n);\n}\n\ntemplate <typename ModIntT>\ntfps<ModIntT>\
+    \ compositional_inverse(tfps<ModIntT> f, int n) {\n  if (n <= 0 || f.size() <\
+    \ 2) return {};\n  const auto f1 = f[1].inv();\n  if (n == 1) return {ModIntT()};\n\
+    \  f.resize(n);\n  {\n    f[1] *= f1;\n    auto c = f1;\n    for (int i = 2; i\
+    \ != n; ++i) f[i] *= c *= f1;\n  }\n  auto a = kth_term_of_x(f, {ModIntT(1)},\
+    \ n - 1, n);\n  binomial<ModIntT> bin(n);\n  const ModIntT c(n - 1);\n  for (int\
+    \ i = 1; i != n; ++i) a[i] *= c * bin.inv(i);\n  return tfps<ModIntT>(a.rbegin(),\
     \ a.rend() - 1).pow(n - 1, (-c.inv()).val()) *\n         tfps<ModIntT>{ModIntT(0),\
     \ f1};\n}\n\nLIB_END\n\n\n#line 1 \"modint/montgomery_modint.hpp\"\n\n\n\n#line\
     \ 5 \"modint/montgomery_modint.hpp\"\n\n#ifdef LIB_DEBUG\n  #include <stdexcept>\n\
@@ -567,7 +565,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   requiredBy: []
-  timestamp: '2024-04-01 22:08:49+08:00'
+  timestamp: '2024-04-02 22:40:51+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
