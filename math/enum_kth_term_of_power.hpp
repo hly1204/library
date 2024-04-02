@@ -80,10 +80,10 @@ lib::tfps<ModIntT> kth_term_of_y(const tfps<ModIntT> &f, const tfps<ModIntT> &g,
   if (k < 0 || n <= 0) return {};
   // returns [y^0](g(y^(-1))/1-yf(x))
   struct coeff_of_y0_rec {
-    coeff_of_y0_rec(tfps<ModIntT> &&P) : P_(std::move(P)) {}
+    coeff_of_y0_rec(tfps<ModIntT> &&P, int k) : P_(std::move(P)), k_(k) {}
     tfps<ModIntT> run(const tfps<ModIntT> Q, int d, int n) {
       // [0,n] => [y^(-d+1)]Q, [n+1,2n+1] => [y^1]Q, ..., [y^0]Q
-      if (n == 0) {
+      if (d > k_ && n == 0) {
         // [-d+1,0] => [0,d-1]
         tfps<ModIntT> res(d);
         std::copy_n(P_.cbegin(), std::min(P_.size(), res.size()), res.rbegin());
@@ -123,6 +123,7 @@ lib::tfps<ModIntT> kth_term_of_y(const tfps<ModIntT> &f, const tfps<ModIntT> &g,
 
   private:
     const tfps<ModIntT> P_;
+    const int k_;
   };
 
   // [y^k](g(y)/1-yf(x)) => [y^0](y^(-k)g(y)/1-yf(x))
@@ -131,7 +132,7 @@ lib::tfps<ModIntT> kth_term_of_y(const tfps<ModIntT> &f, const tfps<ModIntT> &g,
   Q.front() = ModIntT(1);
   if (const int s = static_cast<int>(f.size()))
     for (int i = n, j = 0; j != s && i != n << 1;) Q[i++] = -f[j++];
-  return coeff_of_y0_rec(std::move(P)).run(std::move(Q), 1, n - 1);
+  return coeff_of_y0_rec(std::move(P), k).run(std::move(Q), 1, n - 1);
 }
 
 LIB_END
