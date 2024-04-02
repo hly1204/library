@@ -14,14 +14,13 @@ LIB_BEGIN
 // [x^k](g(x)/(1-yf(x)))
 // reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034
 template <typename ModIntT>
-std::vector<ModIntT> enum_kth_term_of_power_x(const tfps<ModIntT> &f, const tfps<ModIntT> &g, int k,
-                                              int n) {
+lib::tfps<ModIntT> kth_term_of_x(const tfps<ModIntT> &f, const tfps<ModIntT> &g, int k, int n) {
   if (k < 0 || n <= 0) return {};
-  std::vector<ModIntT> P(k + 1), Q((k + 1) << 1);
+  lib::tfps<ModIntT> P(k + 1), Q((k + 1) << 1);
   std::copy_n(g.cbegin(), std::min(P.size(), g.size()), P.begin());
   Q.front() = ModIntT(1);
   if (const int s = static_cast<int>(f.size()))
-    for (int i = k + 1, j = 0; j < s && i < (k + 1) << 1;) Q[i++] = -f[j++];
+    for (int i = k + 1, j = 0; j != s && i != (k + 1) << 1;) Q[i++] = -f[j++];
 
   auto get_root_div_2 = [](int n) -> decltype(auto) {
     // modified from idft
@@ -38,9 +37,9 @@ std::vector<ModIntT> enum_kth_term_of_power_x(const tfps<ModIntT> &f, const tfps
     return (root);
   };
 
-  for (int d = 1; d < n || k != 0; d <<= 1, k >>= 1) {
+  for (int d = 1; k != 0; d <<= 1, k >>= 1) {
     const int len = ntt_len((d << 1 | 1) * ((k + 1) << 1) - 1);
-    std::vector<ModIntT> dftP(len), dftQ(len), U(len >> 1), V(len >> 1);
+    lib::tfps<ModIntT> dftP(len), dftQ(len), U(len >> 1), V(len >> 1);
     for (int i = 0; i != d; ++i)
       std::copy_n(P.cbegin() + i * (k + 1), k + 1, dftP.begin() + i * ((k + 1) << 1));
     for (int i = 0; i <= d; ++i)
@@ -71,14 +70,13 @@ std::vector<ModIntT> enum_kth_term_of_power_x(const tfps<ModIntT> &f, const tfps
       std::copy_n(V.cbegin() + (i * (k + 1)), (k >> 1) + 1, Q.begin() + (i * ((k >> 1) + 1)));
   }
 
-  return tfps<ModIntT>(P).div(Q, n);
+  return P.div(Q, n);
 }
 
 // returns [y^k](g(y)/1-yf(x)) = [y^k](1 + g(y)yf(x) + g(y)y^2f(x)^2 + ...)
 // reference: noshi91's blog: https://noshi91.hatenablog.com/entry/2024/03/16/224034
 template <typename ModIntT>
-std::vector<ModIntT> enum_kth_term_of_power_y(const tfps<ModIntT> &f, const tfps<ModIntT> &g, int k,
-                                              int n) {
+lib::tfps<ModIntT> kth_term_of_y(const tfps<ModIntT> &f, const tfps<ModIntT> &g, int k, int n) {
   if (k < 0 || n <= 0) return {};
   // returns [y^0](g(y^(-1))/1-yf(x))
   struct coeff_of_y0_rec {
@@ -130,9 +128,9 @@ std::vector<ModIntT> enum_kth_term_of_power_y(const tfps<ModIntT> &f, const tfps
   // [y^k](g(y)/1-yf(x)) => [y^0](y^(-k)g(y)/1-yf(x))
   tfps<ModIntT> P(k + 1), Q(n << 1); // [0,n)=1, [n,2n)=-g
   std::copy_n(g.cbegin(), std::min(P.size(), g.size()), P.rbegin());
-  Q.front()   = ModIntT(1);
-  const int s = static_cast<int>(f.size());
-  for (int i = n; i - n < s && i != n << 1; ++i) Q[i] = -f[i - n];
+  Q.front() = ModIntT(1);
+  if (const int s = static_cast<int>(f.size()))
+    for (int i = n, j = 0; j != s && i != n << 1;) Q[i++] = -f[j++];
   return coeff_of_y0_rec(std::move(P)).run(std::move(Q), 1, n - 1);
 }
 
