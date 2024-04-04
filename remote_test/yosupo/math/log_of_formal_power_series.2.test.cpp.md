@@ -543,8 +543,8 @@ data:
     \  int n;\n  std::cin >> n;\n  using mint = lib::mm30<998244353>;\n  lib::tfps<mint>\
     \ f(n), g(n);\n  std::cin >> f;\n  lib::binomial<mint> bin(n);\n  for (int i =\
     \ 1; i < n; ++i) {\n    g[i] = bin.inv(i);\n    if ((i - 1) & 1) g[i] = -g[i];\n\
-    \  }\n  f[0] = 0;\n  for (auto &&c : lib::composition(g, f, n)) std::cout << c\
-    \ << ' ';\n  return 0;\n}\n"
+    \  }\n  f[0] = mint(0);\n  for (auto &&c : lib::composition(g, f, n)) std::cout\
+    \ << c << ' ';\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/log_of_formal_power_series\"\
     \n\n#include \"math/binomial.hpp\"\n#include \"math/fps_composition.hpp\"\n#include\
     \ \"math/truncated_formal_power_series.hpp\"\n#include \"modint/montgomery_modint.hpp\"\
@@ -553,8 +553,8 @@ data:
     \  std::cin.tie(nullptr);\n  int n;\n  std::cin >> n;\n  using mint = lib::mm30<998244353>;\n\
     \  lib::tfps<mint> f(n), g(n);\n  std::cin >> f;\n  lib::binomial<mint> bin(n);\n\
     \  for (int i = 1; i < n; ++i) {\n    g[i] = bin.inv(i);\n    if ((i - 1) & 1)\
-    \ g[i] = -g[i];\n  }\n  f[0] = 0;\n  for (auto &&c : lib::composition(g, f, n))\
-    \ std::cout << c << ' ';\n  return 0;\n}\n"
+    \ g[i] = -g[i];\n  }\n  f[0] = mint(0);\n  for (auto &&c : lib::composition(g,\
+    \ f, n)) std::cout << c << ' ';\n  return 0;\n}\n"
   dependsOn:
   - math/binomial.hpp
   - common.hpp
@@ -572,7 +572,7 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
   requiredBy: []
-  timestamp: '2024-04-04 08:34:21+08:00'
+  timestamp: '2024-04-04 14:11:40+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp

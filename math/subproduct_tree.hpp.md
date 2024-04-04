@@ -242,8 +242,8 @@ data:
   timestamp: '2023-08-05 09:04:07+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
   - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
+  - remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
 documentation_of: math/subproduct_tree.hpp
 layout: document
 title: Multipoint Evaluation and Interpolation (in $\mathbb{F} _ p$ for FFT prime

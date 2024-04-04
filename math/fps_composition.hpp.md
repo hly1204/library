@@ -43,7 +43,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
     title: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
     title: remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
   - icon: ':x:'
@@ -510,10 +510,10 @@ data:
   timestamp: '2024-04-04 08:34:21+08:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
-  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   - remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
-  - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
   - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
+  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
 documentation_of: math/fps_composition.hpp
 layout: document
 title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack

@@ -47,9 +47,9 @@ data:
     title: Montgomery ModInt
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/exp_of_formal_power_series
@@ -541,18 +541,18 @@ data:
     \nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\", \"r\", stdin), std::freopen(\"\
     out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n\
     \  int n;\n  std::cin >> n;\n  using mint = lib::mm30<998244353>;\n  lib::tfps<mint>\
-    \ f(n), g(n);\n  lib::binomial<mint> bin(n);\n  for (int i = 0; i != n; ++i) g[i]\
-    \ = bin.inv_factorial(i);\n  for (auto &&c : lib::composition(g, f, n)) std::cout\
-    \ << c << ' ';\n  return 0;\n}\n"
+    \ f(n), g(n);\n  std::cin >> f;\n  lib::binomial<mint> bin(n);\n  for (int i =\
+    \ 0; i != n; ++i) g[i] = bin.inv_factorial(i);\n  for (auto &&c : lib::composition(g,\
+    \ f, n)) std::cout << c << ' ';\n  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/exp_of_formal_power_series\"\
     \n\n#include \"math/binomial.hpp\"\n#include \"math/fps_composition.hpp\"\n#include\
     \ \"math/truncated_formal_power_series.hpp\"\n#include \"modint/montgomery_modint.hpp\"\
     \n\n#include <iostream>\n\nint main() {\n#ifdef LOCAL\n  std::freopen(\"in\",\
     \ \"r\", stdin), std::freopen(\"out\", \"w\", stdout);\n#endif\n  std::ios::sync_with_stdio(false);\n\
     \  std::cin.tie(nullptr);\n  int n;\n  std::cin >> n;\n  using mint = lib::mm30<998244353>;\n\
-    \  lib::tfps<mint> f(n), g(n);\n  lib::binomial<mint> bin(n);\n  for (int i =\
-    \ 0; i != n; ++i) g[i] = bin.inv_factorial(i);\n  for (auto &&c : lib::composition(g,\
-    \ f, n)) std::cout << c << ' ';\n  return 0;\n}\n"
+    \  lib::tfps<mint> f(n), g(n);\n  std::cin >> f;\n  lib::binomial<mint> bin(n);\n\
+    \  for (int i = 0; i != n; ++i) g[i] = bin.inv_factorial(i);\n  for (auto &&c\
+    \ : lib::composition(g, f, n)) std::cout << c << ' ';\n  return 0;\n}\n"
   dependsOn:
   - math/binomial.hpp
   - common.hpp
@@ -570,8 +570,8 @@ data:
   isVerificationFile: true
   path: remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
   requiredBy: []
-  timestamp: '2024-04-04 08:34:21+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-04-04 14:11:40+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
 layout: document
