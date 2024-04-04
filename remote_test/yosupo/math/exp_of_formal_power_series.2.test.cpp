@@ -17,6 +17,7 @@ int main() {
   std::cin >> n;
   using mint = lib::mm30<998244353>;
   lib::tfps<mint> f(n), g(n);
+  std::cin >> f;
   lib::binomial<mint> bin(n);
   for (int i = 0; i != n; ++i) g[i] = bin.inv_factorial(i);
   for (auto &&c : lib::composition(g, f, n)) std::cout << c << ' ';

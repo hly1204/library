@@ -23,7 +23,7 @@ int main() {
     g[i] = bin.inv(i);
     if ((i - 1) & 1) g[i] = -g[i];
   }
-  f[0] = 0;
+  f[0] = mint(0);
   for (auto &&c : lib::composition(g, f, n)) std::cout << c << ' ';
   return 0;
 }
