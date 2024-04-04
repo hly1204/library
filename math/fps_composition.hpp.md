@@ -1,37 +1,37 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/binomial.hpp
     title: Binomial Coefficient (in $\mathbb{F} _ p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/enum_kth_term_of_power.hpp
     title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
       _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/semi_relaxed_convolution.hpp
     title: Semi-Relaxed Convolution (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT
       prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/sqrt_mod.hpp
     title: Square Roots (in $\mathbb{F} _ p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/truncated_formal_power_series.hpp
     title: Truncated Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: math/truncated_fourier_transform.hpp
     title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for
       FFT prime $p$)
@@ -43,9 +43,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
     title: remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
+    title: remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
+  - icon: ':x:'
+    path: remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
+    title: remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links:
     - https://noshi91.hatenablog.com/entry/2024/03/16/224034
@@ -431,9 +437,9 @@ data:
     \ const tfps<ModIntT> &g, int k, int n) {\n  if (k < 0 || n <= 0) return {};\n\
     \  // returns [y^0](g(y^(-1))/1-yf(x))\n  struct coeff_of_y0_rec {\n    coeff_of_y0_rec(tfps<ModIntT>\
     \ &&P, int k) : P_(std::move(P)), k_(k) {}\n    tfps<ModIntT> run(const tfps<ModIntT>\
-    \ Q, int d, int n) {\n      // [0,n] => [y^(-d+1)]Q, [n+1,2n+1] => [y^1]Q, ...,\
-    \ [y^0]Q\n      if (d > k_ && n == 0) {\n        // [-d+1,0] => [0,d-1]\n    \
-    \    tfps<ModIntT> res(d);\n        std::copy_n(P_.cbegin(), std::min(P_.size(),\
+    \ Q, int d, int n) {\n      // [0,n] => [y^(-d+1)]Q, [n+1,2n+1] => [y^(-1)]Q,\
+    \ ..., [y^0]Q\n      if (d > k_ && n == 0) {\n        // [-d+1,0] => [0,d-1]\n\
+    \        tfps<ModIntT> res(d);\n        std::copy_n(P_.cbegin(), std::min(P_.size(),\
     \ res.size()), res.rbegin());\n        return res.div(Q, d);\n      }\n      //\
     \ let y=x^(2n+2) => [0,2n+2) = [y^0]Q, ...\n      // y^0[0,2n+2), y^1[2n+2,4n+4),\
     \ ..., y^(2d)[2d(2n+2),(2d+1)(2n+2)-1)\n      const int len = ntt_len((d << 1\
@@ -501,10 +507,12 @@ data:
   isVerificationFile: false
   path: math/fps_composition.hpp
   requiredBy: []
-  timestamp: '2024-04-02 23:48:36+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2024-04-04 08:34:21+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+  - remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
+  - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
   - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
 documentation_of: math/fps_composition.hpp
 layout: document

@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: common.hpp
     title: common.hpp
   _extendedRequiredBy: []
@@ -39,6 +39,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
+  - icon: ':x:'
+    path: remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
+    title: remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
     title: remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
@@ -57,6 +60,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
+  - icon: ':x:'
+    path: remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
+    title: remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
     title: remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
@@ -96,9 +102,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/subset_convolution.0.test.cpp
     title: remote_test/yosupo/math/subset_convolution.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 1 \"modint/montgomery_modint.hpp\"\n\n\n\n#line 1 \"common.hpp\"\
@@ -225,7 +231,7 @@ data:
   path: modint/montgomery_modint.hpp
   requiredBy: []
   timestamp: '2022-04-23 22:52:36+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - remote_test/yosupo/math/convolution_mod.1.test.cpp
   - remote_test/yosupo/math/partition_function.0.test.cpp
@@ -240,6 +246,7 @@ data:
   - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
   - remote_test/yosupo/math/inv_of_formal_power_series.0.test.cpp
+  - remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
   - remote_test/yosupo/math/exp_of_formal_power_series.0.test.cpp
   - remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
   - remote_test/yosupo/math/subset_convolution.0.test.cpp
@@ -252,6 +259,7 @@ data:
   - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
   - remote_test/yosupo/math/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - remote_test/yosupo/math/sharp_p_subset_sum.0.test.cpp
+  - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
   - remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
   - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
   - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
