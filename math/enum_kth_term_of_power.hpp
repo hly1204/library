@@ -83,7 +83,7 @@ lib::tfps<ModIntT> kth_term(const tfps<ModIntT> &f, const tfps<ModIntT> &g, int 
   struct coeff_of_y0_rec {
     coeff_of_y0_rec(tfps<ModIntT> &&P, int k) : P_(std::move(P)), k_(k) {}
     tfps<ModIntT> run(const tfps<ModIntT> Q, int d, int n) {
-      // [0,n] => [y^(-d+1)]Q, [n+1,2n+1] => [y^1]Q, ..., [y^0]Q
+      // [0,n] => [y^(-d+1)]Q, [n+1,2n+1] => [y^(-1)]Q, ..., [y^0]Q
       if (d > k_ && n == 0) {
         // [-d+1,0] => [0,d-1]
         tfps<ModIntT> res(d);
