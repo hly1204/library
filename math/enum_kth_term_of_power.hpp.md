@@ -1,35 +1,35 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/extended_gcd.hpp
     title: Extended Euclidean Algorithm (in $\mathbb{Z}$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/random.hpp
     title: Pseudo Random Number Generator
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/semi_relaxed_convolution.hpp
     title: Semi-Relaxed Convolution (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT
       prime $p$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/sqrt_mod.hpp
     title: Square Roots (in $\mathbb{F} _ p$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/truncated_formal_power_series.hpp
     title: Truncated Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/truncated_fourier_transform.hpp
     title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for
       FFT prime $p$)
   _extendedRequiredBy:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/fps_composition.hpp
     title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
@@ -43,12 +43,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
     title: remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://noshi91.hatenablog.com/entry/2024/03/16/224034
@@ -531,12 +531,12 @@ data:
   requiredBy:
   - math/fps_composition.hpp
   timestamp: '2024-04-04 08:34:21+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
-  - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
   - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+  - remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
+  - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
+  - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
 documentation_of: math/enum_kth_term_of_power.hpp
 layout: document
 title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}

@@ -1,11 +1,11 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
   _extendedRequiredBy:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/fps_composition.hpp
     title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
@@ -25,7 +25,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
     title: remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
   - icon: ':heavy_check_mark:'
@@ -37,9 +37,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
     title: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/binomial.hpp\"\n\n\n\n#line 1 \"common.hpp\"\n\n\n\n\
@@ -86,15 +86,15 @@ data:
   - math/taylor_shift.hpp
   - math/stirling_numbers.hpp
   timestamp: '2022-05-05 22:58:57+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
+  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
   - remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
-  - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
   - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
-  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
+  - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
 documentation_of: math/binomial.hpp
 layout: document
 title: Binomial Coefficient (in $\mathbb{F} _ p$)

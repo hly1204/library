@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/truncated_fourier_transform.hpp
     title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for
       FFT prime $p$)
@@ -190,8 +190,8 @@ data:
   isVerificationFile: false
   path: math/convolution.hpp
   requiredBy:
-  - math/binomial_convolution.hpp
   - math/convolution_mod.hpp
+  - math/binomial_convolution.hpp
   timestamp: '2022-06-22 23:05:33+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

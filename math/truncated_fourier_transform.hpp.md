@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: common.hpp
     title: common.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/radix2_ntt.hpp
     title: Radix-2 NTT (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
   _extendedRequiredBy:
@@ -17,11 +17,11 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/convolution_mod.hpp
     title: Convolution (in $\mathbb{Z} / m \mathbb{Z} \lbrack z \rbrack$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/enum_kth_term_of_power.hpp
     title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
       _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/fps_composition.hpp
     title: Formal Power Series Composition (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
@@ -32,7 +32,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/polynomial.hpp
     title: Polynomial (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT prime $p$)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/truncated_formal_power_series.hpp
     title: Truncated Formal Power Series (in $\mathbb{F} _ p \lbrack \lbrack z \rbrack
       \rbrack$ for FFT prime $p$)
@@ -70,7 +70,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
     title: remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
   - icon: ':heavy_check_mark:'
@@ -100,9 +100,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
     title: remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 1 \"math/truncated_fourier_transform.hpp\"\n\n\n\n#line 1 \"\
@@ -283,38 +283,38 @@ data:
   isVerificationFile: false
   path: math/truncated_fourier_transform.hpp
   requiredBy:
-  - math/binomial_convolution.hpp
   - math/fps_composition.hpp
-  - math/convolution_mod.hpp
-  - math/truncated_formal_power_series.hpp
   - math/multivariate_convolution.hpp
-  - math/enum_kth_term_of_power.hpp
+  - math/truncated_formal_power_series.hpp
   - math/convolution.hpp
+  - math/enum_kth_term_of_power.hpp
+  - math/convolution_mod.hpp
   - math/polynomial.hpp
+  - math/binomial_convolution.hpp
   timestamp: '2022-06-22 23:05:33+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
-  - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
-  - remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
-  - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
+  - remote_test/yosupo/math/convolution_mod.1.test.cpp
+  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
   - remote_test/yosupo/math/convolution_mod.0.test.cpp
   - remote_test/yosupo/math/polynomial_taylor_shift.1.test.cpp
-  - remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
-  - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
-  - remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
-  - remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
   - remote_test/yosupo/math/pow_of_formal_power_series.1.test.cpp
-  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
-  - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
-  - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
-  - remote_test/yosupo/math/multivariate_convolution.0.test.cpp
-  - remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
-  - remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
-  - remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
   - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
-  - remote_test/yosupo/math/convolution_mod.1.test.cpp
+  - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
+  - remote_test/yosupo/math/inv_of_formal_power_series.2.test.cpp
+  - remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
+  - remote_test/yosupo/math/sqrt_of_formal_power_series.0.test.cpp
+  - remote_test/yosupo/math/multipoint_evaluation.0.test.cpp
+  - remote_test/yosupo/math/polynomial_interpolation.0.test.cpp
+  - remote_test/yosupo/math/inv_of_polynomials.0.test.cpp
+  - remote_test/yosupo/math/multivariate_convolution.0.test.cpp
+  - remote_test/yosupo/math/division_of_polynomials.0.test.cpp
+  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
+  - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
+  - remote_test/yosupo/math/exp_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/convolution_mod_1000000007.0.test.cpp
+  - remote_test/yosupo/math/log_of_formal_power_series.1.test.cpp
+  - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
 documentation_of: math/truncated_fourier_transform.hpp
 layout: document
 title: Truncated Fourier Transform (in $\mathbb{F} _ p \lbrack z \rbrack$ for FFT
