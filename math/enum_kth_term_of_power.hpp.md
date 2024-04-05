@@ -543,7 +543,7 @@ title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F
   _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
 ---
 
-From this algorithm, we can know that the sequence $\left(\left\lbrack x^k\right\rbrack gf^n\right)_{n\geq 0}$ is a linearly recurrent sequence, what this algorithm is doing is find such a rational function $P/Q$ generate the sequence.
+From this algorithm, we can know that the sequence $\left(\left\lbrack x^k\right\rbrack gf^n\right)_{n\geq 0}$ is a linearly recurrent sequence (more precisely, the $C$-recursive sequence), what this algorithm is doing is find such a rational function $P/Q$ generate the sequence.
 
 ## Bibliography
 
