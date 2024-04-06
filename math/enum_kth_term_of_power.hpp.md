@@ -533,17 +533,15 @@ data:
   timestamp: '2024-04-04 08:34:21+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   - remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
-  - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
   - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
+  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
 documentation_of: math/enum_kth_term_of_power.hpp
 layout: document
 title: Enumeration of $k$-th Term of Power of Formal Power Series (in $\mathbb{F}
   _ p \lbrack \lbrack z \rbrack \rbrack$ for FFT prime $p$)
 ---
-
-From this algorithm, we can know that the sequence $\left(\left\lbrack x^k\right\rbrack gf^n\right)_{n\geq 0}$ is a linearly recurrent sequence (more precisely, the $C$-recursive sequence), what this algorithm is doing is finding such a rational function $P/Q$ generate the sequence.
 
 ## Bibliography
 

@@ -88,13 +88,13 @@ data:
   timestamp: '2022-05-05 22:58:57+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
-  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
   - remote_test/yosupo/math/stirling_number_of_the_first_kind.0.test.cpp
   - remote_test/yosupo/math/log_of_formal_power_series.2.test.cpp
-  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
-  - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
   - remote_test/yosupo/math/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  - remote_test/yosupo/math/polynomial_taylor_shift.0.test.cpp
+  - remote_test/yosupo/math/stirling_number_of_the_second_kind.0.test.cpp
+  - remote_test/yosupo/math/exp_of_formal_power_series.2.test.cpp
+  - remote_test/yosupo/math/composition_of_formal_power_series_large.0.test.cpp
 documentation_of: math/binomial.hpp
 layout: document
 title: Binomial Coefficient (in $\mathbb{F} _ p$)
