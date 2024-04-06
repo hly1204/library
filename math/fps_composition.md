@@ -108,7 +108,7 @@ $$
 
 There is no need to compute the inversion of formal power series.
 
-Thanks noshi91 for teaching me this on [X (Twitter)](https://twitter.com/noshi91/status/1776305463526826041)!
+Thanks noshi91 for teaching me this at [X (Twitter)](https://twitter.com/noshi91/status/1776305463526826041)!
 
 ## Bibliography
 
