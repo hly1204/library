@@ -74,7 +74,7 @@ template <typename Iterator>
 inline void fft_n(Iterator a, int n) {
     using Tp = typename std::iterator_traits<Iterator>::value_type;
     assert((n & (n - 1)) == 0);
-    for (int j = 0; j != n / 2; ++j) {
+    for (int j = 0; j < n / 2; ++j) {
         auto u = a[j], v = a[j + n / 2];
         a[j] = u + v, a[j + n / 2] = u - v;
     }
@@ -121,6 +121,22 @@ inline void inv_fft_n(Iterator a, int n) {
 }
 
 template <typename Tp>
-void inv_fft(std::vector<Tp> &a) {
+inline void inv_fft(std::vector<Tp> &a) {
     inv_fft_n(a.begin(), a.size());
+}
+
+template <typename Tp>
+inline std::vector<Tp> convolution_fft(std::vector<Tp> a, std::vector<Tp> b) {
+    if (a.empty() || b.empty()) return {};
+    const int n   = a.size();
+    const int m   = b.size();
+    const int len = fft_len(n + m - 1);
+    a.resize(len);
+    b.resize(len);
+    fft(a);
+    fft(b);
+    for (int i = 0; i < len; ++i) a[i] *= b[i];
+    inv_fft(a);
+    a.resize(n + m - 1);
+    return a;
 }
