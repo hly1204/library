@@ -2,6 +2,7 @@
 
 #include "binomial.hpp"
 #include "fft.hpp"
+#include <algorithm>
 #include <vector>
 
 // returns f(g) mod x^n
