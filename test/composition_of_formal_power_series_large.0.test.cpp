@@ -3,6 +3,7 @@
 #include "fps_composition.hpp"
 #include "modint.hpp"
 #include <iostream>
+#include <vector>
 
 int main() {
     std::ios::sync_with_stdio(false);
