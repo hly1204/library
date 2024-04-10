@@ -110,6 +110,32 @@ There is no need to compute the inversion of formal power series.
 
 Thanks noshi91 for teaching me this at [X (Twitter)](https://twitter.com/noshi91/status/1776305463526826041)!
 
+## Variants
+
+Consider the ring of reversed formal Laurent series: $\mathbb{C}\left\lbrack \left\lbrack x\right\rbrack\right\rbrack((y^{-1}))$, we have
+
+$$
+\dfrac{1}{-g(x)+y}=y^{-1}+g(x)y^{-2}+g(x)^2y^{-3}+\cdots =\sum_{j\geq 1}g(x)^{j-1}y^{-j}
+$$
+
+for the composition problem, our goal is
+
+$$
+\left\lbrack y^{-1}\right\rbrack \dfrac{f(y)}{-g(x)+y}
+$$
+
+because we know the leading coefficient of the denominator is always $1$, we could take advantage of cyclic convolution, seems also works for the compositional inverse case.
+
+### Radix-3 Variant
+
+If we could only do radix-3 FFTs, we may use
+
+$$
+\frac{1}{Q(x)Q(\Omega x)Q(\Omega^2x)}=\frac{1}{V(x^3)}
+$$
+
+for $1+\Omega +\Omega^2=0$.
+
 ## Bibliography
 
 1. noshi91. [FPS の合成と逆関数、冪乗の係数列挙 $\Theta(n(\log(n))^2)$](https://noshi91.hatenablog.com/entry/2024/03/16/224034).
