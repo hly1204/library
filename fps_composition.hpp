@@ -14,7 +14,7 @@ std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<Tp> &g, 
     if (g.empty()) return std::vector<Tp>(n);
 
     // [[y^(-1)]] (f(y) / (-f(x) + y)) mod x^n
-    // 在 R[x]((y^(-1))) 上计算乘法逆元
+    // R[x]((y^(-1)))
     auto rec = [g0 = g[0]](auto &&rec, const std::vector<Tp> &P, const std::vector<Tp> &Q, int d,
                            int n) {
         if (n == 1) {
@@ -24,7 +24,7 @@ std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<Tp> &g, 
             for (int i = 0; i <= d; ++i) invQ[d - i] = bin.binom(d + i - 1, d - 1) * gg, gg *= g0;
             // invQ[i] = [y^(-2d + i)]Q
             // P[0,d-1] * invQ[-2d,-d] => [0,d-1] * [0,d]
-            // 取 [-d,-1] => 取 [d,2d-1]
+            // take [-d,-1] => take [d,2d-1]
             auto PinvQ = convolution_fft(P, invQ);
             PinvQ.erase(PinvQ.begin(), PinvQ.begin() + d);
             PinvQ.resize(d);
@@ -60,7 +60,7 @@ std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<Tp> &g, 
         inv_fft(U);
 
         // [-2d,d-1] => [0,3d-1]
-        // 取 [-d,-1] => 取 [d,2d-1]
+        // take [-d,-1] => take [d,2d-1]
         for (int i = 0; i < d; ++i)
             for (int j = 0; j < n; ++j) U[i * n + j] = U[(i + d) * (n * 2) + j];
         U.resize(d * n);
