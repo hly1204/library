@@ -13,7 +13,7 @@ std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<Tp> &g, 
     if (n <= 0) return {};
     if (g.empty()) return std::vector<Tp>(n);
 
-    // [[y^(-1)]] (f(y) / (-f(x) + y)) mod x^n
+    // [[y^(-1)]] (f(y) / (-g(x) + y)) mod x^n
     // R[x]((y^(-1)))
     auto rec = [g0 = g[0]](auto &&rec, const std::vector<Tp> &P, const std::vector<Tp> &Q, int d,
                            int n) {
