@@ -113,7 +113,7 @@ inline void inv_fft_n(Iterator a, int n) {
                 a[k] = u + v, a[k + i / 2] = (u - v) * root[m];
             }
     }
-    const Tp iv(Tp::mod() - Tp::mod() / n);
+    const Tp iv = Tp::mod() - Tp::mod() / n;
     for (int j = 0; j < n / 2; ++j) {
         auto u = a[j] * iv, v = a[j + n / 2] * iv;
         a[j] = u + v, a[j + n / 2] = u - v;
