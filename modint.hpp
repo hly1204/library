@@ -40,7 +40,8 @@ public:
         }
         return from_raw(x1 < 0 ? x1 + (int)Mod : x1);
     }
-    std::enable_if_t<(Mod & 1), ModInt> div_by_2() const {
+    template <bool Odd = (Mod & 1)>
+    std::enable_if_t<Odd, ModInt> div_by_2() const {
         if (v_ & 1) return from_raw((v_ + Mod) >> 1);
         return from_raw(v_ >> 1);
     }
