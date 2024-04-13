@@ -64,7 +64,7 @@ inline Tp div_at(const std::vector<Tp> &P, std::vector<Tp> Q, long long k) {
         if (k < (int)P.size()) {
             inv_fft(dftP);
             inv_fft(dftQ);
-            return div(P, Q, k + 1).at(k);
+            return div(dftP, dftQ, k + 1).at(k);
         }
 
         fft_doubling(dftP);
