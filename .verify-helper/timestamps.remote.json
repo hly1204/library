@@ -3,5 +3,6 @@
 "test/convolution_mod.0.test.cpp": "2024-04-11 20:59:01 +0800",
 "test/exp_of_formal_power_series.0.test.cpp": "2024-04-13 19:01:37 +0800",
 "test/inv_of_formal_power_series.0.test.cpp": "2024-04-13 19:01:37 +0800",
+"test/kth_term_of_linearly_recurrent_sequence.0.test.cpp": "2024-04-13 19:24:21 +0800",
 "test/log_of_formal_power_series.0.test.cpp": "2024-04-13 19:01:37 +0800"
 }
