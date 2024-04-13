@@ -13,7 +13,7 @@ class Binomial {
         if (const int nn = factorial_.size(); nn < n) {
             int k = nn;
             while (k < n) k *= 2;
-            assert(Tp::mod() >= k);
+            k = std::min(k, (int)Tp::mod());
             factorial_.resize(k);
             invfactorial_.resize(k);
             for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;
