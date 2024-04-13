@@ -15,6 +15,8 @@ semi_relaxed_convolution(const std::vector<Tp> &A, Closure gen, int n) {
     enum { BaseCaseSize = 32 };
     static_assert((BaseCaseSize & (BaseCaseSize - 1)) == 0);
 
+    if (A.empty()) return std::vector<Tp>(n);
+
     static const int Block[]     = {16, 16, 16, 16, 16};
     static const int BlockSize[] = {
         BaseCaseSize,
@@ -75,7 +77,7 @@ semi_relaxed_convolution(const std::vector<Tp> &A, Closure gen, int n) {
         }
 
         // basecase contribution
-        for (int j = i - s; j < i; ++j) AB[i] += A[i - j] * B[j];
+        for (int j = std::max(i - s, i - (int)A.size() + 1); j < i; ++j) AB[i] += A[i - j] * B[j];
         B[i] = gen(i, AB);
         AB[i] += A[0] * B[i];
     }
