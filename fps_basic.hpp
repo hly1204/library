@@ -61,3 +61,36 @@ inline std::vector<Tp> exp(const std::vector<Tp> &a, int n) {
         },
         n);
 }
+
+template <typename Tp>
+inline std::vector<Tp> pow(std::vector<Tp> a, long long e, int n) {
+    auto ord = [](const std::vector<Tp> &a) {
+        for (int i = 0; i < (int)a.size(); ++i)
+            if (a[i] != 0) return i;
+        return -1;
+    };
+
+    if (n <= 0) return {};
+    if (e == 0) {
+        std::vector<Tp> res(n);
+        res[0] = 1;
+        return res;
+    }
+
+    const int o = ord(a);
+    if (o < 0 || o > n / e || (o == n / e && n % e == 0)) return std::vector<Tp>(n);
+    if (o != 0) a.erase(a.begin(), a.begin() + o);
+
+    const Tp ia0 = a[0].inv();
+    const Tp a0e = a[0].pow(e);
+    const Tp me  = e;
+
+    for (int i = 0; i < (int)a.size(); ++i) a[i] *= ia0;
+    a = log(a, n - o * e);
+    for (int i = 0; i < (int)a.size(); ++i) a[i] *= me;
+    a = exp(a, n - o * e);
+    for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;
+
+    a.insert(a.begin(), o * e, Tp());
+    return a;
+}
