@@ -37,7 +37,7 @@ inline Tp div_at(const std::vector<Tp> &P, std::vector<Tp> Q, long long k) {
     }
 
     assert(k >= 0);
-    if (k < P.size()) return div(P, Q, k + 1).at(k);
+    if (k < (int)P.size()) return div(P, Q, k + 1).at(k);
 
     const int len = fft_len(std::max(P.size() + Q.size(), Q.size() * 2) - 1);
     std::vector<Tp> dftP(P), dftQ(Q);
@@ -61,7 +61,7 @@ inline Tp div_at(const std::vector<Tp> &P, std::vector<Tp> Q, long long k) {
         dftQ.resize(len / 2);
 
         k /= 2;
-        if (k < P.size()) {
+        if (k < (int)P.size()) {
             inv_fft(dftP);
             inv_fft(dftQ);
             return div(P, Q, k + 1).at(k);
