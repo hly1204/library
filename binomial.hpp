@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cassert>
 #include <vector>
 
 template <typename Tp>
@@ -13,7 +12,7 @@ class Binomial {
         if (const int nn = factorial_.size(); nn < n) {
             int k = nn;
             while (k < n) k *= 2;
-            k = std::min(k, (int)Tp::mod());
+            k = std::min<long long>(k, Tp::mod());
             factorial_.resize(k);
             invfactorial_.resize(k);
             for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;
