@@ -86,7 +86,11 @@ template <typename Tp>
 std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const std::vector<Tp> &g, int k,
                                        int n) {
     if (k < 0 || n <= 0) return {};
-    if (f.empty()) return std::vector<Tp>(n);
+    if (f.empty()) {
+        std::vector<Tp> res(n);
+        if (k < (int)g.size()) res[0] = g[k];
+        return res;
+    }
 
     // [x^k] (g(x) / (-f(x) + y))
     // R[x]((y^(-1)))
