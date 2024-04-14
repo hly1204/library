@@ -83,8 +83,8 @@ inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<T
 // see: https://noshi91.hatenablog.com/entry/2024/03/16/224034
 // noshi91. FPS の合成と逆関数、冪乗の係数列挙 Θ(n (log(n))^2)
 template <typename Tp>
-std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const std::vector<Tp> &g, int k,
-                                       int n) {
+inline std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const std::vector<Tp> &g,
+                                              int k, int n) {
     if (k < 0 || n <= 0) return {};
     if (f.empty()) {
         std::vector<Tp> res(n);
