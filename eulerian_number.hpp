@@ -11,11 +11,11 @@
 // returns A(n,0), ..., A(n,n)
 template <typename Tp>
 inline std::vector<Tp> eulerian_number_row(int n) {
-    std::vector<Tp> A(n + 1), B(pow(std::vector<Tp>{Tp(1), Tp(-1)}, n + 1, n + 1));
+    std::vector<Tp> A(n + 1);
     for (int i = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);
-    auto AB = convolution_fft(A, B);
-    AB.resize(n + 1);
-    return AB;
+    auto AA = convolution_fft(A, pow(std::vector<Tp>{Tp(1), Tp(-1)}, n + 1, n + 1));
+    AA.resize(n + 1);
+    return AA;
 }
 
 // returns A(0,k), ..., A(m-1,k)
@@ -25,8 +25,10 @@ template <typename Tp>
 inline std::vector<Tp> eulerian_number_column(int k, int m) {
     std::vector<Tp> A(k + 1), B(k + 1);
     auto &&bin = Binomial<Tp>::get(std::max(k + 1, m));
-    for (int i = 0; i <= k; ++i) A[k - i] = Tp(-i - 1).pow(k - i) * bin.inv_factorial(k - i);
-    for (int i = 1; i <= k; ++i) B[k - i] = Tp(-i).pow(k - i) * bin.inv_factorial(k - i);
+    for (int i = 0; i <= k; ++i) {
+        A[k - i] = Tp(-i - 1).pow(k - i) * bin.inv_factorial(k - i);
+        B[k - i] = Tp(-i).pow(k - i) * bin.inv_factorial(k - i);
+    }
     std::vector<Tp> xe_neg_x(m); // xe^(-x)
     for (int i = 1; i < m; ++i) {
         xe_neg_x[i] = bin.inv_factorial(i - 1);
