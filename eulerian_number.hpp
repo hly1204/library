@@ -24,7 +24,7 @@ inline std::vector<Tp> eulerian_number_row(int n) {
 template <typename Tp>
 inline std::vector<Tp> eulerian_number_column(int k, int m) {
     std::vector<Tp> A(k + 1), B(k + 1);
-    auto &&bin = Binomial<Tp>::get(m + 1);
+    auto &&bin = Binomial<Tp>::get(std::max(k + 1, m));
     for (int i = 0; i <= k; ++i) A[k - i] = Tp(-i - 1).pow(k - i) * bin.inv_factorial(k - i);
     for (int i = 1; i <= k; ++i) B[k - i] = Tp(-i).pow(k - i) * bin.inv_factorial(k - i);
     std::vector<Tp> xe_neg_x(m); // xe^(-x)
