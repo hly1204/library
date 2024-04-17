@@ -2,6 +2,7 @@
 "test/composition_of_formal_power_series_large.0.test.cpp": "2024-04-14 12:33:43 +0800",
 "test/compositional_inverse_of_formal_power_series_large.0.test.cpp": "2024-04-14 12:33:43 +0800",
 "test/convolution_mod.0.test.cpp": "2024-04-13 20:32:50 +0800",
+"test/division_of_polynomials.0.test.cpp": "2024-04-17 21:01:31 +0800",
 "test/exp_of_formal_power_series.0.test.cpp": "2024-04-14 12:13:13 +0800",
 "test/inv_of_formal_power_series.0.test.cpp": "2024-04-14 12:13:13 +0800",
 "test/kth_term_of_linearly_recurrent_sequence.0.test.cpp": "2024-04-14 12:13:13 +0800",
