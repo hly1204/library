@@ -3,6 +3,7 @@
 #include "fft.hpp"
 #include "fps_basic.hpp"
 #include "semi_relaxed_conv.hpp"
+#include <algorithm>
 #include <cassert>
 #include <utility>
 #include <vector>
@@ -42,7 +43,7 @@ inline std::pair<std::vector<Tp>, std::vector<Tp>> euclidean_div(const std::vect
                  std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);
     std::reverse(Q.begin(), Q.end());
 
-    const int len      = fft_len(degB);
+    const int len      = fft_len(std::max(degB, 1));
     const auto cyclicA = make_cyclic(A, len);
     auto cyclicB       = make_cyclic(B, len);
     auto cyclicQ       = make_cyclic(Q, len);
