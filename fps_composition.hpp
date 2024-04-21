@@ -116,8 +116,7 @@ inline std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const st
         if (k & 1) {
             auto &&root = FftInfo<Tp>::get().inv_root(len / 2);
             for (int i = 0; i < len; i += 2) {
-                P[i / 2] =
-                    (dftP[i] * dftQ[i + 1] - dftP[i + 1] * dftQ[i]).div_by_2() * root[i >> 1];
+                P[i / 2] = (dftP[i] * dftQ[i + 1] - dftP[i + 1] * dftQ[i]).div_by_2() * root[i / 2];
                 Q[i / 2] = dftQ[i] * dftQ[i + 1];
             }
         } else {
