@@ -1,8 +1,8 @@
 #pragma once
 
+#include "binomial.hpp"
 #include "fft.hpp"
 #include "fps_basic.hpp"
-#include "semi_relaxed_conv.hpp"
 #include <algorithm>
 #include <cassert>
 #include <utility>
@@ -18,6 +18,25 @@ inline int degree(const std::vector<Tp> &a) {
 template <typename Tp>
 inline void shrink(std::vector<Tp> &a) {
     a.resize(degree(a) + 1);
+}
+
+template <typename Tp>
+inline std::vector<Tp> taylor_shift(std::vector<Tp> a, Tp c) {
+    int n      = a.size();
+    auto &&bin = Binomial<Tp>::get(n);
+    for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);
+    Tp cc = 1;
+    std::vector<Tp> b(n);
+    for (int i = 0; i < n; ++i) {
+        b[i] = cc * bin.inv_factorial(i);
+        cc *= c;
+    }
+    std::reverse(a.begin(), a.end());
+    auto ab = convolution_fft(a, b);
+    ab.resize(n);
+    std::reverse(ab.begin(), ab.end());
+    for (int i = 0; i < n; ++i) ab[i] *= bin.inv_factorial(i);
+    return ab;
 }
 
 // returns (quotient, remainder)
