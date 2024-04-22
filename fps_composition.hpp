@@ -142,9 +142,14 @@ inline std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const st
     auto &&bin = Binomial<Tp>::get(d + n);
     Tp ff      = 1;
     for (int i = 0; i <= n; ++i) invQ[n - i] = bin.binom(d + i - 1, d - 1) * ff, ff *= f[0];
+    // invQ[i] = [y^(-2d + i)]Q
+    // P[0,d-1] * invQ[-(d+n),-d] => [0,d-1] * [0,n]
     auto PinvQ = convolution_fft(P, invQ);
+    // take [-n,-1] => take [d,d+n-1]
     PinvQ.erase(PinvQ.begin(), PinvQ.begin() + d);
     PinvQ.resize(n);
+    // output => [-1,-n] reverse
+    // before I just reverse it and mistaken something.
     std::reverse(PinvQ.begin(), PinvQ.end());
     return PinvQ;
 }
