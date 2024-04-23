@@ -13,7 +13,11 @@
 template <typename Tp>
 inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<Tp> &g, int n) {
     if (n <= 0) return {};
-    if (g.empty()) return std::vector<Tp>(n);
+    if (g.empty()) {
+        std::vector<Tp> res(n);
+        if (!f.empty()) res[0] = f[0];
+        return res;
+    }
 
     // [y^(-1)] (f(y) / (-g(x) + y)) mod x^n
     // R[x]((y^(-1)))
