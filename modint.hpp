@@ -8,8 +8,8 @@ class ModInt {
     static_assert((Mod >> 31) == 0, "`Mod` must less than 2^(31)");
     template <typename Int>
     static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v) {
-        if ((v %= (int)Mod) < 0) v += (int)Mod;
-        return v;
+        using D = std::common_type_t<Int, unsigned>;
+        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;
     }
 
     struct PrivateConstructor {};
@@ -37,7 +37,7 @@ public:
         }
     }
     ModInt inv() const {
-        int x1 = 1, x3 = 0, a = v_, b = Mod;
+        int x1 = 1, x3 = 0, a = val(), b = Mod;
         while (b) {
             int q = a / b, x1_old = x1, a_old = a;
             x1 = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;
@@ -76,5 +76,5 @@ public:
         b.v_ = safe_mod(v);
         return a;
     }
-    friend std::ostream &operator<<(std::ostream &a, const ModInt &b) { return a << b.v_; }
+    friend std::ostream &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }
 };

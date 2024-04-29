@@ -21,9 +21,9 @@ class FftInfo {
     mutable std::vector<Tp> invroot_;
 
     FftInfo()
-        : ordlog2_(__builtin_ctz(Tp::mod() - 1)),
+        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),
           zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >> ordlog2_)),
-          invzeta_(zeta_.inv()), imag_(zeta_.pow(1 << (ordlog2_ - 2))), invimag_(-imag_),
+          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_ - 2))), invimag_(-imag_),
           root_{Tp(1), imag_}, invroot_{Tp(1), invimag_} {}
 
 public:
@@ -43,7 +43,7 @@ public:
             root_.resize(n);
             for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {
                 const int j = 1 << i;
-                root_[j]    = zeta_.pow(1 << (ordlog2_ - i - 2));
+                root_[j]    = zeta_.pow(1LL << (ordlog2_ - i - 2));
                 for (int k = j + 1; k < j * 2; ++k) root_[k] = root_[k - j] * root_[j];
             }
         }
@@ -56,7 +56,7 @@ public:
             invroot_.resize(n);
             for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {
                 const int j = 1 << i;
-                invroot_[j] = invzeta_.pow(1 << (ordlog2_ - i - 2));
+                invroot_[j] = invzeta_.pow(1LL << (ordlog2_ - i - 2));
                 for (int k = j + 1; k < j * 2; ++k) invroot_[k] = invroot_[k - j] * invroot_[j];
             }
         }
