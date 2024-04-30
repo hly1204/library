@@ -61,7 +61,7 @@ public:
     template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>
     ModLong(Int v) : v_(redc_mul(safe_mod(v), R2)) {}
     template <typename Int, typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>
-    ModLong(Int v) : v_(redc_mul(norm(v % Mod), R2)) {}
+    ModLong(Int v) : v_(redc_mul(v % Mod, R2)) {}
     unsigned long long val() const { return norm(-mul_high(v_ * R, Mod)); }
 
     ModLong operator-() const { return ModLong(private_constructor, v_ == 0 ? v_ : Mod - v_); }
