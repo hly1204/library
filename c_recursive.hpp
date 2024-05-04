@@ -12,7 +12,7 @@
 // A Simple and Fast Algorithm for Computing the N-th Term of a Linearly Recurrent Sequence
 template <typename Tp>
 inline Tp div_at(const std::vector<Tp> &P, std::vector<Tp> Q, long long k) {
-    auto iszero       = [&](const std::vector<Tp> &a) { return order(a) == -1; };
+    auto iszero       = [](const std::vector<Tp> &a) { return order(a) == -1; };
     auto fft_doubling = [](std::vector<Tp> &a) {
         const int n = a.size();
         a.resize(n * 2);
@@ -26,7 +26,7 @@ inline Tp div_at(const std::vector<Tp> &P, std::vector<Tp> Q, long long k) {
 
     assert(!iszero(Q));
     if (P.empty()) return Tp();
-    if (int ordQ = order(Q)) {
+    if (const int ordQ = order(Q)) {
         Q.erase(Q.begin(), Q.begin() + ordQ);
         k += ordQ;
     }
