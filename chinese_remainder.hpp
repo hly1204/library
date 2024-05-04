@@ -2,6 +2,7 @@
 
 #include "xgcd.hpp"
 #include <cassert>
+#include <numeric>
 #include <optional>
 #include <vector>
 
@@ -36,4 +37,40 @@ inline std::optional<ChineseRemainderResult<Int>> chinese_remainder(const std::v
         else
             return {};
     return ChineseRemainderResult<Int>{R, M};
+}
+
+struct ChineseRemainderModResult {
+    int rem, mod; // remainder mod x, modular mod x
+};
+
+inline std::optional<ChineseRemainderModResult> chinese_remainder_mod(std::vector<int> rem,
+                                                                      std::vector<int> mod, int x) {
+    using LL = long long;
+
+    assert(rem.size() == mod.size());
+    auto safe_mod = [](int r, int m) { return r %= m, (r < 0 ? r + m : r); };
+    const int n   = rem.size();
+    // check conflicts and make coprime
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < i; ++j) {
+            auto d = std::gcd(mod[i], mod[j]);
+            if (d == 1) continue;
+            if (safe_mod(rem[i], d) != safe_mod(rem[j], d)) return {};
+            mod[i] /= d, mod[j] /= d;
+            if (const auto k = std::gcd(mod[i], d); k != 1)
+                while (d % k == 0) mod[i] *= k, d /= k;
+            mod[j] *= d;
+        }
+    // Garner's algorithm
+    // see: https://math314.hateblo.jp/entry/2015/05/07/014908
+    // math314. 任意modでの畳み込み演算をO(n log(n))で.
+    mod.push_back(x);
+    std::vector<int> pp(n + 1, 1), res(n + 1);
+    for (int i = 0; i < n; ++i) {
+        auto u = (LL)(safe_mod(rem[i], mod[i]) - res[i]) * inv_gcd(pp[i], mod[i]).inv % mod[i];
+        if (u < 0) u += mod[i];
+        for (int j = i + 1; j <= n; ++j)
+            res[j] = (res[j] + u * pp[j]) % mod[j], pp[j] = (LL)pp[j] * mod[i] % mod[j];
+    }
+    return ChineseRemainderModResult{res[n], pp[n]};
 }
