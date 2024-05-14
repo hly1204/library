@@ -88,6 +88,7 @@ inline std::vector<Tp> slice_coeff_rationalA(std::vector<Tp> P, std::vector<Tp> 
 
     const int degP = degree(P);
     const int degQ = degree(Q);
+    if (degP < 0) std::vector<Tp> res(R - L);
     assert(degP < degQ);
     if (degQ == 0) {
         std::vector<Tp> res(R - L);
