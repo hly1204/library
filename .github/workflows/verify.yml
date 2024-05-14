@@ -1,9 +1,6 @@
 name: verify
 
-on:
-  push:
-    branches:
-      - master
+on: push
 
 jobs:
   verify:

@@ -2,3 +2,8 @@
 -I
 .
 -std=c++17
+-Wall
+-Wextra
+-Werror
+-Wshadow
+-Wformat=2
