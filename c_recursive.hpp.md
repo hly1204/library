@@ -1,32 +1,32 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://arxiv.org/abs/2008.08822
@@ -263,9 +263,9 @@ data:
     \ + n / 2, n / 2);\n        for (int i = 0; i < n / 2; ++i) a[i] = (a[i] - a[i\
     \ + n / 2]).div_by_2();\n        a.resize(n / 2);\n    };\n\n    const int len\
     \ = fft_len(degQ * 2 + 1);\n\n    // returns DFT([x^[L,L+len/2)]1/Q)\n    // len/2\
-    \ > degQ, len/2 is even\n    auto rec = [len, &fft_doubling](auto &&rec, std::vector<Tp>\
-    \ dftQ, long long L) {\n        if (L <= 0) {\n            inv_fft(dftQ);\n  \
-    \          auto invQ = inv(dftQ, L + len / 2);\n            invQ.insert(invQ.begin(),\
+    \ > degQ, len/2 is even\n    auto rec = [len, &fft_doubling, &fft_high](auto &&rec,\
+    \ std::vector<Tp> dftQ, long long L) {\n        if (L <= 0) {\n            inv_fft(dftQ);\n\
+    \            auto invQ = inv(dftQ, L + len / 2);\n            invQ.insert(invQ.begin(),\
     \ -L, Tp());\n            fft(invQ);\n            return invQ;\n        }\n\n\
     \        if ((int)dftQ.size() < len) fft_doubling(dftQ);\n        std::vector<Tp>\
     \ dftV(len / 2);\n        for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i]\
@@ -355,9 +355,9 @@ data:
     \ + n / 2, n / 2);\n        for (int i = 0; i < n / 2; ++i) a[i] = (a[i] - a[i\
     \ + n / 2]).div_by_2();\n        a.resize(n / 2);\n    };\n\n    const int len\
     \ = fft_len(degQ * 2 + 1);\n\n    // returns DFT([x^[L,L+len/2)]1/Q)\n    // len/2\
-    \ > degQ, len/2 is even\n    auto rec = [len, &fft_doubling](auto &&rec, std::vector<Tp>\
-    \ dftQ, long long L) {\n        if (L <= 0) {\n            inv_fft(dftQ);\n  \
-    \          auto invQ = inv(dftQ, L + len / 2);\n            invQ.insert(invQ.begin(),\
+    \ > degQ, len/2 is even\n    auto rec = [len, &fft_doubling, &fft_high](auto &&rec,\
+    \ std::vector<Tp> dftQ, long long L) {\n        if (L <= 0) {\n            inv_fft(dftQ);\n\
+    \            auto invQ = inv(dftQ, L + len / 2);\n            invQ.insert(invQ.begin(),\
     \ -L, Tp());\n            fft(invQ);\n            return invQ;\n        }\n\n\
     \        if ((int)dftQ.size() < len) fft_doubling(dftQ);\n        std::vector<Tp>\
     \ dftV(len / 2);\n        for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i]\
@@ -401,8 +401,8 @@ data:
   isVerificationFile: false
   path: c_recursive.hpp
   requiredBy: []
-  timestamp: '2024-05-15 07:33:10+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2024-05-15 07:36:33+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
