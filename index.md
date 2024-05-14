@@ -3,10 +3,10 @@ data:
   libraryCategories:
   - name: .
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: binomial.hpp
       title: binomial.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: c_recursive.hpp
       title: c_recursive.hpp
     - icon: ':heavy_check_mark:'
@@ -18,22 +18,22 @@ data:
     - icon: ':warning:'
       path: eulerian_number.hpp
       title: eulerian_number.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: fft.hpp
       title: fft.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: fps_basic.hpp
       title: fps_basic.hpp
     - icon: ':heavy_check_mark:'
       path: fps_composition.hpp
       title: fps_composition.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
       path: modlong.hpp
       title: modlong.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: poly_basic.hpp
       title: poly_basic.hpp
     - icon: ':warning:'
@@ -42,7 +42,7 @@ data:
     - icon: ':warning:'
       path: rng.hpp
       title: rng.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: semi_relaxed_conv.hpp
       title: semi_relaxed_conv.hpp
     - icon: ':heavy_check_mark:'
@@ -60,7 +60,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
       title: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
       title: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     - icon: ':heavy_check_mark:'
