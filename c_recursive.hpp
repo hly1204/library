@@ -135,7 +135,7 @@ inline std::vector<Tp> slice_coeff_rationalA(std::vector<Tp> P, std::vector<Tp> 
 
     // returns DFT([x^[L,L+len/2)]1/Q)
     // len/2 > degQ, len/2 is even
-    auto rec = [&](auto &&rec, std::vector<Tp> dftQ, long long L) {
+    auto rec = [len, &fft_doubling](auto &&rec, std::vector<Tp> dftQ, long long L) {
         if (L <= 0) {
             inv_fft(dftQ);
             auto invQ = inv(dftQ, L + len / 2);
