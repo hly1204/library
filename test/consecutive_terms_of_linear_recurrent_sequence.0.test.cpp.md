@@ -246,14 +246,14 @@ data:
     \ order(Q)) {\n        Q.erase(Q.begin(), Q.begin() + ordQ);\n        L += ordQ;\n\
     \        R += ordQ;\n    }\n\n    assert(L >= 0);\n    if (L == 0) return div(P,\
     \ Q, R - L);\n\n    const int degP = degree(P);\n    const int degQ = degree(Q);\n\
-    \    assert(degP < degQ);\n    if (degQ == 0) {\n        std::vector<Tp> res(R\
-    \ - L);\n        const auto iQ0 = Q[0].inv();\n        for (long long i = L; i\
-    \ < R && i < (long long)P.size(); ++i) res[i - L] = P[i] * iQ0;\n        return\
-    \ res;\n    }\n\n    auto fft_doubling = [](std::vector<Tp> &a) {\n        const\
-    \ int n = a.size();\n        a.resize(n * 2);\n        std::copy_n(a.begin(),\
-    \ n, a.begin() + n);\n        inv_fft_n(a.begin() + n, n);\n        Tp k     \
-    \    = 1;\n        const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n    \
-    \    for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n        fft_n(a.begin()\
+    \    if (degP < 0) std::vector<Tp> res(R - L);\n    assert(degP < degQ);\n   \
+    \ if (degQ == 0) {\n        std::vector<Tp> res(R - L);\n        const auto iQ0\
+    \ = Q[0].inv();\n        for (long long i = L; i < R && i < (long long)P.size();\
+    \ ++i) res[i - L] = P[i] * iQ0;\n        return res;\n    }\n\n    auto fft_doubling\
+    \ = [](std::vector<Tp> &a) {\n        const int n = a.size();\n        a.resize(n\
+    \ * 2);\n        std::copy_n(a.begin(), n, a.begin() + n);\n        inv_fft_n(a.begin()\
+    \ + n, n);\n        Tp k         = 1;\n        const auto t = FftInfo<Tp>::get().root(n).at(n\
+    \ / 2);\n        for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n        fft_n(a.begin()\
     \ + n, n);\n    };\n\n    auto fft_doubling2 = [](std::vector<Tp> &a) {\n    \
     \    const int n = a.size();\n        a.resize(n * 2);\n        std::copy_n(a.begin(),\
     \ n, a.begin() + n);\n        inv_fft_n(a.begin() + n, n);\n        const std::vector\
@@ -372,7 +372,7 @@ data:
   isVerificationFile: true
   path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-05-15 07:36:33+08:00'
+  timestamp: '2024-05-15 07:58:03+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
