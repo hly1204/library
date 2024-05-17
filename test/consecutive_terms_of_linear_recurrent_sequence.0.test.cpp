@@ -21,7 +21,7 @@ int main() {
         std::cin >> Q[i];
         Q[i] = -Q[i];
     }
-    auto P = convolution_fft(Q, init_v);
+    auto P = convolution(Q, init_v);
     P.resize(d);
     const auto res = slice_coeff_rational(P, Q, k, k + M);
     for (int i = 0; i < (int)res.size(); ++i) std::cout << res[i] << ' ';

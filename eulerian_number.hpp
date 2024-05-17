@@ -13,7 +13,7 @@ template <typename Tp>
 inline std::vector<Tp> eulerian_number_row(int n) {
     std::vector<Tp> A(n + 1);
     for (int i = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);
-    auto AA = convolution_fft(A, pow(std::vector<Tp>{Tp(1), Tp(-1)}, n + 1, n + 1));
+    auto AA = convolution(A, pow(std::vector<Tp>{Tp(1), Tp(-1)}, n + 1, n + 1));
     AA.resize(n + 1);
     return AA;
 }
@@ -34,8 +34,8 @@ inline std::vector<Tp> eulerian_number_column(int k, int m) {
         xe_neg_x[i] = bin.inv_factorial(i - 1);
         if ((i - 1) & 1) xe_neg_x[i] = -xe_neg_x[i];
     }
-    auto AA = convolution_fft(composition(A, xe_neg_x, m), exp(std::vector{Tp(0), Tp(k + 1)}, m));
-    auto BB = convolution_fft(composition(B, xe_neg_x, m), exp(std::vector{Tp(0), Tp(k)}, m));
+    auto AA = convolution(composition(A, xe_neg_x, m), exp(std::vector{Tp(0), Tp(k + 1)}, m));
+    auto BB = convolution(composition(B, xe_neg_x, m), exp(std::vector{Tp(0), Tp(k)}, m));
     for (int i = 0; i < m; ++i) AA[i] = (AA[i] - BB[i]) * bin.factorial(i);
     AA.resize(m);
     return AA;

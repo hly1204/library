@@ -14,7 +14,7 @@ int main() {
     std::vector<mint> a(n), b(m);
     for (int i = 0; i < n; ++i) std::cin >> a[i];
     for (int i = 0; i < m; ++i) std::cin >> b[i];
-    const auto ab = convolution_fft(a, b);
+    const auto ab = convolution(a, b);
     for (int i = 0; i < n + m - 1; ++i) std::cout << ab[i] << ' ';
     return 0;
 }

@@ -31,7 +31,7 @@ inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<T
             // invQ[i] = [y^(-2d + i)]Q
             // P[0,d-1] * invQ[-2d,-d] => [0,d-1] * [0,d]
             // take [-d,-1] => take [d,2d-1]
-            auto PinvQ = convolution_fft(P, invQ);
+            auto PinvQ = convolution(P, invQ);
             PinvQ.erase(PinvQ.begin(), PinvQ.begin() + d);
             PinvQ.resize(d);
             return PinvQ;
@@ -148,7 +148,7 @@ inline std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const st
     for (int i = 0; i <= n; ++i) invQ[n - i] = bin.binom(d + i - 1, d - 1) * ff, ff *= f[0];
     // invQ[i] = [y^(-2d + i)]Q
     // P[0,d-1] * invQ[-(d+n),-d] => [0,d-1] * [0,n]
-    auto PinvQ = convolution_fft(P, invQ);
+    auto PinvQ = convolution(P, invQ);
     // take [-n,-1] => take [d,d+n-1]
     PinvQ.erase(PinvQ.begin(), PinvQ.begin() + d);
     PinvQ.resize(n);

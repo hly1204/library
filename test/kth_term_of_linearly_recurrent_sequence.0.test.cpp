@@ -20,7 +20,7 @@ int main() {
         std::cin >> Q[i];
         Q[i] = -Q[i];
     }
-    auto P = convolution_fft(Q, init_v);
+    auto P = convolution(Q, init_v);
     P.resize(d);
     std::cout << div_at(P, Q, k) << '\n';
     return 0;

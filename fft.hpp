@@ -1,7 +1,9 @@
 #pragma once
 
+#include <algorithm>
 #include <cassert>
 #include <iterator>
+#include <memory>
 #include <vector>
 
 template <typename Tp>
@@ -139,4 +141,35 @@ inline std::vector<Tp> convolution_fft(std::vector<Tp> a, std::vector<Tp> b) {
     inv_fft(a);
     a.resize(n + m - 1);
     return a;
+}
+
+template <typename Tp>
+inline std::vector<Tp> square_fft(std::vector<Tp> a) {
+    if (a.empty()) return {};
+    const int n   = a.size();
+    const int len = fft_len(n * 2 - 1);
+    a.resize(len);
+    fft(a);
+    for (int i = 0; i < len; ++i) a[i] *= a[i];
+    inv_fft(a);
+    a.resize(n * 2 - 1);
+    return a;
+}
+
+template <typename Tp>
+inline std::vector<Tp> convolution_naive(const std::vector<Tp> &a, std::vector<Tp> &b) {
+    if (a.empty() || b.empty()) return {};
+    const int n = a.size();
+    const int m = b.size();
+    std::vector<Tp> res(n + m - 1);
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j) res[i + j] += a[i] * b[j];
+    return res;
+}
+
+template <typename Tp>
+inline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {
+    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a, b);
+    if (std::addressof(a) == std::addressof(b)) return square_fft(a);
+    return convolution_fft(a, b);
 }

@@ -32,7 +32,7 @@ inline std::vector<Tp> taylor_shift(std::vector<Tp> a, Tp c) {
         cc *= c;
     }
     std::reverse(a.begin(), a.end());
-    auto ab = convolution_fft(a, b);
+    auto ab = convolution(a, b);
     ab.resize(n);
     std::reverse(ab.begin(), ab.end());
     for (int i = 0; i < n; ++i) ab[i] *= bin.inv_factorial(i);
