@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: conv_mod.hpp
     title: conv_mod.hpp
   - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: modlong.hpp
     title: modlong.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/convolution_mod_1000000007
@@ -84,11 +84,11 @@ data:
     \ - 1);\n    a.resize(len);\n    fft(a);\n    for (int i = 0; i < len; ++i) a[i]\
     \ *= a[i];\n    inv_fft(a);\n    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate\
     \ <typename Tp>\ninline std::vector<Tp> convolution_naive(const std::vector<Tp>\
-    \ &a, std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n    const\
-    \ int n = a.size();\n    const int m = b.size();\n    std::vector<Tp> res(n +\
-    \ m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j < m; ++j)\
-    \ res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename Tp>\ninline\
-    \ std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
+    \ &a, const std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n\
+    \    const int n = a.size();\n    const int m = b.size();\n    std::vector<Tp>\
+    \ res(n + m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j\
+    \ < m; ++j) res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
     \    return convolution_fft(a, b);\n}\n#line 2 \"modlong.hpp\"\n\n#include <iostream>\n\
@@ -178,8 +178,8 @@ data:
   isVerificationFile: true
   path: test/convolution_mod_1000000007.0.test.cpp
   requiredBy: []
-  timestamp: '2024-05-17 19:05:46+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-05-17 19:15:49+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/convolution_mod_1000000007.0.test.cpp
 layout: document

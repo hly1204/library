@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':x:'
+  - icon: ':question:'
     path: c_recursive.hpp
     title: c_recursive.hpp
   - icon: ':warning:'
@@ -11,20 +11,20 @@ data:
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
     title: fps_composition.hpp
   - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/composition_of_formal_power_series_large.0.test.cpp
     title: test/composition_of_formal_power_series_large.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
     title: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -39,13 +39,13 @@ data:
   - icon: ':x:'
     path: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/log_of_formal_power_series.0.test.cpp
     title: test/log_of_formal_power_series.0.test.cpp
   - icon: ':x:'
     path: test/polynomial_taylor_shift.0.test.cpp
     title: test/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/pow_of_formal_power_series.0.test.cpp
     title: test/pow_of_formal_power_series.0.test.cpp
   _isVerificationFailed: true

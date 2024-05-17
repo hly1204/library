@@ -18,9 +18,9 @@ data:
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/pow_of_formal_power_series
@@ -105,11 +105,11 @@ data:
     \ - 1);\n    a.resize(len);\n    fft(a);\n    for (int i = 0; i < len; ++i) a[i]\
     \ *= a[i];\n    inv_fft(a);\n    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate\
     \ <typename Tp>\ninline std::vector<Tp> convolution_naive(const std::vector<Tp>\
-    \ &a, std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n    const\
-    \ int n = a.size();\n    const int m = b.size();\n    std::vector<Tp> res(n +\
-    \ m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j < m; ++j)\
-    \ res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename Tp>\ninline\
-    \ std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
+    \ &a, const std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n\
+    \    const int n = a.size();\n    const int m = b.size();\n    std::vector<Tp>\
+    \ res(n + m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j\
+    \ < m; ++j) res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
     \    return convolution_fft(a, b);\n}\n#line 5 \"semi_relaxed_conv.hpp\"\n#include\
@@ -245,8 +245,8 @@ data:
   isVerificationFile: true
   path: test/pow_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-05-17 19:05:46+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-05-17 19:15:49+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/pow_of_formal_power_series.0.test.cpp
 layout: document

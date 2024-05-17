@@ -4,17 +4,17 @@ data:
   - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: modlong.hpp
     title: modlong.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/convolution_mod_1000000007.0.test.cpp
     title: test/convolution_mod_1000000007.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"conv_mod.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
@@ -79,11 +79,11 @@ data:
     \ - 1);\n    a.resize(len);\n    fft(a);\n    for (int i = 0; i < len; ++i) a[i]\
     \ *= a[i];\n    inv_fft(a);\n    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate\
     \ <typename Tp>\ninline std::vector<Tp> convolution_naive(const std::vector<Tp>\
-    \ &a, std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n    const\
-    \ int n = a.size();\n    const int m = b.size();\n    std::vector<Tp> res(n +\
-    \ m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j < m; ++j)\
-    \ res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename Tp>\ninline\
-    \ std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
+    \ &a, const std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n\
+    \    const int n = a.size();\n    const int m = b.size();\n    std::vector<Tp>\
+    \ res(n + m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j\
+    \ < m; ++j) res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
     \    return convolution_fft(a, b);\n}\n#line 2 \"modlong.hpp\"\n\n#include <iostream>\n\
@@ -170,8 +170,8 @@ data:
   isVerificationFile: false
   path: conv_mod.hpp
   requiredBy: []
-  timestamp: '2024-05-17 19:05:46+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2024-05-17 19:15:49+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution_mod_1000000007.0.test.cpp
 documentation_of: conv_mod.hpp
