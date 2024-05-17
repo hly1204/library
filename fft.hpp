@@ -157,7 +157,7 @@ inline std::vector<Tp> square_fft(std::vector<Tp> a) {
 }
 
 template <typename Tp>
-inline std::vector<Tp> convolution_naive(const std::vector<Tp> &a, std::vector<Tp> &b) {
+inline std::vector<Tp> convolution_naive(const std::vector<Tp> &a, const std::vector<Tp> &b) {
     if (a.empty() || b.empty()) return {};
     const int n = a.size();
     const int m = b.size();
