@@ -1,36 +1,37 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/convolution_mod
     links:
     - https://judge.yosupo.jp/problem/convolution_mod
   bundledCode: "#line 1 \"test/convolution_mod.0.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod\"\
-    \n\n#line 2 \"fft.hpp\"\n\n#include <cassert>\n#include <iterator>\n#include <vector>\n\
-    \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
-    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
-    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
-    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
-    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
-    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
-    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
-    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
-    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
-    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
-    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
-    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+    \n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n#include <cassert>\n#include\
+    \ <iterator>\n#include <memory>\n#include <vector>\n\ntemplate <typename Tp>\n\
+    class FftInfo {\n    static Tp least_quadratic_nonresidue() {\n        for (int\
+    \ i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n\
+    \    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n\
+    \    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n\
+    \    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
+    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
+    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
+    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
+    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
+    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
+    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
+    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
     \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
     \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
     \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
@@ -73,20 +74,32 @@ data:
     \ b.empty()) return {};\n    const int n   = a.size();\n    const int m   = b.size();\n\
     \    const int len = fft_len(n + m - 1);\n    a.resize(len);\n    b.resize(len);\n\
     \    fft(a);\n    fft(b);\n    for (int i = 0; i < len; ++i) a[i] *= b[i];\n \
-    \   inv_fft(a);\n    a.resize(n + m - 1);\n    return a;\n}\n#line 2 \"modint.hpp\"\
-    \n\n#include <iostream>\n#include <type_traits>\n\ntemplate <unsigned Mod>\nclass\
-    \ ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\"\
-    );\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
-    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
-    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
-    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
-    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
-    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
-    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
-    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
-    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
-    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
-    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \   inv_fft(a);\n    a.resize(n + m - 1);\n    return a;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> square_fft(std::vector<Tp> a) {\n    if (a.empty())\
+    \ return {};\n    const int n   = a.size();\n    const int len = fft_len(n * 2\
+    \ - 1);\n    a.resize(len);\n    fft(a);\n    for (int i = 0; i < len; ++i) a[i]\
+    \ *= a[i];\n    inv_fft(a);\n    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> convolution_naive(const std::vector<Tp>\
+    \ &a, std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n    const\
+    \ int n = a.size();\n    const int m = b.size();\n    std::vector<Tp> res(n +\
+    \ m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j < m; ++j)\
+    \ res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
+    \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
+    \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
+    \    return convolution_fft(a, b);\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
+    #include <type_traits>\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
+    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
+    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
+    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
+    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
+    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
+    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
+    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
+    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
+    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
+    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
+    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
     \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
     \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
     \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
@@ -116,24 +129,24 @@ data:
     \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
     \    std::cin >> n >> m;\n    std::vector<mint> a(n), b(m);\n    for (int i =\
     \ 0; i < n; ++i) std::cin >> a[i];\n    for (int i = 0; i < m; ++i) std::cin >>\
-    \ b[i];\n    const auto ab = convolution_fft(a, b);\n    for (int i = 0; i < n\
-    \ + m - 1; ++i) std::cout << ab[i] << ' ';\n    return 0;\n}\n"
+    \ b[i];\n    const auto ab = convolution(a, b);\n    for (int i = 0; i < n + m\
+    \ - 1; ++i) std::cout << ab[i] << ' ';\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod\"\n\n#include\
     \ \"fft.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n#include <vector>\n\
     \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
     \    std::vector<mint> a(n), b(m);\n    for (int i = 0; i < n; ++i) std::cin >>\
     \ a[i];\n    for (int i = 0; i < m; ++i) std::cin >> b[i];\n    const auto ab\
-    \ = convolution_fft(a, b);\n    for (int i = 0; i < n + m - 1; ++i) std::cout\
-    \ << ab[i] << ' ';\n    return 0;\n}\n"
+    \ = convolution(a, b);\n    for (int i = 0; i < n + m - 1; ++i) std::cout << ab[i]\
+    \ << ' ';\n    return 0;\n}\n"
   dependsOn:
   - fft.hpp
   - modint.hpp
   isVerificationFile: true
   path: test/convolution_mod.0.test.cpp
   requiredBy: []
-  timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-05-17 19:05:46+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/convolution_mod.0.test.cpp
 layout: document

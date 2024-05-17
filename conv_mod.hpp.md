@@ -1,36 +1,36 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: modlong.hpp
     title: modlong.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/convolution_mod_1000000007.0.test.cpp
     title: test/convolution_mod_1000000007.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
-  bundledCode: "#line 2 \"conv_mod.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <cassert>\n\
-    #include <iterator>\n#include <vector>\n\ntemplate <typename Tp>\nclass FftInfo\
-    \ {\n    static Tp least_quadratic_nonresidue() {\n        for (int i = 2;; ++i)\n\
-    \            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n    }\n\n\
-    \    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n    const\
-    \ Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n  \
-    \  mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
-    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
-    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
-    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
-    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
-    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
-    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
-    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+  bundledCode: "#line 2 \"conv_mod.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
+    #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
+    \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
+    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
+    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
+    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
+    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
+    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
+    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
+    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
+    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
+    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
+    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
+    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
     \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
     \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
     \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
@@ -73,17 +73,30 @@ data:
     \ b.empty()) return {};\n    const int n   = a.size();\n    const int m   = b.size();\n\
     \    const int len = fft_len(n + m - 1);\n    a.resize(len);\n    b.resize(len);\n\
     \    fft(a);\n    fft(b);\n    for (int i = 0; i < len; ++i) a[i] *= b[i];\n \
-    \   inv_fft(a);\n    a.resize(n + m - 1);\n    return a;\n}\n#line 2 \"modlong.hpp\"\
-    \n\n#include <iostream>\n#include <type_traits>\n\ntemplate <unsigned long long\
-    \ Mod, bool Odd = (Mod & 1)>\nclass ModLong;\n\ntemplate <unsigned long long Mod>\n\
-    class ModLong<Mod, true> {\n    using LL  = long long;\n    using ULL = unsigned\
-    \ long long;\n\n    static_assert((Mod >> 63) == 0, \"`Mod` must less than 2^(63)\"\
-    );\n    static_assert((Mod & 1) == 1, \"`Mod` must be odd\");\n\n    template\
-    \ <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>, ULL> safe_mod(Int\
-    \ v) {\n        using D = std::common_type_t<Int, LL>;\n        return (v %= (LL)Mod)\
-    \ < 0 ? (D)(v + (LL)Mod) : (D)v;\n    }\n\n    static ULL norm(LL x) { return\
-    \ x < 0 ? x + (LL)Mod : x; }\n    static ULL norm(ULL x) { return x + (Mod & -(x\
-    \ >> 63)); }\n\n    struct PrivateConstructor {};\n    static inline PrivateConstructor\
+    \   inv_fft(a);\n    a.resize(n + m - 1);\n    return a;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> square_fft(std::vector<Tp> a) {\n    if (a.empty())\
+    \ return {};\n    const int n   = a.size();\n    const int len = fft_len(n * 2\
+    \ - 1);\n    a.resize(len);\n    fft(a);\n    for (int i = 0; i < len; ++i) a[i]\
+    \ *= a[i];\n    inv_fft(a);\n    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> convolution_naive(const std::vector<Tp>\
+    \ &a, std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n    const\
+    \ int n = a.size();\n    const int m = b.size();\n    std::vector<Tp> res(n +\
+    \ m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j < m; ++j)\
+    \ res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
+    \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
+    \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
+    \    return convolution_fft(a, b);\n}\n#line 2 \"modlong.hpp\"\n\n#include <iostream>\n\
+    #include <type_traits>\n\ntemplate <unsigned long long Mod, bool Odd = (Mod &\
+    \ 1)>\nclass ModLong;\n\ntemplate <unsigned long long Mod>\nclass ModLong<Mod,\
+    \ true> {\n    using LL  = long long;\n    using ULL = unsigned long long;\n\n\
+    \    static_assert((Mod >> 63) == 0, \"`Mod` must less than 2^(63)\");\n    static_assert((Mod\
+    \ & 1) == 1, \"`Mod` must be odd\");\n\n    template <typename Int>\n    static\
+    \ std::enable_if_t<std::is_integral_v<Int>, ULL> safe_mod(Int v) {\n        using\
+    \ D = std::common_type_t<Int, LL>;\n        return (v %= (LL)Mod) < 0 ? (D)(v\
+    \ + (LL)Mod) : (D)v;\n    }\n\n    static ULL norm(LL x) { return x < 0 ? x +\
+    \ (LL)Mod : x; }\n    static ULL norm(ULL x) { return x + (Mod & -(x >> 63));\
+    \ }\n\n    struct PrivateConstructor {};\n    static inline PrivateConstructor\
     \ private_constructor{};\n    ModLong(PrivateConstructor, ULL v) : v_(v) {}\n\n\
     \    ULL v_;\n\n    static constexpr ULL r() {\n        ULL t = 2, iv = Mod *\
     \ (t - Mod * Mod);\n        iv *= t - Mod * iv, iv *= t - Mod * iv, iv *= t -\
@@ -130,37 +143,35 @@ data:
     \ &a, const ModLong &b) { return a << b.val(); }\n};\n#line 6 \"conv_mod.hpp\"\
     \n\ninline std::vector<int> convolution_mod(const std::vector<int> &a, const std::vector<int>\
     \ &b,\n                                        int modular) {\n    using mint0\
-    \     = ModLong<0x3F9A000000000001>;\n    using mint1     = ModLong<0x3FC6000000000001>;\n\
-    \    const auto res0 = convolution_fft(std::vector<mint0>(a.begin(), a.end()),\n\
-    \                                      std::vector<mint0>(b.begin(), b.end()));\n\
-    \    const auto res1 = convolution_fft(std::vector<mint1>(a.begin(), a.end()),\n\
-    \                                      std::vector<mint1>(b.begin(), b.end()));\n\
-    \    const int n     = res0.size();\n    std::vector<int> res(n);\n    const mint0\
-    \ im1 = mint0(mint1::mod()).inv();\n    const int m1    = mint1::mod() % modular;\n\
-    \    for (int i = 0; i < n; ++i) {\n        const mint0 k1 = (res0[i] - res1[i].val())\
-    \ * im1;\n        res[i]         = (k1.val() % modular * m1 + res1[i].val()) %\
-    \ modular;\n    }\n    return res;\n}\n"
+    \ = ModLong<0x3F9A000000000001>;\n    using mint1 = ModLong<0x3FC6000000000001>;\n\
+    \    const auto res0 =\n        convolution(std::vector<mint0>(a.begin(), a.end()),\
+    \ std::vector<mint0>(b.begin(), b.end()));\n    const auto res1 =\n        convolution(std::vector<mint1>(a.begin(),\
+    \ a.end()), std::vector<mint1>(b.begin(), b.end()));\n    const int n = res0.size();\n\
+    \    std::vector<int> res(n);\n    const mint0 im1 = mint0(mint1::mod()).inv();\n\
+    \    const int m1    = mint1::mod() % modular;\n    for (int i = 0; i < n; ++i)\
+    \ {\n        const mint0 k1 = (res0[i] - res1[i].val()) * im1;\n        res[i]\
+    \         = (k1.val() % modular * m1 + res1[i].val()) % modular;\n    }\n    return\
+    \ res;\n}\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include \"modlong.hpp\"\n#include\
     \ <vector>\n\ninline std::vector<int> convolution_mod(const std::vector<int> &a,\
     \ const std::vector<int> &b,\n                                        int modular)\
-    \ {\n    using mint0     = ModLong<0x3F9A000000000001>;\n    using mint1     =\
-    \ ModLong<0x3FC6000000000001>;\n    const auto res0 = convolution_fft(std::vector<mint0>(a.begin(),\
-    \ a.end()),\n                                      std::vector<mint0>(b.begin(),\
-    \ b.end()));\n    const auto res1 = convolution_fft(std::vector<mint1>(a.begin(),\
-    \ a.end()),\n                                      std::vector<mint1>(b.begin(),\
-    \ b.end()));\n    const int n     = res0.size();\n    std::vector<int> res(n);\n\
-    \    const mint0 im1 = mint0(mint1::mod()).inv();\n    const int m1    = mint1::mod()\
-    \ % modular;\n    for (int i = 0; i < n; ++i) {\n        const mint0 k1 = (res0[i]\
-    \ - res1[i].val()) * im1;\n        res[i]         = (k1.val() % modular * m1 +\
-    \ res1[i].val()) % modular;\n    }\n    return res;\n}\n"
+    \ {\n    using mint0 = ModLong<0x3F9A000000000001>;\n    using mint1 = ModLong<0x3FC6000000000001>;\n\
+    \    const auto res0 =\n        convolution(std::vector<mint0>(a.begin(), a.end()),\
+    \ std::vector<mint0>(b.begin(), b.end()));\n    const auto res1 =\n        convolution(std::vector<mint1>(a.begin(),\
+    \ a.end()), std::vector<mint1>(b.begin(), b.end()));\n    const int n = res0.size();\n\
+    \    std::vector<int> res(n);\n    const mint0 im1 = mint0(mint1::mod()).inv();\n\
+    \    const int m1    = mint1::mod() % modular;\n    for (int i = 0; i < n; ++i)\
+    \ {\n        const mint0 k1 = (res0[i] - res1[i].val()) * im1;\n        res[i]\
+    \         = (k1.val() % modular * m1 + res1[i].val()) % modular;\n    }\n    return\
+    \ res;\n}\n"
   dependsOn:
   - fft.hpp
   - modlong.hpp
   isVerificationFile: false
   path: conv_mod.hpp
   requiredBy: []
-  timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2024-05-17 19:05:46+08:00'
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - test/convolution_mod_1000000007.0.test.cpp
 documentation_of: conv_mod.hpp

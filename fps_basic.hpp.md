@@ -1,36 +1,36 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: c_recursive.hpp
     title: c_recursive.hpp
   - icon: ':warning:'
     path: eulerian_number.hpp
     title: eulerian_number.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: fps_composition.hpp
     title: fps_composition.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/composition_of_formal_power_series_large.0.test.cpp
     title: test/composition_of_formal_power_series_large.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
     title: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -42,21 +42,21 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/inv_of_formal_power_series.0.test.cpp
     title: test/inv_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/log_of_formal_power_series.0.test.cpp
     title: test/log_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/polynomial_taylor_shift.0.test.cpp
     title: test/polynomial_taylor_shift.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/pow_of_formal_power_series.0.test.cpp
     title: test/pow_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
@@ -75,20 +75,20 @@ data:
     \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
     \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
     \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
-    \ }\n};\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
-    \ <cassert>\n#include <iterator>\n#line 6 \"fft.hpp\"\n\ntemplate <typename Tp>\n\
-    class FftInfo {\n    static Tp least_quadratic_nonresidue() {\n        for (int\
-    \ i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n\
-    \    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n\
-    \    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n\
-    \    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
-    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
-    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
-    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
-    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
-    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
-    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
-    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+    \ }\n};\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#line 4 \"\
+    fft.hpp\"\n#include <cassert>\n#include <iterator>\n#include <memory>\n#line 8\
+    \ \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
+    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
+    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
+    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
+    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
+    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
+    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
+    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
+    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
+    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
+    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
+    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
     \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
     \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
     \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
@@ -131,9 +131,22 @@ data:
     \ b.empty()) return {};\n    const int n   = a.size();\n    const int m   = b.size();\n\
     \    const int len = fft_len(n + m - 1);\n    a.resize(len);\n    b.resize(len);\n\
     \    fft(a);\n    fft(b);\n    for (int i = 0; i < len; ++i) a[i] *= b[i];\n \
-    \   inv_fft(a);\n    a.resize(n + m - 1);\n    return a;\n}\n#line 5 \"semi_relaxed_conv.hpp\"\
-    \n#include <type_traits>\n#include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\
-    \n\n// returns coefficients generated by closure\n// closure: gen(index, current_product)\n\
+    \   inv_fft(a);\n    a.resize(n + m - 1);\n    return a;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> square_fft(std::vector<Tp> a) {\n    if (a.empty())\
+    \ return {};\n    const int n   = a.size();\n    const int len = fft_len(n * 2\
+    \ - 1);\n    a.resize(len);\n    fft(a);\n    for (int i = 0; i < len; ++i) a[i]\
+    \ *= a[i];\n    inv_fft(a);\n    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> convolution_naive(const std::vector<Tp>\
+    \ &a, std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n    const\
+    \ int n = a.size();\n    const int m = b.size();\n    std::vector<Tp> res(n +\
+    \ m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j < m; ++j)\
+    \ res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
+    \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
+    \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
+    \    return convolution_fft(a, b);\n}\n#line 5 \"semi_relaxed_conv.hpp\"\n#include\
+    \ <type_traits>\n#include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\n\n// returns\
+    \ coefficients generated by closure\n// closure: gen(index, current_product)\n\
     template <typename Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp,\
     \ Closure, int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\n\
     semi_relaxed_convolution(const std::vector<Tp> &A, Closure gen, int n) {\n   \
@@ -247,23 +260,23 @@ data:
   isVerificationFile: false
   path: fps_basic.hpp
   requiredBy:
-  - fps_composition.hpp
-  - c_recursive.hpp
   - eulerian_number.hpp
+  - fps_composition.hpp
   - poly_basic.hpp
-  timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  - c_recursive.hpp
+  timestamp: '2024-05-17 19:05:46+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
-  - test/exp_of_formal_power_series.0.test.cpp
-  - test/polynomial_taylor_shift.0.test.cpp
   - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - test/division_of_polynomials.0.test.cpp
-  - test/log_of_formal_power_series.0.test.cpp
-  - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - test/pow_of_formal_power_series.0.test.cpp
   - test/inv_of_formal_power_series.0.test.cpp
   - test/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  - test/division_of_polynomials.0.test.cpp
+  - test/log_of_formal_power_series.0.test.cpp
+  - test/pow_of_formal_power_series.0.test.cpp
+  - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/exp_of_formal_power_series.0.test.cpp
   - test/composition_of_formal_power_series_large.0.test.cpp
+  - test/polynomial_taylor_shift.0.test.cpp
 documentation_of: fps_basic.hpp
 layout: document
 redirect_from:
