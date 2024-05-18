@@ -83,46 +83,17 @@ data:
     \    return convolution_fft(a, b);\n}\n#line 7 \"middle_product.hpp\"\n\n// see:\n\
     // [1] Guillaume Hanrot, Michel Quercia, Paul Zimmermann. The Middle Product Algorithm\
     \ I.\n// [2] Alin Bostan, Gr\xE9goire Lecerf, \xC9ric Schost. Tellegen's principle\
-    \ into practice.\n\ntemplate <typename Tp>\ninline std::vector<Tp> middle_product_naive(const\
-    \ std::vector<Tp> &a, const std::vector<Tp> &b) {\n    const int n = a.size();\n\
-    \    const int m = b.size();\n    // MUL  : n, m     -> n+m-1\n    // MUL^T: n,\
-    \ n+m-1 -> m\n    assert(m >= n);\n    std::vector<Tp> res(m - n + 1);\n    for\
-    \ (int i = 0; i < m - n; ++i)\n        for (int j = 0; j < n; ++j) res[i] += a[j]\
-    \ * b[n + i - j];\n    for (int j = 1; j < n; ++j) res[m - n] += a[j] * b[m -\
-    \ j];\n    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> middle_product_fft(std::vector<Tp>\
-    \ a, std::vector<Tp> b) {\n    const int n = a.size();\n    const int m = b.size();\n\
-    \    assert(m >= n);\n    const int len = fft_len(m + 1);\n    a.resize(len);\n\
-    \    b.resize(len);\n    fft(a);\n    fft(b);\n    for (int i = 0; i < len; ++i)\
-    \ a[i] *= b[i];\n    inv_fft(a);\n    a.erase(a.begin(), a.begin() + n);\n   \
-    \ a.resize(m - n + 1);\n    return a;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ middle_product(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n    if\
-    \ (std::min((int)b.size() - (int)a.size() + 1, (int)a.size()) < 60)\n        return\
-    \ middle_product_naive(a, b);\n    return middle_product_fft(a, b);\n}\n"
+    \ into practice.\n\n// TODO\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include <algorithm>\n#include <cassert>\n\
     #include <vector>\n\n// see:\n// [1] Guillaume Hanrot, Michel Quercia, Paul Zimmermann.\
     \ The Middle Product Algorithm I.\n// [2] Alin Bostan, Gr\xE9goire Lecerf, \xC9\
-    ric Schost. Tellegen's principle into practice.\n\ntemplate <typename Tp>\ninline\
-    \ std::vector<Tp> middle_product_naive(const std::vector<Tp> &a, const std::vector<Tp>\
-    \ &b) {\n    const int n = a.size();\n    const int m = b.size();\n    // MUL\
-    \  : n, m     -> n+m-1\n    // MUL^T: n, n+m-1 -> m\n    assert(m >= n);\n   \
-    \ std::vector<Tp> res(m - n + 1);\n    for (int i = 0; i < m - n; ++i)\n     \
-    \   for (int j = 0; j < n; ++j) res[i] += a[j] * b[n + i - j];\n    for (int j\
-    \ = 1; j < n; ++j) res[m - n] += a[j] * b[m - j];\n    return res;\n}\n\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> middle_product_fft(std::vector<Tp> a,\
-    \ std::vector<Tp> b) {\n    const int n = a.size();\n    const int m = b.size();\n\
-    \    assert(m >= n);\n    const int len = fft_len(m + 1);\n    a.resize(len);\n\
-    \    b.resize(len);\n    fft(a);\n    fft(b);\n    for (int i = 0; i < len; ++i)\
-    \ a[i] *= b[i];\n    inv_fft(a);\n    a.erase(a.begin(), a.begin() + n);\n   \
-    \ a.resize(m - n + 1);\n    return a;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ middle_product(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n    if\
-    \ (std::min((int)b.size() - (int)a.size() + 1, (int)a.size()) < 60)\n        return\
-    \ middle_product_naive(a, b);\n    return middle_product_fft(a, b);\n}\n"
+    ric Schost. Tellegen's principle into practice.\n\n// TODO\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
   path: middle_product.hpp
   requiredBy: []
-  timestamp: '2024-05-17 23:59:29+08:00'
+  timestamp: '2024-05-18 13:28:54+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: middle_product.hpp
