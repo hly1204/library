@@ -13,14 +13,14 @@ public:
     int N;
     int S;
 
-    SubproductTree(const std::vector<Tp> &A) : N(A.size()), S(std::max(fft_len(N), 2)) {
+    SubproductTree(const std::vector<Tp> &X) : N(X.size()), S(std::max(fft_len(N), 2)) {
         assert(N > 0);
         int LogS = 1;
         while ((1 << LogS) < S) ++LogS;
         T.assign((LogS + 1) * S * 2, 1);
         for (int i = 0; i < N; ++i) {
-            T[LogS * S * 2 + i * 2]     = 1 - A[i];
-            T[LogS * S * 2 + i * 2 + 1] = -1 - A[i];
+            T[LogS * S * 2 + i * 2]     = 1 - X[i];
+            T[LogS * S * 2 + i * 2 + 1] = -1 - X[i];
         }
         for (int lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {
             for (int i = 0; i < (1 << lv); ++i) {
@@ -76,6 +76,34 @@ public:
                 std::copy_n(RR.begin() + degL, len / 2, C + len / 2);
             }
         }
+        res.resize(N);
+        return res;
+    }
+
+    std::vector<Tp> interpolation(const std::vector<Tp> &Y) {
+        assert((int)Y.size() == N);
+        const auto D = evaluation(deriv(product())); // denominator => P(x_i)
+        std::vector<Tp> res(S * 2);
+        for (int i = 0; i < N; ++i) res[i * 2] = res[i * 2 + 1] = Y[i] / D[i];
+        int LogS = 1;
+        while ((1 << LogS) < S) ++LogS;
+        for (int lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {
+            for (int i = 0; i < (1 << lv); ++i) {
+                auto C = res.begin() + i * len * 2;                    // current
+                auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child
+                for (int j = 0; j < len; ++j)
+                    C[j] = C[len + j] = C[j] * L[len + j] + C[len + j] * L[j];
+                if (lv) {
+                    inv_fft_n(C + len, len);
+                    Tp k         = 1;
+                    const auto t = FftInfo<Tp>::get().root(len).at(len / 2);
+                    for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;
+                    fft_n(C + len, len);
+                }
+            }
+        }
+        res.resize(S);
+        inv_fft(res);
         res.resize(N);
         return res;
     }
