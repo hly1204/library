@@ -312,19 +312,19 @@ data:
     \     auto C = res.begin() + i * len * 2;                    // current\n    \
     \            auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
     \                for (int j = 0; j < len; ++j)\n                    C[j] = C[len\
-    \ + j] = C[j] * L[len + j] + C[len + j] * L[j];\n                if (lv) {\n \
-    \                   inv_fft_n(C + len, len);\n                    Tp k       \
-    \  = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
-    \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
-    \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
-    \     }\n        }\n        res.resize(S);\n        inv_fft(res);\n        res.resize(N);\n\
-    \        return res;\n    }\n};\n#line 7 \"test/multipoint_evaluation.0.test.cpp\"\
-    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
-    \    std::vector<mint> f(n), p(m);\n    for (int i = 0; i < n; ++i) std::cin >>\
-    \ f[i];\n    for (int i = 0; i < m; ++i) std::cin >> p[i];\n    SubproductTree<mint>\
-    \ T(p);\n    const auto res = T.evaluation(f);\n    for (int i = 0; i < m; ++i)\
-    \ std::cout << res[i] << ' ';\n    return 0;\n}\n"
+    \ + j] = C[j] * L[len + j] + C[len + j] * L[j];\n                inv_fft_n(C +\
+    \ len, len);\n                if (lv) {\n                    Tp k         = 1;\n\
+    \                    const auto t = FftInfo<Tp>::get().root(len).at(len / 2);\n\
+    \                    for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;\n\
+    \                    fft_n(C + len, len);\n                }\n            }\n\
+    \        }\n        return std::vector(res.begin() + S, res.begin() + S + N);\n\
+    \    }\n};\n#line 7 \"test/multipoint_evaluation.0.test.cpp\"\n\nint main() {\n\
+    \    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
+    \ mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n    std::vector<mint>\
+    \ f(n), p(m);\n    for (int i = 0; i < n; ++i) std::cin >> f[i];\n    for (int\
+    \ i = 0; i < m; ++i) std::cin >> p[i];\n    SubproductTree<mint> T(p);\n    const\
+    \ auto res = T.evaluation(f);\n    for (int i = 0; i < m; ++i) std::cout << res[i]\
+    \ << ' ';\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/multipoint_evaluation\"\
     \n\n#include \"modint.hpp\"\n#include \"subproduct_tree.hpp\"\n#include <iostream>\n\
     #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
@@ -345,7 +345,7 @@ data:
   isVerificationFile: true
   path: test/multipoint_evaluation.0.test.cpp
   requiredBy: []
-  timestamp: '2024-05-22 22:45:48+08:00'
+  timestamp: '2024-05-22 22:49:15+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/multipoint_evaluation.0.test.cpp
