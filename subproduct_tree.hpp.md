@@ -246,17 +246,17 @@ data:
     \ - N + 1));\n        std::reverse(res.begin(), res.end());\n        res.resize(S);\n\
     \        for (int lv = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {\n        \
     \    std::vector<Tp> LL(len), RR(len);\n            for (int i = 0; i < (1 <<\
-    \ lv); ++i) {\n                auto FF = res.begin() + i * len;\n            \
-    \    auto L  = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n \
-    \               fft_n(FF, len);\n                for (int j = 0; j < len; ++j)\
-    \ {\n                    LL[j] = FF[j] * L[len + j];\n                    RR[j]\
-    \ = FF[j] * L[j];\n                }\n                inv_fft(LL);\n         \
-    \       inv_fft(RR);\n                const int degL = std::max(std::min((i *\
-    \ len) + len / 2, N) - i * len, 0);\n                const int degR = std::max(std::min((i\
-    \ + 1) * len, N) - ((i * len) + len / 2), 0);\n                std::copy_n(LL.begin()\
-    \ + degR, len / 2, FF);\n                std::copy_n(RR.begin() + degL, len /\
-    \ 2, FF + len / 2);\n            }\n        }\n        res.resize(N);\n      \
-    \  return res;\n    }\n};\n"
+    \ lv); ++i) {\n                auto C = res.begin() + i * len;               \
+    \         // current\n                auto L = T.begin() + ((lv + 1) * S * 2 +\
+    \ i * len * 2); // left child\n                fft_n(C, len);\n              \
+    \  for (int j = 0; j < len; ++j) {\n                    LL[j] = C[j] * L[len +\
+    \ j];\n                    RR[j] = C[j] * L[j];\n                }\n         \
+    \       inv_fft(LL);\n                inv_fft(RR);\n                const int\
+    \ degL = std::max(std::min((i * len) + len / 2, N) - i * len, 0);\n          \
+    \      const int degR = std::max(std::min((i + 1) * len, N) - ((i * len) + len\
+    \ / 2), 0);\n                std::copy_n(LL.begin() + degR, len / 2, C);\n   \
+    \             std::copy_n(RR.begin() + degL, len / 2, C + len / 2);\n        \
+    \    }\n        }\n        res.resize(N);\n        return res;\n    }\n};\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include \"fps_basic.hpp\"\n#include\
     \ \"poly_basic.hpp\"\n#include <cassert>\n#include <vector>\n\ntemplate <typename\
     \ Tp>\nclass SubproductTree {\npublic:\n    std::vector<Tp> T;\n    int N;\n \
@@ -286,17 +286,17 @@ data:
     \ - N + 1));\n        std::reverse(res.begin(), res.end());\n        res.resize(S);\n\
     \        for (int lv = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {\n        \
     \    std::vector<Tp> LL(len), RR(len);\n            for (int i = 0; i < (1 <<\
-    \ lv); ++i) {\n                auto FF = res.begin() + i * len;\n            \
-    \    auto L  = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n \
-    \               fft_n(FF, len);\n                for (int j = 0; j < len; ++j)\
-    \ {\n                    LL[j] = FF[j] * L[len + j];\n                    RR[j]\
-    \ = FF[j] * L[j];\n                }\n                inv_fft(LL);\n         \
-    \       inv_fft(RR);\n                const int degL = std::max(std::min((i *\
-    \ len) + len / 2, N) - i * len, 0);\n                const int degR = std::max(std::min((i\
-    \ + 1) * len, N) - ((i * len) + len / 2), 0);\n                std::copy_n(LL.begin()\
-    \ + degR, len / 2, FF);\n                std::copy_n(RR.begin() + degL, len /\
-    \ 2, FF + len / 2);\n            }\n        }\n        res.resize(N);\n      \
-    \  return res;\n    }\n};\n"
+    \ lv); ++i) {\n                auto C = res.begin() + i * len;               \
+    \         // current\n                auto L = T.begin() + ((lv + 1) * S * 2 +\
+    \ i * len * 2); // left child\n                fft_n(C, len);\n              \
+    \  for (int j = 0; j < len; ++j) {\n                    LL[j] = C[j] * L[len +\
+    \ j];\n                    RR[j] = C[j] * L[j];\n                }\n         \
+    \       inv_fft(LL);\n                inv_fft(RR);\n                const int\
+    \ degL = std::max(std::min((i * len) + len / 2, N) - i * len, 0);\n          \
+    \      const int degR = std::max(std::min((i + 1) * len, N) - ((i * len) + len\
+    \ / 2), 0);\n                std::copy_n(LL.begin() + degR, len / 2, C);\n   \
+    \             std::copy_n(RR.begin() + degL, len / 2, C + len / 2);\n        \
+    \    }\n        }\n        res.resize(N);\n        return res;\n    }\n};\n"
   dependsOn:
   - fft.hpp
   - fps_basic.hpp
@@ -306,7 +306,7 @@ data:
   isVerificationFile: false
   path: subproduct_tree.hpp
   requiredBy: []
-  timestamp: '2024-05-22 21:14:31+08:00'
+  timestamp: '2024-05-22 21:24:41+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp

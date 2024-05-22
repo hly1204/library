@@ -292,23 +292,24 @@ data:
     \ - N + 1));\n        std::reverse(res.begin(), res.end());\n        res.resize(S);\n\
     \        for (int lv = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {\n        \
     \    std::vector<Tp> LL(len), RR(len);\n            for (int i = 0; i < (1 <<\
-    \ lv); ++i) {\n                auto FF = res.begin() + i * len;\n            \
-    \    auto L  = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n \
-    \               fft_n(FF, len);\n                for (int j = 0; j < len; ++j)\
-    \ {\n                    LL[j] = FF[j] * L[len + j];\n                    RR[j]\
-    \ = FF[j] * L[j];\n                }\n                inv_fft(LL);\n         \
-    \       inv_fft(RR);\n                const int degL = std::max(std::min((i *\
-    \ len) + len / 2, N) - i * len, 0);\n                const int degR = std::max(std::min((i\
-    \ + 1) * len, N) - ((i * len) + len / 2), 0);\n                std::copy_n(LL.begin()\
-    \ + degR, len / 2, FF);\n                std::copy_n(RR.begin() + degL, len /\
-    \ 2, FF + len / 2);\n            }\n        }\n        res.resize(N);\n      \
-    \  return res;\n    }\n};\n#line 7 \"test/multipoint_evaluation.0.test.cpp\"\n\
-    \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
-    \    std::vector<mint> f(n), p(m);\n    for (int i = 0; i < n; ++i) std::cin >>\
-    \ f[i];\n    for (int i = 0; i < m; ++i) std::cin >> p[i];\n    SubproductTree<mint>\
-    \ T(p);\n    const auto res = T.evaluation(f);\n    for (int i = 0; i < m; ++i)\
-    \ std::cout << res[i] << ' ';\n    return 0;\n}\n"
+    \ lv); ++i) {\n                auto C = res.begin() + i * len;               \
+    \         // current\n                auto L = T.begin() + ((lv + 1) * S * 2 +\
+    \ i * len * 2); // left child\n                fft_n(C, len);\n              \
+    \  for (int j = 0; j < len; ++j) {\n                    LL[j] = C[j] * L[len +\
+    \ j];\n                    RR[j] = C[j] * L[j];\n                }\n         \
+    \       inv_fft(LL);\n                inv_fft(RR);\n                const int\
+    \ degL = std::max(std::min((i * len) + len / 2, N) - i * len, 0);\n          \
+    \      const int degR = std::max(std::min((i + 1) * len, N) - ((i * len) + len\
+    \ / 2), 0);\n                std::copy_n(LL.begin() + degR, len / 2, C);\n   \
+    \             std::copy_n(RR.begin() + degL, len / 2, C + len / 2);\n        \
+    \    }\n        }\n        res.resize(N);\n        return res;\n    }\n};\n#line\
+    \ 7 \"test/multipoint_evaluation.0.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
+    \    std::cin >> n >> m;\n    std::vector<mint> f(n), p(m);\n    for (int i =\
+    \ 0; i < n; ++i) std::cin >> f[i];\n    for (int i = 0; i < m; ++i) std::cin >>\
+    \ p[i];\n    SubproductTree<mint> T(p);\n    const auto res = T.evaluation(f);\n\
+    \    for (int i = 0; i < m; ++i) std::cout << res[i] << ' ';\n    return 0;\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/multipoint_evaluation\"\
     \n\n#include \"modint.hpp\"\n#include \"subproduct_tree.hpp\"\n#include <iostream>\n\
     #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
@@ -329,7 +330,7 @@ data:
   isVerificationFile: true
   path: test/multipoint_evaluation.0.test.cpp
   requiredBy: []
-  timestamp: '2024-05-22 21:14:31+08:00'
+  timestamp: '2024-05-22 21:24:41+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/multipoint_evaluation.0.test.cpp
