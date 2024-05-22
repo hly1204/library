@@ -94,8 +94,8 @@ public:
                 auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child
                 for (int j = 0; j < len; ++j)
                     C[j] = C[len + j] = C[j] * L[len + j] + C[len + j] * L[j];
+                inv_fft_n(C + len, len);
                 if (lv) {
-                    inv_fft_n(C + len, len);
                     Tp k         = 1;
                     const auto t = FftInfo<Tp>::get().root(len).at(len / 2);
                     for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;
@@ -103,9 +103,6 @@ public:
                 }
             }
         }
-        res.resize(S);
-        inv_fft(res);
-        res.resize(N);
-        return res;
+        return std::vector(res.begin() + S, res.begin() + S + N);
     }
 };
