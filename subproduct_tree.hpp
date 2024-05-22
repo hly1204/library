@@ -3,6 +3,7 @@
 #include "fft.hpp"
 #include "fps_basic.hpp"
 #include "poly_basic.hpp"
+#include <algorithm>
 #include <cassert>
 #include <vector>
 
