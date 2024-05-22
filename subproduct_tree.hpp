@@ -61,19 +61,19 @@ public:
         for (int lv = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {
             std::vector<Tp> LL(len), RR(len);
             for (int i = 0; i < (1 << lv); ++i) {
-                auto FF = res.begin() + i * len;
-                auto L  = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child
-                fft_n(FF, len);
+                auto C = res.begin() + i * len;                        // current
+                auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child
+                fft_n(C, len);
                 for (int j = 0; j < len; ++j) {
-                    LL[j] = FF[j] * L[len + j];
-                    RR[j] = FF[j] * L[j];
+                    LL[j] = C[j] * L[len + j];
+                    RR[j] = C[j] * L[j];
                 }
                 inv_fft(LL);
                 inv_fft(RR);
                 const int degL = std::max(std::min((i * len) + len / 2, N) - i * len, 0);
                 const int degR = std::max(std::min((i + 1) * len, N) - ((i * len) + len / 2), 0);
-                std::copy_n(LL.begin() + degR, len / 2, FF);
-                std::copy_n(RR.begin() + degL, len / 2, FF + len / 2);
+                std::copy_n(LL.begin() + degR, len / 2, C);
+                std::copy_n(RR.begin() + degL, len / 2, C + len / 2);
             }
         }
         res.resize(N);
