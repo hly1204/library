@@ -17,6 +17,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
+  - icon: ':heavy_check_mark:'
+    path: subproduct_tree.hpp
+    title: subproduct_tree.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/composition_of_formal_power_series_large.0.test.cpp
@@ -42,6 +45,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/log_of_formal_power_series.0.test.cpp
     title: test/log_of_formal_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/multipoint_evaluation.0.test.cpp
+    title: test/multipoint_evaluation.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/polynomial_taylor_shift.0.test.cpp
     title: test/polynomial_taylor_shift.0.test.cpp
@@ -94,9 +100,11 @@ data:
   - fps_composition.hpp
   - poly_basic.hpp
   - c_recursive.hpp
+  - subproduct_tree.hpp
   timestamp: '2024-05-15 00:00:04+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/multipoint_evaluation.0.test.cpp
   - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/inv_of_formal_power_series.0.test.cpp
   - test/compositional_inverse_of_formal_power_series_large.0.test.cpp

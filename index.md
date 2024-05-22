@@ -49,6 +49,9 @@ data:
       path: semi_relaxed_conv.hpp
       title: semi_relaxed_conv.hpp
     - icon: ':heavy_check_mark:'
+      path: subproduct_tree.hpp
+      title: subproduct_tree.hpp
+    - icon: ':heavy_check_mark:'
       path: xgcd.hpp
       title: xgcd.hpp
   verificationCategories:
@@ -87,6 +90,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/log_of_formal_power_series.0.test.cpp
       title: test/log_of_formal_power_series.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/multipoint_evaluation.0.test.cpp
+      title: test/multipoint_evaluation.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/polynomial_taylor_shift.0.test.cpp
       title: test/polynomial_taylor_shift.0.test.cpp

@@ -31,6 +31,9 @@ data:
     path: test/log_of_formal_power_series.0.test.cpp
     title: test/log_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/multipoint_evaluation.0.test.cpp
+    title: test/multipoint_evaluation.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/polynomial_taylor_shift.0.test.cpp
     title: test/polynomial_taylor_shift.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -124,6 +127,7 @@ data:
   timestamp: '2024-05-15 00:00:04+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/multipoint_evaluation.0.test.cpp
   - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/convolution_mod.0.test.cpp
   - test/inv_of_formal_power_series.0.test.cpp
