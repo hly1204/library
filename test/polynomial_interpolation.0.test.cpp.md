@@ -264,7 +264,7 @@ data:
     \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
     \ < 0) return {Tp(0)};\n\n    auto Q = div(std::vector(A.rend() - (degA + 1),\
     \ A.rend()),\n                 std::vector(B.rend() - (degB + 1), B.rend()), degQ\
-    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 8 \"subproduct_tree.hpp\"\
+    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 9 \"subproduct_tree.hpp\"\
     \n\ntemplate <typename Tp>\nclass SubproductTree {\npublic:\n    std::vector<Tp>\
     \ T;\n    int N;\n    int S;\n\n    SubproductTree(const std::vector<Tp> &X) :\
     \ N(X.size()), S(std::max(fft_len(N), 2)) {\n        assert(N > 0);\n        int\
@@ -344,7 +344,7 @@ data:
   isVerificationFile: true
   path: test/polynomial_interpolation.0.test.cpp
   requiredBy: []
-  timestamp: '2024-05-22 22:23:40+08:00'
+  timestamp: '2024-05-22 22:45:48+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/polynomial_interpolation.0.test.cpp

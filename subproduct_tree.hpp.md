@@ -221,7 +221,7 @@ data:
     \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
     \ < 0) return {Tp(0)};\n\n    auto Q = div(std::vector(A.rend() - (degA + 1),\
     \ A.rend()),\n                 std::vector(B.rend() - (degB + 1), B.rend()), degQ\
-    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 8 \"subproduct_tree.hpp\"\
+    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 9 \"subproduct_tree.hpp\"\
     \n\ntemplate <typename Tp>\nclass SubproductTree {\npublic:\n    std::vector<Tp>\
     \ T;\n    int N;\n    int S;\n\n    SubproductTree(const std::vector<Tp> &X) :\
     \ N(X.size()), S(std::max(fft_len(N), 2)) {\n        assert(N > 0);\n        int\
@@ -277,28 +277,28 @@ data:
     \     }\n        }\n        res.resize(S);\n        inv_fft(res);\n        res.resize(N);\n\
     \        return res;\n    }\n};\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include \"fps_basic.hpp\"\n#include\
-    \ \"poly_basic.hpp\"\n#include <cassert>\n#include <vector>\n\ntemplate <typename\
-    \ Tp>\nclass SubproductTree {\npublic:\n    std::vector<Tp> T;\n    int N;\n \
-    \   int S;\n\n    SubproductTree(const std::vector<Tp> &X) : N(X.size()), S(std::max(fft_len(N),\
-    \ 2)) {\n        assert(N > 0);\n        int LogS = 1;\n        while ((1 << LogS)\
-    \ < S) ++LogS;\n        T.assign((LogS + 1) * S * 2, 1);\n        for (int i =\
-    \ 0; i < N; ++i) {\n            T[LogS * S * 2 + i * 2]     = 1 - X[i];\n    \
-    \        T[LogS * S * 2 + i * 2 + 1] = -1 - X[i];\n        }\n        for (int\
-    \ lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {\n            for (int i =\
-    \ 0; i < (1 << lv); ++i) {\n                auto C = T.begin() + (lv * S * 2 +\
-    \ i * len * 2);       // current\n                auto L = T.begin() + ((lv +\
-    \ 1) * S * 2 + i * len * 2); // left child\n                for (int j = 0; j\
-    \ < len; ++j) C[j] = C[len + j] = L[j] * L[len + j];\n                inv_fft_n(C\
-    \ + len, len);\n                if ((i + 1) * len <= N) C[len] -= 2;\n       \
-    \         if (lv) {\n                    Tp k         = 1;\n                 \
-    \   const auto t = FftInfo<Tp>::get().root(len).at(len / 2);\n               \
-    \     for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;\n               \
-    \     fft_n(C + len, len);\n                }\n            }\n        }\n    }\n\
-    \n    std::vector<Tp> product() const {\n        std::vector res(T.begin() + S,\
-    \ T.begin() + S * 2);\n        if (N == S) {\n            res[0] += 1;\n     \
-    \       res.emplace_back(1);\n        }\n        res.resize(N + 1);\n        return\
-    \ res;\n    }\n\n    std::vector<Tp> evaluation(const std::vector<Tp> &F) const\
-    \ {\n        const int degF = degree(F);\n        const auto P   = product();\n\
+    \ \"poly_basic.hpp\"\n#include <algorithm>\n#include <cassert>\n#include <vector>\n\
+    \ntemplate <typename Tp>\nclass SubproductTree {\npublic:\n    std::vector<Tp>\
+    \ T;\n    int N;\n    int S;\n\n    SubproductTree(const std::vector<Tp> &X) :\
+    \ N(X.size()), S(std::max(fft_len(N), 2)) {\n        assert(N > 0);\n        int\
+    \ LogS = 1;\n        while ((1 << LogS) < S) ++LogS;\n        T.assign((LogS +\
+    \ 1) * S * 2, 1);\n        for (int i = 0; i < N; ++i) {\n            T[LogS *\
+    \ S * 2 + i * 2]     = 1 - X[i];\n            T[LogS * S * 2 + i * 2 + 1] = -1\
+    \ - X[i];\n        }\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv,\
+    \ len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i) {\n           \
+    \     auto C = T.begin() + (lv * S * 2 + i * len * 2);       // current\n    \
+    \            auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
+    \                for (int j = 0; j < len; ++j) C[j] = C[len + j] = L[j] * L[len\
+    \ + j];\n                inv_fft_n(C + len, len);\n                if ((i + 1)\
+    \ * len <= N) C[len] -= 2;\n                if (lv) {\n                    Tp\
+    \ k         = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
+    \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
+    \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
+    \     }\n        }\n    }\n\n    std::vector<Tp> product() const {\n        std::vector\
+    \ res(T.begin() + S, T.begin() + S * 2);\n        if (N == S) {\n            res[0]\
+    \ += 1;\n            res.emplace_back(1);\n        }\n        res.resize(N + 1);\n\
+    \        return res;\n    }\n\n    std::vector<Tp> evaluation(const std::vector<Tp>\
+    \ &F) const {\n        const int degF = degree(F);\n        const auto P   = product();\n\
     \        // find x^(-1),...,x^(-N) of F/P in R((x^(-1)))\n        auto res = div(std::vector(F.rend()\
     \ - (degF + 1), F.rend()),\n                       std::vector(P.rbegin(), P.rend()),\
     \ degF + 1);\n        if (degF >= N) res.erase(res.begin(), res.begin() + (degF\
@@ -341,7 +341,7 @@ data:
   isVerificationFile: false
   path: subproduct_tree.hpp
   requiredBy: []
-  timestamp: '2024-05-22 22:23:40+08:00'
+  timestamp: '2024-05-22 22:45:48+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
