@@ -94,6 +94,9 @@ data:
       path: test/multipoint_evaluation.0.test.cpp
       title: test/multipoint_evaluation.0.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/polynomial_interpolation.0.test.cpp
+      title: test/polynomial_interpolation.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/polynomial_taylor_shift.0.test.cpp
       title: test/polynomial_taylor_shift.0.test.cpp
     - icon: ':heavy_check_mark:'

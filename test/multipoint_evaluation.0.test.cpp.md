@@ -266,12 +266,12 @@ data:
     \ A.rend()),\n                 std::vector(B.rend() - (degB + 1), B.rend()), degQ\
     \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 8 \"subproduct_tree.hpp\"\
     \n\ntemplate <typename Tp>\nclass SubproductTree {\npublic:\n    std::vector<Tp>\
-    \ T;\n    int N;\n    int S;\n\n    SubproductTree(const std::vector<Tp> &A) :\
-    \ N(A.size()), S(std::max(fft_len(N), 2)) {\n        assert(N > 0);\n        int\
+    \ T;\n    int N;\n    int S;\n\n    SubproductTree(const std::vector<Tp> &X) :\
+    \ N(X.size()), S(std::max(fft_len(N), 2)) {\n        assert(N > 0);\n        int\
     \ LogS = 1;\n        while ((1 << LogS) < S) ++LogS;\n        T.assign((LogS +\
     \ 1) * S * 2, 1);\n        for (int i = 0; i < N; ++i) {\n            T[LogS *\
-    \ S * 2 + i * 2]     = 1 - A[i];\n            T[LogS * S * 2 + i * 2 + 1] = -1\
-    \ - A[i];\n        }\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv,\
+    \ S * 2 + i * 2]     = 1 - X[i];\n            T[LogS * S * 2 + i * 2 + 1] = -1\
+    \ - X[i];\n        }\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv,\
     \ len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i) {\n           \
     \     auto C = T.begin() + (lv * S * 2 + i * len * 2);       // current\n    \
     \            auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
@@ -302,14 +302,29 @@ data:
     \      const int degR = std::max(std::min((i + 1) * len, N) - ((i * len) + len\
     \ / 2), 0);\n                std::copy_n(LL.begin() + degR, len / 2, C);\n   \
     \             std::copy_n(RR.begin() + degL, len / 2, C + len / 2);\n        \
-    \    }\n        }\n        res.resize(N);\n        return res;\n    }\n};\n#line\
-    \ 7 \"test/multipoint_evaluation.0.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
-    \    std::cin >> n >> m;\n    std::vector<mint> f(n), p(m);\n    for (int i =\
-    \ 0; i < n; ++i) std::cin >> f[i];\n    for (int i = 0; i < m; ++i) std::cin >>\
-    \ p[i];\n    SubproductTree<mint> T(p);\n    const auto res = T.evaluation(f);\n\
-    \    for (int i = 0; i < m; ++i) std::cout << res[i] << ' ';\n    return 0;\n\
-    }\n"
+    \    }\n        }\n        res.resize(N);\n        return res;\n    }\n\n    std::vector<Tp>\
+    \ interpolation(const std::vector<Tp> &Y) {\n        assert((int)Y.size() == N);\n\
+    \        const auto D = evaluation(deriv(product())); // denominator => P(x_i)\n\
+    \        std::vector<Tp> res(S * 2);\n        for (int i = 0; i < N; ++i) res[i\
+    \ * 2] = res[i * 2 + 1] = Y[i] / D[i];\n        int LogS = 1;\n        while ((1\
+    \ << LogS) < S) ++LogS;\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv,\
+    \ len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i) {\n           \
+    \     auto C = res.begin() + i * len * 2;                    // current\n    \
+    \            auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
+    \                for (int j = 0; j < len; ++j)\n                    C[j] = C[len\
+    \ + j] = C[j] * L[len + j] + C[len + j] * L[j];\n                if (lv) {\n \
+    \                   inv_fft_n(C + len, len);\n                    Tp k       \
+    \  = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
+    \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
+    \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
+    \     }\n        }\n        res.resize(S);\n        inv_fft(res);\n        res.resize(N);\n\
+    \        return res;\n    }\n};\n#line 7 \"test/multipoint_evaluation.0.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
+    \    std::vector<mint> f(n), p(m);\n    for (int i = 0; i < n; ++i) std::cin >>\
+    \ f[i];\n    for (int i = 0; i < m; ++i) std::cin >> p[i];\n    SubproductTree<mint>\
+    \ T(p);\n    const auto res = T.evaluation(f);\n    for (int i = 0; i < m; ++i)\
+    \ std::cout << res[i] << ' ';\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/multipoint_evaluation\"\
     \n\n#include \"modint.hpp\"\n#include \"subproduct_tree.hpp\"\n#include <iostream>\n\
     #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
@@ -330,7 +345,7 @@ data:
   isVerificationFile: true
   path: test/multipoint_evaluation.0.test.cpp
   requiredBy: []
-  timestamp: '2024-05-22 21:24:41+08:00'
+  timestamp: '2024-05-22 22:23:40+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/multipoint_evaluation.0.test.cpp
