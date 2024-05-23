@@ -10,11 +10,11 @@
 template <typename Tp>
 class SubproductTree {
 public:
-    // LV=0   => T[0..S]  = DFT((x-X_0)..(x-X_(N-1))    mod (x^S - 1))
-    //        => T[S..2S] = (x-X_0)..(x-X_(N-1))        mod (x^S + 1)      (* SPECIAL CASE)
-    // LV=1   => T[..]    = DFT((x-X_0)..(x-X_(S/2-1))  mod (x^(S/2) - 1))
-    //        => T[..]    = DFT((x-X_(S/2))..(x-X(N-1)) mod (x^(S/2) - 1)) (* GENERAL CASE)
-    // LV=2.. => ..                                                        (* GENERAL CASE)
+    // LV=0   => T[0..S]  = DFT((x-X_0)..(x-X_(N-1))     mod (x^S     - 1))
+    //        => T[S..2S] = (x-X_0)..(x-X_(N-1))         mod (x^S     + 1)  (* SPECIAL CASE)
+    // LV=1   => T[..]    = DFT((x-X_0)..(x-X_(S/2-1))   mod (x^(S/2) - 1))
+    //        => T[..]    = DFT((x-X_(S/2))..(x-X_(N-1)) mod (x^(S/2) - 1)) (* GENERAL CASE)
+    // LV=2.. => ..                                                         (* GENERAL CASE)
     std::vector<Tp> T;
     int N;
     int S;
