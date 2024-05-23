@@ -146,9 +146,10 @@ public:
     }
 
     std::vector<Tp> newton_to_monomial(const std::vector<Tp> &F) const {
-        assert((int)F.size() <= N);
+        const int degF = degree(F);
+        assert(degF < N);
         std::vector<Tp> res(S * 2);
-        for (int i = 0; i < (int)F.size(); ++i) res[i * 2] = res[i * 2 + 1] = F[i];
+        for (int i = 0; i <= degF; ++i) res[i * 2] = res[i * 2 + 1] = F[i];
         int LogS = 1;
         while ((1 << LogS) < S) ++LogS;
         for (int lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {
