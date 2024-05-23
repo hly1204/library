@@ -93,7 +93,10 @@ public:
         assert((int)Y.size() == N);
         const auto D = evaluation(deriv(product())); // denominator => P'(x_i)
         std::vector<Tp> res(S * 2);
-        for (int i = 0; i < N; ++i) res[i * 2] = res[i * 2 + 1] = Y[i] / D[i];
+        for (int i = 0; i < N; ++i) {
+            assert(D[i] != 0); // X[i] == X[?]
+            res[i * 2] = res[i * 2 + 1] = Y[i] / D[i];
+        }
         int LogS = 1;
         while ((1 << LogS) < S) ++LogS;
         for (int lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {
