@@ -34,6 +34,9 @@ data:
     path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+    title: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/division_of_polynomials.0.test.cpp
     title: test/division_of_polynomials.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -228,6 +231,7 @@ data:
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
   - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - test/inv_of_formal_power_series.0.test.cpp
   - test/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - test/division_of_polynomials.0.test.cpp

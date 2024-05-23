@@ -29,14 +29,14 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/multipoint_evaluation
+    PROBLEM: https://judge.yosupo.jp/problem/conversion_from_monomial_basis_to_newton_basis
     links:
-    - https://judge.yosupo.jp/problem/multipoint_evaluation
-  bundledCode: "#line 1 \"test/multipoint_evaluation.0.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/multipoint_evaluation\"\n\n#line 2 \"modint.hpp\"\
-    \n\n#include <iostream>\n#include <type_traits>\n\ntemplate <unsigned Mod>\nclass\
-    \ ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\"\
-    );\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    - https://judge.yosupo.jp/problem/conversion_from_monomial_basis_to_newton_basis
+  bundledCode: "#line 1 \"test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/conversion_from_monomial_basis_to_newton_basis\"\
+    \n\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\n\
+    template <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"\
+    `Mod` must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
     \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
     \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
     \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
@@ -359,21 +359,21 @@ data:
     \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
     \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
     \     }\n        }\n        return std::vector(res.begin() + S, res.begin() +\
-    \ S + N);\n    }\n};\n#line 7 \"test/multipoint_evaluation.0.test.cpp\"\n\nint\
-    \ main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
-    \    std::vector<mint> f(n), p(m);\n    for (int i = 0; i < n; ++i) std::cin >>\
-    \ f[i];\n    for (int i = 0; i < m; ++i) std::cin >> p[i];\n    SubproductTree<mint>\
-    \ T(p);\n    const auto res = T.evaluation(f);\n    for (int i = 0; i < m; ++i)\
-    \ std::cout << res[i] << ' ';\n    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/multipoint_evaluation\"\
+    \ S + N);\n    }\n};\n#line 7 \"test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
+    \ F(n), X(n);\n    for (int i = 0; i < n; ++i) std::cin >> F[i];\n    for (int\
+    \ i = 0; i < n; ++i) std::cin >> X[i];\n    SubproductTree<mint> T(X);\n    const\
+    \ auto res = T.monomial_to_newton(F);\n    for (int i = 0; i < n; ++i) std::cout\
+    \ << res[i] << ' ';\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/conversion_from_monomial_basis_to_newton_basis\"\
     \n\n#include \"modint.hpp\"\n#include \"subproduct_tree.hpp\"\n#include <iostream>\n\
     #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
-    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
-    \    std::cin >> n >> m;\n    std::vector<mint> f(n), p(m);\n    for (int i =\
-    \ 0; i < n; ++i) std::cin >> f[i];\n    for (int i = 0; i < m; ++i) std::cin >>\
-    \ p[i];\n    SubproductTree<mint> T(p);\n    const auto res = T.evaluation(f);\n\
-    \    for (int i = 0; i < m; ++i) std::cout << res[i] << ' ';\n    return 0;\n\
+    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n  \
+    \  std::cin >> n;\n    std::vector<mint> F(n), X(n);\n    for (int i = 0; i <\
+    \ n; ++i) std::cin >> F[i];\n    for (int i = 0; i < n; ++i) std::cin >> X[i];\n\
+    \    SubproductTree<mint> T(X);\n    const auto res = T.monomial_to_newton(F);\n\
+    \    for (int i = 0; i < n; ++i) std::cout << res[i] << ' ';\n    return 0;\n\
     }\n"
   dependsOn:
   - modint.hpp
@@ -384,15 +384,15 @@ data:
   - semi_relaxed_conv.hpp
   - poly_basic.hpp
   isVerificationFile: true
-  path: test/multipoint_evaluation.0.test.cpp
+  path: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   requiredBy: []
   timestamp: '2024-05-23 22:40:40+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/multipoint_evaluation.0.test.cpp
+documentation_of: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/multipoint_evaluation.0.test.cpp
-- /verify/test/multipoint_evaluation.0.test.cpp.html
-title: test/multipoint_evaluation.0.test.cpp
+- /verify/test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+- /verify/test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp.html
+title: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
 ---

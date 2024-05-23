@@ -70,6 +70,9 @@ data:
       path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
       title: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+      title: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/convolution_mod.0.test.cpp
       title: test/convolution_mod.0.test.cpp
     - icon: ':heavy_check_mark:'
