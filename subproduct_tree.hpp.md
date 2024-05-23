@@ -275,15 +275,16 @@ data:
     \ interpolation(const std::vector<Tp> &Y) const {\n        assert((int)Y.size()\
     \ == N);\n        const auto D = evaluation(deriv(product())); // denominator\
     \ => P'(x_i)\n        std::vector<Tp> res(S * 2);\n        for (int i = 0; i <\
-    \ N; ++i) res[i * 2] = res[i * 2 + 1] = Y[i] / D[i];\n        int LogS = 1;\n\
-    \        while ((1 << LogS) < S) ++LogS;\n        for (int lv = LogS - 1, len\
-    \ = 2; lv >= 0; --lv, len *= 2) {\n            for (int i = 0; i < (1 << lv);\
-    \ ++i) {\n                auto C = res.begin() + i * len * 2;                \
-    \    // current\n                auto L = T.begin() + ((lv + 1) * S * 2 + i *\
-    \ len * 2); // left child\n                for (int j = 0; j < len; ++j)\n   \
-    \                 C[j] = C[len + j] = C[j] * L[len + j] + C[len + j] * L[j];\n\
-    \                inv_fft_n(C + len, len);\n                if (lv) {\n       \
-    \             Tp k         = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
+    \ N; ++i) {\n            assert(D[i] != 0); // X[i] == X[?]\n            res[i\
+    \ * 2] = res[i * 2 + 1] = Y[i] / D[i];\n        }\n        int LogS = 1;\n   \
+    \     while ((1 << LogS) < S) ++LogS;\n        for (int lv = LogS - 1, len = 2;\
+    \ lv >= 0; --lv, len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i)\
+    \ {\n                auto C = res.begin() + i * len * 2;                    //\
+    \ current\n                auto L = T.begin() + ((lv + 1) * S * 2 + i * len *\
+    \ 2); // left child\n                for (int j = 0; j < len; ++j)\n         \
+    \           C[j] = C[len + j] = C[j] * L[len + j] + C[len + j] * L[j];\n     \
+    \           inv_fft_n(C + len, len);\n                if (lv) {\n            \
+    \        Tp k         = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
     \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
     \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
     \     }\n        }\n        return std::vector(res.begin() + S, res.begin() +\
@@ -373,15 +374,16 @@ data:
     \ interpolation(const std::vector<Tp> &Y) const {\n        assert((int)Y.size()\
     \ == N);\n        const auto D = evaluation(deriv(product())); // denominator\
     \ => P'(x_i)\n        std::vector<Tp> res(S * 2);\n        for (int i = 0; i <\
-    \ N; ++i) res[i * 2] = res[i * 2 + 1] = Y[i] / D[i];\n        int LogS = 1;\n\
-    \        while ((1 << LogS) < S) ++LogS;\n        for (int lv = LogS - 1, len\
-    \ = 2; lv >= 0; --lv, len *= 2) {\n            for (int i = 0; i < (1 << lv);\
-    \ ++i) {\n                auto C = res.begin() + i * len * 2;                \
-    \    // current\n                auto L = T.begin() + ((lv + 1) * S * 2 + i *\
-    \ len * 2); // left child\n                for (int j = 0; j < len; ++j)\n   \
-    \                 C[j] = C[len + j] = C[j] * L[len + j] + C[len + j] * L[j];\n\
-    \                inv_fft_n(C + len, len);\n                if (lv) {\n       \
-    \             Tp k         = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
+    \ N; ++i) {\n            assert(D[i] != 0); // X[i] == X[?]\n            res[i\
+    \ * 2] = res[i * 2 + 1] = Y[i] / D[i];\n        }\n        int LogS = 1;\n   \
+    \     while ((1 << LogS) < S) ++LogS;\n        for (int lv = LogS - 1, len = 2;\
+    \ lv >= 0; --lv, len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i)\
+    \ {\n                auto C = res.begin() + i * len * 2;                    //\
+    \ current\n                auto L = T.begin() + ((lv + 1) * S * 2 + i * len *\
+    \ 2); // left child\n                for (int j = 0; j < len; ++j)\n         \
+    \           C[j] = C[len + j] = C[j] * L[len + j] + C[len + j] * L[j];\n     \
+    \           inv_fft_n(C + len, len);\n                if (lv) {\n            \
+    \        Tp k         = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
     \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
     \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
     \     }\n        }\n        return std::vector(res.begin() + S, res.begin() +\
@@ -429,7 +431,7 @@ data:
   isVerificationFile: false
   path: subproduct_tree.hpp
   requiredBy: []
-  timestamp: '2024-05-23 23:00:03+08:00'
+  timestamp: '2024-05-24 00:02:40+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
