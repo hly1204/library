@@ -81,19 +81,19 @@ data:
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
     \    return convolution_fft(a, b);\n}\n#line 7 \"middle_product.hpp\"\n\n// see:\n\
-    // [1] Guillaume Hanrot, Michel Quercia, Paul Zimmermann. The Middle Product Algorithm\
-    \ I.\n// [2] Alin Bostan, Gr\xE9goire Lecerf, \xC9ric Schost. Tellegen's principle\
-    \ into practice.\n\n// TODO\n"
+    // [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann. The Middle Product\
+    \ Algorithm I.\n// [2]: Alin Bostan, Gr\xE9goire Lecerf, \xC9ric Schost. Tellegen's\
+    \ principle into practice.\n\n// TODO\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include <algorithm>\n#include <cassert>\n\
-    #include <vector>\n\n// see:\n// [1] Guillaume Hanrot, Michel Quercia, Paul Zimmermann.\
-    \ The Middle Product Algorithm I.\n// [2] Alin Bostan, Gr\xE9goire Lecerf, \xC9\
+    #include <vector>\n\n// see:\n// [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann.\
+    \ The Middle Product Algorithm I.\n// [2]: Alin Bostan, Gr\xE9goire Lecerf, \xC9\
     ric Schost. Tellegen's principle into practice.\n\n// TODO\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
   path: middle_product.hpp
   requiredBy: []
-  timestamp: '2024-05-18 13:28:54+08:00'
+  timestamp: '2024-05-23 23:00:03+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: middle_product.hpp
