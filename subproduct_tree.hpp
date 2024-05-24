@@ -61,7 +61,7 @@ public:
     std::vector<Tp> evaluation(const std::vector<Tp> &F) const {
         const int degF = degree(F);
         const auto P   = product();
-        // find x^(-1),...,x^(-N) of F/P in R((x^(-1)))
+        // find coefficients of x^(-1),...,x^(-N) of F/P in R((x^(-1)))
         auto res = div(std::vector(F.rend() - (degF + 1), F.rend()),
                        std::vector(P.rbegin(), P.rend()), degF + 1);
         if (degF >= N) res.erase(res.begin(), res.begin() + (degF - N + 1));
@@ -114,7 +114,7 @@ public:
                 }
             }
         }
-        return std::vector(res.begin() + S, res.begin() + S + N);
+        return std::vector(res.begin() + S, res.begin() + (S + N));
     }
 
     // see:
@@ -125,7 +125,7 @@ public:
         const int degF = degree(F);
         assert(degF < N);
         const auto P = product();
-        // find x^(-1),...,x^(-N) of F/P in R((x^(-1)))
+        // find coefficients of x^(-1),...,x^(-N) of F/P in R((x^(-1)))
         auto res = div(std::vector(F.rend() - (degF + 1), F.rend()),
                        std::vector(P.rbegin(), P.rend()), degF + 1);
         std::reverse(res.begin(), res.end());
@@ -169,6 +169,6 @@ public:
                 }
             }
         }
-        return std::vector(res.begin() + S, res.begin() + S + N);
+        return std::vector(res.begin() + S, res.begin() + (S + N));
     }
 };
