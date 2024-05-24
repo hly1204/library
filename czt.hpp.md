@@ -234,16 +234,18 @@ data:
     \ < 0) return {Tp(0)};\n\n    auto Q = div(std::vector(A.rend() - (degA + 1),\
     \ A.rend()),\n                 std::vector(B.rend() - (degB + 1), B.rend()), degQ\
     \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 6 \"czt.hpp\"\
-    \n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\ntemplate <typename Tp>\ninline\
-    \ std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {\n    if (n <=\
-    \ 0) return {};\n    const int degF = degree(F);\n    if (degF < 0) return std::vector<Tp>(n);\n\
-    \    if (degF == 0 || a == 0) return std::vector<Tp>(n, F[0]);\n    if (a != 1)\
-    \ {\n        // F(x) <- F(ax)\n        Tp aa = 1;\n        for (int i = 0; i <=\
-    \ degF; ++i) F[i] *= aa, aa *= a;\n    }\n    if (c == 0) {\n        std::vector<Tp>\
-    \ res(n, F[0]);\n        for (int i = 1; i <= degF; ++i) res[0] += F[i];\n   \
-    \     return res;\n    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1));\
-    \ // H[i]=c^i\n    Tp cc = H[0] = 1;\n    for (int i = 1; i < (int)H.size(); ++i)\
-    \ H[i] = H[i - 1] * (cc *= c);\n    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n\
+    \n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\n// Use        ij = binom(i,2)\
+    \   + binom(-j,2) - binom(i-j,2)\n// instead of ij = binom(i+j,2) - binom(i,2)\
+    \  - binom(j,2)\ntemplate <typename Tp>\ninline std::vector<Tp> czt(std::vector<Tp>\
+    \ F, Tp c, int n, Tp a = 1) {\n    if (n <= 0) return {};\n    const int degF\
+    \ = degree(F);\n    if (degF < 0) return std::vector<Tp>(n);\n    if (degF ==\
+    \ 0 || a == 0) return std::vector<Tp>(n, F[0]);\n    if (a != 1) {\n        //\
+    \ F(x) <- F(ax)\n        Tp aa = 1;\n        for (int i = 0; i <= degF; ++i) F[i]\
+    \ *= aa, aa *= a;\n    }\n    if (c == 0) {\n        std::vector<Tp> res(n, F[0]);\n\
+    \        for (int i = 1; i <= degF; ++i) res[0] += F[i];\n        return res;\n\
+    \    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1)); // H[i]=c^i\n    Tp\
+    \ cc = H[0] = 1;\n    for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1]\
+    \ * (cc *= c);\n    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n\
     \    const Tp ic = c.inv();\n    cc = G[degF] = 1;\n    for (int i = degF + 1;\
     \ i < degF + n; ++i) G[i] = G[i - 1] * cc, cc *= ic;\n    cc = 1;\n    for (int\
     \ i = 1; i <= degF; ++i) G[degF - i] = G[degF - i + 1] * (cc *= ic);\n\n    //\
@@ -251,23 +253,24 @@ data:
     \n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n    for\
     \ (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n"
   code: "#pragma once\n\n#include \"middle_product.hpp\"\n#include \"poly_basic.hpp\"\
-    \n#include <vector>\n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp\
-    \ a = 1) {\n    if (n <= 0) return {};\n    const int degF = degree(F);\n    if\
-    \ (degF < 0) return std::vector<Tp>(n);\n    if (degF == 0 || a == 0) return std::vector<Tp>(n,\
-    \ F[0]);\n    if (a != 1) {\n        // F(x) <- F(ax)\n        Tp aa = 1;\n  \
-    \      for (int i = 0; i <= degF; ++i) F[i] *= aa, aa *= a;\n    }\n    if (c\
-    \ == 0) {\n        std::vector<Tp> res(n, F[0]);\n        for (int i = 1; i <=\
-    \ degF; ++i) res[0] += F[i];\n        return res;\n    }\n\n    std::vector<Tp>\
-    \ H(std::max(degF + 1, n - 1)); // H[i]=c^i\n    Tp cc = H[0] = 1;\n    for (int\
-    \ i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1] * (cc *= c);\n    std::vector<Tp>\
-    \ G(degF + n); // G[i+degF]=c^(-binom(i,2))\n    const Tp ic = c.inv();\n    cc\
-    \ = G[degF] = 1;\n    for (int i = degF + 1; i < degF + n; ++i) G[i] = G[i - 1]\
-    \ * cc, cc *= ic;\n    cc = 1;\n    for (int i = 1; i <= degF; ++i) G[degF - i]\
-    \ = G[degF - i + 1] * (cc *= ic);\n\n    // F[i] <- c^(binom(i+1,2))*F[i]\n  \
-    \  for (int i = 0; i <= degF; ++i) F[i] *= H[i];\n\n    F = middle_product(G,\
-    \ F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n    for (int i = 1; i < n; ++i) F[i]\
-    \ *= H[i - 1];\n    return F;\n}\n"
+    \n#include <vector>\n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\n// Use \
+    \       ij = binom(i,2)   + binom(-j,2) - binom(i-j,2)\n// instead of ij = binom(i+j,2)\
+    \ - binom(i,2)  - binom(j,2)\ntemplate <typename Tp>\ninline std::vector<Tp> czt(std::vector<Tp>\
+    \ F, Tp c, int n, Tp a = 1) {\n    if (n <= 0) return {};\n    const int degF\
+    \ = degree(F);\n    if (degF < 0) return std::vector<Tp>(n);\n    if (degF ==\
+    \ 0 || a == 0) return std::vector<Tp>(n, F[0]);\n    if (a != 1) {\n        //\
+    \ F(x) <- F(ax)\n        Tp aa = 1;\n        for (int i = 0; i <= degF; ++i) F[i]\
+    \ *= aa, aa *= a;\n    }\n    if (c == 0) {\n        std::vector<Tp> res(n, F[0]);\n\
+    \        for (int i = 1; i <= degF; ++i) res[0] += F[i];\n        return res;\n\
+    \    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1)); // H[i]=c^i\n    Tp\
+    \ cc = H[0] = 1;\n    for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1]\
+    \ * (cc *= c);\n    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n\
+    \    const Tp ic = c.inv();\n    cc = G[degF] = 1;\n    for (int i = degF + 1;\
+    \ i < degF + n; ++i) G[i] = G[i - 1] * cc, cc *= ic;\n    cc = 1;\n    for (int\
+    \ i = 1; i <= degF; ++i) G[degF - i] = G[degF - i + 1] * (cc *= ic);\n\n    //\
+    \ F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i] *= H[i];\n\
+    \n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n    for\
+    \ (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n"
   dependsOn:
   - middle_product.hpp
   - fft.hpp
@@ -278,7 +281,7 @@ data:
   isVerificationFile: false
   path: czt.hpp
   requiredBy: []
-  timestamp: '2024-05-24 19:16:22+08:00'
+  timestamp: '2024-05-24 19:41:23+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
