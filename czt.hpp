@@ -5,6 +5,8 @@
 #include <vector>
 
 // returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))
+// Use        ij = binom(i,2)   + binom(-j,2) - binom(i-j,2)
+// instead of ij = binom(i+j,2) - binom(i,2)  - binom(j,2)
 template <typename Tp>
 inline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {
     if (n <= 0) return {};
