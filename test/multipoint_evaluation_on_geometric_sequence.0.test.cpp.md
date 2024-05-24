@@ -240,7 +240,7 @@ data:
     \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
     \ < 0) return {Tp(0)};\n\n    auto Q = div(std::vector(A.rend() - (degA + 1),\
     \ A.rend()),\n                 std::vector(B.rend() - (degB + 1), B.rend()), degQ\
-    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 6 \"czt.hpp\"\
+    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 7 \"czt.hpp\"\
     \n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\n// Use        ij = binom(i,2)\
     \   + binom(-j,2) - binom(i-j,2)\n// instead of ij = binom(i+j,2) - binom(i,2)\
     \  - binom(j,2)\ntemplate <typename Tp>\ninline std::vector<Tp> czt(std::vector<Tp>\
@@ -322,7 +322,7 @@ data:
   isVerificationFile: true
   path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-05-24 19:41:23+08:00'
+  timestamp: '2024-05-24 21:39:08+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
