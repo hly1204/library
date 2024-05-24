@@ -37,6 +37,9 @@ data:
     path: test/multipoint_evaluation.0.test.cpp
     title: test/multipoint_evaluation.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+    title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/polynomial_interpolation.0.test.cpp
     title: test/polynomial_interpolation.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -138,6 +141,7 @@ data:
   - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - test/convolution_mod.0.test.cpp
   - test/inv_of_formal_power_series.0.test.cpp
+  - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - test/division_of_polynomials.0.test.cpp
   - test/polynomial_interpolation.0.test.cpp

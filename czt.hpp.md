@@ -11,71 +11,32 @@ data:
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
+    path: middle_product.hpp
+    title: middle_product.hpp
+  - icon: ':heavy_check_mark:'
+    path: poly_basic.hpp
+    title: poly_basic.hpp
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
-    path: c_recursive.hpp
-    title: c_recursive.hpp
-  - icon: ':heavy_check_mark:'
-    path: czt.hpp
-    title: czt.hpp
-  - icon: ':heavy_check_mark:'
-    path: subproduct_tree.hpp
-    title: subproduct_tree.hpp
+  _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-    title: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-    title: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/division_of_polynomials.0.test.cpp
-    title: test/division_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-    title: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/multipoint_evaluation.0.test.cpp
-    title: test/multipoint_evaluation.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/polynomial_interpolation.0.test.cpp
-    title: test/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/polynomial_taylor_shift.0.test.cpp
-    title: test/polynomial_taylor_shift.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
-  bundledCode: "#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
-    \ <algorithm>\n#include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n\
-    \    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
-    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
-    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
-    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
-    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
-    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
-    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
-    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
-    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
-    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
-    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
-    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
-    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
-    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
-    \ }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include <cassert>\n#include\
-    \ <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\n\
-    class FftInfo {\n    static Tp least_quadratic_nonresidue() {\n        for (int\
-    \ i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n\
-    \    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n\
-    \    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n\
-    \    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
+  bundledCode: "#line 2 \"czt.hpp\"\n\n#line 2 \"middle_product.hpp\"\n\n#line 2 \"\
+    fft.hpp\"\n\n#include <algorithm>\n#include <cassert>\n#include <iterator>\n#include\
+    \ <memory>\n#include <vector>\n\ntemplate <typename Tp>\nclass FftInfo {\n   \
+    \ static Tp least_quadratic_nonresidue() {\n        for (int i = 2;; ++i)\n  \
+    \          if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n    }\n\n\
+    \    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n    const\
+    \ Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n  \
+    \  mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
     \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
     \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
     \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
@@ -138,12 +99,38 @@ data:
     \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"\
-    semi_relaxed_conv.hpp\"\n\n#line 5 \"semi_relaxed_conv.hpp\"\n#include <type_traits>\n\
-    #include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\n\n// returns coefficients\
-    \ generated by closure\n// closure: gen(index, current_product)\ntemplate <typename\
-    \ Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp, Closure,\
-    \ int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
+    \    return convolution_fft(a, b);\n}\n#line 6 \"middle_product.hpp\"\n\n// see:\n\
+    // [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann. The Middle Product\
+    \ Algorithm I.\n// [2]: Alin Bostan, Gr\xE9goire Lecerf, \xC9ric Schost. Tellegen's\
+    \ principle into practice.\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n// f: f_0\
+    \ + ... + f_(m-1)x^(m-1)\n// g: g_0 + ... + g_(n-1)x^(n-1)\n// m >= n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> middle_product(std::vector<Tp> f, std::vector<Tp>\
+    \ g) {\n    const int m = f.size();\n    const int n = g.size();\n    assert(m\
+    \ >= n);\n    const int len = fft_len(m);\n    f.resize(len);\n    g.resize(len);\n\
+    \    fft(f);\n    fft(g);\n    for (int i = 0; i < len; ++i) f[i] *= g[i];\n \
+    \   inv_fft(f);\n    f.erase(f.begin(), f.begin() + (n - 1));\n    f.resize(m\
+    \ - n + 1);\n    return f;\n}\n#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\
+    \n\n#line 5 \"binomial.hpp\"\n\ntemplate <typename Tp>\nclass Binomial {\n   \
+    \ std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
+    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
+    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
+    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
+    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
+    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
+    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
+    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
+    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
+    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
+    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
+    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
+    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
+    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
+    \ }\n};\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line\
+    \ 5 \"semi_relaxed_conv.hpp\"\n#include <type_traits>\n#include <utility>\n#line\
+    \ 8 \"semi_relaxed_conv.hpp\"\n\n// returns coefficients generated by closure\n\
+    // closure: gen(index, current_product)\ntemplate <typename Tp, typename Closure>\n\
+    inline std::enable_if_t<std::is_invocable_r_v<Tp, Closure, int, const std::vector<Tp>\
+    \ &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
     \ std::vector<Tp> &A, Closure gen, int n) {\n    enum { BaseCaseSize = 32 };\n\
     \    static_assert((BaseCaseSize & (BaseCaseSize - 1)) == 0);\n\n    static const\
     \ int Block[]     = {16, 16, 16, 16, 16};\n    static const int BlockSize[] =\
@@ -246,70 +233,60 @@ data:
     \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
     \ < 0) return {Tp(0)};\n\n    auto Q = div(std::vector(A.rend() - (degA + 1),\
     \ A.rend()),\n                 std::vector(B.rend() - (degB + 1), B.rend()), degQ\
-    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n"
-  code: "#pragma once\n\n#include \"binomial.hpp\"\n#include \"fft.hpp\"\n#include\
-    \ \"fps_basic.hpp\"\n#include <algorithm>\n#include <cassert>\n#include <utility>\n\
-    #include <vector>\n\ntemplate <typename Tp>\ninline int degree(const std::vector<Tp>\
-    \ &a) {\n    int n = (int)a.size() - 1;\n    while (n >= 0 && a[n] == 0) --n;\n\
-    \    return n;\n}\n\ntemplate <typename Tp>\ninline void shrink(std::vector<Tp>\
-    \ &a) {\n    a.resize(degree(a) + 1);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ taylor_shift(std::vector<Tp> a, Tp c) {\n    int n      = a.size();\n    auto\
-    \ &&bin = Binomial<Tp>::get(n);\n    for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);\n\
-    \    Tp cc = 1;\n    std::vector<Tp> b(n);\n    for (int i = 0; i < n; ++i) {\n\
-    \        b[i] = cc * bin.inv_factorial(i);\n        cc *= c;\n    }\n    std::reverse(a.begin(),\
-    \ a.end());\n    auto ab = convolution(a, b);\n    ab.resize(n);\n    std::reverse(ab.begin(),\
-    \ ab.end());\n    for (int i = 0; i < n; ++i) ab[i] *= bin.inv_factorial(i);\n\
-    \    return ab;\n}\n\n// returns (quotient, remainder)\ntemplate <typename Tp>\n\
-    inline std::pair<std::vector<Tp>, std::vector<Tp>> euclidean_div(const std::vector<Tp>\
-    \ &A,\n                                                                 const\
-    \ std::vector<Tp> &B) {\n    // returns a mod (x^n-1)\n    auto make_cyclic =\
-    \ [](const std::vector<Tp> &a, int n) {\n        assert((n & (n - 1)) == 0);\n\
-    \        std::vector<Tp> b(n);\n        for (int i = 0; i < (int)a.size(); ++i)\
-    \ b[i & (n - 1)] += a[i];\n        return b;\n    };\n\n    const int degA = degree(A);\n\
-    \    const int degB = degree(B);\n    assert(degB >= 0);\n    // A = Q*B + R =>\
-    \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
-    \ < 0) return {std::vector<Tp>{Tp(0)}, A};\n\n    auto Q = div(std::vector(A.rend()\
-    \ - (degA + 1), A.rend()),\n                 std::vector(B.rend() - (degB + 1),\
-    \ B.rend()), degQ + 1);\n    std::reverse(Q.begin(), Q.end());\n\n    const int\
-    \ len      = fft_len(std::max(degB, 1));\n    const auto cyclicA = make_cyclic(A,\
-    \ len);\n    auto cyclicB       = make_cyclic(B, len);\n    auto cyclicQ     \
-    \  = make_cyclic(Q, len);\n\n    fft(cyclicQ);\n    fft(cyclicB);\n    for (int\
-    \ i = 0; i < len; ++i) cyclicQ[i] *= cyclicB[i];\n    inv_fft(cyclicQ);\n\n  \
-    \  // R = A - QB mod (x^n-1) (n >= degB)\n    std::vector<Tp> R(degB);\n    for\
-    \ (int i = 0; i < degB; ++i) R[i] = cyclicA[i] - cyclicQ[i];\n    return {Q, R};\n\
-    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> euclidean_div_quotient(const\
-    \ std::vector<Tp> &A, const std::vector<Tp> &B) {\n    const int degA = degree(A);\n\
-    \    const int degB = degree(B);\n    assert(degB >= 0);\n    // A = Q*B + R =>\
-    \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
-    \ < 0) return {Tp(0)};\n\n    auto Q = div(std::vector(A.rend() - (degA + 1),\
-    \ A.rend()),\n                 std::vector(B.rend() - (degB + 1), B.rend()), degQ\
-    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n"
+    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 6 \"czt.hpp\"\
+    \n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {\n    if (n <=\
+    \ 0) return {};\n    const int degF = degree(F);\n    if (degF < 0) return std::vector<Tp>(n);\n\
+    \    if (degF == 0 || a == 0) return std::vector<Tp>(n, F[0]);\n    if (a != 1)\
+    \ {\n        // F(x) <- F(ax)\n        Tp aa = 1;\n        for (int i = 0; i <=\
+    \ degF; ++i) F[i] *= aa, aa *= a;\n    }\n    if (c == 0) {\n        std::vector<Tp>\
+    \ res(n, F[0]);\n        for (int i = 1; i <= degF; ++i) res[0] += F[i];\n   \
+    \     return res;\n    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1));\
+    \ // H[i]=c^i\n    Tp cc = H[0] = 1;\n    for (int i = 1; i < (int)H.size(); ++i)\
+    \ H[i] = H[i - 1] * (cc *= c);\n    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n\
+    \    const Tp ic = c.inv();\n    cc = G[degF] = 1;\n    for (int i = degF + 1;\
+    \ i < (int)G.size(); ++i) G[i] = G[i - 1] * cc, cc *= ic;\n    cc = 1;\n    for\
+    \ (int i = 1; i <= degF; ++i) G[degF - i] = G[degF - i + 1] * (cc *= ic);\n\n\
+    \    // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i]\
+    \ *= H[i];\n\n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n\
+    \    for (int i = 1; i < (int)F.size(); ++i) F[i] *= H[i - 1];\n    return F;\n\
+    }\n"
+  code: "#pragma once\n\n#include \"middle_product.hpp\"\n#include \"poly_basic.hpp\"\
+    \n#include <vector>\n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp\
+    \ a = 1) {\n    if (n <= 0) return {};\n    const int degF = degree(F);\n    if\
+    \ (degF < 0) return std::vector<Tp>(n);\n    if (degF == 0 || a == 0) return std::vector<Tp>(n,\
+    \ F[0]);\n    if (a != 1) {\n        // F(x) <- F(ax)\n        Tp aa = 1;\n  \
+    \      for (int i = 0; i <= degF; ++i) F[i] *= aa, aa *= a;\n    }\n    if (c\
+    \ == 0) {\n        std::vector<Tp> res(n, F[0]);\n        for (int i = 1; i <=\
+    \ degF; ++i) res[0] += F[i];\n        return res;\n    }\n\n    std::vector<Tp>\
+    \ H(std::max(degF + 1, n - 1)); // H[i]=c^i\n    Tp cc = H[0] = 1;\n    for (int\
+    \ i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1] * (cc *= c);\n    std::vector<Tp>\
+    \ G(degF + n); // G[i+degF]=c^(-binom(i,2))\n    const Tp ic = c.inv();\n    cc\
+    \ = G[degF] = 1;\n    for (int i = degF + 1; i < (int)G.size(); ++i) G[i] = G[i\
+    \ - 1] * cc, cc *= ic;\n    cc = 1;\n    for (int i = 1; i <= degF; ++i) G[degF\
+    \ - i] = G[degF - i + 1] * (cc *= ic);\n\n    // F[i] <- c^(binom(i+1,2))*F[i]\n\
+    \    for (int i = 0; i <= degF; ++i) F[i] *= H[i];\n\n    F = middle_product(G,\
+    \ F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n    for (int i = 1; i < (int)F.size();\
+    \ ++i) F[i] *= H[i - 1];\n    return F;\n}\n"
   dependsOn:
-  - binomial.hpp
+  - middle_product.hpp
   - fft.hpp
+  - poly_basic.hpp
+  - binomial.hpp
   - fps_basic.hpp
   - semi_relaxed_conv.hpp
   isVerificationFile: false
-  path: poly_basic.hpp
-  requiredBy:
-  - czt.hpp
-  - c_recursive.hpp
-  - subproduct_tree.hpp
-  timestamp: '2024-05-17 19:15:49+08:00'
+  path: czt.hpp
+  requiredBy: []
+  timestamp: '2024-05-24 19:10:06+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/multipoint_evaluation.0.test.cpp
-  - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - test/division_of_polynomials.0.test.cpp
-  - test/polynomial_interpolation.0.test.cpp
-  - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - test/polynomial_taylor_shift.0.test.cpp
-documentation_of: poly_basic.hpp
+documentation_of: czt.hpp
 layout: document
 redirect_from:
-- /library/poly_basic.hpp
-- /library/poly_basic.hpp.html
-title: poly_basic.hpp
+- /library/czt.hpp
+- /library/czt.hpp.html
+title: czt.hpp
 ---

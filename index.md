@@ -15,6 +15,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: conv_mod.hpp
       title: conv_mod.hpp
+    - icon: ':heavy_check_mark:'
+      path: czt.hpp
+      title: czt.hpp
     - icon: ':warning:'
       path: eulerian_number.hpp
       title: eulerian_number.hpp
@@ -27,7 +30,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: fps_composition.hpp
       title: fps_composition.hpp
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
     - icon: ':heavy_check_mark:'
@@ -96,6 +99,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/multipoint_evaluation.0.test.cpp
       title: test/multipoint_evaluation.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+      title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/polynomial_interpolation.0.test.cpp
       title: test/polynomial_interpolation.0.test.cpp

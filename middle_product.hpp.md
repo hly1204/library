@@ -4,11 +4,17 @@ data:
   - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: czt.hpp
+    title: czt.hpp
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+    title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"middle_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
@@ -80,22 +86,38 @@ data:
     \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 7 \"middle_product.hpp\"\n\n// see:\n\
+    \    return convolution_fft(a, b);\n}\n#line 6 \"middle_product.hpp\"\n\n// see:\n\
     // [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann. The Middle Product\
     \ Algorithm I.\n// [2]: Alin Bostan, Gr\xE9goire Lecerf, \xC9ric Schost. Tellegen's\
-    \ principle into practice.\n\n// TODO\n"
-  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <algorithm>\n#include <cassert>\n\
-    #include <vector>\n\n// see:\n// [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann.\
-    \ The Middle Product Algorithm I.\n// [2]: Alin Bostan, Gr\xE9goire Lecerf, \xC9\
-    ric Schost. Tellegen's principle into practice.\n\n// TODO\n"
+    \ principle into practice.\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n// f: f_0\
+    \ + ... + f_(m-1)x^(m-1)\n// g: g_0 + ... + g_(n-1)x^(n-1)\n// m >= n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> middle_product(std::vector<Tp> f, std::vector<Tp>\
+    \ g) {\n    const int m = f.size();\n    const int n = g.size();\n    assert(m\
+    \ >= n);\n    const int len = fft_len(m);\n    f.resize(len);\n    g.resize(len);\n\
+    \    fft(f);\n    fft(g);\n    for (int i = 0; i < len; ++i) f[i] *= g[i];\n \
+    \   inv_fft(f);\n    f.erase(f.begin(), f.begin() + (n - 1));\n    f.resize(m\
+    \ - n + 1);\n    return f;\n}\n"
+  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <cassert>\n#include <vector>\n\
+    \n// see:\n// [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann. The Middle\
+    \ Product Algorithm I.\n// [2]: Alin Bostan, Gr\xE9goire Lecerf, \xC9ric Schost.\
+    \ Tellegen's principle into practice.\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n\
+    // f: f_0 + ... + f_(m-1)x^(m-1)\n// g: g_0 + ... + g_(n-1)x^(n-1)\n// m >= n\n\
+    template <typename Tp>\ninline std::vector<Tp> middle_product(std::vector<Tp>\
+    \ f, std::vector<Tp> g) {\n    const int m = f.size();\n    const int n = g.size();\n\
+    \    assert(m >= n);\n    const int len = fft_len(m);\n    f.resize(len);\n  \
+    \  g.resize(len);\n    fft(f);\n    fft(g);\n    for (int i = 0; i < len; ++i)\
+    \ f[i] *= g[i];\n    inv_fft(f);\n    f.erase(f.begin(), f.begin() + (n - 1));\n\
+    \    f.resize(m - n + 1);\n    return f;\n}\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
   path: middle_product.hpp
-  requiredBy: []
-  timestamp: '2024-05-23 23:00:03+08:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  requiredBy:
+  - czt.hpp
+  timestamp: '2024-05-24 19:10:06+08:00'
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
 documentation_of: middle_product.hpp
 layout: document
 redirect_from:
