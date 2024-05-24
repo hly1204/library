@@ -2,6 +2,7 @@
 
 #include "middle_product.hpp"
 #include "poly_basic.hpp"
+#include <algorithm>
 #include <vector>
 
 // returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))
