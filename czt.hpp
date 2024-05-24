@@ -28,7 +28,7 @@ inline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {
     std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))
     const Tp ic = c.inv();
     cc = G[degF] = 1;
-    for (int i = degF + 1; i < (int)G.size(); ++i) G[i] = G[i - 1] * cc, cc *= ic;
+    for (int i = degF + 1; i < degF + n; ++i) G[i] = G[i - 1] * cc, cc *= ic;
     cc = 1;
     for (int i = 1; i <= degF; ++i) G[degF - i] = G[degF - i + 1] * (cc *= ic);
 
@@ -38,6 +38,6 @@ inline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {
     F = middle_product(G, F);
 
     // F[i] <- c^(binom(i,2))*F[i]
-    for (int i = 1; i < (int)F.size(); ++i) F[i] *= H[i - 1];
+    for (int i = 1; i < n; ++i) F[i] *= H[i - 1];
     return F;
 }
