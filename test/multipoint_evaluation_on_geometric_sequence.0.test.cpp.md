@@ -252,14 +252,14 @@ data:
     \ // H[i]=c^i\n    Tp cc = H[0] = 1;\n    for (int i = 1; i < (int)H.size(); ++i)\
     \ H[i] = H[i - 1] * (cc *= c);\n    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n\
     \    const Tp ic = c.inv();\n    cc = G[degF] = 1;\n    for (int i = degF + 1;\
-    \ i < (int)G.size(); ++i) G[i] = G[i - 1] * cc, cc *= ic;\n    cc = 1;\n    for\
-    \ (int i = 1; i <= degF; ++i) G[degF - i] = G[degF - i + 1] * (cc *= ic);\n\n\
-    \    // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i]\
-    \ *= H[i];\n\n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n\
-    \    for (int i = 1; i < (int)F.size(); ++i) F[i] *= H[i - 1];\n    return F;\n\
-    }\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#line 5 \"modint.hpp\"\n\ntemplate\
-    \ <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod`\
-    \ must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \ i < degF + n; ++i) G[i] = G[i - 1] * cc, cc *= ic;\n    cc = 1;\n    for (int\
+    \ i = 1; i <= degF; ++i) G[degF - i] = G[degF - i + 1] * (cc *= ic);\n\n    //\
+    \ F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i] *= H[i];\n\
+    \n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n    for\
+    \ (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n#line 2 \"modint.hpp\"\
+    \n\n#include <iostream>\n#line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\nclass\
+    \ ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\"\
+    );\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
     \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
     \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
     \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
@@ -320,7 +320,7 @@ data:
   isVerificationFile: true
   path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-05-24 19:10:06+08:00'
+  timestamp: '2024-05-24 19:16:22+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp

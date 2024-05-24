@@ -245,12 +245,11 @@ data:
     \ // H[i]=c^i\n    Tp cc = H[0] = 1;\n    for (int i = 1; i < (int)H.size(); ++i)\
     \ H[i] = H[i - 1] * (cc *= c);\n    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n\
     \    const Tp ic = c.inv();\n    cc = G[degF] = 1;\n    for (int i = degF + 1;\
-    \ i < (int)G.size(); ++i) G[i] = G[i - 1] * cc, cc *= ic;\n    cc = 1;\n    for\
-    \ (int i = 1; i <= degF; ++i) G[degF - i] = G[degF - i + 1] * (cc *= ic);\n\n\
-    \    // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i]\
-    \ *= H[i];\n\n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n\
-    \    for (int i = 1; i < (int)F.size(); ++i) F[i] *= H[i - 1];\n    return F;\n\
-    }\n"
+    \ i < degF + n; ++i) G[i] = G[i - 1] * cc, cc *= ic;\n    cc = 1;\n    for (int\
+    \ i = 1; i <= degF; ++i) G[degF - i] = G[degF - i + 1] * (cc *= ic);\n\n    //\
+    \ F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i] *= H[i];\n\
+    \n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n    for\
+    \ (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n"
   code: "#pragma once\n\n#include \"middle_product.hpp\"\n#include \"poly_basic.hpp\"\
     \n#include <vector>\n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\ntemplate\
     \ <typename Tp>\ninline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp\
@@ -263,12 +262,12 @@ data:
     \ H(std::max(degF + 1, n - 1)); // H[i]=c^i\n    Tp cc = H[0] = 1;\n    for (int\
     \ i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1] * (cc *= c);\n    std::vector<Tp>\
     \ G(degF + n); // G[i+degF]=c^(-binom(i,2))\n    const Tp ic = c.inv();\n    cc\
-    \ = G[degF] = 1;\n    for (int i = degF + 1; i < (int)G.size(); ++i) G[i] = G[i\
-    \ - 1] * cc, cc *= ic;\n    cc = 1;\n    for (int i = 1; i <= degF; ++i) G[degF\
-    \ - i] = G[degF - i + 1] * (cc *= ic);\n\n    // F[i] <- c^(binom(i+1,2))*F[i]\n\
-    \    for (int i = 0; i <= degF; ++i) F[i] *= H[i];\n\n    F = middle_product(G,\
-    \ F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n    for (int i = 1; i < (int)F.size();\
-    \ ++i) F[i] *= H[i - 1];\n    return F;\n}\n"
+    \ = G[degF] = 1;\n    for (int i = degF + 1; i < degF + n; ++i) G[i] = G[i - 1]\
+    \ * cc, cc *= ic;\n    cc = 1;\n    for (int i = 1; i <= degF; ++i) G[degF - i]\
+    \ = G[degF - i + 1] * (cc *= ic);\n\n    // F[i] <- c^(binom(i+1,2))*F[i]\n  \
+    \  for (int i = 0; i <= degF; ++i) F[i] *= H[i];\n\n    F = middle_product(G,\
+    \ F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n    for (int i = 1; i < n; ++i) F[i]\
+    \ *= H[i - 1];\n    return F;\n}\n"
   dependsOn:
   - middle_product.hpp
   - fft.hpp
@@ -279,7 +278,7 @@ data:
   isVerificationFile: false
   path: czt.hpp
   requiredBy: []
-  timestamp: '2024-05-24 19:10:06+08:00'
+  timestamp: '2024-05-24 19:16:22+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
