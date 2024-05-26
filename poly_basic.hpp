@@ -22,8 +22,8 @@ inline void shrink(std::vector<Tp> &a) {
 
 template <typename Tp>
 inline std::vector<Tp> taylor_shift(std::vector<Tp> a, Tp c) {
-    int n      = a.size();
-    auto &&bin = Binomial<Tp>::get(n);
+    const int n = a.size();
+    auto &&bin  = Binomial<Tp>::get(n);
     for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);
     Tp cc = 1;
     std::vector<Tp> b(n);
