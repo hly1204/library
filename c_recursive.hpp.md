@@ -192,8 +192,8 @@ data:
     \  int n = (int)a.size() - 1;\n    while (n >= 0 && a[n] == 0) --n;\n    return\
     \ n;\n}\n\ntemplate <typename Tp>\ninline void shrink(std::vector<Tp> &a) {\n\
     \    a.resize(degree(a) + 1);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ taylor_shift(std::vector<Tp> a, Tp c) {\n    int n      = a.size();\n    auto\
-    \ &&bin = Binomial<Tp>::get(n);\n    for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);\n\
+    \ taylor_shift(std::vector<Tp> a, Tp c) {\n    const int n = a.size();\n    auto\
+    \ &&bin  = Binomial<Tp>::get(n);\n    for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);\n\
     \    Tp cc = 1;\n    std::vector<Tp> b(n);\n    for (int i = 0; i < n; ++i) {\n\
     \        b[i] = cc * bin.inv_factorial(i);\n        cc *= c;\n    }\n    std::reverse(a.begin(),\
     \ a.end());\n    auto ab = convolution(a, b);\n    ab.resize(n);\n    std::reverse(ab.begin(),\
@@ -414,7 +414,7 @@ data:
   isVerificationFile: false
   path: c_recursive.hpp
   requiredBy: []
-  timestamp: '2024-05-17 19:15:49+08:00'
+  timestamp: '2024-05-26 22:23:37+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
