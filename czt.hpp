@@ -29,11 +29,12 @@ inline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {
     Tp cc = H[0] = 1;
     for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1] * (cc *= c);
     std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))
+    auto GG     = G.begin() + degF;
     const Tp ic = c.inv();
-    cc = G[degF] = 1;
-    for (int i = degF + 1; i < degF + n; ++i) G[i] = G[i - 1] * cc, cc *= ic;
+    cc = GG[0] = 1;
+    for (int i = 1; i < n; ++i) GG[i] = GG[i - 1] * cc, cc *= ic;
     cc = 1;
-    for (int i = 1; i <= degF; ++i) G[degF - i] = G[degF - i + 1] * (cc *= ic);
+    for (int i = -1; i >= -degF; --i) GG[i] = GG[i + 1] * (cc *= ic);
 
     // F[i] <- c^(binom(i+1,2))*F[i]
     for (int i = 0; i <= degF; ++i) F[i] *= H[i];
