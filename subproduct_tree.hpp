@@ -66,23 +66,18 @@ public:
                        std::vector(P.rbegin(), P.rend()), degF + 1);
         if (degF >= N) res.erase(res.begin(), res.begin() + (degF - N + 1));
         std::reverse(res.begin(), res.end());
-        res.resize(S);
+        res.resize(N);
+        res.insert(res.begin(), S - N, 0); // res[S-1]=[x^(-1)]F/P, res[S-2]=[x^(-2)]F/P, ...
         for (int lv = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {
-            std::vector<Tp> LL(len), RR(len);
+            std::vector<Tp> LL(len);
             for (int i = 0; i < (1 << lv); ++i) {
                 auto C = res.begin() + i * len;                        // current
                 auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child
                 fft_n(C, len);
-                for (int j = 0; j < len; ++j) {
-                    LL[j] = C[j] * L[len + j];
-                    RR[j] = C[j] * L[j];
-                }
+                for (int j = 0; j < len; ++j) LL[j] = C[j] * L[len + j], C[j] *= L[j];
                 inv_fft(LL);
-                inv_fft(RR);
-                const int degL = std::max(std::min((i * len) + len / 2, N) - i * len, 0);
-                const int degR = std::max(std::min((i + 1) * len, N) - ((i * len) + len / 2), 0);
-                std::copy_n(LL.begin() + degR, len / 2, C);
-                std::copy_n(RR.begin() + degL, len / 2, C + len / 2);
+                inv_fft_n(C, len);
+                std::copy_n(LL.begin() + len / 2, len / 2, C);
             }
         }
         res.resize(N);
@@ -129,7 +124,8 @@ public:
         auto res = div(std::vector(F.rend() - (degF + 1), F.rend()),
                        std::vector(P.rbegin(), P.rend()), degF + 1);
         std::reverse(res.begin(), res.end());
-        res.resize(S);
+        res.resize(N);
+        res.insert(res.begin(), S - N, 0); // res[S-1]=[x^(-1)]F/P, res[S-2]=[x^(-2)]F/P, ...
         for (int lv = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {
             std::vector<Tp> RR(len / 2);
             for (int i = 0; i < (1 << lv); ++i) {
@@ -139,8 +135,7 @@ public:
                 fft_n(C, len);
                 for (int j = 0; j < len; ++j) C[j] *= R[j];
                 inv_fft_n(C, len);
-                const int degR = std::max(std::min((i + 1) * len, N) - ((i * len) + len / 2), 0);
-                std::rotate(C, C + degR, C + (degR + len / 2));
+                std::copy_n(C + len / 2, len / 2, C);
                 std::copy_n(RR.begin(), len / 2, C + len / 2);
             }
         }
