@@ -31,6 +31,9 @@ data:
       path: fps_composition.hpp
       title: fps_composition.hpp
     - icon: ':heavy_check_mark:'
+      path: mat_basic.hpp
+      title: mat_basic.hpp
+    - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
     - icon: ':heavy_check_mark:'
@@ -64,6 +67,9 @@ data:
       path: test/187.0.test.cpp
       title: test/187.0.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/characteristic_polynomial.0.test.cpp
+      title: test/characteristic_polynomial.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/composition_of_formal_power_series_large.0.test.cpp
       title: test/composition_of_formal_power_series_large.0.test.cpp
     - icon: ':heavy_check_mark:'
@@ -91,11 +97,17 @@ data:
       path: test/inv_of_formal_power_series.0.test.cpp
       title: test/inv_of_formal_power_series.0.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/inverse_matrix.0.test.cpp
+      title: test/inverse_matrix.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
       title: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/log_of_formal_power_series.0.test.cpp
       title: test/log_of_formal_power_series.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/matrix_product.0.test.cpp
+      title: test/matrix_product.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/multipoint_evaluation.0.test.cpp
       title: test/multipoint_evaluation.0.test.cpp

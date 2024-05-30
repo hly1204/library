@@ -4,6 +4,9 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/characteristic_polynomial.0.test.cpp
+    title: test/characteristic_polynomial.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/composition_of_formal_power_series_large.0.test.cpp
     title: test/composition_of_formal_power_series_large.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -28,11 +31,17 @@ data:
     path: test/inv_of_formal_power_series.0.test.cpp
     title: test/inv_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/inverse_matrix.0.test.cpp
+    title: test/inverse_matrix.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/log_of_formal_power_series.0.test.cpp
     title: test/log_of_formal_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix_product.0.test.cpp
+    title: test/matrix_product.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/multipoint_evaluation.0.test.cpp
     title: test/multipoint_evaluation.0.test.cpp
@@ -137,6 +146,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
+  - test/matrix_product.0.test.cpp
   - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - test/convolution_mod.0.test.cpp
@@ -144,11 +154,13 @@ data:
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - test/division_of_polynomials.0.test.cpp
+  - test/inverse_matrix.0.test.cpp
   - test/polynomial_interpolation.0.test.cpp
   - test/log_of_formal_power_series.0.test.cpp
   - test/pow_of_formal_power_series.0.test.cpp
   - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - test/exp_of_formal_power_series.0.test.cpp
+  - test/characteristic_polynomial.0.test.cpp
   - test/composition_of_formal_power_series_large.0.test.cpp
   - test/polynomial_taylor_shift.0.test.cpp
 documentation_of: modint.hpp
