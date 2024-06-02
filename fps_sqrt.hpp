@@ -6,7 +6,7 @@
 #include <vector>
 
 template <typename Tp>
-std::optional<std::vector<Tp>> sqrt(const std::vector<Tp> &a, int n) {
+inline std::optional<std::vector<Tp>> sqrt(const std::vector<Tp> &a, int n) {
     const int o = order(a);
     if (o < 0) return std::vector<Tp>(n);
     const auto cv = sqrt_mod_prime(a[o]);
@@ -15,7 +15,7 @@ std::optional<std::vector<Tp>> sqrt(const std::vector<Tp> &a, int n) {
 }
 
 template <typename Tp>
-std::optional<std::vector<Tp>> sqrt_hint(const std::vector<Tp> &a, int n, Tp c) {
+inline std::optional<std::vector<Tp>> sqrt_hint(const std::vector<Tp> &a, int n, Tp c) {
     const int o = order(a);
     if (o < 0) return std::vector<Tp>(n);
     if ((o & 1) || c * c != a[o]) return {};

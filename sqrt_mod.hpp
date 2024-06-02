@@ -5,7 +5,7 @@
 #include <vector>
 
 template <typename Tp>
-std::vector<Tp> sqrt_mod_prime(Tp a) {
+inline std::vector<Tp> sqrt_mod_prime(Tp a) {
     // Bostan--Mori's algorithm
     const auto p = Tp::mod();
     if (p == 2 || a == 0) return {a};

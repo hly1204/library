@@ -8,22 +8,22 @@ template <typename Tp>
 using Matrix = std::vector<std::vector<Tp>>;
 
 template <typename Tp>
-int width(const Matrix<Tp> &A) {
+inline int width(const Matrix<Tp> &A) {
     return A.empty() ? 0 : (int)A[0].size();
 }
 
 template <typename Tp>
-int height(const Matrix<Tp> &A) {
+inline int height(const Matrix<Tp> &A) {
     return A.size();
 }
 
 template <typename Tp>
-bool is_square_matrix(const Matrix<Tp> &A) {
+inline bool is_square_matrix(const Matrix<Tp> &A) {
     return width(A) == height(A);
 }
 
 template <typename Tp>
-Matrix<Tp> transpose(const Matrix<Tp> &A) {
+inline Matrix<Tp> transpose(const Matrix<Tp> &A) {
     const int w = width(A);
     const int h = height(A);
     Matrix<Tp> TA(w, std::vector<Tp>(h));
@@ -33,7 +33,7 @@ Matrix<Tp> transpose(const Matrix<Tp> &A) {
 }
 
 template <typename Tp>
-std::vector<Tp> apply(const Matrix<Tp> &A, const std::vector<Tp> &b) {
+inline std::vector<Tp> apply(const Matrix<Tp> &A, const std::vector<Tp> &b) {
     const int w = width(A);
     const int h = height(A);
     assert((int)b.size() == w);
@@ -44,7 +44,7 @@ std::vector<Tp> apply(const Matrix<Tp> &A, const std::vector<Tp> &b) {
 }
 
 template <typename Tp>
-Matrix<Tp> mat_mul(const Matrix<Tp> &A, const Matrix<Tp> &B) {
+inline Matrix<Tp> mat_mul(const Matrix<Tp> &A, const Matrix<Tp> &B) {
     const int wA = width(A);
     const int hA = height(A);
     assert(height(B) == wA);
@@ -57,7 +57,7 @@ Matrix<Tp> mat_mul(const Matrix<Tp> &A, const Matrix<Tp> &B) {
 }
 
 template <typename Tp>
-std::optional<Matrix<Tp>> mat_inv(Matrix<Tp> A) {
+inline std::optional<Matrix<Tp>> mat_inv(Matrix<Tp> A) {
     assert(is_square_matrix(A));
     const int n = height(A);
     for (int i = 0; i < n; ++i) {
@@ -92,7 +92,7 @@ std::optional<Matrix<Tp>> mat_inv(Matrix<Tp> A) {
 }
 
 template <typename Tp>
-Matrix<Tp> to_upper_hessenberg(Matrix<Tp> A) {
+inline Matrix<Tp> to_upper_hessenberg(Matrix<Tp> A) {
     assert(is_square_matrix(A));
     const int n = height(A);
     for (int i = 0; i < n - 1; ++i) {
@@ -116,7 +116,7 @@ Matrix<Tp> to_upper_hessenberg(Matrix<Tp> A) {
 }
 
 template <typename Tp>
-std::vector<Tp> charpoly(const Matrix<Tp> &A) {
+inline std::vector<Tp> charpoly(const Matrix<Tp> &A) {
     const auto H = to_upper_hessenberg(A);
     const int n  = height(A);
     std::vector<std::vector<Tp>> P(n + 1);

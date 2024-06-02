@@ -4,7 +4,8 @@
 #include <vector>
 
 template <typename Tp>
-std::vector<Tp> lagrange_interpolation_naive(const std::vector<Tp> &x, const std::vector<Tp> &y) {
+inline std::vector<Tp> lagrange_interpolation_naive(const std::vector<Tp> &x,
+                                                    const std::vector<Tp> &y) {
     assert(x.size() == y.size());
     const int n = x.size();
     std::vector<Tp> M(n + 1), xx(n), f(n);
