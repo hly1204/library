@@ -2,6 +2,9 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: batch_inv.hpp
+    title: batch_inv.hpp
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
   - icon: ':heavy_check_mark:'
@@ -72,20 +75,25 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 2 \"subproduct_tree.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
-    \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
-    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
-    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
-    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
-    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
-    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
-    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
-    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
-    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
-    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
-    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
-    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+    #line 2 \"subproduct_tree.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#include <vector>\n\
+    \ntemplate <typename Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp>\
+    \ &a) {\n    if (a.empty()) return {};\n    const int n = a.size();\n    std::vector<Tp>\
+    \ b(n);\n    Tp v = 1;\n    for (int i = 0; i < n; ++i) b[i] = v, v *= a[i];\n\
+    \    v = v.inv();\n    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n\
+    \    return b;\n}\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n#include <cassert>\n\
+    #include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename\
+    \ Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue() {\n       \
+    \ for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1)\
+    \ return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const\
+    \ Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp>\
+    \ root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
+    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
+    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
+    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
+    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
+    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
+    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
+    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
     \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
     \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
     \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
@@ -264,34 +272,34 @@ data:
     \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
     \ < 0) return {Tp(0)};\n\n    auto Q = div(std::vector(A.rend() - (degA + 1),\
     \ A.rend()),\n                 std::vector(B.rend() - (degB + 1), B.rend()), degQ\
-    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 9 \"subproduct_tree.hpp\"\
-    \n\ntemplate <typename Tp>\nclass SubproductTree {\npublic:\n    // LV=0   =>\
-    \ T[0..S]  = DFT((x-X_0)..(x-X_(N-1))     mod (x^S     - 1))\n    //        =>\
-    \ T[S..2S] = (x-X_0)..(x-X_(N-1))         mod (x^S     + 1)  (* SPECIAL CASE)\n\
-    \    // LV=1   => T[..]    = DFT((x-X_0)..(x-X_(S/2-1))   mod (x^(S/2) - 1))\n\
-    \    //        => T[..]    = DFT((x-X_(S/2))..(x-X_(N-1)) mod (x^(S/2) - 1)) (*\
-    \ GENERAL CASE)\n    // LV=2.. => ..                                         \
-    \                (* GENERAL CASE)\n    std::vector<Tp> T;\n    int N;\n    int\
-    \ S;\n\n    SubproductTree(const std::vector<Tp> &X)\n        : N(X.size()), S(N\
-    \ == 0 ? 2 : std::max(fft_len(N), 2)) {\n        int LogS = 1;\n        while\
-    \ ((1 << LogS) < S) ++LogS;\n        T.assign((LogS + 1) * S * 2, 1);\n      \
-    \  for (int i = 0; i < N; ++i) {\n            T[LogS * S * 2 + i * 2]     = 1\
-    \ - X[i];\n            T[LogS * S * 2 + i * 2 + 1] = -1 - X[i];\n        }\n \
-    \       for (int lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {\n        \
-    \    for (int i = 0; i < (1 << lv); ++i) {\n                auto C = T.begin()\
-    \ + (lv * S * 2 + i * len * 2);       // current\n                auto L = T.begin()\
-    \ + ((lv + 1) * S * 2 + i * len * 2); // left child\n                for (int\
-    \ j = 0; j < len; ++j) C[j] = C[len + j] = L[j] * L[len + j];\n              \
-    \  inv_fft_n(C + len, len);\n                if ((i + 1) * len <= N) C[len] -=\
-    \ 2;\n                if (lv) {\n                    Tp k         = 1;\n     \
-    \               const auto t = FftInfo<Tp>::get().root(len).at(len / 2);\n   \
-    \                 for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;\n   \
-    \                 fft_n(C + len, len);\n                }\n            }\n   \
-    \     }\n    }\n\n    std::vector<Tp> product() const {\n        std::vector res(T.begin()\
-    \ + S, T.begin() + S * 2);\n        if (N == S) {\n            res[0] += 1;\n\
-    \            res.emplace_back(1);\n        }\n        res.resize(N + 1);\n   \
-    \     return res;\n    }\n\n    // see:\n    // [1]: A. Bostan, Gr\xE9goire Lecerf,\
-    \ \xC9. Schost. Tellegen's principle into practice.\n    // [2]: D. Bernstein.\
+    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 10 \"\
+    subproduct_tree.hpp\"\n\ntemplate <typename Tp>\nclass SubproductTree {\npublic:\n\
+    \    // LV=0   => T[0..S]  = DFT((x-X_0)..(x-X_(N-1))     mod (x^S     - 1))\n\
+    \    //        => T[S..2S] = (x-X_0)..(x-X_(N-1))         mod (x^S     + 1)  (*\
+    \ SPECIAL CASE)\n    // LV=1   => T[..]    = DFT((x-X_0)..(x-X_(S/2-1))   mod\
+    \ (x^(S/2) - 1))\n    //        => T[..]    = DFT((x-X_(S/2))..(x-X_(N-1)) mod\
+    \ (x^(S/2) - 1)) (* GENERAL CASE)\n    // LV=2.. => ..                       \
+    \                                  (* GENERAL CASE)\n    std::vector<Tp> T;\n\
+    \    int N;\n    int S;\n\n    SubproductTree(const std::vector<Tp> &X)\n    \
+    \    : N(X.size()), S(N == 0 ? 2 : std::max(fft_len(N), 2)) {\n        int LogS\
+    \ = 1;\n        while ((1 << LogS) < S) ++LogS;\n        T.assign((LogS + 1) *\
+    \ S * 2, 1);\n        for (int i = 0; i < N; ++i) {\n            T[LogS * S *\
+    \ 2 + i * 2]     = 1 - X[i];\n            T[LogS * S * 2 + i * 2 + 1] = -1 - X[i];\n\
+    \        }\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2)\
+    \ {\n            for (int i = 0; i < (1 << lv); ++i) {\n                auto C\
+    \ = T.begin() + (lv * S * 2 + i * len * 2);       // current\n               \
+    \ auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n     \
+    \           for (int j = 0; j < len; ++j) C[j] = C[len + j] = L[j] * L[len + j];\n\
+    \                inv_fft_n(C + len, len);\n                if ((i + 1) * len <=\
+    \ N) C[len] -= 2;\n                if (lv) {\n                    Tp k       \
+    \  = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
+    \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
+    \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
+    \     }\n        }\n    }\n\n    std::vector<Tp> product() const {\n        std::vector\
+    \ res(T.begin() + S, T.begin() + S * 2);\n        if (N == S) {\n            res[0]\
+    \ += 1;\n            res.emplace_back(1);\n        }\n        res.resize(N + 1);\n\
+    \        return res;\n    }\n\n    // see:\n    // [1]: A. Bostan, Gr\xE9goire\
+    \ Lecerf, \xC9. Schost. Tellegen's principle into practice.\n    // [2]: D. Bernstein.\
     \ SCALED REMAINDER TREES.\n    std::vector<Tp> evaluation(const std::vector<Tp>\
     \ &F) const {\n        const int degF = degree(F);\n        const auto P   = product();\n\
     \        // find coefficients of x^(-1),...,x^(-N) of F/P in R((x^(-1)))\n   \
@@ -309,25 +317,25 @@ data:
     \             inv_fft_n(C, len);\n                std::copy_n(LL.begin() + len\
     \ / 2, len / 2, C);\n            }\n        }\n        res.resize(N);\n      \
     \  return res;\n    }\n\n    std::vector<Tp> interpolation(const std::vector<Tp>\
-    \ &Y) const {\n        assert((int)Y.size() == N);\n        const auto D = evaluation(deriv(product()));\
-    \ // denominator => P'(x_i)\n        std::vector<Tp> res(S * 2);\n        for\
-    \ (int i = 0; i < N; ++i) {\n            assert(D[i] != 0); // X[i] == X[?]\n\
-    \            res[i * 2] = res[i * 2 + 1] = Y[i] / D[i];\n        }\n        int\
-    \ LogS = 1;\n        while ((1 << LogS) < S) ++LogS;\n        for (int lv = LogS\
-    \ - 1, len = 2; lv >= 0; --lv, len *= 2) {\n            for (int i = 0; i < (1\
-    \ << lv); ++i) {\n                auto C = res.begin() + i * len * 2;        \
-    \            // current\n                auto L = T.begin() + ((lv + 1) * S *\
-    \ 2 + i * len * 2); // left child\n                for (int j = 0; j < len; ++j)\n\
-    \                    C[j] = C[len + j] = C[j] * L[len + j] + C[len + j] * L[j];\n\
-    \                inv_fft_n(C + len, len);\n                if (lv) {\n       \
-    \             Tp k         = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
-    \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
-    \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
-    \     }\n        }\n        return std::vector(res.begin() + S, res.begin() +\
-    \ (S + N));\n    }\n\n    // see:\n    // [1]: A. Bostan, \xC9. Schost. Polynomial\
-    \ evaluation and interpolation on special sets of points.\n    // [2]: noshi91.\
-    \ \u8EE2\u7F6E\u539F\u7406\u306A\u3057\u3067 Monomial \u57FA\u5E95\u304B\u3089\
-    \ Newton \u57FA\u5E95\u3078\u306E\u5909\u63DB.\n    //      https://noshi91.hatenablog.com/entry/2023/05/01/022946\n\
+    \ &Y) const {\n        assert((int)Y.size() == N);\n        const auto invD =\
+    \ batch_inv(evaluation(deriv(product()))); // denominator => P'(x_i)\n       \
+    \ std::vector<Tp> res(S * 2);\n        for (int i = 0; i < N; ++i) res[i * 2]\
+    \ = res[i * 2 + 1] = Y[i] * invD[i];\n        int LogS = 1;\n        while ((1\
+    \ << LogS) < S) ++LogS;\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv,\
+    \ len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i) {\n           \
+    \     auto C = res.begin() + i * len * 2;                    // current\n    \
+    \            auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
+    \                for (int j = 0; j < len; ++j)\n                    C[j] = C[len\
+    \ + j] = C[j] * L[len + j] + C[len + j] * L[j];\n                inv_fft_n(C +\
+    \ len, len);\n                if (lv) {\n                    Tp k         = 1;\n\
+    \                    const auto t = FftInfo<Tp>::get().root(len).at(len / 2);\n\
+    \                    for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;\n\
+    \                    fft_n(C + len, len);\n                }\n            }\n\
+    \        }\n        return std::vector(res.begin() + S, res.begin() + (S + N));\n\
+    \    }\n\n    // see:\n    // [1]: A. Bostan, \xC9. Schost. Polynomial evaluation\
+    \ and interpolation on special sets of points.\n    // [2]: noshi91. \u8EE2\u7F6E\
+    \u539F\u7406\u306A\u3057\u3067 Monomial \u57FA\u5E95\u304B\u3089 Newton \u57FA\
+    \u5E95\u3078\u306E\u5909\u63DB.\n    //      https://noshi91.hatenablog.com/entry/2023/05/01/022946\n\
     \    std::vector<Tp> monomial_to_newton(const std::vector<Tp> &F) const {\n  \
     \      const int degF = degree(F);\n        assert(degF < N);\n        const auto\
     \ P = product();\n        // find coefficients of x^(-1),...,x^(-N) of F/P in\
@@ -377,6 +385,7 @@ data:
   dependsOn:
   - modint.hpp
   - subproduct_tree.hpp
+  - batch_inv.hpp
   - fft.hpp
   - fps_basic.hpp
   - binomial.hpp
@@ -385,7 +394,7 @@ data:
   isVerificationFile: true
   path: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-02 11:00:30+08:00'
+  timestamp: '2024-06-02 16:57:07+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
