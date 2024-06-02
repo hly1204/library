@@ -61,7 +61,7 @@ semi_relaxed_convolution(const std::vector<Tp> &A, Closure gen, int n) {
 
             dftB[lv][j - 1].resize(blocksize * 2);
             std::copy_n(B.begin() + (i - blocksize), blocksize, dftB[lv][j - 1].begin());
-            std::fill_n(dftB[lv][j - 1].begin() + blocksize, blocksize, Tp());
+            std::fill_n(dftB[lv][j - 1].begin() + blocksize, blocksize, 0);
             fft(dftB[lv][j - 1]);
 
             // middle product

@@ -26,7 +26,7 @@ inline Tp div_at(const std::vector<Tp> &P, std::vector<Tp> Q, long long k) {
     };
 
     assert(!iszero(Q));
-    if (P.empty()) return Tp();
+    if (P.empty()) return 0;
     if (const int ordQ = order(Q)) {
         Q.erase(Q.begin(), Q.begin() + ordQ);
         k += ordQ;
@@ -140,7 +140,7 @@ inline std::vector<Tp> slice_coeff_rationalA(std::vector<Tp> P, std::vector<Tp> 
         if (L <= 0) {
             inv_fft(dftQ);
             auto invQ = inv(dftQ, L + len / 2);
-            invQ.insert(invQ.begin(), -L, Tp());
+            invQ.insert(invQ.begin(), -L, 0);
             fft(invQ);
             return invQ;
         }

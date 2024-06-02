@@ -92,6 +92,6 @@ inline std::vector<Tp> pow(std::vector<Tp> a, long long e, int n) {
     a = exp(a, n - o * e);
     for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;
 
-    a.insert(a.begin(), o * e, Tp());
+    a.insert(a.begin(), o * e, 0);
     return a;
 }

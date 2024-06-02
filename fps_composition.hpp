@@ -173,6 +173,6 @@ inline std::vector<Tp> reversion(std::vector<Tp> f, int n) {
     for (int i = 1; i < n; ++i) a[i] *= (n - 1) * bin.inv(i);
     auto b = pow(std::vector(a.rbegin(), a.rend() - 1), Tp(1 - n).inv().val(), n - 1);
     for (int i = 0; i < n - 1; ++i) b[i] *= if1;
-    b.insert(b.begin(), Tp());
+    b.insert(b.begin(), 0);
     return b;
 }
