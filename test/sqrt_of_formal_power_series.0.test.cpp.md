@@ -211,7 +211,7 @@ data:
     \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
     \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
     \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"sqrt_mod.hpp\"\n#include\
-    \ <random>\n#line 6 \"sqrt_mod.hpp\"\n\ntemplate <typename Tp>\nstd::vector<Tp>\
+    \ <random>\n#line 6 \"sqrt_mod.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ sqrt_mod_prime(Tp a) {\n    // Bostan--Mori's algorithm\n    const auto p =\
     \ Tp::mod();\n    if (p == 2 || a == 0) return {a};\n    if (a.pow(p / 2) == -1)\
     \ return {};\n    if ((p & 3) == 3) {\n        const auto b = a.pow((p + 1) /\
@@ -223,10 +223,10 @@ data:
     \ {\n            k1 = k0 * k3 - k1 * k2;\n        }\n        if ((e >>= 1) ==\
     \ 0) return {k0, -k0};\n        k2 = k3 + k3 - k2 * k2, k3 *= k3;\n    }\n}\n\
     #line 5 \"fps_sqrt.hpp\"\n#include <optional>\n#line 7 \"fps_sqrt.hpp\"\n\ntemplate\
-    \ <typename Tp>\nstd::optional<std::vector<Tp>> sqrt(const std::vector<Tp> &a,\
-    \ int n) {\n    const int o = order(a);\n    if (o < 0) return std::vector<Tp>(n);\n\
+    \ <typename Tp>\ninline std::optional<std::vector<Tp>> sqrt(const std::vector<Tp>\
+    \ &a, int n) {\n    const int o = order(a);\n    if (o < 0) return std::vector<Tp>(n);\n\
     \    const auto cv = sqrt_mod_prime(a[o]);\n    if (cv.empty()) return {};\n \
-    \   return sqrt_hint(a, n, cv[0]);\n}\n\ntemplate <typename Tp>\nstd::optional<std::vector<Tp>>\
+    \   return sqrt_hint(a, n, cv[0]);\n}\n\ntemplate <typename Tp>\ninline std::optional<std::vector<Tp>>\
     \ sqrt_hint(const std::vector<Tp> &a, int n, Tp c) {\n    const int o = order(a);\n\
     \    if (o < 0) return std::vector<Tp>(n);\n    if ((o & 1) || c * c != a[o])\
     \ return {};\n    std::vector sqrta(a.begin() + o, a.end());\n    const auto iv\
@@ -297,7 +297,7 @@ data:
   isVerificationFile: true
   path: test/sqrt_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-02 11:32:31+08:00'
+  timestamp: '2024-06-02 13:23:25+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/sqrt_of_formal_power_series.0.test.cpp
