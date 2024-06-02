@@ -11,34 +11,36 @@ data:
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
-    path: modint.hpp
-    title: modint.hpp
+    path: rng.hpp
+    title: rng.hpp
   - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
+  - icon: ':heavy_check_mark:'
+    path: sqrt_mod.hpp
+    title: sqrt_mod.hpp
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/sqrt_of_formal_power_series.0.test.cpp
+    title: test/sqrt_of_formal_power_series.0.test.cpp
   _isVerificationFailed: false
-  _pathExtension: cpp
+  _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/log_of_formal_power_series
-    links:
-    - https://judge.yosupo.jp/problem/log_of_formal_power_series
-  bundledCode: "#line 1 \"test/log_of_formal_power_series.0.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/log_of_formal_power_series\"\n\n#line 2 \"\
-    fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n#include\
-    \ <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_,\
-    \ invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\
-    \n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
-    \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
-    \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
-    \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
-    \ factorial_[i] = factorial_[i - 1] * i;\n            invfactorial_.back() = factorial_.back().inv();\n\
-    \            for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i\
-    \ + 1] * (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int\
-    \ n) {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
+    links: []
+  bundledCode: "#line 2 \"fps_sqrt.hpp\"\n\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"\
+    binomial.hpp\"\n\n#include <algorithm>\n#include <vector>\n\ntemplate <typename\
+    \ Tp>\nclass Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\n  \
+    \  Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\n    void preprocess(int\
+    \ n) {\n        if (const int nn = factorial_.size(); nn < n) {\n            int\
+    \ k = nn;\n            while (k < n) k *= 2;\n            k = std::min<long long>(k,\
+    \ Tp::mod());\n            factorial_.resize(k);\n            invfactorial_.resize(k);\n\
+    \            for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] *\
+    \ i;\n            invfactorial_.back() = factorial_.back().inv();\n          \
+    \  for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] *\
+    \ (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int n)\
+    \ {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
     \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
     \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
     \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
@@ -184,72 +186,76 @@ data:
     \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = log(a, n - o * e);\n    for (int\
     \ i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = exp(a, n - o * e);\n   \
     \ for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
-    \ o * e, 0);\n    return a;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
-    #line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
-    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
-    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
-    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
-    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
-    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
-    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
-    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
-    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
-    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
-    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
-    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
-    \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
-    \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
-    \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
-    \ if ((e >>= 1) == 0) return res;\n        }\n    }\n    ModInt inv() const {\n\
-    \        int x1 = 1, x3 = 0, a = val(), b = Mod;\n        while (b) {\n      \
-    \      int q = a / b, x1_old = x1, a_old = a;\n            x1 = x3, x3 = x1_old\
-    \ - x3 * q, a = b, b = a_old - b * q;\n        }\n        return from_raw(x1 <\
-    \ 0 ? x1 + (int)Mod : x1);\n    }\n    template <bool Odd = (Mod & 1)>\n    std::enable_if_t<Odd,\
-    \ ModInt> div_by_2() const {\n        if (v_ & 1) return from_raw((v_ + Mod) >>\
-    \ 1);\n        return from_raw(v_ >> 1);\n    }\n\n    ModInt &operator+=(const\
-    \ ModInt &a) {\n        if ((v_ += a.v_) >= Mod) v_ -= Mod;\n        return *this;\n\
-    \    }\n    ModInt &operator-=(const ModInt &a) {\n        if ((v_ += Mod - a.v_)\
-    \ >= Mod) v_ -= Mod;\n        return *this;\n    }\n    ModInt &operator*=(const\
-    \ ModInt &a) {\n        v_ = (unsigned long long)v_ * a.v_ % Mod;\n        return\
-    \ *this;\n    }\n    ModInt &operator/=(const ModInt &a) { return *this *= a.inv();\
-    \ }\n\n    friend ModInt operator+(const ModInt &a, const ModInt &b) { return\
-    \ ModInt(a) += b; }\n    friend ModInt operator-(const ModInt &a, const ModInt\
-    \ &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const ModInt &a,\
-    \ const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
-    \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
-    \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
-    \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
-    \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
-    \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
-    \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 7 \"test/log_of_formal_power_series.0.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
-    \    std::cin >> n;\n    std::vector<mint> a(n);\n    for (int i = 0; i < n; ++i)\
-    \ std::cin >> a[i];\n    const auto loga = log(a, n);\n    for (int i = 0; i <\
-    \ n; ++i) std::cout << loga[i] << ' ';\n    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/log_of_formal_power_series\"\
-    \n\n#include \"fps_basic.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\
-    #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
-    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n  \
-    \  std::cin >> n;\n    std::vector<mint> a(n);\n    for (int i = 0; i < n; ++i)\
-    \ std::cin >> a[i];\n    const auto loga = log(a, n);\n    for (int i = 0; i <\
-    \ n; ++i) std::cout << loga[i] << ' ';\n    return 0;\n}\n"
+    \ o * e, 0);\n    return a;\n}\n#line 2 \"sqrt_mod.hpp\"\n\n#line 2 \"rng.hpp\"\
+    \n\n#include <cstdint>\n#include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n\
+    // original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
+    \n    static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64\
+    \ - k)); }\n\n    u64 s_[4];\n\n    u64 next() {\n        const u64 res = rotl(s_[1]\
+    \ * 5, 7) * 9;\n        const u64 t   = s_[1] << 17;\n        s_[2] ^= s_[0];\n\
+    \        s_[3] ^= s_[1];\n        s_[1] ^= s_[2];\n        s_[0] ^= s_[3];\n \
+    \       s_[2] ^= t;\n        s_[3] = rotl(s_[3], 45);\n        return res;\n \
+    \   }\n\npublic:\n    // see: https://prng.di.unimi.it/splitmix64.c\n    // original\
+    \ license CC0 1.0\n    explicit xoshiro256starstar(u64 seed) {\n        for (int\
+    \ i = 0; i < 4; ++i) {\n            u64 z = (seed += 0x9e3779b97f4a7c15);\n  \
+    \          z     = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n            z     =\
+    \ (z ^ (z >> 27)) * 0x94d049bb133111eb;\n            s_[i] = z ^ (z >> 31);\n\
+    \        }\n    }\n    // see: https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator\n\
+    \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
+    \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
+    \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"sqrt_mod.hpp\"\n#include\
+    \ <random>\n#line 6 \"sqrt_mod.hpp\"\n\ntemplate <typename Tp>\nstd::vector<Tp>\
+    \ sqrt_mod_prime(Tp a) {\n    // Bostan--Mori's algorithm\n    const auto p =\
+    \ Tp::mod();\n    if (p == 2 || a == 0) return {a};\n    if (a.pow(p / 2) == -1)\
+    \ return {};\n    if ((p & 3) == 3) {\n        const auto b = a.pow((p + 1) /\
+    \ 4);\n        return {b, -b};\n    }\n    xoshiro256starstar rng(std::random_device{}());\n\
+    \    std::uniform_int_distribution<std::decay_t<decltype(p)>> dis(2, p - 1);\n\
+    \    Tp t;\n    do { t = dis(rng); } while ((t * t - a * 4).pow(p / 2) != -1);\n\
+    \    Tp k0 = 1, k1, k2 = -t, k3 = a;\n    for (auto e = (p + 1) >> 1;;) {\n  \
+    \      if (e & 1) {\n            k0 = k1 - k0 * k2, k1 *= k3;\n        } else\
+    \ {\n            k1 = k0 * k3 - k1 * k2;\n        }\n        if ((e >>= 1) ==\
+    \ 0) return {k0, -k0};\n        k2 = k3 + k3 - k2 * k2, k3 *= k3;\n    }\n}\n\
+    #line 5 \"fps_sqrt.hpp\"\n#include <optional>\n#line 7 \"fps_sqrt.hpp\"\n\ntemplate\
+    \ <typename Tp>\nstd::optional<std::vector<Tp>> sqrt(const std::vector<Tp> &a,\
+    \ int n) {\n    const int o = order(a);\n    if (o < 0) return std::vector<Tp>(n);\n\
+    \    const auto cv = sqrt_mod_prime(a[o]);\n    if (cv.empty()) return {};\n \
+    \   return sqrt_hint(a, n, cv[0]);\n}\n\ntemplate <typename Tp>\nstd::optional<std::vector<Tp>>\
+    \ sqrt_hint(const std::vector<Tp> &a, int n, Tp c) {\n    const int o = order(a);\n\
+    \    if (o < 0) return std::vector<Tp>(n);\n    if ((o & 1) || c * c != a[o])\
+    \ return {};\n    std::vector sqrta(a.begin() + o, a.end());\n    const auto iv\
+    \ = sqrta[0].inv();\n    for (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i]\
+    \ *= iv;\n    sqrta = pow(sqrta, Tp(1).div_by_2().val(), n - o / 2);\n    for\
+    \ (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i] *= c;\n    sqrta.insert(sqrta.begin(),\
+    \ o / 2, 0);\n    return sqrta;\n}\n"
+  code: "#pragma once\n\n#include \"fps_basic.hpp\"\n#include \"sqrt_mod.hpp\"\n#include\
+    \ <optional>\n#include <vector>\n\ntemplate <typename Tp>\nstd::optional<std::vector<Tp>>\
+    \ sqrt(const std::vector<Tp> &a, int n) {\n    const int o = order(a);\n    if\
+    \ (o < 0) return std::vector<Tp>(n);\n    const auto cv = sqrt_mod_prime(a[o]);\n\
+    \    if (cv.empty()) return {};\n    return sqrt_hint(a, n, cv[0]);\n}\n\ntemplate\
+    \ <typename Tp>\nstd::optional<std::vector<Tp>> sqrt_hint(const std::vector<Tp>\
+    \ &a, int n, Tp c) {\n    const int o = order(a);\n    if (o < 0) return std::vector<Tp>(n);\n\
+    \    if ((o & 1) || c * c != a[o]) return {};\n    std::vector sqrta(a.begin()\
+    \ + o, a.end());\n    const auto iv = sqrta[0].inv();\n    for (int i = 0; i <\
+    \ (int)sqrta.size(); ++i) sqrta[i] *= iv;\n    sqrta = pow(sqrta, Tp(1).div_by_2().val(),\
+    \ n - o / 2);\n    for (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i] *= c;\n\
+    \    sqrta.insert(sqrta.begin(), o / 2, 0);\n    return sqrta;\n}\n"
   dependsOn:
   - fps_basic.hpp
   - binomial.hpp
   - semi_relaxed_conv.hpp
   - fft.hpp
-  - modint.hpp
-  isVerificationFile: true
-  path: test/log_of_formal_power_series.0.test.cpp
+  - sqrt_mod.hpp
+  - rng.hpp
+  isVerificationFile: false
+  path: fps_sqrt.hpp
   requiredBy: []
-  timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: TEST_ACCEPTED
-  verifiedWith: []
-documentation_of: test/log_of_formal_power_series.0.test.cpp
+  timestamp: '2024-06-02 11:32:31+08:00'
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/sqrt_of_formal_power_series.0.test.cpp
+documentation_of: fps_sqrt.hpp
 layout: document
 redirect_from:
-- /verify/test/log_of_formal_power_series.0.test.cpp
-- /verify/test/log_of_formal_power_series.0.test.cpp.html
-title: test/log_of_formal_power_series.0.test.cpp
+- /library/fps_sqrt.hpp
+- /library/fps_sqrt.hpp.html
+title: fps_sqrt.hpp
 ---

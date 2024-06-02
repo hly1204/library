@@ -1,32 +1,32 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: middle_product.hpp
     title: middle_product.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"czt.hpp\"\n\n#line 2 \"middle_product.hpp\"\n\n#line 2 \"\
@@ -282,7 +282,7 @@ data:
   path: czt.hpp
   requiredBy: []
   timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
 documentation_of: czt.hpp

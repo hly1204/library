@@ -1,29 +1,32 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
     title: c_recursive.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: czt.hpp
   - icon: ':warning:'
     path: eulerian_number.hpp
     title: eulerian_number.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
     title: fps_composition.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
+    path: fps_sqrt.hpp
+    title: fps_sqrt.hpp
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
   _extendedVerifiedWith:
@@ -51,27 +54,30 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/log_of_formal_power_series.0.test.cpp
     title: test/log_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/multipoint_evaluation.0.test.cpp
     title: test/multipoint_evaluation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/polynomial_interpolation.0.test.cpp
     title: test/polynomial_interpolation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/polynomial_taylor_shift.0.test.cpp
     title: test/polynomial_taylor_shift.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/pow_of_formal_power_series.0.test.cpp
     title: test/pow_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: true
+  - icon: ':heavy_check_mark:'
+    path: test/sqrt_of_formal_power_series.0.test.cpp
+    title: test/sqrt_of_formal_power_series.0.test.cpp
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
@@ -227,6 +233,7 @@ data:
   path: semi_relaxed_conv.hpp
   requiredBy:
   - eulerian_number.hpp
+  - fps_sqrt.hpp
   - fps_basic.hpp
   - czt.hpp
   - fps_composition.hpp
@@ -234,7 +241,7 @@ data:
   - c_recursive.hpp
   - subproduct_tree.hpp
   timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
   - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
@@ -243,6 +250,7 @@ data:
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - test/division_of_polynomials.0.test.cpp
+  - test/sqrt_of_formal_power_series.0.test.cpp
   - test/polynomial_interpolation.0.test.cpp
   - test/log_of_formal_power_series.0.test.cpp
   - test/pow_of_formal_power_series.0.test.cpp

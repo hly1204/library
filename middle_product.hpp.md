@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
   _extendedRequiredBy:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: czt.hpp
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"middle_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
@@ -115,7 +115,7 @@ data:
   requiredBy:
   - czt.hpp
   timestamp: '2024-05-24 19:10:06+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
 documentation_of: middle_product.hpp

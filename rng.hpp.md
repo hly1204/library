@@ -1,11 +1,20 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: fps_sqrt.hpp
+    title: fps_sqrt.hpp
+  - icon: ':heavy_check_mark:'
+    path: sqrt_mod.hpp
+    title: sqrt_mod.hpp
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/sqrt_of_formal_power_series.0.test.cpp
+    title: test/sqrt_of_formal_power_series.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator
@@ -47,10 +56,13 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: rng.hpp
-  requiredBy: []
+  requiredBy:
+  - fps_sqrt.hpp
+  - sqrt_mod.hpp
   timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/sqrt_of_formal_power_series.0.test.cpp
 documentation_of: rng.hpp
 layout: document
 redirect_from:
