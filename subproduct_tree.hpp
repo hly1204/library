@@ -1,5 +1,6 @@
 #pragma once
 
+#include "batch_inv.hpp"
 #include "fft.hpp"
 #include "fps_basic.hpp"
 #include "poly_basic.hpp"
@@ -86,12 +87,9 @@ public:
 
     std::vector<Tp> interpolation(const std::vector<Tp> &Y) const {
         assert((int)Y.size() == N);
-        const auto D = evaluation(deriv(product())); // denominator => P'(x_i)
+        const auto invD = batch_inv(evaluation(deriv(product()))); // denominator => P'(x_i)
         std::vector<Tp> res(S * 2);
-        for (int i = 0; i < N; ++i) {
-            assert(D[i] != 0); // X[i] == X[?]
-            res[i * 2] = res[i * 2 + 1] = Y[i] / D[i];
-        }
+        for (int i = 0; i < N; ++i) res[i * 2] = res[i * 2 + 1] = Y[i] * invD[i];
         int LogS = 1;
         while ((1 << LogS) < S) ++LogS;
         for (int lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {
