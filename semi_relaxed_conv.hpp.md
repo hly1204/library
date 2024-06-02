@@ -1,29 +1,29 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
     title: c_recursive.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: czt.hpp
     title: czt.hpp
   - icon: ':warning:'
     path: eulerian_number.hpp
     title: eulerian_number.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
     title: fps_composition.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
   _extendedVerifiedWith:
@@ -51,27 +51,27 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/log_of_formal_power_series.0.test.cpp
     title: test/log_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/multipoint_evaluation.0.test.cpp
     title: test/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/polynomial_interpolation.0.test.cpp
     title: test/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/polynomial_taylor_shift.0.test.cpp
     title: test/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/pow_of_formal_power_series.0.test.cpp
     title: test/pow_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
@@ -173,7 +173,7 @@ data:
     \    dftA[lv].emplace_back(blocksize * 2);\n                }\n            }\n\
     \n            dftB[lv][j - 1].resize(blocksize * 2);\n            std::copy_n(B.begin()\
     \ + (i - blocksize), blocksize, dftB[lv][j - 1].begin());\n            std::fill_n(dftB[lv][j\
-    \ - 1].begin() + blocksize, blocksize, Tp());\n            fft(dftB[lv][j - 1]);\n\
+    \ - 1].begin() + blocksize, blocksize, 0);\n            fft(dftB[lv][j - 1]);\n\
     \n            // middle product\n            std::vector<Tp> mp(blocksize * 2);\n\
     \            for (int k = 0; k < j; ++k)\n                for (int l = 0; l <\
     \ blocksize * 2; ++l)\n                    mp[l] += dftA[lv][j - 1 - k][l] * dftB[lv][k][l];\n\
@@ -212,7 +212,7 @@ data:
     \    dftA[lv].emplace_back(blocksize * 2);\n                }\n            }\n\
     \n            dftB[lv][j - 1].resize(blocksize * 2);\n            std::copy_n(B.begin()\
     \ + (i - blocksize), blocksize, dftB[lv][j - 1].begin());\n            std::fill_n(dftB[lv][j\
-    \ - 1].begin() + blocksize, blocksize, Tp());\n            fft(dftB[lv][j - 1]);\n\
+    \ - 1].begin() + blocksize, blocksize, 0);\n            fft(dftB[lv][j - 1]);\n\
     \n            // middle product\n            std::vector<Tp> mp(blocksize * 2);\n\
     \            for (int k = 0; k < j; ++k)\n                for (int l = 0; l <\
     \ blocksize * 2; ++l)\n                    mp[l] += dftA[lv][j - 1 - k][l] * dftB[lv][k][l];\n\
@@ -233,8 +233,8 @@ data:
   - poly_basic.hpp
   - c_recursive.hpp
   - subproduct_tree.hpp
-  timestamp: '2024-05-17 19:15:49+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2024-06-02 11:00:30+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
   - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp

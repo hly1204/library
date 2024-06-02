@@ -1,26 +1,26 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/log_of_formal_power_series
@@ -142,7 +142,7 @@ data:
     \    dftA[lv].emplace_back(blocksize * 2);\n                }\n            }\n\
     \n            dftB[lv][j - 1].resize(blocksize * 2);\n            std::copy_n(B.begin()\
     \ + (i - blocksize), blocksize, dftB[lv][j - 1].begin());\n            std::fill_n(dftB[lv][j\
-    \ - 1].begin() + blocksize, blocksize, Tp());\n            fft(dftB[lv][j - 1]);\n\
+    \ - 1].begin() + blocksize, blocksize, 0);\n            fft(dftB[lv][j - 1]);\n\
     \n            // middle product\n            std::vector<Tp> mp(blocksize * 2);\n\
     \            for (int k = 0; k < j; ++k)\n                for (int l = 0; l <\
     \ blocksize * 2; ++l)\n                    mp[l] += dftA[lv][j - 1 - k][l] * dftB[lv][k][l];\n\
@@ -184,7 +184,7 @@ data:
     \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = log(a, n - o * e);\n    for (int\
     \ i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = exp(a, n - o * e);\n   \
     \ for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
-    \ o * e, Tp());\n    return a;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
+    \ o * e, 0);\n    return a;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
     #line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
     \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
     \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
@@ -243,8 +243,8 @@ data:
   isVerificationFile: true
   path: test/log_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-05-17 19:15:49+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-06-02 11:00:30+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/log_of_formal_power_series.0.test.cpp
 layout: document

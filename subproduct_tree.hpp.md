@@ -1,19 +1,19 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
@@ -21,15 +21,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/multipoint_evaluation.0.test.cpp
     title: test/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/polynomial_interpolation.0.test.cpp
     title: test/polynomial_interpolation.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links:
     - https://noshi91.hatenablog.com/entry/2023/05/01/022946
@@ -148,7 +148,7 @@ data:
     \    dftA[lv].emplace_back(blocksize * 2);\n                }\n            }\n\
     \n            dftB[lv][j - 1].resize(blocksize * 2);\n            std::copy_n(B.begin()\
     \ + (i - blocksize), blocksize, dftB[lv][j - 1].begin());\n            std::fill_n(dftB[lv][j\
-    \ - 1].begin() + blocksize, blocksize, Tp());\n            fft(dftB[lv][j - 1]);\n\
+    \ - 1].begin() + blocksize, blocksize, 0);\n            fft(dftB[lv][j - 1]);\n\
     \n            // middle product\n            std::vector<Tp> mp(blocksize * 2);\n\
     \            for (int k = 0; k < j; ++k)\n                for (int l = 0; l <\
     \ blocksize * 2; ++l)\n                    mp[l] += dftA[lv][j - 1 - k][l] * dftB[lv][k][l];\n\
@@ -190,7 +190,7 @@ data:
     \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = log(a, n - o * e);\n    for (int\
     \ i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = exp(a, n - o * e);\n   \
     \ for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
-    \ o * e, Tp());\n    return a;\n}\n#line 2 \"poly_basic.hpp\"\n\n#line 10 \"poly_basic.hpp\"\
+    \ o * e, 0);\n    return a;\n}\n#line 2 \"poly_basic.hpp\"\n\n#line 10 \"poly_basic.hpp\"\
     \n\ntemplate <typename Tp>\ninline int degree(const std::vector<Tp> &a) {\n  \
     \  int n = (int)a.size() - 1;\n    while (n >= 0 && a[n] == 0) --n;\n    return\
     \ n;\n}\n\ntemplate <typename Tp>\ninline void shrink(std::vector<Tp> &a) {\n\
@@ -425,8 +425,8 @@ data:
   isVerificationFile: false
   path: subproduct_tree.hpp
   requiredBy: []
-  timestamp: '2024-05-27 19:01:13+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2024-06-02 11:00:30+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
   - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp

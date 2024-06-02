@@ -1,19 +1,19 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
@@ -145,7 +145,7 @@ data:
     \    dftA[lv].emplace_back(blocksize * 2);\n                }\n            }\n\
     \n            dftB[lv][j - 1].resize(blocksize * 2);\n            std::copy_n(B.begin()\
     \ + (i - blocksize), blocksize, dftB[lv][j - 1].begin());\n            std::fill_n(dftB[lv][j\
-    \ - 1].begin() + blocksize, blocksize, Tp());\n            fft(dftB[lv][j - 1]);\n\
+    \ - 1].begin() + blocksize, blocksize, 0);\n            fft(dftB[lv][j - 1]);\n\
     \n            // middle product\n            std::vector<Tp> mp(blocksize * 2);\n\
     \            for (int k = 0; k < j; ++k)\n                for (int l = 0; l <\
     \ blocksize * 2; ++l)\n                    mp[l] += dftA[lv][j - 1 - k][l] * dftB[lv][k][l];\n\
@@ -187,7 +187,7 @@ data:
     \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = log(a, n - o * e);\n    for (int\
     \ i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = exp(a, n - o * e);\n   \
     \ for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
-    \ o * e, Tp());\n    return a;\n}\n#line 2 \"poly_basic.hpp\"\n\n#line 10 \"poly_basic.hpp\"\
+    \ o * e, 0);\n    return a;\n}\n#line 2 \"poly_basic.hpp\"\n\n#line 10 \"poly_basic.hpp\"\
     \n\ntemplate <typename Tp>\ninline int degree(const std::vector<Tp> &a) {\n  \
     \  int n = (int)a.size() - 1;\n    while (n >= 0 && a[n] == 0) --n;\n    return\
     \ n;\n}\n\ntemplate <typename Tp>\ninline void shrink(std::vector<Tp> &a) {\n\
@@ -232,7 +232,7 @@ data:
     \ * 2);\n        std::copy_n(a.begin(), n, a.begin() + n);\n        inv_fft_n(a.begin()\
     \ + n, n);\n        Tp k         = 1;\n        const auto t = FftInfo<Tp>::get().root(n).at(n\
     \ / 2);\n        for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n        fft_n(a.begin()\
-    \ + n, n);\n    };\n\n    assert(!iszero(Q));\n    if (P.empty()) return Tp();\n\
+    \ + n, n);\n    };\n\n    assert(!iszero(Q));\n    if (P.empty()) return 0;\n\
     \    if (const int ordQ = order(Q)) {\n        Q.erase(Q.begin(), Q.begin() +\
     \ ordQ);\n        k += ordQ;\n    }\n\n    assert(k >= 0);\n    if (k < (int)P.size())\
     \ return div(P, Q, k + 1).at(k);\n\n    const int len = fft_len(std::max(P.size()\
@@ -279,8 +279,8 @@ data:
     \ > degQ, len/2 is even\n    auto rec = [len, &fft_doubling, &fft_high](auto &&rec,\
     \ std::vector<Tp> dftQ, long long L) {\n        if (L <= 0) {\n            inv_fft(dftQ);\n\
     \            auto invQ = inv(dftQ, L + len / 2);\n            invQ.insert(invQ.begin(),\
-    \ -L, Tp());\n            fft(invQ);\n            return invQ;\n        }\n\n\
-    \        if ((int)dftQ.size() < len) fft_doubling(dftQ);\n        std::vector<Tp>\
+    \ -L, 0);\n            fft(invQ);\n            return invQ;\n        }\n\n   \
+    \     if ((int)dftQ.size() < len) fft_doubling(dftQ);\n        std::vector<Tp>\
     \ dftV(len / 2);\n        for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i]\
     \ * dftQ[i + 1];\n        const auto dftT = rec(rec, dftV, (L - len / 2 + (L &\
     \ 1)) / 2);\n\n        std::vector<Tp> dftU(len);\n        if (L & 1) {\n    \
@@ -324,7 +324,7 @@ data:
     \ * 2);\n        std::copy_n(a.begin(), n, a.begin() + n);\n        inv_fft_n(a.begin()\
     \ + n, n);\n        Tp k         = 1;\n        const auto t = FftInfo<Tp>::get().root(n).at(n\
     \ / 2);\n        for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n        fft_n(a.begin()\
-    \ + n, n);\n    };\n\n    assert(!iszero(Q));\n    if (P.empty()) return Tp();\n\
+    \ + n, n);\n    };\n\n    assert(!iszero(Q));\n    if (P.empty()) return 0;\n\
     \    if (const int ordQ = order(Q)) {\n        Q.erase(Q.begin(), Q.begin() +\
     \ ordQ);\n        k += ordQ;\n    }\n\n    assert(k >= 0);\n    if (k < (int)P.size())\
     \ return div(P, Q, k + 1).at(k);\n\n    const int len = fft_len(std::max(P.size()\
@@ -371,8 +371,8 @@ data:
     \ > degQ, len/2 is even\n    auto rec = [len, &fft_doubling, &fft_high](auto &&rec,\
     \ std::vector<Tp> dftQ, long long L) {\n        if (L <= 0) {\n            inv_fft(dftQ);\n\
     \            auto invQ = inv(dftQ, L + len / 2);\n            invQ.insert(invQ.begin(),\
-    \ -L, Tp());\n            fft(invQ);\n            return invQ;\n        }\n\n\
-    \        if ((int)dftQ.size() < len) fft_doubling(dftQ);\n        std::vector<Tp>\
+    \ -L, 0);\n            fft(invQ);\n            return invQ;\n        }\n\n   \
+    \     if ((int)dftQ.size() < len) fft_doubling(dftQ);\n        std::vector<Tp>\
     \ dftV(len / 2);\n        for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i]\
     \ * dftQ[i + 1];\n        const auto dftT = rec(rec, dftV, (L - len / 2 + (L &\
     \ 1)) / 2);\n\n        std::vector<Tp> dftU(len);\n        if (L & 1) {\n    \
@@ -414,7 +414,7 @@ data:
   isVerificationFile: false
   path: c_recursive.hpp
   requiredBy: []
-  timestamp: '2024-05-26 22:23:37+08:00'
+  timestamp: '2024-06-02 11:00:30+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
