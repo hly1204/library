@@ -23,6 +23,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
+  - icon: ':warning:'
+    path: poly_interpolation.hpp
+    title: poly_interpolation.hpp
   - icon: ':heavy_check_mark:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
@@ -115,6 +118,7 @@ data:
   requiredBy:
   - eulerian_number.hpp
   - fps_sqrt.hpp
+  - poly_interpolation.hpp
   - fps_basic.hpp
   - czt.hpp
   - fps_composition.hpp
