@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: mat_basic.hpp
     title: mat_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
   _extendedRequiredBy: []
@@ -19,7 +19,7 @@ data:
     - https://judge.yosupo.jp/problem/inverse_matrix
   bundledCode: "#line 1 \"test/inverse_matrix.0.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/inverse_matrix\"\
     \n\n#line 2 \"mat_basic.hpp\"\n\n#include <cassert>\n#include <optional>\n#include\
-    \ <vector>\n\ntemplate <typename Tp>\nusing Matrix = std::vector<std::vector<Tp>>;\n\
+    \ <utility>\n#include <vector>\n\ntemplate <typename Tp>\nusing Matrix = std::vector<std::vector<Tp>>;\n\
     \ntemplate <typename Tp>\ninline int width(const Matrix<Tp> &A) {\n    return\
     \ A.empty() ? 0 : (int)A[0].size();\n}\n\ntemplate <typename Tp>\ninline int height(const\
     \ Matrix<Tp> &A) {\n    return A.size();\n}\n\ntemplate <typename Tp>\ninline\
@@ -52,26 +52,35 @@ data:
     \            if (p == 0) continue;\n            for (int k = n; k < n * 2; ++k)\
     \ A[j][k] -= p * A[i + 1][k];\n        }\n    }\n    for (int i = 0; i < n; ++i)\
     \ A[i].erase(A[i].begin(), A[i].begin() + n);\n    return A;\n}\n\ntemplate <typename\
-    \ Tp>\ninline Matrix<Tp> to_upper_hessenberg(Matrix<Tp> A) {\n    assert(is_square_matrix(A));\n\
-    \    const int n = height(A);\n    for (int i = 0; i < n - 1; ++i) {\n       \
-    \ int pivot = i + 1;\n        for (; pivot < n; ++pivot)\n            if (A[pivot][i]\
-    \ != 0) break;\n        if (pivot == n) continue;\n        if (pivot != i + 1)\
-    \ {\n            A[pivot].swap(A[i + 1]);\n            for (int j = 0; j < n;\
-    \ ++j) std::swap(A[j][pivot], A[j][i + 1]);\n        }\n        const auto iv\
-    \ = A[i + 1][i].inv();\n        for (int j = i + 2; j < n; ++j) {\n          \
-    \  if (A[j][i] == 0) continue;\n            const auto v = A[j][i] * iv;\n   \
-    \         for (int k = i; k < n; ++k) A[j][k] -= v * A[i + 1][k];\n          \
-    \  for (int k = 0; k < n; ++k) A[k][i + 1] += v * A[k][j];\n        }\n    }\n\
-    \    return A;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> charpoly(const\
-    \ Matrix<Tp> &A) {\n    const auto H = to_upper_hessenberg(A);\n    const int\
-    \ n  = height(A);\n    std::vector<std::vector<Tp>> P(n + 1);\n    P[0] = {1};\n\
-    \    for (int i = 1; i <= n; ++i) {\n        P[i].resize(i + 1);\n        for\
-    \ (int j = 0; j < i; ++j)\n            P[i][j] -= H[i - 1][i - 1] * P[i - 1][j],\
-    \ P[i][j + 1] += P[i - 1][j];\n        Tp t = 1;\n        for (int j = 1; j <\
-    \ i; ++j) {\n            t *= H[i - j][i - j - 1];\n            const auto prod\
-    \ = t * H[i - j - 1][i - 1];\n            if (prod == 0) continue;\n         \
-    \   for (int k = 0; k < i - j; ++k) P[i][k] -= prod * P[i - j - 1][k];\n     \
-    \   }\n    }\n    return P[n];\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
+    \ Tp>\ninline Tp det(Matrix<Tp> A) {\n    assert(is_square_matrix(A));\n    const\
+    \ int n = height(A);\n    Tp det      = 1;\n    bool neg    = false;\n    for\
+    \ (int i = 0; i < n; ++i) {\n        int pivot = i;\n        for (; pivot < n;\
+    \ ++pivot)\n            if (A[pivot][i] != 0) break;\n        if (pivot == n)\
+    \ return 0;\n        if (pivot != i) {\n            A[pivot].swap(A[i]);\n   \
+    \         neg = !neg;\n        }\n        det *= A[i][i];\n        const auto\
+    \ iv = A[i][i].inv();\n        for (int j = i + 1; j < n; ++j) {\n           \
+    \ const auto p = A[j][i] * iv;\n            if (p == 0) continue;\n          \
+    \  for (int k = i; i < n; ++k) A[j][k] -= p * A[i][k];\n        }\n    }\n   \
+    \ return neg ? -det : det;\n}\n\ntemplate <typename Tp>\ninline Matrix<Tp> to_upper_hessenberg(Matrix<Tp>\
+    \ A) {\n    assert(is_square_matrix(A));\n    const int n = height(A);\n    for\
+    \ (int i = 0; i < n - 1; ++i) {\n        int pivot = i + 1;\n        for (; pivot\
+    \ < n; ++pivot)\n            if (A[pivot][i] != 0) break;\n        if (pivot ==\
+    \ n) continue;\n        if (pivot != i + 1) {\n            A[pivot].swap(A[i +\
+    \ 1]);\n            for (int j = 0; j < n; ++j) std::swap(A[j][pivot], A[j][i\
+    \ + 1]);\n        }\n        const auto iv = A[i + 1][i].inv();\n        for (int\
+    \ j = i + 2; j < n; ++j) {\n            if (A[j][i] == 0) continue;\n        \
+    \    const auto v = A[j][i] * iv;\n            for (int k = i; k < n; ++k) A[j][k]\
+    \ -= v * A[i + 1][k];\n            for (int k = 0; k < n; ++k) A[k][i + 1] +=\
+    \ v * A[k][j];\n        }\n    }\n    return A;\n}\n\ntemplate <typename Tp>\n\
+    inline std::vector<Tp> charpoly(const Matrix<Tp> &A) {\n    const auto H = to_upper_hessenberg(A);\n\
+    \    const int n  = height(A);\n    std::vector<std::vector<Tp>> P(n + 1);\n \
+    \   P[0] = {1};\n    for (int i = 1; i <= n; ++i) {\n        P[i].resize(i + 1);\n\
+    \        for (int j = 0; j < i; ++j)\n            P[i][j] -= H[i - 1][i - 1] *\
+    \ P[i - 1][j], P[i][j + 1] += P[i - 1][j];\n        Tp t = 1;\n        for (int\
+    \ j = 1; j < i; ++j) {\n            t *= H[i - j][i - j - 1];\n            const\
+    \ auto prod = t * H[i - j - 1][i - 1];\n            if (prod == 0) continue;\n\
+    \            for (int k = 0; k < i - j; ++k) P[i][k] -= prod * P[i - j - 1][k];\n\
+    \        }\n    }\n    return P[n];\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
     #include <type_traits>\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
     \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
     \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
@@ -132,7 +141,7 @@ data:
   isVerificationFile: true
   path: test/inverse_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-02 13:23:25+08:00'
+  timestamp: '2024-06-03 19:05:53+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/inverse_matrix.0.test.cpp

@@ -36,13 +36,13 @@ data:
     - icon: ':heavy_check_mark:'
       path: fps_sqrt.hpp
       title: fps_sqrt.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: mat_basic.hpp
       title: mat_basic.hpp
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -114,6 +114,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/log_of_formal_power_series.0.test.cpp
       title: test/log_of_formal_power_series.0.test.cpp
+    - icon: ':x:'
+      path: test/matrix_det.0.test.cpp
+      title: test/matrix_det.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/matrix_product.0.test.cpp
       title: test/matrix_product.0.test.cpp

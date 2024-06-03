@@ -9,15 +9,15 @@ data:
     title: modint.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/matrix_product
+    PROBLEM: https://judge.yosupo.jp/problem/matrix_det
     links:
-    - https://judge.yosupo.jp/problem/matrix_product
-  bundledCode: "#line 1 \"test/matrix_product.0.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/matrix_product\"\
+    - https://judge.yosupo.jp/problem/matrix_det
+  bundledCode: "#line 1 \"test/matrix_det.0.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/matrix_det\"\
     \n\n#line 2 \"mat_basic.hpp\"\n\n#include <cassert>\n#include <optional>\n#include\
     \ <utility>\n#include <vector>\n\ntemplate <typename Tp>\nusing Matrix = std::vector<std::vector<Tp>>;\n\
     \ntemplate <typename Tp>\ninline int width(const Matrix<Tp> &A) {\n    return\
@@ -118,38 +118,31 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 6 \"test/matrix_product.0.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m,\
-    \ k;\n    std::cin >> n >> m >> k;\n    Matrix<mint> A(n, std::vector<mint>(m));\n\
-    \    Matrix<mint> B(m, std::vector<mint>(k));\n    for (int i = 0; i < n; ++i)\n\
-    \        for (int j = 0; j < m; ++j) std::cin >> A[i][j];\n    for (int i = 0;\
-    \ i < m; ++i)\n        for (int j = 0; j < k; ++j) std::cin >> B[i][j];\n    const\
-    \ auto AB = mat_mul(A, B);\n    for (int i = 0; i < n; ++i)\n        for (int\
-    \ j = 0; j < k; ++j) std::cout << AB[i][j] << \" \\n\"[j == k - 1];\n    return\
-    \ 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/matrix_product\"\n\n#include\
+    #line 6 \"test/matrix_det.0.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
+    \    std::cin >> n;\n    Matrix<mint> A(n, std::vector<mint>(n));\n    for (int\
+    \ i = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cin >> A[i][j];\n\
+    \    std::cout << det(A);\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/matrix_det\"\n\n#include\
     \ \"mat_basic.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\nint main()\
     \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
-    \ mint = ModInt<998244353>;\n    int n, m, k;\n    std::cin >> n >> m >> k;\n\
-    \    Matrix<mint> A(n, std::vector<mint>(m));\n    Matrix<mint> B(m, std::vector<mint>(k));\n\
-    \    for (int i = 0; i < n; ++i)\n        for (int j = 0; j < m; ++j) std::cin\
-    \ >> A[i][j];\n    for (int i = 0; i < m; ++i)\n        for (int j = 0; j < k;\
-    \ ++j) std::cin >> B[i][j];\n    const auto AB = mat_mul(A, B);\n    for (int\
-    \ i = 0; i < n; ++i)\n        for (int j = 0; j < k; ++j) std::cout << AB[i][j]\
-    \ << \" \\n\"[j == k - 1];\n    return 0;\n}\n"
+    \ mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    Matrix<mint>\
+    \ A(n, std::vector<mint>(n));\n    for (int i = 0; i < n; ++i)\n        for (int\
+    \ j = 0; j < n; ++j) std::cin >> A[i][j];\n    std::cout << det(A);\n    return\
+    \ 0;\n}\n"
   dependsOn:
   - mat_basic.hpp
   - modint.hpp
   isVerificationFile: true
-  path: test/matrix_product.0.test.cpp
+  path: test/matrix_det.0.test.cpp
   requiredBy: []
   timestamp: '2024-06-03 19:05:53+08:00'
-  verificationStatus: TEST_ACCEPTED
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/matrix_product.0.test.cpp
+documentation_of: test/matrix_det.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/matrix_product.0.test.cpp
-- /verify/test/matrix_product.0.test.cpp.html
-title: test/matrix_product.0.test.cpp
+- /verify/test/matrix_det.0.test.cpp
+- /verify/test/matrix_det.0.test.cpp.html
+title: test/matrix_det.0.test.cpp
 ---

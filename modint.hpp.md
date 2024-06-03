@@ -39,6 +39,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/log_of_formal_power_series.0.test.cpp
     title: test/log_of_formal_power_series.0.test.cpp
+  - icon: ':x:'
+    path: test/matrix_det.0.test.cpp
+    title: test/matrix_det.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix_product.0.test.cpp
     title: test/matrix_product.0.test.cpp
@@ -60,9 +63,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/sqrt_of_formal_power_series.0.test.cpp
     title: test/sqrt_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
@@ -146,7 +149,7 @@ data:
   path: modint.hpp
   requiredBy: []
   timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
   - test/matrix_product.0.test.cpp
@@ -167,6 +170,7 @@ data:
   - test/characteristic_polynomial.0.test.cpp
   - test/composition_of_formal_power_series_large.0.test.cpp
   - test/polynomial_taylor_shift.0.test.cpp
+  - test/matrix_det.0.test.cpp
 documentation_of: modint.hpp
 layout: document
 redirect_from:
