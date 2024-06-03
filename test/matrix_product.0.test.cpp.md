@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: mat_basic.hpp
     title: mat_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
   _extendedRequiredBy: []
@@ -60,7 +60,7 @@ data:
     \         neg = !neg;\n        }\n        det *= A[i][i];\n        const auto\
     \ iv = A[i][i].inv();\n        for (int j = i + 1; j < n; ++j) {\n           \
     \ const auto p = A[j][i] * iv;\n            if (p == 0) continue;\n          \
-    \  for (int k = i; i < n; ++k) A[j][k] -= p * A[i][k];\n        }\n    }\n   \
+    \  for (int k = i; k < n; ++k) A[j][k] -= p * A[i][k];\n        }\n    }\n   \
     \ return neg ? -det : det;\n}\n\ntemplate <typename Tp>\ninline Matrix<Tp> to_upper_hessenberg(Matrix<Tp>\
     \ A) {\n    assert(is_square_matrix(A));\n    const int n = height(A);\n    for\
     \ (int i = 0; i < n - 1; ++i) {\n        int pivot = i + 1;\n        for (; pivot\
@@ -143,7 +143,7 @@ data:
   isVerificationFile: true
   path: test/matrix_product.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-03 19:05:53+08:00'
+  timestamp: '2024-06-03 19:11:50+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix_product.0.test.cpp

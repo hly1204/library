@@ -9,15 +9,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/inverse_matrix.0.test.cpp
     title: test/inverse_matrix.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/matrix_det.0.test.cpp
     title: test/matrix_det.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix_product.0.test.cpp
     title: test/matrix_product.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"mat_basic.hpp\"\n\n#include <cassert>\n#include <optional>\n\
@@ -63,7 +63,7 @@ data:
     \         neg = !neg;\n        }\n        det *= A[i][i];\n        const auto\
     \ iv = A[i][i].inv();\n        for (int j = i + 1; j < n; ++j) {\n           \
     \ const auto p = A[j][i] * iv;\n            if (p == 0) continue;\n          \
-    \  for (int k = i; i < n; ++k) A[j][k] -= p * A[i][k];\n        }\n    }\n   \
+    \  for (int k = i; k < n; ++k) A[j][k] -= p * A[i][k];\n        }\n    }\n   \
     \ return neg ? -det : det;\n}\n\ntemplate <typename Tp>\ninline Matrix<Tp> to_upper_hessenberg(Matrix<Tp>\
     \ A) {\n    assert(is_square_matrix(A));\n    const int n = height(A);\n    for\
     \ (int i = 0; i < n - 1; ++i) {\n        int pivot = i + 1;\n        for (; pivot\
@@ -126,7 +126,7 @@ data:
     \         neg = !neg;\n        }\n        det *= A[i][i];\n        const auto\
     \ iv = A[i][i].inv();\n        for (int j = i + 1; j < n; ++j) {\n           \
     \ const auto p = A[j][i] * iv;\n            if (p == 0) continue;\n          \
-    \  for (int k = i; i < n; ++k) A[j][k] -= p * A[i][k];\n        }\n    }\n   \
+    \  for (int k = i; k < n; ++k) A[j][k] -= p * A[i][k];\n        }\n    }\n   \
     \ return neg ? -det : det;\n}\n\ntemplate <typename Tp>\ninline Matrix<Tp> to_upper_hessenberg(Matrix<Tp>\
     \ A) {\n    assert(is_square_matrix(A));\n    const int n = height(A);\n    for\
     \ (int i = 0; i < n - 1; ++i) {\n        int pivot = i + 1;\n        for (; pivot\
@@ -151,8 +151,8 @@ data:
   isVerificationFile: false
   path: mat_basic.hpp
   requiredBy: []
-  timestamp: '2024-06-03 19:05:53+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2024-06-03 19:11:50+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix_product.0.test.cpp
   - test/inverse_matrix.0.test.cpp

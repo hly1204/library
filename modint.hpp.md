@@ -39,7 +39,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/log_of_formal_power_series.0.test.cpp
     title: test/log_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/matrix_det.0.test.cpp
     title: test/matrix_det.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -63,9 +63,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/sqrt_of_formal_power_series.0.test.cpp
     title: test/sqrt_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
@@ -149,7 +149,7 @@ data:
   path: modint.hpp
   requiredBy: []
   timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
   - test/matrix_product.0.test.cpp
