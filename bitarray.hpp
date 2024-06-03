@@ -8,14 +8,11 @@
 
 namespace detail {
 
-// |s| = 2^N
-// s[0..2^(N-1)) | s[2^(N-1)..2^N) << 2^(N-1)
 template <int N>
 inline unsigned long long from_bit_string(const char *s) {
     return from_bit_string<N / 2>(s + N / 2) << (N / 2) | from_bit_string<N / 2>(s);
 }
 
-// |s| = 2^0
 template <>
 inline unsigned long long from_bit_string<1>(const char *s) {
     return s[0] == '1';
