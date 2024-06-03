@@ -10,6 +10,9 @@ data:
       path: binomial.hpp
       title: binomial.hpp
     - icon: ':heavy_check_mark:'
+      path: bitarray.hpp
+      title: bitarray.hpp
+    - icon: ':heavy_check_mark:'
       path: c_recursive.hpp
       title: c_recursive.hpp
     - icon: ':heavy_check_mark:'
@@ -117,6 +120,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/matrix_det.0.test.cpp
       title: test/matrix_det.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/matrix_det_mod_2.0.test.cpp
+      title: test/matrix_det_mod_2.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/matrix_product.0.test.cpp
       title: test/matrix_product.0.test.cpp
