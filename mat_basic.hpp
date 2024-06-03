@@ -112,7 +112,7 @@ inline Tp det(Matrix<Tp> A) {
         for (int j = i + 1; j < n; ++j) {
             const auto p = A[j][i] * iv;
             if (p == 0) continue;
-            for (int k = i; i < n; ++k) A[j][k] -= p * A[i][k];
+            for (int k = i; k < n; ++k) A[j][k] -= p * A[i][k];
         }
     }
     return neg ? -det : det;
