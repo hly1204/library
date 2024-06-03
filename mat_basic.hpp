@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <optional>
+#include <utility>
 #include <vector>
 
 template <typename Tp>
@@ -89,6 +90,32 @@ inline std::optional<Matrix<Tp>> mat_inv(Matrix<Tp> A) {
     }
     for (int i = 0; i < n; ++i) A[i].erase(A[i].begin(), A[i].begin() + n);
     return A;
+}
+
+template <typename Tp>
+inline Tp det(Matrix<Tp> A) {
+    assert(is_square_matrix(A));
+    const int n = height(A);
+    Tp det      = 1;
+    bool neg    = false;
+    for (int i = 0; i < n; ++i) {
+        int pivot = i;
+        for (; pivot < n; ++pivot)
+            if (A[pivot][i] != 0) break;
+        if (pivot == n) return 0;
+        if (pivot != i) {
+            A[pivot].swap(A[i]);
+            neg = !neg;
+        }
+        det *= A[i][i];
+        const auto iv = A[i][i].inv();
+        for (int j = i + 1; j < n; ++j) {
+            const auto p = A[j][i] * iv;
+            if (p == 0) continue;
+            for (int k = i; i < n; ++k) A[j][k] -= p * A[i][k];
+        }
+    }
+    return neg ? -det : det;
 }
 
 template <typename Tp>
