@@ -17,11 +17,10 @@ data:
   bundledCode: "#line 1 \"test/matrix_det_mod_2.0.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/matrix_det_mod_2\"\
     \n\n#line 2 \"bitarray.hpp\"\n\n#include <cassert>\n#include <cstddef>\n#include\
     \ <string>\n#include <type_traits>\n#include <vector>\n\nnamespace detail {\n\n\
-    // |s| = 2^N\n// s[0..2^(N-1)) | s[2^(N-1)..2^N) << 2^(N-1)\ntemplate <int N>\n\
-    inline unsigned long long from_bit_string(const char *s) {\n    return from_bit_string<N\
-    \ / 2>(s + N / 2) << (N / 2) | from_bit_string<N / 2>(s);\n}\n\n// |s| = 2^0\n\
-    template <>\ninline unsigned long long from_bit_string<1>(const char *s) {\n \
-    \   return s[0] == '1';\n}\n\ntemplate <int N>\ninline void to_bit_string(unsigned\
+    template <int N>\ninline unsigned long long from_bit_string(const char *s) {\n\
+    \    return from_bit_string<N / 2>(s + N / 2) << (N / 2) | from_bit_string<N /\
+    \ 2>(s);\n}\n\ntemplate <>\ninline unsigned long long from_bit_string<1>(const\
+    \ char *s) {\n    return s[0] == '1';\n}\n\ntemplate <int N>\ninline void to_bit_string(unsigned\
     \ long long v, char *s) {\n    to_bit_string<N / 2>(v, s);\n    to_bit_string<N\
     \ / 2>(v >> (N / 2), s + N / 2);\n}\n\ntemplate <>\ninline void to_bit_string<1>(unsigned\
     \ long long v, char *s) {\n    s[0] = ((v & 1) + '0');\n}\n\n} // namespace detail\n\
@@ -125,7 +124,7 @@ data:
   isVerificationFile: true
   path: test/matrix_det_mod_2.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-03 19:21:07+08:00'
+  timestamp: '2024-06-03 19:26:10+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix_det_mod_2.0.test.cpp
