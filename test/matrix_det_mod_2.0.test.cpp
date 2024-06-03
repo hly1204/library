@@ -3,6 +3,7 @@
 #include "bitarray.hpp"
 #include <iostream>
 #include <string>
+#include <vector>
 
 using BitMatrix = std::vector<BitArray>;
 
@@ -25,7 +26,7 @@ int main() {
     std::cin.tie(nullptr);
     int n;
     std::cin >> n;
-    BitMatrix A(n, BitArray(n));
+    BitMatrix A(n);
     for (int i = 0; i < n; ++i) {
         std::string s;
         std::cin >> s;
