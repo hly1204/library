@@ -20,7 +20,7 @@ public:
     int N;
     int S;
 
-    SubproductTree(const std::vector<Tp> &X)
+    explicit SubproductTree(const std::vector<Tp> &X)
         : N(X.size()), S(N == 0 ? 2 : std::max(fft_len(N), 2)) {
         int LogS = 1;
         while ((1 << LogS) < S) ++LogS;
