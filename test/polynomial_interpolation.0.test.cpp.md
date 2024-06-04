@@ -280,19 +280,19 @@ data:
     \ (x^(S/2) - 1))\n    //        => T[..]    = DFT((x-X_(S/2))..(x-X_(N-1)) mod\
     \ (x^(S/2) - 1)) (* GENERAL CASE)\n    // LV=2.. => ..                       \
     \                                  (* GENERAL CASE)\n    std::vector<Tp> T;\n\
-    \    int N;\n    int S;\n\n    SubproductTree(const std::vector<Tp> &X)\n    \
-    \    : N(X.size()), S(N == 0 ? 2 : std::max(fft_len(N), 2)) {\n        int LogS\
-    \ = 1;\n        while ((1 << LogS) < S) ++LogS;\n        T.assign((LogS + 1) *\
-    \ S * 2, 1);\n        for (int i = 0; i < N; ++i) {\n            T[LogS * S *\
-    \ 2 + i * 2]     = 1 - X[i];\n            T[LogS * S * 2 + i * 2 + 1] = -1 - X[i];\n\
-    \        }\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2)\
-    \ {\n            for (int i = 0; i < (1 << lv); ++i) {\n                auto C\
-    \ = T.begin() + (lv * S * 2 + i * len * 2);       // current\n               \
-    \ auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n     \
-    \           for (int j = 0; j < len; ++j) C[j] = C[len + j] = L[j] * L[len + j];\n\
-    \                inv_fft_n(C + len, len);\n                if ((i + 1) * len <=\
-    \ N) C[len] -= 2;\n                if (lv) {\n                    Tp k       \
-    \  = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
+    \    int N;\n    int S;\n\n    explicit SubproductTree(const std::vector<Tp> &X)\n\
+    \        : N(X.size()), S(N == 0 ? 2 : std::max(fft_len(N), 2)) {\n        int\
+    \ LogS = 1;\n        while ((1 << LogS) < S) ++LogS;\n        T.assign((LogS +\
+    \ 1) * S * 2, 1);\n        for (int i = 0; i < N; ++i) {\n            T[LogS *\
+    \ S * 2 + i * 2]     = 1 - X[i];\n            T[LogS * S * 2 + i * 2 + 1] = -1\
+    \ - X[i];\n        }\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv,\
+    \ len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i) {\n           \
+    \     auto C = T.begin() + (lv * S * 2 + i * len * 2);       // current\n    \
+    \            auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
+    \                for (int j = 0; j < len; ++j) C[j] = C[len + j] = L[j] * L[len\
+    \ + j];\n                inv_fft_n(C + len, len);\n                if ((i + 1)\
+    \ * len <= N) C[len] -= 2;\n                if (lv) {\n                    Tp\
+    \ k         = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
     \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
     \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
     \     }\n        }\n    }\n\n    std::vector<Tp> product() const {\n        std::vector\
@@ -393,7 +393,7 @@ data:
   isVerificationFile: true
   path: test/polynomial_interpolation.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-02 16:57:07+08:00'
+  timestamp: '2024-06-04 19:03:34+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/polynomial_interpolation.0.test.cpp
