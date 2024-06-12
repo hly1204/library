@@ -25,7 +25,7 @@ inline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {
         return res;
     }
 
-    std::vector<Tp> H(std::max(degF + 1, n - 1)); // H[i]=c^i
+    std::vector<Tp> H(std::max(degF + 1, n - 1));
     Tp cc = H[0] = 1;
     for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1] * (cc *= c);
     std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))
