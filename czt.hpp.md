@@ -243,14 +243,14 @@ data:
     \ F(x) <- F(ax)\n        Tp aa = 1;\n        for (int i = 0; i <= degF; ++i) F[i]\
     \ *= aa, aa *= a;\n    }\n    if (c == 0) {\n        std::vector<Tp> res(n, F[0]);\n\
     \        for (int i = 1; i <= degF; ++i) res[0] += F[i];\n        return res;\n\
-    \    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1)); // H[i]=c^i\n    Tp\
-    \ cc = H[0] = 1;\n    for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1]\
-    \ * (cc *= c);\n    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n\
-    \    auto GG     = G.begin() + degF;\n    const Tp ic = c.inv();\n    cc = GG[0]\
-    \ = 1;\n    for (int i = 1; i < n; ++i) GG[i] = GG[i - 1] * cc, cc *= ic;\n  \
-    \  cc = 1;\n    for (int i = -1; i >= -degF; --i) GG[i] = GG[i + 1] * (cc *= ic);\n\
-    \n    // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i]\
-    \ *= H[i];\n\n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n\
+    \    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1));\n    Tp cc = H[0]\
+    \ = 1;\n    for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1] * (cc *= c);\n\
+    \    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n    auto GG  \
+    \   = G.begin() + degF;\n    const Tp ic = c.inv();\n    cc = GG[0] = 1;\n   \
+    \ for (int i = 1; i < n; ++i) GG[i] = GG[i - 1] * cc, cc *= ic;\n    cc = 1;\n\
+    \    for (int i = -1; i >= -degF; --i) GG[i] = GG[i + 1] * (cc *= ic);\n\n   \
+    \ // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i] *=\
+    \ H[i];\n\n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n\
     \    for (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n"
   code: "#pragma once\n\n#include \"middle_product.hpp\"\n#include \"poly_basic.hpp\"\
     \n#include <algorithm>\n#include <vector>\n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\n\
@@ -262,9 +262,9 @@ data:
     \ {\n        // F(x) <- F(ax)\n        Tp aa = 1;\n        for (int i = 0; i <=\
     \ degF; ++i) F[i] *= aa, aa *= a;\n    }\n    if (c == 0) {\n        std::vector<Tp>\
     \ res(n, F[0]);\n        for (int i = 1; i <= degF; ++i) res[0] += F[i];\n   \
-    \     return res;\n    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1));\
-    \ // H[i]=c^i\n    Tp cc = H[0] = 1;\n    for (int i = 1; i < (int)H.size(); ++i)\
-    \ H[i] = H[i - 1] * (cc *= c);\n    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n\
+    \     return res;\n    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1));\n\
+    \    Tp cc = H[0] = 1;\n    for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i\
+    \ - 1] * (cc *= c);\n    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n\
     \    auto GG     = G.begin() + degF;\n    const Tp ic = c.inv();\n    cc = GG[0]\
     \ = 1;\n    for (int i = 1; i < n; ++i) GG[i] = GG[i - 1] * cc, cc *= ic;\n  \
     \  cc = 1;\n    for (int i = -1; i >= -degF; --i) GG[i] = GG[i + 1] * (cc *= ic);\n\
@@ -281,7 +281,7 @@ data:
   isVerificationFile: false
   path: czt.hpp
   requiredBy: []
-  timestamp: '2024-06-02 11:00:30+08:00'
+  timestamp: '2024-06-12 22:34:53+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
