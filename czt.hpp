@@ -66,7 +66,7 @@ std::vector<Tp> iczt(const std::vector<Tp> &F, Tp q, Tp a = 1) {
     const auto Sn   = S[n - 1] * (1 - qq);
     const auto invS = batch_inv(S);
     qq              = 1;
-    // M[i]=qbinom(n,i)*binom(i,2)*(-1)^i
+    // M[i]=qbinom(n,i)*q^(binom(i,2))*(-1)^i
     for (int i = 1; i < n; ++i) M[n - i] = Sn * invS[i] * invS[n - i] * (qq *= -Q[i - 1]);
     M[0] = qq * -Q[n - 1]; // in case of q^n=1
     // D[i]=S[i]*S[n-i-1]*q^(binom(i,2)+i(n-i-1))*(-1)^i
