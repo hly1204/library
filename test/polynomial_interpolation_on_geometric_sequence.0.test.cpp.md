@@ -276,7 +276,7 @@ data:
     \ Q(n), S(n), M(n), D(n);\n    Tp qq = 1;\n    // Q[i]=q^i\n    for (int i = 0;\
     \ i < n; ++i) Q[i] = qq, qq *= q;\n    // S[i]=prod_(i=1..i)(1-q^i)\n    S[0]\
     \ = 1;\n    for (int i = 1; i < n; ++i) S[i] = S[i - 1] * (1 - Q[i]);\n    const\
-    \ auto invS = batch_inv(S);\n    const auto Sn   = S[n - 1] * (1 - qq);\n    qq\
+    \ auto Sn   = S[n - 1] * (1 - qq);\n    const auto invS = batch_inv(S);\n    qq\
     \              = 1;\n    // M[i]=qbinom(n,i)*binom(i,2)*(-1)^i\n    for (int i\
     \ = 1; i < n; ++i) M[n - i] = Sn * invS[i] * invS[n - i] * (qq *= -Q[i - 1]);\n\
     \    M[0] = qq * -Q[n - 1]; // in case of q^n=1\n    // D[i]=S[i]*S[n-i-1]*q^(binom(i,2)+i(n-i-1))*(-1)^i\n\
@@ -350,7 +350,7 @@ data:
   isVerificationFile: true
   path: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-13 22:07:01+08:00'
+  timestamp: '2024-06-13 22:19:07+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
