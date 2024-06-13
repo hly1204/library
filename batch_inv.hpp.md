@@ -2,6 +2,9 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: czt.hpp
+    title: czt.hpp
   - icon: ':warning:'
     path: poly_interpolation.hpp
     title: poly_interpolation.hpp
@@ -16,8 +19,14 @@ data:
     path: test/multipoint_evaluation.0.test.cpp
     title: test/multipoint_evaluation.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+    title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/polynomial_interpolation.0.test.cpp
     title: test/polynomial_interpolation.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+    title: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -38,12 +47,15 @@ data:
   path: batch_inv.hpp
   requiredBy:
   - poly_interpolation.hpp
+  - czt.hpp
   - subproduct_tree.hpp
   timestamp: '2024-06-02 16:57:07+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
   - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+  - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/polynomial_interpolation.0.test.cpp
 documentation_of: batch_inv.hpp
 layout: document

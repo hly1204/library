@@ -6,7 +6,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: batch_inv.hpp
       title: batch_inv.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: binomial.hpp
       title: binomial.hpp
     - icon: ':heavy_check_mark:'
@@ -21,16 +21,16 @@ data:
     - icon: ':heavy_check_mark:'
       path: conv_mod.hpp
       title: conv_mod.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: czt.hpp
       title: czt.hpp
     - icon: ':warning:'
       path: eulerian_number.hpp
       title: eulerian_number.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: fft.hpp
       title: fft.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: fps_basic.hpp
       title: fps_basic.hpp
     - icon: ':heavy_check_mark:'
@@ -42,16 +42,16 @@ data:
     - icon: ':heavy_check_mark:'
       path: mat_basic.hpp
       title: mat_basic.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
       path: modlong.hpp
       title: modlong.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: poly_basic.hpp
       title: poly_basic.hpp
     - icon: ':warning:'
@@ -60,7 +60,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: rng.hpp
       title: rng.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: semi_relaxed_conv.hpp
       title: semi_relaxed_conv.hpp
     - icon: ':heavy_check_mark:'
@@ -135,7 +135,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/polynomial_interpolation.0.test.cpp
       title: test/polynomial_interpolation.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
       title: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     - icon: ':heavy_check_mark:'

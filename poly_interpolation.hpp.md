@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: batch_inv.hpp
     title: batch_inv.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
   _extendedRequiredBy: []

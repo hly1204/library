@@ -1,22 +1,25 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
+    path: batch_inv.hpp
+    title: batch_inv.hpp
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: middle_product.hpp
     title: middle_product.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
@@ -24,30 +27,34 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     title: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric
-  bundledCode: "#line 2 \"czt.hpp\"\n\n#line 2 \"middle_product.hpp\"\n\n#line 2 \"\
-    fft.hpp\"\n\n#include <algorithm>\n#include <cassert>\n#include <iterator>\n#include\
-    \ <memory>\n#include <vector>\n\ntemplate <typename Tp>\nclass FftInfo {\n   \
-    \ static Tp least_quadratic_nonresidue() {\n        for (int i = 2;; ++i)\n  \
-    \          if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n    }\n\n\
-    \    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n    const\
-    \ Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n  \
-    \  mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
-    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
-    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
-    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
-    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
-    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
-    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
-    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+  bundledCode: "#line 2 \"czt.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#include <vector>\n\
+    \ntemplate <typename Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp>\
+    \ &a) {\n    if (a.empty()) return {};\n    const int n = a.size();\n    std::vector<Tp>\
+    \ b(n);\n    Tp v = 1;\n    for (int i = 0; i < n; ++i) b[i] = v, v *= a[i];\n\
+    \    v = v.inv();\n    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n\
+    \    return b;\n}\n#line 2 \"middle_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
+    \ <algorithm>\n#include <cassert>\n#include <iterator>\n#include <memory>\n#line\
+    \ 8 \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
+    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
+    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
+    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
+    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
+    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
+    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
+    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
+    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
+    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
+    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
+    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
     \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
     \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
     \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
@@ -237,7 +244,7 @@ data:
     \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
     \ < 0) return {Tp(0)};\n\n    auto Q = div(std::vector(A.rend() - (degA + 1),\
     \ A.rend()),\n                 std::vector(B.rend() - (degB + 1), B.rend()), degQ\
-    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 7 \"czt.hpp\"\
+    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 8 \"czt.hpp\"\
     \n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\n// Use        ij = binom(i,2)\
     \   + binom(-j,2) - binom(i-j,2)\n// instead of ij = binom(i+j,2) - binom(i,2)\
     \  - binom(j,2)\ntemplate <typename Tp>\ninline std::vector<Tp> czt(std::vector<Tp>\
@@ -276,26 +283,27 @@ data:
     \ res.resize(n);\n    if (a != 1) {\n        const auto ia = a.inv();\n      \
     \  Tp aa         = 1;\n        for (int i = 0; i < n; ++i) res[i] *= aa, aa *=\
     \ ia;\n    }\n    return res;\n}\n"
-  code: "#pragma once\n\n#include \"middle_product.hpp\"\n#include \"poly_basic.hpp\"\
-    \n#include <algorithm>\n#include <vector>\n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\n\
-    // Use        ij = binom(i,2)   + binom(-j,2) - binom(i-j,2)\n// instead of ij\
-    \ = binom(i+j,2) - binom(i,2)  - binom(j,2)\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {\n    if (n <= 0) return {};\n\
-    \    const int degF = degree(F);\n    if (degF < 0) return std::vector<Tp>(n);\n\
-    \    if (degF == 0 || a == 0) return std::vector<Tp>(n, F[0]);\n    if (a != 1)\
-    \ {\n        // F(x) <- F(ax)\n        Tp aa = 1;\n        for (int i = 0; i <=\
-    \ degF; ++i) F[i] *= aa, aa *= a;\n    }\n    if (c == 0) {\n        std::vector<Tp>\
-    \ res(n, F[0]);\n        for (int i = 1; i <= degF; ++i) res[0] += F[i];\n   \
-    \     return res;\n    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1));\n\
-    \    Tp cc = H[0] = 1;\n    for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i\
-    \ - 1] * (cc *= c);\n    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n\
-    \    auto GG     = G.begin() + degF;\n    const Tp ic = c.inv();\n    cc = GG[0]\
-    \ = 1;\n    for (int i = 1; i < n; ++i) GG[i] = GG[i - 1] * cc, cc *= ic;\n  \
-    \  cc = 1;\n    for (int i = -1; i >= -degF; --i) GG[i] = GG[i + 1] * (cc *= ic);\n\
-    \n    // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i]\
-    \ *= H[i];\n\n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n\
-    \    for (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n\n// returns\
-    \ f s.t. f(aq^i)=F[i]\n// aq^i != aq^j for all i != j\n// see: https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric\n\
+  code: "#pragma once\n\n#include \"batch_inv.hpp\"\n#include \"middle_product.hpp\"\
+    \n#include \"poly_basic.hpp\"\n#include <algorithm>\n#include <vector>\n\n// returns\
+    \ F(a),F(ac),F(ac^2),...,F(ac^(n-1))\n// Use        ij = binom(i,2)   + binom(-j,2)\
+    \ - binom(i-j,2)\n// instead of ij = binom(i+j,2) - binom(i,2)  - binom(j,2)\n\
+    template <typename Tp>\ninline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int\
+    \ n, Tp a = 1) {\n    if (n <= 0) return {};\n    const int degF = degree(F);\n\
+    \    if (degF < 0) return std::vector<Tp>(n);\n    if (degF == 0 || a == 0) return\
+    \ std::vector<Tp>(n, F[0]);\n    if (a != 1) {\n        // F(x) <- F(ax)\n   \
+    \     Tp aa = 1;\n        for (int i = 0; i <= degF; ++i) F[i] *= aa, aa *= a;\n\
+    \    }\n    if (c == 0) {\n        std::vector<Tp> res(n, F[0]);\n        for\
+    \ (int i = 1; i <= degF; ++i) res[0] += F[i];\n        return res;\n    }\n\n\
+    \    std::vector<Tp> H(std::max(degF + 1, n - 1));\n    Tp cc = H[0] = 1;\n  \
+    \  for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1] * (cc *= c);\n    std::vector<Tp>\
+    \ G(degF + n); // G[i+degF]=c^(-binom(i,2))\n    auto GG     = G.begin() + degF;\n\
+    \    const Tp ic = c.inv();\n    cc = GG[0] = 1;\n    for (int i = 1; i < n; ++i)\
+    \ GG[i] = GG[i - 1] * cc, cc *= ic;\n    cc = 1;\n    for (int i = -1; i >= -degF;\
+    \ --i) GG[i] = GG[i + 1] * (cc *= ic);\n\n    // F[i] <- c^(binom(i+1,2))*F[i]\n\
+    \    for (int i = 0; i <= degF; ++i) F[i] *= H[i];\n\n    F = middle_product(G,\
+    \ F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n    for (int i = 1; i < n; ++i) F[i]\
+    \ *= H[i - 1];\n    return F;\n}\n\n// returns f s.t. f(aq^i)=F[i]\n// aq^i !=\
+    \ aq^j for all i != j\n// see: https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric\n\
     // noshi91. \u6A19\u672C\u70B9\u304C\u7B49\u6BD4\u6570\u5217\u3092\u6210\u3059\
     \u5834\u5408\u306B\u88DC\u9593\u591A\u9805\u5F0F\u3092\u8A08\u7B97\u3059\u308B\
     \u30A2\u30EB\u30B4\u30EA\u30BA\u30E0.\ntemplate <typename Tp>\nstd::vector<Tp>\
@@ -316,6 +324,7 @@ data:
     \  Tp aa         = 1;\n        for (int i = 0; i < n; ++i) res[i] *= aa, aa *=\
     \ ia;\n    }\n    return res;\n}\n"
   dependsOn:
+  - batch_inv.hpp
   - middle_product.hpp
   - fft.hpp
   - poly_basic.hpp
@@ -325,8 +334,8 @@ data:
   isVerificationFile: false
   path: czt.hpp
   requiredBy: []
-  timestamp: '2024-06-13 22:04:48+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2024-06-13 22:07:01+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
