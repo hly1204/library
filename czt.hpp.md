@@ -1,22 +1,22 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: middle_product.hpp
     title: middle_product.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
@@ -24,11 +24,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+    title: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
-    links: []
+    links:
+    - https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric
   bundledCode: "#line 2 \"czt.hpp\"\n\n#line 2 \"middle_product.hpp\"\n\n#line 2 \"\
     fft.hpp\"\n\n#include <algorithm>\n#include <cassert>\n#include <iterator>\n#include\
     \ <memory>\n#include <vector>\n\ntemplate <typename Tp>\nclass FftInfo {\n   \
@@ -251,7 +255,27 @@ data:
     \    for (int i = -1; i >= -degF; --i) GG[i] = GG[i + 1] * (cc *= ic);\n\n   \
     \ // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i] *=\
     \ H[i];\n\n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n\
-    \    for (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n"
+    \    for (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n\n// returns\
+    \ f s.t. f(aq^i)=F[i]\n// aq^i != aq^j for all i != j\n// see: https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric\n\
+    // noshi91. \u6A19\u672C\u70B9\u304C\u7B49\u6BD4\u6570\u5217\u3092\u6210\u3059\
+    \u5834\u5408\u306B\u88DC\u9593\u591A\u9805\u5F0F\u3092\u8A08\u7B97\u3059\u308B\
+    \u30A2\u30EB\u30B4\u30EA\u30BA\u30E0.\ntemplate <typename Tp>\nstd::vector<Tp>\
+    \ iczt(const std::vector<Tp> &F, Tp q, Tp a = 1) {\n    if (F.empty()) return\
+    \ {};\n    if (a == 0) return {F[0]};\n    const int n = F.size();\n    std::vector<Tp>\
+    \ Q(n), S(n), M(n), D(n);\n    Tp qq = 1;\n    // Q[i]=q^i\n    for (int i = 0;\
+    \ i < n; ++i) Q[i] = qq, qq *= q;\n    // S[i]=prod_(i=1..i)(1-q^i)\n    S[0]\
+    \ = 1;\n    for (int i = 1; i < n; ++i) S[i] = S[i - 1] * (1 - Q[i]);\n    const\
+    \ auto invS = batch_inv(S);\n    const auto Sn   = S[n - 1] * (1 - qq);\n    qq\
+    \              = 1;\n    // M[i]=qbinom(n,i)*binom(i,2)*(-1)^i\n    for (int i\
+    \ = 1; i < n; ++i) M[n - i] = Sn * invS[i] * invS[n - i] * (qq *= -Q[i - 1]);\n\
+    \    M[0] = qq * -Q[n - 1]; // in case of q^n=1\n    // D[i]=S[i]*S[n-i-1]*q^(binom(i,2)+i(n-i-1))*(-1)^i\n\
+    \    D[0] = 1;\n    for (int i = 0; i < n - 1; ++i) D[i + 1] = D[i] * -Q[n - i\
+    \ - 2];\n    for (int i = 0; i < n; ++i) D[i] *= S[i] * S[n - i - 1];\n    //\
+    \ D[i] <- -F[i]/D[i]\n    D = batch_inv(D);\n    for (int i = 0; i < n; ++i) D[i]\
+    \ *= -F[i];\n    auto res = convolution(M, czt(D, q.inv(), n, q.inv()));\n   \
+    \ res.resize(n);\n    if (a != 1) {\n        const auto ia = a.inv();\n      \
+    \  Tp aa         = 1;\n        for (int i = 0; i < n; ++i) res[i] *= aa, aa *=\
+    \ ia;\n    }\n    return res;\n}\n"
   code: "#pragma once\n\n#include \"middle_product.hpp\"\n#include \"poly_basic.hpp\"\
     \n#include <algorithm>\n#include <vector>\n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\n\
     // Use        ij = binom(i,2)   + binom(-j,2) - binom(i-j,2)\n// instead of ij\
@@ -270,7 +294,27 @@ data:
     \  cc = 1;\n    for (int i = -1; i >= -degF; --i) GG[i] = GG[i + 1] * (cc *= ic);\n\
     \n    // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i]\
     \ *= H[i];\n\n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n\
-    \    for (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n"
+    \    for (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n\n// returns\
+    \ f s.t. f(aq^i)=F[i]\n// aq^i != aq^j for all i != j\n// see: https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric\n\
+    // noshi91. \u6A19\u672C\u70B9\u304C\u7B49\u6BD4\u6570\u5217\u3092\u6210\u3059\
+    \u5834\u5408\u306B\u88DC\u9593\u591A\u9805\u5F0F\u3092\u8A08\u7B97\u3059\u308B\
+    \u30A2\u30EB\u30B4\u30EA\u30BA\u30E0.\ntemplate <typename Tp>\nstd::vector<Tp>\
+    \ iczt(const std::vector<Tp> &F, Tp q, Tp a = 1) {\n    if (F.empty()) return\
+    \ {};\n    if (a == 0) return {F[0]};\n    const int n = F.size();\n    std::vector<Tp>\
+    \ Q(n), S(n), M(n), D(n);\n    Tp qq = 1;\n    // Q[i]=q^i\n    for (int i = 0;\
+    \ i < n; ++i) Q[i] = qq, qq *= q;\n    // S[i]=prod_(i=1..i)(1-q^i)\n    S[0]\
+    \ = 1;\n    for (int i = 1; i < n; ++i) S[i] = S[i - 1] * (1 - Q[i]);\n    const\
+    \ auto invS = batch_inv(S);\n    const auto Sn   = S[n - 1] * (1 - qq);\n    qq\
+    \              = 1;\n    // M[i]=qbinom(n,i)*binom(i,2)*(-1)^i\n    for (int i\
+    \ = 1; i < n; ++i) M[n - i] = Sn * invS[i] * invS[n - i] * (qq *= -Q[i - 1]);\n\
+    \    M[0] = qq * -Q[n - 1]; // in case of q^n=1\n    // D[i]=S[i]*S[n-i-1]*q^(binom(i,2)+i(n-i-1))*(-1)^i\n\
+    \    D[0] = 1;\n    for (int i = 0; i < n - 1; ++i) D[i + 1] = D[i] * -Q[n - i\
+    \ - 2];\n    for (int i = 0; i < n; ++i) D[i] *= S[i] * S[n - i - 1];\n    //\
+    \ D[i] <- -F[i]/D[i]\n    D = batch_inv(D);\n    for (int i = 0; i < n; ++i) D[i]\
+    \ *= -F[i];\n    auto res = convolution(M, czt(D, q.inv(), n, q.inv()));\n   \
+    \ res.resize(n);\n    if (a != 1) {\n        const auto ia = a.inv();\n      \
+    \  Tp aa         = 1;\n        for (int i = 0; i < n; ++i) res[i] *= aa, aa *=\
+    \ ia;\n    }\n    return res;\n}\n"
   dependsOn:
   - middle_product.hpp
   - fft.hpp
@@ -281,10 +325,11 @@ data:
   isVerificationFile: false
   path: czt.hpp
   requiredBy: []
-  timestamp: '2024-06-12 22:34:53+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2024-06-13 22:04:48+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
 documentation_of: czt.hpp
 layout: document
 redirect_from:

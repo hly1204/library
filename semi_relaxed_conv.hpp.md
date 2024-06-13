@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
     title: c_recursive.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: czt.hpp
     title: czt.hpp
   - icon: ':warning:'
     path: eulerian_number.hpp
     title: eulerian_number.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
@@ -23,7 +23,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
   - icon: ':heavy_check_mark:'
@@ -66,6 +66,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/polynomial_interpolation.0.test.cpp
     title: test/polynomial_interpolation.0.test.cpp
+  - icon: ':x:'
+    path: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+    title: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/polynomial_taylor_shift.0.test.cpp
     title: test/polynomial_taylor_shift.0.test.cpp
@@ -75,9 +78,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/sqrt_of_formal_power_series.0.test.cpp
     title: test/sqrt_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
@@ -241,13 +244,14 @@ data:
   - c_recursive.hpp
   - subproduct_tree.hpp
   timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
   - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - test/inv_of_formal_power_series.0.test.cpp
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - test/division_of_polynomials.0.test.cpp
   - test/sqrt_of_formal_power_series.0.test.cpp
