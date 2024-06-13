@@ -63,8 +63,8 @@ std::vector<Tp> iczt(const std::vector<Tp> &F, Tp q, Tp a = 1) {
     // S[i]=prod_(i=1..i)(1-q^i)
     S[0] = 1;
     for (int i = 1; i < n; ++i) S[i] = S[i - 1] * (1 - Q[i]);
-    const auto invS = batch_inv(S);
     const auto Sn   = S[n - 1] * (1 - qq);
+    const auto invS = batch_inv(S);
     qq              = 1;
     // M[i]=qbinom(n,i)*binom(i,2)*(-1)^i
     for (int i = 1; i < n; ++i) M[n - i] = Sn * invS[i] * invS[n - i] * (qq *= -Q[i - 1]);
