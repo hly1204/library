@@ -1,5 +1,6 @@
 #pragma once
 
+#include "batch_inv.hpp"
 #include "middle_product.hpp"
 #include "poly_basic.hpp"
 #include <algorithm>
