@@ -271,7 +271,7 @@ data:
     // noshi91. \u6A19\u672C\u70B9\u304C\u7B49\u6BD4\u6570\u5217\u3092\u6210\u3059\
     \u5834\u5408\u306B\u88DC\u9593\u591A\u9805\u5F0F\u3092\u8A08\u7B97\u3059\u308B\
     \u30A2\u30EB\u30B4\u30EA\u30BA\u30E0.\ntemplate <typename Tp>\nstd::vector<Tp>\
-    \ iczt(const std::vector<Tp> &F, Tp q, Tp a = 1) {\n    if (F.empty()) return\
+    \ inv_czt(const std::vector<Tp> &F, Tp q, Tp a = 1) {\n    if (F.empty()) return\
     \ {};\n    if (a == 0) return {F[0]};\n    const int n = F.size();\n    std::vector<Tp>\
     \ Q(n), S(n), M(n), D(n);\n    Tp qq = 1;\n    // Q[i]=q^i\n    for (int i = 0;\
     \ i < n; ++i) Q[i] = qq, qq *= q;\n    // S[i]=prod_(i=1..i)(1-q^i)\n    S[0]\
@@ -328,15 +328,15 @@ data:
     int main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    mint a, r;\n    std::cin\
     \ >> n >> a >> r;\n    std::vector<mint> F(n);\n    for (int i = 0; i < n; ++i)\
-    \ std::cin >> F[i];\n    const auto res = iczt(F, r, a);\n    for (int i = 0;\
-    \ i < n; ++i) std::cout << res[i] << ' ';\n    return 0;\n}\n"
+    \ std::cin >> F[i];\n    const auto res = inv_czt(F, r, a);\n    for (int i =\
+    \ 0; i < n; ++i) std::cout << res[i] << ' ';\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/polynomial_interpolation_on_geometric_sequence\"\
     \n\n#include \"czt.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n#include\
     \ <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    mint a, r;\n    std::cin\
     \ >> n >> a >> r;\n    std::vector<mint> F(n);\n    for (int i = 0; i < n; ++i)\
-    \ std::cin >> F[i];\n    const auto res = iczt(F, r, a);\n    for (int i = 0;\
-    \ i < n; ++i) std::cout << res[i] << ' ';\n    return 0;\n}\n"
+    \ std::cin >> F[i];\n    const auto res = inv_czt(F, r, a);\n    for (int i =\
+    \ 0; i < n; ++i) std::cout << res[i] << ' ';\n    return 0;\n}\n"
   dependsOn:
   - czt.hpp
   - batch_inv.hpp
@@ -350,7 +350,7 @@ data:
   isVerificationFile: true
   path: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-13 22:56:22+08:00'
+  timestamp: '2024-06-15 10:07:01+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
