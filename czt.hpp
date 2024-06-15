@@ -52,7 +52,7 @@ inline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {
 // see: https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric
 // noshi91. 標本点が等比数列を成す場合に補間多項式を計算するアルゴリズム.
 template <typename Tp>
-std::vector<Tp> iczt(const std::vector<Tp> &F, Tp q, Tp a = 1) {
+std::vector<Tp> inv_czt(const std::vector<Tp> &F, Tp q, Tp a = 1) {
     if (F.empty()) return {};
     if (a == 0) return {F[0]};
     const int n = F.size();

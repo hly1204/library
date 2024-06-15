@@ -14,7 +14,7 @@ int main() {
     std::cin >> n >> a >> r;
     std::vector<mint> F(n);
     for (int i = 0; i < n; ++i) std::cin >> F[i];
-    const auto res = iczt(F, r, a);
+    const auto res = inv_czt(F, r, a);
     for (int i = 0; i < n; ++i) std::cout << res[i] << ' ';
     return 0;
 }
