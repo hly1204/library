@@ -1,31 +1,31 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: batch_inv.hpp
     title: batch_inv.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: czt.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: middle_product.hpp
     title: middle_product.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
@@ -254,19 +254,19 @@ data:
     \   + binom(-j,2) - binom(i-j,2)\n// instead of ij = binom(i+j,2) - binom(i,2)\
     \  - binom(j,2)\ntemplate <typename Tp>\ninline std::vector<Tp> czt(std::vector<Tp>\
     \ F, Tp c, int n, Tp a = 1) {\n    if (n <= 0) return {};\n    const int degF\
-    \ = degree(F);\n    if (degF < 0) return std::vector<Tp>(n);\n    if (degF ==\
-    \ 0 || a == 0) return std::vector<Tp>(n, F[0]);\n    if (a != 1) {\n        //\
-    \ F(x) <- F(ax)\n        Tp aa = 1;\n        for (int i = 0; i <= degF; ++i) F[i]\
-    \ *= aa, aa *= a;\n    }\n    if (c == 0) {\n        std::vector<Tp> res(n, F[0]);\n\
-    \        for (int i = 1; i <= degF; ++i) res[0] += F[i];\n        return res;\n\
-    \    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1));\n    Tp cc = H[0]\
-    \ = 1;\n    for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1] * (cc *= c);\n\
-    \    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n    auto GG  \
-    \   = G.begin() + degF;\n    const Tp ic = c.inv();\n    cc = GG[0] = 1;\n   \
-    \ for (int i = 1; i < n; ++i) GG[i] = GG[i - 1] * cc, cc *= ic;\n    cc = 1;\n\
-    \    for (int i = -1; i >= -degF; --i) GG[i] = GG[i + 1] * (cc *= ic);\n\n   \
-    \ // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i] *=\
-    \ H[i];\n\n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n\
+    \ = degree(F);\n    shrink(F);\n    if (degF < 0) return std::vector<Tp>(n);\n\
+    \    if (degF == 0 || a == 0) return std::vector<Tp>(n, F[0]);\n    if (a != 1)\
+    \ {\n        // F(x) <- F(ax)\n        Tp aa = 1;\n        for (int i = 0; i <=\
+    \ degF; ++i) F[i] *= aa, aa *= a;\n    }\n    if (c == 0) {\n        std::vector<Tp>\
+    \ res(n, F[0]);\n        for (int i = 1; i <= degF; ++i) res[0] += F[i];\n   \
+    \     return res;\n    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1));\n\
+    \    Tp cc = H[0] = 1;\n    for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i\
+    \ - 1] * (cc *= c);\n    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n\
+    \    auto GG     = G.begin() + degF;\n    const Tp ic = c.inv();\n    cc = GG[0]\
+    \ = 1;\n    for (int i = 1; i < n; ++i) GG[i] = GG[i - 1] * cc, cc *= ic;\n  \
+    \  cc = 1;\n    for (int i = -1; i >= -degF; --i) GG[i] = GG[i + 1] * (cc *= ic);\n\
+    \n    // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i]\
+    \ *= H[i];\n\n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n\
     \    for (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n\n// returns\
     \ f s.t. f(aq^i)=F[i]\n// aq^i != aq^j for all i != j\n// see: https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric\n\
     // noshi91. \u6A19\u672C\u70B9\u304C\u7B49\u6BD4\u6570\u5217\u3092\u6210\u3059\
@@ -351,7 +351,7 @@ data:
   isVerificationFile: true
   path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-16 14:16:14+08:00'
+  timestamp: '2024-06-16 14:38:42+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp

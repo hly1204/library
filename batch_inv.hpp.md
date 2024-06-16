@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: czt.hpp
   - icon: ':warning:'
@@ -15,7 +15,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/convolution_mod.1.test.cpp
     title: test/convolution_mod.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -30,9 +30,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     title: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"batch_inv.hpp\"\n\n#include <cassert>\n#include <vector>\n\
@@ -55,7 +55,7 @@ data:
   - czt.hpp
   - subproduct_tree.hpp
   timestamp: '2024-06-16 14:16:14+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
   - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
