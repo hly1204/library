@@ -40,25 +40,26 @@ data:
     - https://judge.yosupo.jp/problem/multipoint_evaluation_on_geometric_sequence
   bundledCode: "#line 1 \"test/multipoint_evaluation_on_geometric_sequence.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/multipoint_evaluation_on_geometric_sequence\"\
-    \n\n#line 2 \"czt.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#include <vector>\n\n\
-    template <typename Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp>\
+    \n\n#line 2 \"czt.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#include <cassert>\n#include\
+    \ <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp>\
     \ &a) {\n    if (a.empty()) return {};\n    const int n = a.size();\n    std::vector<Tp>\
     \ b(n);\n    Tp v = 1;\n    for (int i = 0; i < n; ++i) b[i] = v, v *= a[i];\n\
-    \    v = v.inv();\n    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n\
-    \    return b;\n}\n#line 2 \"middle_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
-    \ <algorithm>\n#include <cassert>\n#include <iterator>\n#include <memory>\n#line\
-    \ 8 \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
-    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
-    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
-    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
-    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
-    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
-    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
-    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
-    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
-    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
-    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
-    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+    \    assert(v != 0);\n    v = v.inv();\n    for (int i = n - 1; i >= 0; --i) b[i]\
+    \ *= v, v *= a[i];\n    return b;\n}\n#line 2 \"middle_product.hpp\"\n\n#line\
+    \ 2 \"fft.hpp\"\n\n#include <algorithm>\n#line 5 \"fft.hpp\"\n#include <iterator>\n\
+    #include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo\
+    \ {\n    static Tp least_quadratic_nonresidue() {\n        for (int i = 2;; ++i)\n\
+    \            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n    }\n\n\
+    \    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n    const\
+    \ Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n  \
+    \  mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
+    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
+    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
+    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
+    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
+    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
+    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
+    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
     \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
     \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
     \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
@@ -350,7 +351,7 @@ data:
   isVerificationFile: true
   path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-15 10:07:01+08:00'
+  timestamp: '2024-06-16 14:16:14+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp

@@ -75,41 +75,41 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 2 \"subproduct_tree.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#include <vector>\n\
-    \ntemplate <typename Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp>\
-    \ &a) {\n    if (a.empty()) return {};\n    const int n = a.size();\n    std::vector<Tp>\
-    \ b(n);\n    Tp v = 1;\n    for (int i = 0; i < n; ++i) b[i] = v, v *= a[i];\n\
-    \    v = v.inv();\n    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n\
-    \    return b;\n}\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n#include <cassert>\n\
-    #include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename\
-    \ Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue() {\n       \
-    \ for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1)\
-    \ return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const\
-    \ Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp>\
-    \ root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
-    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
-    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
-    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
-    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
-    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
-    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
-    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
-    \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
-    \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
-    \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
-    \  const int j = 1 << i;\n                root_[j]    = zeta_.pow(1LL << (ordlog2_\
-    \ - i - 2));\n                for (int k = j + 1; k < j * 2; ++k) root_[k] = root_[k\
-    \ - j] * root_[j];\n            }\n        }\n        return root_;\n    }\n \
-    \   const std::vector<Tp> &inv_root(int n) const {\n        // [0, n)\n      \
-    \  assert((n & (n - 1)) == 0);\n        if (const int s = invroot_.size(); s <\
-    \ n) {\n            invroot_.resize(n);\n            for (int i = __builtin_ctz(s);\
-    \ (1 << i) < n; ++i) {\n                const int j = 1 << i;\n              \
-    \  invroot_[j] = invzeta_.pow(1LL << (ordlog2_ - i - 2));\n                for\
-    \ (int k = j + 1; k < j * 2; ++k) invroot_[k] = invroot_[k - j] * invroot_[j];\n\
-    \            }\n        }\n        return invroot_;\n    }\n};\n\ninline int fft_len(int\
-    \ n) {\n    --n;\n    n |= n >> 1, n |= n >> 2, n |= n >> 4, n |= n >> 8;\n  \
-    \  return (n | n >> 16) + 1;\n}\n\ntemplate <typename Iterator>\ninline void fft_n(Iterator\
-    \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
+    #line 2 \"subproduct_tree.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#include <cassert>\n\
+    #include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp> batch_inv(const\
+    \ std::vector<Tp> &a) {\n    if (a.empty()) return {};\n    const int n = a.size();\n\
+    \    std::vector<Tp> b(n);\n    Tp v = 1;\n    for (int i = 0; i < n; ++i) b[i]\
+    \ = v, v *= a[i];\n    assert(v != 0);\n    v = v.inv();\n    for (int i = n -\
+    \ 1; i >= 0; --i) b[i] *= v, v *= a[i];\n    return b;\n}\n#line 2 \"fft.hpp\"\
+    \n\n#include <algorithm>\n#line 5 \"fft.hpp\"\n#include <iterator>\n#include <memory>\n\
+    #line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp\
+    \ least_quadratic_nonresidue() {\n        for (int i = 2;; ++i)\n            if\
+    \ (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n    }\n\n    const int\
+    \ ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n    const Tp imag_;\n\
+    \    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n    mutable std::vector<Tp>\
+    \ invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n\
+    \          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >> ordlog2_)),\n\
+    \          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_ - 2))), invimag_(-imag_),\n\
+    \          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_} {}\n\npublic:\n    static\
+    \ const FftInfo &get() {\n        static FftInfo info;\n        return info;\n\
+    \    }\n\n    Tp imag() const { return imag_; }\n    Tp inv_imag() const { return\
+    \ invimag_; }\n    Tp zeta() const { return zeta_; }\n    Tp inv_zeta() const\
+    \ { return invzeta_; }\n    const std::vector<Tp> &root(int n) const {\n     \
+    \   // [0, n)\n        assert((n & (n - 1)) == 0);\n        if (const int s =\
+    \ root_.size(); s < n) {\n            root_.resize(n);\n            for (int i\
+    \ = __builtin_ctz(s); (1 << i) < n; ++i) {\n                const int j = 1 <<\
+    \ i;\n                root_[j]    = zeta_.pow(1LL << (ordlog2_ - i - 2));\n  \
+    \              for (int k = j + 1; k < j * 2; ++k) root_[k] = root_[k - j] * root_[j];\n\
+    \            }\n        }\n        return root_;\n    }\n    const std::vector<Tp>\
+    \ &inv_root(int n) const {\n        // [0, n)\n        assert((n & (n - 1)) ==\
+    \ 0);\n        if (const int s = invroot_.size(); s < n) {\n            invroot_.resize(n);\n\
+    \            for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n           \
+    \     const int j = 1 << i;\n                invroot_[j] = invzeta_.pow(1LL <<\
+    \ (ordlog2_ - i - 2));\n                for (int k = j + 1; k < j * 2; ++k) invroot_[k]\
+    \ = invroot_[k - j] * invroot_[j];\n            }\n        }\n        return invroot_;\n\
+    \    }\n};\n\ninline int fft_len(int n) {\n    --n;\n    n |= n >> 1, n |= n >>\
+    \ 2, n |= n >> 4, n |= n >> 8;\n    return (n | n >> 16) + 1;\n}\n\ntemplate <typename\
+    \ Iterator>\ninline void fft_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
     \    assert((n & (n - 1)) == 0);\n    for (int j = 0; j < n / 2; ++j) {\n    \
     \    auto u = a[j], v = a[j + n / 2];\n        a[j] = u + v, a[j + n / 2] = u\
     \ - v;\n    }\n    auto &&root = FftInfo<Tp>::get().root(n / 2);\n    for (int\
@@ -394,7 +394,7 @@ data:
   isVerificationFile: true
   path: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-04 19:03:34+08:00'
+  timestamp: '2024-06-16 14:16:14+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp

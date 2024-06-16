@@ -35,16 +35,18 @@ data:
   _verificationStatusIcon: ':question:'
   attributes:
     links: []
-  bundledCode: "#line 2 \"batch_inv.hpp\"\n\n#include <vector>\n\ntemplate <typename\
+  bundledCode: "#line 2 \"batch_inv.hpp\"\n\n#include <cassert>\n#include <vector>\n\
+    \ntemplate <typename Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp>\
+    \ &a) {\n    if (a.empty()) return {};\n    const int n = a.size();\n    std::vector<Tp>\
+    \ b(n);\n    Tp v = 1;\n    for (int i = 0; i < n; ++i) b[i] = v, v *= a[i];\n\
+    \    assert(v != 0);\n    v = v.inv();\n    for (int i = n - 1; i >= 0; --i) b[i]\
+    \ *= v, v *= a[i];\n    return b;\n}\n"
+  code: "#pragma once\n\n#include <cassert>\n#include <vector>\n\ntemplate <typename\
     \ Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp> &a) {\n    if (a.empty())\
     \ return {};\n    const int n = a.size();\n    std::vector<Tp> b(n);\n    Tp v\
-    \ = 1;\n    for (int i = 0; i < n; ++i) b[i] = v, v *= a[i];\n    v = v.inv();\n\
-    \    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n    return b;\n}\n"
-  code: "#pragma once\n\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ batch_inv(const std::vector<Tp> &a) {\n    if (a.empty()) return {};\n    const\
-    \ int n = a.size();\n    std::vector<Tp> b(n);\n    Tp v = 1;\n    for (int i\
-    \ = 0; i < n; ++i) b[i] = v, v *= a[i];\n    v = v.inv();\n    for (int i = n\
-    \ - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n    return b;\n}\n"
+    \ = 1;\n    for (int i = 0; i < n; ++i) b[i] = v, v *= a[i];\n    assert(v !=\
+    \ 0);\n    v = v.inv();\n    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *=\
+    \ a[i];\n    return b;\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: batch_inv.hpp
@@ -52,7 +54,7 @@ data:
   - poly_interpolation.hpp
   - czt.hpp
   - subproduct_tree.hpp
-  timestamp: '2024-06-02 16:57:07+08:00'
+  timestamp: '2024-06-16 14:16:14+08:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp

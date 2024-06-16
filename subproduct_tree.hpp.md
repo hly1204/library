@@ -37,17 +37,18 @@ data:
     links:
     - https://noshi91.hatenablog.com/entry/2023/05/01/022946
   bundledCode: "#line 2 \"subproduct_tree.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#include\
-    \ <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp>\
-    \ &a) {\n    if (a.empty()) return {};\n    const int n = a.size();\n    std::vector<Tp>\
-    \ b(n);\n    Tp v = 1;\n    for (int i = 0; i < n; ++i) b[i] = v, v *= a[i];\n\
-    \    v = v.inv();\n    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n\
-    \    return b;\n}\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n#include <cassert>\n\
-    #include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename\
-    \ Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue() {\n       \
-    \ for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1)\
-    \ return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const\
-    \ Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp>\
-    \ root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
+    \ <cassert>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ batch_inv(const std::vector<Tp> &a) {\n    if (a.empty()) return {};\n    const\
+    \ int n = a.size();\n    std::vector<Tp> b(n);\n    Tp v = 1;\n    for (int i\
+    \ = 0; i < n; ++i) b[i] = v, v *= a[i];\n    assert(v != 0);\n    v = v.inv();\n\
+    \    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n    return b;\n}\n\
+    #line 2 \"fft.hpp\"\n\n#include <algorithm>\n#line 5 \"fft.hpp\"\n#include <iterator>\n\
+    #include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo\
+    \ {\n    static Tp least_quadratic_nonresidue() {\n        for (int i = 2;; ++i)\n\
+    \            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n    }\n\n\
+    \    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n    const\
+    \ Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n  \
+    \  mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
     \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
     \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
     \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
@@ -434,7 +435,7 @@ data:
   isVerificationFile: false
   path: subproduct_tree.hpp
   requiredBy: []
-  timestamp: '2024-06-04 19:03:34+08:00'
+  timestamp: '2024-06-16 14:16:14+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation.0.test.cpp
