@@ -13,6 +13,7 @@ template <typename Tp>
 inline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {
     if (n <= 0) return {};
     const int degF = degree(F);
+    shrink(F);
     if (degF < 0) return std::vector<Tp>(n);
     if (degF == 0 || a == 0) return std::vector<Tp>(n, F[0]);
     if (a != 1) {
