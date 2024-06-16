@@ -1,38 +1,41 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: batch_inv.hpp
     title: batch_inv.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: middle_product.hpp
     title: middle_product.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
+  - icon: ':x:'
+    path: test/convolution_mod.1.test.cpp
+    title: test/convolution_mod.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     title: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links:
     - https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric
@@ -335,10 +338,11 @@ data:
   path: czt.hpp
   requiredBy: []
   timestamp: '2024-06-15 10:07:01+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - test/convolution_mod.1.test.cpp
 documentation_of: czt.hpp
 layout: document
 redirect_from:

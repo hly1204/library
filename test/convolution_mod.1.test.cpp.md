@@ -2,55 +2,53 @@
 data:
   _extendedDependsOn:
   - icon: ':question:'
+    path: batch_inv.hpp
+    title: batch_inv.hpp
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
+  - icon: ':question:'
+    path: czt.hpp
+    title: czt.hpp
   - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
-    path: fps_composition.hpp
-    title: fps_composition.hpp
+  - icon: ':question:'
+    path: middle_product.hpp
+    title: middle_product.hpp
   - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
+  - icon: ':question:'
+    path: poly_basic.hpp
+    title: poly_basic.hpp
   - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large
+    PROBLEM: https://judge.yosupo.jp/problem/convolution_mod
     links:
-    - https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large
-  bundledCode: "#line 1 \"test/compositional_inverse_of_formal_power_series_large.0.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large\"\
-    \n\n#line 2 \"fps_composition.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n\
-    #include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp>\
-    \ factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)}\
-    \ {}\n\n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
-    \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
-    \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
-    \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
-    \ factorial_[i] = factorial_[i - 1] * i;\n            invfactorial_.back() = factorial_.back().inv();\n\
-    \            for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i\
-    \ + 1] * (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int\
-    \ n) {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
-    \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
-    \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
-    \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
-    \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
-    \ invfactorial_[n]; }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include\
-    \ <cassert>\n#include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate\
-    \ <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue() {\n\
-    \        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2)\
-    \ == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
+    - https://judge.yosupo.jp/problem/convolution_mod
+  bundledCode: "#line 1 \"test/convolution_mod.1.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod\"\
+    \n\n#line 2 \"czt.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#include <vector>\n\n\
+    template <typename Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp>\
+    \ &a) {\n    if (a.empty()) return {};\n    const int n = a.size();\n    std::vector<Tp>\
+    \ b(n);\n    Tp v = 1;\n    for (int i = 0; i < n; ++i) b[i] = v, v *= a[i];\n\
+    \    v = v.inv();\n    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n\
+    \    return b;\n}\n#line 2 \"middle_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
+    \ <algorithm>\n#include <cassert>\n#include <iterator>\n#include <memory>\n#line\
+    \ 8 \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
+    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
+    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
     \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
     \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
     \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
@@ -115,12 +113,38 @@ data:
     \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"\
-    semi_relaxed_conv.hpp\"\n\n#line 5 \"semi_relaxed_conv.hpp\"\n#include <type_traits>\n\
-    #include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\n\n// returns coefficients\
-    \ generated by closure\n// closure: gen(index, current_product)\ntemplate <typename\
-    \ Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp, Closure,\
-    \ int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
+    \    return convolution_fft(a, b);\n}\n#line 6 \"middle_product.hpp\"\n\n// see:\n\
+    // [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann. The Middle Product\
+    \ Algorithm I.\n// [2]: Alin Bostan, Gr\xE9goire Lecerf, \xC9ric Schost. Tellegen's\
+    \ principle into practice.\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n// f: f_0\
+    \ + ... + f_(m-1)x^(m-1)\n// g: g_0 + ... + g_(n-1)x^(n-1)\n// m >= n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> middle_product(std::vector<Tp> f, std::vector<Tp>\
+    \ g) {\n    const int m = f.size();\n    const int n = g.size();\n    assert(m\
+    \ >= n);\n    const int len = fft_len(m);\n    f.resize(len);\n    g.resize(len);\n\
+    \    fft(f);\n    fft(g);\n    for (int i = 0; i < len; ++i) f[i] *= g[i];\n \
+    \   inv_fft(f);\n    f.erase(f.begin(), f.begin() + (n - 1));\n    f.resize(m\
+    \ - n + 1);\n    return f;\n}\n#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\
+    \n\n#line 5 \"binomial.hpp\"\n\ntemplate <typename Tp>\nclass Binomial {\n   \
+    \ std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
+    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
+    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
+    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
+    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
+    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
+    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
+    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
+    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
+    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
+    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
+    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
+    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
+    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
+    \ }\n};\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line\
+    \ 5 \"semi_relaxed_conv.hpp\"\n#include <type_traits>\n#include <utility>\n#line\
+    \ 8 \"semi_relaxed_conv.hpp\"\n\n// returns coefficients generated by closure\n\
+    // closure: gen(index, current_product)\ntemplate <typename Tp, typename Closure>\n\
+    inline std::enable_if_t<std::is_invocable_r_v<Tp, Closure, int, const std::vector<Tp>\
+    \ &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
     \ std::vector<Tp> &A, Closure gen, int n) {\n    enum { BaseCaseSize = 32 };\n\
     \    static_assert((BaseCaseSize & (BaseCaseSize - 1)) == 0);\n\n    static const\
     \ int Block[]     = {16, 16, 16, 16, 16};\n    static const int BlockSize[] =\
@@ -188,99 +212,92 @@ data:
     \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = log(a, n - o * e);\n    for (int\
     \ i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = exp(a, n - o * e);\n   \
     \ for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
-    \ o * e, 0);\n    return a;\n}\n#line 9 \"fps_composition.hpp\"\n\n// returns\
-    \ f(g) mod x^n\n// see: https://arxiv.org/abs/2404.05177\n// Yasunori Kinoshita,\
-    \ Baitian Li. Power Series Composition in Near-Linear Time.\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<Tp>\
-    \ &g, int n) {\n    if (n <= 0) return {};\n    if (g.empty()) {\n        std::vector<Tp>\
-    \ res(n);\n        if (!f.empty()) res[0] = f[0];\n        return res;\n    }\n\
-    \n    // [y^(-1)] (f(y) / (-g(x) + y)) mod x^n\n    // R[x]((y^(-1)))\n    auto\
-    \ rec = [g0 = g[0]](auto &&rec, const std::vector<Tp> &P, const std::vector<Tp>\
-    \ &Q, int d,\n                           int n) {\n        if (n == 1) {\n   \
-    \         std::vector<Tp> invQ(d + 1);\n            auto &&bin = Binomial<Tp>::get(d\
-    \ * 2);\n            Tp gg      = 1;\n            for (int i = 0; i <= d; ++i)\
-    \ invQ[d - i] = bin.binom(d + i - 1, d - 1) * gg, gg *= g0;\n            // invQ[i]\
-    \ = [y^(-2d + i)]Q\n            // P[0,d-1] * invQ[-2d,-d] => [0,d-1] * [0,d]\n\
-    \            // take [-d,-1] => take [d,2d-1]\n            auto PinvQ = convolution(P,\
-    \ invQ);\n            PinvQ.erase(PinvQ.begin(), PinvQ.begin() + d);\n       \
-    \     PinvQ.resize(d);\n            return PinvQ;\n        }\n\n        std::vector<Tp>\
-    \ dftQ(d * n * 4);\n        for (int i = 0; i < d; ++i)\n            for (int\
-    \ j = 0; j < n; ++j) dftQ[i * (n * 2) + j] = Q[i * n + j];\n        dftQ[d * n\
-    \ * 2] = 1;\n        fft(dftQ);\n        std::vector<Tp> V(d * n * 2);\n     \
-    \   for (int i = 0; i < d * n * 4; i += 2) V[i / 2] = dftQ[i] * dftQ[i + 1];\n\
-    \        inv_fft(V);\n        V[0] -= 1;\n\n        for (int i = 1; i < d * 2;\
-    \ ++i)\n            for (int j = 0; j < n / 2; ++j) V[i * (n / 2) + j] = V[i *\
-    \ n + j];\n        V.resize(d * n);\n\n        const auto T = rec(rec, P, V, d\
-    \ * 2, n / 2);\n\n        std::vector<Tp> dftT(d * n * 2);\n        for (int i\
-    \ = 0; i < d * 2; ++i)\n            for (int j = 0; j < n / 2; ++j) dftT[i * n\
-    \ + j] = T[i * (n / 2) + j];\n        fft(dftT);\n\n        std::vector<Tp> U(d\
-    \ * n * 4);\n        for (int i = 0; i < d * n * 4; i += 2) {\n            U[i]\
-    \     = dftT[i / 2] * dftQ[i + 1];\n            U[i + 1] = dftT[i / 2] * dftQ[i];\n\
-    \        }\n        inv_fft(U);\n\n        // [-2d,d-1] => [0,3d-1]\n        //\
-    \ take [-d,-1] => take [d,2d-1]\n        for (int i = 0; i < d; ++i)\n       \
-    \     for (int j = 0; j < n; ++j) U[i * n + j] = U[(i + d) * (n * 2) + j];\n \
-    \       U.resize(d * n);\n        return U;\n    };\n\n    int k = 1;\n    while\
-    \ (k < std::max(n, (int)f.size())) k *= 2;\n    std::vector<Tp> Q(k);\n    for\
-    \ (int i = 0; i < std::min(k, (int)g.size()); ++i) Q[i] = -g[i];\n\n    auto res\
-    \ = rec(rec, f, Q, 1, k);\n    res.resize(n);\n    return res;\n}\n\n// returns\
-    \ [x^k]gf^0, [x^k]gf, ..., [x^k]gf^(n-1)\n// see: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
-    // noshi91. FPS \u306E\u5408\u6210\u3068\u9006\u95A2\u6570\u3001\u51AA\u4E57\u306E\
-    \u4FC2\u6570\u5217\u6319 \u0398(n (log(n))^2)\ntemplate <typename Tp>\ninline\
-    \ std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const std::vector<Tp>\
-    \ &g,\n                                              int k, int n) {\n    if (k\
-    \ < 0 || n <= 0) return {};\n    if (f.empty()) {\n        std::vector<Tp> res(n);\n\
-    \        if (k < (int)g.size()) res[0] = g[k];\n        return res;\n    }\n\n\
-    \    // [x^k] (g(x) / (-f(x) + y))\n    // R[x]((y^(-1)))\n    std::vector<Tp>\
-    \ P(g), Q(k + 1);\n    P.resize(k + 1);\n    for (int i = 0; i < std::min(k +\
-    \ 1, (int)f.size()); ++i) Q[i] = -f[i];\n\n    int d = 1;\n    for (; k; d *=\
-    \ 2, k /= 2) {\n        const int len = fft_len((d * 2) * ((k + 1) * 2) - 1);\n\
-    \        std::vector<Tp> dftP(len), dftQ(len);\n        for (int i = 0; i < d;\
-    \ ++i)\n            for (int j = 0; j <= k; ++j) {\n                dftP[i * ((k\
-    \ + 1) * 2) + j] = P[i * (k + 1) + j];\n                dftQ[i * ((k + 1) * 2)\
-    \ + j] = Q[i * (k + 1) + j];\n            }\n        dftQ[d * (k + 1) * 2] = 1;\n\
-    \        fft(dftP);\n        fft(dftQ);\n\n        P.resize(len / 2);\n      \
-    \  Q.resize(len / 2);\n        if (k & 1) {\n            auto &&root = FftInfo<Tp>::get().inv_root(len\
-    \ / 2);\n            for (int i = 0; i < len; i += 2) {\n                P[i /\
-    \ 2] = (dftP[i] * dftQ[i + 1] - dftP[i + 1] * dftQ[i]).div_by_2() * root[i / 2];\n\
-    \                Q[i / 2] = dftQ[i] * dftQ[i + 1];\n            }\n        } else\
-    \ {\n            for (int i = 0; i < len; i += 2) {\n                P[i / 2]\
-    \ = (dftP[i] * dftQ[i + 1] + dftP[i + 1] * dftQ[i]).div_by_2();\n            \
-    \    Q[i / 2] = dftQ[i] * dftQ[i + 1];\n            }\n        }\n        inv_fft(P);\n\
-    \        inv_fft(Q);\n        if (d * (k + 1) * 4 >= len) Q[(d * (k + 1) * 4)\
-    \ % len] -= 1;\n\n        for (int i = 1; i < d * 2; ++i)\n            for (int\
-    \ j = 0; j <= k / 2; ++j) {\n                P[i * (k / 2 + 1) + j] = P[i * (k\
-    \ + 1) + j];\n                Q[i * (k / 2 + 1) + j] = Q[i * (k + 1) + j];\n \
-    \           }\n        P.resize(d * 2 * (k / 2 + 1));\n        Q.resize(d * 2\
-    \ * (k / 2 + 1));\n    }\n\n    std::vector<Tp> invQ(n + 1);\n    auto &&bin =\
-    \ Binomial<Tp>::get(d + n);\n    Tp ff      = 1;\n    for (int i = 0; i <= n;\
-    \ ++i) invQ[n - i] = bin.binom(d + i - 1, d - 1) * ff, ff *= f[0];\n    // invQ[i]\
-    \ = [y^(-2d + i)]Q\n    // P[0,d-1] * invQ[-(d+n),-d] => [0,d-1] * [0,n]\n   \
-    \ auto PinvQ = convolution(P, invQ);\n    // take [-n,-1] => take [d,d+n-1]\n\
-    \    PinvQ.erase(PinvQ.begin(), PinvQ.begin() + d);\n    PinvQ.resize(n);\n  \
-    \  // output => [-1,-n] reverse\n    // before I just reverse it and mistaken\
-    \ something.\n    std::reverse(PinvQ.begin(), PinvQ.end());\n    return PinvQ;\n\
-    }\n\n// returns g s.t. f(g) = g(f) = x mod x^n\ntemplate <typename Tp>\ninline\
-    \ std::vector<Tp> reversion(std::vector<Tp> f, int n) {\n    if (n <= 0 || f.size()\
-    \ < 2) return {};\n    assert(f[1] != 0);\n    const auto if1 = f[1].inv();\n\
-    \    if (n == 1) return {Tp()};\n    f.resize(n);\n    Tp ff = 1;\n    for (int\
-    \ i = 1; i < n; ++i) f[i] *= ff *= if1;\n    auto a     = enum_kth_term_of_power(f,\
-    \ {Tp(1)}, n - 1, n);\n    auto &&bin = Binomial<Tp>::get(n);\n    for (int i\
-    \ = 1; i < n; ++i) a[i] *= (n - 1) * bin.inv(i);\n    auto b = pow(std::vector(a.rbegin(),\
-    \ a.rend() - 1), Tp(1 - n).inv().val(), n - 1);\n    for (int i = 0; i < n - 1;\
-    \ ++i) b[i] *= if1;\n    b.insert(b.begin(), 0);\n    return b;\n}\n#line 2 \"\
-    modint.hpp\"\n\n#include <iostream>\n#line 5 \"modint.hpp\"\n\ntemplate <unsigned\
-    \ Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less\
-    \ than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
-    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
-    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
-    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
-    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
-    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
-    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
-    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
-    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
-    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
-    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ o * e, 0);\n    return a;\n}\n#line 10 \"poly_basic.hpp\"\n\ntemplate <typename\
+    \ Tp>\ninline int degree(const std::vector<Tp> &a) {\n    int n = (int)a.size()\
+    \ - 1;\n    while (n >= 0 && a[n] == 0) --n;\n    return n;\n}\n\ntemplate <typename\
+    \ Tp>\ninline void shrink(std::vector<Tp> &a) {\n    a.resize(degree(a) + 1);\n\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> taylor_shift(std::vector<Tp>\
+    \ a, Tp c) {\n    const int n = a.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n\
+    \    for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);\n    Tp cc = 1;\n \
+    \   std::vector<Tp> b(n);\n    for (int i = 0; i < n; ++i) {\n        b[i] = cc\
+    \ * bin.inv_factorial(i);\n        cc *= c;\n    }\n    std::reverse(a.begin(),\
+    \ a.end());\n    auto ab = convolution(a, b);\n    ab.resize(n);\n    std::reverse(ab.begin(),\
+    \ ab.end());\n    for (int i = 0; i < n; ++i) ab[i] *= bin.inv_factorial(i);\n\
+    \    return ab;\n}\n\n// returns (quotient, remainder)\ntemplate <typename Tp>\n\
+    inline std::pair<std::vector<Tp>, std::vector<Tp>> euclidean_div(const std::vector<Tp>\
+    \ &A,\n                                                                 const\
+    \ std::vector<Tp> &B) {\n    // returns a mod (x^n-1)\n    auto make_cyclic =\
+    \ [](const std::vector<Tp> &a, int n) {\n        assert((n & (n - 1)) == 0);\n\
+    \        std::vector<Tp> b(n);\n        for (int i = 0; i < (int)a.size(); ++i)\
+    \ b[i & (n - 1)] += a[i];\n        return b;\n    };\n\n    const int degA = degree(A);\n\
+    \    const int degB = degree(B);\n    assert(degB >= 0);\n    // A = Q*B + R =>\
+    \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
+    \ < 0) return {std::vector<Tp>{Tp(0)}, A};\n\n    auto Q = div(std::vector(A.rend()\
+    \ - (degA + 1), A.rend()),\n                 std::vector(B.rend() - (degB + 1),\
+    \ B.rend()), degQ + 1);\n    std::reverse(Q.begin(), Q.end());\n\n    const int\
+    \ len      = fft_len(std::max(degB, 1));\n    const auto cyclicA = make_cyclic(A,\
+    \ len);\n    auto cyclicB       = make_cyclic(B, len);\n    auto cyclicQ     \
+    \  = make_cyclic(Q, len);\n\n    fft(cyclicQ);\n    fft(cyclicB);\n    for (int\
+    \ i = 0; i < len; ++i) cyclicQ[i] *= cyclicB[i];\n    inv_fft(cyclicQ);\n\n  \
+    \  // R = A - QB mod (x^n-1) (n >= degB)\n    std::vector<Tp> R(degB);\n    for\
+    \ (int i = 0; i < degB; ++i) R[i] = cyclicA[i] - cyclicQ[i];\n    return {Q, R};\n\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> euclidean_div_quotient(const\
+    \ std::vector<Tp> &A, const std::vector<Tp> &B) {\n    const int degA = degree(A);\n\
+    \    const int degB = degree(B);\n    assert(degB >= 0);\n    // A = Q*B + R =>\
+    \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
+    \ < 0) return {Tp(0)};\n\n    auto Q = div(std::vector(A.rend() - (degA + 1),\
+    \ A.rend()),\n                 std::vector(B.rend() - (degB + 1), B.rend()), degQ\
+    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 8 \"czt.hpp\"\
+    \n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\n// Use        ij = binom(i,2)\
+    \   + binom(-j,2) - binom(i-j,2)\n// instead of ij = binom(i+j,2) - binom(i,2)\
+    \  - binom(j,2)\ntemplate <typename Tp>\ninline std::vector<Tp> czt(std::vector<Tp>\
+    \ F, Tp c, int n, Tp a = 1) {\n    if (n <= 0) return {};\n    const int degF\
+    \ = degree(F);\n    if (degF < 0) return std::vector<Tp>(n);\n    if (degF ==\
+    \ 0 || a == 0) return std::vector<Tp>(n, F[0]);\n    if (a != 1) {\n        //\
+    \ F(x) <- F(ax)\n        Tp aa = 1;\n        for (int i = 0; i <= degF; ++i) F[i]\
+    \ *= aa, aa *= a;\n    }\n    if (c == 0) {\n        std::vector<Tp> res(n, F[0]);\n\
+    \        for (int i = 1; i <= degF; ++i) res[0] += F[i];\n        return res;\n\
+    \    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1));\n    Tp cc = H[0]\
+    \ = 1;\n    for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1] * (cc *= c);\n\
+    \    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n    auto GG  \
+    \   = G.begin() + degF;\n    const Tp ic = c.inv();\n    cc = GG[0] = 1;\n   \
+    \ for (int i = 1; i < n; ++i) GG[i] = GG[i - 1] * cc, cc *= ic;\n    cc = 1;\n\
+    \    for (int i = -1; i >= -degF; --i) GG[i] = GG[i + 1] * (cc *= ic);\n\n   \
+    \ // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i] *=\
+    \ H[i];\n\n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n\
+    \    for (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n\n// returns\
+    \ f s.t. f(aq^i)=F[i]\n// aq^i != aq^j for all i != j\n// see: https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric\n\
+    // noshi91. \u6A19\u672C\u70B9\u304C\u7B49\u6BD4\u6570\u5217\u3092\u6210\u3059\
+    \u5834\u5408\u306B\u88DC\u9593\u591A\u9805\u5F0F\u3092\u8A08\u7B97\u3059\u308B\
+    \u30A2\u30EB\u30B4\u30EA\u30BA\u30E0.\ntemplate <typename Tp>\nstd::vector<Tp>\
+    \ inv_czt(const std::vector<Tp> &F, Tp q, Tp a = 1) {\n    if (F.empty()) return\
+    \ {};\n    if (a == 0) return {F[0]};\n    const int n = F.size();\n    std::vector<Tp>\
+    \ Q(n), S(n), M(n), D(n);\n    Tp qq = 1;\n    // Q[i]=q^i\n    for (int i = 0;\
+    \ i < n; ++i) Q[i] = qq, qq *= q;\n    // S[i]=prod_(i=1..i)(1-q^i)\n    S[0]\
+    \ = 1;\n    for (int i = 1; i < n; ++i) S[i] = S[i - 1] * (1 - Q[i]);\n    const\
+    \ auto Sn   = S[n - 1] * (1 - qq);\n    const auto invS = batch_inv(S);\n    qq\
+    \              = 1;\n    // M[i]=qbinom(n,i)*q^(binom(i,2))*(-1)^i\n    for (int\
+    \ i = 1; i < n; ++i) M[n - i] = Sn * invS[i] * invS[n - i] * (qq *= -Q[i - 1]);\n\
+    \    M[0] = qq * -Q[n - 1]; // in case of q^n=1\n    // D[i]=S[i]*S[n-i-1]*q^(binom(i,2)+i(n-i-1))*(-1)^i\n\
+    \    D[0] = 1;\n    for (int i = 0; i < n - 1; ++i) D[i + 1] = D[i] * -Q[n - i\
+    \ - 2];\n    for (int i = 0; i < n; ++i) D[i] *= S[i] * S[n - i - 1];\n    //\
+    \ D[i] <- -F[i]/D[i]\n    D = batch_inv(D);\n    for (int i = 0; i < n; ++i) D[i]\
+    \ *= -F[i];\n    auto res = convolution(M, czt(D, q.inv(), n, q.inv()));\n   \
+    \ res.resize(n);\n    if (a != 1) {\n        const auto ia = a.inv();\n      \
+    \  Tp aa         = 1;\n        for (int i = 0; i < n; ++i) res[i] *= aa, aa *=\
+    \ ia;\n    }\n    return res;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
+    #line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
+    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
+    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
+    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
+    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
+    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
+    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
+    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
+    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
+    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
+    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
+    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
     \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
     \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
     \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
@@ -306,36 +323,43 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 7 \"test/compositional_inverse_of_formal_power_series_large.0.test.cpp\"\
-    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
-    \ f(n);\n    for (int i = 0; i < n; ++i) std::cin >> f[i];\n    const auto g =\
-    \ reversion(f, n);\n    for (int i = 0; i < n; ++i) std::cout << g[i] << ' ';\n\
+    #line 7 \"test/convolution_mod.1.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
+    \    std::cin >> n >> m;\n    std::vector<mint> a(n), b(m);\n    for (int i =\
+    \ 0; i < n; ++i) std::cin >> a[i];\n    for (int i = 0; i < m; ++i) std::cin >>\
+    \ b[i];\n    a = czt(a, mint(3), n + m - 1);\n    b = czt(b, mint(3), n + m -\
+    \ 1);\n    for (int i = 0; i < n + m - 1; ++i) a[i] *= b[i];\n    a = inv_czt(a,\
+    \ mint(3));\n    for (int i = 0; i < n + m - 1; ++i) std::cout << a[i] << ' ';\n\
     \    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large\"\
-    \n\n#include \"fps_composition.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\
-    #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
-    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n  \
-    \  std::cin >> n;\n    std::vector<mint> f(n);\n    for (int i = 0; i < n; ++i)\
-    \ std::cin >> f[i];\n    const auto g = reversion(f, n);\n    for (int i = 0;\
-    \ i < n; ++i) std::cout << g[i] << ' ';\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod\"\n\n#include\
+    \ \"czt.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n#include <vector>\n\
+    \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
+    \    std::vector<mint> a(n), b(m);\n    for (int i = 0; i < n; ++i) std::cin >>\
+    \ a[i];\n    for (int i = 0; i < m; ++i) std::cin >> b[i];\n    a = czt(a, mint(3),\
+    \ n + m - 1);\n    b = czt(b, mint(3), n + m - 1);\n    for (int i = 0; i < n\
+    \ + m - 1; ++i) a[i] *= b[i];\n    a = inv_czt(a, mint(3));\n    for (int i =\
+    \ 0; i < n + m - 1; ++i) std::cout << a[i] << ' ';\n    return 0;\n}\n"
   dependsOn:
-  - fps_composition.hpp
-  - binomial.hpp
+  - czt.hpp
+  - batch_inv.hpp
+  - middle_product.hpp
   - fft.hpp
+  - poly_basic.hpp
+  - binomial.hpp
   - fps_basic.hpp
   - semi_relaxed_conv.hpp
   - modint.hpp
   isVerificationFile: true
-  path: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  path: test/convolution_mod.1.test.cpp
   requiredBy: []
-  timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-06-16 14:09:33+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
+documentation_of: test/convolution_mod.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/compositional_inverse_of_formal_power_series_large.0.test.cpp
-- /verify/test/compositional_inverse_of_formal_power_series_large.0.test.cpp.html
-title: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
+- /verify/test/convolution_mod.1.test.cpp
+- /verify/test/convolution_mod.1.test.cpp.html
+title: test/convolution_mod.1.test.cpp
 ---
