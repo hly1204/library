@@ -270,7 +270,7 @@ data:
     \ f s.t. f(aq^i)=F[i]\n// aq^i != aq^j for all i != j\n// see: https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric\n\
     // noshi91. \u6A19\u672C\u70B9\u304C\u7B49\u6BD4\u6570\u5217\u3092\u6210\u3059\
     \u5834\u5408\u306B\u88DC\u9593\u591A\u9805\u5F0F\u3092\u8A08\u7B97\u3059\u308B\
-    \u30A2\u30EB\u30B4\u30EA\u30BA\u30E0.\ntemplate <typename Tp>\nstd::vector<Tp>\
+    \u30A2\u30EB\u30B4\u30EA\u30BA\u30E0.\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ inv_czt(const std::vector<Tp> &F, Tp q, Tp a = 1) {\n    if (F.empty()) return\
     \ {};\n    if (a == 0) return {F[0]};\n    const int n = F.size();\n    std::vector<Tp>\
     \ Q(n), S(n), M(n), D(n);\n    Tp qq = 1;\n    // Q[i]=q^i\n    for (int i = 0;\
@@ -310,7 +310,7 @@ data:
     \ f s.t. f(aq^i)=F[i]\n// aq^i != aq^j for all i != j\n// see: https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric\n\
     // noshi91. \u6A19\u672C\u70B9\u304C\u7B49\u6BD4\u6570\u5217\u3092\u6210\u3059\
     \u5834\u5408\u306B\u88DC\u9593\u591A\u9805\u5F0F\u3092\u8A08\u7B97\u3059\u308B\
-    \u30A2\u30EB\u30B4\u30EA\u30BA\u30E0.\ntemplate <typename Tp>\nstd::vector<Tp>\
+    \u30A2\u30EB\u30B4\u30EA\u30BA\u30E0.\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ inv_czt(const std::vector<Tp> &F, Tp q, Tp a = 1) {\n    if (F.empty()) return\
     \ {};\n    if (a == 0) return {F[0]};\n    const int n = F.size();\n    std::vector<Tp>\
     \ Q(n), S(n), M(n), D(n);\n    Tp qq = 1;\n    // Q[i]=q^i\n    for (int i = 0;\
@@ -338,7 +338,7 @@ data:
   isVerificationFile: false
   path: czt.hpp
   requiredBy: []
-  timestamp: '2024-06-16 14:38:42+08:00'
+  timestamp: '2024-06-17 18:41:17+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
