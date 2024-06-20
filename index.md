@@ -70,6 +70,9 @@ data:
       path: subproduct_tree.hpp
       title: subproduct_tree.hpp
     - icon: ':heavy_check_mark:'
+      path: treap_node_base.hpp
+      title: treap_node_base.hpp
+    - icon: ':heavy_check_mark:'
       path: xgcd.hpp
       title: xgcd.hpp
   verificationCategories:
@@ -147,6 +150,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/pow_of_formal_power_series.0.test.cpp
       title: test/pow_of_formal_power_series.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/range_reverse_range_sum.0.test.cpp
+      title: test/range_reverse_range_sum.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/shift_of_sampling_points_of_polynomial.0.test.cpp
       title: test/shift_of_sampling_points_of_polynomial.0.test.cpp
