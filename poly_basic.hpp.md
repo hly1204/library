@@ -54,6 +54,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/polynomial_taylor_shift.0.test.cpp
     title: test/polynomial_taylor_shift.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/shift_of_sampling_points_of_polynomial.0.test.cpp
+    title: test/shift_of_sampling_points_of_polynomial.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -304,15 +307,16 @@ data:
   timestamp: '2024-06-02 11:00:30+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/multipoint_evaluation.0.test.cpp
-  - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+  - test/polynomial_interpolation.0.test.cpp
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - test/division_of_polynomials.0.test.cpp
-  - test/polynomial_interpolation.0.test.cpp
-  - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - test/polynomial_taylor_shift.0.test.cpp
+  - test/division_of_polynomials.0.test.cpp
+  - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/shift_of_sampling_points_of_polynomial.0.test.cpp
+  - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+  - test/multipoint_evaluation.0.test.cpp
+  - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - test/convolution_mod.1.test.cpp
 documentation_of: poly_basic.hpp
 layout: document

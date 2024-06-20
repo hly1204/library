@@ -57,8 +57,8 @@ data:
   isVerificationFile: false
   path: rng.hpp
   requiredBy:
-  - fps_sqrt.hpp
   - sqrt_mod.hpp
+  - fps_sqrt.hpp
   timestamp: '2024-05-15 00:00:04+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

@@ -148,6 +148,9 @@ data:
       path: test/pow_of_formal_power_series.0.test.cpp
       title: test/pow_of_formal_power_series.0.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/shift_of_sampling_points_of_polynomial.0.test.cpp
+      title: test/shift_of_sampling_points_of_polynomial.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/sqrt_of_formal_power_series.0.test.cpp
       title: test/sqrt_of_formal_power_series.0.test.cpp
 layout: toppage

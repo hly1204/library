@@ -5,11 +5,17 @@ data:
     path: binomial.hpp
     title: binomial.hpp
   - icon: ':heavy_check_mark:'
+    path: c_recursive.hpp
+    title: c_recursive.hpp
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
   - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
+  - icon: ':heavy_check_mark:'
+    path: modint.hpp
+    title: modint.hpp
   - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
@@ -17,23 +23,18 @@ data:
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
-  _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-    title: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-    title: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/shift_of_sampling_points_of_polynomial.0.test.cpp
-    title: test/shift_of_sampling_points_of_polynomial.0.test.cpp
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
-  _pathExtension: hpp
+  _pathExtension: cpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
+    '*NOT_SPECIAL_COMMENTS*': ''
+    PROBLEM: https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
     links:
-    - https://arxiv.org/abs/2008.08822
-  bundledCode: "#line 2 \"c_recursive.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
+    - https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
+  bundledCode: "#line 1 \"test/shift_of_sampling_points_of_polynomial.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial\"\
+    \n\n#line 2 \"c_recursive.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
     #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
     \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
     \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
@@ -315,118 +316,81 @@ data:
     \ &P, const std::vector<Tp> &Q,\n                                            long\
     \ long L, long long R) {\n    auto [q, r] = euclidean_div(P, Q);\n    auto res\
     \    = slice_coeff_rationalA(r, Q, L, R);\n    for (long long i = L; i < std::min<long\
-    \ long>(R, q.size()); ++i) res[i - L] += q[i];\n    return res;\n}\n"
-  code: "#pragma once\n\n#include \"fft.hpp\"\n#include \"fps_basic.hpp\"\n#include\
-    \ \"poly_basic.hpp\"\n#include <algorithm>\n#include <cassert>\n#include <vector>\n\
-    \n// returns [x^k]P/Q\n// see: https://arxiv.org/abs/2008.08822\n// Alin Bostan,\
-    \ Ryuhei Mori.\n// A Simple and Fast Algorithm for Computing the N-th Term of\
-    \ a Linearly Recurrent Sequence\ntemplate <typename Tp>\ninline Tp div_at(const\
-    \ std::vector<Tp> &P, std::vector<Tp> Q, long long k) {\n    auto iszero     \
-    \  = [](const std::vector<Tp> &a) { return order(a) == -1; };\n    auto fft_doubling\
-    \ = [](std::vector<Tp> &a) {\n        const int n = a.size();\n        a.resize(n\
-    \ * 2);\n        std::copy_n(a.begin(), n, a.begin() + n);\n        inv_fft_n(a.begin()\
-    \ + n, n);\n        Tp k         = 1;\n        const auto t = FftInfo<Tp>::get().root(n).at(n\
-    \ / 2);\n        for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n        fft_n(a.begin()\
-    \ + n, n);\n    };\n\n    assert(!iszero(Q));\n    if (P.empty()) return 0;\n\
-    \    if (const int ordQ = order(Q)) {\n        Q.erase(Q.begin(), Q.begin() +\
-    \ ordQ);\n        k += ordQ;\n    }\n\n    assert(k >= 0);\n    if (k < (int)P.size())\
-    \ return div(P, Q, k + 1).at(k);\n\n    const int len = fft_len(std::max(P.size()\
-    \ + Q.size(), Q.size() * 2) - 1);\n    std::vector<Tp> dftP(P), dftQ(Q);\n   \
-    \ dftP.resize(len);\n    dftQ.resize(len);\n    fft(dftP);\n    fft(dftQ);\n\n\
-    \    for (;;) {\n        if (k & 1) {\n            auto &&root = FftInfo<Tp>::get().inv_root(len\
-    \ / 2);\n            for (int i = 0; i < len; i += 2)\n                dftP[i\
-    \ / 2] =\n                    (dftP[i] * dftQ[i + 1] - dftP[i + 1] * dftQ[i]).div_by_2()\
-    \ * root[i / 2];\n        } else {\n            for (int i = 0; i < len; i +=\
-    \ 2)\n                dftP[i / 2] = (dftP[i] * dftQ[i + 1] + dftP[i + 1] * dftQ[i]).div_by_2();\n\
-    \        }\n        dftP.resize(len / 2);\n        for (int i = 0; i < len; i\
-    \ += 2) dftQ[i / 2] = dftQ[i] * dftQ[i + 1];\n        dftQ.resize(len / 2);\n\n\
-    \        k /= 2;\n        if (k < (int)P.size()) {\n            inv_fft(dftP);\n\
-    \            inv_fft(dftQ);\n            return div(dftP, dftQ, k + 1).at(k);\n\
-    \        }\n\n        fft_doubling(dftP);\n        fft_doubling(dftQ);\n    }\n\
-    }\n\n// returns [x^[L,R)]P/Q\n// P: polynomial\n// Q: non-zero polynomial\n//\
-    \ deg(P) < deg(Q)\ntemplate <typename Tp>\ninline std::vector<Tp> slice_coeff_rationalA(std::vector<Tp>\
-    \ P, std::vector<Tp> Q, long long L,\n                                       \
-    \      long long R) {\n    if (R <= L) return {};\n\n    if (const int ordQ =\
-    \ order(Q)) {\n        Q.erase(Q.begin(), Q.begin() + ordQ);\n        L += ordQ;\n\
-    \        R += ordQ;\n    }\n\n    assert(L >= 0);\n    if (L == 0) return div(P,\
-    \ Q, R - L);\n\n    const int degP = degree(P);\n    const int degQ = degree(Q);\n\
-    \    if (degP < 0) std::vector<Tp> res(R - L);\n    assert(degP < degQ);\n   \
-    \ if (degQ == 0) {\n        std::vector<Tp> res(R - L);\n        const auto iQ0\
-    \ = Q[0].inv();\n        for (long long i = L; i < R && i < (long long)P.size();\
-    \ ++i) res[i - L] = P[i] * iQ0;\n        return res;\n    }\n\n    auto fft_doubling\
-    \ = [](std::vector<Tp> &a) {\n        const int n = a.size();\n        a.resize(n\
-    \ * 2);\n        std::copy_n(a.begin(), n, a.begin() + n);\n        inv_fft_n(a.begin()\
-    \ + n, n);\n        Tp k         = 1;\n        const auto t = FftInfo<Tp>::get().root(n).at(n\
-    \ / 2);\n        for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n        fft_n(a.begin()\
-    \ + n, n);\n    };\n\n    auto fft_doubling2 = [](std::vector<Tp> &a) {\n    \
-    \    const int n = a.size();\n        a.resize(n * 2);\n        std::copy_n(a.begin(),\
-    \ n, a.begin() + n);\n        inv_fft_n(a.begin() + n, n);\n        const std::vector\
-    \ b(a.begin() + n, a.end());\n        Tp k         = 1;\n        const auto t\
-    \ = FftInfo<Tp>::get().root(n).at(n / 2);\n        for (int i = 0; i < n; ++i)\
-    \ a[i + n] *= k, k *= t;\n        fft_n(a.begin() + n, n);\n        return b;\n\
-    \    };\n\n    auto fft_high = [](std::vector<Tp> &a) {\n        const int n =\
-    \ a.size();\n        inv_fft_n(a.begin() + n / 2, n / 2);\n        Tp k      \
-    \   = 1;\n        const auto t = FftInfo<Tp>::get().inv_root(n / 2).at(n / 4);\n\
-    \        for (int i = 0; i < n / 2; ++i) a[i + n / 2] *= k, k *= t;\n        fft_n(a.begin()\
-    \ + n / 2, n / 2);\n        for (int i = 0; i < n / 2; ++i) a[i] = (a[i] - a[i\
-    \ + n / 2]).div_by_2();\n        a.resize(n / 2);\n    };\n\n    const int len\
-    \ = fft_len(degQ * 2 + 1);\n\n    // returns DFT([x^[L,L+len/2)]1/Q)\n    // len/2\
-    \ > degQ, len/2 is even\n    auto rec = [len, &fft_doubling, &fft_high](auto &&rec,\
-    \ std::vector<Tp> dftQ, long long L) {\n        if (L <= 0) {\n            inv_fft(dftQ);\n\
-    \            auto invQ = inv(dftQ, L + len / 2);\n            invQ.insert(invQ.begin(),\
-    \ -L, 0);\n            fft(invQ);\n            return invQ;\n        }\n\n   \
-    \     if ((int)dftQ.size() < len) fft_doubling(dftQ);\n        std::vector<Tp>\
-    \ dftV(len / 2);\n        for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i]\
-    \ * dftQ[i + 1];\n        const auto dftT = rec(rec, dftV, (L - len / 2 + (L &\
-    \ 1)) / 2);\n\n        std::vector<Tp> dftU(len);\n        if (L & 1) {\n    \
-    \        auto &&root = FftInfo<Tp>::get().root(len / 2);\n            for (int\
-    \ i = 0; i < len; i += 2) {\n                dftU[i]     = dftT[i / 2] * dftQ[i\
-    \ + 1] * root[i / 2];\n                dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i\
-    \ / 2];\n            }\n        } else {\n            for (int i = 0; i < len;\
-    \ i += 2) {\n                dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n      \
-    \          dftU[i + 1] = dftT[i / 2] * dftQ[i];\n            }\n        }\n\n\
-    \        fft_high(dftU);\n        return dftU;\n    };\n\n    auto dftQ = Q;\n\
-    \    dftQ.resize(len);\n    fft(dftQ);\n    auto dftinvQ    = rec(rec, dftQ, L\
-    \ - degP);\n    const auto invQ = fft_doubling2(dftinvQ); // [x^[L-degP,L-degP+(len/2))]1/Q\n\
-    \    std::vector<Tp> U(len);\n    for (int i = 0; i < len; ++i) U[i] = dftQ[i]\
-    \ * dftinvQ[i];\n    inv_fft(U);\n    U.resize(degQ);\n    // U/Q = invQ[L-degP..]\n\
-    \    std::vector xinvQ(invQ.begin(), invQ.begin() + degP);\n    const int convlen\
-    \ = fft_len(degP + degQ);\n    xinvQ.resize(convlen);\n    fft(xinvQ);\n    for\
-    \ (int i = 0; i < convlen; ++i) xinvQ[i] *= dftQ[i];\n    inv_fft(xinvQ);\n  \
-    \  for (int i = degP; i < degQ; ++i) xinvQ[i] = U[i] - xinvQ[i];\n    for (int\
-    \ i = degQ; i < degP + degQ; ++i) xinvQ[i] = -xinvQ[i];\n    xinvQ.erase(xinvQ.begin(),\
-    \ xinvQ.begin() + degP);\n    xinvQ = div(xinvQ, Q, degQ); // [x^[L,L+degQ)]1/Q\n\
-    \    xinvQ.insert(xinvQ.begin(), invQ.begin(), invQ.begin() + degP);\n\n    xinvQ.resize(convlen);\n\
-    \    P.resize(convlen);\n    fft(xinvQ);\n    fft(P);\n    for (int i = 0; i <\
-    \ convlen; ++i) P[i] *= xinvQ[i];\n    inv_fft(P);\n    P.erase(P.begin(), P.begin()\
-    \ + degP);\n    P.resize(degQ);\n\n    const int aconvlen = fft_len(degQ * 2);\n\
-    \    P.resize(aconvlen);\n    fft(P);\n    for (int i = 0; i < aconvlen; ++i)\
-    \ P[i] *= dftQ[i];\n    inv_fft(P);\n    P.resize(degQ);\n    return div(P, Q,\
-    \ R - L);\n}\n\n// returns [x^[L,R)]P/Q\n// P: polynomial\n// Q: non-zero polynomial\n\
-    template <typename Tp>\ninline std::vector<Tp> slice_coeff_rational(const std::vector<Tp>\
-    \ &P, const std::vector<Tp> &Q,\n                                            long\
-    \ long L, long long R) {\n    auto [q, r] = euclidean_div(P, Q);\n    auto res\
-    \    = slice_coeff_rationalA(r, Q, L, R);\n    for (long long i = L; i < std::min<long\
-    \ long>(R, q.size()); ++i) res[i - L] += q[i];\n    return res;\n}\n"
+    \ long>(R, q.size()); ++i) res[i - L] += q[i];\n    return res;\n}\n#line 2 \"\
+    modint.hpp\"\n\n#include <iostream>\n#line 5 \"modint.hpp\"\n\ntemplate <unsigned\
+    \ Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less\
+    \ than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
+    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
+    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
+    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
+    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
+    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
+    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
+    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
+    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
+    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
+    \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
+    \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
+    \ if ((e >>= 1) == 0) return res;\n        }\n    }\n    ModInt inv() const {\n\
+    \        int x1 = 1, x3 = 0, a = val(), b = Mod;\n        while (b) {\n      \
+    \      int q = a / b, x1_old = x1, a_old = a;\n            x1 = x3, x3 = x1_old\
+    \ - x3 * q, a = b, b = a_old - b * q;\n        }\n        return from_raw(x1 <\
+    \ 0 ? x1 + (int)Mod : x1);\n    }\n    template <bool Odd = (Mod & 1)>\n    std::enable_if_t<Odd,\
+    \ ModInt> div_by_2() const {\n        if (v_ & 1) return from_raw((v_ + Mod) >>\
+    \ 1);\n        return from_raw(v_ >> 1);\n    }\n\n    ModInt &operator+=(const\
+    \ ModInt &a) {\n        if ((v_ += a.v_) >= Mod) v_ -= Mod;\n        return *this;\n\
+    \    }\n    ModInt &operator-=(const ModInt &a) {\n        if ((v_ += Mod - a.v_)\
+    \ >= Mod) v_ -= Mod;\n        return *this;\n    }\n    ModInt &operator*=(const\
+    \ ModInt &a) {\n        v_ = (unsigned long long)v_ * a.v_ % Mod;\n        return\
+    \ *this;\n    }\n    ModInt &operator/=(const ModInt &a) { return *this *= a.inv();\
+    \ }\n\n    friend ModInt operator+(const ModInt &a, const ModInt &b) { return\
+    \ ModInt(a) += b; }\n    friend ModInt operator-(const ModInt &a, const ModInt\
+    \ &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const ModInt &a,\
+    \ const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
+    \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
+    \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
+    \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
+    #line 8 \"test/shift_of_sampling_points_of_polynomial.0.test.cpp\"\n\nint main()\
+    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
+    \ mint = ModInt<998244353>;\n    int n, m;\n    mint c;\n    std::cin >> n >>\
+    \ m >> c;\n    std::vector<mint> A(n);\n    for (int i = 0; i < n; ++i) std::cin\
+    \ >> A[i];\n    const auto Q = pow(std::vector<mint>{1, -1}, n, n + 1);\n    auto\
+    \ P       = convolution(A, Q);\n    P.resize(n);\n    const auto res = slice_coeff_rational(P,\
+    \ Q, c.val(), c.val() + m);\n    for (int i = 0; i < (int)res.size(); ++i) std::cout\
+    \ << res[i] << ' ';\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial\"\
+    \n\n#include \"c_recursive.hpp\"\n#include \"fps_basic.hpp\"\n#include \"modint.hpp\"\
+    \n#include <iostream>\n#include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
+    \    mint c;\n    std::cin >> n >> m >> c;\n    std::vector<mint> A(n);\n    for\
+    \ (int i = 0; i < n; ++i) std::cin >> A[i];\n    const auto Q = pow(std::vector<mint>{1,\
+    \ -1}, n, n + 1);\n    auto P       = convolution(A, Q);\n    P.resize(n);\n \
+    \   const auto res = slice_coeff_rational(P, Q, c.val(), c.val() + m);\n    for\
+    \ (int i = 0; i < (int)res.size(); ++i) std::cout << res[i] << ' ';\n    return\
+    \ 0;\n}\n"
   dependsOn:
+  - c_recursive.hpp
   - fft.hpp
   - fps_basic.hpp
   - binomial.hpp
   - semi_relaxed_conv.hpp
   - poly_basic.hpp
-  isVerificationFile: false
-  path: c_recursive.hpp
+  - modint.hpp
+  isVerificationFile: true
+  path: test/shift_of_sampling_points_of_polynomial.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - test/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-documentation_of: c_recursive.hpp
+  timestamp: '2024-06-20 22:35:47+08:00'
+  verificationStatus: TEST_ACCEPTED
+  verifiedWith: []
+documentation_of: test/shift_of_sampling_points_of_polynomial.0.test.cpp
 layout: document
 redirect_from:
-- /library/c_recursive.hpp
-- /library/c_recursive.hpp.html
-title: c_recursive.hpp
+- /verify/test/shift_of_sampling_points_of_polynomial.0.test.cpp
+- /verify/test/shift_of_sampling_points_of_polynomial.0.test.cpp.html
+title: test/shift_of_sampling_points_of_polynomial.0.test.cpp
 ---

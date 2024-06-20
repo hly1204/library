@@ -79,6 +79,9 @@ data:
     path: test/pow_of_formal_power_series.0.test.cpp
     title: test/pow_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/shift_of_sampling_points_of_polynomial.0.test.cpp
+    title: test/shift_of_sampling_points_of_polynomial.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/sqrt_of_formal_power_series.0.test.cpp
     title: test/sqrt_of_formal_power_series.0.test.cpp
   _isVerificationFailed: false
@@ -122,34 +125,35 @@ data:
   isVerificationFile: false
   path: binomial.hpp
   requiredBy:
-  - eulerian_number.hpp
-  - fps_sqrt.hpp
-  - poly_interpolation.hpp
-  - fps_basic.hpp
   - czt.hpp
-  - fps_composition.hpp
-  - poly_basic.hpp
+  - poly_interpolation.hpp
   - c_recursive.hpp
+  - eulerian_number.hpp
+  - fps_composition.hpp
   - subproduct_tree.hpp
+  - poly_basic.hpp
+  - fps_basic.hpp
+  - fps_sqrt.hpp
   timestamp: '2024-05-15 00:00:04+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/multipoint_evaluation.0.test.cpp
-  - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - test/inv_of_formal_power_series.0.test.cpp
+  - test/polynomial_interpolation.0.test.cpp
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - test/log_of_formal_power_series.0.test.cpp
   - test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - test/division_of_polynomials.0.test.cpp
-  - test/sqrt_of_formal_power_series.0.test.cpp
-  - test/polynomial_interpolation.0.test.cpp
-  - test/log_of_formal_power_series.0.test.cpp
-  - test/pow_of_formal_power_series.0.test.cpp
-  - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - test/exp_of_formal_power_series.0.test.cpp
-  - test/composition_of_formal_power_series_large.0.test.cpp
+  - test/pow_of_formal_power_series.0.test.cpp
   - test/polynomial_taylor_shift.0.test.cpp
+  - test/composition_of_formal_power_series_large.0.test.cpp
+  - test/division_of_polynomials.0.test.cpp
+  - test/inv_of_formal_power_series.0.test.cpp
+  - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/shift_of_sampling_points_of_polynomial.0.test.cpp
+  - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+  - test/multipoint_evaluation.0.test.cpp
+  - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/sqrt_of_formal_power_series.0.test.cpp
   - test/convolution_mod.1.test.cpp
 documentation_of: binomial.hpp
 layout: document

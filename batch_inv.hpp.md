@@ -51,17 +51,17 @@ data:
   isVerificationFile: false
   path: batch_inv.hpp
   requiredBy:
-  - poly_interpolation.hpp
   - czt.hpp
+  - poly_interpolation.hpp
   - subproduct_tree.hpp
   timestamp: '2024-06-16 14:16:14+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/multipoint_evaluation.0.test.cpp
-  - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+  - test/polynomial_interpolation.0.test.cpp
   - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - test/polynomial_interpolation.0.test.cpp
+  - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+  - test/multipoint_evaluation.0.test.cpp
   - test/convolution_mod.1.test.cpp
 documentation_of: batch_inv.hpp
 layout: document

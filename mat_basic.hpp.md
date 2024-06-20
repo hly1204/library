@@ -155,9 +155,9 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix_product.0.test.cpp
-  - test/inverse_matrix.0.test.cpp
   - test/characteristic_polynomial.0.test.cpp
   - test/matrix_det.0.test.cpp
+  - test/inverse_matrix.0.test.cpp
 documentation_of: mat_basic.hpp
 layout: document
 redirect_from:
