@@ -38,16 +38,17 @@ int main() {
             int p;
             mint c, d;
             std::cin >> p;
-            auto node = root->select(p);
-            std::cin >> node->Val[1] >> node->Val[0];
-            node->do_update();
+            auto [R0, R1, R2] = TreapNode::split(root, p, 1);
+            std::cin >> R1->Val[1] >> R1->Val[0];
+            R1->Sum = R1->Val;
+            root    = TreapNode::join(R0, R1, R2);
         } else {
             int l, r;
             mint x;
             std::cin >> l >> r >> x;
-            auto [a, b, c] = TreapNode::split(root, l, r - l);
-            std::cout << TreapNode::composition(b->Sum, {x, 0}).at(0) << '\n';
-            root = TreapNode::join(a, b, c);
+            auto [R0, R1, R2] = TreapNode::split(root, l, r - l);
+            std::cout << TreapNode::composition(R1->Sum, {x, 0}).at(0) << '\n';
+            root = TreapNode::join(R0, R1, R2);
         }
     }
     return 0;
