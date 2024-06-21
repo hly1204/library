@@ -45,7 +45,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -57,7 +57,7 @@ data:
     - icon: ':warning:'
       path: poly_interpolation.hpp
       title: poly_interpolation.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: rng.hpp
       title: rng.hpp
     - icon: ':heavy_check_mark:'
@@ -69,7 +69,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: subproduct_tree.hpp
       title: subproduct_tree.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: treap_node_base.hpp
       title: treap_node_base.hpp
     - icon: ':heavy_check_mark:'
@@ -138,7 +138,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
       title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/point_set_range_composite.0.test.cpp
       title: test/point_set_range_composite.0.test.cpp
     - icon: ':heavy_check_mark:'

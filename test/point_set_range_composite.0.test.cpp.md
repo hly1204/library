@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: treap_node_base.hpp
     title: treap_node_base.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/point_set_range_composite
@@ -135,12 +135,13 @@ data:
     \   root       = TreapNode::join(root, &buf[i]);\n    }\n    while (q--) {\n \
     \       int cmd;\n        std::cin >> cmd;\n        if (cmd == 0) {\n        \
     \    int p;\n            mint c, d;\n            std::cin >> p;\n            auto\
-    \ node = root->select(p);\n            std::cin >> node->Val[1] >> node->Val[0];\n\
-    \            node->do_update();\n        } else {\n            int l, r;\n   \
-    \         mint x;\n            std::cin >> l >> r >> x;\n            auto [a,\
-    \ b, c] = TreapNode::split(root, l, r - l);\n            std::cout << TreapNode::composition(b->Sum,\
-    \ {x, 0}).at(0) << '\\n';\n            root = TreapNode::join(a, b, c);\n    \
-    \    }\n    }\n    return 0;\n}\n"
+    \ [R0, R1, R2] = TreapNode::split(root, p, 1);\n            std::cin >> R1->Val[1]\
+    \ >> R1->Val[0];\n            R1->Sum = R1->Val;\n            root    = TreapNode::join(R0,\
+    \ R1, R2);\n        } else {\n            int l, r;\n            mint x;\n   \
+    \         std::cin >> l >> r >> x;\n            auto [R0, R1, R2] = TreapNode::split(root,\
+    \ l, r - l);\n            std::cout << TreapNode::composition(R1->Sum, {x, 0}).at(0)\
+    \ << '\\n';\n            root = TreapNode::join(R0, R1, R2);\n        }\n    }\n\
+    \    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/point_set_range_composite\"\
     \n\n#include \"modint.hpp\"\n#include \"treap_node_base.hpp\"\n#include <array>\n\
     #include <iostream>\n#include <memory>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
@@ -157,12 +158,13 @@ data:
     \   root       = TreapNode::join(root, &buf[i]);\n    }\n    while (q--) {\n \
     \       int cmd;\n        std::cin >> cmd;\n        if (cmd == 0) {\n        \
     \    int p;\n            mint c, d;\n            std::cin >> p;\n            auto\
-    \ node = root->select(p);\n            std::cin >> node->Val[1] >> node->Val[0];\n\
-    \            node->do_update();\n        } else {\n            int l, r;\n   \
-    \         mint x;\n            std::cin >> l >> r >> x;\n            auto [a,\
-    \ b, c] = TreapNode::split(root, l, r - l);\n            std::cout << TreapNode::composition(b->Sum,\
-    \ {x, 0}).at(0) << '\\n';\n            root = TreapNode::join(a, b, c);\n    \
-    \    }\n    }\n    return 0;\n}\n"
+    \ [R0, R1, R2] = TreapNode::split(root, p, 1);\n            std::cin >> R1->Val[1]\
+    \ >> R1->Val[0];\n            R1->Sum = R1->Val;\n            root    = TreapNode::join(R0,\
+    \ R1, R2);\n        } else {\n            int l, r;\n            mint x;\n   \
+    \         std::cin >> l >> r >> x;\n            auto [R0, R1, R2] = TreapNode::split(root,\
+    \ l, r - l);\n            std::cout << TreapNode::composition(R1->Sum, {x, 0}).at(0)\
+    \ << '\\n';\n            root = TreapNode::join(R0, R1, R2);\n        }\n    }\n\
+    \    return 0;\n}\n"
   dependsOn:
   - modint.hpp
   - treap_node_base.hpp
@@ -170,8 +172,8 @@ data:
   isVerificationFile: true
   path: test/point_set_range_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-21 22:30:09+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-06-21 22:48:37+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/point_set_range_composite.0.test.cpp
 layout: document
