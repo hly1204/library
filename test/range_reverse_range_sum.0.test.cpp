@@ -28,13 +28,13 @@ int main() {
     while (q--) {
         int t, l, r;
         std::cin >> t >> l >> r;
-        auto [a, b, c] = TreapNode::split3(root, l, r - l);
+        auto [a, b, c] = TreapNode::split(root, l, r - l);
         if (t == 0) {
             if (b) b->flip();
         } else {
             std::cout << (b ? b->Sum : 0LL) << '\n';
         }
-        root = TreapNode::join3(a, b, c);
+        root = TreapNode::join(a, b, c);
     }
     return 0;
 }

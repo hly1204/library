@@ -1,8 +1,8 @@
 #pragma once
 
 #include "rng.hpp"
+#include <array>
 #include <random>
-#include <tuple>
 #include <utility>
 
 template <typename TreapNode>
@@ -59,11 +59,7 @@ protected:
         return a;
     }
 
-    static TreapNodeBase *base_join3(TreapNodeBase *a, TreapNodeBase *b, TreapNodeBase *c) {
-        return base_join(base_join(a, b), c);
-    }
-
-    static std::pair<TreapNodeBase *, TreapNodeBase *> base_split(TreapNodeBase *a, int k) {
+    static std::array<TreapNodeBase *, 2> base_split(TreapNodeBase *a, int k) {
         if (a == nullptr) return {nullptr, nullptr};
         if (k == 0) return {nullptr, a};
         a->base_propagate();
@@ -80,13 +76,6 @@ protected:
         return {b, a};
     }
 
-    static std::tuple<TreapNodeBase *, TreapNodeBase *, TreapNodeBase *>
-    base_split3(TreapNodeBase *a, int l, int m) {
-        auto [b, c] = base_split(a, l);
-        auto [d, e] = base_split(c, m);
-        return {b, d, e};
-    }
-
     TreapNodeBase() : L(), R(), Rank(dis(gen)), Size(1), NeedFlip() {}
 
 public:
@@ -97,16 +86,37 @@ public:
     TreapNode *right() const { return (TreapNode *)R; }
 
     void flip() { base_flip(); }
-    static TreapNode *join(TreapNode *a, TreapNode *b) { return (TreapNode *)base_join(a, b); }
-    static TreapNode *join3(TreapNode *a, TreapNode *b, TreapNode *c) {
-        return (TreapNode *)base_join3(a, b, c);
+    template <typename... Nodes>
+    static TreapNode *join(Nodes... node) {
+        struct Helper {
+            TreapNodeBase *Val;
+            Helper &operator|(TreapNodeBase *A) {
+                Val = TreapNodeBase::base_join(Val, A);
+                return *this;
+            }
+        } nil{nullptr};
+        return (TreapNode *)(nil | ... | node).Val;
     }
-    static std::pair<TreapNode *, TreapNode *> split(TreapNode *a, int k) {
-        auto [b, c] = base_split(a, k);
-        return {(TreapNode *)b, (TreapNode *)c};
+    template <typename... Parts>
+    static std::array<TreapNode *, sizeof...(Parts) + 1> split(TreapNode *a, Parts... part) {
+        std::array<TreapNode *, sizeof...(Parts) + 1> res;
+        res[0]    = a;
+        int index = 0;
+        (
+            [&](int s) {
+                auto [l, r]  = base_split(res[index], s);
+                res[index]   = (TreapNode *)l;
+                res[++index] = (TreapNode *)r;
+            }(part),
+            ...);
+        return res;
     }
-    static std::tuple<TreapNode *, TreapNode *, TreapNode *> split3(TreapNode *a, int l, int m) {
-        auto [b, c, d] = base_split3(a, l, m);
-        return {(TreapNode *)b, (TreapNode *)c, (TreapNode *)d};
+
+    TreapNode *select(int k) {
+        base_propagate();
+        const int leftsize = left() ? left()->size() : 0;
+        if (k == leftsize) return (TreapNode *)this;
+        if (k < leftsize) return left()->select(k);
+        return right()->select(k - leftsize - 1);
     }
 };
