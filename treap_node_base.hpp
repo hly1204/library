@@ -61,7 +61,6 @@ protected:
 
     static std::array<TreapNodeBase *, 2> base_split(TreapNodeBase *a, int k) {
         if (a == nullptr) return {nullptr, nullptr};
-        if (k == 0) return {nullptr, a};
         a->base_propagate();
         const int leftsize = a->L != nullptr ? a->L->Size : 0;
         if (leftsize < k) {
