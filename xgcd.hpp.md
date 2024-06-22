@@ -2,16 +2,16 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: chinese_remainder.hpp
     title: chinese_remainder.hpp
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/187.0.test.cpp
-    title: test/187.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: test/number_theory/187.0.test.cpp
+    title: test/number_theory/187.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
   bundledCode: "#line 2 \"xgcd.hpp\"\n\n#include <type_traits>\n\ntemplate <typename\
@@ -45,9 +45,9 @@ data:
   requiredBy:
   - chinese_remainder.hpp
   timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
-  - test/187.0.test.cpp
+  - test/number_theory/187.0.test.cpp
 documentation_of: xgcd.hpp
 layout: document
 redirect_from:

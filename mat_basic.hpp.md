@@ -3,21 +3,21 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/characteristic_polynomial.0.test.cpp
-    title: test/characteristic_polynomial.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/inverse_matrix.0.test.cpp
-    title: test/inverse_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/matrix_det.0.test.cpp
-    title: test/matrix_det.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/matrix_product.0.test.cpp
-    title: test/matrix_product.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: test/matrix/characteristic_polynomial.0.test.cpp
+    title: test/matrix/characteristic_polynomial.0.test.cpp
+  - icon: ':x:'
+    path: test/matrix/inverse_matrix.0.test.cpp
+    title: test/matrix/inverse_matrix.0.test.cpp
+  - icon: ':x:'
+    path: test/matrix/matrix_det.0.test.cpp
+    title: test/matrix/matrix_det.0.test.cpp
+  - icon: ':x:'
+    path: test/matrix/matrix_product.0.test.cpp
+    title: test/matrix/matrix_product.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
   bundledCode: "#line 2 \"mat_basic.hpp\"\n\n#include <cassert>\n#include <optional>\n\
@@ -152,12 +152,12 @@ data:
   path: mat_basic.hpp
   requiredBy: []
   timestamp: '2024-06-03 19:11:50+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
-  - test/matrix_product.0.test.cpp
-  - test/characteristic_polynomial.0.test.cpp
-  - test/matrix_det.0.test.cpp
-  - test/inverse_matrix.0.test.cpp
+  - test/matrix/matrix_product.0.test.cpp
+  - test/matrix/characteristic_polynomial.0.test.cpp
+  - test/matrix/matrix_det.0.test.cpp
+  - test/matrix/inverse_matrix.0.test.cpp
 documentation_of: mat_basic.hpp
 layout: document
 redirect_from:

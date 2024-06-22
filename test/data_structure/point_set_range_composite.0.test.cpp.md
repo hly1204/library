@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   - icon: ':heavy_check_mark:'
@@ -20,11 +20,11 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/point_set_range_composite
     links:
     - https://judge.yosupo.jp/problem/point_set_range_composite
-  bundledCode: "#line 1 \"test/point_set_range_composite.0.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/point_set_range_composite\"\n\n#line 2 \"\
-    modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\ntemplate <unsigned\
-    \ Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less\
-    \ than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+  bundledCode: "#line 1 \"test/data_structure/point_set_range_composite.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/point_set_range_composite\"\
+    \n\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\n\
+    template <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"\
+    `Mod` must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
     \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
     \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
     \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
@@ -120,7 +120,7 @@ data:
     \    }\n\n    TreapNode *select(int k) {\n        base_propagate();\n        const\
     \ int leftsize = left() ? left()->size() : 0;\n        if (k == leftsize) return\
     \ (TreapNode *)this;\n        if (k < leftsize) return left()->select(k);\n  \
-    \      return right()->select(k - leftsize - 1);\n    }\n};\n#line 7 \"test/point_set_range_composite.0.test.cpp\"\
+    \      return right()->select(k - leftsize - 1);\n    }\n};\n#line 7 \"test/data_structure/point_set_range_composite.0.test.cpp\"\
     \n#include <memory>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n \
     \   std::cin.tie(nullptr);\n    using mint           = ModInt<998244353>;\n  \
     \  using LinearFunction = std::array<mint, 2>;\n    struct TreapNode : TreapNodeBase<TreapNode>\
@@ -170,15 +170,15 @@ data:
   - treap_node_base.hpp
   - rng.hpp
   isVerificationFile: true
-  path: test/point_set_range_composite.0.test.cpp
+  path: test/data_structure/point_set_range_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-21 22:55:18+08:00'
+  timestamp: '2024-06-22 10:58:08+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/point_set_range_composite.0.test.cpp
+documentation_of: test/data_structure/point_set_range_composite.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/point_set_range_composite.0.test.cpp
-- /verify/test/point_set_range_composite.0.test.cpp.html
-title: test/point_set_range_composite.0.test.cpp
+- /verify/test/data_structure/point_set_range_composite.0.test.cpp
+- /verify/test/data_structure/point_set_range_composite.0.test.cpp.html
+title: test/data_structure/point_set_range_composite.0.test.cpp
 ---

@@ -1,44 +1,44 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: batch_inv.hpp
     title: batch_inv.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: czt.hpp
     title: czt.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: middle_product.hpp
     title: middle_product.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/multipoint_evaluation_on_geometric_sequence
     links:
     - https://judge.yosupo.jp/problem/multipoint_evaluation_on_geometric_sequence
-  bundledCode: "#line 1 \"test/multipoint_evaluation_on_geometric_sequence.0.test.cpp\"\
+  bundledCode: "#line 1 \"test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/multipoint_evaluation_on_geometric_sequence\"\
     \n\n#line 2 \"czt.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#include <cassert>\n#include\
     \ <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp>\
@@ -325,8 +325,8 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 7 \"test/multipoint_evaluation_on_geometric_sequence.0.test.cpp\"\n\nint\
-    \ main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    #line 7 \"test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n, m;\n    mint a, r;\n    std::cin\
     \ >> n >> m >> a >> r;\n    std::vector<mint> F(n);\n    for (int i = 0; i < n;\
     \ ++i) std::cin >> F[i];\n    const auto res = czt(F, r, m, a);\n    for (int\
@@ -349,15 +349,15 @@ data:
   - semi_relaxed_conv.hpp
   - modint.hpp
   isVerificationFile: true
-  path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-17 18:41:17+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-06-22 10:58:08+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+documentation_of: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-- /verify/test/multipoint_evaluation_on_geometric_sequence.0.test.cpp.html
-title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+- /verify/test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+- /verify/test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp.html
+title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
 ---

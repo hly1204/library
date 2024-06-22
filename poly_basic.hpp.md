@@ -1,65 +1,65 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: c_recursive.hpp
     title: c_recursive.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: czt.hpp
     title: czt.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-    title: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+    path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+    title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-    title: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+    path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+    title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/convolution_mod.1.test.cpp
-    title: test/convolution_mod.1.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/division_of_polynomials.0.test.cpp
-    title: test/division_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-    title: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/multipoint_evaluation.0.test.cpp
-    title: test/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-    title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/polynomial_interpolation.0.test.cpp
-    title: test/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-    title: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/polynomial_taylor_shift.0.test.cpp
-    title: test/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/shift_of_sampling_points_of_polynomial.0.test.cpp
-    title: test/shift_of_sampling_points_of_polynomial.0.test.cpp
-  _isVerificationFailed: false
+    path: test/formal_power_series/convolution_mod.1.test.cpp
+    title: test/formal_power_series/convolution_mod.1.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/division_of_polynomials.0.test.cpp
+    title: test/formal_power_series/division_of_polynomials.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+    title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/multipoint_evaluation.0.test.cpp
+    title: test/formal_power_series/multipoint_evaluation.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+    title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/polynomial_interpolation.0.test.cpp
+    title: test/formal_power_series/polynomial_interpolation.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+    title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
+    title: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+    title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
@@ -305,19 +305,19 @@ data:
   - c_recursive.hpp
   - subproduct_tree.hpp
   timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
-  - test/polynomial_interpolation.0.test.cpp
-  - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - test/polynomial_taylor_shift.0.test.cpp
-  - test/division_of_polynomials.0.test.cpp
-  - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - test/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - test/multipoint_evaluation.0.test.cpp
-  - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - test/convolution_mod.1.test.cpp
+  - test/formal_power_series/polynomial_interpolation.0.test.cpp
+  - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
+  - test/formal_power_series/division_of_polynomials.0.test.cpp
+  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+  - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+  - test/formal_power_series/multipoint_evaluation.0.test.cpp
+  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/convolution_mod.1.test.cpp
 documentation_of: poly_basic.hpp
 layout: document
 redirect_from:

@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: modlong.hpp
     title: modlong.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/convolution_mod_1000000007.0.test.cpp
-    title: test/convolution_mod_1000000007.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
+    title: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
   bundledCode: "#line 2 \"conv_mod.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
@@ -171,9 +171,9 @@ data:
   path: conv_mod.hpp
   requiredBy: []
   timestamp: '2024-05-17 19:15:49+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
-  - test/convolution_mod_1000000007.0.test.cpp
+  - test/formal_power_series/convolution_mod_1000000007.0.test.cpp
 documentation_of: conv_mod.hpp
 layout: document
 redirect_from:

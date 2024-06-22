@@ -1,16 +1,16 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy:
@@ -19,11 +19,11 @@ data:
     title: eulerian_number.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/composition_of_formal_power_series_large.0.test.cpp
-    title: test/composition_of_formal_power_series_large.0.test.cpp
+    path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
+    title: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
-    title: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
+    path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
+    title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -362,8 +362,8 @@ data:
   timestamp: '2024-06-02 11:00:30+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - test/composition_of_formal_power_series_large.0.test.cpp
+  - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
 documentation_of: fps_composition.hpp
 layout: document
 redirect_from:

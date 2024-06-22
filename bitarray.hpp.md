@@ -3,12 +3,12 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/matrix_det_mod_2.0.test.cpp
-    title: test/matrix_det_mod_2.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: test/matrix/matrix_det_mod_2.0.test.cpp
+    title: test/matrix/matrix_det_mod_2.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
   bundledCode: "#line 2 \"bitarray.hpp\"\n\n#include <cassert>\n#include <cstddef>\n\
@@ -178,9 +178,9 @@ data:
   path: bitarray.hpp
   requiredBy: []
   timestamp: '2024-06-03 19:40:13+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
-  - test/matrix_det_mod_2.0.test.cpp
+  - test/matrix/matrix_det_mod_2.0.test.cpp
 documentation_of: bitarray.hpp
 layout: document
 redirect_from:

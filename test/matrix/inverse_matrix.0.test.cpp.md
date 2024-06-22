@@ -1,27 +1,28 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: mat_basic.hpp
     title: mat_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/inverse_matrix
     links:
     - https://judge.yosupo.jp/problem/inverse_matrix
-  bundledCode: "#line 1 \"test/inverse_matrix.0.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/inverse_matrix\"\
-    \n\n#line 2 \"mat_basic.hpp\"\n\n#include <cassert>\n#include <optional>\n#include\
-    \ <utility>\n#include <vector>\n\ntemplate <typename Tp>\nusing Matrix = std::vector<std::vector<Tp>>;\n\
-    \ntemplate <typename Tp>\ninline int width(const Matrix<Tp> &A) {\n    return\
-    \ A.empty() ? 0 : (int)A[0].size();\n}\n\ntemplate <typename Tp>\ninline int height(const\
+  bundledCode: "#line 1 \"test/matrix/inverse_matrix.0.test.cpp\"\n#define PROBLEM\
+    \ \"https://judge.yosupo.jp/problem/inverse_matrix\"\n\n#line 2 \"mat_basic.hpp\"\
+    \n\n#include <cassert>\n#include <optional>\n#include <utility>\n#include <vector>\n\
+    \ntemplate <typename Tp>\nusing Matrix = std::vector<std::vector<Tp>>;\n\ntemplate\
+    \ <typename Tp>\ninline int width(const Matrix<Tp> &A) {\n    return A.empty()\
+    \ ? 0 : (int)A[0].size();\n}\n\ntemplate <typename Tp>\ninline int height(const\
     \ Matrix<Tp> &A) {\n    return A.size();\n}\n\ntemplate <typename Tp>\ninline\
     \ bool is_square_matrix(const Matrix<Tp> &A) {\n    return width(A) == height(A);\n\
     }\n\ntemplate <typename Tp>\ninline Matrix<Tp> transpose(const Matrix<Tp> &A)\
@@ -118,7 +119,7 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 6 \"test/inverse_matrix.0.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    #line 6 \"test/matrix/inverse_matrix.0.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
     \    std::cin >> n;\n    Matrix<mint> A(n, std::vector<mint>(n));\n    for (int\
     \ i = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cin >> A[i][j];\n\
@@ -139,15 +140,15 @@ data:
   - mat_basic.hpp
   - modint.hpp
   isVerificationFile: true
-  path: test/inverse_matrix.0.test.cpp
+  path: test/matrix/inverse_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-03 19:11:50+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-06-22 10:58:08+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/inverse_matrix.0.test.cpp
+documentation_of: test/matrix/inverse_matrix.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/inverse_matrix.0.test.cpp
-- /verify/test/inverse_matrix.0.test.cpp.html
-title: test/inverse_matrix.0.test.cpp
+- /verify/test/matrix/inverse_matrix.0.test.cpp
+- /verify/test/matrix/inverse_matrix.0.test.cpp.html
+title: test/matrix/inverse_matrix.0.test.cpp
 ---

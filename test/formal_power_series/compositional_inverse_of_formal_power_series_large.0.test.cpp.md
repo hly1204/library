@@ -1,22 +1,22 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
     title: fps_composition.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
@@ -29,7 +29,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large
     links:
     - https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large
-  bundledCode: "#line 1 \"test/compositional_inverse_of_formal_power_series_large.0.test.cpp\"\
+  bundledCode: "#line 1 \"test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large\"\
     \n\n#line 2 \"fps_composition.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n\
     #include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp>\
@@ -306,7 +306,7 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 7 \"test/compositional_inverse_of_formal_power_series_large.0.test.cpp\"\
+    #line 7 \"test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
     \ f(n);\n    for (int i = 0; i < n; ++i) std::cin >> f[i];\n    const auto g =\
@@ -327,15 +327,15 @@ data:
   - semi_relaxed_conv.hpp
   - modint.hpp
   isVerificationFile: true
-  path: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-02 11:00:30+08:00'
+  timestamp: '2024-06-22 10:58:08+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
+documentation_of: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/compositional_inverse_of_formal_power_series_large.0.test.cpp
-- /verify/test/compositional_inverse_of_formal_power_series_large.0.test.cpp.html
-title: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
+- /verify/test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
+- /verify/test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp.html
+title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
 ---

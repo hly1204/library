@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/point_set_range_composite.0.test.cpp
-    title: test/point_set_range_composite.0.test.cpp
+    path: test/data_structure/point_set_range_composite.0.test.cpp
+    title: test/data_structure/point_set_range_composite.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/range_reverse_range_sum.0.test.cpp
-    title: test/range_reverse_range_sum.0.test.cpp
+    path: test/data_structure/range_reverse_range_sum.0.test.cpp
+    title: test/data_structure/range_reverse_range_sum.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -131,8 +131,8 @@ data:
   timestamp: '2024-06-21 19:04:38+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/range_reverse_range_sum.0.test.cpp
-  - test/point_set_range_composite.0.test.cpp
+  - test/data_structure/range_reverse_range_sum.0.test.cpp
+  - test/data_structure/point_set_range_composite.0.test.cpp
 documentation_of: treap_node_base.hpp
 layout: document
 redirect_from:

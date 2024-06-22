@@ -1,41 +1,41 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: conv_mod.hpp
     title: conv_mod.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: modlong.hpp
     title: modlong.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/convolution_mod_1000000007
     links:
     - https://judge.yosupo.jp/problem/convolution_mod_1000000007
-  bundledCode: "#line 1 \"test/convolution_mod_1000000007.0.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/convolution_mod_1000000007\"\n\n#line 2 \"\
-    conv_mod.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n#include <cassert>\n\
-    #include <iterator>\n#include <memory>\n#include <vector>\n\ntemplate <typename\
-    \ Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue() {\n       \
-    \ for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1)\
-    \ return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const\
-    \ Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp>\
-    \ root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
-    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
-    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
-    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
-    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
-    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
-    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
-    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+  bundledCode: "#line 1 \"test/formal_power_series/convolution_mod_1000000007.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod_1000000007\"\
+    \n\n#line 2 \"conv_mod.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
+    #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
+    \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
+    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
+    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
+    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
+    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
+    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
+    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
+    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
+    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
+    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
+    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
+    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
     \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
     \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
     \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
@@ -156,13 +156,13 @@ data:
     \    const int m1    = mint1::mod() % modular;\n    for (int i = 0; i < n; ++i)\
     \ {\n        const mint0 k1 = (res0[i] - res1[i].val()) * im1;\n        res[i]\
     \         = (k1.val() % modular * m1 + res1[i].val()) % modular;\n    }\n    return\
-    \ res;\n}\n#line 6 \"test/convolution_mod_1000000007.0.test.cpp\"\n\nint main()\
-    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
-    \ n, m;\n    std::cin >> n >> m;\n    std::vector<int> f(n), g(m);\n    for (int\
-    \ i = 0; i < n; ++i) std::cin >> f[i];\n    for (int i = 0; i < m; ++i) std::cin\
-    \ >> g[i];\n    const auto fg = convolution_mod(f, g, 1000000007);\n    for (int\
-    \ i = 0; i < (int)fg.size(); ++i) std::cout << fg[i] << ' ';\n    return 0;\n\
-    }\n"
+    \ res;\n}\n#line 6 \"test/formal_power_series/convolution_mod_1000000007.0.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    int n, m;\n    std::cin >> n >> m;\n    std::vector<int> f(n), g(m);\n  \
+    \  for (int i = 0; i < n; ++i) std::cin >> f[i];\n    for (int i = 0; i < m; ++i)\
+    \ std::cin >> g[i];\n    const auto fg = convolution_mod(f, g, 1000000007);\n\
+    \    for (int i = 0; i < (int)fg.size(); ++i) std::cout << fg[i] << ' ';\n   \
+    \ return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod_1000000007\"\
     \n\n#include \"conv_mod.hpp\"\n#include <iostream>\n#include <vector>\n\nint main()\
     \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
@@ -176,15 +176,15 @@ data:
   - fft.hpp
   - modlong.hpp
   isVerificationFile: true
-  path: test/convolution_mod_1000000007.0.test.cpp
+  path: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
   requiredBy: []
-  timestamp: '2024-05-17 19:15:49+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-06-22 10:58:08+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/convolution_mod_1000000007.0.test.cpp
+documentation_of: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/convolution_mod_1000000007.0.test.cpp
-- /verify/test/convolution_mod_1000000007.0.test.cpp.html
-title: test/convolution_mod_1000000007.0.test.cpp
+- /verify/test/formal_power_series/convolution_mod_1000000007.0.test.cpp
+- /verify/test/formal_power_series/convolution_mod_1000000007.0.test.cpp.html
+title: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
 ---

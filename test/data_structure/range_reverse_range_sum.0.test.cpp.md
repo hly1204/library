@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   - icon: ':heavy_check_mark:'
@@ -17,10 +17,11 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/range_reverse_range_sum
     links:
     - https://judge.yosupo.jp/problem/range_reverse_range_sum
-  bundledCode: "#line 1 \"test/range_reverse_range_sum.0.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/range_reverse_range_sum\"\n\n#line 2 \"treap_node_base.hpp\"\
-    \n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n#include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n\
-    // original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
+  bundledCode: "#line 1 \"test/data_structure/range_reverse_range_sum.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/range_reverse_range_sum\"\n\
+    \n#line 2 \"treap_node_base.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n\
+    #include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n//\
+    \ original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
     \n    static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64\
     \ - k)); }\n\n    u64 s_[4];\n\n    u64 next() {\n        const u64 res = rotl(s_[1]\
     \ * 5, 7) * 9;\n        const u64 t   = s_[1] << 17;\n        s_[2] ^= s_[0];\n\
@@ -78,7 +79,7 @@ data:
     \    }\n\n    TreapNode *select(int k) {\n        base_propagate();\n        const\
     \ int leftsize = left() ? left()->size() : 0;\n        if (k == leftsize) return\
     \ (TreapNode *)this;\n        if (k < leftsize) return left()->select(k);\n  \
-    \      return right()->select(k - leftsize - 1);\n    }\n};\n#line 4 \"test/range_reverse_range_sum.0.test.cpp\"\
+    \      return right()->select(k - leftsize - 1);\n    }\n};\n#line 4 \"test/data_structure/range_reverse_range_sum.0.test.cpp\"\
     \n#include <iostream>\n#include <memory>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    struct TreapNode : TreapNodeBase<TreapNode> {\n\
     \        int Val;\n        long long Sum;\n        void do_update() {\n      \
@@ -111,15 +112,15 @@ data:
   - treap_node_base.hpp
   - rng.hpp
   isVerificationFile: true
-  path: test/range_reverse_range_sum.0.test.cpp
+  path: test/data_structure/range_reverse_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-21 19:04:38+08:00'
+  timestamp: '2024-06-22 10:58:08+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/range_reverse_range_sum.0.test.cpp
+documentation_of: test/data_structure/range_reverse_range_sum.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/range_reverse_range_sum.0.test.cpp
-- /verify/test/range_reverse_range_sum.0.test.cpp.html
-title: test/range_reverse_range_sum.0.test.cpp
+- /verify/test/data_structure/range_reverse_range_sum.0.test.cpp
+- /verify/test/data_structure/range_reverse_range_sum.0.test.cpp.html
+title: test/data_structure/range_reverse_range_sum.0.test.cpp
 ---

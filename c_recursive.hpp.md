@@ -1,35 +1,35 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-    title: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-    title: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/shift_of_sampling_points_of_polynomial.0.test.cpp
-    title: test/shift_of_sampling_points_of_polynomial.0.test.cpp
-  _isVerificationFailed: false
+    path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+    title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+    title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+    title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links:
     - https://arxiv.org/abs/2008.08822
@@ -418,11 +418,11 @@ data:
   path: c_recursive.hpp
   requiredBy: []
   timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
-  - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - test/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
 documentation_of: c_recursive.hpp
 layout: document
 redirect_from:

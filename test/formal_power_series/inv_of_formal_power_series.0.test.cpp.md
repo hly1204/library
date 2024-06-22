@@ -1,88 +1,78 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
-    path: fps_sqrt.hpp
-    title: fps_sqrt.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
-    path: rng.hpp
-    title: rng.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  - icon: ':heavy_check_mark:'
-    path: sqrt_mod.hpp
-    title: sqrt_mod.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/sqrt_of_formal_power_series
+    PROBLEM: https://judge.yosupo.jp/problem/inv_of_formal_power_series
     links:
-    - https://judge.yosupo.jp/problem/sqrt_of_formal_power_series
-  bundledCode: "#line 1 \"test/sqrt_of_formal_power_series.0.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/sqrt_of_formal_power_series\"\n\n#line 2 \"\
-    fps_sqrt.hpp\"\n\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
-    \ <algorithm>\n#include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n\
-    \    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
-    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
-    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
-    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
-    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
-    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
-    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
-    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
-    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
-    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
-    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
-    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
-    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
-    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
-    \ }\n};\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#line 4 \"\
-    fft.hpp\"\n#include <cassert>\n#include <iterator>\n#include <memory>\n#line 8\
-    \ \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
-    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
-    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
-    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
-    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
-    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
-    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
-    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
-    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
-    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
-    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
-    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
-    \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
-    \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
-    \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
-    \  const int j = 1 << i;\n                root_[j]    = zeta_.pow(1LL << (ordlog2_\
-    \ - i - 2));\n                for (int k = j + 1; k < j * 2; ++k) root_[k] = root_[k\
-    \ - j] * root_[j];\n            }\n        }\n        return root_;\n    }\n \
-    \   const std::vector<Tp> &inv_root(int n) const {\n        // [0, n)\n      \
-    \  assert((n & (n - 1)) == 0);\n        if (const int s = invroot_.size(); s <\
-    \ n) {\n            invroot_.resize(n);\n            for (int i = __builtin_ctz(s);\
-    \ (1 << i) < n; ++i) {\n                const int j = 1 << i;\n              \
-    \  invroot_[j] = invzeta_.pow(1LL << (ordlog2_ - i - 2));\n                for\
-    \ (int k = j + 1; k < j * 2; ++k) invroot_[k] = invroot_[k - j] * invroot_[j];\n\
-    \            }\n        }\n        return invroot_;\n    }\n};\n\ninline int fft_len(int\
-    \ n) {\n    --n;\n    n |= n >> 1, n |= n >> 2, n |= n >> 4, n |= n >> 8;\n  \
-    \  return (n | n >> 16) + 1;\n}\n\ntemplate <typename Iterator>\ninline void fft_n(Iterator\
-    \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
+    - https://judge.yosupo.jp/problem/inv_of_formal_power_series
+  bundledCode: "#line 1 \"test/formal_power_series/inv_of_formal_power_series.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
+    \n\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n\
+    #include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp>\
+    \ factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)}\
+    \ {}\n\n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
+    \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
+    \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
+    \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
+    \ factorial_[i] = factorial_[i - 1] * i;\n            invfactorial_.back() = factorial_.back().inv();\n\
+    \            for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i\
+    \ + 1] * (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int\
+    \ n) {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
+    \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
+    \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
+    \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
+    \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
+    \ invfactorial_[n]; }\n};\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 2 \"fft.hpp\"\
+    \n\n#line 4 \"fft.hpp\"\n#include <cassert>\n#include <iterator>\n#include <memory>\n\
+    #line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp\
+    \ least_quadratic_nonresidue() {\n        for (int i = 2;; ++i)\n            if\
+    \ (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n    }\n\n    const int\
+    \ ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n    const Tp imag_;\n\
+    \    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n    mutable std::vector<Tp>\
+    \ invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n\
+    \          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >> ordlog2_)),\n\
+    \          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_ - 2))), invimag_(-imag_),\n\
+    \          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_} {}\n\npublic:\n    static\
+    \ const FftInfo &get() {\n        static FftInfo info;\n        return info;\n\
+    \    }\n\n    Tp imag() const { return imag_; }\n    Tp inv_imag() const { return\
+    \ invimag_; }\n    Tp zeta() const { return zeta_; }\n    Tp inv_zeta() const\
+    \ { return invzeta_; }\n    const std::vector<Tp> &root(int n) const {\n     \
+    \   // [0, n)\n        assert((n & (n - 1)) == 0);\n        if (const int s =\
+    \ root_.size(); s < n) {\n            root_.resize(n);\n            for (int i\
+    \ = __builtin_ctz(s); (1 << i) < n; ++i) {\n                const int j = 1 <<\
+    \ i;\n                root_[j]    = zeta_.pow(1LL << (ordlog2_ - i - 2));\n  \
+    \              for (int k = j + 1; k < j * 2; ++k) root_[k] = root_[k - j] * root_[j];\n\
+    \            }\n        }\n        return root_;\n    }\n    const std::vector<Tp>\
+    \ &inv_root(int n) const {\n        // [0, n)\n        assert((n & (n - 1)) ==\
+    \ 0);\n        if (const int s = invroot_.size(); s < n) {\n            invroot_.resize(n);\n\
+    \            for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n           \
+    \     const int j = 1 << i;\n                invroot_[j] = invzeta_.pow(1LL <<\
+    \ (ordlog2_ - i - 2));\n                for (int k = j + 1; k < j * 2; ++k) invroot_[k]\
+    \ = invroot_[k - j] * invroot_[j];\n            }\n        }\n        return invroot_;\n\
+    \    }\n};\n\ninline int fft_len(int n) {\n    --n;\n    n |= n >> 1, n |= n >>\
+    \ 2, n |= n >> 4, n |= n >> 8;\n    return (n | n >> 16) + 1;\n}\n\ntemplate <typename\
+    \ Iterator>\ninline void fft_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
     \    assert((n & (n - 1)) == 0);\n    for (int j = 0; j < n / 2; ++j) {\n    \
     \    auto u = a[j], v = a[j + n / 2];\n        a[j] = u + v, a[j + n / 2] = u\
     \ - v;\n    }\n    auto &&root = FftInfo<Tp>::get().root(n / 2);\n    for (int\
@@ -194,46 +184,7 @@ data:
     \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = log(a, n - o * e);\n    for (int\
     \ i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = exp(a, n - o * e);\n   \
     \ for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
-    \ o * e, 0);\n    return a;\n}\n#line 2 \"sqrt_mod.hpp\"\n\n#line 2 \"rng.hpp\"\
-    \n\n#include <cstdint>\n#include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n\
-    // original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
-    \n    static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64\
-    \ - k)); }\n\n    u64 s_[4];\n\n    u64 next() {\n        const u64 res = rotl(s_[1]\
-    \ * 5, 7) * 9;\n        const u64 t   = s_[1] << 17;\n        s_[2] ^= s_[0];\n\
-    \        s_[3] ^= s_[1];\n        s_[1] ^= s_[2];\n        s_[0] ^= s_[3];\n \
-    \       s_[2] ^= t;\n        s_[3] = rotl(s_[3], 45);\n        return res;\n \
-    \   }\n\npublic:\n    // see: https://prng.di.unimi.it/splitmix64.c\n    // original\
-    \ license CC0 1.0\n    explicit xoshiro256starstar(u64 seed) {\n        for (int\
-    \ i = 0; i < 4; ++i) {\n            u64 z = (seed += 0x9e3779b97f4a7c15);\n  \
-    \          z     = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n            z     =\
-    \ (z ^ (z >> 27)) * 0x94d049bb133111eb;\n            s_[i] = z ^ (z >> 31);\n\
-    \        }\n    }\n    // see: https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator\n\
-    \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
-    \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
-    \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"sqrt_mod.hpp\"\n#include\
-    \ <random>\n#line 6 \"sqrt_mod.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ sqrt_mod_prime(Tp a) {\n    // Bostan--Mori's algorithm\n    const auto p =\
-    \ Tp::mod();\n    if (p == 2 || a == 0) return {a};\n    if (a.pow(p / 2) == -1)\
-    \ return {};\n    if ((p & 3) == 3) {\n        const auto b = a.pow((p + 1) /\
-    \ 4);\n        return {b, -b};\n    }\n    xoshiro256starstar rng(std::random_device{}());\n\
-    \    std::uniform_int_distribution<std::decay_t<decltype(p)>> dis(2, p - 1);\n\
-    \    Tp t;\n    do { t = dis(rng); } while ((t * t - a * 4).pow(p / 2) != -1);\n\
-    \    Tp k0 = 1, k1, k2 = -t, k3 = a;\n    for (auto e = (p + 1) >> 1;;) {\n  \
-    \      if (e & 1) {\n            k0 = k1 - k0 * k2, k1 *= k3;\n        } else\
-    \ {\n            k1 = k0 * k3 - k1 * k2;\n        }\n        if ((e >>= 1) ==\
-    \ 0) return {k0, -k0};\n        k2 = k3 + k3 - k2 * k2, k3 *= k3;\n    }\n}\n\
-    #line 5 \"fps_sqrt.hpp\"\n#include <optional>\n#line 7 \"fps_sqrt.hpp\"\n\ntemplate\
-    \ <typename Tp>\ninline std::optional<std::vector<Tp>> sqrt(const std::vector<Tp>\
-    \ &a, int n) {\n    const int o = order(a);\n    if (o < 0) return std::vector<Tp>(n);\n\
-    \    const auto cv = sqrt_mod_prime(a[o]);\n    if (cv.empty()) return {};\n \
-    \   return sqrt_hint(a, n, cv[0]);\n}\n\ntemplate <typename Tp>\ninline std::optional<std::vector<Tp>>\
-    \ sqrt_hint(const std::vector<Tp> &a, int n, Tp c) {\n    const int o = order(a);\n\
-    \    if (o < 0) return std::vector<Tp>(n);\n    if ((o & 1) || c * c != a[o])\
-    \ return {};\n    std::vector sqrta(a.begin() + o, a.end());\n    const auto iv\
-    \ = sqrta[0].inv();\n    for (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i]\
-    \ *= iv;\n    sqrta = pow(sqrta, Tp(1).div_by_2().val(), n - o / 2);\n    for\
-    \ (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i] *= c;\n    sqrta.insert(sqrta.begin(),\
-    \ o / 2, 0);\n    return sqrta;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
+    \ o * e, 0);\n    return a;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
     #line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
     \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
     \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
@@ -271,39 +222,35 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 7 \"test/sqrt_of_formal_power_series.0.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
-    \    std::cin >> n;\n    std::vector<mint> a(n);\n    for (int i = 0; i < n; ++i)\
-    \ std::cin >> a[i];\n    if (const auto sqrta = sqrt(a, n)) {\n        for (int\
-    \ i = 0; i < n; ++i) std::cout << sqrta->at(i) << ' ';\n    } else {\n       \
-    \ std::cout << \"-1\";\n    }\n    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/sqrt_of_formal_power_series\"\
-    \n\n#include \"fps_sqrt.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\
+    #line 7 \"test/formal_power_series/inv_of_formal_power_series.0.test.cpp\"\n\n\
+    int main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
+    \ a(n);\n    for (int i = 0; i < n; ++i) std::cin >> a[i];\n    const auto inva\
+    \ = inv(a, n);\n    for (int i = 0; i < n; ++i) std::cout << inva[i] << ' ';\n\
+    \    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
+    \n\n#include \"fps_basic.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\
     #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
     \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n  \
     \  std::cin >> n;\n    std::vector<mint> a(n);\n    for (int i = 0; i < n; ++i)\
-    \ std::cin >> a[i];\n    if (const auto sqrta = sqrt(a, n)) {\n        for (int\
-    \ i = 0; i < n; ++i) std::cout << sqrta->at(i) << ' ';\n    } else {\n       \
-    \ std::cout << \"-1\";\n    }\n    return 0;\n}\n"
+    \ std::cin >> a[i];\n    const auto inva = inv(a, n);\n    for (int i = 0; i <\
+    \ n; ++i) std::cout << inva[i] << ' ';\n    return 0;\n}\n"
   dependsOn:
-  - fps_sqrt.hpp
   - fps_basic.hpp
   - binomial.hpp
   - semi_relaxed_conv.hpp
   - fft.hpp
-  - sqrt_mod.hpp
-  - rng.hpp
   - modint.hpp
   isVerificationFile: true
-  path: test/sqrt_of_formal_power_series.0.test.cpp
+  path: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-02 13:23:25+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-06-22 10:58:08+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/sqrt_of_formal_power_series.0.test.cpp
+documentation_of: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/sqrt_of_formal_power_series.0.test.cpp
-- /verify/test/sqrt_of_formal_power_series.0.test.cpp.html
-title: test/sqrt_of_formal_power_series.0.test.cpp
+- /verify/test/formal_power_series/inv_of_formal_power_series.0.test.cpp
+- /verify/test/formal_power_series/inv_of_formal_power_series.0.test.cpp.html
+title: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
 ---

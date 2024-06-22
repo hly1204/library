@@ -1,39 +1,39 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: c_recursive.hpp
     title: c_recursive.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/consecutive_terms_of_linear_recurrent_sequence
+    PROBLEM: https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
     links:
-    - https://judge.yosupo.jp/problem/consecutive_terms_of_linear_recurrent_sequence
-  bundledCode: "#line 1 \"test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/consecutive_terms_of_linear_recurrent_sequence\"\
+    - https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
+  bundledCode: "#line 1 \"test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial\"\
     \n\n#line 2 \"c_recursive.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
     #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
     \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
@@ -355,25 +355,24 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 8 \"test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp\"\n\n\
-    int main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using mint = ModInt<998244353>;\n    int d;\n    long long k;\n    int M;\n\
-    \    std::cin >> d >> k >> M;\n    std::vector<mint> Q(d + 1), init_v(d);\n  \
-    \  for (int i = 0; i < d; ++i) std::cin >> init_v[i];\n    Q[0] = 1;\n    for\
-    \ (int i = 1; i <= d; ++i) {\n        std::cin >> Q[i];\n        Q[i] = -Q[i];\n\
-    \    }\n    auto P = convolution(Q, init_v);\n    P.resize(d);\n    const auto\
-    \ res = slice_coeff_rational(P, Q, k, k + M);\n    for (int i = 0; i < (int)res.size();\
+    #line 8 \"test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n, m;\n    mint c;\n    std::cin\
+    \ >> n >> m >> c;\n    std::vector<mint> A(n);\n    for (int i = 0; i < n; ++i)\
+    \ std::cin >> A[i];\n    const auto Q = pow(std::vector<mint>{1, -1}, n, n + 1);\n\
+    \    auto P       = convolution(A, Q);\n    P.resize(n);\n    const auto res =\
+    \ slice_coeff_rational(P, Q, c.val(), c.val() + m);\n    for (int i = 0; i < (int)res.size();\
     \ ++i) std::cout << res[i] << ' ';\n    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/consecutive_terms_of_linear_recurrent_sequence\"\
-    \n\n#include \"c_recursive.hpp\"\n#include \"fft.hpp\"\n#include \"modint.hpp\"\
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial\"\
+    \n\n#include \"c_recursive.hpp\"\n#include \"fps_basic.hpp\"\n#include \"modint.hpp\"\
     \n#include <iostream>\n#include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int d;\n\
-    \    long long k;\n    int M;\n    std::cin >> d >> k >> M;\n    std::vector<mint>\
-    \ Q(d + 1), init_v(d);\n    for (int i = 0; i < d; ++i) std::cin >> init_v[i];\n\
-    \    Q[0] = 1;\n    for (int i = 1; i <= d; ++i) {\n        std::cin >> Q[i];\n\
-    \        Q[i] = -Q[i];\n    }\n    auto P = convolution(Q, init_v);\n    P.resize(d);\n\
-    \    const auto res = slice_coeff_rational(P, Q, k, k + M);\n    for (int i =\
-    \ 0; i < (int)res.size(); ++i) std::cout << res[i] << ' ';\n    return 0;\n}\n"
+    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
+    \    mint c;\n    std::cin >> n >> m >> c;\n    std::vector<mint> A(n);\n    for\
+    \ (int i = 0; i < n; ++i) std::cin >> A[i];\n    const auto Q = pow(std::vector<mint>{1,\
+    \ -1}, n, n + 1);\n    auto P       = convolution(A, Q);\n    P.resize(n);\n \
+    \   const auto res = slice_coeff_rational(P, Q, c.val(), c.val() + m);\n    for\
+    \ (int i = 0; i < (int)res.size(); ++i) std::cout << res[i] << ' ';\n    return\
+    \ 0;\n}\n"
   dependsOn:
   - c_recursive.hpp
   - fft.hpp
@@ -383,15 +382,15 @@ data:
   - poly_basic.hpp
   - modint.hpp
   isVerificationFile: true
-  path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-06-22 10:58:08+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+documentation_of: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-- /verify/test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp.html
-title: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+- /verify/test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+- /verify/test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp.html
+title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
 ---

@@ -1,39 +1,39 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/division_of_polynomials
     links:
     - https://judge.yosupo.jp/problem/division_of_polynomials
-  bundledCode: "#line 1 \"test/division_of_polynomials.0.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/division_of_polynomials\"\n\n#line 2 \"modint.hpp\"\
-    \n\n#include <iostream>\n#include <type_traits>\n\ntemplate <unsigned Mod>\nclass\
-    \ ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\"\
-    );\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+  bundledCode: "#line 1 \"test/formal_power_series/division_of_polynomials.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/division_of_polynomials\"\n\
+    \n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\ntemplate\
+    \ <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod`\
+    \ must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
     \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
     \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
     \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
@@ -261,7 +261,7 @@ data:
     \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
     \ < 0) return {Tp(0)};\n\n    auto Q = div(std::vector(A.rend() - (degA + 1),\
     \ A.rend()),\n                 std::vector(B.rend() - (degB + 1), B.rend()), degQ\
-    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 7 \"test/division_of_polynomials.0.test.cpp\"\
+    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 7 \"test/formal_power_series/division_of_polynomials.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
     \    std::vector<mint> f(n), g(m);\n    for (int i = 0; i < n; ++i) std::cin >>\
@@ -289,15 +289,15 @@ data:
   - fps_basic.hpp
   - semi_relaxed_conv.hpp
   isVerificationFile: true
-  path: test/division_of_polynomials.0.test.cpp
+  path: test/formal_power_series/division_of_polynomials.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-06-22 10:58:08+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/division_of_polynomials.0.test.cpp
+documentation_of: test/formal_power_series/division_of_polynomials.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/division_of_polynomials.0.test.cpp
-- /verify/test/division_of_polynomials.0.test.cpp.html
-title: test/division_of_polynomials.0.test.cpp
+- /verify/test/formal_power_series/division_of_polynomials.0.test.cpp
+- /verify/test/formal_power_series/division_of_polynomials.0.test.cpp.html
+title: test/formal_power_series/division_of_polynomials.0.test.cpp
 ---

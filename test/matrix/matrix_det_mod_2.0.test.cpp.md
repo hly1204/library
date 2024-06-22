@@ -1,28 +1,29 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: bitarray.hpp
     title: bitarray.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/matrix_det_mod_2
     links:
     - https://judge.yosupo.jp/problem/matrix_det_mod_2
-  bundledCode: "#line 1 \"test/matrix_det_mod_2.0.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/matrix_det_mod_2\"\
-    \n\n#line 2 \"bitarray.hpp\"\n\n#include <cassert>\n#include <cstddef>\n#include\
-    \ <string>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\n\
-    namespace detail {\n\ntemplate <int N>\ninline unsigned long long from_bit_string(const\
-    \ char *s) {\n    return from_bit_string<N / 2>(s + N / 2) << (N / 2) | from_bit_string<N\
-    \ / 2>(s);\n}\n\ntemplate <>\ninline unsigned long long from_bit_string<1>(const\
-    \ char *s) {\n    return s[0] == '1';\n}\n\ntemplate <int N>\ninline void to_bit_string(unsigned\
-    \ long long v, char *s) {\n    to_bit_string<N / 2>(v, s);\n    to_bit_string<N\
-    \ / 2>(v >> (N / 2), s + N / 2);\n}\n\ntemplate <>\ninline void to_bit_string<1>(unsigned\
+  bundledCode: "#line 1 \"test/matrix/matrix_det_mod_2.0.test.cpp\"\n#define PROBLEM\
+    \ \"https://judge.yosupo.jp/problem/matrix_det_mod_2\"\n\n#line 2 \"bitarray.hpp\"\
+    \n\n#include <cassert>\n#include <cstddef>\n#include <string>\n#include <type_traits>\n\
+    #include <utility>\n#include <vector>\n\nnamespace detail {\n\ntemplate <int N>\n\
+    inline unsigned long long from_bit_string(const char *s) {\n    return from_bit_string<N\
+    \ / 2>(s + N / 2) << (N / 2) | from_bit_string<N / 2>(s);\n}\n\ntemplate <>\n\
+    inline unsigned long long from_bit_string<1>(const char *s) {\n    return s[0]\
+    \ == '1';\n}\n\ntemplate <int N>\ninline void to_bit_string(unsigned long long\
+    \ v, char *s) {\n    to_bit_string<N / 2>(v, s);\n    to_bit_string<N / 2>(v >>\
+    \ (N / 2), s + N / 2);\n}\n\ntemplate <>\ninline void to_bit_string<1>(unsigned\
     \ long long v, char *s) {\n    s[0] = ((v & 1) + '0');\n}\n\n} // namespace detail\n\
     \n// TODO: operator<< operator>> ...\nclass BitArray {\npublic:\n    using ULL\
     \                          = unsigned long long;\n    static constexpr std::size_t\
@@ -95,14 +96,14 @@ data:
     \ BitArray &L, const BitArray &R) { return BitArray(L) &= R; }\n    friend BitArray\
     \ operator|(const BitArray &L, const BitArray &R) { return BitArray(L) |= R; }\n\
     \    friend BitArray operator^(const BitArray &L, const BitArray &R) { return\
-    \ BitArray(L) ^= R; }\n};\n#line 4 \"test/matrix_det_mod_2.0.test.cpp\"\n#include\
-    \ <iostream>\n#line 7 \"test/matrix_det_mod_2.0.test.cpp\"\n\nusing BitMatrix\
-    \ = std::vector<BitArray>;\n\nbool det(BitMatrix A) {\n    const int n = A.size();\n\
-    \    for (int i = 0; i < n; ++i) {\n        int pivot = i;\n        for (; pivot\
-    \ < n; ++pivot)\n            if (A[pivot].test(i)) break;\n        if (pivot ==\
-    \ n) return false;\n        if (pivot != i) A[pivot].swap(A[i]);\n        for\
-    \ (int j = i + 1; j < n; ++j)\n            if (A[j].test(i)) A[j] ^= A[i];\n \
-    \   }\n    return true;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \ BitArray(L) ^= R; }\n};\n#line 4 \"test/matrix/matrix_det_mod_2.0.test.cpp\"\
+    \n#include <iostream>\n#line 7 \"test/matrix/matrix_det_mod_2.0.test.cpp\"\n\n\
+    using BitMatrix = std::vector<BitArray>;\n\nbool det(BitMatrix A) {\n    const\
+    \ int n = A.size();\n    for (int i = 0; i < n; ++i) {\n        int pivot = i;\n\
+    \        for (; pivot < n; ++pivot)\n            if (A[pivot].test(i)) break;\n\
+    \        if (pivot == n) return false;\n        if (pivot != i) A[pivot].swap(A[i]);\n\
+    \        for (int j = i + 1; j < n; ++j)\n            if (A[j].test(i)) A[j] ^=\
+    \ A[i];\n    }\n    return true;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    int n;\n    std::cin >> n;\n    BitMatrix A(n);\n\
     \    for (int i = 0; i < n; ++i) {\n        std::string s;\n        std::cin >>\
     \ s;\n        A[i] = BitArray(s);\n    }\n    std::cout << det(A);\n    return\
@@ -122,15 +123,15 @@ data:
   dependsOn:
   - bitarray.hpp
   isVerificationFile: true
-  path: test/matrix_det_mod_2.0.test.cpp
+  path: test/matrix/matrix_det_mod_2.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-03 19:40:13+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-06-22 10:58:08+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/matrix_det_mod_2.0.test.cpp
+documentation_of: test/matrix/matrix_det_mod_2.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/matrix_det_mod_2.0.test.cpp
-- /verify/test/matrix_det_mod_2.0.test.cpp.html
-title: test/matrix_det_mod_2.0.test.cpp
+- /verify/test/matrix/matrix_det_mod_2.0.test.cpp
+- /verify/test/matrix/matrix_det_mod_2.0.test.cpp.html
+title: test/matrix/matrix_det_mod_2.0.test.cpp
 ---

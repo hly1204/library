@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: xgcd.hpp
     title: xgcd.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/187.0.test.cpp
-    title: test/187.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: test/number_theory/187.0.test.cpp
+    title: test/number_theory/187.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links:
     - https://math314.hateblo.jp/entry/2015/05/07/014908
@@ -110,9 +110,9 @@ data:
   path: chinese_remainder.hpp
   requiredBy: []
   timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
-  - test/187.0.test.cpp
+  - test/number_theory/187.0.test.cpp
 documentation_of: chinese_remainder.hpp
 layout: document
 redirect_from:

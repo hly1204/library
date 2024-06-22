@@ -1,37 +1,37 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/exp_of_formal_power_series
     links:
     - https://judge.yosupo.jp/problem/exp_of_formal_power_series
-  bundledCode: "#line 1 \"test/exp_of_formal_power_series.0.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/exp_of_formal_power_series\"\n\n#line 2 \"\
-    fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n#include\
-    \ <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_,\
-    \ invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\
-    \n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
+  bundledCode: "#line 1 \"test/formal_power_series/exp_of_formal_power_series.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/exp_of_formal_power_series\"\
+    \n\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n\
+    #include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp>\
+    \ factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)}\
+    \ {}\n\n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
     \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
     \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
     \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
@@ -222,11 +222,12 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 7 \"test/exp_of_formal_power_series.0.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
-    \    std::cin >> n;\n    std::vector<mint> a(n);\n    for (int i = 0; i < n; ++i)\
-    \ std::cin >> a[i];\n    const auto expa = exp(a, n);\n    for (int i = 0; i <\
-    \ n; ++i) std::cout << expa[i] << ' ';\n    return 0;\n}\n"
+    #line 7 \"test/formal_power_series/exp_of_formal_power_series.0.test.cpp\"\n\n\
+    int main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
+    \ a(n);\n    for (int i = 0; i < n; ++i) std::cin >> a[i];\n    const auto expa\
+    \ = exp(a, n);\n    for (int i = 0; i < n; ++i) std::cout << expa[i] << ' ';\n\
+    \    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/exp_of_formal_power_series\"\
     \n\n#include \"fps_basic.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\
     #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
@@ -241,15 +242,15 @@ data:
   - fft.hpp
   - modint.hpp
   isVerificationFile: true
-  path: test/exp_of_formal_power_series.0.test.cpp
+  path: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-06-22 10:58:08+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/exp_of_formal_power_series.0.test.cpp
+documentation_of: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/exp_of_formal_power_series.0.test.cpp
-- /verify/test/exp_of_formal_power_series.0.test.cpp.html
-title: test/exp_of_formal_power_series.0.test.cpp
+- /verify/test/formal_power_series/exp_of_formal_power_series.0.test.cpp
+- /verify/test/formal_power_series/exp_of_formal_power_series.0.test.cpp.html
+title: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
 ---

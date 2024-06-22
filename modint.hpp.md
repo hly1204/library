@@ -4,80 +4,80 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/characteristic_polynomial.0.test.cpp
-    title: test/characteristic_polynomial.0.test.cpp
+    path: test/data_structure/point_set_range_composite.0.test.cpp
+    title: test/data_structure/point_set_range_composite.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/composition_of_formal_power_series_large.0.test.cpp
-    title: test/composition_of_formal_power_series_large.0.test.cpp
+    path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
+    title: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
-    title: test/compositional_inverse_of_formal_power_series_large.0.test.cpp
+    path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
+    title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-    title: test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+    path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+    title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-    title: test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+    path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+    title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/convolution_mod.0.test.cpp
-    title: test/convolution_mod.0.test.cpp
+    path: test/formal_power_series/convolution_mod.0.test.cpp
+    title: test/formal_power_series/convolution_mod.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/convolution_mod.1.test.cpp
-    title: test/convolution_mod.1.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/division_of_polynomials.0.test.cpp
-    title: test/division_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/exp_of_formal_power_series.0.test.cpp
-    title: test/exp_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/inv_of_formal_power_series.0.test.cpp
-    title: test/inv_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/inverse_matrix.0.test.cpp
-    title: test/inverse_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-    title: test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/log_of_formal_power_series.0.test.cpp
-    title: test/log_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/matrix_det.0.test.cpp
-    title: test/matrix_det.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/matrix_product.0.test.cpp
-    title: test/matrix_product.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/multipoint_evaluation.0.test.cpp
-    title: test/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-    title: test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/point_set_range_composite.0.test.cpp
-    title: test/point_set_range_composite.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/polynomial_interpolation.0.test.cpp
-    title: test/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-    title: test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/polynomial_taylor_shift.0.test.cpp
-    title: test/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/pow_of_formal_power_series.0.test.cpp
-    title: test/pow_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/shift_of_sampling_points_of_polynomial.0.test.cpp
-    title: test/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/sqrt_of_formal_power_series.0.test.cpp
-    title: test/sqrt_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: false
+    path: test/formal_power_series/convolution_mod.1.test.cpp
+    title: test/formal_power_series/convolution_mod.1.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/division_of_polynomials.0.test.cpp
+    title: test/formal_power_series/division_of_polynomials.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
+    title: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
+    title: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+    title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/log_of_formal_power_series.0.test.cpp
+    title: test/formal_power_series/log_of_formal_power_series.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/multipoint_evaluation.0.test.cpp
+    title: test/formal_power_series/multipoint_evaluation.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+    title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/polynomial_interpolation.0.test.cpp
+    title: test/formal_power_series/polynomial_interpolation.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+    title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
+    title: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
+    title: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+    title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
+    title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
+  - icon: ':x:'
+    path: test/matrix/characteristic_polynomial.0.test.cpp
+    title: test/matrix/characteristic_polynomial.0.test.cpp
+  - icon: ':x:'
+    path: test/matrix/inverse_matrix.0.test.cpp
+    title: test/matrix/inverse_matrix.0.test.cpp
+  - icon: ':x:'
+    path: test/matrix/matrix_det.0.test.cpp
+    title: test/matrix/matrix_det.0.test.cpp
+  - icon: ':x:'
+    path: test/matrix/matrix_product.0.test.cpp
+    title: test/matrix/matrix_product.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
@@ -161,32 +161,32 @@ data:
   path: modint.hpp
   requiredBy: []
   timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
-  - test/polynomial_interpolation.0.test.cpp
-  - test/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - test/matrix_product.0.test.cpp
-  - test/log_of_formal_power_series.0.test.cpp
-  - test/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - test/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - test/characteristic_polynomial.0.test.cpp
-  - test/convolution_mod.0.test.cpp
-  - test/exp_of_formal_power_series.0.test.cpp
-  - test/pow_of_formal_power_series.0.test.cpp
-  - test/matrix_det.0.test.cpp
-  - test/polynomial_taylor_shift.0.test.cpp
-  - test/composition_of_formal_power_series_large.0.test.cpp
-  - test/division_of_polynomials.0.test.cpp
-  - test/inv_of_formal_power_series.0.test.cpp
-  - test/inverse_matrix.0.test.cpp
-  - test/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - test/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - test/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - test/multipoint_evaluation.0.test.cpp
-  - test/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - test/sqrt_of_formal_power_series.0.test.cpp
-  - test/point_set_range_composite.0.test.cpp
-  - test/convolution_mod.1.test.cpp
+  - test/data_structure/point_set_range_composite.0.test.cpp
+  - test/formal_power_series/polynomial_interpolation.0.test.cpp
+  - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/log_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  - test/formal_power_series/convolution_mod.0.test.cpp
+  - test/formal_power_series/exp_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/pow_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
+  - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
+  - test/formal_power_series/division_of_polynomials.0.test.cpp
+  - test/formal_power_series/inv_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+  - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+  - test/formal_power_series/multipoint_evaluation.0.test.cpp
+  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/convolution_mod.1.test.cpp
+  - test/matrix/matrix_product.0.test.cpp
+  - test/matrix/characteristic_polynomial.0.test.cpp
+  - test/matrix/matrix_det.0.test.cpp
+  - test/matrix/inverse_matrix.0.test.cpp
 documentation_of: modint.hpp
 layout: document
 redirect_from:
