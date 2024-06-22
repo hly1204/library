@@ -29,6 +29,9 @@ protected:
         std::swap(L, R);
         derived()->do_flip();
     }
+    // base_propagate() is called to propagate the update infomation to child(ren).
+    // There is no need to update the infomation combined from child(ren)
+    // which should be done in base_update().
     void base_propagate() {
         derived()->do_propagate();
         if (NeedFlip) {
@@ -37,6 +40,7 @@ protected:
             if (R) R->base_flip();
         }
     }
+    // base_update() is called to update the infomation combined from child(ren).
     void base_update() {
         Size = 1;
         if (L) Size += L->Size;
