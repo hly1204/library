@@ -12,16 +12,16 @@ data:
     title: treap_node_base.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/range_affine_point_get
+    PROBLEM: https://judge.yosupo.jp/problem/range_affine_range_sum
     links:
-    - https://judge.yosupo.jp/problem/range_affine_point_get
-  bundledCode: "#line 1 \"test/data_structure/range_affine_point_get.0.test.cpp\"\n\
-    #define PROBLEM \"https://judge.yosupo.jp/problem/range_affine_point_get\"\n\n\
+    - https://judge.yosupo.jp/problem/range_affine_range_sum
+  bundledCode: "#line 1 \"test/data_structure/range_affine_range_sum.0.test.cpp\"\n\
+    #define PROBLEM \"https://judge.yosupo.jp/problem/range_affine_range_sum\"\n\n\
     #line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\ntemplate\
     \ <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod`\
     \ must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
@@ -120,57 +120,63 @@ data:
     \ *select(int k) {\n        base_propagate();\n        const int leftsize = left()\
     \ ? left()->size() : 0;\n        if (k == leftsize) return (TreapNode *)this;\n\
     \        if (k < leftsize) return left()->select(k);\n        return right()->select(k\
-    \ - leftsize - 1);\n    }\n};\n#line 6 \"test/data_structure/range_affine_point_get.0.test.cpp\"\
+    \ - leftsize - 1);\n    }\n};\n#line 6 \"test/data_structure/range_affine_range_sum.0.test.cpp\"\
     \n#include <memory>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n \
     \   std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    struct TreapNode\
-    \ : TreapNodeBase<TreapNode> {\n        mint Val, Add, Mul = {1};\n        void\
-    \ do_propagate() {\n            if (left()) {\n                left()->Add = Mul\
-    \ * left()->Add + Add;\n                left()->Mul *= Mul;\n            }\n \
-    \           if (right()) {\n                right()->Add = Mul * right()->Add\
-    \ + Add;\n                right()->Mul *= Mul;\n            }\n            Val\
+    \ : TreapNodeBase<TreapNode> {\n        mint Val, Sum, Add, Mul = {1};\n     \
+    \   void do_propagate() {\n            if (left()) {\n                left()->Add\
+    \ = Mul * left()->Add + Add;\n                left()->Mul *= Mul;\n          \
+    \      left()->Sum = Add * left()->size() + Mul * left()->Sum;\n            }\n\
+    \            if (right()) {\n                right()->Add = Mul * right()->Add\
+    \ + Add;\n                right()->Mul *= Mul;\n                right()->Sum =\
+    \ Add * right()->size() + Mul * right()->Sum;\n            }\n            Val\
     \ = Add + Mul * Val;\n            Add = 0;\n            Mul = 1;\n        }\n\
+    \        void do_update() {\n            Sum = Val;\n            if (left()) Sum\
+    \ += left()->Sum;\n            if (right()) Sum += right()->Sum;\n        }\n\
     \    };\n    int n, q;\n    std::cin >> n >> q;\n    auto buf        = std::make_unique<TreapNode[]>(n);\n\
     \    TreapNode *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n        std::cin\
-    \ >> buf[i].Val;\n        root = TreapNode::join(root, &buf[i]);\n    }\n    while\
-    \ (q--) {\n        int cmd;\n        std::cin >> cmd;\n        if (cmd == 0) {\n\
-    \            int l, r;\n            std::cin >> l >> r;\n            auto [R0,\
-    \ R1, R2] = TreapNode::split(root, l, r - l);\n            std::cin >> R1->Mul\
-    \ >> R1->Add;\n            root = TreapNode::join(R0, R1, R2);\n        } else\
-    \ {\n            int pos;\n            std::cin >> pos;\n            std::cout\
-    \ << root->select(pos)->Val << '\\n';\n        }\n    }\n    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/range_affine_point_get\"\
+    \ >> buf[i].Val;\n        buf[i].Sum = buf[i].Val;\n        root       = TreapNode::join(root,\
+    \ &buf[i]);\n    }\n    while (q--) {\n        int cmd, l, r;\n        std::cin\
+    \ >> cmd >> l >> r;\n        auto [R0, R1, R2] = TreapNode::split(root, l, r -\
+    \ l);\n        if (cmd == 0) {\n            std::cin >> R1->Mul >> R1->Add;\n\
+    \        } else {\n            std::cout << R1->Sum << '\\n';\n        }\n   \
+    \     root = TreapNode::join(R0, R1, R2);\n    }\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/range_affine_range_sum\"\
     \n\n#include \"modint.hpp\"\n#include \"treap_node_base.hpp\"\n#include <iostream>\n\
     #include <memory>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
     \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    struct TreapNode\
-    \ : TreapNodeBase<TreapNode> {\n        mint Val, Add, Mul = {1};\n        void\
-    \ do_propagate() {\n            if (left()) {\n                left()->Add = Mul\
-    \ * left()->Add + Add;\n                left()->Mul *= Mul;\n            }\n \
-    \           if (right()) {\n                right()->Add = Mul * right()->Add\
-    \ + Add;\n                right()->Mul *= Mul;\n            }\n            Val\
+    \ : TreapNodeBase<TreapNode> {\n        mint Val, Sum, Add, Mul = {1};\n     \
+    \   void do_propagate() {\n            if (left()) {\n                left()->Add\
+    \ = Mul * left()->Add + Add;\n                left()->Mul *= Mul;\n          \
+    \      left()->Sum = Add * left()->size() + Mul * left()->Sum;\n            }\n\
+    \            if (right()) {\n                right()->Add = Mul * right()->Add\
+    \ + Add;\n                right()->Mul *= Mul;\n                right()->Sum =\
+    \ Add * right()->size() + Mul * right()->Sum;\n            }\n            Val\
     \ = Add + Mul * Val;\n            Add = 0;\n            Mul = 1;\n        }\n\
+    \        void do_update() {\n            Sum = Val;\n            if (left()) Sum\
+    \ += left()->Sum;\n            if (right()) Sum += right()->Sum;\n        }\n\
     \    };\n    int n, q;\n    std::cin >> n >> q;\n    auto buf        = std::make_unique<TreapNode[]>(n);\n\
     \    TreapNode *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n        std::cin\
-    \ >> buf[i].Val;\n        root = TreapNode::join(root, &buf[i]);\n    }\n    while\
-    \ (q--) {\n        int cmd;\n        std::cin >> cmd;\n        if (cmd == 0) {\n\
-    \            int l, r;\n            std::cin >> l >> r;\n            auto [R0,\
-    \ R1, R2] = TreapNode::split(root, l, r - l);\n            std::cin >> R1->Mul\
-    \ >> R1->Add;\n            root = TreapNode::join(R0, R1, R2);\n        } else\
-    \ {\n            int pos;\n            std::cin >> pos;\n            std::cout\
-    \ << root->select(pos)->Val << '\\n';\n        }\n    }\n    return 0;\n}\n"
+    \ >> buf[i].Val;\n        buf[i].Sum = buf[i].Val;\n        root       = TreapNode::join(root,\
+    \ &buf[i]);\n    }\n    while (q--) {\n        int cmd, l, r;\n        std::cin\
+    \ >> cmd >> l >> r;\n        auto [R0, R1, R2] = TreapNode::split(root, l, r -\
+    \ l);\n        if (cmd == 0) {\n            std::cin >> R1->Mul >> R1->Add;\n\
+    \        } else {\n            std::cout << R1->Sum << '\\n';\n        }\n   \
+    \     root = TreapNode::join(R0, R1, R2);\n    }\n    return 0;\n}\n"
   dependsOn:
   - modint.hpp
   - treap_node_base.hpp
   - rng.hpp
   isVerificationFile: true
-  path: test/data_structure/range_affine_point_get.0.test.cpp
+  path: test/data_structure/range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-22 17:09:41+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-06-22 17:12:35+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/data_structure/range_affine_point_get.0.test.cpp
+documentation_of: test/data_structure/range_affine_range_sum.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/data_structure/range_affine_point_get.0.test.cpp
-- /verify/test/data_structure/range_affine_point_get.0.test.cpp.html
-title: test/data_structure/range_affine_point_get.0.test.cpp
+- /verify/test/data_structure/range_affine_range_sum.0.test.cpp
+- /verify/test/data_structure/range_affine_range_sum.0.test.cpp.html
+title: test/data_structure/range_affine_range_sum.0.test.cpp
 ---
