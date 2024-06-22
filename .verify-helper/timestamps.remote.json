@@ -1,5 +1,6 @@
 {
 "test/data_structure/point_set_range_composite.0.test.cpp": "2024-06-22 10:58:08 +0800",
+"test/data_structure/range_affine_point_get.0.test.cpp": "2024-06-22 16:23:07 +0800",
 "test/data_structure/range_reverse_range_sum.0.test.cpp": "2024-06-22 10:58:08 +0800",
 "test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp": "2024-06-22 10:58:08 +0800",
 "test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp": "2024-06-22 10:58:08 +0800",
