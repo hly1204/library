@@ -2,16 +2,16 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: conv_mod.hpp
     title: conv_mod.hpp
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
     title: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"modlong.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
@@ -130,7 +130,7 @@ data:
   requiredBy:
   - conv_mod.hpp
   timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/convolution_mod_1000000007.0.test.cpp
 documentation_of: modlong.hpp

@@ -7,8 +7,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':x:'
-    path: test/number_theory/187.0.test.cpp
-    title: test/number_theory/187.0.test.cpp
+    path: test/number_theory/yukicoder187.0.test.cpp
+    title: test/number_theory/yukicoder187.0.test.cpp
   _isVerificationFailed: true
   _pathExtension: hpp
   _verificationStatusIcon: ':x:'
@@ -112,7 +112,7 @@ data:
   timestamp: '2024-05-15 00:00:04+08:00'
   verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
-  - test/number_theory/187.0.test.cpp
+  - test/number_theory/yukicoder187.0.test.cpp
 documentation_of: chinese_remainder.hpp
 layout: document
 redirect_from:
