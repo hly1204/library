@@ -141,12 +141,12 @@ data:
     \ += left()->Sum;\n            if (right()) Sum += right()->Sum;\n        }\n\
     \    };\n    int n, q;\n    std::cin >> n >> q;\n    auto buf        = std::make_unique<TreapNode[]>(n);\n\
     \    TreapNode *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n        std::cin\
-    \ >> buf[i].Val;\n        buf[i].Sum = buf[i].Val;\n        root       = TreapNode::join(root,\
-    \ &buf[i]);\n    }\n    while (q--) {\n        int cmd, l, r;\n        std::cin\
-    \ >> cmd >> l >> r;\n        auto [R0, R1, R2] = TreapNode::split(root, l, r -\
-    \ l);\n        if (cmd == 0) {\n            std::cin >> R1->Mul >> R1->Add;\n\
-    \        } else {\n            std::cout << R1->Sum << '\\n';\n        }\n   \
-    \     root = TreapNode::join(R0, R1, R2);\n    }\n    return 0;\n}\n"
+    \ >> buf[i].Val;\n        root = TreapNode::join(root, &buf[i]);\n    }\n    while\
+    \ (q--) {\n        int cmd, l, r;\n        std::cin >> cmd >> l >> r;\n      \
+    \  auto [R0, R1, R2] = TreapNode::split(root, l, r - l);\n        if (cmd == 0)\
+    \ {\n            std::cin >> R1->Mul >> R1->Add;\n        } else {\n         \
+    \   std::cout << R1->Sum << '\\n';\n        }\n        root = TreapNode::join(R0,\
+    \ R1, R2);\n    }\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/range_affine_range_sum\"\
     \n\n#include \"modint.hpp\"\n#include \"treap_node_base.hpp\"\n#include <iostream>\n\
     #include <memory>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
@@ -163,12 +163,12 @@ data:
     \ += left()->Sum;\n            if (right()) Sum += right()->Sum;\n        }\n\
     \    };\n    int n, q;\n    std::cin >> n >> q;\n    auto buf        = std::make_unique<TreapNode[]>(n);\n\
     \    TreapNode *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n        std::cin\
-    \ >> buf[i].Val;\n        buf[i].Sum = buf[i].Val;\n        root       = TreapNode::join(root,\
-    \ &buf[i]);\n    }\n    while (q--) {\n        int cmd, l, r;\n        std::cin\
-    \ >> cmd >> l >> r;\n        auto [R0, R1, R2] = TreapNode::split(root, l, r -\
-    \ l);\n        if (cmd == 0) {\n            std::cin >> R1->Mul >> R1->Add;\n\
-    \        } else {\n            std::cout << R1->Sum << '\\n';\n        }\n   \
-    \     root = TreapNode::join(R0, R1, R2);\n    }\n    return 0;\n}\n"
+    \ >> buf[i].Val;\n        root = TreapNode::join(root, &buf[i]);\n    }\n    while\
+    \ (q--) {\n        int cmd, l, r;\n        std::cin >> cmd >> l >> r;\n      \
+    \  auto [R0, R1, R2] = TreapNode::split(root, l, r - l);\n        if (cmd == 0)\
+    \ {\n            std::cin >> R1->Mul >> R1->Add;\n        } else {\n         \
+    \   std::cout << R1->Sum << '\\n';\n        }\n        root = TreapNode::join(R0,\
+    \ R1, R2);\n    }\n    return 0;\n}\n"
   dependsOn:
   - modint.hpp
   - treap_node_base.hpp
@@ -176,7 +176,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-22 17:28:30+08:00'
+  timestamp: '2024-06-22 17:36:22+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_affine_range_sum.0.test.cpp
