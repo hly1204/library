@@ -1,32 +1,32 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
     title: c_recursive.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
@@ -385,7 +385,7 @@ data:
   path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   requiredBy: []
   timestamp: '2024-06-22 10:58:08+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
 layout: document
