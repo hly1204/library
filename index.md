@@ -15,7 +15,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: c_recursive.hpp
       title: c_recursive.hpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: chinese_remainder.hpp
       title: chinese_remainder.hpp
     - icon: ':heavy_check_mark:'
@@ -39,13 +39,13 @@ data:
     - icon: ':heavy_check_mark:'
       path: fps_sqrt.hpp
       title: fps_sqrt.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: mat_basic.hpp
       title: mat_basic.hpp
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -72,7 +72,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: treap_node_base.hpp
       title: treap_node_base.hpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: xgcd.hpp
       title: xgcd.hpp
   verificationCategories:
@@ -160,12 +160,12 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/matrix/matrix_det_mod_2.0.test.cpp
       title: test/matrix/matrix_det_mod_2.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/matrix/matrix_product.0.test.cpp
       title: test/matrix/matrix_product.0.test.cpp
   - name: test/number_theory
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/number_theory/yukicoder187.0.test.cpp
       title: test/number_theory/yukicoder187.0.test.cpp
 layout: toppage
