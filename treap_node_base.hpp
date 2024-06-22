@@ -45,8 +45,20 @@ protected:
     }
 
     static TreapNodeBase *base_join(TreapNodeBase *a, TreapNodeBase *b) {
-        if (a == nullptr) return b;
-        if (b == nullptr) return a;
+        if (a == nullptr) {
+            if (b) {
+                b->base_propagate();
+                b->base_update();
+            }
+            return b;
+        }
+        if (b == nullptr) {
+            if (a) {
+                a->base_propagate();
+                a->base_update();
+            }
+            return a;
+        }
         a->base_propagate();
         b->base_propagate();
         if (a->Rank < b->Rank) {
