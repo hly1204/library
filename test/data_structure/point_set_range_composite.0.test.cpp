@@ -28,8 +28,7 @@ int main() {
     TreapNode *root = nullptr;
     for (int i = 0; i < n; ++i) {
         std::cin >> buf[i].Val[1] >> buf[i].Val[0];
-        buf[i].Sum = buf[i].Val;
-        root       = TreapNode::join(root, &buf[i]);
+        root = TreapNode::join(root, &buf[i]);
     }
     while (q--) {
         int cmd;
@@ -39,8 +38,7 @@ int main() {
             std::cin >> p;
             auto [R0, R1, R2] = TreapNode::split(root, p, 1);
             std::cin >> R1->Val[1] >> R1->Val[0];
-            R1->Sum = R1->Val;
-            root    = TreapNode::join(R0, R1, R2);
+            root = TreapNode::join(R0, R1, R2);
         } else {
             int l, r;
             mint x;
