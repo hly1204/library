@@ -24,6 +24,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: czt.hpp
       title: czt.hpp
+    - icon: ':heavy_check_mark:'
+      path: disjoint_set.hpp
+      title: disjoint_set.hpp
     - icon: ':warning:'
       path: eulerian_number.hpp
       title: eulerian_number.hpp
@@ -90,6 +93,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/range_reverse_range_sum.0.test.cpp
       title: test/data_structure/range_reverse_range_sum.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/unionfind.0.test.cpp
+      title: test/data_structure/unionfind.0.test.cpp
   - name: test/formal_power_series
     pages:
     - icon: ':heavy_check_mark:'
