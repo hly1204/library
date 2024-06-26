@@ -7,6 +7,9 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
+    title: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/data_structure/point_set_range_composite.0.test.cpp
     title: test/data_structure/point_set_range_composite.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -149,6 +152,7 @@ data:
   timestamp: '2024-06-22 17:28:30+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   - test/data_structure/range_affine_point_get.0.test.cpp
   - test/data_structure/range_reverse_range_sum.0.test.cpp
   - test/data_structure/range_affine_range_sum.0.test.cpp
