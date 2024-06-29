@@ -102,21 +102,20 @@ data:
     \          b->base_update();\n            return b;\n        }\n        a->R =\
     \ base_join(a->R, b);\n        a->base_update();\n        return a;\n    }\n\n\
     \    static std::array<TreapNodeBase *, 2> base_split(TreapNodeBase *a, int k)\
-    \ {\n        using Array = std::array<TreapNodeBase *, 2>;\n        if (a == nullptr)\
-    \ return Array{nullptr, nullptr};\n        a->base_propagate();\n        if (k\
-    \ == 0) return a->base_update(), Array{nullptr, a};\n        if (k == a->Size)\
-    \ return a->base_update(), Array{a, nullptr};\n        const int leftsize = a->L\
-    \ != nullptr ? a->L->Size : 0;\n        if (leftsize < k) {\n            auto\
-    \ [b, c] = base_split(a->R, k - leftsize - 1);\n            a->R        = b;\n\
-    \            return a->base_update(), Array{a, c};\n        }\n        auto [b,\
-    \ c] = base_split(a->L, k);\n        a->L        = c;\n        return a->base_update(),\
-    \ Array{b, a};\n    }\n\n    TreapNodeBase() : L(), R(), Rank(dis(gen)), Size(1),\
-    \ NeedFlip() {}\n\npublic:\n    int size() const { return Size; }\n    int rank()\
-    \ const { return Rank; }\n\n    TreapNode *left() const { return (TreapNode *)L;\
-    \ }\n    TreapNode *right() const { return (TreapNode *)R; }\n\n    void flip()\
-    \ { base_flip(); }\n    template <typename... Nodes>\n    static TreapNode *join(Nodes...\
-    \ node) {\n        struct Helper {\n            TreapNodeBase *Val;\n        \
-    \    Helper &operator|(TreapNodeBase *A) {\n                Val = TreapNodeBase::base_join(Val,\
+    \ {\n        if (a == nullptr) return {nullptr, nullptr};\n        a->base_propagate();\n\
+    \        if (k == 0) return {nullptr, a};\n        if (k == a->Size) return {a,\
+    \ nullptr};\n        const int leftsize = a->L != nullptr ? a->L->Size : 0;\n\
+    \        if (leftsize < k) {\n            auto [b, c] = base_split(a->R, k - leftsize\
+    \ - 1);\n            a->R        = b;\n            a->base_update();\n       \
+    \     return {a, c};\n        }\n        auto [b, c] = base_split(a->L, k);\n\
+    \        a->L        = c;\n        a->base_update();\n        return {b, a};\n\
+    \    }\n\n    TreapNodeBase() : L(), R(), Rank(dis(gen)), Size(1), NeedFlip()\
+    \ {}\n\npublic:\n    int size() const { return Size; }\n    int rank() const {\
+    \ return Rank; }\n\n    TreapNode *left() const { return (TreapNode *)L; }\n \
+    \   TreapNode *right() const { return (TreapNode *)R; }\n\n    void flip() { base_flip();\
+    \ }\n    template <typename... Nodes>\n    static TreapNode *join(Nodes... node)\
+    \ {\n        struct Helper {\n            TreapNodeBase *Val;\n            Helper\
+    \ &operator|(TreapNodeBase *A) {\n                Val = TreapNodeBase::base_join(Val,\
     \ A);\n                return *this;\n            }\n        } nil{nullptr};\n\
     \        return (TreapNode *)(nil | ... | node).Val;\n    }\n    template <typename...\
     \ Parts>\n    static std::array<TreapNode *, sizeof...(Parts) + 1> split(TreapNode\
@@ -178,7 +177,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-29 13:29:56+08:00'
+  timestamp: '2024-06-29 13:35:45+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_affine_range_sum.0.test.cpp
