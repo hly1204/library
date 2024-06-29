@@ -50,17 +50,11 @@ protected:
 
     static TreapNodeBase *base_join(TreapNodeBase *a, TreapNodeBase *b) {
         if (a == nullptr) {
-            if (b) {
-                b->base_propagate();
-                b->base_update();
-            }
+            if (b) b->base_propagate(), b->base_update();
             return b;
         }
         if (b == nullptr) {
-            if (a) {
-                a->base_propagate();
-                a->base_update();
-            }
+            if (a) a->base_propagate(), a->base_update();
             return a;
         }
         a->base_propagate();
@@ -76,19 +70,20 @@ protected:
     }
 
     static std::array<TreapNodeBase *, 2> base_split(TreapNodeBase *a, int k) {
-        if (a == nullptr) return {nullptr, nullptr};
+        using Array = std::array<TreapNodeBase *, 2>;
+        if (a == nullptr) return Array{nullptr, nullptr};
         a->base_propagate();
+        if (k == 0) return a->base_update(), Array{nullptr, a};
+        if (k == a->Size) return a->base_update(), Array{a, nullptr};
         const int leftsize = a->L != nullptr ? a->L->Size : 0;
         if (leftsize < k) {
             auto [b, c] = base_split(a->R, k - leftsize - 1);
             a->R        = b;
-            a->base_update();
-            return {a, c};
+            return a->base_update(), Array{a, c};
         }
         auto [b, c] = base_split(a->L, k);
         a->L        = c;
-        a->base_update();
-        return {b, a};
+        return a->base_update(), Array{b, a};
     }
 
     TreapNodeBase() : L(), R(), Rank(dis(gen)), Size(1), NeedFlip() {}
