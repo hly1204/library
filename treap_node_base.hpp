@@ -70,20 +70,21 @@ protected:
     }
 
     static std::array<TreapNodeBase *, 2> base_split(TreapNodeBase *a, int k) {
-        using Array = std::array<TreapNodeBase *, 2>;
-        if (a == nullptr) return Array{nullptr, nullptr};
+        if (a == nullptr) return {nullptr, nullptr};
         a->base_propagate();
-        if (k == 0) return a->base_update(), Array{nullptr, a};
-        if (k == a->Size) return a->base_update(), Array{a, nullptr};
+        if (k == 0) return {nullptr, a};
+        if (k == a->Size) return {a, nullptr};
         const int leftsize = a->L != nullptr ? a->L->Size : 0;
         if (leftsize < k) {
             auto [b, c] = base_split(a->R, k - leftsize - 1);
             a->R        = b;
-            return a->base_update(), Array{a, c};
+            a->base_update();
+            return {a, c};
         }
         auto [b, c] = base_split(a->L, k);
         a->L        = c;
-        return a->base_update(), Array{b, a};
+        a->base_update();
+        return {b, a};
     }
 
     TreapNodeBase() : L(), R(), Rank(dis(gen)), Size(1), NeedFlip() {}
