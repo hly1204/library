@@ -34,7 +34,7 @@ inline Matrix<Tp> transpose(const Matrix<Tp> &A) {
 }
 
 template <typename Tp>
-inline std::vector<Tp> apply(const Matrix<Tp> &A, const std::vector<Tp> &b) {
+inline std::vector<Tp> mat_apply(const Matrix<Tp> &A, const std::vector<Tp> &b) {
     const int w = width(A);
     const int h = height(A);
     assert((int)b.size() == w);
@@ -81,11 +81,11 @@ inline std::optional<Matrix<Tp>> mat_inv(Matrix<Tp> A) {
             for (int k = i + 1; k < n * 2; ++k) A[j][k] -= p * A[i][k];
         }
     }
-    for (int i = n - 2; i >= 0; --i) {
-        for (int j = i; j >= 0; --j) {
-            const auto p = A[j][i + 1];
+    for (int i = n - 1; i > 0; --i) {
+        for (int j = i - 1; j >= 0; --j) {
+            const auto p = A[j][i];
             if (p == 0) continue;
-            for (int k = n; k < n * 2; ++k) A[j][k] -= p * A[i + 1][k];
+            for (int k = n; k < n * 2; ++k) A[j][k] -= p * A[i][k];
         }
     }
     for (int i = 0; i < n; ++i) A[i].erase(A[i].begin(), A[i].begin() + n);
