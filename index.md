@@ -3,6 +3,9 @@ data:
   libraryCategories:
   - name: .
     pages:
+    - icon: ':warning:'
+      path: basis.hpp
+      title: basis.hpp
     - icon: ':heavy_check_mark:'
       path: batch_inv.hpp
       title: batch_inv.hpp
