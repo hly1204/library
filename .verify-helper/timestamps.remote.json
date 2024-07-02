@@ -26,6 +26,7 @@
 "test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp": "2024-06-22 10:58:08 +0800",
 "test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp": "2024-06-22 10:58:08 +0800",
 "test/matrix/characteristic_polynomial.0.test.cpp": "2024-07-02 19:04:48 +0800",
+"test/matrix/characteristic_polynomial.1.test.cpp": "2024-07-02 22:17:39 +0800",
 "test/matrix/inverse_matrix.0.test.cpp": "2024-07-02 19:04:48 +0800",
 "test/matrix/matrix_det.0.test.cpp": "2024-07-02 19:04:48 +0800",
 "test/matrix/matrix_det_mod_2.0.test.cpp": "2024-06-22 10:58:08 +0800",
