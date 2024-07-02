@@ -1,29 +1,29 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':heavy_check_mark:'
-    path: fft.hpp
-    title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: mat_basic.hpp
     title: mat_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: random.hpp
     title: random.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
+  - icon: ':x:'
+    path: sbpoly.hpp
+    title: sbpoly.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/characteristic_polynomial
@@ -119,88 +119,20 @@ data:
     \ const {\n        assert(size() == dim());\n        auto res = Augmented;\n \
     \       for (int i = dim() - 1; i > 0; --i)\n            for (int j = i - 1; j\
     \ >= 0; --j)\n                for (int k = 0; k < dim(); ++k) res[j][k] -= Reduced[j][i]\
-    \ * res[i][k];\n        return transpose(res);\n    }\n};\n#line 2 \"fft.hpp\"\
-    \n\n#include <algorithm>\n#line 5 \"fft.hpp\"\n#include <iterator>\n#include <memory>\n\
-    #line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp\
-    \ least_quadratic_nonresidue() {\n        for (int i = 2;; ++i)\n            if\
-    \ (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n    }\n\n    const int\
-    \ ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n    const Tp imag_;\n\
-    \    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n    mutable std::vector<Tp>\
-    \ invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n\
-    \          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >> ordlog2_)),\n\
-    \          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_ - 2))), invimag_(-imag_),\n\
-    \          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_} {}\n\npublic:\n    static\
-    \ const FftInfo &get() {\n        static FftInfo info;\n        return info;\n\
-    \    }\n\n    Tp imag() const { return imag_; }\n    Tp inv_imag() const { return\
-    \ invimag_; }\n    Tp zeta() const { return zeta_; }\n    Tp inv_zeta() const\
-    \ { return invzeta_; }\n    const std::vector<Tp> &root(int n) const {\n     \
-    \   // [0, n)\n        assert((n & (n - 1)) == 0);\n        if (const int s =\
-    \ root_.size(); s < n) {\n            root_.resize(n);\n            for (int i\
-    \ = __builtin_ctz(s); (1 << i) < n; ++i) {\n                const int j = 1 <<\
-    \ i;\n                root_[j]    = zeta_.pow(1LL << (ordlog2_ - i - 2));\n  \
-    \              for (int k = j + 1; k < j * 2; ++k) root_[k] = root_[k - j] * root_[j];\n\
-    \            }\n        }\n        return root_;\n    }\n    const std::vector<Tp>\
-    \ &inv_root(int n) const {\n        // [0, n)\n        assert((n & (n - 1)) ==\
-    \ 0);\n        if (const int s = invroot_.size(); s < n) {\n            invroot_.resize(n);\n\
-    \            for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n           \
-    \     const int j = 1 << i;\n                invroot_[j] = invzeta_.pow(1LL <<\
-    \ (ordlog2_ - i - 2));\n                for (int k = j + 1; k < j * 2; ++k) invroot_[k]\
-    \ = invroot_[k - j] * invroot_[j];\n            }\n        }\n        return invroot_;\n\
-    \    }\n};\n\ninline int fft_len(int n) {\n    --n;\n    n |= n >> 1, n |= n >>\
-    \ 2, n |= n >> 4, n |= n >> 8;\n    return (n | n >> 16) + 1;\n}\n\ntemplate <typename\
-    \ Iterator>\ninline void fft_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
-    \    assert((n & (n - 1)) == 0);\n    for (int j = 0; j < n / 2; ++j) {\n    \
-    \    auto u = a[j], v = a[j + n / 2];\n        a[j] = u + v, a[j + n / 2] = u\
-    \ - v;\n    }\n    auto &&root = FftInfo<Tp>::get().root(n / 2);\n    for (int\
-    \ i = n / 2; i >= 2; i /= 2) {\n        for (int j = 0; j < i / 2; ++j) {\n  \
-    \          auto u = a[j], v = a[j + i / 2];\n            a[j] = u + v, a[j + i\
-    \ / 2] = u - v;\n        }\n        for (int j = i, m = 1; j < n; j += i, ++m)\n\
-    \            for (int k = j; k < j + i / 2; ++k) {\n                auto u = a[k],\
-    \ v = a[k + i / 2] * root[m];\n                a[k] = u + v, a[k + i / 2] = u\
-    \ - v;\n            }\n    }\n}\n\ntemplate <typename Tp>\ninline void fft(std::vector<Tp>\
-    \ &a) {\n    fft_n(a.begin(), a.size());\n}\n\ntemplate <typename Iterator>\n\
-    inline void inv_fft_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
-    \    assert((n & (n - 1)) == 0);\n    auto &&root = FftInfo<Tp>::get().inv_root(n\
-    \ / 2);\n    for (int i = 2; i < n; i *= 2) {\n        for (int j = 0; j < i /\
-    \ 2; ++j) {\n            auto u = a[j], v = a[j + i / 2];\n            a[j] =\
-    \ u + v, a[j + i / 2] = u - v;\n        }\n        for (int j = i, m = 1; j <\
-    \ n; j += i, ++m)\n            for (int k = j; k < j + i / 2; ++k) {\n       \
-    \         auto u = a[k], v = a[k + i / 2];\n                a[k] = u + v, a[k\
-    \ + i / 2] = (u - v) * root[m];\n            }\n    }\n    const Tp iv = Tp::mod()\
-    \ - Tp::mod() / n;\n    for (int j = 0; j < n / 2; ++j) {\n        auto u = a[j]\
-    \ * iv, v = a[j + n / 2] * iv;\n        a[j] = u + v, a[j + n / 2] = u - v;\n\
-    \    }\n}\n\ntemplate <typename Tp>\ninline void inv_fft(std::vector<Tp> &a) {\n\
-    \    inv_fft_n(a.begin(), a.size());\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ convolution_fft(std::vector<Tp> a, std::vector<Tp> b) {\n    if (a.empty() ||\
-    \ b.empty()) return {};\n    const int n   = a.size();\n    const int m   = b.size();\n\
-    \    const int len = fft_len(n + m - 1);\n    a.resize(len);\n    b.resize(len);\n\
-    \    fft(a);\n    fft(b);\n    for (int i = 0; i < len; ++i) a[i] *= b[i];\n \
-    \   inv_fft(a);\n    a.resize(n + m - 1);\n    return a;\n}\n\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> square_fft(std::vector<Tp> a) {\n    if (a.empty())\
-    \ return {};\n    const int n   = a.size();\n    const int len = fft_len(n * 2\
-    \ - 1);\n    a.resize(len);\n    fft(a);\n    for (int i = 0; i < len; ++i) a[i]\
-    \ *= a[i];\n    inv_fft(a);\n    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> convolution_naive(const std::vector<Tp>\
-    \ &a, const std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n\
-    \    const int n = a.size();\n    const int m = b.size();\n    std::vector<Tp>\
-    \ res(n + m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j\
-    \ < m; ++j) res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
-    \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
-    \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
-    #include <type_traits>\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
-    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
-    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
-    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
-    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
-    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
-    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
-    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
-    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
-    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
-    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
-    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ * res[i][k];\n        return transpose(res);\n    }\n};\n#line 2 \"modint.hpp\"\
+    \n\n#include <iostream>\n#include <type_traits>\n\ntemplate <unsigned Mod>\nclass\
+    \ ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\"\
+    );\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
+    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
+    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
+    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
+    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
+    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
+    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
+    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
+    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
+    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
     \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
     \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
     \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
@@ -247,44 +179,123 @@ data:
     \ random_vector(int n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar\
     \ rng(std::random_device{}());\n    std::uniform_int_distribution<decltype(Tp::mod())>\
     \ dis(0, Tp::mod() - 1);\n    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n\
-    \    return res;\n}\n#line 9 \"test/matrix/characteristic_polynomial.1.test.cpp\"\
+    \    return res;\n}\n#line 2 \"sbpoly.hpp\"\n\n#include <algorithm>\n#line 6 \"\
+    sbpoly.hpp\"\n#include <tuple>\n#line 9 \"sbpoly.hpp\"\n\n// Schoolbook Polynomial\n\
+    template <typename Tp>\nclass SBPoly : public std::vector<Tp> {\n    using Base\
+    \ = std::vector<Tp>;\n\npublic:\n    using Base::Base;\n\n    int deg() const\
+    \ {\n        for (int i = (int)Base::size() - 1; i >= 0; --i)\n            if\
+    \ (Base::operator[](i) != 0) return i;\n        return -1;\n    }\n\n    int ord()\
+    \ const {\n        for (int i = 0; i < (int)Base::size(); ++i)\n            if\
+    \ (Base::operator[](i) != 0) return i;\n        return -1;\n    }\n\n    SBPoly\
+    \ rev() const {\n        const int d = deg();\n        SBPoly res(d + 1);\n  \
+    \      for (int i = d; i >= 0; --i) res[i] = Base::operator[](d - i);\n      \
+    \  return res;\n    }\n\n    SBPoly slice(int L, int R) const {\n        SBPoly\
+    \ res(R - L);\n        for (int i = L; i < std::min(R, (int)Base::size()); ++i)\
+    \ res[i - L] = Base::operator[](i);\n        return res;\n    }\n\n    SBPoly\
+    \ trunc(int D) const {\n        SBPoly res(D);\n        for (int i = 0; i < std::min(D,\
+    \ (int)Base::size()); ++i) res[i] = Base::operator[](i);\n        return res;\n\
+    \    }\n\n    SBPoly &shrink() {\n        Base::resize(deg() + 1);\n        return\
+    \ *this;\n    }\n\n    Tp lc() const {\n        const int d = deg();\n       \
+    \ return d == -1 ? Tp() : Base::operator[](d);\n    }\n\n    SBPoly operator-()\
+    \ const {\n        const int d = deg();\n        SBPoly res(d + 1);\n        for\
+    \ (int i = 0; i <= d; ++i) res[i] = -Base::operator[](i);\n        res.shrink();\n\
+    \        return res;\n    }\n\n    // O(deg(Q)deg(R))\n    std::pair<SBPoly, SBPoly>\
+    \ divmod(const SBPoly &R) const {\n        const int degL = deg(), degR = R.deg(),\
+    \ degQ = degL - degR;\n        assert(degR >= 0);\n        SBPoly quo(degQ + 1),\
+    \ rem(*this);\n        if (degQ >= 0) {\n            const auto inv = R.lc().inv();\n\
+    \            for (int i = degQ, n = degL; i >= 0; --i)\n                if ((quo[i]\
+    \ = rem[n--] * inv) != 0)\n                    for (int j = 0; j <= degR; ++j)\
+    \ rem[i + j] -= quo[i] * R[j];\n        }\n        rem.shrink();\n        return\
+    \ std::make_pair(quo, rem);\n    }\n    SBPoly &operator+=(const SBPoly &R) {\n\
+    \        if (Base::size() < R.size()) Base::resize(R.size());\n        for (int\
+    \ i = 0; i < (int)R.size(); ++i) Base::operator[](i) += R[i];\n        return\
+    \ shrink();\n    }\n    SBPoly &operator-=(const SBPoly &R) {\n        if (Base::size()\
+    \ < R.size()) Base::resize(R.size());\n        for (int i = 0; i < (int)R.size();\
+    \ ++i) Base::operator[](i) -= R[i];\n        return shrink();\n    }\n    SBPoly\
+    \ &operator*=(const SBPoly &R) {\n        const int degL = deg(), degR = R.deg();\n\
+    \        if (degL < 0 || degR < 0) return {};\n        SBPoly res(degL + degR\
+    \ + 1);\n        for (int i = 0; i <= degL; ++i)\n            for (int j = 0;\
+    \ j <= degR; ++j) res[i + j] += Base::operator[](i) * R[j];\n        Base::swap(res);\n\
+    \        return *this;\n    }\n    // O(min(deg(Q)^2,deg(Q)deg(R)))\n    SBPoly\
+    \ &operator/=(const SBPoly &R) {\n        const int degL = deg(), degR = R.deg(),\
+    \ degQ = degL - degR;\n        assert(degR >= 0);\n        if (degQ < 0) {\n \
+    \           Base::clear();\n            return *this;\n        }\n        SBPoly\
+    \ quo(degQ + 1);\n        const auto inv = R.lc().inv();\n        for (int i =\
+    \ 0; i <= degQ; ++i) {\n            for (int j = 1; j <= std::min(i, degR); ++j)\n\
+    \                quo[degQ - i] += R[degR - j] * quo[degQ - i + j];\n         \
+    \   quo[degQ - i] = (Base::operator[](degL - i) - quo[degQ - i]) * inv;\n    \
+    \    }\n        Base::swap(quo);\n        return *this;\n    }\n    SBPoly &operator%=(const\
+    \ SBPoly &R) {\n        const int degL = deg(), degR = R.deg(), degQ = degL -\
+    \ degR;\n        assert(degR >= 0);\n        const auto inv = R.lc().inv();\n\
+    \        for (int i = degQ, n = degL; i >= 0; --i)\n            if (const Tp res\
+    \ = Base::operator[](n--) * inv; res != 0)\n                for (int j = 0; j\
+    \ <= degR; ++j) Base::operator[](i + j) -= res * R[j];\n        return shrink();\n\
+    \    }\n    SBPoly &operator<<=(int D) {\n        if (D > 0) {\n            Base::insert(Base::begin(),\
+    \ D, Tp());\n        } else if (D < 0) {\n            if (-D < Base::size()) {\n\
+    \                Base::erase(Base::begin(), Base::begin() + (-D));\n         \
+    \   } else {\n                Base::clear();\n            }\n        }\n     \
+    \   return shrink();\n    }\n    SBPoly &operator>>=(int D) { return operator<<=(-D);\
+    \ }\n\n    friend SBPoly operator+(const SBPoly &L, const SBPoly &R) { return\
+    \ SBPoly(L) += R; }\n    friend SBPoly operator-(const SBPoly &L, const SBPoly\
+    \ &R) { return SBPoly(L) -= R; }\n    friend SBPoly operator*(const SBPoly &L,\
+    \ const SBPoly &R) { return SBPoly(L) *= R; }\n    friend SBPoly operator/(const\
+    \ SBPoly &L, const SBPoly &R) { return SBPoly(L) /= R; }\n    friend SBPoly operator%(const\
+    \ SBPoly &L, const SBPoly &R) { return SBPoly(L) %= R; }\n    friend SBPoly operator<<(const\
+    \ SBPoly &L, int D) { return SBPoly(L) <<= D; }\n    friend SBPoly operator>>(const\
+    \ SBPoly &L, int D) { return SBPoly(L) >>= D; }\n\n    friend std::ostream &operator<<(std::ostream\
+    \ &L, const SBPoly &R) {\n        L << '[';\n        const int d = R.deg();\n\
+    \        if (d < 0) {\n            L << '0';\n        } else {\n            for\
+    \ (int i = 0; i <= d; ++i) {\n                L << R[i];\n                if (i\
+    \ == 1) L << \"*X\";\n                if (i > 1) L << \"*X^\" << i;\n        \
+    \        if (i != d) L << \" + \";\n            }\n        }\n        return L\
+    \ << ']';\n    }\n};\n\ntemplate <typename Tp>\ninline std::tuple<SBPoly<Tp>,\
+    \ SBPoly<Tp>, SBPoly<Tp>> xgcd(SBPoly<Tp> A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11\
+    \ = {1}, x12 = {}, x21 = {}, x22 = {1};\n    while (B.deg() >= 0) {\n        auto\
+    \ [Q, R]  = A.divmod(B);\n        auto x11_old = x11, x12_old = x12;\n       \
+    \ x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22, x22 = x12_old - x22\
+    \ * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11, x12, A);\n\
+    }\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp>\
+    \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {1}, x21 = {};\n    while (B.deg()\
+    \ >= 0) {\n        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11;\n\
+    \        x11 = x21, x21 = x11_old - x21 * Q;\n        A = B, B = R;\n    }\n \
+    \   return std::make_pair(x11, A);\n}\n#line 9 \"test/matrix/characteristic_polynomial.1.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    Matrix<mint>\
     \ A(n, std::vector<mint>(n));\n    for (int i = 0; i < n; ++i)\n        for (int\
-    \ j = 0; j < n; ++j) std::cin >> A[i][j];\n    Basis<mint> B(n);\n    std::vector<mint>\
+    \ j = 0; j < n; ++j) std::cin >> A[i][j];\n    Basis<mint> B(n);\n    SBPoly<mint>\
     \ cp = {1};\n    while (B.size() < n) {\n        int deg = 0;\n        for (auto\
     \ R = random_vector<mint>(n);; R = mat_apply(A, R)) {\n            if (auto comb\
-    \ = B.insert(R)) {\n                std::vector p(comb->begin() + (B.size() -\
+    \ = B.insert(R)) {\n                SBPoly<mint> p(comb->begin() + (B.size() -\
     \ deg), comb->begin() + B.size());\n                p.emplace_back(1);\n     \
-    \           cp = convolution(cp, p);\n                break;\n            }\n\
-    \            ++deg;\n        }\n    }\n    for (int i = 0; i <= n; ++i) std::cout\
-    \ << cp[i] << ' ';\n    return 0;\n}\n"
+    \           cp *= p;\n                break;\n            }\n            ++deg;\n\
+    \        }\n    }\n    for (int i = 0; i <= n; ++i) std::cout << cp[i] << ' ';\n\
+    \    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/characteristic_polynomial\"\
-    \n\n#include \"basis.hpp\"\n#include \"fft.hpp\"\n#include \"mat_basic.hpp\"\n\
-    #include \"modint.hpp\"\n#include \"random.hpp\"\n#include <iostream>\n\nint main()\
-    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
-    \ mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    Matrix<mint>\
+    \n\n#include \"basis.hpp\"\n#include \"mat_basic.hpp\"\n#include \"modint.hpp\"\
+    \n#include \"random.hpp\"\n#include \"sbpoly.hpp\"\n#include <iostream>\n\nint\
+    \ main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    Matrix<mint>\
     \ A(n, std::vector<mint>(n));\n    for (int i = 0; i < n; ++i)\n        for (int\
-    \ j = 0; j < n; ++j) std::cin >> A[i][j];\n    Basis<mint> B(n);\n    std::vector<mint>\
+    \ j = 0; j < n; ++j) std::cin >> A[i][j];\n    Basis<mint> B(n);\n    SBPoly<mint>\
     \ cp = {1};\n    while (B.size() < n) {\n        int deg = 0;\n        for (auto\
     \ R = random_vector<mint>(n);; R = mat_apply(A, R)) {\n            if (auto comb\
-    \ = B.insert(R)) {\n                std::vector p(comb->begin() + (B.size() -\
+    \ = B.insert(R)) {\n                SBPoly<mint> p(comb->begin() + (B.size() -\
     \ deg), comb->begin() + B.size());\n                p.emplace_back(1);\n     \
-    \           cp = convolution(cp, p);\n                break;\n            }\n\
-    \            ++deg;\n        }\n    }\n    for (int i = 0; i <= n; ++i) std::cout\
-    \ << cp[i] << ' ';\n    return 0;\n}\n"
+    \           cp *= p;\n                break;\n            }\n            ++deg;\n\
+    \        }\n    }\n    for (int i = 0; i <= n; ++i) std::cout << cp[i] << ' ';\n\
+    \    return 0;\n}\n"
   dependsOn:
   - basis.hpp
   - mat_basic.hpp
-  - fft.hpp
   - modint.hpp
   - random.hpp
   - rng.hpp
+  - sbpoly.hpp
   isVerificationFile: true
   path: test/matrix/characteristic_polynomial.1.test.cpp
   requiredBy: []
-  timestamp: '2024-07-02 19:14:45+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-07-02 22:15:07+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/matrix/characteristic_polynomial.1.test.cpp
 layout: document
