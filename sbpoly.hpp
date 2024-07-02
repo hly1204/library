@@ -90,7 +90,10 @@ public:
     }
     SBPoly &operator*=(const SBPoly &R) {
         const int degL = deg(), degR = R.deg();
-        if (degL < 0 || degR < 0) return {};
+        if (degL < 0 || degR < 0) {
+            Base::clear();
+            return *this;
+        }
         SBPoly res(degL + degR + 1);
         for (int i = 0; i <= degL; ++i)
             for (int j = 0; j <= degR; ++j) res[i + j] += Base::operator[](i) * R[j];
