@@ -3,12 +3,12 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"sbpoly.hpp\"\n\n#include <algorithm>\n#include <cassert>\n\
@@ -45,33 +45,34 @@ data:
     \ < R.size()) Base::resize(R.size());\n        for (int i = 0; i < (int)R.size();\
     \ ++i) Base::operator[](i) -= R[i];\n        return shrink();\n    }\n    SBPoly\
     \ &operator*=(const SBPoly &R) {\n        const int degL = deg(), degR = R.deg();\n\
-    \        if (degL < 0 || degR < 0) return {};\n        SBPoly res(degL + degR\
-    \ + 1);\n        for (int i = 0; i <= degL; ++i)\n            for (int j = 0;\
-    \ j <= degR; ++j) res[i + j] += Base::operator[](i) * R[j];\n        Base::swap(res);\n\
-    \        return *this;\n    }\n    // O(min(deg(Q)^2,deg(Q)deg(R)))\n    SBPoly\
-    \ &operator/=(const SBPoly &R) {\n        const int degL = deg(), degR = R.deg(),\
-    \ degQ = degL - degR;\n        assert(degR >= 0);\n        if (degQ < 0) {\n \
-    \           Base::clear();\n            return *this;\n        }\n        SBPoly\
-    \ quo(degQ + 1);\n        const auto inv = R.lc().inv();\n        for (int i =\
-    \ 0; i <= degQ; ++i) {\n            for (int j = 1; j <= std::min(i, degR); ++j)\n\
-    \                quo[degQ - i] += R[degR - j] * quo[degQ - i + j];\n         \
-    \   quo[degQ - i] = (Base::operator[](degL - i) - quo[degQ - i]) * inv;\n    \
-    \    }\n        Base::swap(quo);\n        return *this;\n    }\n    SBPoly &operator%=(const\
+    \        if (degL < 0 || degR < 0) {\n            Base::clear();\n           \
+    \ return *this;\n        }\n        SBPoly res(degL + degR + 1);\n        for\
+    \ (int i = 0; i <= degL; ++i)\n            for (int j = 0; j <= degR; ++j) res[i\
+    \ + j] += Base::operator[](i) * R[j];\n        Base::swap(res);\n        return\
+    \ *this;\n    }\n    // O(min(deg(Q)^2,deg(Q)deg(R)))\n    SBPoly &operator/=(const\
     \ SBPoly &R) {\n        const int degL = deg(), degR = R.deg(), degQ = degL -\
-    \ degR;\n        assert(degR >= 0);\n        const auto inv = R.lc().inv();\n\
-    \        for (int i = degQ, n = degL; i >= 0; --i)\n            if (const Tp res\
-    \ = Base::operator[](n--) * inv; res != 0)\n                for (int j = 0; j\
-    \ <= degR; ++j) Base::operator[](i + j) -= res * R[j];\n        return shrink();\n\
-    \    }\n    SBPoly &operator<<=(int D) {\n        if (D > 0) {\n            Base::insert(Base::begin(),\
-    \ D, Tp());\n        } else if (D < 0) {\n            if (-D < Base::size()) {\n\
-    \                Base::erase(Base::begin(), Base::begin() + (-D));\n         \
-    \   } else {\n                Base::clear();\n            }\n        }\n     \
-    \   return shrink();\n    }\n    SBPoly &operator>>=(int D) { return operator<<=(-D);\
-    \ }\n\n    friend SBPoly operator+(const SBPoly &L, const SBPoly &R) { return\
-    \ SBPoly(L) += R; }\n    friend SBPoly operator-(const SBPoly &L, const SBPoly\
-    \ &R) { return SBPoly(L) -= R; }\n    friend SBPoly operator*(const SBPoly &L,\
-    \ const SBPoly &R) { return SBPoly(L) *= R; }\n    friend SBPoly operator/(const\
-    \ SBPoly &L, const SBPoly &R) { return SBPoly(L) /= R; }\n    friend SBPoly operator%(const\
+    \ degR;\n        assert(degR >= 0);\n        if (degQ < 0) {\n            Base::clear();\n\
+    \            return *this;\n        }\n        SBPoly quo(degQ + 1);\n       \
+    \ const auto inv = R.lc().inv();\n        for (int i = 0; i <= degQ; ++i) {\n\
+    \            for (int j = 1; j <= std::min(i, degR); ++j)\n                quo[degQ\
+    \ - i] += R[degR - j] * quo[degQ - i + j];\n            quo[degQ - i] = (Base::operator[](degL\
+    \ - i) - quo[degQ - i]) * inv;\n        }\n        Base::swap(quo);\n        return\
+    \ *this;\n    }\n    SBPoly &operator%=(const SBPoly &R) {\n        const int\
+    \ degL = deg(), degR = R.deg(), degQ = degL - degR;\n        assert(degR >= 0);\n\
+    \        const auto inv = R.lc().inv();\n        for (int i = degQ, n = degL;\
+    \ i >= 0; --i)\n            if (const Tp res = Base::operator[](n--) * inv; res\
+    \ != 0)\n                for (int j = 0; j <= degR; ++j) Base::operator[](i +\
+    \ j) -= res * R[j];\n        return shrink();\n    }\n    SBPoly &operator<<=(int\
+    \ D) {\n        if (D > 0) {\n            Base::insert(Base::begin(), D, Tp());\n\
+    \        } else if (D < 0) {\n            if (-D < Base::size()) {\n         \
+    \       Base::erase(Base::begin(), Base::begin() + (-D));\n            } else\
+    \ {\n                Base::clear();\n            }\n        }\n        return\
+    \ shrink();\n    }\n    SBPoly &operator>>=(int D) { return operator<<=(-D); }\n\
+    \n    friend SBPoly operator+(const SBPoly &L, const SBPoly &R) { return SBPoly(L)\
+    \ += R; }\n    friend SBPoly operator-(const SBPoly &L, const SBPoly &R) { return\
+    \ SBPoly(L) -= R; }\n    friend SBPoly operator*(const SBPoly &L, const SBPoly\
+    \ &R) { return SBPoly(L) *= R; }\n    friend SBPoly operator/(const SBPoly &L,\
+    \ const SBPoly &R) { return SBPoly(L) /= R; }\n    friend SBPoly operator%(const\
     \ SBPoly &L, const SBPoly &R) { return SBPoly(L) %= R; }\n    friend SBPoly operator<<(const\
     \ SBPoly &L, int D) { return SBPoly(L) <<= D; }\n    friend SBPoly operator>>(const\
     \ SBPoly &L, int D) { return SBPoly(L) >>= D; }\n\n    friend std::ostream &operator<<(std::ostream\
@@ -125,33 +126,34 @@ data:
     \ < R.size()) Base::resize(R.size());\n        for (int i = 0; i < (int)R.size();\
     \ ++i) Base::operator[](i) -= R[i];\n        return shrink();\n    }\n    SBPoly\
     \ &operator*=(const SBPoly &R) {\n        const int degL = deg(), degR = R.deg();\n\
-    \        if (degL < 0 || degR < 0) return {};\n        SBPoly res(degL + degR\
-    \ + 1);\n        for (int i = 0; i <= degL; ++i)\n            for (int j = 0;\
-    \ j <= degR; ++j) res[i + j] += Base::operator[](i) * R[j];\n        Base::swap(res);\n\
-    \        return *this;\n    }\n    // O(min(deg(Q)^2,deg(Q)deg(R)))\n    SBPoly\
-    \ &operator/=(const SBPoly &R) {\n        const int degL = deg(), degR = R.deg(),\
-    \ degQ = degL - degR;\n        assert(degR >= 0);\n        if (degQ < 0) {\n \
-    \           Base::clear();\n            return *this;\n        }\n        SBPoly\
-    \ quo(degQ + 1);\n        const auto inv = R.lc().inv();\n        for (int i =\
-    \ 0; i <= degQ; ++i) {\n            for (int j = 1; j <= std::min(i, degR); ++j)\n\
-    \                quo[degQ - i] += R[degR - j] * quo[degQ - i + j];\n         \
-    \   quo[degQ - i] = (Base::operator[](degL - i) - quo[degQ - i]) * inv;\n    \
-    \    }\n        Base::swap(quo);\n        return *this;\n    }\n    SBPoly &operator%=(const\
+    \        if (degL < 0 || degR < 0) {\n            Base::clear();\n           \
+    \ return *this;\n        }\n        SBPoly res(degL + degR + 1);\n        for\
+    \ (int i = 0; i <= degL; ++i)\n            for (int j = 0; j <= degR; ++j) res[i\
+    \ + j] += Base::operator[](i) * R[j];\n        Base::swap(res);\n        return\
+    \ *this;\n    }\n    // O(min(deg(Q)^2,deg(Q)deg(R)))\n    SBPoly &operator/=(const\
     \ SBPoly &R) {\n        const int degL = deg(), degR = R.deg(), degQ = degL -\
-    \ degR;\n        assert(degR >= 0);\n        const auto inv = R.lc().inv();\n\
-    \        for (int i = degQ, n = degL; i >= 0; --i)\n            if (const Tp res\
-    \ = Base::operator[](n--) * inv; res != 0)\n                for (int j = 0; j\
-    \ <= degR; ++j) Base::operator[](i + j) -= res * R[j];\n        return shrink();\n\
-    \    }\n    SBPoly &operator<<=(int D) {\n        if (D > 0) {\n            Base::insert(Base::begin(),\
-    \ D, Tp());\n        } else if (D < 0) {\n            if (-D < Base::size()) {\n\
-    \                Base::erase(Base::begin(), Base::begin() + (-D));\n         \
-    \   } else {\n                Base::clear();\n            }\n        }\n     \
-    \   return shrink();\n    }\n    SBPoly &operator>>=(int D) { return operator<<=(-D);\
-    \ }\n\n    friend SBPoly operator+(const SBPoly &L, const SBPoly &R) { return\
-    \ SBPoly(L) += R; }\n    friend SBPoly operator-(const SBPoly &L, const SBPoly\
-    \ &R) { return SBPoly(L) -= R; }\n    friend SBPoly operator*(const SBPoly &L,\
-    \ const SBPoly &R) { return SBPoly(L) *= R; }\n    friend SBPoly operator/(const\
-    \ SBPoly &L, const SBPoly &R) { return SBPoly(L) /= R; }\n    friend SBPoly operator%(const\
+    \ degR;\n        assert(degR >= 0);\n        if (degQ < 0) {\n            Base::clear();\n\
+    \            return *this;\n        }\n        SBPoly quo(degQ + 1);\n       \
+    \ const auto inv = R.lc().inv();\n        for (int i = 0; i <= degQ; ++i) {\n\
+    \            for (int j = 1; j <= std::min(i, degR); ++j)\n                quo[degQ\
+    \ - i] += R[degR - j] * quo[degQ - i + j];\n            quo[degQ - i] = (Base::operator[](degL\
+    \ - i) - quo[degQ - i]) * inv;\n        }\n        Base::swap(quo);\n        return\
+    \ *this;\n    }\n    SBPoly &operator%=(const SBPoly &R) {\n        const int\
+    \ degL = deg(), degR = R.deg(), degQ = degL - degR;\n        assert(degR >= 0);\n\
+    \        const auto inv = R.lc().inv();\n        for (int i = degQ, n = degL;\
+    \ i >= 0; --i)\n            if (const Tp res = Base::operator[](n--) * inv; res\
+    \ != 0)\n                for (int j = 0; j <= degR; ++j) Base::operator[](i +\
+    \ j) -= res * R[j];\n        return shrink();\n    }\n    SBPoly &operator<<=(int\
+    \ D) {\n        if (D > 0) {\n            Base::insert(Base::begin(), D, Tp());\n\
+    \        } else if (D < 0) {\n            if (-D < Base::size()) {\n         \
+    \       Base::erase(Base::begin(), Base::begin() + (-D));\n            } else\
+    \ {\n                Base::clear();\n            }\n        }\n        return\
+    \ shrink();\n    }\n    SBPoly &operator>>=(int D) { return operator<<=(-D); }\n\
+    \n    friend SBPoly operator+(const SBPoly &L, const SBPoly &R) { return SBPoly(L)\
+    \ += R; }\n    friend SBPoly operator-(const SBPoly &L, const SBPoly &R) { return\
+    \ SBPoly(L) -= R; }\n    friend SBPoly operator*(const SBPoly &L, const SBPoly\
+    \ &R) { return SBPoly(L) *= R; }\n    friend SBPoly operator/(const SBPoly &L,\
+    \ const SBPoly &R) { return SBPoly(L) /= R; }\n    friend SBPoly operator%(const\
     \ SBPoly &L, const SBPoly &R) { return SBPoly(L) %= R; }\n    friend SBPoly operator<<(const\
     \ SBPoly &L, int D) { return SBPoly(L) <<= D; }\n    friend SBPoly operator>>(const\
     \ SBPoly &L, int D) { return SBPoly(L) >>= D; }\n\n    friend std::ostream &operator<<(std::ostream\
@@ -175,8 +177,8 @@ data:
   isVerificationFile: false
   path: sbpoly.hpp
   requiredBy: []
-  timestamp: '2024-07-02 22:13:47+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2024-07-02 22:17:39+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/characteristic_polynomial.1.test.cpp
 documentation_of: sbpoly.hpp

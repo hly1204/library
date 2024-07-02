@@ -3,7 +3,7 @@ data:
   libraryCategories:
   - name: .
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: basis.hpp
       title: basis.hpp
     - icon: ':heavy_check_mark:'
@@ -45,13 +45,13 @@ data:
     - icon: ':heavy_check_mark:'
       path: fps_sqrt.hpp
       title: fps_sqrt.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: mat_basic.hpp
       title: mat_basic.hpp
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -63,13 +63,13 @@ data:
     - icon: ':warning:'
       path: poly_interpolation.hpp
       title: poly_interpolation.hpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: random.hpp
       title: random.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: rng.hpp
       title: rng.hpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: sbpoly.hpp
       title: sbpoly.hpp
     - icon: ':heavy_check_mark:'
@@ -175,7 +175,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/matrix/characteristic_polynomial.0.test.cpp
       title: test/matrix/characteristic_polynomial.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/matrix/characteristic_polynomial.1.test.cpp
       title: test/matrix/characteristic_polynomial.1.test.cpp
     - icon: ':heavy_check_mark:'

@@ -2,14 +2,14 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: basis.hpp
     title: basis.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.0.test.cpp
     title: test/matrix/characteristic_polynomial.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -21,9 +21,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/matrix_product.0.test.cpp
     title: test/matrix/matrix_product.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"mat_basic.hpp\"\n\n#include <cassert>\n#include <optional>\n\
@@ -159,7 +159,7 @@ data:
   requiredBy:
   - basis.hpp
   timestamp: '2024-07-02 19:04:48+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/matrix_product.0.test.cpp
