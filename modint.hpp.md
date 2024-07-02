@@ -76,6 +76,9 @@ data:
     path: test/matrix/characteristic_polynomial.0.test.cpp
     title: test/matrix/characteristic_polynomial.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/matrix/characteristic_polynomial.1.test.cpp
+    title: test/matrix/characteristic_polynomial.1.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/matrix/inverse_matrix.0.test.cpp
     title: test/matrix/inverse_matrix.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -195,6 +198,7 @@ data:
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   - test/formal_power_series/convolution_mod.1.test.cpp
+  - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/matrix_product.0.test.cpp
   - test/matrix/characteristic_polynomial.0.test.cpp
   - test/matrix/matrix_det.0.test.cpp

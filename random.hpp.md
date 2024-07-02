@@ -1,0 +1,59 @@
+---
+data:
+  _extendedDependsOn:
+  - icon: ':heavy_check_mark:'
+    path: rng.hpp
+    title: rng.hpp
+  _extendedRequiredBy: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/characteristic_polynomial.1.test.cpp
+    title: test/matrix/characteristic_polynomial.1.test.cpp
+  _isVerificationFailed: false
+  _pathExtension: hpp
+  _verificationStatusIcon: ':heavy_check_mark:'
+  attributes:
+    links: []
+  bundledCode: "#line 2 \"random.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n\
+    #include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n//\
+    \ original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
+    \n    static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64\
+    \ - k)); }\n\n    u64 s_[4];\n\n    u64 next() {\n        const u64 res = rotl(s_[1]\
+    \ * 5, 7) * 9;\n        const u64 t   = s_[1] << 17;\n        s_[2] ^= s_[0];\n\
+    \        s_[3] ^= s_[1];\n        s_[1] ^= s_[2];\n        s_[0] ^= s_[3];\n \
+    \       s_[2] ^= t;\n        s_[3] = rotl(s_[3], 45);\n        return res;\n \
+    \   }\n\npublic:\n    // see: https://prng.di.unimi.it/splitmix64.c\n    // original\
+    \ license CC0 1.0\n    explicit xoshiro256starstar(u64 seed) {\n        for (int\
+    \ i = 0; i < 4; ++i) {\n            u64 z = (seed += 0x9e3779b97f4a7c15);\n  \
+    \          z     = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n            z     =\
+    \ (z ^ (z >> 27)) * 0x94d049bb133111eb;\n            s_[i] = z ^ (z >> 31);\n\
+    \        }\n    }\n    // see: https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator\n\
+    \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
+    \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
+    \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"random.hpp\"\n#include\
+    \ <random>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ random_vector(int n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar\
+    \ rng(std::random_device{}());\n    std::uniform_int_distribution<decltype(Tp::mod())>\
+    \ dis(0, Tp::mod() - 1);\n    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n\
+    \    return res;\n}\n"
+  code: "#pragma once\n\n#include \"rng.hpp\"\n#include <random>\n#include <vector>\n\
+    \ntemplate <typename Tp>\ninline std::vector<Tp> random_vector(int n) {\n    std::vector<Tp>\
+    \ res(n);\n    xoshiro256starstar rng(std::random_device{}());\n    std::uniform_int_distribution<decltype(Tp::mod())>\
+    \ dis(0, Tp::mod() - 1);\n    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n\
+    \    return res;\n}\n"
+  dependsOn:
+  - rng.hpp
+  isVerificationFile: false
+  path: random.hpp
+  requiredBy: []
+  timestamp: '2024-07-02 19:12:26+08:00'
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/matrix/characteristic_polynomial.1.test.cpp
+documentation_of: random.hpp
+layout: document
+redirect_from:
+- /library/random.hpp
+- /library/random.hpp.html
+title: random.hpp
+---

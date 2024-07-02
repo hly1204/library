@@ -6,6 +6,9 @@ data:
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
   - icon: ':heavy_check_mark:'
+    path: random.hpp
+    title: random.hpp
+  - icon: ':heavy_check_mark:'
     path: sqrt_mod.hpp
     title: sqrt_mod.hpp
   - icon: ':heavy_check_mark:'
@@ -30,6 +33,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/characteristic_polynomial.1.test.cpp
+    title: test/matrix/characteristic_polynomial.1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -76,6 +82,7 @@ data:
   path: rng.hpp
   requiredBy:
   - sqrt_mod.hpp
+  - random.hpp
   - treap_node_base.hpp
   - fps_sqrt.hpp
   timestamp: '2024-05-15 00:00:04+08:00'
@@ -87,6 +94,7 @@ data:
   - test/data_structure/range_affine_range_sum.0.test.cpp
   - test/data_structure/point_set_range_composite.0.test.cpp
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
+  - test/matrix/characteristic_polynomial.1.test.cpp
 documentation_of: rng.hpp
 layout: document
 redirect_from:

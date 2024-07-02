@@ -2,13 +2,16 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':warning:'
+  - icon: ':heavy_check_mark:'
     path: basis.hpp
     title: basis.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.0.test.cpp
     title: test/matrix/characteristic_polynomial.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/characteristic_polynomial.1.test.cpp
+    title: test/matrix/characteristic_polynomial.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix/inverse_matrix.0.test.cpp
     title: test/matrix/inverse_matrix.0.test.cpp
@@ -158,6 +161,7 @@ data:
   timestamp: '2024-07-02 19:04:48+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/matrix_product.0.test.cpp
   - test/matrix/characteristic_polynomial.0.test.cpp
   - test/matrix/matrix_det.0.test.cpp

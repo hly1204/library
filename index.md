@@ -3,7 +3,7 @@ data:
   libraryCategories:
   - name: .
     pages:
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: basis.hpp
       title: basis.hpp
     - icon: ':heavy_check_mark:'
@@ -63,6 +63,9 @@ data:
     - icon: ':warning:'
       path: poly_interpolation.hpp
       title: poly_interpolation.hpp
+    - icon: ':heavy_check_mark:'
+      path: random.hpp
+      title: random.hpp
     - icon: ':heavy_check_mark:'
       path: rng.hpp
       title: rng.hpp
@@ -169,6 +172,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/matrix/characteristic_polynomial.0.test.cpp
       title: test/matrix/characteristic_polynomial.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/matrix/characteristic_polynomial.1.test.cpp
+      title: test/matrix/characteristic_polynomial.1.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/matrix/inverse_matrix.0.test.cpp
       title: test/matrix/inverse_matrix.0.test.cpp
