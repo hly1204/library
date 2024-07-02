@@ -81,11 +81,10 @@ data:
     \ Tp>\nclass Basis {\npublic:\n    const int Dim;\n    Matrix<Tp> Vectors; //\
     \ v_0, v_1, ...\n    Matrix<Tp> Augmented;\n    Matrix<Tp> Reduced; // upper triangular\
     \ matrix diag(Reduced)=(1,...,1)\n    // Augmented * Vectors = Reduced\n\n   \
-    \ Basis(int dim) : Dim(dim), Augmented(dim, std::vector<Tp>(dim)), Reduced(dim)\
-    \ {\n        for (int i = 0; i < Dim; ++i) Augmented[i][i] = 1;\n    }\n\n   \
-    \ int size() const { return Vectors.size(); }\n    int dim() const { return Dim;\
-    \ }\n\n    // if V is linear combination of v_0, ..., v_k then\n    // returns\
-    \ coefficients (a_0, ..., a_k) s.t. -(a_0v_0 + ... + a_kv_k) = V\n    std::optional<std::vector<Tp>>\
+    \ Basis(int dim) : Dim(dim), Augmented(dim), Reduced(dim) {}\n\n    int size()\
+    \ const { return Vectors.size(); }\n    int dim() const { return Dim; }\n\n  \
+    \  // if V is linear combination of v_0, ..., v_k then\n    // returns coefficients\
+    \ (a_0, ..., a_k) s.t. -(a_0v_0 + ... + a_kv_k) = V\n    std::optional<std::vector<Tp>>\
     \ insert(const std::vector<Tp> &V) {\n        std::vector<Tp> Aug(dim()), RV =\
     \ V;\n        for (int i = 0; i < dim(); ++i) {\n            if (RV[i] == 0) continue;\n\
     \            if (Reduced[i].empty()) {\n                Aug[size()]    = 1;\n\
@@ -108,12 +107,11 @@ data:
     \ <optional>\n#include <vector>\n\ntemplate <typename Tp>\nclass Basis {\npublic:\n\
     \    const int Dim;\n    Matrix<Tp> Vectors; // v_0, v_1, ...\n    Matrix<Tp>\
     \ Augmented;\n    Matrix<Tp> Reduced; // upper triangular matrix diag(Reduced)=(1,...,1)\n\
-    \    // Augmented * Vectors = Reduced\n\n    Basis(int dim) : Dim(dim), Augmented(dim,\
-    \ std::vector<Tp>(dim)), Reduced(dim) {\n        for (int i = 0; i < Dim; ++i)\
-    \ Augmented[i][i] = 1;\n    }\n\n    int size() const { return Vectors.size();\
-    \ }\n    int dim() const { return Dim; }\n\n    // if V is linear combination\
-    \ of v_0, ..., v_k then\n    // returns coefficients (a_0, ..., a_k) s.t. -(a_0v_0\
-    \ + ... + a_kv_k) = V\n    std::optional<std::vector<Tp>> insert(const std::vector<Tp>\
+    \    // Augmented * Vectors = Reduced\n\n    Basis(int dim) : Dim(dim), Augmented(dim),\
+    \ Reduced(dim) {}\n\n    int size() const { return Vectors.size(); }\n    int\
+    \ dim() const { return Dim; }\n\n    // if V is linear combination of v_0, ...,\
+    \ v_k then\n    // returns coefficients (a_0, ..., a_k) s.t. -(a_0v_0 + ... +\
+    \ a_kv_k) = V\n    std::optional<std::vector<Tp>> insert(const std::vector<Tp>\
     \ &V) {\n        std::vector<Tp> Aug(dim()), RV = V;\n        for (int i = 0;\
     \ i < dim(); ++i) {\n            if (RV[i] == 0) continue;\n            if (Reduced[i].empty())\
     \ {\n                Aug[size()]    = 1;\n                const auto inv = RV[i].inv();\n\
@@ -137,7 +135,7 @@ data:
   isVerificationFile: false
   path: basis.hpp
   requiredBy: []
-  timestamp: '2024-07-02 19:04:48+08:00'
+  timestamp: '2024-07-02 19:14:45+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/characteristic_polynomial.1.test.cpp
