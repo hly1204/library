@@ -201,9 +201,10 @@ data:
     \ (int i = 0; i <= d; ++i) res[i] = -Base::operator[](i);\n        res.shrink();\n\
     \        return res;\n    }\n\n    // O(deg(Q)deg(R))\n    std::pair<SBPoly, SBPoly>\
     \ divmod(const SBPoly &R) const {\n        const int degL = deg(), degR = R.deg(),\
-    \ degQ = degL - degR;\n        assert(degR >= 0);\n        SBPoly quo(degQ + 1),\
-    \ rem(*this);\n        if (degQ >= 0) {\n            const auto inv = R.lc().inv();\n\
-    \            for (int i = degQ, n = degL; i >= 0; --i)\n                if ((quo[i]\
+    \ degQ = degL - degR;\n        assert(degR >= 0);\n        if (degQ < 0) return\
+    \ std::make_pair(SBPoly(), *this);\n        SBPoly quo(degQ + 1), rem(*this);\n\
+    \        if (degQ >= 0) {\n            const auto inv = R.lc().inv();\n      \
+    \      for (int i = degQ, n = degL; i >= 0; --i)\n                if ((quo[i]\
     \ = rem[n--] * inv) != 0)\n                    for (int j = 0; j <= degR; ++j)\
     \ rem[i + j] -= quo[i] * R[j];\n        }\n        rem.shrink();\n        return\
     \ std::make_pair(quo, rem);\n    }\n    SBPoly &operator+=(const SBPoly &R) {\n\
@@ -295,7 +296,7 @@ data:
   isVerificationFile: true
   path: test/matrix/characteristic_polynomial.1.test.cpp
   requiredBy: []
-  timestamp: '2024-07-02 22:17:39+08:00'
+  timestamp: '2024-07-02 22:41:05+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/characteristic_polynomial.1.test.cpp
