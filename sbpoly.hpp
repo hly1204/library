@@ -68,6 +68,7 @@ public:
     std::pair<SBPoly, SBPoly> divmod(const SBPoly &R) const {
         const int degL = deg(), degR = R.deg(), degQ = degL - degR;
         assert(degR >= 0);
+        if (degQ < 0) return std::make_pair(SBPoly(), *this);
         SBPoly quo(degQ + 1), rem(*this);
         if (degQ >= 0) {
             const auto inv = R.lc().inv();
