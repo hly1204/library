@@ -254,17 +254,17 @@ data:
     \       for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n     \
     \       for (int j = s; j < s + P[i].deg() - 1; ++j) res[j + 1][j] = 1;\n    \
     \        for (int j = s; j < s + P[i].deg(); ++j) res[j][s + P[i].deg() - 1] =\
-    \ -P[i][j - s];\n        }\n        return res;\n    }\n\n    Matrix<Tp> pow(long\
-    \ long e) const {\n        assert(e >= 0);\n        // returns x^e mod p\n   \
-    \     auto pow_mod = [](auto &&pow_mod, long long e, const SBPoly<Tp> &p) {\n\
-    \            if (e == 0) return SBPoly<Tp>{Tp(1)};\n            const auto half\
-    \ = pow_mod(pow_mod, e / 2, p);\n            return ((half * half) << (e & 1))\
-    \ % p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n        for\
-    \ (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n            auto\
-    \ c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j < P[i].deg();\
-    \ c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <= c.deg(); ++k)\
-    \ res[k + s][s + j] = c[k];\n        }\n        return mat_mul(T, mat_mul(res,\
-    \ InvT));\n    }\n};\n"
+    \ -P[i][j - s];\n        }\n        return res;\n    }\n\n    // returns (F_A)^e\n\
+    \    Matrix<Tp> pow(long long e) const {\n        assert(e >= 0);\n        //\
+    \ returns x^e mod p\n        auto pow_mod = [](auto &&pow_mod, long long e, const\
+    \ SBPoly<Tp> &p) {\n            if (e == 0) return SBPoly<Tp>{Tp(1)};\n      \
+    \      const auto half = pow_mod(pow_mod, e / 2, p);\n            return ((half\
+    \ * half) << (e & 1)) % p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n\
+    \        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n    \
+    \        auto c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j <\
+    \ P[i].deg(); c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <=\
+    \ c.deg(); ++k) res[k + s][s + j] = c[k];\n        }\n        return res;\n  \
+    \  }\n};\n"
   code: "#pragma once\n\n#include \"basis.hpp\"\n#include \"mat_basic.hpp\"\n#include\
     \ \"random.hpp\"\n#include \"sbpoly.hpp\"\n#include <vector>\n\ntemplate <typename\
     \ Tp>\nclass Frobenius {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_k))\n\
@@ -302,17 +302,17 @@ data:
     \       for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n     \
     \       for (int j = s; j < s + P[i].deg() - 1; ++j) res[j + 1][j] = 1;\n    \
     \        for (int j = s; j < s + P[i].deg(); ++j) res[j][s + P[i].deg() - 1] =\
-    \ -P[i][j - s];\n        }\n        return res;\n    }\n\n    Matrix<Tp> pow(long\
-    \ long e) const {\n        assert(e >= 0);\n        // returns x^e mod p\n   \
-    \     auto pow_mod = [](auto &&pow_mod, long long e, const SBPoly<Tp> &p) {\n\
-    \            if (e == 0) return SBPoly<Tp>{Tp(1)};\n            const auto half\
-    \ = pow_mod(pow_mod, e / 2, p);\n            return ((half * half) << (e & 1))\
-    \ % p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n        for\
-    \ (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n            auto\
-    \ c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j < P[i].deg();\
-    \ c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <= c.deg(); ++k)\
-    \ res[k + s][s + j] = c[k];\n        }\n        return mat_mul(T, mat_mul(res,\
-    \ InvT));\n    }\n};\n"
+    \ -P[i][j - s];\n        }\n        return res;\n    }\n\n    // returns (F_A)^e\n\
+    \    Matrix<Tp> pow(long long e) const {\n        assert(e >= 0);\n        //\
+    \ returns x^e mod p\n        auto pow_mod = [](auto &&pow_mod, long long e, const\
+    \ SBPoly<Tp> &p) {\n            if (e == 0) return SBPoly<Tp>{Tp(1)};\n      \
+    \      const auto half = pow_mod(pow_mod, e / 2, p);\n            return ((half\
+    \ * half) << (e & 1)) % p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n\
+    \        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n    \
+    \        auto c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j <\
+    \ P[i].deg(); c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <=\
+    \ c.deg(); ++k) res[k + s][s + j] = c[k];\n        }\n        return res;\n  \
+    \  }\n};\n"
   dependsOn:
   - basis.hpp
   - mat_basic.hpp
@@ -322,7 +322,7 @@ data:
   isVerificationFile: false
   path: frobenius.hpp
   requiredBy: []
-  timestamp: '2024-07-03 19:37:20+08:00'
+  timestamp: '2024-07-03 20:56:13+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp

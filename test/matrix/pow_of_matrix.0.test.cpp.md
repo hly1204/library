@@ -260,29 +260,29 @@ data:
     \       for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n     \
     \       for (int j = s; j < s + P[i].deg() - 1; ++j) res[j + 1][j] = 1;\n    \
     \        for (int j = s; j < s + P[i].deg(); ++j) res[j][s + P[i].deg() - 1] =\
-    \ -P[i][j - s];\n        }\n        return res;\n    }\n\n    Matrix<Tp> pow(long\
-    \ long e) const {\n        assert(e >= 0);\n        // returns x^e mod p\n   \
-    \     auto pow_mod = [](auto &&pow_mod, long long e, const SBPoly<Tp> &p) {\n\
-    \            if (e == 0) return SBPoly<Tp>{Tp(1)};\n            const auto half\
-    \ = pow_mod(pow_mod, e / 2, p);\n            return ((half * half) << (e & 1))\
-    \ % p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n        for\
-    \ (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n            auto\
-    \ c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j < P[i].deg();\
-    \ c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <= c.deg(); ++k)\
-    \ res[k + s][s + j] = c[k];\n        }\n        return mat_mul(T, mat_mul(res,\
-    \ InvT));\n    }\n};\n#line 2 \"modint.hpp\"\n\n#line 4 \"modint.hpp\"\n#include\
-    \ <type_traits>\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
-    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
-    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
-    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
-    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
-    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
-    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
-    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
-    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
-    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
-    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
-    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ -P[i][j - s];\n        }\n        return res;\n    }\n\n    // returns (F_A)^e\n\
+    \    Matrix<Tp> pow(long long e) const {\n        assert(e >= 0);\n        //\
+    \ returns x^e mod p\n        auto pow_mod = [](auto &&pow_mod, long long e, const\
+    \ SBPoly<Tp> &p) {\n            if (e == 0) return SBPoly<Tp>{Tp(1)};\n      \
+    \      const auto half = pow_mod(pow_mod, e / 2, p);\n            return ((half\
+    \ * half) << (e & 1)) % p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n\
+    \        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n    \
+    \        auto c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j <\
+    \ P[i].deg(); c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <=\
+    \ c.deg(); ++k) res[k + s][s + j] = c[k];\n        }\n        return res;\n  \
+    \  }\n};\n#line 2 \"modint.hpp\"\n\n#line 4 \"modint.hpp\"\n#include <type_traits>\n\
+    \ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0,\
+    \ \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
+    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
+    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
+    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
+    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
+    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
+    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
+    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
+    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
+    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
     \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
     \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
     \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
@@ -312,18 +312,20 @@ data:
     \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
     \    long long k;\n    std::cin >> n >> k;\n    Matrix<mint> A(n, std::vector<mint>(n));\n\
     \    for (int i = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cin\
-    \ >> A[i][j];\n    Frobenius<mint> F(A);\n    const auto res = F.pow(k);\n   \
-    \ for (int i = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cout <<\
-    \ res[i][j] << \" \\n\"[j == n - 1];\n    return 0;\n}\n"
+    \ >> A[i][j];\n    Frobenius<mint> F(A);\n    const auto res = mat_mul(F.transition_matrix(),\
+    \ mat_mul(F.pow(k), F.inv_transition_matrix()));\n    for (int i = 0; i < n; ++i)\n\
+    \        for (int j = 0; j < n; ++j) std::cout << res[i][j] << \" \\n\"[j == n\
+    \ - 1];\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/pow_of_matrix\"\n\n#include\
     \ \"frobenius.hpp\"\n#include \"mat_basic.hpp\"\n#include \"modint.hpp\"\n#include\
     \ <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    long long k;\n    std::cin\
     \ >> n >> k;\n    Matrix<mint> A(n, std::vector<mint>(n));\n    for (int i = 0;\
     \ i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cin >> A[i][j];\n    Frobenius<mint>\
-    \ F(A);\n    const auto res = F.pow(k);\n    for (int i = 0; i < n; ++i)\n   \
-    \     for (int j = 0; j < n; ++j) std::cout << res[i][j] << \" \\n\"[j == n -\
-    \ 1];\n    return 0;\n}\n"
+    \ F(A);\n    const auto res = mat_mul(F.transition_matrix(), mat_mul(F.pow(k),\
+    \ F.inv_transition_matrix()));\n    for (int i = 0; i < n; ++i)\n        for (int\
+    \ j = 0; j < n; ++j) std::cout << res[i][j] << \" \\n\"[j == n - 1];\n    return\
+    \ 0;\n}\n"
   dependsOn:
   - frobenius.hpp
   - basis.hpp
@@ -335,7 +337,7 @@ data:
   isVerificationFile: true
   path: test/matrix/pow_of_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-03 19:37:20+08:00'
+  timestamp: '2024-07-03 20:56:13+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/pow_of_matrix.0.test.cpp
