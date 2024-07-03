@@ -16,7 +16,7 @@ int main() {
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j) std::cin >> A[i][j];
     Frobenius<mint> F(A);
-    const auto res = F.pow(k);
+    const auto res = mat_mul(F.transition_matrix(), mat_mul(F.pow(k), F.inv_transition_matrix()));
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j) std::cout << res[i][j] << " \n"[j == n - 1];
     return 0;

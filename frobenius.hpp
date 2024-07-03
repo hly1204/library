@@ -71,6 +71,7 @@ public:
         return res;
     }
 
+    // returns (F_A)^e
     Matrix<Tp> pow(long long e) const {
         assert(e >= 0);
         // returns x^e mod p
@@ -85,6 +86,6 @@ public:
             for (int j = 0; j < P[i].deg(); c = (c << 1) % P[i], ++j)
                 for (int k = 0; k <= c.deg(); ++k) res[k + s][s + j] = c[k];
         }
-        return mat_mul(T, mat_mul(res, InvT));
+        return res;
     }
 };
