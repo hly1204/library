@@ -90,12 +90,12 @@ data:
     \        if (i != d) L << \" + \";\n            }\n        }\n        return L\
     \ << ']';\n    }\n};\n\ntemplate <typename Tp>\ninline std::tuple<SBPoly<Tp>,\
     \ SBPoly<Tp>, SBPoly<Tp>> xgcd(SBPoly<Tp> A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11\
-    \ = {1}, x12 = {}, x21 = {}, x22 = {1};\n    while (B.deg() >= 0) {\n        auto\
-    \ [Q, R]  = A.divmod(B);\n        auto x11_old = x11, x12_old = x12;\n       \
-    \ x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22, x22 = x12_old - x22\
-    \ * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11, x12, A);\n\
-    }\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp>\
-    \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {1}, x21 = {};\n    while (B.deg()\
+    \ = {Tp(1)}, x12 = {}, x21 = {}, x22 = {Tp(1)};\n    while (B.deg() >= 0) {\n\
+    \        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11, x12_old = x12;\n\
+    \        x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22, x22 = x12_old\
+    \ - x22 * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11, x12,\
+    \ A);\n}\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp>\
+    \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {Tp(1)}, x21 = {};\n    while (B.deg()\
     \ >= 0) {\n        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11;\n\
     \        x11 = x21, x21 = x11_old - x21 * Q;\n        A = B, B = R;\n    }\n \
     \   return std::make_pair(x11, A);\n}\n"
@@ -172,12 +172,12 @@ data:
     \        if (i != d) L << \" + \";\n            }\n        }\n        return L\
     \ << ']';\n    }\n};\n\ntemplate <typename Tp>\ninline std::tuple<SBPoly<Tp>,\
     \ SBPoly<Tp>, SBPoly<Tp>> xgcd(SBPoly<Tp> A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11\
-    \ = {1}, x12 = {}, x21 = {}, x22 = {1};\n    while (B.deg() >= 0) {\n        auto\
-    \ [Q, R]  = A.divmod(B);\n        auto x11_old = x11, x12_old = x12;\n       \
-    \ x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22, x22 = x12_old - x22\
-    \ * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11, x12, A);\n\
-    }\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp>\
-    \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {1}, x21 = {};\n    while (B.deg()\
+    \ = {Tp(1)}, x12 = {}, x21 = {}, x22 = {Tp(1)};\n    while (B.deg() >= 0) {\n\
+    \        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11, x12_old = x12;\n\
+    \        x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22, x22 = x12_old\
+    \ - x22 * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11, x12,\
+    \ A);\n}\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp>\
+    \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {Tp(1)}, x21 = {};\n    while (B.deg()\
     \ >= 0) {\n        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11;\n\
     \        x11 = x21, x21 = x11_old - x21 * Q;\n        A = B, B = R;\n    }\n \
     \   return std::make_pair(x11, A);\n}\n"
@@ -186,7 +186,7 @@ data:
   path: sbpoly.hpp
   requiredBy:
   - frobenius.hpp
-  timestamp: '2024-07-03 19:06:57+08:00'
+  timestamp: '2024-07-03 19:37:20+08:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/matrix/characteristic_polynomial.1.test.cpp

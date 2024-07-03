@@ -84,7 +84,7 @@ data:
     \  for (int k = 0; k < n; ++k) A[k][i + 1] += v * A[k][j];\n        }\n    }\n\
     \    return A;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> charpoly(const\
     \ Matrix<Tp> &A) {\n    const auto H = to_upper_hessenberg(A);\n    const int\
-    \ n  = height(A);\n    std::vector<std::vector<Tp>> P(n + 1);\n    P[0] = {1};\n\
+    \ n  = height(A);\n    std::vector<std::vector<Tp>> P(n + 1);\n    P[0] = {Tp(1)};\n\
     \    for (int i = 1; i <= n; ++i) {\n        P[i].resize(i + 1);\n        for\
     \ (int j = 0; j < i; ++j)\n            P[i][j] -= H[i - 1][i - 1] * P[i - 1][j],\
     \ P[i][j + 1] += P[i - 1][j];\n        Tp t = 1;\n        for (int j = 1; j <\
@@ -210,12 +210,12 @@ data:
     \        if (i != d) L << \" + \";\n            }\n        }\n        return L\
     \ << ']';\n    }\n};\n\ntemplate <typename Tp>\ninline std::tuple<SBPoly<Tp>,\
     \ SBPoly<Tp>, SBPoly<Tp>> xgcd(SBPoly<Tp> A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11\
-    \ = {1}, x12 = {}, x21 = {}, x22 = {1};\n    while (B.deg() >= 0) {\n        auto\
-    \ [Q, R]  = A.divmod(B);\n        auto x11_old = x11, x12_old = x12;\n       \
-    \ x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22, x22 = x12_old - x22\
-    \ * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11, x12, A);\n\
-    }\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp>\
-    \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {1}, x21 = {};\n    while (B.deg()\
+    \ = {Tp(1)}, x12 = {}, x21 = {}, x22 = {Tp(1)};\n    while (B.deg() >= 0) {\n\
+    \        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11, x12_old = x12;\n\
+    \        x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22, x22 = x12_old\
+    \ - x22 * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11, x12,\
+    \ A);\n}\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp>\
+    \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {Tp(1)}, x21 = {};\n    while (B.deg()\
     \ >= 0) {\n        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11;\n\
     \        x11 = x21, x21 = x11_old - x21 * Q;\n        A = B, B = R;\n    }\n \
     \   return std::make_pair(x11, A);\n}\n#line 8 \"frobenius.hpp\"\n\ntemplate <typename\
@@ -257,9 +257,9 @@ data:
     \ -P[i][j - s];\n        }\n        return res;\n    }\n\n    Matrix<Tp> pow(long\
     \ long e) const {\n        assert(e >= 0);\n        // returns x^e mod p\n   \
     \     auto pow_mod = [](auto &&pow_mod, long long e, const SBPoly<Tp> &p) {\n\
-    \            if (e == 0) return SBPoly<Tp>{1};\n            const auto half =\
-    \ pow_mod(pow_mod, e / 2, p);\n            return ((half * half) << (e & 1)) %\
-    \ p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n        for\
+    \            if (e == 0) return SBPoly<Tp>{Tp(1)};\n            const auto half\
+    \ = pow_mod(pow_mod, e / 2, p);\n            return ((half * half) << (e & 1))\
+    \ % p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n        for\
     \ (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n            auto\
     \ c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j < P[i].deg();\
     \ c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <= c.deg(); ++k)\
@@ -305,9 +305,9 @@ data:
     \ -P[i][j - s];\n        }\n        return res;\n    }\n\n    Matrix<Tp> pow(long\
     \ long e) const {\n        assert(e >= 0);\n        // returns x^e mod p\n   \
     \     auto pow_mod = [](auto &&pow_mod, long long e, const SBPoly<Tp> &p) {\n\
-    \            if (e == 0) return SBPoly<Tp>{1};\n            const auto half =\
-    \ pow_mod(pow_mod, e / 2, p);\n            return ((half * half) << (e & 1)) %\
-    \ p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n        for\
+    \            if (e == 0) return SBPoly<Tp>{Tp(1)};\n            const auto half\
+    \ = pow_mod(pow_mod, e / 2, p);\n            return ((half * half) << (e & 1))\
+    \ % p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n        for\
     \ (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n            auto\
     \ c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j < P[i].deg();\
     \ c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <= c.deg(); ++k)\
@@ -322,7 +322,7 @@ data:
   isVerificationFile: false
   path: frobenius.hpp
   requiredBy: []
-  timestamp: '2024-07-03 19:15:58+08:00'
+  timestamp: '2024-07-03 19:37:20+08:00'
   verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp

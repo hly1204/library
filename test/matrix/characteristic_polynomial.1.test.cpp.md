@@ -87,7 +87,7 @@ data:
     \  for (int k = 0; k < n; ++k) A[k][i + 1] += v * A[k][j];\n        }\n    }\n\
     \    return A;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> charpoly(const\
     \ Matrix<Tp> &A) {\n    const auto H = to_upper_hessenberg(A);\n    const int\
-    \ n  = height(A);\n    std::vector<std::vector<Tp>> P(n + 1);\n    P[0] = {1};\n\
+    \ n  = height(A);\n    std::vector<std::vector<Tp>> P(n + 1);\n    P[0] = {Tp(1)};\n\
     \    for (int i = 1; i <= n; ++i) {\n        P[i].resize(i + 1);\n        for\
     \ (int j = 0; j < i; ++j)\n            P[i][j] -= H[i - 1][i - 1] * P[i - 1][j],\
     \ P[i][j + 1] += P[i - 1][j];\n        Tp t = 1;\n        for (int j = 1; j <\
@@ -252,12 +252,12 @@ data:
     \        if (i != d) L << \" + \";\n            }\n        }\n        return L\
     \ << ']';\n    }\n};\n\ntemplate <typename Tp>\ninline std::tuple<SBPoly<Tp>,\
     \ SBPoly<Tp>, SBPoly<Tp>> xgcd(SBPoly<Tp> A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11\
-    \ = {1}, x12 = {}, x21 = {}, x22 = {1};\n    while (B.deg() >= 0) {\n        auto\
-    \ [Q, R]  = A.divmod(B);\n        auto x11_old = x11, x12_old = x12;\n       \
-    \ x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22, x22 = x12_old - x22\
-    \ * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11, x12, A);\n\
-    }\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp>\
-    \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {1}, x21 = {};\n    while (B.deg()\
+    \ = {Tp(1)}, x12 = {}, x21 = {}, x22 = {Tp(1)};\n    while (B.deg() >= 0) {\n\
+    \        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11, x12_old = x12;\n\
+    \        x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22, x22 = x12_old\
+    \ - x22 * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11, x12,\
+    \ A);\n}\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp>\
+    \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {Tp(1)}, x21 = {};\n    while (B.deg()\
     \ >= 0) {\n        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11;\n\
     \        x11 = x21, x21 = x11_old - x21 * Q;\n        A = B, B = R;\n    }\n \
     \   return std::make_pair(x11, A);\n}\n#line 9 \"test/matrix/characteristic_polynomial.1.test.cpp\"\
@@ -265,11 +265,11 @@ data:
     \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    Matrix<mint>\
     \ A(n, std::vector<mint>(n));\n    for (int i = 0; i < n; ++i)\n        for (int\
     \ j = 0; j < n; ++j) std::cin >> A[i][j];\n    Basis<mint> B(n);\n    SBPoly<mint>\
-    \ cp = {1};\n    while (B.size() < n) {\n        int deg = 0;\n        for (auto\
-    \ R = random_vector<mint>(n);; R = mat_apply(A, R)) {\n            if (auto comb\
-    \ = B.insert(R)) {\n                SBPoly<mint> p(comb->begin() + (B.size() -\
-    \ deg), comb->begin() + B.size());\n                p.emplace_back(1);\n     \
-    \           cp *= p;\n                break;\n            }\n            ++deg;\n\
+    \ cp = {mint(1)};\n    while (B.size() < n) {\n        int deg = 0;\n        for\
+    \ (auto R = random_vector<mint>(n);; R = mat_apply(A, R)) {\n            if (auto\
+    \ comb = B.insert(R)) {\n                SBPoly<mint> p(comb->begin() + (B.size()\
+    \ - deg), comb->begin() + B.size());\n                p.emplace_back(1);\n   \
+    \             cp *= p;\n                break;\n            }\n            ++deg;\n\
     \        }\n    }\n    for (int i = 0; i <= n; ++i) std::cout << cp[i] << ' ';\n\
     \    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/characteristic_polynomial\"\
@@ -279,11 +279,11 @@ data:
     \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    Matrix<mint>\
     \ A(n, std::vector<mint>(n));\n    for (int i = 0; i < n; ++i)\n        for (int\
     \ j = 0; j < n; ++j) std::cin >> A[i][j];\n    Basis<mint> B(n);\n    SBPoly<mint>\
-    \ cp = {1};\n    while (B.size() < n) {\n        int deg = 0;\n        for (auto\
-    \ R = random_vector<mint>(n);; R = mat_apply(A, R)) {\n            if (auto comb\
-    \ = B.insert(R)) {\n                SBPoly<mint> p(comb->begin() + (B.size() -\
-    \ deg), comb->begin() + B.size());\n                p.emplace_back(1);\n     \
-    \           cp *= p;\n                break;\n            }\n            ++deg;\n\
+    \ cp = {mint(1)};\n    while (B.size() < n) {\n        int deg = 0;\n        for\
+    \ (auto R = random_vector<mint>(n);; R = mat_apply(A, R)) {\n            if (auto\
+    \ comb = B.insert(R)) {\n                SBPoly<mint> p(comb->begin() + (B.size()\
+    \ - deg), comb->begin() + B.size());\n                p.emplace_back(1);\n   \
+    \             cp *= p;\n                break;\n            }\n            ++deg;\n\
     \        }\n    }\n    for (int i = 0; i <= n; ++i) std::cout << cp[i] << ' ';\n\
     \    return 0;\n}\n"
   dependsOn:
@@ -296,7 +296,7 @@ data:
   isVerificationFile: true
   path: test/matrix/characteristic_polynomial.1.test.cpp
   requiredBy: []
-  timestamp: '2024-07-03 19:06:57+08:00'
+  timestamp: '2024-07-03 19:37:20+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/characteristic_polynomial.1.test.cpp

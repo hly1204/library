@@ -76,7 +76,7 @@ data:
     \  for (int k = 0; k < n; ++k) A[k][i + 1] += v * A[k][j];\n        }\n    }\n\
     \    return A;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> charpoly(const\
     \ Matrix<Tp> &A) {\n    const auto H = to_upper_hessenberg(A);\n    const int\
-    \ n  = height(A);\n    std::vector<std::vector<Tp>> P(n + 1);\n    P[0] = {1};\n\
+    \ n  = height(A);\n    std::vector<std::vector<Tp>> P(n + 1);\n    P[0] = {Tp(1)};\n\
     \    for (int i = 1; i <= n; ++i) {\n        P[i].resize(i + 1);\n        for\
     \ (int j = 0; j < i; ++j)\n            P[i][j] -= H[i - 1][i - 1] * P[i - 1][j],\
     \ P[i][j + 1] += P[i - 1][j];\n        Tp t = 1;\n        for (int j = 1; j <\
@@ -142,7 +142,7 @@ data:
   path: basis.hpp
   requiredBy:
   - frobenius.hpp
-  timestamp: '2024-07-03 19:06:57+08:00'
+  timestamp: '2024-07-03 19:37:20+08:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/matrix/characteristic_polynomial.1.test.cpp
