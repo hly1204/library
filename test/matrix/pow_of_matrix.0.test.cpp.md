@@ -263,7 +263,7 @@ data:
     \ -P[i][j - s];\n        }\n        return res;\n    }\n\n    Matrix<Tp> pow(long\
     \ long e) const {\n        assert(e >= 0);\n        // returns x^e mod p\n   \
     \     auto pow_mod = [](auto &&pow_mod, long long e, const SBPoly<Tp> &p) {\n\
-    \            if (e == 0) return SBPoly<Tp>{Tp(1)};\n            const auto half\
+    \            if (e == 0) return SBPoly<Tp>({1});\n            const auto half\
     \ = pow_mod(pow_mod, e / 2, p);\n            return ((half * half) << (e & 1))\
     \ % p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n        for\
     \ (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n            auto\
@@ -335,7 +335,7 @@ data:
   isVerificationFile: true
   path: test/matrix/pow_of_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-03 19:37:20+08:00'
+  timestamp: '2024-07-03 19:51:32+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/matrix/pow_of_matrix.0.test.cpp

@@ -257,7 +257,7 @@ data:
     \ b[i & (n - 1)] += a[i];\n        return b;\n    };\n\n    const int degA = degree(A);\n\
     \    const int degB = degree(B);\n    assert(degB >= 0);\n    // A = Q*B + R =>\
     \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
-    \ < 0) return {std::vector<Tp>{Tp(0)}, A};\n\n    auto Q = div(std::vector(A.rend()\
+    \ < 0) return {std::vector<Tp>({0}), A};\n\n    auto Q = div(std::vector(A.rend()\
     \ - (degA + 1), A.rend()),\n                 std::vector(B.rend() - (degB + 1),\
     \ B.rend()), degQ + 1);\n    std::reverse(Q.begin(), Q.end());\n\n    const int\
     \ len      = fft_len(std::max(degB, 1));\n    const auto cyclicA = make_cyclic(A,\
@@ -394,7 +394,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/multipoint_evaluation.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-22 10:58:08+08:00'
+  timestamp: '2024-07-03 19:51:32+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/multipoint_evaluation.0.test.cpp
