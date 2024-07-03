@@ -224,7 +224,7 @@ data:
     \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {Tp(1)}, x21 = {};\n    while (B.deg()\
     \ >= 0) {\n        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11;\n\
     \        x11 = x21, x21 = x11_old - x21 * Q;\n        A = B, B = R;\n    }\n \
-    \   return std::make_pair(x11, A);\n}\n#line 8 \"frobenius.hpp\"\n\ntemplate <typename\
+    \   return std::make_pair(x11, A);\n}\n#line 9 \"frobenius.hpp\"\n\ntemplate <typename\
     \ Tp>\nclass Frobenius {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_k))\n\
     \    // where C_(p_j) is the companion matrix of monic polynomial P[j]\n    //\
     \ *        minimal polynomial of A = p_0\n    // * characteristic polynomial of\
@@ -337,7 +337,7 @@ data:
   isVerificationFile: true
   path: test/matrix/pow_of_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-03 20:56:13+08:00'
+  timestamp: '2024-07-03 21:33:44+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/pow_of_matrix.0.test.cpp
