@@ -266,8 +266,8 @@ data:
     eulerian_number.hpp\"\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
     \n// returns A(n,0), ..., A(n,n)\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ eulerian_number_row(int n) {\n    std::vector<Tp> A(n + 1);\n    for (int i\
-    \ = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);\n    auto AA = convolution(A, pow(std::vector<Tp>({1,\
-    \ -1}), n + 1, n + 1));\n    AA.resize(n + 1);\n    return AA;\n}\n\n// returns\
+    \ = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);\n    auto AA = convolution(A, pow(std::vector<Tp>{Tp(1),\
+    \ Tp(-1)}, n + 1, n + 1));\n    AA.resize(n + 1);\n    return AA;\n}\n\n// returns\
     \ A(0,k), ..., A(m-1,k)\n// see: https://blog.csdn.net/EI_Captain/article/details/108586699\n\
     // Entropy Increaser. \u5E73\u79FB\u6307\u6570\u57FA\u53D8\u6362.\ntemplate <typename\
     \ Tp>\ninline std::vector<Tp> eulerian_number_column(int k, int m) {\n    std::vector<Tp>\
@@ -286,8 +286,8 @@ data:
     \ Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
     \n// returns A(n,0), ..., A(n,n)\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ eulerian_number_row(int n) {\n    std::vector<Tp> A(n + 1);\n    for (int i\
-    \ = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);\n    auto AA = convolution(A, pow(std::vector<Tp>({1,\
-    \ -1}), n + 1, n + 1));\n    AA.resize(n + 1);\n    return AA;\n}\n\n// returns\
+    \ = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);\n    auto AA = convolution(A, pow(std::vector<Tp>{Tp(1),\
+    \ Tp(-1)}, n + 1, n + 1));\n    AA.resize(n + 1);\n    return AA;\n}\n\n// returns\
     \ A(0,k), ..., A(m-1,k)\n// see: https://blog.csdn.net/EI_Captain/article/details/108586699\n\
     // Entropy Increaser. \u5E73\u79FB\u6307\u6570\u57FA\u53D8\u6362.\ntemplate <typename\
     \ Tp>\ninline std::vector<Tp> eulerian_number_column(int k, int m) {\n    std::vector<Tp>\
@@ -310,7 +310,7 @@ data:
   isVerificationFile: false
   path: eulerian_number.hpp
   requiredBy: []
-  timestamp: '2024-07-03 19:51:32+08:00'
+  timestamp: '2024-06-02 11:00:30+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: eulerian_number.hpp
