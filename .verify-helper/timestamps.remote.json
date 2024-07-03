@@ -31,6 +31,6 @@
 "test/matrix/matrix_det.0.test.cpp": "2024-07-03 19:37:20 +0800",
 "test/matrix/matrix_det_mod_2.0.test.cpp": "2024-06-22 10:58:08 +0800",
 "test/matrix/matrix_product.0.test.cpp": "2024-07-03 19:37:20 +0800",
-"test/matrix/pow_of_matrix.0.test.cpp": "2024-07-03 19:37:20 +0800",
+"test/matrix/pow_of_matrix.0.test.cpp": "2024-07-03 20:56:13 +0800",
 "test/number_theory/yukicoder187.0.test.cpp": "2024-06-22 11:16:41 +0800"
 }
