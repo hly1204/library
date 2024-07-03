@@ -147,7 +147,7 @@ inline std::vector<Tp> charpoly(const Matrix<Tp> &A) {
     const auto H = to_upper_hessenberg(A);
     const int n  = height(A);
     std::vector<std::vector<Tp>> P(n + 1);
-    P[0] = {1};
+    P[0] = {Tp(1)};
     for (int i = 1; i <= n; ++i) {
         P[i].resize(i + 1);
         for (int j = 0; j < i; ++j)

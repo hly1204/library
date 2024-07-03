@@ -75,7 +75,7 @@ public:
         assert(e >= 0);
         // returns x^e mod p
         auto pow_mod = [](auto &&pow_mod, long long e, const SBPoly<Tp> &p) {
-            if (e == 0) return SBPoly<Tp>{1};
+            if (e == 0) return SBPoly<Tp>{Tp(1)};
             const auto half = pow_mod(pow_mod, e / 2, p);
             return ((half * half) << (e & 1)) % p;
         };

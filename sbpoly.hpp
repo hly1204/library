@@ -169,7 +169,7 @@ public:
 
 template <typename Tp>
 inline std::tuple<SBPoly<Tp>, SBPoly<Tp>, SBPoly<Tp>> xgcd(SBPoly<Tp> A, SBPoly<Tp> B) {
-    SBPoly<Tp> x11 = {1}, x12 = {}, x21 = {}, x22 = {1};
+    SBPoly<Tp> x11 = {Tp(1)}, x12 = {}, x21 = {}, x22 = {Tp(1)};
     while (B.deg() >= 0) {
         auto [Q, R]  = A.divmod(B);
         auto x11_old = x11, x12_old = x12;
@@ -182,7 +182,7 @@ inline std::tuple<SBPoly<Tp>, SBPoly<Tp>, SBPoly<Tp>> xgcd(SBPoly<Tp> A, SBPoly<
 
 template <typename Tp>
 inline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp> A, SBPoly<Tp> B) {
-    SBPoly<Tp> x11 = {1}, x21 = {};
+    SBPoly<Tp> x11 = {Tp(1)}, x21 = {};
     while (B.deg() >= 0) {
         auto [Q, R]  = A.divmod(B);
         auto x11_old = x11;

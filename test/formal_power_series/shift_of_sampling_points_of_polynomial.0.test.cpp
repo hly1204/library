@@ -15,7 +15,7 @@ int main() {
     std::cin >> n >> m >> c;
     std::vector<mint> A(n);
     for (int i = 0; i < n; ++i) std::cin >> A[i];
-    const auto Q = pow(std::vector<mint>{1, -1}, n, n + 1);
+    const auto Q = pow(std::vector<mint>{mint(1), mint(-1)}, n, n + 1);
     auto P       = convolution(A, Q);
     P.resize(n);
     const auto res = slice_coeff_rational(P, Q, c.val(), c.val() + m);

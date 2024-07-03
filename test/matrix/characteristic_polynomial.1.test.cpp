@@ -17,7 +17,7 @@ int main() {
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j) std::cin >> A[i][j];
     Basis<mint> B(n);
-    SBPoly<mint> cp = {1};
+    SBPoly<mint> cp = {mint(1)};
     while (B.size() < n) {
         int deg = 0;
         for (auto R = random_vector<mint>(n);; R = mat_apply(A, R)) {
