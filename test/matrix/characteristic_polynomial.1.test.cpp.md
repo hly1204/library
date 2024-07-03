@@ -98,9 +98,9 @@ data:
     \ Tp>\nclass Basis {\npublic:\n    const int Dim;\n    Matrix<Tp> Vectors; //\
     \ v_0, v_1, ...\n    Matrix<Tp> Augmented;\n    Matrix<Tp> Reduced; // upper triangular\
     \ matrix diag(Reduced)=(1,...,1)\n    // Augmented * Vectors = Reduced\n\n   \
-    \ Basis(int dim) : Dim(dim), Augmented(dim), Reduced(dim) {}\n\n    int size()\
-    \ const { return Vectors.size(); }\n    int dim() const { return Dim; }\n\n  \
-    \  // if V is linear combination of v_0, ..., v_k then\n    // returns coefficients\
+    \ explicit Basis(int dim) : Dim(dim), Augmented(dim), Reduced(dim) {}\n\n    int\
+    \ size() const { return Vectors.size(); }\n    int dim() const { return Dim; }\n\
+    \n    // if V is linear combination of v_0, ..., v_k then\n    // returns coefficients\
     \ (a_0, ..., a_k) s.t. -(a_0v_0 + ... + a_kv_k) = V\n    std::optional<std::vector<Tp>>\
     \ insert(const std::vector<Tp> &V) {\n        std::vector<Tp> Aug(dim()), RV =\
     \ V;\n        for (int i = 0; i < dim(); ++i) {\n            if (RV[i] == 0) continue;\n\
@@ -233,9 +233,9 @@ data:
     \ != 0)\n                for (int j = 0; j <= degR; ++j) Base::operator[](i +\
     \ j) -= res * R[j];\n        return shrink();\n    }\n    SBPoly &operator<<=(int\
     \ D) {\n        if (D > 0) {\n            Base::insert(Base::begin(), D, Tp());\n\
-    \        } else if (D < 0) {\n            if (-D < Base::size()) {\n         \
-    \       Base::erase(Base::begin(), Base::begin() + (-D));\n            } else\
-    \ {\n                Base::clear();\n            }\n        }\n        return\
+    \        } else if (D < 0) {\n            if (-D < (int)Base::size()) {\n    \
+    \            Base::erase(Base::begin(), Base::begin() + (-D));\n            }\
+    \ else {\n                Base::clear();\n            }\n        }\n        return\
     \ shrink();\n    }\n    SBPoly &operator>>=(int D) { return operator<<=(-D); }\n\
     \n    friend SBPoly operator+(const SBPoly &L, const SBPoly &R) { return SBPoly(L)\
     \ += R; }\n    friend SBPoly operator-(const SBPoly &L, const SBPoly &R) { return\
@@ -296,7 +296,7 @@ data:
   isVerificationFile: true
   path: test/matrix/characteristic_polynomial.1.test.cpp
   requiredBy: []
-  timestamp: '2024-07-02 22:41:05+08:00'
+  timestamp: '2024-07-03 19:06:57+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/characteristic_polynomial.1.test.cpp

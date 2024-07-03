@@ -65,9 +65,9 @@ data:
     \ != 0)\n                for (int j = 0; j <= degR; ++j) Base::operator[](i +\
     \ j) -= res * R[j];\n        return shrink();\n    }\n    SBPoly &operator<<=(int\
     \ D) {\n        if (D > 0) {\n            Base::insert(Base::begin(), D, Tp());\n\
-    \        } else if (D < 0) {\n            if (-D < Base::size()) {\n         \
-    \       Base::erase(Base::begin(), Base::begin() + (-D));\n            } else\
-    \ {\n                Base::clear();\n            }\n        }\n        return\
+    \        } else if (D < 0) {\n            if (-D < (int)Base::size()) {\n    \
+    \            Base::erase(Base::begin(), Base::begin() + (-D));\n            }\
+    \ else {\n                Base::clear();\n            }\n        }\n        return\
     \ shrink();\n    }\n    SBPoly &operator>>=(int D) { return operator<<=(-D); }\n\
     \n    friend SBPoly operator+(const SBPoly &L, const SBPoly &R) { return SBPoly(L)\
     \ += R; }\n    friend SBPoly operator-(const SBPoly &L, const SBPoly &R) { return\
@@ -147,9 +147,9 @@ data:
     \ != 0)\n                for (int j = 0; j <= degR; ++j) Base::operator[](i +\
     \ j) -= res * R[j];\n        return shrink();\n    }\n    SBPoly &operator<<=(int\
     \ D) {\n        if (D > 0) {\n            Base::insert(Base::begin(), D, Tp());\n\
-    \        } else if (D < 0) {\n            if (-D < Base::size()) {\n         \
-    \       Base::erase(Base::begin(), Base::begin() + (-D));\n            } else\
-    \ {\n                Base::clear();\n            }\n        }\n        return\
+    \        } else if (D < 0) {\n            if (-D < (int)Base::size()) {\n    \
+    \            Base::erase(Base::begin(), Base::begin() + (-D));\n            }\
+    \ else {\n                Base::clear();\n            }\n        }\n        return\
     \ shrink();\n    }\n    SBPoly &operator>>=(int D) { return operator<<=(-D); }\n\
     \n    friend SBPoly operator+(const SBPoly &L, const SBPoly &R) { return SBPoly(L)\
     \ += R; }\n    friend SBPoly operator-(const SBPoly &L, const SBPoly &R) { return\
@@ -179,7 +179,7 @@ data:
   isVerificationFile: false
   path: sbpoly.hpp
   requiredBy: []
-  timestamp: '2024-07-02 22:41:05+08:00'
+  timestamp: '2024-07-03 19:06:57+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/characteristic_polynomial.1.test.cpp
