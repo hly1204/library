@@ -4,7 +4,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':warning:'
+    path: frobenius.hpp
+    title: frobenius.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
@@ -45,7 +48,8 @@ data:
   - rng.hpp
   isVerificationFile: false
   path: random.hpp
-  requiredBy: []
+  requiredBy:
+  - frobenius.hpp
   timestamp: '2024-07-02 19:12:26+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

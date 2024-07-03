@@ -4,7 +4,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: mat_basic.hpp
     title: mat_basic.hpp
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':warning:'
+    path: frobenius.hpp
+    title: frobenius.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
@@ -134,7 +137,8 @@ data:
   - mat_basic.hpp
   isVerificationFile: false
   path: basis.hpp
-  requiredBy: []
+  requiredBy:
+  - frobenius.hpp
   timestamp: '2024-07-03 19:06:57+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

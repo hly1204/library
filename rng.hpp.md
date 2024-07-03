@@ -5,6 +5,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
+  - icon: ':warning:'
+    path: frobenius.hpp
+    title: frobenius.hpp
   - icon: ':heavy_check_mark:'
     path: random.hpp
     title: random.hpp
@@ -83,6 +86,7 @@ data:
   requiredBy:
   - sqrt_mod.hpp
   - random.hpp
+  - frobenius.hpp
   - treap_node_base.hpp
   - fps_sqrt.hpp
   timestamp: '2024-05-15 00:00:04+08:00'

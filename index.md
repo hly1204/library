@@ -45,6 +45,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: fps_sqrt.hpp
       title: fps_sqrt.hpp
+    - icon: ':warning:'
+      path: frobenius.hpp
+      title: frobenius.hpp
     - icon: ':heavy_check_mark:'
       path: mat_basic.hpp
       title: mat_basic.hpp

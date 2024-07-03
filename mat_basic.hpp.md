@@ -5,6 +5,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: basis.hpp
     title: basis.hpp
+  - icon: ':warning:'
+    path: frobenius.hpp
+    title: frobenius.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.0.test.cpp
@@ -158,6 +161,7 @@ data:
   path: mat_basic.hpp
   requiredBy:
   - basis.hpp
+  - frobenius.hpp
   timestamp: '2024-07-02 19:04:48+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
