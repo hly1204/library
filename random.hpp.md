@@ -1,20 +1,23 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   _extendedRequiredBy:
-  - icon: ':warning:'
+  - icon: ':x:'
     path: frobenius.hpp
     title: frobenius.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: test/matrix/pow_of_matrix.0.test.cpp
+    title: test/matrix/pow_of_matrix.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"random.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n\
@@ -51,9 +54,10 @@ data:
   requiredBy:
   - frobenius.hpp
   timestamp: '2024-07-02 19:12:26+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/matrix/characteristic_polynomial.1.test.cpp
+  - test/matrix/pow_of_matrix.0.test.cpp
 documentation_of: random.hpp
 layout: document
 redirect_from:

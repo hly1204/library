@@ -3,7 +3,7 @@ data:
   libraryCategories:
   - name: .
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: basis.hpp
       title: basis.hpp
     - icon: ':heavy_check_mark:'
@@ -45,16 +45,16 @@ data:
     - icon: ':heavy_check_mark:'
       path: fps_sqrt.hpp
       title: fps_sqrt.hpp
-    - icon: ':warning:'
+    - icon: ':x:'
       path: frobenius.hpp
       title: frobenius.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: mat_basic.hpp
       title: mat_basic.hpp
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -66,13 +66,13 @@ data:
     - icon: ':warning:'
       path: poly_interpolation.hpp
       title: poly_interpolation.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: random.hpp
       title: random.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: rng.hpp
       title: rng.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: sbpoly.hpp
       title: sbpoly.hpp
     - icon: ':heavy_check_mark:'
@@ -193,6 +193,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/matrix/matrix_product.0.test.cpp
       title: test/matrix/matrix_product.0.test.cpp
+    - icon: ':x:'
+      path: test/matrix/pow_of_matrix.0.test.cpp
+      title: test/matrix/pow_of_matrix.0.test.cpp
   - name: test/number_theory
     pages:
     - icon: ':heavy_check_mark:'
