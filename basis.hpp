@@ -14,7 +14,7 @@ public:
     Matrix<Tp> Reduced; // upper triangular matrix diag(Reduced)=(1,...,1)
     // Augmented * Vectors = Reduced
 
-    Basis(int dim) : Dim(dim), Augmented(dim), Reduced(dim) {}
+    explicit Basis(int dim) : Dim(dim), Augmented(dim), Reduced(dim) {}
 
     int size() const { return Vectors.size(); }
     int dim() const { return Dim; }

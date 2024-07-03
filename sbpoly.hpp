@@ -132,7 +132,7 @@ public:
         if (D > 0) {
             Base::insert(Base::begin(), D, Tp());
         } else if (D < 0) {
-            if (-D < Base::size()) {
+            if (-D < (int)Base::size()) {
                 Base::erase(Base::begin(), Base::begin() + (-D));
             } else {
                 Base::clear();
