@@ -4,6 +4,7 @@
 #include "mat_basic.hpp"
 #include "random.hpp"
 #include "sbpoly.hpp"
+#include <cassert>
 #include <vector>
 
 template <typename Tp>
