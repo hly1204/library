@@ -233,24 +233,24 @@ data:
     \ V;        // vectors for new basis\n        P.clear();\n        while (B.size()\
     \ < N) {\n            int deg = 0;\n            for (auto R = random_vector<Tp>(N);;\
     \ R = mat_apply(A, R), ++deg)\n                if (const auto c = B.insert(R))\
-    \ {\n                    if (!P.empty() && deg > P.back().deg()) goto retry;\n\
-    \                    P.emplace_back(c->begin() + (B.size() - deg), c->begin()\
-    \ + B.size())\n                        .emplace_back(1);\n                   \
-    \ V.emplace_back(SBPoly<Tp>(c->begin(), c->begin() + (B.size() - deg)) / P.back())\n\
-    \                        .resize(B.size());\n                    for (int i =\
-    \ B.size() - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n                \
-    \    for (int i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n  \
-    \                  break;\n                }\n        }\n        auto TT = T =\
-    \ transpose(B.transition_matrix()), InvTT = InvT = B.inv_transition_matrix();\n\
-    \        for (int i = 1, n = P[0].deg(); i < (int)V.size(); ++i)\n           \
-    \ for (int j = P[i].deg(); j--; ++n) {\n                std::vector<Tp> Vi(n);\n\
-    \                for (int k = 0; k < n; ++k) {\n                    if (V[i][k]\
-    \ != 0)\n                        for (int l = 0; l < N; ++l)\n               \
-    \             TT[n][l] += V[i][k] * T[k][l], InvTT[k][l] -= V[i][k] * InvT[n][l];\n\
-    \                    for (int l = 0; l < n; ++l) Vi[k] += A_B[k][l] * V[i][l];\n\
-    \                }\n                V[i] = Vi;\n            }\n        T = transpose(TT),\
-    \ InvT = InvTT;\n    }\n\n    Matrix<Tp> transition_matrix() const { return T;\
-    \ }\n    Matrix<Tp> inv_transition_matrix() const { return InvT; }\n\n    Matrix<Tp>\
+    \ {\n                    if (deg == 0) break;\n                    if (!P.empty()\
+    \ && deg > P.back().deg()) goto retry;\n                    P.emplace_back(c->begin()\
+    \ + (B.size() - deg), c->begin() + B.size())\n                        .emplace_back(1);\n\
+    \                    V.emplace_back(SBPoly<Tp>(c->begin(), c->begin() + (B.size()\
+    \ - deg)) / P.back())\n                        .resize(N);\n                 \
+    \   V.back().at(B.size() - deg) = 1;\n                    for (int i = B.size()\
+    \ - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n                    for (int\
+    \ i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n              \
+    \      break;\n                }\n        }\n        auto C = Matrix<Tp>(N), TT\
+    \ = T = transpose(B.transition_matrix());\n        InvT = B.inv_transition_matrix();\n\
+    \        for (int i = 0, n = 0; i < (int)V.size(); ++i)\n            for (int\
+    \ j = P[i].deg(); j--; C[n++] = V[i], V[i] = mat_apply(A_B, V[i]))\n         \
+    \       for (int k = 0; k < n; ++k)\n                    for (int l = 0; l < N;\
+    \ ++l) T[n][l] += V[i][k] * TT[k][l];\n        T = transpose(T), C = transpose(C);\n\
+    \        for (int i = N - 1; i > 0; --i)\n            for (int j = i - 1; j >=\
+    \ 0; --j)\n                for (int k = 0; k < N; ++k) InvT[j][k] -= C[j][i] *\
+    \ InvT[i][k];\n    }\n\n    Matrix<Tp> transition_matrix() const { return T; }\n\
+    \    Matrix<Tp> inv_transition_matrix() const { return InvT; }\n\n    Matrix<Tp>\
     \ frobenius_form() const {\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n \
     \       for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n     \
     \       for (int j = s; j < s + P[i].deg() - 1; ++j) res[j + 1][j] = 1;\n    \
@@ -283,24 +283,24 @@ data:
     \ V;        // vectors for new basis\n        P.clear();\n        while (B.size()\
     \ < N) {\n            int deg = 0;\n            for (auto R = random_vector<Tp>(N);;\
     \ R = mat_apply(A, R), ++deg)\n                if (const auto c = B.insert(R))\
-    \ {\n                    if (!P.empty() && deg > P.back().deg()) goto retry;\n\
-    \                    P.emplace_back(c->begin() + (B.size() - deg), c->begin()\
-    \ + B.size())\n                        .emplace_back(1);\n                   \
-    \ V.emplace_back(SBPoly<Tp>(c->begin(), c->begin() + (B.size() - deg)) / P.back())\n\
-    \                        .resize(B.size());\n                    for (int i =\
-    \ B.size() - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n                \
-    \    for (int i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n  \
-    \                  break;\n                }\n        }\n        auto TT = T =\
-    \ transpose(B.transition_matrix()), InvTT = InvT = B.inv_transition_matrix();\n\
-    \        for (int i = 1, n = P[0].deg(); i < (int)V.size(); ++i)\n           \
-    \ for (int j = P[i].deg(); j--; ++n) {\n                std::vector<Tp> Vi(n);\n\
-    \                for (int k = 0; k < n; ++k) {\n                    if (V[i][k]\
-    \ != 0)\n                        for (int l = 0; l < N; ++l)\n               \
-    \             TT[n][l] += V[i][k] * T[k][l], InvTT[k][l] -= V[i][k] * InvT[n][l];\n\
-    \                    for (int l = 0; l < n; ++l) Vi[k] += A_B[k][l] * V[i][l];\n\
-    \                }\n                V[i] = Vi;\n            }\n        T = transpose(TT),\
-    \ InvT = InvTT;\n    }\n\n    Matrix<Tp> transition_matrix() const { return T;\
-    \ }\n    Matrix<Tp> inv_transition_matrix() const { return InvT; }\n\n    Matrix<Tp>\
+    \ {\n                    if (deg == 0) break;\n                    if (!P.empty()\
+    \ && deg > P.back().deg()) goto retry;\n                    P.emplace_back(c->begin()\
+    \ + (B.size() - deg), c->begin() + B.size())\n                        .emplace_back(1);\n\
+    \                    V.emplace_back(SBPoly<Tp>(c->begin(), c->begin() + (B.size()\
+    \ - deg)) / P.back())\n                        .resize(N);\n                 \
+    \   V.back().at(B.size() - deg) = 1;\n                    for (int i = B.size()\
+    \ - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n                    for (int\
+    \ i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n              \
+    \      break;\n                }\n        }\n        auto C = Matrix<Tp>(N), TT\
+    \ = T = transpose(B.transition_matrix());\n        InvT = B.inv_transition_matrix();\n\
+    \        for (int i = 0, n = 0; i < (int)V.size(); ++i)\n            for (int\
+    \ j = P[i].deg(); j--; C[n++] = V[i], V[i] = mat_apply(A_B, V[i]))\n         \
+    \       for (int k = 0; k < n; ++k)\n                    for (int l = 0; l < N;\
+    \ ++l) T[n][l] += V[i][k] * TT[k][l];\n        T = transpose(T), C = transpose(C);\n\
+    \        for (int i = N - 1; i > 0; --i)\n            for (int j = i - 1; j >=\
+    \ 0; --j)\n                for (int k = 0; k < N; ++k) InvT[j][k] -= C[j][i] *\
+    \ InvT[i][k];\n    }\n\n    Matrix<Tp> transition_matrix() const { return T; }\n\
+    \    Matrix<Tp> inv_transition_matrix() const { return InvT; }\n\n    Matrix<Tp>\
     \ frobenius_form() const {\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n \
     \       for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n     \
     \       for (int j = s; j < s + P[i].deg() - 1; ++j) res[j + 1][j] = 1;\n    \
@@ -325,7 +325,7 @@ data:
   isVerificationFile: false
   path: frobenius.hpp
   requiredBy: []
-  timestamp: '2024-07-04 19:24:17+08:00'
+  timestamp: '2024-07-04 23:01:33+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp
