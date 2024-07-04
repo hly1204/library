@@ -100,18 +100,18 @@ data:
     \   }\n    }\n    return P[n];\n}\n#line 7 \"basis.hpp\"\n\ntemplate <typename\
     \ Tp>\nclass Basis {\npublic:\n    const int Dim;\n    Matrix<Tp> Vectors; //\
     \ v_0, v_1, ...\n    Matrix<Tp> Augmented;\n    Matrix<Tp> Reduced; // upper triangular\
-    \ matrix diag(Reduced)=(1,...,1)\n    // Augmented * Vectors = Reduced\n\n   \
-    \ explicit Basis(int dim) : Dim(dim), Augmented(dim), Reduced(dim) {}\n\n    int\
-    \ size() const { return Vectors.size(); }\n    int dim() const { return Dim; }\n\
-    \n    // if V is linear combination of v_0, ..., v_k then\n    // returns coefficients\
-    \ (a_0, ..., a_k) s.t. -(a_0v_0 + ... + a_kv_k) = V\n    std::optional<std::vector<Tp>>\
-    \ insert(const std::vector<Tp> &V) {\n        std::vector<Tp> Aug(dim()), RV =\
-    \ V;\n        for (int i = 0; i < dim(); ++i) {\n            if (RV[i] == 0) continue;\n\
-    \            if (Reduced[i].empty()) {\n                Aug[size()]    = 1;\n\
-    \                const auto inv = RV[i].inv();\n                for (int j = i;\
-    \ j < dim(); ++j) RV[j] *= inv;\n                for (int j = 0; j < dim(); ++j)\
-    \ Aug[j] *= inv;\n                Augmented[i] = Aug;\n                Reduced[i]\
-    \   = RV;\n                Vectors.push_back(V);\n                return {};\n\
+    \ matrix, diagonal of Reduced = (1,...,1)\n    // Augmented * Vectors = Reduced\n\
+    \n    explicit Basis(int dim) : Dim(dim), Augmented(dim), Reduced(dim) {}\n\n\
+    \    int size() const { return Vectors.size(); }\n    int dim() const { return\
+    \ Dim; }\n\n    // if V is linear combination of v_0, ..., v_(k-1) then\n    //\
+    \ returns coefficients (a_0, ..., a_(k-1)) s.t. -(a_0v_0 + ... + a_(k-1)v_(k-1))\
+    \ = V\n    std::optional<std::vector<Tp>> insert(const std::vector<Tp> &V) {\n\
+    \        std::vector<Tp> Aug(dim()), RV = V;\n        for (int i = 0; i < dim();\
+    \ ++i) {\n            if (RV[i] == 0) continue;\n            if (Reduced[i].empty())\
+    \ {\n                Aug[size()]    = 1;\n                const auto inv = RV[i].inv();\n\
+    \                for (int j = i; j < dim(); ++j) RV[j] *= inv;\n             \
+    \   for (int j = 0; j < dim(); ++j) Aug[j] *= inv;\n                Augmented[i]\
+    \ = Aug, Reduced[i] = RV, Vectors.push_back(V);\n                return {};\n\
     \            }\n            const auto v = RV[i];\n            for (int j = i;\
     \ j < dim(); ++j) RV[j] -= v * Reduced[i][j];\n            for (int j = 0; j <\
     \ dim(); ++j) Aug[j] -= v * Augmented[i][j];\n        }\n        return Aug;\n\
@@ -225,37 +225,38 @@ data:
     \ >= 0) {\n        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11;\n\
     \        x11 = x21, x21 = x11_old - x21 * Q;\n        A = B, B = R;\n    }\n \
     \   return std::make_pair(x11, A);\n}\n#line 9 \"frobenius.hpp\"\n\ntemplate <typename\
-    \ Tp>\nclass Frobenius {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_k))\n\
+    \ Tp>\nclass Frobenius {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n\
     \    // where C_(p_j) is the companion matrix of monic polynomial P[j]\n    //\
     \ *        minimal polynomial of A = p_0\n    // * characteristic polynomial of\
-    \ A = prod_(j=0)^k p_j\n    int N;\n    Matrix<Tp> InvT;\n    std::vector<SBPoly<Tp>>\
+    \ A = prod_(j=0)^(k-1) p_j\n    int N;\n    Matrix<Tp> InvT;\n    std::vector<SBPoly<Tp>>\
     \ P;\n    Matrix<Tp> T;\n\n    // see:\n    // [1]: Elegia. A (Somehow) Simple\
     \ (Randomized) Algorithm for Frobenius Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n\
     \    // [2]: Arne Storjohann. Algorithms for Matrix Canonical Forms.\n    // \
     \     https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf\n    explicit Frobenius(const\
-    \ Matrix<Tp> &A) : N(height(A)) {\n    retry:\n        Matrix<Tp> A_B(N, std::vector<Tp>(N));\
-    \ // linear transform respect to basis B\n        std::vector<std::vector<Tp>>\
-    \ V;        // vectors for new basis\n        P.clear();\n        { // compute\
-    \ A_B\n            Basis<Tp> B(N);\n            while (B.size() < N) {\n     \
-    \           int deg = 0;\n                for (auto R = random_vector<Tp>(N);;\
-    \ R = mat_apply(A, R), ++deg)\n                    if (const auto c = B.insert(R))\
-    \ {\n                        if (!P.empty() && deg > P.back().deg()) goto retry;\n\
-    \                        P.emplace_back(c->begin() + (B.size() - deg), c->begin()\
-    \ + B.size())\n                            .emplace_back(1);\n               \
-    \         SBPoly<Tp> b(c->begin(), c->begin() + (B.size() - deg));\n         \
-    \               (b /= P.back()).resize(N);\n                        b[B.size()\
-    \ - deg] = 1;\n                        V.emplace_back(b);\n                  \
-    \      for (int i = B.size() - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n\
-    \                        for (int i = 0; i < B.size(); ++i) A_B[i][B.size() -\
-    \ 1] = -c->at(i);\n                        break;\n                    }\n   \
-    \         }\n            InvT = B.inv_transition_matrix();\n            T    =\
-    \ B.transition_matrix();\n        }\n        if (P.size() > 1) { // compute A_B_B\n\
-    \            Basis<Tp> B(N);\n            for (int i = 0; i < (int)V.size(); ++i)\n\
-    \                for (int j = 0; j < P[i].deg(); V[i] = mat_apply(A_B, V[i]),\
-    \ ++j)\n                    if (B.insert(V[i])) goto retry;\n            InvT\
-    \ = mat_mul(B.inv_transition_matrix(), InvT);\n            T    = mat_mul(T, B.transition_matrix());\n\
-    \        }\n    }\n\n    Matrix<Tp> transition_matrix() const { return T; }\n\
-    \    Matrix<Tp> inv_transition_matrix() const { return InvT; }\n\n    Matrix<Tp>\
+    \ Matrix<Tp> &A) : N(height(A)) {\n        assert(is_square_matrix(A));\n    retry:\n\
+    \        Basis<Tp> B(N);\n        Matrix<Tp> A_B(N, std::vector<Tp>(N)); // linear\
+    \ transform respect to basis B\n        std::vector<std::vector<Tp>> V;      \
+    \  // vectors for new basis\n        P.clear();\n        while (B.size() < N)\
+    \ {\n            int deg = 0;\n            for (auto R = random_vector<Tp>(N);;\
+    \ R = mat_apply(A, R), ++deg)\n                if (const auto c = B.insert(R))\
+    \ {\n                    if (!P.empty() && deg > P.back().deg()) goto retry;\n\
+    \                    P.emplace_back(c->begin() + (B.size() - deg), c->begin()\
+    \ + B.size())\n                        .emplace_back(1);\n                   \
+    \ V.emplace_back(SBPoly<Tp>(c->begin(), c->begin() + (B.size() - deg)) / P.back())\n\
+    \                        .resize(B.size());\n                    for (int i =\
+    \ B.size() - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n                \
+    \    for (int i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n  \
+    \                  break;\n                }\n        }\n        auto TT = T =\
+    \ transpose(B.transition_matrix()), InvTT = InvT = B.inv_transition_matrix();\n\
+    \        for (int i = 0, n = 0; i < (int)V.size(); ++i)\n            for (int\
+    \ j = P[i].deg(); j--; ++n) {\n                std::vector<Tp> Vi(n);\n      \
+    \          for (int k = 0; k < n; ++k) {\n                    if (V[i][k] != 0)\n\
+    \                        for (int l = 0; l < N; ++l)\n                       \
+    \     TT[n][l] += V[i][k] * T[k][l], InvTT[k][l] -= V[i][k] * InvT[n][l];\n  \
+    \                  for (int l = 0; l < n; ++l) Vi[k] += A_B[k][l] * V[i][l];\n\
+    \                }\n                V[i] = Vi;\n            }\n        T = transpose(TT),\
+    \ InvT = InvTT;\n    }\n\n    Matrix<Tp> transition_matrix() const { return T;\
+    \ }\n    Matrix<Tp> inv_transition_matrix() const { return InvT; }\n\n    Matrix<Tp>\
     \ frobenius_form() const {\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n \
     \       for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n     \
     \       for (int j = s; j < s + P[i].deg() - 1; ++j) res[j + 1][j] = 1;\n    \
@@ -337,7 +338,7 @@ data:
   isVerificationFile: true
   path: test/matrix/pow_of_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-03 21:33:44+08:00'
+  timestamp: '2024-07-04 19:05:02+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/pow_of_matrix.0.test.cpp

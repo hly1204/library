@@ -97,18 +97,18 @@ data:
     \   }\n    }\n    return P[n];\n}\n#line 7 \"basis.hpp\"\n\ntemplate <typename\
     \ Tp>\nclass Basis {\npublic:\n    const int Dim;\n    Matrix<Tp> Vectors; //\
     \ v_0, v_1, ...\n    Matrix<Tp> Augmented;\n    Matrix<Tp> Reduced; // upper triangular\
-    \ matrix diag(Reduced)=(1,...,1)\n    // Augmented * Vectors = Reduced\n\n   \
-    \ explicit Basis(int dim) : Dim(dim), Augmented(dim), Reduced(dim) {}\n\n    int\
-    \ size() const { return Vectors.size(); }\n    int dim() const { return Dim; }\n\
-    \n    // if V is linear combination of v_0, ..., v_k then\n    // returns coefficients\
-    \ (a_0, ..., a_k) s.t. -(a_0v_0 + ... + a_kv_k) = V\n    std::optional<std::vector<Tp>>\
-    \ insert(const std::vector<Tp> &V) {\n        std::vector<Tp> Aug(dim()), RV =\
-    \ V;\n        for (int i = 0; i < dim(); ++i) {\n            if (RV[i] == 0) continue;\n\
-    \            if (Reduced[i].empty()) {\n                Aug[size()]    = 1;\n\
-    \                const auto inv = RV[i].inv();\n                for (int j = i;\
-    \ j < dim(); ++j) RV[j] *= inv;\n                for (int j = 0; j < dim(); ++j)\
-    \ Aug[j] *= inv;\n                Augmented[i] = Aug;\n                Reduced[i]\
-    \   = RV;\n                Vectors.push_back(V);\n                return {};\n\
+    \ matrix, diagonal of Reduced = (1,...,1)\n    // Augmented * Vectors = Reduced\n\
+    \n    explicit Basis(int dim) : Dim(dim), Augmented(dim), Reduced(dim) {}\n\n\
+    \    int size() const { return Vectors.size(); }\n    int dim() const { return\
+    \ Dim; }\n\n    // if V is linear combination of v_0, ..., v_(k-1) then\n    //\
+    \ returns coefficients (a_0, ..., a_(k-1)) s.t. -(a_0v_0 + ... + a_(k-1)v_(k-1))\
+    \ = V\n    std::optional<std::vector<Tp>> insert(const std::vector<Tp> &V) {\n\
+    \        std::vector<Tp> Aug(dim()), RV = V;\n        for (int i = 0; i < dim();\
+    \ ++i) {\n            if (RV[i] == 0) continue;\n            if (Reduced[i].empty())\
+    \ {\n                Aug[size()]    = 1;\n                const auto inv = RV[i].inv();\n\
+    \                for (int j = i; j < dim(); ++j) RV[j] *= inv;\n             \
+    \   for (int j = 0; j < dim(); ++j) Aug[j] *= inv;\n                Augmented[i]\
+    \ = Aug, Reduced[i] = RV, Vectors.push_back(V);\n                return {};\n\
     \            }\n            const auto v = RV[i];\n            for (int j = i;\
     \ j < dim(); ++j) RV[j] -= v * Reduced[i][j];\n            for (int j = 0; j <\
     \ dim(); ++j) Aug[j] -= v * Augmented[i][j];\n        }\n        return Aug;\n\
@@ -296,7 +296,7 @@ data:
   isVerificationFile: true
   path: test/matrix/characteristic_polynomial.1.test.cpp
   requiredBy: []
-  timestamp: '2024-07-03 19:37:20+08:00'
+  timestamp: '2024-07-04 19:05:02+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/characteristic_polynomial.1.test.cpp
