@@ -25,6 +25,7 @@ public:
     // [2]: Arne Storjohann. Algorithms for Matrix Canonical Forms.
     //      https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf
     explicit Frobenius(const Matrix<Tp> &A) : N(height(A)) {
+        assert(N != 0);
         assert(is_square_matrix(A));
     retry:
         Basis<Tp> B(N);
@@ -46,7 +47,7 @@ public:
                 }
         }
         auto TT = T = transpose(B.transition_matrix()), InvTT = InvT = B.inv_transition_matrix();
-        for (int i = 0, n = 0; i < (int)V.size(); ++i)
+        for (int i = 1, n = P[0].deg(); i < (int)V.size(); ++i)
             for (int j = P[i].deg(); j--; ++n) {
                 std::vector<Tp> Vi(n);
                 for (int k = 0; k < n; ++k) {
