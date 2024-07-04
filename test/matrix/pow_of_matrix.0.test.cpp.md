@@ -233,11 +233,11 @@ data:
     \ (Randomized) Algorithm for Frobenius Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n\
     \    // [2]: Arne Storjohann. Algorithms for Matrix Canonical Forms.\n    // \
     \     https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf\n    explicit Frobenius(const\
-    \ Matrix<Tp> &A) : N(height(A)) {\n        assert(is_square_matrix(A));\n    retry:\n\
-    \        Basis<Tp> B(N);\n        Matrix<Tp> A_B(N, std::vector<Tp>(N)); // linear\
-    \ transform respect to basis B\n        std::vector<std::vector<Tp>> V;      \
-    \  // vectors for new basis\n        P.clear();\n        while (B.size() < N)\
-    \ {\n            int deg = 0;\n            for (auto R = random_vector<Tp>(N);;\
+    \ Matrix<Tp> &A) : N(height(A)) {\n        assert(N != 0);\n        assert(is_square_matrix(A));\n\
+    \    retry:\n        Basis<Tp> B(N);\n        Matrix<Tp> A_B(N, std::vector<Tp>(N));\
+    \ // linear transform respect to basis B\n        std::vector<std::vector<Tp>>\
+    \ V;        // vectors for new basis\n        P.clear();\n        while (B.size()\
+    \ < N) {\n            int deg = 0;\n            for (auto R = random_vector<Tp>(N);;\
     \ R = mat_apply(A, R), ++deg)\n                if (const auto c = B.insert(R))\
     \ {\n                    if (!P.empty() && deg > P.back().deg()) goto retry;\n\
     \                    P.emplace_back(c->begin() + (B.size() - deg), c->begin()\
@@ -248,12 +248,12 @@ data:
     \    for (int i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n  \
     \                  break;\n                }\n        }\n        auto TT = T =\
     \ transpose(B.transition_matrix()), InvTT = InvT = B.inv_transition_matrix();\n\
-    \        for (int i = 0, n = 0; i < (int)V.size(); ++i)\n            for (int\
-    \ j = P[i].deg(); j--; ++n) {\n                std::vector<Tp> Vi(n);\n      \
-    \          for (int k = 0; k < n; ++k) {\n                    if (V[i][k] != 0)\n\
-    \                        for (int l = 0; l < N; ++l)\n                       \
-    \     TT[n][l] += V[i][k] * T[k][l], InvTT[k][l] -= V[i][k] * InvT[n][l];\n  \
-    \                  for (int l = 0; l < n; ++l) Vi[k] += A_B[k][l] * V[i][l];\n\
+    \        for (int i = 1, n = P[0].deg(); i < (int)V.size(); ++i)\n           \
+    \ for (int j = P[i].deg(); j--; ++n) {\n                std::vector<Tp> Vi(n);\n\
+    \                for (int k = 0; k < n; ++k) {\n                    if (V[i][k]\
+    \ != 0)\n                        for (int l = 0; l < N; ++l)\n               \
+    \             TT[n][l] += V[i][k] * T[k][l], InvTT[k][l] -= V[i][k] * InvT[n][l];\n\
+    \                    for (int l = 0; l < n; ++l) Vi[k] += A_B[k][l] * V[i][l];\n\
     \                }\n                V[i] = Vi;\n            }\n        T = transpose(TT),\
     \ InvT = InvTT;\n    }\n\n    Matrix<Tp> transition_matrix() const { return T;\
     \ }\n    Matrix<Tp> inv_transition_matrix() const { return InvT; }\n\n    Matrix<Tp>\
@@ -338,7 +338,7 @@ data:
   isVerificationFile: true
   path: test/matrix/pow_of_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-04 19:05:02+08:00'
+  timestamp: '2024-07-04 19:24:17+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/pow_of_matrix.0.test.cpp
