@@ -36,29 +36,28 @@ public:
             int deg = 0;
             for (auto R = random_vector<Tp>(N);; R = mat_apply(A, R), ++deg)
                 if (const auto c = B.insert(R)) {
+                    if (deg == 0) break;
                     if (!P.empty() && deg > P.back().deg()) goto retry;
                     P.emplace_back(c->begin() + (B.size() - deg), c->begin() + B.size())
                         .emplace_back(1);
                     V.emplace_back(SBPoly<Tp>(c->begin(), c->begin() + (B.size() - deg)) / P.back())
-                        .resize(B.size());
+                        .resize(N);
+                    V.back().at(B.size() - deg) = 1;
                     for (int i = B.size() - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;
                     for (int i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);
                     break;
                 }
         }
-        auto TT = T = transpose(B.transition_matrix()), InvTT = InvT = B.inv_transition_matrix();
-        for (int i = 1, n = P[0].deg(); i < (int)V.size(); ++i)
-            for (int j = P[i].deg(); j--; ++n) {
-                std::vector<Tp> Vi(n);
-                for (int k = 0; k < n; ++k) {
-                    if (V[i][k] != 0)
-                        for (int l = 0; l < N; ++l)
-                            TT[n][l] += V[i][k] * T[k][l], InvTT[k][l] -= V[i][k] * InvT[n][l];
-                    for (int l = 0; l < n; ++l) Vi[k] += A_B[k][l] * V[i][l];
-                }
-                V[i] = Vi;
-            }
-        T = transpose(TT), InvT = InvTT;
+        auto C = Matrix<Tp>(N), TT = T = transpose(B.transition_matrix());
+        InvT = B.inv_transition_matrix();
+        for (int i = 0, n = 0; i < (int)V.size(); ++i)
+            for (int j = P[i].deg(); j--; C[n++] = V[i], V[i] = mat_apply(A_B, V[i]))
+                for (int k = 0; k < n; ++k)
+                    for (int l = 0; l < N; ++l) T[n][l] += V[i][k] * TT[k][l];
+        T = transpose(T), C = transpose(C);
+        for (int i = N - 1; i > 0; --i)
+            for (int j = i - 1; j >= 0; --j)
+                for (int k = 0; k < N; ++k) InvT[j][k] -= C[j][i] * InvT[i][k];
     }
 
     Matrix<Tp> transition_matrix() const { return T; }
