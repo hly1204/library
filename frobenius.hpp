@@ -49,12 +49,11 @@ public:
                 }
         }
         auto C = Matrix<Tp>(N), TT = T = transpose(B.transition_matrix());
-        InvT = B.inv_transition_matrix();
         for (int i = 0, n = 0; i < (int)V.size(); ++i)
             for (int j = P[i].deg(); j--; C[n++] = V[i], V[i] = mat_apply(A_B, V[i]))
                 for (int k = 0; k < n; ++k)
                     for (int l = 0; l < N; ++l) T[n][l] += V[i][k] * TT[k][l];
-        T = transpose(T), C = transpose(C);
+        T = transpose(T), C = transpose(C), InvT = B.inv_transition_matrix();
         for (int i = N - 1; i > 0; --i)
             for (int j = i - 1; j >= 0; --j)
                 for (int k = 0; k < N; ++k) InvT[j][k] -= C[j][i] * InvT[i][k];
