@@ -11,7 +11,7 @@ public:
     const int Dim;
     Matrix<Tp> Vectors; // v_0, v_1, ...
     Matrix<Tp> Augmented;
-    Matrix<Tp> Reduced; // upper triangular matrix diag(Reduced)=(1,...,1)
+    Matrix<Tp> Reduced; // upper triangular matrix, diagonal of Reduced = (1,...,1)
     // Augmented * Vectors = Reduced
 
     explicit Basis(int dim) : Dim(dim), Augmented(dim), Reduced(dim) {}
@@ -19,8 +19,8 @@ public:
     int size() const { return Vectors.size(); }
     int dim() const { return Dim; }
 
-    // if V is linear combination of v_0, ..., v_k then
-    // returns coefficients (a_0, ..., a_k) s.t. -(a_0v_0 + ... + a_kv_k) = V
+    // if V is linear combination of v_0, ..., v_(k-1) then
+    // returns coefficients (a_0, ..., a_(k-1)) s.t. -(a_0v_0 + ... + a_(k-1)v_(k-1)) = V
     std::optional<std::vector<Tp>> insert(const std::vector<Tp> &V) {
         std::vector<Tp> Aug(dim()), RV = V;
         for (int i = 0; i < dim(); ++i) {
@@ -30,9 +30,7 @@ public:
                 const auto inv = RV[i].inv();
                 for (int j = i; j < dim(); ++j) RV[j] *= inv;
                 for (int j = 0; j < dim(); ++j) Aug[j] *= inv;
-                Augmented[i] = Aug;
-                Reduced[i]   = RV;
-                Vectors.push_back(V);
+                Augmented[i] = Aug, Reduced[i] = RV, Vectors.push_back(V);
                 return {};
             }
             const auto v = RV[i];
