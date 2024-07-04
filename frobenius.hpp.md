@@ -242,11 +242,11 @@ data:
     \ - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n                    for (int\
     \ i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n              \
     \      break;\n                }\n        }\n        auto C = Matrix<Tp>(N), TT\
-    \ = T = transpose(B.transition_matrix());\n        InvT = B.inv_transition_matrix();\n\
-    \        for (int i = 0, n = 0; i < (int)V.size(); ++i)\n            for (int\
-    \ j = P[i].deg(); j--; C[n++] = V[i], V[i] = mat_apply(A_B, V[i]))\n         \
-    \       for (int k = 0; k < n; ++k)\n                    for (int l = 0; l < N;\
-    \ ++l) T[n][l] += V[i][k] * TT[k][l];\n        T = transpose(T), C = transpose(C);\n\
+    \ = T = transpose(B.transition_matrix());\n        for (int i = 0, n = 0; i <\
+    \ (int)V.size(); ++i)\n            for (int j = P[i].deg(); j--; C[n++] = V[i],\
+    \ V[i] = mat_apply(A_B, V[i]))\n                for (int k = 0; k < n; ++k)\n\
+    \                    for (int l = 0; l < N; ++l) T[n][l] += V[i][k] * TT[k][l];\n\
+    \        T = transpose(T), C = transpose(C), InvT = B.inv_transition_matrix();\n\
     \        for (int i = N - 1; i > 0; --i)\n            for (int j = i - 1; j >=\
     \ 0; --j)\n                for (int k = 0; k < N; ++k) InvT[j][k] -= C[j][i] *\
     \ InvT[i][k];\n    }\n\n    Matrix<Tp> transition_matrix() const { return T; }\n\
@@ -292,11 +292,11 @@ data:
     \ - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n                    for (int\
     \ i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n              \
     \      break;\n                }\n        }\n        auto C = Matrix<Tp>(N), TT\
-    \ = T = transpose(B.transition_matrix());\n        InvT = B.inv_transition_matrix();\n\
-    \        for (int i = 0, n = 0; i < (int)V.size(); ++i)\n            for (int\
-    \ j = P[i].deg(); j--; C[n++] = V[i], V[i] = mat_apply(A_B, V[i]))\n         \
-    \       for (int k = 0; k < n; ++k)\n                    for (int l = 0; l < N;\
-    \ ++l) T[n][l] += V[i][k] * TT[k][l];\n        T = transpose(T), C = transpose(C);\n\
+    \ = T = transpose(B.transition_matrix());\n        for (int i = 0, n = 0; i <\
+    \ (int)V.size(); ++i)\n            for (int j = P[i].deg(); j--; C[n++] = V[i],\
+    \ V[i] = mat_apply(A_B, V[i]))\n                for (int k = 0; k < n; ++k)\n\
+    \                    for (int l = 0; l < N; ++l) T[n][l] += V[i][k] * TT[k][l];\n\
+    \        T = transpose(T), C = transpose(C), InvT = B.inv_transition_matrix();\n\
     \        for (int i = N - 1; i > 0; --i)\n            for (int j = i - 1; j >=\
     \ 0; --j)\n                for (int k = 0; k < N; ++k) InvT[j][k] -= C[j][i] *\
     \ InvT[i][k];\n    }\n\n    Matrix<Tp> transition_matrix() const { return T; }\n\
@@ -325,7 +325,7 @@ data:
   isVerificationFile: false
   path: frobenius.hpp
   requiredBy: []
-  timestamp: '2024-07-04 23:01:33+08:00'
+  timestamp: '2024-07-04 23:13:55+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp
