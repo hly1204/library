@@ -7,9 +7,7 @@
 #include <cassert>
 #include <vector>
 
-// Compute the Frobenius form (rational canonical form) of a square matrix,
-// but the result is not always true.
-template <typename Tp>
+template <typename Tp, bool check = false>
 class Frobenius {
 public:
     // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))
@@ -29,7 +27,7 @@ public:
     explicit Frobenius(const Matrix<Tp> &A) : N(height(A)) {
         assert(N != 0);
         assert(is_square_matrix(A));
-    retry: // retry is not guaranteed to give the right result
+    retry:
         Basis<Tp> B(N);
         Matrix<Tp> A_B(N, std::vector<Tp>(N)); // linear transform respect to basis B
         std::vector<std::vector<Tp>> V;        // vectors for new basis
@@ -42,15 +40,23 @@ public:
                     if (!P.empty() && deg > P.back().deg()) goto retry;
                     P.emplace_back(c->begin() + (B.size() - deg), c->begin() + B.size())
                         .emplace_back(1);
-                    // if the remainder is not 0, failed, but I don't want to check.
-                    V.emplace_back(SBPoly<Tp>(c->begin(), c->begin() + (B.size() - deg)) / P.back())
-                        .resize(N);
+                    const SBPoly<Tp> b(c->begin(), c->begin() + (B.size() - deg));
+                    if constexpr (check) {
+                        const auto [q, r] = b.divmod(P.back());
+                        if (r.deg() >= 0) goto retry;
+                        V.emplace_back(q).resize(N);
+                    } else {
+                        V.emplace_back(b / P.back()).resize(N);
+                    }
                     V.back().at(B.size() - deg) = 1;
                     for (int i = B.size() - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;
                     for (int i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);
                     break;
                 }
         }
+        if constexpr (check)
+            if (A_B != mat_mul(B.inv_transition_matrix(), mat_mul(A, B.transition_matrix())))
+                goto retry;
         auto C = Matrix<Tp>(N), TT = T = transpose(B.transition_matrix());
         for (int i = 0, n = 0; i < (int)V.size(); ++i)
             for (int j = P[i].deg(); j--; C[n++] = V[i], V[i] = mat_apply(A_B, V[i]))
