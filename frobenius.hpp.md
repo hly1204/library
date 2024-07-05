@@ -218,24 +218,28 @@ data:
     \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {Tp(1)}, x21 = {};\n    while (B.deg()\
     \ >= 0) {\n        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11;\n\
     \        x11 = x21, x21 = x11_old - x21 * Q;\n        A = B, B = R;\n    }\n \
-    \   return std::make_pair(x11, A);\n}\n#line 9 \"frobenius.hpp\"\n\ntemplate <typename\
-    \ Tp>\nclass Frobenius {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n\
-    \    // where C_(p_j) is the companion matrix of monic polynomial P[j]\n    //\
-    \ *        minimal polynomial of A = p_0\n    // * characteristic polynomial of\
-    \ A = prod_(j=0)^(k-1) p_j\n    int N;\n    Matrix<Tp> InvT;\n    std::vector<SBPoly<Tp>>\
-    \ P;\n    Matrix<Tp> T;\n\n    // see:\n    // [1]: Elegia. A (Somehow) Simple\
-    \ (Randomized) Algorithm for Frobenius Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n\
+    \   return std::make_pair(x11, A);\n}\n#line 9 \"frobenius.hpp\"\n\n// Compute\
+    \ the Frobenius form (rational canonical form) of a square matrix,\n// but the\
+    \ result is not always true.\ntemplate <typename Tp>\nclass Frobenius {\npublic:\n\
+    \    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n    // where C_(p_j) is\
+    \ the companion matrix of monic polynomial P[j]\n    // *        minimal polynomial\
+    \ of A = p_0\n    // * characteristic polynomial of A = prod_(j=0)^(k-1) p_j\n\
+    \    int N;\n    Matrix<Tp> InvT;\n    std::vector<SBPoly<Tp>> P;\n    Matrix<Tp>\
+    \ T;\n\n    // see:\n    // [1]: Elegia. A (Somehow) Simple (Randomized) Algorithm\
+    \ for Frobenius Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n\
     \    // [2]: Arne Storjohann. Algorithms for Matrix Canonical Forms.\n    // \
     \     https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf\n    explicit Frobenius(const\
     \ Matrix<Tp> &A) : N(height(A)) {\n        assert(N != 0);\n        assert(is_square_matrix(A));\n\
-    \    retry:\n        Basis<Tp> B(N);\n        Matrix<Tp> A_B(N, std::vector<Tp>(N));\
-    \ // linear transform respect to basis B\n        std::vector<std::vector<Tp>>\
-    \ V;        // vectors for new basis\n        P.clear();\n        while (B.size()\
-    \ < N) {\n            int deg = 0;\n            for (auto R = random_vector<Tp>(N);;\
-    \ R = mat_apply(A, R), ++deg)\n                if (const auto c = B.insert(R))\
-    \ {\n                    if (deg == 0) break;\n                    if (!P.empty()\
-    \ && deg > P.back().deg()) goto retry;\n                    P.emplace_back(c->begin()\
-    \ + (B.size() - deg), c->begin() + B.size())\n                        .emplace_back(1);\n\
+    \    retry: // retry is not guaranteed to give the right result\n        Basis<Tp>\
+    \ B(N);\n        Matrix<Tp> A_B(N, std::vector<Tp>(N)); // linear transform respect\
+    \ to basis B\n        std::vector<std::vector<Tp>> V;        // vectors for new\
+    \ basis\n        P.clear();\n        while (B.size() < N) {\n            int deg\
+    \ = 0;\n            for (auto R = random_vector<Tp>(N);; R = mat_apply(A, R),\
+    \ ++deg)\n                if (const auto c = B.insert(R)) {\n                \
+    \    if (deg == 0) break;\n                    if (!P.empty() && deg > P.back().deg())\
+    \ goto retry;\n                    P.emplace_back(c->begin() + (B.size() - deg),\
+    \ c->begin() + B.size())\n                        .emplace_back(1);\n        \
+    \            // if the remainder is not 0, failed, but I don't want to check.\n\
     \                    V.emplace_back(SBPoly<Tp>(c->begin(), c->begin() + (B.size()\
     \ - deg)) / P.back())\n                        .resize(N);\n                 \
     \   V.back().at(B.size() - deg) = 1;\n                    for (int i = B.size()\
@@ -268,24 +272,27 @@ data:
     \  }\n};\n"
   code: "#pragma once\n\n#include \"basis.hpp\"\n#include \"mat_basic.hpp\"\n#include\
     \ \"random.hpp\"\n#include \"sbpoly.hpp\"\n#include <cassert>\n#include <vector>\n\
-    \ntemplate <typename Tp>\nclass Frobenius {\npublic:\n    // F_A = T^(-1)AT =\
-    \ diag(C_(p_0),...,C_(p_(k-1)))\n    // where C_(p_j) is the companion matrix\
-    \ of monic polynomial P[j]\n    // *        minimal polynomial of A = p_0\n  \
-    \  // * characteristic polynomial of A = prod_(j=0)^(k-1) p_j\n    int N;\n  \
-    \  Matrix<Tp> InvT;\n    std::vector<SBPoly<Tp>> P;\n    Matrix<Tp> T;\n\n   \
-    \ // see:\n    // [1]: Elegia. A (Somehow) Simple (Randomized) Algorithm for Frobenius\
-    \ Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n  \
-    \  // [2]: Arne Storjohann. Algorithms for Matrix Canonical Forms.\n    //   \
-    \   https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf\n    explicit Frobenius(const\
+    \n// Compute the Frobenius form (rational canonical form) of a square matrix,\n\
+    // but the result is not always true.\ntemplate <typename Tp>\nclass Frobenius\
+    \ {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n    // where\
+    \ C_(p_j) is the companion matrix of monic polynomial P[j]\n    // *        minimal\
+    \ polynomial of A = p_0\n    // * characteristic polynomial of A = prod_(j=0)^(k-1)\
+    \ p_j\n    int N;\n    Matrix<Tp> InvT;\n    std::vector<SBPoly<Tp>> P;\n    Matrix<Tp>\
+    \ T;\n\n    // see:\n    // [1]: Elegia. A (Somehow) Simple (Randomized) Algorithm\
+    \ for Frobenius Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n\
+    \    // [2]: Arne Storjohann. Algorithms for Matrix Canonical Forms.\n    // \
+    \     https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf\n    explicit Frobenius(const\
     \ Matrix<Tp> &A) : N(height(A)) {\n        assert(N != 0);\n        assert(is_square_matrix(A));\n\
-    \    retry:\n        Basis<Tp> B(N);\n        Matrix<Tp> A_B(N, std::vector<Tp>(N));\
-    \ // linear transform respect to basis B\n        std::vector<std::vector<Tp>>\
-    \ V;        // vectors for new basis\n        P.clear();\n        while (B.size()\
-    \ < N) {\n            int deg = 0;\n            for (auto R = random_vector<Tp>(N);;\
-    \ R = mat_apply(A, R), ++deg)\n                if (const auto c = B.insert(R))\
-    \ {\n                    if (deg == 0) break;\n                    if (!P.empty()\
-    \ && deg > P.back().deg()) goto retry;\n                    P.emplace_back(c->begin()\
-    \ + (B.size() - deg), c->begin() + B.size())\n                        .emplace_back(1);\n\
+    \    retry: // retry is not guaranteed to give the right result\n        Basis<Tp>\
+    \ B(N);\n        Matrix<Tp> A_B(N, std::vector<Tp>(N)); // linear transform respect\
+    \ to basis B\n        std::vector<std::vector<Tp>> V;        // vectors for new\
+    \ basis\n        P.clear();\n        while (B.size() < N) {\n            int deg\
+    \ = 0;\n            for (auto R = random_vector<Tp>(N);; R = mat_apply(A, R),\
+    \ ++deg)\n                if (const auto c = B.insert(R)) {\n                \
+    \    if (deg == 0) break;\n                    if (!P.empty() && deg > P.back().deg())\
+    \ goto retry;\n                    P.emplace_back(c->begin() + (B.size() - deg),\
+    \ c->begin() + B.size())\n                        .emplace_back(1);\n        \
+    \            // if the remainder is not 0, failed, but I don't want to check.\n\
     \                    V.emplace_back(SBPoly<Tp>(c->begin(), c->begin() + (B.size()\
     \ - deg)) / P.back())\n                        .resize(N);\n                 \
     \   V.back().at(B.size() - deg) = 1;\n                    for (int i = B.size()\
@@ -325,7 +332,7 @@ data:
   isVerificationFile: false
   path: frobenius.hpp
   requiredBy: []
-  timestamp: '2024-07-04 23:13:55+08:00'
+  timestamp: '2024-07-05 19:03:56+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp
