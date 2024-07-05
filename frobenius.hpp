@@ -7,6 +7,8 @@
 #include <cassert>
 #include <vector>
 
+// Compute the Frobenius form (rational canonical form) of a square matrix,
+// but the result is not always true.
 template <typename Tp>
 class Frobenius {
 public:
@@ -27,7 +29,7 @@ public:
     explicit Frobenius(const Matrix<Tp> &A) : N(height(A)) {
         assert(N != 0);
         assert(is_square_matrix(A));
-    retry:
+    retry: // retry is not guaranteed to give the right result
         Basis<Tp> B(N);
         Matrix<Tp> A_B(N, std::vector<Tp>(N)); // linear transform respect to basis B
         std::vector<std::vector<Tp>> V;        // vectors for new basis
@@ -40,6 +42,7 @@ public:
                     if (!P.empty() && deg > P.back().deg()) goto retry;
                     P.emplace_back(c->begin() + (B.size() - deg), c->begin() + B.size())
                         .emplace_back(1);
+                    // if the remainder is not 0, failed, but I don't want to check.
                     V.emplace_back(SBPoly<Tp>(c->begin(), c->begin() + (B.size() - deg)) / P.back())
                         .resize(N);
                     V.back().at(B.size() - deg) = 1;
