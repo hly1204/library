@@ -87,12 +87,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/matrix_product.0.test.cpp
     title: test/matrix/matrix_product.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
@@ -176,7 +176,7 @@ data:
   path: modint.hpp
   requiredBy: []
   timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   - test/data_structure/range_affine_point_get.0.test.cpp
