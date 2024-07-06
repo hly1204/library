@@ -58,11 +58,11 @@ public:
                 for (int l = 0; l < j; ++l)
                     for (int m = 0; m < j; ++m) C[j][l] += A_B[l][m] * C[j - 1][m];
         }
-        C = transpose(C), T = transpose(B.transition_matrix()), InvT = B.inv_transition_matrix();
+        T = transpose(B.transition_matrix()), InvT = B.inv_transition_matrix();
         for (int i = N - 1; i > 0; --i)
             for (int j = i - 1; j >= 0; --j)
                 for (int k = 0; k < N; ++k)
-                    T[i][k] += C[j][i] * T[j][k], InvT[j][k] -= C[j][i] * InvT[i][k];
+                    T[i][k] += C[i][j] * T[j][k], InvT[j][k] -= C[i][j] * InvT[i][k];
         T = transpose(T);
     }
 
