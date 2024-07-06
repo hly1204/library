@@ -1,22 +1,22 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: mat_basic.hpp
     title: mat_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: random.hpp
     title: random.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: sbpoly.hpp
     title: sbpoly.hpp
   _extendedRequiredBy: []

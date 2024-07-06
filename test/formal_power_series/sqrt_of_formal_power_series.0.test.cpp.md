@@ -13,10 +13,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
   - icon: ':heavy_check_mark:'

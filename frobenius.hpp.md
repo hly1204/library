@@ -1,29 +1,29 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: mat_basic.hpp
     title: mat_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: random.hpp
     title: random.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: sbpoly.hpp
     title: sbpoly.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://codeforces.com/blog/entry/124815
@@ -246,13 +246,13 @@ data:
     \ - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n                    for (int\
     \ i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n              \
     \      break;\n                }\n        }\n        auto C = Matrix<Tp>(N, std::vector<Tp>(N));\n\
-    \        for (int i = 0, j = 0; i < (int)V.size(); ++i) {\n            C[j] =\
-    \ V[i];\n            for (int k = P[i].deg(); --k; ++j)\n                for (int\
-    \ l = 0; l <= j; ++l)\n                    for (int m = 0; m <= j; ++m) C[j +\
-    \ 1][l] += A_B[l][m] * C[j][m];\n        }\n        C = transpose(C), T = transpose(B.transition_matrix()),\
+    \        for (int i = 0, j = 0; i < (int)V.size(); ++i) {\n            C[j++]\
+    \ = V[i];\n            for (int k = P[i].deg(); --k; ++j)\n                for\
+    \ (int l = 0; l < j; ++l)\n                    for (int m = 0; m < j; ++m) C[j][l]\
+    \ += A_B[l][m] * C[j - 1][m];\n        }\n        C = transpose(C), T = transpose(B.transition_matrix()),\
     \ InvT = B.inv_transition_matrix();\n        for (int i = N - 1; i > 0; --i)\n\
     \            for (int j = i - 1; j >= 0; --j)\n                for (int k = 0;\
-    \ k < N; ++k)\n                    T[j][k] += C[j][i] * T[i][k], InvT[j][k] -=\
+    \ k < N; ++k)\n                    T[i][k] += C[j][i] * T[j][k], InvT[j][k] -=\
     \ C[j][i] * InvT[i][k];\n        T = transpose(T);\n    }\n\n    Matrix<Tp> transition_matrix()\
     \ const { return T; }\n    Matrix<Tp> inv_transition_matrix() const { return InvT;\
     \ }\n\n    Matrix<Tp> frobenius_form() const {\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n\
@@ -299,13 +299,13 @@ data:
     \ - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n                    for (int\
     \ i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n              \
     \      break;\n                }\n        }\n        auto C = Matrix<Tp>(N, std::vector<Tp>(N));\n\
-    \        for (int i = 0, j = 0; i < (int)V.size(); ++i) {\n            C[j] =\
-    \ V[i];\n            for (int k = P[i].deg(); --k; ++j)\n                for (int\
-    \ l = 0; l <= j; ++l)\n                    for (int m = 0; m <= j; ++m) C[j +\
-    \ 1][l] += A_B[l][m] * C[j][m];\n        }\n        C = transpose(C), T = transpose(B.transition_matrix()),\
+    \        for (int i = 0, j = 0; i < (int)V.size(); ++i) {\n            C[j++]\
+    \ = V[i];\n            for (int k = P[i].deg(); --k; ++j)\n                for\
+    \ (int l = 0; l < j; ++l)\n                    for (int m = 0; m < j; ++m) C[j][l]\
+    \ += A_B[l][m] * C[j - 1][m];\n        }\n        C = transpose(C), T = transpose(B.transition_matrix()),\
     \ InvT = B.inv_transition_matrix();\n        for (int i = N - 1; i > 0; --i)\n\
     \            for (int j = i - 1; j >= 0; --j)\n                for (int k = 0;\
-    \ k < N; ++k)\n                    T[j][k] += C[j][i] * T[i][k], InvT[j][k] -=\
+    \ k < N; ++k)\n                    T[i][k] += C[j][i] * T[j][k], InvT[j][k] -=\
     \ C[j][i] * InvT[i][k];\n        T = transpose(T);\n    }\n\n    Matrix<Tp> transition_matrix()\
     \ const { return T; }\n    Matrix<Tp> inv_transition_matrix() const { return InvT;\
     \ }\n\n    Matrix<Tp> frobenius_form() const {\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n\
@@ -332,8 +332,8 @@ data:
   isVerificationFile: false
   path: frobenius.hpp
   requiredBy: []
-  timestamp: '2024-07-06 11:13:41+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2024-07-06 11:48:33+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp
 documentation_of: frobenius.hpp
