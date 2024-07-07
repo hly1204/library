@@ -23,6 +23,7 @@
 "test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp": "2024-06-22 10:58:08 +0800",
 "test/formal_power_series/polynomial_taylor_shift.0.test.cpp": "2024-06-22 10:58:08 +0800",
 "test/formal_power_series/pow_of_formal_power_series.0.test.cpp": "2024-06-22 10:58:08 +0800",
+"test/formal_power_series/product_of_polynomial_sequence.0.test.cpp": "2024-07-07 13:26:04 +0800",
 "test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp": "2024-07-03 19:37:20 +0800",
 "test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp": "2024-06-22 10:58:08 +0800",
 "test/matrix/characteristic_polynomial.0.test.cpp": "2024-07-03 19:37:20 +0800",
