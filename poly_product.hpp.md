@@ -4,28 +4,19 @@ data:
   - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
-    path: czt.hpp
-    title: czt.hpp
+  _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/convolution_mod.1.test.cpp
-    title: test/formal_power_series/convolution_mod.1.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-    title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-    title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
+    title: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
-  bundledCode: "#line 2 \"middle_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
-    \ <algorithm>\n#include <cassert>\n#include <iterator>\n#include <memory>\n#include\
-    \ <vector>\n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
+  bundledCode: "#line 2 \"poly_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
+    #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
+    \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
     \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
     \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
     \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
@@ -92,44 +83,32 @@ data:
     \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 6 \"middle_product.hpp\"\n\n// see:\n\
-    // [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann. The Middle Product\
-    \ Algorithm I.\n// [2]: Alin Bostan, Gr\xE9goire Lecerf, \xC9ric Schost. Tellegen's\
-    \ principle into practice.\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n// f: f_0\
-    \ + ... + f_(m-1)x^(m-1)\n// g: g_0 + ... + g_(n-1)x^(n-1)\n// m >= n\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> middle_product(std::vector<Tp> f, std::vector<Tp>\
-    \ g) {\n    const int m = f.size();\n    const int n = g.size();\n    assert(m\
-    \ >= n);\n    const int len = fft_len(m);\n    f.resize(len);\n    g.resize(len);\n\
-    \    fft(f);\n    fft(g);\n    for (int i = 0; i < len; ++i) f[i] *= g[i];\n \
-    \   inv_fft(f);\n    f.erase(f.begin(), f.begin() + (n - 1));\n    f.resize(m\
-    \ - n + 1);\n    return f;\n}\n"
-  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <cassert>\n#include <vector>\n\
-    \n// see:\n// [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann. The Middle\
-    \ Product Algorithm I.\n// [2]: Alin Bostan, Gr\xE9goire Lecerf, \xC9ric Schost.\
-    \ Tellegen's principle into practice.\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n\
-    // f: f_0 + ... + f_(m-1)x^(m-1)\n// g: g_0 + ... + g_(n-1)x^(n-1)\n// m >= n\n\
-    template <typename Tp>\ninline std::vector<Tp> middle_product(std::vector<Tp>\
-    \ f, std::vector<Tp> g) {\n    const int m = f.size();\n    const int n = g.size();\n\
-    \    assert(m >= n);\n    const int len = fft_len(m);\n    f.resize(len);\n  \
-    \  g.resize(len);\n    fft(f);\n    fft(g);\n    for (int i = 0; i < len; ++i)\
-    \ f[i] *= g[i];\n    inv_fft(f);\n    f.erase(f.begin(), f.begin() + (n - 1));\n\
-    \    f.resize(m - n + 1);\n    return f;\n}\n"
+    \    return convolution_fft(a, b);\n}\n#line 5 \"poly_product.hpp\"\n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> poly_product(std::vector<std::vector<Tp>>\
+    \ L) {\n    if (L.empty()) return {Tp(1)};\n    std::vector<std::vector<Tp>> res;\n\
+    \    while (L.size() > 1) {\n        for (int i = 0; i + 1 < (int)L.size(); i\
+    \ += 2) res.push_back(convolution(L[i], L[i + 1]));\n        if (L.size() & 1)\
+    \ res.push_back(L.back());\n        L.swap(res);\n        res.clear();\n    }\n\
+    \    return res[0];\n}\n"
+  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <vector>\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> poly_product(std::vector<std::vector<Tp>> L) {\n\
+    \    if (L.empty()) return {Tp(1)};\n    std::vector<std::vector<Tp>> res;\n \
+    \   while (L.size() > 1) {\n        for (int i = 0; i + 1 < (int)L.size(); i +=\
+    \ 2) res.push_back(convolution(L[i], L[i + 1]));\n        if (L.size() & 1) res.push_back(L.back());\n\
+    \        L.swap(res);\n        res.clear();\n    }\n    return res[0];\n}\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
-  path: middle_product.hpp
-  requiredBy:
-  - czt.hpp
-  timestamp: '2024-05-24 19:10:06+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  path: poly_product.hpp
+  requiredBy: []
+  timestamp: '2024-07-07 13:14:17+08:00'
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
-  - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - test/formal_power_series/convolution_mod.1.test.cpp
-documentation_of: middle_product.hpp
+  - test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
+documentation_of: poly_product.hpp
 layout: document
 redirect_from:
-- /library/middle_product.hpp
-- /library/middle_product.hpp.html
-title: middle_product.hpp
+- /library/poly_product.hpp
+- /library/poly_product.hpp.html
+title: poly_product.hpp
 ---

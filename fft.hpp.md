@@ -29,6 +29,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
+  - icon: ':x:'
+    path: poly_product.hpp
+    title: poly_product.hpp
   - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
@@ -90,15 +93,18 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
+    title: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"fft.hpp\"\n\n#include <algorithm>\n#include <cassert>\n\
@@ -253,17 +259,19 @@ data:
   - fps_composition.hpp
   - subproduct_tree.hpp
   - poly_basic.hpp
+  - poly_product.hpp
   - fps_basic.hpp
   - fps_sqrt.hpp
   - middle_product.hpp
   timestamp: '2024-05-17 19:15:49+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/formal_power_series/polynomial_interpolation.0.test.cpp
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/log_of_formal_power_series.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  - test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
   - test/formal_power_series/convolution_mod.0.test.cpp
   - test/formal_power_series/exp_of_formal_power_series.0.test.cpp
   - test/formal_power_series/convolution_mod_1000000007.0.test.cpp
