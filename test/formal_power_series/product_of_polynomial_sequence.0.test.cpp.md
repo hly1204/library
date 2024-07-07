@@ -130,10 +130,10 @@ data:
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
     \    return convolution_fft(a, b);\n}\n#line 4 \"poly_product.hpp\"\n#include\
-    \ <utility>\n#line 6 \"poly_product.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ poly_product(std::vector<std::vector<Tp>> L) {\n    if (L.empty()) return {Tp(1)};\n\
-    \    while (L.size() > 1) {\n        std::vector<std::vector<Tp>> t;\n       \
-    \ for (int i = 0; i + 1 < (int)L.size(); i += 2) t.push_back(convolution(L[i],\
+    \ <utility>\n#line 6 \"poly_product.hpp\"\n\n// TODO: cache dft\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> poly_product(std::vector<std::vector<Tp>> L) {\n\
+    \    if (L.empty()) return {Tp(1)};\n    while (L.size() > 1) {\n        std::vector<std::vector<Tp>>\
+    \ t;\n        for (int i = 0; i + 1 < (int)L.size(); i += 2) t.push_back(convolution(L[i],\
     \ L[i + 1]));\n        if (L.size() & 1) t.push_back(L.back());\n        L = std::move(t);\n\
     \    }\n    return L[0];\n}\n#line 7 \"test/formal_power_series/product_of_polynomial_sequence.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
@@ -158,7 +158,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-07 13:26:04+08:00'
+  timestamp: '2024-07-07 14:35:08+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
