@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: poly_product.hpp
     title: poly_product.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/product_of_polynomial_sequence
@@ -129,13 +129,13 @@ data:
     \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 5 \"poly_product.hpp\"\n\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> poly_product(std::vector<std::vector<Tp>>\
-    \ L) {\n    if (L.empty()) return {Tp(1)};\n    std::vector<std::vector<Tp>> res;\n\
-    \    while (L.size() > 1) {\n        for (int i = 0; i + 1 < (int)L.size(); i\
-    \ += 2) res.push_back(convolution(L[i], L[i + 1]));\n        if (L.size() & 1)\
-    \ res.push_back(L.back());\n        L.swap(res);\n        res.clear();\n    }\n\
-    \    return res[0];\n}\n#line 7 \"test/formal_power_series/product_of_polynomial_sequence.0.test.cpp\"\
+    \    return convolution_fft(a, b);\n}\n#line 4 \"poly_product.hpp\"\n#include\
+    \ <utility>\n#line 6 \"poly_product.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ poly_product(std::vector<std::vector<Tp>> L) {\n    if (L.empty()) return {Tp(1)};\n\
+    \    while (L.size() > 1) {\n        std::vector<std::vector<Tp>> t;\n       \
+    \ for (int i = 0; i + 1 < (int)L.size(); i += 2) t.push_back(convolution(L[i],\
+    \ L[i + 1]));\n        if (L.size() & 1) t.push_back(L.back());\n        L = std::move(t);\n\
+    \    }\n    return L[0];\n}\n#line 7 \"test/formal_power_series/product_of_polynomial_sequence.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<std::vector<mint>>\
     \ L;\n    while (n--) {\n        int d;\n        std::cin >> d;\n        auto\
@@ -158,8 +158,8 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-07 13:18:46+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-07-07 13:26:04+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
 layout: document

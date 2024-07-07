@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
     title: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"poly_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
@@ -83,26 +83,27 @@ data:
     \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 5 \"poly_product.hpp\"\n\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> poly_product(std::vector<std::vector<Tp>>\
-    \ L) {\n    if (L.empty()) return {Tp(1)};\n    std::vector<std::vector<Tp>> res;\n\
-    \    while (L.size() > 1) {\n        for (int i = 0; i + 1 < (int)L.size(); i\
-    \ += 2) res.push_back(convolution(L[i], L[i + 1]));\n        if (L.size() & 1)\
-    \ res.push_back(L.back());\n        L.swap(res);\n        res.clear();\n    }\n\
-    \    return res[0];\n}\n"
-  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <vector>\n\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> poly_product(std::vector<std::vector<Tp>> L) {\n\
-    \    if (L.empty()) return {Tp(1)};\n    std::vector<std::vector<Tp>> res;\n \
-    \   while (L.size() > 1) {\n        for (int i = 0; i + 1 < (int)L.size(); i +=\
-    \ 2) res.push_back(convolution(L[i], L[i + 1]));\n        if (L.size() & 1) res.push_back(L.back());\n\
-    \        L.swap(res);\n        res.clear();\n    }\n    return res[0];\n}\n"
+    \    return convolution_fft(a, b);\n}\n#line 4 \"poly_product.hpp\"\n#include\
+    \ <utility>\n#line 6 \"poly_product.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ poly_product(std::vector<std::vector<Tp>> L) {\n    if (L.empty()) return {Tp(1)};\n\
+    \    while (L.size() > 1) {\n        std::vector<std::vector<Tp>> t;\n       \
+    \ for (int i = 0; i + 1 < (int)L.size(); i += 2) t.push_back(convolution(L[i],\
+    \ L[i + 1]));\n        if (L.size() & 1) t.push_back(L.back());\n        L = std::move(t);\n\
+    \    }\n    return L[0];\n}\n"
+  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <utility>\n#include <vector>\n\
+    \ntemplate <typename Tp>\ninline std::vector<Tp> poly_product(std::vector<std::vector<Tp>>\
+    \ L) {\n    if (L.empty()) return {Tp(1)};\n    while (L.size() > 1) {\n     \
+    \   std::vector<std::vector<Tp>> t;\n        for (int i = 0; i + 1 < (int)L.size();\
+    \ i += 2) t.push_back(convolution(L[i], L[i + 1]));\n        if (L.size() & 1)\
+    \ t.push_back(L.back());\n        L = std::move(t);\n    }\n    return L[0];\n\
+    }\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
   path: poly_product.hpp
   requiredBy: []
-  timestamp: '2024-07-07 13:14:17+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2024-07-07 13:26:04+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
 documentation_of: poly_product.hpp

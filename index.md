@@ -33,7 +33,7 @@ data:
     - icon: ':warning:'
       path: eulerian_number.hpp
       title: eulerian_number.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: fft.hpp
       title: fft.hpp
     - icon: ':heavy_check_mark:'
@@ -54,7 +54,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -66,7 +66,7 @@ data:
     - icon: ':warning:'
       path: poly_interpolation.hpp
       title: poly_interpolation.hpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: poly_product.hpp
       title: poly_product.hpp
     - icon: ':heavy_check_mark:'
@@ -170,7 +170,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
       title: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
       title: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
     - icon: ':heavy_check_mark:'
