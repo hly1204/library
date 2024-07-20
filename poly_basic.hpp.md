@@ -301,23 +301,23 @@ data:
   isVerificationFile: false
   path: poly_basic.hpp
   requiredBy:
-  - czt.hpp
-  - c_recursive.hpp
   - subproduct_tree.hpp
+  - c_recursive.hpp
+  - czt.hpp
   timestamp: '2024-06-02 11:00:30+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/formal_power_series/polynomial_interpolation.0.test.cpp
+  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/multipoint_evaluation.0.test.cpp
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/convolution_mod.1.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/polynomial_interpolation.0.test.cpp
+  - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
   - test/formal_power_series/division_of_polynomials.0.test.cpp
-  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - test/formal_power_series/convolution_mod.1.test.cpp
 documentation_of: poly_basic.hpp
 layout: document
 redirect_from:

@@ -56,8 +56,8 @@ data:
   timestamp: '2024-07-02 19:12:26+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
+  - test/matrix/characteristic_polynomial.1.test.cpp
 documentation_of: random.hpp
 layout: document
 redirect_from:
