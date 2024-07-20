@@ -67,7 +67,7 @@ public:
         D.resize(get_size(L));
         if (L > S) {
             if (S % WIDTH != 0)
-                if (const std::size_t SS = get_size(S)) D[SS - 1] &= ~((1ULL << (S % WIDTH)) - 1);
+                if (const std::size_t SS = get_size(S)) D[SS - 1] &= (1ULL << (S % WIDTH)) - 1;
             if (v)
                 for (std::size_t i = get_size(S); i < D.size(); ++i) D[i] = ~0ULL;
         }
