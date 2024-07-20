@@ -42,8 +42,10 @@ int main() {
         A[i] = BitArray(s);
     }
     if (const auto invA = mat_inv(A)) {
-        for (int i = 0; i < n; ++i)
-            for (int j = 0; j < n; ++j) std::cout << invA->at(i).at(j) << " \n"[j == n - 1];
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) std::cout << invA->at(i).at(j);
+            std::cout << '\n';
+        }
     } else {
         std::cout << "-1";
     }

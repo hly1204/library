@@ -66,13 +66,10 @@ public:
     void resize(std::size_t L, bool v = false) {
         D.resize(get_size(L));
         if (L > S) {
-            if (v) {
-                if (const std::size_t SS = get_size(S)) D[SS - 1] |= ~((1ULL << (S % WIDTH)) - 1);
+            if (S % WIDTH != 0)
+                if (const std::size_t SS = get_size(S)) D[SS - 1] &= ~((1ULL << (S % WIDTH)) - 1);
+            if (v)
                 for (std::size_t i = get_size(S); i < D.size(); ++i) D[i] = ~0ULL;
-            } else {
-                if (const std::size_t SS = get_size(S)) D[SS - 1] &= (1ULL << (S % WIDTH)) - 1;
-                for (std::size_t i = get_size(S); i < D.size(); ++i) D[i] = 0ULL;
-            }
         }
         S = L;
     }
