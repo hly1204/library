@@ -72,7 +72,7 @@ data:
     \n#include <algorithm>\n#include <iostream>\n#line 7 \"test/number_theory/yukicoder187.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n;\n    std::cin >> n;\n    std::vector<int> rem(n), mod(n);\n    for\
-    \ (int i = 0; i != n; ++i) std::cin >> rem[i] >> mod[i];\n    if (const auto res\
+    \ (int i = 0; i < n; ++i) std::cin >> rem[i] >> mod[i];\n    if (const auto res\
     \ = chinese_remainder_mod(rem, mod, 1000000007)) {\n        if (std::all_of(rem.begin(),\
     \ rem.end(), [](int n) { return n == 0; })) {\n            std::cout << res->mod\
     \ << '\\n';\n        } else {\n            std::cout << res->rem << '\\n';\n \
@@ -82,7 +82,7 @@ data:
     \n#include <algorithm>\n#include <iostream>\n#include <vector>\n\nint main() {\n\
     \    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int n;\n\
     \    std::cin >> n;\n    std::vector<int> rem(n), mod(n);\n    for (int i = 0;\
-    \ i != n; ++i) std::cin >> rem[i] >> mod[i];\n    if (const auto res = chinese_remainder_mod(rem,\
+    \ i < n; ++i) std::cin >> rem[i] >> mod[i];\n    if (const auto res = chinese_remainder_mod(rem,\
     \ mod, 1000000007)) {\n        if (std::all_of(rem.begin(), rem.end(), [](int\
     \ n) { return n == 0; })) {\n            std::cout << res->mod << '\\n';\n   \
     \     } else {\n            std::cout << res->rem << '\\n';\n        }\n    }\
@@ -93,7 +93,7 @@ data:
   isVerificationFile: true
   path: test/number_theory/yukicoder187.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-22 11:16:41+08:00'
+  timestamp: '2024-07-20 11:57:39+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/number_theory/yukicoder187.0.test.cpp

@@ -6,16 +6,16 @@ data:
     title: bitarray.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/matrix_det_mod_2
+    PROBLEM: https://judge.yosupo.jp/problem/inverse_matrix_mod_2
     links:
-    - https://judge.yosupo.jp/problem/matrix_det_mod_2
-  bundledCode: "#line 1 \"test/matrix/matrix_det_mod_2.0.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/matrix_det_mod_2\"\n\n#line 2 \"bitarray.hpp\"\
+    - https://judge.yosupo.jp/problem/inverse_matrix_mod_2
+  bundledCode: "#line 1 \"test/matrix/inverse_matrix_mod_2.0.test.cpp\"\n#define PROBLEM\
+    \ \"https://judge.yosupo.jp/problem/inverse_matrix_mod_2\"\n\n#line 2 \"bitarray.hpp\"\
     \n\n#include <cassert>\n#include <cstddef>\n#include <string>\n#include <type_traits>\n\
     #include <utility>\n#include <vector>\n\nnamespace detail {\n\ntemplate <int N>\n\
     inline unsigned long long from_bit_string(const char *s) {\n    return from_bit_string<N\
@@ -96,42 +96,55 @@ data:
     \ BitArray &L, const BitArray &R) { return BitArray(L) &= R; }\n    friend BitArray\
     \ operator|(const BitArray &L, const BitArray &R) { return BitArray(L) |= R; }\n\
     \    friend BitArray operator^(const BitArray &L, const BitArray &R) { return\
-    \ BitArray(L) ^= R; }\n};\n#line 4 \"test/matrix/matrix_det_mod_2.0.test.cpp\"\
-    \n#include <iostream>\n#line 7 \"test/matrix/matrix_det_mod_2.0.test.cpp\"\n\n\
-    using BitMatrix = std::vector<BitArray>;\n\nbool det(BitMatrix A) {\n    const\
-    \ int n = A.size();\n    for (int i = 0; i < n; ++i) {\n        int pivot = i;\n\
-    \        for (; pivot < n; ++pivot)\n            if (A[pivot].test(i)) break;\n\
-    \        if (pivot == n) return false;\n        if (pivot != i) A[pivot].swap(A[i]);\n\
-    \        for (int j = i + 1; j < n; ++j)\n            if (A[j].test(i)) A[j] ^=\
-    \ A[i];\n    }\n    return true;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    int n;\n    std::cin >> n;\n    BitMatrix A(n);\n\
+    \ BitArray(L) ^= R; }\n};\n#line 4 \"test/matrix/inverse_matrix_mod_2.0.test.cpp\"\
+    \n#include <iostream>\n#include <optional>\n#line 8 \"test/matrix/inverse_matrix_mod_2.0.test.cpp\"\
+    \n\nusing BitMatrix = std::vector<BitArray>;\n\nstd::optional<BitMatrix> mat_inv(BitMatrix\
+    \ A) {\n    const int n = A.size();\n    for (int i = 0; i < n; ++i) {\n     \
+    \   A[i].resize(n * 2);\n        A[i].set(n + i);\n    }\n    for (int i = 0;\
+    \ i < n; ++i) {\n        int pivot = i;\n        for (; pivot < n; ++pivot)\n\
+    \            if (A[pivot].test(i)) break;\n        if (pivot == n) return {};\n\
+    \        if (pivot != i) A[pivot].swap(A[i]);\n        for (int j = i + 1; j <\
+    \ n; ++j)\n            if (A[j].test(i)) A[j] ^= A[i];\n    }\n    for (int i\
+    \ = n - 1; i > 0; --i)\n        for (int j = i - 1; j >= 0; --j)\n           \
+    \ if (A[j].test(i)) A[j] ^= A[i];\n    for (int i = 0; i < n; ++i) A[i] = BitArray(A[i].to_string().substr(n));\n\
+    \    return A;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
+    \ std::cin.tie(nullptr);\n    int n;\n    std::cin >> n;\n    BitMatrix A(n);\n\
     \    for (int i = 0; i < n; ++i) {\n        std::string s;\n        std::cin >>\
-    \ s;\n        A[i] = BitArray(s);\n    }\n    std::cout << det(A);\n    return\
-    \ 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/matrix_det_mod_2\"\n\n\
-    #include \"bitarray.hpp\"\n#include <iostream>\n#include <string>\n#include <vector>\n\
-    \nusing BitMatrix = std::vector<BitArray>;\n\nbool det(BitMatrix A) {\n    const\
-    \ int n = A.size();\n    for (int i = 0; i < n; ++i) {\n        int pivot = i;\n\
-    \        for (; pivot < n; ++pivot)\n            if (A[pivot].test(i)) break;\n\
-    \        if (pivot == n) return false;\n        if (pivot != i) A[pivot].swap(A[i]);\n\
+    \ s;\n        A[i] = BitArray(s);\n    }\n    if (const auto invA = mat_inv(A))\
+    \ {\n        for (int i = 0; i < n; ++i)\n            for (int j = 0; j < n; ++j)\
+    \ std::cout << invA->at(i).at(j) << \" \\n\"[j == n - 1];\n    } else {\n    \
+    \    std::cout << \"-1\";\n    }\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inverse_matrix_mod_2\"\n\
+    \n#include \"bitarray.hpp\"\n#include <iostream>\n#include <optional>\n#include\
+    \ <string>\n#include <vector>\n\nusing BitMatrix = std::vector<BitArray>;\n\n\
+    std::optional<BitMatrix> mat_inv(BitMatrix A) {\n    const int n = A.size();\n\
+    \    for (int i = 0; i < n; ++i) {\n        A[i].resize(n * 2);\n        A[i].set(n\
+    \ + i);\n    }\n    for (int i = 0; i < n; ++i) {\n        int pivot = i;\n  \
+    \      for (; pivot < n; ++pivot)\n            if (A[pivot].test(i)) break;\n\
+    \        if (pivot == n) return {};\n        if (pivot != i) A[pivot].swap(A[i]);\n\
     \        for (int j = i + 1; j < n; ++j)\n            if (A[j].test(i)) A[j] ^=\
-    \ A[i];\n    }\n    return true;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    int n;\n    std::cin >> n;\n    BitMatrix A(n);\n\
-    \    for (int i = 0; i < n; ++i) {\n        std::string s;\n        std::cin >>\
-    \ s;\n        A[i] = BitArray(s);\n    }\n    std::cout << det(A);\n    return\
-    \ 0;\n}\n"
+    \ A[i];\n    }\n    for (int i = n - 1; i > 0; --i)\n        for (int j = i -\
+    \ 1; j >= 0; --j)\n            if (A[j].test(i)) A[j] ^= A[i];\n    for (int i\
+    \ = 0; i < n; ++i) A[i] = BitArray(A[i].to_string().substr(n));\n    return A;\n\
+    }\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    int n;\n    std::cin >> n;\n    BitMatrix A(n);\n    for (int i = 0; i <\
+    \ n; ++i) {\n        std::string s;\n        std::cin >> s;\n        A[i] = BitArray(s);\n\
+    \    }\n    if (const auto invA = mat_inv(A)) {\n        for (int i = 0; i < n;\
+    \ ++i)\n            for (int j = 0; j < n; ++j) std::cout << invA->at(i).at(j)\
+    \ << \" \\n\"[j == n - 1];\n    } else {\n        std::cout << \"-1\";\n    }\n\
+    \    return 0;\n}\n"
   dependsOn:
   - bitarray.hpp
   isVerificationFile: true
-  path: test/matrix/matrix_det_mod_2.0.test.cpp
+  path: test/matrix/inverse_matrix_mod_2.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-22 10:58:08+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-07-20 11:57:39+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/matrix/matrix_det_mod_2.0.test.cpp
+documentation_of: test/matrix/inverse_matrix_mod_2.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/matrix/matrix_det_mod_2.0.test.cpp
-- /verify/test/matrix/matrix_det_mod_2.0.test.cpp.html
-title: test/matrix/matrix_det_mod_2.0.test.cpp
+- /verify/test/matrix/inverse_matrix_mod_2.0.test.cpp
+- /verify/test/matrix/inverse_matrix_mod_2.0.test.cpp.html
+title: test/matrix/inverse_matrix_mod_2.0.test.cpp
 ---

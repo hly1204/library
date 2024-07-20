@@ -12,7 +12,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: binomial.hpp
       title: binomial.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: bitarray.hpp
       title: bitarray.hpp
     - icon: ':heavy_check_mark:'
@@ -190,6 +190,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/matrix/inverse_matrix.0.test.cpp
       title: test/matrix/inverse_matrix.0.test.cpp
+    - icon: ':x:'
+      path: test/matrix/inverse_matrix_mod_2.0.test.cpp
+      title: test/matrix/inverse_matrix_mod_2.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/matrix/matrix_det.0.test.cpp
       title: test/matrix/matrix_det.0.test.cpp
