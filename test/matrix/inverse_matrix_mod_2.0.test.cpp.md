@@ -38,42 +38,39 @@ data:
     \   }\n\npublic:\n    [[nodiscard]] std::size_t size() const { return S; }\n \
     \   [[nodiscard]] std::make_signed_t<std::size_t> ssize() const { return S; }\n\
     \n    void resize(std::size_t L, bool v = false) {\n        D.resize(get_size(L));\n\
-    \        if (L > S) {\n            if (v) {\n                if (const std::size_t\
-    \ SS = get_size(S)) D[SS - 1] |= ~((1ULL << (S % WIDTH)) - 1);\n             \
-    \   for (std::size_t i = get_size(S); i < D.size(); ++i) D[i] = ~0ULL;\n     \
-    \       } else {\n                if (const std::size_t SS = get_size(S)) D[SS\
-    \ - 1] &= (1ULL << (S % WIDTH)) - 1;\n                for (std::size_t i = get_size(S);\
-    \ i < D.size(); ++i) D[i] = 0ULL;\n            }\n        }\n        S = L;\n\
-    \    }\n\n    void clear() {\n        D.clear();\n        S = 0;\n    }\n\n  \
-    \  void assign(std::size_t L, bool v) { D.assign(get_size(L), v ? ~0ULL : 0ULL);\
-    \ }\n\n    BitArray &set() {\n        for (std::size_t i = 0; i < D.size(); ++i)\
-    \ D[i] = ~0ULL;\n        return *this;\n    }\n\n    BitArray &set(std::size_t\
-    \ P, bool v = true) {\n        if (v) {\n            D[P / WIDTH] |= 1ULL << (P\
-    \ % WIDTH);\n        } else {\n            D[P / WIDTH] &= ~(1ULL << (P % WIDTH));\n\
-    \        }\n        return *this;\n    }\n\n    BitArray &reset() {\n        for\
-    \ (std::size_t i = 0; i < D.size(); ++i) D[i] = 0ULL;\n        return *this;\n\
-    \    }\n\n    BitArray &reset(std::size_t P) {\n        D[P / WIDTH] &= ~(1ULL\
-    \ << (P % WIDTH));\n        return *this;\n    }\n\n    BitArray &flip() {\n \
-    \       for (std::size_t i = 0; i < D.size(); ++i) D[i] = ~D[i];\n        return\
-    \ *this;\n    }\n\n    BitArray &flip(std::size_t P) {\n        D[P / WIDTH] ^=\
-    \ 1ULL << (P % WIDTH);\n        return *this;\n    }\n\n    [[nodiscard]] bool\
-    \ test(std::size_t P) const { return D[P / WIDTH] >> (P % WIDTH) & 1; }\n\n  \
-    \  [[nodiscard]] bool all() const {\n        if (S == 0) return true;\n      \
-    \  if (D.size() > 1) {\n            for (std::size_t i = 0; i < D.size() - 1;\
-    \ ++i)\n                if (~D[i] != 0) return false;\n        }\n        return\
-    \ (~D.back() & ((1ULL << (S % WIDTH)) - 1)) == 0;\n    }\n    [[nodiscard]] bool\
-    \ any() const {\n        if (S == 0) return true;\n        if (D.size() > 1) {\n\
-    \            for (std::size_t i = 0; i < D.size() - 1; ++i)\n                if\
-    \ (D[i] != 0) return true;\n        }\n        return (D.back() & ((1ULL << (S\
-    \ % WIDTH)) - 1)) != 0;\n    }\n    [[nodiscard]] bool none() const {\n      \
-    \  if (S == 0) return true;\n        return !any();\n    }\n\n    class Proxy\
-    \ {\n        friend BitArray;\n        std::vector<ULL>::iterator I;\n       \
-    \ unsigned O;\n\n        Proxy(std::vector<ULL>::iterator I, unsigned O) : I(I),\
-    \ O(O) {}\n\n    public:\n        Proxy &operator=(bool v) {\n            v ?\
-    \ (*I |= 1ULL << O) : (*I &= ~(1ULL << O));\n            return *this;\n     \
-    \   }\n        operator bool() const { return *I & (1ULL << O); }\n    };\n\n\
-    \    class ConstProxy {\n        friend BitArray;\n        std::vector<ULL>::const_iterator\
-    \ I;\n        unsigned O;\n\n        ConstProxy(std::vector<ULL>::const_iterator\
+    \        if (L > S) {\n            if (S % WIDTH != 0)\n                if (const\
+    \ std::size_t SS = get_size(S)) D[SS - 1] &= ~((1ULL << (S % WIDTH)) - 1);\n \
+    \           if (v)\n                for (std::size_t i = get_size(S); i < D.size();\
+    \ ++i) D[i] = ~0ULL;\n        }\n        S = L;\n    }\n\n    void clear() {\n\
+    \        D.clear();\n        S = 0;\n    }\n\n    void assign(std::size_t L, bool\
+    \ v) { D.assign(get_size(L), v ? ~0ULL : 0ULL); }\n\n    BitArray &set() {\n \
+    \       for (std::size_t i = 0; i < D.size(); ++i) D[i] = ~0ULL;\n        return\
+    \ *this;\n    }\n\n    BitArray &set(std::size_t P, bool v = true) {\n       \
+    \ if (v) {\n            D[P / WIDTH] |= 1ULL << (P % WIDTH);\n        } else {\n\
+    \            D[P / WIDTH] &= ~(1ULL << (P % WIDTH));\n        }\n        return\
+    \ *this;\n    }\n\n    BitArray &reset() {\n        for (std::size_t i = 0; i\
+    \ < D.size(); ++i) D[i] = 0ULL;\n        return *this;\n    }\n\n    BitArray\
+    \ &reset(std::size_t P) {\n        D[P / WIDTH] &= ~(1ULL << (P % WIDTH));\n \
+    \       return *this;\n    }\n\n    BitArray &flip() {\n        for (std::size_t\
+    \ i = 0; i < D.size(); ++i) D[i] = ~D[i];\n        return *this;\n    }\n\n  \
+    \  BitArray &flip(std::size_t P) {\n        D[P / WIDTH] ^= 1ULL << (P % WIDTH);\n\
+    \        return *this;\n    }\n\n    [[nodiscard]] bool test(std::size_t P) const\
+    \ { return D[P / WIDTH] >> (P % WIDTH) & 1; }\n\n    [[nodiscard]] bool all()\
+    \ const {\n        if (S == 0) return true;\n        if (D.size() > 1) {\n   \
+    \         for (std::size_t i = 0; i < D.size() - 1; ++i)\n                if (~D[i]\
+    \ != 0) return false;\n        }\n        return (~D.back() & ((1ULL << (S % WIDTH))\
+    \ - 1)) == 0;\n    }\n    [[nodiscard]] bool any() const {\n        if (S == 0)\
+    \ return true;\n        if (D.size() > 1) {\n            for (std::size_t i =\
+    \ 0; i < D.size() - 1; ++i)\n                if (D[i] != 0) return true;\n   \
+    \     }\n        return (D.back() & ((1ULL << (S % WIDTH)) - 1)) != 0;\n    }\n\
+    \    [[nodiscard]] bool none() const {\n        if (S == 0) return true;\n   \
+    \     return !any();\n    }\n\n    class Proxy {\n        friend BitArray;\n \
+    \       std::vector<ULL>::iterator I;\n        unsigned O;\n\n        Proxy(std::vector<ULL>::iterator\
+    \ I, unsigned O) : I(I), O(O) {}\n\n    public:\n        Proxy &operator=(bool\
+    \ v) {\n            v ? (*I |= 1ULL << O) : (*I &= ~(1ULL << O));\n          \
+    \  return *this;\n        }\n        operator bool() const { return *I & (1ULL\
+    \ << O); }\n    };\n\n    class ConstProxy {\n        friend BitArray;\n     \
+    \   std::vector<ULL>::const_iterator I;\n        unsigned O;\n\n        ConstProxy(std::vector<ULL>::const_iterator\
     \ I, unsigned O) : I(I), O(O) {}\n\n    public:\n        ConstProxy(const Proxy\
     \ &P) : I(P.I), O(P.O) {}\n        operator bool() const { return *I & (1ULL <<\
     \ O); }\n    };\n\n    [[nodiscard]] Proxy operator[](std::size_t P) {\n     \
@@ -111,9 +108,9 @@ data:
     \ std::cin.tie(nullptr);\n    int n;\n    std::cin >> n;\n    BitMatrix A(n);\n\
     \    for (int i = 0; i < n; ++i) {\n        std::string s;\n        std::cin >>\
     \ s;\n        A[i] = BitArray(s);\n    }\n    if (const auto invA = mat_inv(A))\
-    \ {\n        for (int i = 0; i < n; ++i)\n            for (int j = 0; j < n; ++j)\
-    \ std::cout << invA->at(i).at(j) << \" \\n\"[j == n - 1];\n    } else {\n    \
-    \    std::cout << \"-1\";\n    }\n    return 0;\n}\n"
+    \ {\n        for (int i = 0; i < n; ++i) {\n            for (int j = 0; j < n;\
+    \ ++j) std::cout << invA->at(i).at(j);\n            std::cout << '\\n';\n    \
+    \    }\n    } else {\n        std::cout << \"-1\";\n    }\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inverse_matrix_mod_2\"\n\
     \n#include \"bitarray.hpp\"\n#include <iostream>\n#include <optional>\n#include\
     \ <string>\n#include <vector>\n\nusing BitMatrix = std::vector<BitArray>;\n\n\
@@ -130,15 +127,15 @@ data:
     \    int n;\n    std::cin >> n;\n    BitMatrix A(n);\n    for (int i = 0; i <\
     \ n; ++i) {\n        std::string s;\n        std::cin >> s;\n        A[i] = BitArray(s);\n\
     \    }\n    if (const auto invA = mat_inv(A)) {\n        for (int i = 0; i < n;\
-    \ ++i)\n            for (int j = 0; j < n; ++j) std::cout << invA->at(i).at(j)\
-    \ << \" \\n\"[j == n - 1];\n    } else {\n        std::cout << \"-1\";\n    }\n\
-    \    return 0;\n}\n"
+    \ ++i) {\n            for (int j = 0; j < n; ++j) std::cout << invA->at(i).at(j);\n\
+    \            std::cout << '\\n';\n        }\n    } else {\n        std::cout <<\
+    \ \"-1\";\n    }\n    return 0;\n}\n"
   dependsOn:
   - bitarray.hpp
   isVerificationFile: true
   path: test/matrix/inverse_matrix_mod_2.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-20 11:57:39+08:00'
+  timestamp: '2024-07-20 12:50:08+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/matrix/inverse_matrix_mod_2.0.test.cpp
