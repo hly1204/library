@@ -11,7 +11,7 @@ int main() {
     int n;
     std::cin >> n;
     std::vector<int> rem(n), mod(n);
-    for (int i = 0; i != n; ++i) std::cin >> rem[i] >> mod[i];
+    for (int i = 0; i < n; ++i) std::cin >> rem[i] >> mod[i];
     if (const auto res = chinese_remainder_mod(rem, mod, 1000000007)) {
         if (std::all_of(rem.begin(), rem.end(), [](int n) { return n == 0; })) {
             std::cout << res->mod << '\n';
