@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: bitarray.hpp
     title: bitarray.hpp
   _extendedRequiredBy: []
@@ -39,8 +39,8 @@ data:
     \   [[nodiscard]] std::make_signed_t<std::size_t> ssize() const { return S; }\n\
     \n    void resize(std::size_t L, bool v = false) {\n        D.resize(get_size(L));\n\
     \        if (L > S) {\n            if (S % WIDTH != 0)\n                if (const\
-    \ std::size_t SS = get_size(S)) D[SS - 1] &= ~((1ULL << (S % WIDTH)) - 1);\n \
-    \           if (v)\n                for (std::size_t i = get_size(S); i < D.size();\
+    \ std::size_t SS = get_size(S)) D[SS - 1] &= (1ULL << (S % WIDTH)) - 1;\n    \
+    \        if (v)\n                for (std::size_t i = get_size(S); i < D.size();\
     \ ++i) D[i] = ~0ULL;\n        }\n        S = L;\n    }\n\n    void clear() {\n\
     \        D.clear();\n        S = 0;\n    }\n\n    void assign(std::size_t L, bool\
     \ v) { D.assign(get_size(L), v ? ~0ULL : 0ULL); }\n\n    BitArray &set() {\n \
@@ -122,7 +122,7 @@ data:
   isVerificationFile: true
   path: test/matrix/matrix_det_mod_2.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-20 12:50:08+08:00'
+  timestamp: '2024-07-20 12:58:03+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/matrix_det_mod_2.0.test.cpp
