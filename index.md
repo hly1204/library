@@ -144,6 +144,9 @@ data:
       path: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
       title: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/formal_power_series/find_linear_recurrence.0.test.cpp
+      title: test/formal_power_series/find_linear_recurrence.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
       title: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
     - icon: ':heavy_check_mark:'
