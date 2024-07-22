@@ -171,8 +171,8 @@ template <typename Tp>
 inline std::tuple<SBPoly<Tp>, SBPoly<Tp>, SBPoly<Tp>> xgcd(SBPoly<Tp> A, SBPoly<Tp> B) {
     SBPoly<Tp> x11 = {Tp(1)}, x12 = {}, x21 = {}, x22 = {Tp(1)};
     while (B.deg() >= 0) {
-        auto [Q, R]  = A.divmod(B);
-        auto x11_old = x11, x12_old = x12;
+        const auto [Q, R]  = A.divmod(B);
+        const auto x11_old = x11, x12_old = x12;
         x11 = x21, x21 = x11_old - x21 * Q;
         x12 = x22, x22 = x12_old - x22 * Q;
         A = B, B = R;
@@ -184,8 +184,8 @@ template <typename Tp>
 inline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp> A, SBPoly<Tp> B) {
     SBPoly<Tp> x11 = {Tp(1)}, x21 = {};
     while (B.deg() >= 0) {
-        auto [Q, R]  = A.divmod(B);
-        auto x11_old = x11;
+        const auto [Q, R]  = A.divmod(B);
+        const auto x11_old = x11;
         x11 = x21, x21 = x11_old - x21 * Q;
         A = B, B = R;
     }
@@ -223,4 +223,18 @@ rational_function_reconstruction_slow(const std::vector<Tp> &A) {
     };
     // (A[n-1]+A[n-2]x+...+A[0]x^(n-1)) / x^n = A[0]x^(-1)+A[1]x^(-2)+...
     return rec(rec, SBPoly<Tp>(A.rbegin(), A.rend()), SBPoly<Tp>{Tp(1)} << A.size(), A.size());
+}
+
+// same as the function above
+template <typename Tp>
+inline std::pair<SBPoly<Tp>, SBPoly<Tp>>
+rational_function_reconstruction(const std::vector<Tp> &F) {
+    SBPoly<Tp> A = SBPoly<Tp>(F.rbegin(), F.rend()), B = SBPoly<Tp>{Tp(1)} << F.size();
+    if (A.deg() < 0) return std::make_pair(SBPoly<Tp>(), SBPoly<Tp>{Tp(1)});
+    SBPoly<Tp> P{Tp(1)}, PP, Q, QQ{Tp(1)};
+    for (;;) {
+        const auto [C, D]            = B.divmod(A);
+        std::tie(P, PP, Q, QQ, A, B) = std::make_tuple(PP, C * PP + P, QQ, C * QQ + Q, D, A);
+        if (A.deg() < QQ.deg()) return std::make_pair(PP, QQ);
+    }
 }

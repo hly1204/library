@@ -13,7 +13,7 @@ int main() {
     std::cin >> n;
     std::vector<mint> A(n);
     for (int i = 0; i < n; ++i) std::cin >> A[i];
-    const auto [P, Q] = rational_function_reconstruction_slow(A);
+    const auto [P, Q] = rational_function_reconstruction(A);
     const auto res    = Q / SBPoly<mint>{Q.lc()};
     std::cout << res.deg() << '\n';
     for (int i = res.deg() - 1; i >= 0; --i) std::cout << -res[i] << ' ';
