@@ -94,23 +94,23 @@ data:
     \ << ']';\n    }\n};\n\ntemplate <typename Tp>\ninline std::tuple<SBPoly<Tp>,\
     \ SBPoly<Tp>, SBPoly<Tp>> xgcd(SBPoly<Tp> A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11\
     \ = {Tp(1)}, x12 = {}, x21 = {}, x22 = {Tp(1)};\n    while (B.deg() >= 0) {\n\
-    \        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11, x12_old = x12;\n\
-    \        x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22, x22 = x12_old\
-    \ - x22 * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11, x12,\
-    \ A);\n}\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp>\
-    \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {Tp(1)}, x21 = {};\n    while (B.deg()\
-    \ >= 0) {\n        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11;\n\
-    \        x11 = x21, x21 = x11_old - x21 * Q;\n        A = B, B = R;\n    }\n \
-    \   return std::make_pair(x11, A);\n}\n\n// returns P,Q s.t. P/Q=A[0]x^(-1)+A[1]x^(-2)+...\
-    \ in F((x^(-1)))\n// where P,Q in F[x], deg(Q) is minimized\n// both time & space\
-    \ complexity is O(n^2) where n=A.size()\n// (*) this function is only for explaining\
-    \ how this algorithm works.\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>,\
-    \ SBPoly<Tp>>\nrational_function_reconstruction_slow(const std::vector<Tp> &A)\
-    \ {\n    // returns C,D s.t. [x^([-k,-1])]A/B=[x^([-k,-1])]C/D and deg(D) is minimized\n\
-    \    auto rec = [](auto &&rec, const SBPoly<Tp> &A, const SBPoly<Tp> &B,\n   \
-    \               int k) -> std::pair<SBPoly<Tp>, SBPoly<Tp>> {\n        if (A.deg()\
-    \ < 0) return std::make_pair(SBPoly<Tp>(), SBPoly<Tp>{Tp(1)});\n        const\
-    \ auto [Q, R] = B.divmod(A);\n        // A/B = ...+?x^(-k)+...+?x^(-deg(Q))\n\
+    \        const auto [Q, R]  = A.divmod(B);\n        const auto x11_old = x11,\
+    \ x12_old = x12;\n        x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22,\
+    \ x22 = x12_old - x22 * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11,\
+    \ x12, A);\n}\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>>\
+    \ inv_gcd(SBPoly<Tp> A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {Tp(1)}, x21 = {};\n\
+    \    while (B.deg() >= 0) {\n        const auto [Q, R]  = A.divmod(B);\n     \
+    \   const auto x11_old = x11;\n        x11 = x21, x21 = x11_old - x21 * Q;\n \
+    \       A = B, B = R;\n    }\n    return std::make_pair(x11, A);\n}\n\n// returns\
+    \ P,Q s.t. P/Q=A[0]x^(-1)+A[1]x^(-2)+... in F((x^(-1)))\n// where P,Q in F[x],\
+    \ deg(Q) is minimized\n// both time & space complexity is O(n^2) where n=A.size()\n\
+    // (*) this function is only for explaining how this algorithm works.\ntemplate\
+    \ <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>>\nrational_function_reconstruction_slow(const\
+    \ std::vector<Tp> &A) {\n    // returns C,D s.t. [x^([-k,-1])]A/B=[x^([-k,-1])]C/D\
+    \ and deg(D) is minimized\n    auto rec = [](auto &&rec, const SBPoly<Tp> &A,\
+    \ const SBPoly<Tp> &B,\n                  int k) -> std::pair<SBPoly<Tp>, SBPoly<Tp>>\
+    \ {\n        if (A.deg() < 0) return std::make_pair(SBPoly<Tp>(), SBPoly<Tp>{Tp(1)});\n\
+    \        const auto [Q, R] = B.divmod(A);\n        // A/B = ...+?x^(-k)+...+?x^(-deg(Q))\n\
     \        //     = 1/(B/A)\n        //     = 1/(C+D)\n        // note that C,D\
     \ in F((x^(-1))) and we define deg(C)=deg(Q) > deg(D)\n        // (A/B)*C + (A/B)*D\
     \ = 1\n        // we must have [x^([-k,-deg(Q)])]1/C = [x^([-k,-deg(Q)])]A/B\n\
@@ -123,7 +123,14 @@ data:
     \ = rec(rec, R, A, k - Q.deg() * 2);\n        // now we have 1/(Q+E/F)=F/(QF+E)\n\
     \        return std::make_pair(F, Q * F + E);\n    };\n    // (A[n-1]+A[n-2]x+...+A[0]x^(n-1))\
     \ / x^n = A[0]x^(-1)+A[1]x^(-2)+...\n    return rec(rec, SBPoly<Tp>(A.rbegin(),\
-    \ A.rend()), SBPoly<Tp>{Tp(1)} << A.size(), A.size());\n}\n"
+    \ A.rend()), SBPoly<Tp>{Tp(1)} << A.size(), A.size());\n}\n\n// same as the function\
+    \ above\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>>\nrational_function_reconstruction(const\
+    \ std::vector<Tp> &F) {\n    SBPoly<Tp> A = SBPoly<Tp>(F.rbegin(), F.rend()),\
+    \ B = SBPoly<Tp>{Tp(1)} << F.size();\n    if (A.deg() < 0) return std::make_pair(SBPoly<Tp>(),\
+    \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P{Tp(1)}, PP, Q, QQ{Tp(1)};\n    for (;;)\
+    \ {\n        const auto [C, D]            = B.divmod(A);\n        std::tie(P,\
+    \ PP, Q, QQ, A, B) = std::make_tuple(PP, C * PP + P, QQ, C * QQ + Q, D, A);\n\
+    \        if (A.deg() < QQ.deg()) return std::make_pair(PP, QQ);\n    }\n}\n"
   code: "#pragma once\n\n#include <algorithm>\n#include <cassert>\n#include <iostream>\n\
     #include <tuple>\n#include <utility>\n#include <vector>\n\n// Schoolbook Polynomial\n\
     template <typename Tp>\nclass SBPoly : public std::vector<Tp> {\n    using Base\
@@ -198,23 +205,23 @@ data:
     \ << ']';\n    }\n};\n\ntemplate <typename Tp>\ninline std::tuple<SBPoly<Tp>,\
     \ SBPoly<Tp>, SBPoly<Tp>> xgcd(SBPoly<Tp> A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11\
     \ = {Tp(1)}, x12 = {}, x21 = {}, x22 = {Tp(1)};\n    while (B.deg() >= 0) {\n\
-    \        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11, x12_old = x12;\n\
-    \        x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22, x22 = x12_old\
-    \ - x22 * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11, x12,\
-    \ A);\n}\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp>\
-    \ A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {Tp(1)}, x21 = {};\n    while (B.deg()\
-    \ >= 0) {\n        auto [Q, R]  = A.divmod(B);\n        auto x11_old = x11;\n\
-    \        x11 = x21, x21 = x11_old - x21 * Q;\n        A = B, B = R;\n    }\n \
-    \   return std::make_pair(x11, A);\n}\n\n// returns P,Q s.t. P/Q=A[0]x^(-1)+A[1]x^(-2)+...\
-    \ in F((x^(-1)))\n// where P,Q in F[x], deg(Q) is minimized\n// both time & space\
-    \ complexity is O(n^2) where n=A.size()\n// (*) this function is only for explaining\
-    \ how this algorithm works.\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>,\
-    \ SBPoly<Tp>>\nrational_function_reconstruction_slow(const std::vector<Tp> &A)\
-    \ {\n    // returns C,D s.t. [x^([-k,-1])]A/B=[x^([-k,-1])]C/D and deg(D) is minimized\n\
-    \    auto rec = [](auto &&rec, const SBPoly<Tp> &A, const SBPoly<Tp> &B,\n   \
-    \               int k) -> std::pair<SBPoly<Tp>, SBPoly<Tp>> {\n        if (A.deg()\
-    \ < 0) return std::make_pair(SBPoly<Tp>(), SBPoly<Tp>{Tp(1)});\n        const\
-    \ auto [Q, R] = B.divmod(A);\n        // A/B = ...+?x^(-k)+...+?x^(-deg(Q))\n\
+    \        const auto [Q, R]  = A.divmod(B);\n        const auto x11_old = x11,\
+    \ x12_old = x12;\n        x11 = x21, x21 = x11_old - x21 * Q;\n        x12 = x22,\
+    \ x22 = x12_old - x22 * Q;\n        A = B, B = R;\n    }\n    return std::make_tuple(x11,\
+    \ x12, A);\n}\n\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>>\
+    \ inv_gcd(SBPoly<Tp> A, SBPoly<Tp> B) {\n    SBPoly<Tp> x11 = {Tp(1)}, x21 = {};\n\
+    \    while (B.deg() >= 0) {\n        const auto [Q, R]  = A.divmod(B);\n     \
+    \   const auto x11_old = x11;\n        x11 = x21, x21 = x11_old - x21 * Q;\n \
+    \       A = B, B = R;\n    }\n    return std::make_pair(x11, A);\n}\n\n// returns\
+    \ P,Q s.t. P/Q=A[0]x^(-1)+A[1]x^(-2)+... in F((x^(-1)))\n// where P,Q in F[x],\
+    \ deg(Q) is minimized\n// both time & space complexity is O(n^2) where n=A.size()\n\
+    // (*) this function is only for explaining how this algorithm works.\ntemplate\
+    \ <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>>\nrational_function_reconstruction_slow(const\
+    \ std::vector<Tp> &A) {\n    // returns C,D s.t. [x^([-k,-1])]A/B=[x^([-k,-1])]C/D\
+    \ and deg(D) is minimized\n    auto rec = [](auto &&rec, const SBPoly<Tp> &A,\
+    \ const SBPoly<Tp> &B,\n                  int k) -> std::pair<SBPoly<Tp>, SBPoly<Tp>>\
+    \ {\n        if (A.deg() < 0) return std::make_pair(SBPoly<Tp>(), SBPoly<Tp>{Tp(1)});\n\
+    \        const auto [Q, R] = B.divmod(A);\n        // A/B = ...+?x^(-k)+...+?x^(-deg(Q))\n\
     \        //     = 1/(B/A)\n        //     = 1/(C+D)\n        // note that C,D\
     \ in F((x^(-1))) and we define deg(C)=deg(Q) > deg(D)\n        // (A/B)*C + (A/B)*D\
     \ = 1\n        // we must have [x^([-k,-deg(Q)])]1/C = [x^([-k,-deg(Q)])]A/B\n\
@@ -227,13 +234,20 @@ data:
     \ = rec(rec, R, A, k - Q.deg() * 2);\n        // now we have 1/(Q+E/F)=F/(QF+E)\n\
     \        return std::make_pair(F, Q * F + E);\n    };\n    // (A[n-1]+A[n-2]x+...+A[0]x^(n-1))\
     \ / x^n = A[0]x^(-1)+A[1]x^(-2)+...\n    return rec(rec, SBPoly<Tp>(A.rbegin(),\
-    \ A.rend()), SBPoly<Tp>{Tp(1)} << A.size(), A.size());\n}\n"
+    \ A.rend()), SBPoly<Tp>{Tp(1)} << A.size(), A.size());\n}\n\n// same as the function\
+    \ above\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>>\nrational_function_reconstruction(const\
+    \ std::vector<Tp> &F) {\n    SBPoly<Tp> A = SBPoly<Tp>(F.rbegin(), F.rend()),\
+    \ B = SBPoly<Tp>{Tp(1)} << F.size();\n    if (A.deg() < 0) return std::make_pair(SBPoly<Tp>(),\
+    \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P{Tp(1)}, PP, Q, QQ{Tp(1)};\n    for (;;)\
+    \ {\n        const auto [C, D]            = B.divmod(A);\n        std::tie(P,\
+    \ PP, Q, QQ, A, B) = std::make_tuple(PP, C * PP + P, QQ, C * QQ + Q, D, A);\n\
+    \        if (A.deg() < QQ.deg()) return std::make_pair(PP, QQ);\n    }\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: sbpoly.hpp
   requiredBy:
   - frobenius.hpp
-  timestamp: '2024-07-21 22:42:15+08:00'
+  timestamp: '2024-07-22 23:26:56+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/find_linear_recurrence.0.test.cpp
