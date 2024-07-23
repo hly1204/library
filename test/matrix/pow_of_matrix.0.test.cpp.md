@@ -232,7 +232,7 @@ data:
     \ (A.deg() < 0 || A.deg() - B.deg() < -k)\n        return std::make_pair(SBPoly<Tp>(),\
     \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P0, P1{Tp(1)}, Q0{Tp(1)}, Q1;\n    for (;;)\
     \ {\n        const auto [Q, R]              = B.divmod(A);\n        std::tie(P0,\
-    \ P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q * Q0 + P0, R, A);\n\
+    \ P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q * Q1 + Q0, R, A);\n\
     \        if (A.deg() - B.deg() < -(k -= Q.deg() * 2)) return std::make_pair(P1,\
     \ Q1);\n    }\n}\n#line 9 \"frobenius.hpp\"\n\n// Compute the Frobenius form (rational\
     \ canonical form) of a square matrix,\n// but the result is not always true.\n\
@@ -352,7 +352,7 @@ data:
   isVerificationFile: true
   path: test/matrix/pow_of_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-23 21:56:46+08:00'
+  timestamp: '2024-07-23 21:59:56+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/pow_of_matrix.0.test.cpp
