@@ -6,7 +6,7 @@ data:
     path: frobenius.hpp
     title: frobenius.hpp
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/find_linear_recurrence.0.test.cpp
     title: test/formal_power_series/find_linear_recurrence.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -15,9 +15,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"sbpoly.hpp\"\n\n#include <algorithm>\n#include <cassert>\n\
@@ -107,10 +107,10 @@ data:
     \ rational_function_reconstruction(SBPoly<Tp> A,\n                           \
     \                                               SBPoly<Tp> B, int k) {\n    if\
     \ (A.deg() < 0 || A.deg() - B.deg() < -k)\n        return std::make_pair(SBPoly<Tp>(),\
-    \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P0, P1{Tp(1)}, Q0{Tp(1)}, Q1;\n    for (;;)\
+    \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P0{Tp(1)}, P1, Q0, Q1{Tp(1)};\n    for (;;)\
     \ {\n        const auto [Q, R]              = B.divmod(A);\n        std::tie(P0,\
     \ P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q * Q1 + Q0, R, A);\n\
-    \        if (A.deg() - B.deg() < -(k -= Q.deg() * 2)) return std::make_pair(P1,\
+    \        if (A.deg() < 0 || A.deg() - B.deg() < -(k -= Q.deg() * 2)) return std::make_pair(P1,\
     \ Q1);\n    }\n}\n"
   code: "#pragma once\n\n#include <algorithm>\n#include <cassert>\n#include <iostream>\n\
     #include <tuple>\n#include <utility>\n#include <vector>\n\n// Schoolbook Polynomial\n\
@@ -199,18 +199,18 @@ data:
     \ rational_function_reconstruction(SBPoly<Tp> A,\n                           \
     \                                               SBPoly<Tp> B, int k) {\n    if\
     \ (A.deg() < 0 || A.deg() - B.deg() < -k)\n        return std::make_pair(SBPoly<Tp>(),\
-    \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P0, P1{Tp(1)}, Q0{Tp(1)}, Q1;\n    for (;;)\
+    \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P0{Tp(1)}, P1, Q0, Q1{Tp(1)};\n    for (;;)\
     \ {\n        const auto [Q, R]              = B.divmod(A);\n        std::tie(P0,\
     \ P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q * Q1 + Q0, R, A);\n\
-    \        if (A.deg() - B.deg() < -(k -= Q.deg() * 2)) return std::make_pair(P1,\
+    \        if (A.deg() < 0 || A.deg() - B.deg() < -(k -= Q.deg() * 2)) return std::make_pair(P1,\
     \ Q1);\n    }\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: sbpoly.hpp
   requiredBy:
   - frobenius.hpp
-  timestamp: '2024-07-23 21:59:56+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2024-07-23 22:09:07+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp

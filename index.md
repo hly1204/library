@@ -54,7 +54,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -75,7 +75,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: rng.hpp
       title: rng.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: sbpoly.hpp
       title: sbpoly.hpp
     - icon: ':heavy_check_mark:'
@@ -143,7 +143,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
       title: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/formal_power_series/find_linear_recurrence.0.test.cpp
       title: test/formal_power_series/find_linear_recurrence.0.test.cpp
     - icon: ':heavy_check_mark:'
