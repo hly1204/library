@@ -202,7 +202,7 @@ inline std::pair<SBPoly<Tp>, SBPoly<Tp>> rational_function_reconstruction(SBPoly
     SBPoly<Tp> P0, P1{Tp(1)}, Q0{Tp(1)}, Q1;
     for (;;) {
         const auto [Q, R]              = B.divmod(A);
-        std::tie(P0, P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q * Q0 + P0, R, A);
+        std::tie(P0, P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q * Q1 + Q0, R, A);
         if (A.deg() - B.deg() < -(k -= Q.deg() * 2)) return std::make_pair(P1, Q1);
     }
 }
