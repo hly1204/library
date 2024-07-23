@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: sbpoly.hpp
     title: sbpoly.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/find_linear_recurrence
@@ -139,40 +139,21 @@ data:
     \    while (B.deg() >= 0) {\n        const auto [Q, R]  = A.divmod(B);\n     \
     \   const auto x11_old = x11;\n        x11 = x21, x21 = x11_old - x21 * Q;\n \
     \       A = B, B = R;\n    }\n    return std::make_pair(x11, A);\n}\n\n// returns\
-    \ P,Q s.t. P/Q=A[0]x^(-1)+A[1]x^(-2)+... in F((x^(-1)))\n// where P,Q in F[x],\
-    \ deg(Q) is minimized\n// both time & space complexity is O(n^2) where n=A.size()\n\
-    // (*) this function is only for explaining how this algorithm works.\ntemplate\
-    \ <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>>\nrational_function_reconstruction_slow(const\
-    \ std::vector<Tp> &A) {\n    // returns C,D s.t. [x^([-k,-1])]A/B=[x^([-k,-1])]C/D\
-    \ and deg(D) is minimized\n    auto rec = [](auto &&rec, const SBPoly<Tp> &A,\
-    \ const SBPoly<Tp> &B,\n                  int k) -> std::pair<SBPoly<Tp>, SBPoly<Tp>>\
-    \ {\n        if (A.deg() < 0) return std::make_pair(SBPoly<Tp>(), SBPoly<Tp>{Tp(1)});\n\
-    \        const auto [Q, R] = B.divmod(A);\n        // A/B = ...+?x^(-k)+...+?x^(-deg(Q))\n\
-    \        //     = 1/(B/A)\n        //     = 1/(C+D)\n        // note that C,D\
-    \ in F((x^(-1))) and we define deg(C)=deg(Q) > deg(D)\n        // (A/B)*C + (A/B)*D\
-    \ = 1\n        // we must have [x^([-k,-deg(Q)])]1/C = [x^([-k,-deg(Q)])]A/B\n\
-    \        //           => (A/B)*C + (A/B)*D = 1\n        //           => (A/B)\
-    \ + (A/B)*D/C = 1/C\n        //           => deg(A/B) + deg(D) - deg(C) < -k\n\
-    \        //           => deg(D) < -k + 2deg(C)\n        // (1) If we set C<-Q\
-    \ and deg(D) < -k + 2deg(Q), we could just drop D.\n        if (R.deg() - A.deg()\
-    \ < -k + Q.deg() * 2) return std::make_pair(SBPoly<Tp>{Tp(1)}, Q);\n        //\
-    \ (2) Otherwise we set C<-Q+E/F and minimize deg(F)\n        const auto [E, F]\
-    \ = rec(rec, R, A, k - Q.deg() * 2);\n        // now we have 1/(Q+E/F)=F/(QF+E)\n\
-    \        return std::make_pair(F, Q * F + E);\n    };\n    // (A[n-1]+A[n-2]x+...+A[0]x^(n-1))\
-    \ / x^n = A[0]x^(-1)+A[1]x^(-2)+...\n    return rec(rec, SBPoly<Tp>(A.rbegin(),\
-    \ A.rend()), SBPoly<Tp>{Tp(1)} << A.size(), A.size());\n}\n\n// same as the function\
-    \ above\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>>\nrational_function_reconstruction(const\
-    \ std::vector<Tp> &F) {\n    SBPoly<Tp> A = SBPoly<Tp>(F.rbegin(), F.rend()),\
-    \ B = SBPoly<Tp>{Tp(1)} << F.size();\n    if (A.deg() < 0) return std::make_pair(SBPoly<Tp>(),\
-    \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P{Tp(1)}, PP, Q, QQ{Tp(1)};\n    for (;;)\
-    \ {\n        const auto [C, D]            = B.divmod(A);\n        std::tie(P,\
-    \ PP, Q, QQ, A, B) = std::make_tuple(PP, C * PP + P, QQ, C * QQ + Q, D, A);\n\
-    \        if (A.deg() < QQ.deg()) return std::make_pair(PP, QQ);\n    }\n}\n#line\
-    \ 7 \"test/formal_power_series/find_linear_recurrence.0.test.cpp\"\n\nint main()\
-    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
-    \ mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
+    \ P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B\n// where P,Q in F[x], deg(Q) is\
+    \ minimized\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>>\
+    \ rational_function_reconstruction(SBPoly<Tp> A,\n                           \
+    \                                               SBPoly<Tp> B, int k) {\n    if\
+    \ (A.deg() < 0 || A.deg() - B.deg() < -k)\n        return std::make_pair(SBPoly<Tp>(),\
+    \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P0{Tp(1)}, P1, Q0, Q1{Tp(1)};\n    for (;;)\
+    \ {\n        const auto [Q, R]              = B.divmod(A);\n        std::tie(P0,\
+    \ P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q * Q0 + P0, R, A);\n\
+    \        if (A.deg() - B.deg() < -(k -= Q.deg() * 2)) return std::make_pair(P1,\
+    \ Q1);\n    }\n}\n#line 7 \"test/formal_power_series/find_linear_recurrence.0.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
     \ A(n);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    const auto [P,\
-    \ Q] = rational_function_reconstruction(A);\n    const auto res    = Q / SBPoly<mint>{Q.lc()};\n\
+    \ Q] = rational_function_reconstruction(\n        SBPoly<mint>(A.rbegin(), A.rend()),\
+    \ SBPoly<mint>{mint(1)} << A.size(), A.size());\n    const auto res = Q / SBPoly<mint>{Q.lc()};\n\
     \    std::cout << res.deg() << '\\n';\n    for (int i = res.deg() - 1; i >= 0;\
     \ --i) std::cout << -res[i] << ' ';\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/find_linear_recurrence\"\
@@ -180,7 +161,8 @@ data:
     \ <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
     \ A(n);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    const auto [P,\
-    \ Q] = rational_function_reconstruction(A);\n    const auto res    = Q / SBPoly<mint>{Q.lc()};\n\
+    \ Q] = rational_function_reconstruction(\n        SBPoly<mint>(A.rbegin(), A.rend()),\
+    \ SBPoly<mint>{mint(1)} << A.size(), A.size());\n    const auto res = Q / SBPoly<mint>{Q.lc()};\n\
     \    std::cout << res.deg() << '\\n';\n    for (int i = res.deg() - 1; i >= 0;\
     \ --i) std::cout << -res[i] << ' ';\n    return 0;\n}\n"
   dependsOn:
@@ -189,8 +171,8 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/find_linear_recurrence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-22 23:26:56+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-07-23 21:49:25+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/formal_power_series/find_linear_recurrence.0.test.cpp
 layout: document
