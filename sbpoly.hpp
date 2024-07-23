@@ -192,49 +192,17 @@ inline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp> A, SBPoly<Tp> B) {
     return std::make_pair(x11, A);
 }
 
-// returns P,Q s.t. P/Q=A[0]x^(-1)+A[1]x^(-2)+... in F((x^(-1)))
+// returns P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B
 // where P,Q in F[x], deg(Q) is minimized
-// both time & space complexity is O(n^2) where n=A.size()
-// (*) this function is only for explaining how this algorithm works.
 template <typename Tp>
-inline std::pair<SBPoly<Tp>, SBPoly<Tp>>
-rational_function_reconstruction_slow(const std::vector<Tp> &A) {
-    // returns C,D s.t. [x^([-k,-1])]A/B=[x^([-k,-1])]C/D and deg(D) is minimized
-    auto rec = [](auto &&rec, const SBPoly<Tp> &A, const SBPoly<Tp> &B,
-                  int k) -> std::pair<SBPoly<Tp>, SBPoly<Tp>> {
-        if (A.deg() < 0) return std::make_pair(SBPoly<Tp>(), SBPoly<Tp>{Tp(1)});
-        const auto [Q, R] = B.divmod(A);
-        // A/B = ...+?x^(-k)+...+?x^(-deg(Q))
-        //     = 1/(B/A)
-        //     = 1/(C+D)
-        // note that C,D in F((x^(-1))) and we define deg(C)=deg(Q) > deg(D)
-        // (A/B)*C + (A/B)*D = 1
-        // we must have [x^([-k,-deg(Q)])]1/C = [x^([-k,-deg(Q)])]A/B
-        //           => (A/B)*C + (A/B)*D = 1
-        //           => (A/B) + (A/B)*D/C = 1/C
-        //           => deg(A/B) + deg(D) - deg(C) < -k
-        //           => deg(D) < -k + 2deg(C)
-        // (1) If we set C<-Q and deg(D) < -k + 2deg(Q), we could just drop D.
-        if (R.deg() - A.deg() < -k + Q.deg() * 2) return std::make_pair(SBPoly<Tp>{Tp(1)}, Q);
-        // (2) Otherwise we set C<-Q+E/F and minimize deg(F)
-        const auto [E, F] = rec(rec, R, A, k - Q.deg() * 2);
-        // now we have 1/(Q+E/F)=F/(QF+E)
-        return std::make_pair(F, Q * F + E);
-    };
-    // (A[n-1]+A[n-2]x+...+A[0]x^(n-1)) / x^n = A[0]x^(-1)+A[1]x^(-2)+...
-    return rec(rec, SBPoly<Tp>(A.rbegin(), A.rend()), SBPoly<Tp>{Tp(1)} << A.size(), A.size());
-}
-
-// same as the function above
-template <typename Tp>
-inline std::pair<SBPoly<Tp>, SBPoly<Tp>>
-rational_function_reconstruction(const std::vector<Tp> &F) {
-    SBPoly<Tp> A = SBPoly<Tp>(F.rbegin(), F.rend()), B = SBPoly<Tp>{Tp(1)} << F.size();
-    if (A.deg() < 0) return std::make_pair(SBPoly<Tp>(), SBPoly<Tp>{Tp(1)});
-    SBPoly<Tp> P{Tp(1)}, PP, Q, QQ{Tp(1)};
+inline std::pair<SBPoly<Tp>, SBPoly<Tp>> rational_function_reconstruction(SBPoly<Tp> A,
+                                                                          SBPoly<Tp> B, int k) {
+    if (A.deg() < 0 || A.deg() - B.deg() < -k)
+        return std::make_pair(SBPoly<Tp>(), SBPoly<Tp>{Tp(1)});
+    SBPoly<Tp> P0{Tp(1)}, P1, Q0, Q1{Tp(1)};
     for (;;) {
-        const auto [C, D]            = B.divmod(A);
-        std::tie(P, PP, Q, QQ, A, B) = std::make_tuple(PP, C * PP + P, QQ, C * QQ + Q, D, A);
-        if (A.deg() < QQ.deg()) return std::make_pair(PP, QQ);
+        const auto [Q, R]              = B.divmod(A);
+        std::tie(P0, P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q * Q0 + P0, R, A);
+        if (A.deg() - B.deg() < -(k -= Q.deg() * 2)) return std::make_pair(P1, Q1);
     }
 }
