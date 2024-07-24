@@ -105,11 +105,7 @@ public:
     SBPoly &operator/=(const SBPoly &R) {
         const int degL = deg(), degR = R.deg(), degQ = degL - degR;
         assert(degR >= 0);
-        if (degQ < 0) {
-            Base::clear();
-            return *this;
-        }
-        SBPoly quo(degQ + 1);
+        SBPoly quo(std::max(0, degQ + 1));
         const auto inv = R.lc().inv();
         for (int i = 0; i <= degQ; ++i) {
             for (int j = 1; j <= std::min(i, degR); ++j)
@@ -194,12 +190,13 @@ inline std::pair<SBPoly<Tp>, SBPoly<Tp>> inv_gcd(SBPoly<Tp> A, SBPoly<Tp> B) {
 
 // returns P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B
 // where P,Q in F[x], deg(Q) is minimized
+// requires deg(A)<deg(B)
 template <typename Tp>
-inline std::pair<SBPoly<Tp>, SBPoly<Tp>> rational_function_reconstruction(SBPoly<Tp> A,
-                                                                          SBPoly<Tp> B, int k) {
+inline std::pair<SBPoly<Tp>, SBPoly<Tp>> rational_function_approximation(SBPoly<Tp> A, SBPoly<Tp> B,
+                                                                         int k) {
     if (A.deg() < 0 || A.deg() - B.deg() < -k)
         return std::make_pair(SBPoly<Tp>(), SBPoly<Tp>{Tp(1)});
-    SBPoly<Tp> P0{Tp(1)}, P1, Q0, Q1{Tp(1)};
+    SBPoly<Tp> P0 = {Tp(1)}, P1 = {}, Q0 = {}, Q1 = {Tp(1)};
     for (;;) {
         const auto [Q, R]              = B.divmod(A);
         std::tie(P0, P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q * Q1 + Q0, R, A);

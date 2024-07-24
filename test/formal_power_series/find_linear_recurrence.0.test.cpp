@@ -13,7 +13,7 @@ int main() {
     std::cin >> n;
     std::vector<mint> A(n);
     for (int i = 0; i < n; ++i) std::cin >> A[i];
-    const auto [P, Q] = rational_function_reconstruction(
+    const auto [P, Q] = rational_function_approximation(
         SBPoly<mint>(A.rbegin(), A.rend()), SBPoly<mint>{mint(1)} << A.size(), A.size());
     const auto res = Q / SBPoly<mint>{Q.lc()};
     std::cout << res.deg() << '\n';
