@@ -61,18 +61,17 @@ data:
     \ + j] += Base::operator[](i) * R[j];\n        Base::swap(res);\n        return\
     \ *this;\n    }\n    // O(min(deg(Q)^2,deg(Q)deg(R)))\n    SBPoly &operator/=(const\
     \ SBPoly &R) {\n        const int degL = deg(), degR = R.deg(), degQ = degL -\
-    \ degR;\n        assert(degR >= 0);\n        if (degQ < 0) {\n            Base::clear();\n\
-    \            return *this;\n        }\n        SBPoly quo(degQ + 1);\n       \
-    \ const auto inv = R.lc().inv();\n        for (int i = 0; i <= degQ; ++i) {\n\
-    \            for (int j = 1; j <= std::min(i, degR); ++j)\n                quo[degQ\
-    \ - i] += R[degR - j] * quo[degQ - i + j];\n            quo[degQ - i] = (Base::operator[](degL\
-    \ - i) - quo[degQ - i]) * inv;\n        }\n        Base::swap(quo);\n        return\
-    \ *this;\n    }\n    SBPoly &operator%=(const SBPoly &R) {\n        const int\
-    \ degL = deg(), degR = R.deg(), degQ = degL - degR;\n        assert(degR >= 0);\n\
-    \        const auto inv = R.lc().inv();\n        for (int i = degQ, n = degL;\
-    \ i >= 0; --i)\n            if (const Tp res = Base::operator[](n--) * inv; res\
-    \ != 0)\n                for (int j = 0; j <= degR; ++j) Base::operator[](i +\
-    \ j) -= res * R[j];\n        return shrink();\n    }\n    SBPoly &operator<<=(int\
+    \ degR;\n        assert(degR >= 0);\n        SBPoly quo(std::max(0, degQ + 1));\n\
+    \        const auto inv = R.lc().inv();\n        for (int i = 0; i <= degQ; ++i)\
+    \ {\n            for (int j = 1; j <= std::min(i, degR); ++j)\n              \
+    \  quo[degQ - i] += R[degR - j] * quo[degQ - i + j];\n            quo[degQ - i]\
+    \ = (Base::operator[](degL - i) - quo[degQ - i]) * inv;\n        }\n        Base::swap(quo);\n\
+    \        return *this;\n    }\n    SBPoly &operator%=(const SBPoly &R) {\n   \
+    \     const int degL = deg(), degR = R.deg(), degQ = degL - degR;\n        assert(degR\
+    \ >= 0);\n        const auto inv = R.lc().inv();\n        for (int i = degQ, n\
+    \ = degL; i >= 0; --i)\n            if (const Tp res = Base::operator[](n--) *\
+    \ inv; res != 0)\n                for (int j = 0; j <= degR; ++j) Base::operator[](i\
+    \ + j) -= res * R[j];\n        return shrink();\n    }\n    SBPoly &operator<<=(int\
     \ D) {\n        if (D > 0) {\n            Base::insert(Base::begin(), D, Tp());\n\
     \        } else if (D < 0) {\n            if (-D < (int)Base::size()) {\n    \
     \            Base::erase(Base::begin(), Base::begin() + (-D));\n            }\
@@ -103,15 +102,15 @@ data:
     \   const auto x11_old = x11;\n        x11 = x21, x21 = x11_old - x21 * Q;\n \
     \       A = B, B = R;\n    }\n    return std::make_pair(x11, A);\n}\n\n// returns\
     \ P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B\n// where P,Q in F[x], deg(Q) is\
-    \ minimized\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>>\
-    \ rational_function_reconstruction(SBPoly<Tp> A,\n                           \
-    \                                               SBPoly<Tp> B, int k) {\n    if\
-    \ (A.deg() < 0 || A.deg() - B.deg() < -k)\n        return std::make_pair(SBPoly<Tp>(),\
-    \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P0{Tp(1)}, P1, Q0, Q1{Tp(1)};\n    for (;;)\
-    \ {\n        const auto [Q, R]              = B.divmod(A);\n        std::tie(P0,\
-    \ P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q * Q1 + Q0, R, A);\n\
-    \        if (A.deg() < 0 || A.deg() - B.deg() < -(k -= Q.deg() * 2)) return std::make_pair(P1,\
-    \ Q1);\n    }\n}\n"
+    \ minimized\n// requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>,\
+    \ SBPoly<Tp>> rational_function_approximation(SBPoly<Tp> A, SBPoly<Tp> B,\n  \
+    \                                                                       int k)\
+    \ {\n    if (A.deg() < 0 || A.deg() - B.deg() < -k)\n        return std::make_pair(SBPoly<Tp>(),\
+    \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P0 = {Tp(1)}, P1 = {}, Q0 = {}, Q1 = {Tp(1)};\n\
+    \    for (;;) {\n        const auto [Q, R]              = B.divmod(A);\n     \
+    \   std::tie(P0, P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q *\
+    \ Q1 + Q0, R, A);\n        if (A.deg() < 0 || A.deg() - B.deg() < -(k -= Q.deg()\
+    \ * 2)) return std::make_pair(P1, Q1);\n    }\n}\n"
   code: "#pragma once\n\n#include <algorithm>\n#include <cassert>\n#include <iostream>\n\
     #include <tuple>\n#include <utility>\n#include <vector>\n\n// Schoolbook Polynomial\n\
     template <typename Tp>\nclass SBPoly : public std::vector<Tp> {\n    using Base\
@@ -153,18 +152,17 @@ data:
     \ + j] += Base::operator[](i) * R[j];\n        Base::swap(res);\n        return\
     \ *this;\n    }\n    // O(min(deg(Q)^2,deg(Q)deg(R)))\n    SBPoly &operator/=(const\
     \ SBPoly &R) {\n        const int degL = deg(), degR = R.deg(), degQ = degL -\
-    \ degR;\n        assert(degR >= 0);\n        if (degQ < 0) {\n            Base::clear();\n\
-    \            return *this;\n        }\n        SBPoly quo(degQ + 1);\n       \
-    \ const auto inv = R.lc().inv();\n        for (int i = 0; i <= degQ; ++i) {\n\
-    \            for (int j = 1; j <= std::min(i, degR); ++j)\n                quo[degQ\
-    \ - i] += R[degR - j] * quo[degQ - i + j];\n            quo[degQ - i] = (Base::operator[](degL\
-    \ - i) - quo[degQ - i]) * inv;\n        }\n        Base::swap(quo);\n        return\
-    \ *this;\n    }\n    SBPoly &operator%=(const SBPoly &R) {\n        const int\
-    \ degL = deg(), degR = R.deg(), degQ = degL - degR;\n        assert(degR >= 0);\n\
-    \        const auto inv = R.lc().inv();\n        for (int i = degQ, n = degL;\
-    \ i >= 0; --i)\n            if (const Tp res = Base::operator[](n--) * inv; res\
-    \ != 0)\n                for (int j = 0; j <= degR; ++j) Base::operator[](i +\
-    \ j) -= res * R[j];\n        return shrink();\n    }\n    SBPoly &operator<<=(int\
+    \ degR;\n        assert(degR >= 0);\n        SBPoly quo(std::max(0, degQ + 1));\n\
+    \        const auto inv = R.lc().inv();\n        for (int i = 0; i <= degQ; ++i)\
+    \ {\n            for (int j = 1; j <= std::min(i, degR); ++j)\n              \
+    \  quo[degQ - i] += R[degR - j] * quo[degQ - i + j];\n            quo[degQ - i]\
+    \ = (Base::operator[](degL - i) - quo[degQ - i]) * inv;\n        }\n        Base::swap(quo);\n\
+    \        return *this;\n    }\n    SBPoly &operator%=(const SBPoly &R) {\n   \
+    \     const int degL = deg(), degR = R.deg(), degQ = degL - degR;\n        assert(degR\
+    \ >= 0);\n        const auto inv = R.lc().inv();\n        for (int i = degQ, n\
+    \ = degL; i >= 0; --i)\n            if (const Tp res = Base::operator[](n--) *\
+    \ inv; res != 0)\n                for (int j = 0; j <= degR; ++j) Base::operator[](i\
+    \ + j) -= res * R[j];\n        return shrink();\n    }\n    SBPoly &operator<<=(int\
     \ D) {\n        if (D > 0) {\n            Base::insert(Base::begin(), D, Tp());\n\
     \        } else if (D < 0) {\n            if (-D < (int)Base::size()) {\n    \
     \            Base::erase(Base::begin(), Base::begin() + (-D));\n            }\
@@ -195,21 +193,21 @@ data:
     \   const auto x11_old = x11;\n        x11 = x21, x21 = x11_old - x21 * Q;\n \
     \       A = B, B = R;\n    }\n    return std::make_pair(x11, A);\n}\n\n// returns\
     \ P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B\n// where P,Q in F[x], deg(Q) is\
-    \ minimized\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>, SBPoly<Tp>>\
-    \ rational_function_reconstruction(SBPoly<Tp> A,\n                           \
-    \                                               SBPoly<Tp> B, int k) {\n    if\
-    \ (A.deg() < 0 || A.deg() - B.deg() < -k)\n        return std::make_pair(SBPoly<Tp>(),\
-    \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P0{Tp(1)}, P1, Q0, Q1{Tp(1)};\n    for (;;)\
-    \ {\n        const auto [Q, R]              = B.divmod(A);\n        std::tie(P0,\
-    \ P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q * Q1 + Q0, R, A);\n\
-    \        if (A.deg() < 0 || A.deg() - B.deg() < -(k -= Q.deg() * 2)) return std::make_pair(P1,\
-    \ Q1);\n    }\n}\n"
+    \ minimized\n// requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::pair<SBPoly<Tp>,\
+    \ SBPoly<Tp>> rational_function_approximation(SBPoly<Tp> A, SBPoly<Tp> B,\n  \
+    \                                                                       int k)\
+    \ {\n    if (A.deg() < 0 || A.deg() - B.deg() < -k)\n        return std::make_pair(SBPoly<Tp>(),\
+    \ SBPoly<Tp>{Tp(1)});\n    SBPoly<Tp> P0 = {Tp(1)}, P1 = {}, Q0 = {}, Q1 = {Tp(1)};\n\
+    \    for (;;) {\n        const auto [Q, R]              = B.divmod(A);\n     \
+    \   std::tie(P0, P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q *\
+    \ Q1 + Q0, R, A);\n        if (A.deg() < 0 || A.deg() - B.deg() < -(k -= Q.deg()\
+    \ * 2)) return std::make_pair(P1, Q1);\n    }\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: sbpoly.hpp
   requiredBy:
   - frobenius.hpp
-  timestamp: '2024-07-23 22:09:07+08:00'
+  timestamp: '2024-07-24 22:44:12+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp
