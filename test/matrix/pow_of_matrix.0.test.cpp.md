@@ -233,15 +233,18 @@ data:
     \    for (;;) {\n        const auto [Q, R]              = B.divmod(A);\n     \
     \   std::tie(P0, P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q *\
     \ Q1 + Q0, R, A);\n        if (A.deg() < 0 || A.deg() - B.deg() < -(k -= Q.deg()\
-    \ * 2)) return std::make_pair(P1, Q1);\n    }\n}\n#line 9 \"frobenius.hpp\"\n\n\
-    // Compute the Frobenius form (rational canonical form) of a square matrix,\n\
-    // but the result is not always true.\ntemplate <typename Tp>\nclass Frobenius\
-    \ {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n    // where\
-    \ C_(p_j) is the companion matrix of monic polynomial P[j]\n    // *        minimal\
-    \ polynomial of A = p_0\n    // * characteristic polynomial of A = prod_(j=0)^(k-1)\
-    \ p_j\n    int N;\n    Matrix<Tp> InvT;\n    std::vector<SBPoly<Tp>> P;\n    Matrix<Tp>\
-    \ T;\n\n    // see:\n    // [1]: Elegia. A (Somehow) Simple (Randomized) Algorithm\
-    \ for Frobenius Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n\
+    \ * 2)) return std::make_pair(P1, Q1);\n    }\n}\n\n// returns [x^([-k,-1])]A/B\n\
+    // requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::vector<Tp> rational_function_to_series(SBPoly<Tp>\
+    \ A, SBPoly<Tp> B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
+    \ - 1)).slice(0, k);\n}\n#line 9 \"frobenius.hpp\"\n\n// Compute the Frobenius\
+    \ form (rational canonical form) of a square matrix,\n// but the result is not\
+    \ always true.\ntemplate <typename Tp>\nclass Frobenius {\npublic:\n    // F_A\
+    \ = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n    // where C_(p_j) is the companion\
+    \ matrix of monic polynomial P[j]\n    // *        minimal polynomial of A = p_0\n\
+    \    // * characteristic polynomial of A = prod_(j=0)^(k-1) p_j\n    int N;\n\
+    \    Matrix<Tp> InvT;\n    std::vector<SBPoly<Tp>> P;\n    Matrix<Tp> T;\n\n \
+    \   // see:\n    // [1]: Elegia. A (Somehow) Simple (Randomized) Algorithm for\
+    \ Frobenius Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n\
     \    // [2]: Arne Storjohann. Algorithms for Matrix Canonical Forms.\n    // \
     \     https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf\n    explicit Frobenius(const\
     \ Matrix<Tp> &A) : N(height(A)) {\n        assert(N != 0);\n        assert(is_square_matrix(A));\n\
@@ -352,7 +355,7 @@ data:
   isVerificationFile: true
   path: test/matrix/pow_of_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-24 22:44:12+08:00'
+  timestamp: '2024-07-26 22:54:35+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/pow_of_matrix.0.test.cpp
