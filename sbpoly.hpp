@@ -207,6 +207,7 @@ inline std::pair<SBPoly<Tp>, SBPoly<Tp>> rational_function_approximation(SBPoly<
 // returns [x^([-k,-1])]A/B
 // requires deg(A)<deg(B)
 template <typename Tp>
-inline std::vector<Tp> rational_function_to_series(SBPoly<Tp> A, SBPoly<Tp> B, int k) {
+inline std::vector<Tp> rational_function_to_series(const SBPoly<Tp> &A, const SBPoly<Tp> &B,
+                                                   int k) {
     return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).slice(0, k);
 }
