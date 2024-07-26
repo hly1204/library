@@ -111,8 +111,9 @@ data:
     \   std::tie(P0, P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q *\
     \ Q1 + Q0, R, A);\n        if (A.deg() < 0 || A.deg() - B.deg() < -(k -= Q.deg()\
     \ * 2)) return std::make_pair(P1, Q1);\n    }\n}\n\n// returns [x^([-k,-1])]A/B\n\
-    // requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::vector<Tp> rational_function_to_series(SBPoly<Tp>\
-    \ A, SBPoly<Tp> B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
+    // requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::vector<Tp> rational_function_to_series(const\
+    \ SBPoly<Tp> &A, const SBPoly<Tp> &B,\n                                      \
+    \             int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
     \ - 1)).slice(0, k);\n}\n"
   code: "#pragma once\n\n#include <algorithm>\n#include <cassert>\n#include <iostream>\n\
     #include <tuple>\n#include <utility>\n#include <vector>\n\n// Schoolbook Polynomial\n\
@@ -205,15 +206,16 @@ data:
     \   std::tie(P0, P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q *\
     \ Q1 + Q0, R, A);\n        if (A.deg() < 0 || A.deg() - B.deg() < -(k -= Q.deg()\
     \ * 2)) return std::make_pair(P1, Q1);\n    }\n}\n\n// returns [x^([-k,-1])]A/B\n\
-    // requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::vector<Tp> rational_function_to_series(SBPoly<Tp>\
-    \ A, SBPoly<Tp> B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
+    // requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::vector<Tp> rational_function_to_series(const\
+    \ SBPoly<Tp> &A, const SBPoly<Tp> &B,\n                                      \
+    \             int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
     \ - 1)).slice(0, k);\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: sbpoly.hpp
   requiredBy:
   - frobenius.hpp
-  timestamp: '2024-07-26 22:54:35+08:00'
+  timestamp: '2024-07-26 23:01:15+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp

@@ -148,8 +148,9 @@ data:
     \   std::tie(P0, P1, Q0, Q1, A, B) = std::make_tuple(P1, Q * P1 + P0, Q1, Q *\
     \ Q1 + Q0, R, A);\n        if (A.deg() < 0 || A.deg() - B.deg() < -(k -= Q.deg()\
     \ * 2)) return std::make_pair(P1, Q1);\n    }\n}\n\n// returns [x^([-k,-1])]A/B\n\
-    // requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::vector<Tp> rational_function_to_series(SBPoly<Tp>\
-    \ A, SBPoly<Tp> B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
+    // requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::vector<Tp> rational_function_to_series(const\
+    \ SBPoly<Tp> &A, const SBPoly<Tp> &B,\n                                      \
+    \             int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
     \ - 1)).slice(0, k);\n}\n#line 7 \"test/formal_power_series/find_linear_recurrence.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
@@ -173,7 +174,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/find_linear_recurrence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-07-26 22:54:35+08:00'
+  timestamp: '2024-07-26 23:01:15+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/find_linear_recurrence.0.test.cpp
