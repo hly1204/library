@@ -163,17 +163,17 @@ data:
   isVerificationFile: false
   path: mat_basic.hpp
   requiredBy:
-  - basis.hpp
   - frobenius.hpp
+  - basis.hpp
   timestamp: '2024-07-03 19:37:20+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/matrix/pow_of_matrix.0.test.cpp
-  - test/matrix/inverse_matrix.0.test.cpp
-  - test/matrix/characteristic_polynomial.0.test.cpp
-  - test/matrix/matrix_det.0.test.cpp
-  - test/matrix/matrix_product.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp
+  - test/matrix/matrix_product.0.test.cpp
+  - test/matrix/matrix_det.0.test.cpp
+  - test/matrix/characteristic_polynomial.0.test.cpp
+  - test/matrix/inverse_matrix.0.test.cpp
+  - test/matrix/pow_of_matrix.0.test.cpp
 documentation_of: mat_basic.hpp
 layout: document
 redirect_from:

@@ -225,36 +225,54 @@ data:
     \ * bin.inv_factorial(i);\n        cc *= c;\n    }\n    std::reverse(a.begin(),\
     \ a.end());\n    auto ab = convolution(a, b);\n    ab.resize(n);\n    std::reverse(ab.begin(),\
     \ ab.end());\n    for (int i = 0; i < n; ++i) ab[i] *= bin.inv_factorial(i);\n\
-    \    return ab;\n}\n\n// returns (quotient, remainder)\ntemplate <typename Tp>\n\
-    inline std::pair<std::vector<Tp>, std::vector<Tp>> euclidean_div(const std::vector<Tp>\
-    \ &A,\n                                                                 const\
-    \ std::vector<Tp> &B) {\n    // returns a mod (x^n-1)\n    auto make_cyclic =\
-    \ [](const std::vector<Tp> &a, int n) {\n        assert((n & (n - 1)) == 0);\n\
-    \        std::vector<Tp> b(n);\n        for (int i = 0; i < (int)a.size(); ++i)\
-    \ b[i & (n - 1)] += a[i];\n        return b;\n    };\n\n    const int degA = degree(A);\n\
-    \    const int degB = degree(B);\n    assert(degB >= 0);\n    // A = Q*B + R =>\
-    \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
-    \ < 0) return {std::vector<Tp>{Tp(0)}, A};\n\n    auto Q = div(std::vector(A.rend()\
+    \    return ab;\n}\n\n// returns (quotient, remainder)\n// O(deg(Q)deg(B))\ntemplate\
+    \ <typename Tp>\ninline std::pair<std::vector<Tp>, std::vector<Tp>> euclidean_div_naive(const\
+    \ std::vector<Tp> &A,\n                                                      \
+    \                 const std::vector<Tp> &B) {\n    const int degA = degree(A);\n\
+    \    const int degB = degree(B);\n    assert(degB >= 0);\n    const int degQ =\
+    \ degA - degB;\n    if (degQ < 0) return {std::vector<Tp>{Tp(0)}, A};\n    std::vector<Tp>\
+    \ Q(degQ + 1), R = A;\n    const auto inv = B[degB].inv();\n    for (int i = degQ,\
+    \ n = degA; i >= 0; --i)\n        if ((Q[i] = R[n--] * inv) != 0)\n          \
+    \  for (int j = 0; j <= degB; ++j) R[i + j] -= Q[i] * B[j];\n    R.resize(degB);\n\
+    \    return {Q, R};\n}\n\n// O(min(deg(Q)^2,deg(Q)deg(B)))\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> euclidean_div_quotient_naive(const std::vector<Tp>\
+    \ &A,\n                                                    const std::vector<Tp>\
+    \ &B) {\n    const int degA = degree(A);\n    const int degB = degree(B);\n  \
+    \  assert(degB >= 0);\n    const int degQ = degA - degB;\n    if (degQ < 0) return\
+    \ {Tp(0)};\n    const auto inv = B[degB].inv();\n    std::vector<Tp> Q(degQ +\
+    \ 1);\n    for (int i = 0; i <= degQ; ++i) {\n        for (int j = 1; j <= std::min(i,\
+    \ degB); ++j) Q[degQ - i] += B[degB - j] * Q[degQ - i + j];\n        Q[degQ -\
+    \ i] = A[degA - i] - Q[degQ - i] * inv;\n    }\n    return Q;\n}\n\n// returns\
+    \ (quotient, remainder)\ntemplate <typename Tp>\ninline std::pair<std::vector<Tp>,\
+    \ std::vector<Tp>> euclidean_div(const std::vector<Tp> &A,\n                 \
+    \                                                const std::vector<Tp> &B) {\n\
+    \    const int degA = degree(A);\n    const int degB = degree(B);\n    assert(degB\
+    \ >= 0);\n    // A = Q*B + R => A/B = Q + R/B in R((x^(-1)))\n    const int degQ\
+    \ = degA - degB;\n    if (degQ < 0) return {std::vector<Tp>{Tp(0)}, A};\n    if\
+    \ (degQ < 60 || degB < 60) return euclidean_div_naive(A, B);\n\n    auto Q = div(std::vector(A.rend()\
     \ - (degA + 1), A.rend()),\n                 std::vector(B.rend() - (degB + 1),\
-    \ B.rend()), degQ + 1);\n    std::reverse(Q.begin(), Q.end());\n\n    const int\
-    \ len      = fft_len(std::max(degB, 1));\n    const auto cyclicA = make_cyclic(A,\
-    \ len);\n    auto cyclicB       = make_cyclic(B, len);\n    auto cyclicQ     \
-    \  = make_cyclic(Q, len);\n\n    fft(cyclicQ);\n    fft(cyclicB);\n    for (int\
-    \ i = 0; i < len; ++i) cyclicQ[i] *= cyclicB[i];\n    inv_fft(cyclicQ);\n\n  \
-    \  // R = A - QB mod (x^n-1) (n >= degB)\n    std::vector<Tp> R(degB);\n    for\
-    \ (int i = 0; i < degB; ++i) R[i] = cyclicA[i] - cyclicQ[i];\n    return {Q, R};\n\
-    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> euclidean_div_quotient(const\
+    \ B.rend()), degQ + 1);\n    std::reverse(Q.begin(), Q.end());\n\n    // returns\
+    \ a mod (x^n-1)\n    auto make_cyclic = [](const std::vector<Tp> &a, int n) {\n\
+    \        assert((n & (n - 1)) == 0);\n        std::vector<Tp> b(n);\n        for\
+    \ (int i = 0; i < (int)a.size(); ++i) b[i & (n - 1)] += a[i];\n        return\
+    \ b;\n    };\n\n    const int len      = fft_len(std::max(degB, 1));\n    const\
+    \ auto cyclicA = make_cyclic(A, len);\n    auto cyclicB       = make_cyclic(B,\
+    \ len);\n    auto cyclicQ       = make_cyclic(Q, len);\n\n    fft(cyclicQ);\n\
+    \    fft(cyclicB);\n    for (int i = 0; i < len; ++i) cyclicQ[i] *= cyclicB[i];\n\
+    \    inv_fft(cyclicQ);\n\n    // R = A - QB mod (x^n-1) (n >= degB)\n    std::vector<Tp>\
+    \ R(degB);\n    for (int i = 0; i < degB; ++i) R[i] = cyclicA[i] - cyclicQ[i];\n\
+    \    return {Q, R};\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> euclidean_div_quotient(const\
     \ std::vector<Tp> &A, const std::vector<Tp> &B) {\n    const int degA = degree(A);\n\
     \    const int degB = degree(B);\n    assert(degB >= 0);\n    // A = Q*B + R =>\
     \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
-    \ < 0) return {Tp(0)};\n\n    auto Q = div(std::vector(A.rend() - (degA + 1),\
-    \ A.rend()),\n                 std::vector(B.rend() - (degB + 1), B.rend()), degQ\
-    \ + 1);\n    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 8 \"czt.hpp\"\
-    \n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\n// Use        ij = binom(i,2)\
-    \   + binom(-j,2) - binom(i-j,2)\n// instead of ij = binom(i+j,2) - binom(i,2)\
-    \  - binom(j,2)\ntemplate <typename Tp>\ninline std::vector<Tp> czt(std::vector<Tp>\
-    \ F, Tp c, int n, Tp a = 1) {\n    if (n <= 0) return {};\n    const int degF\
-    \ = degree(F);\n    shrink(F);\n    if (degF < 0) return std::vector<Tp>(n);\n\
+    \ < 0) return {Tp(0)};\n    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A,\
+    \ B);\n\n    auto Q = div(std::vector(A.rend() - (degA + 1), A.rend()),\n    \
+    \             std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n    std::reverse(Q.begin(),\
+    \ Q.end());\n    return Q;\n}\n#line 8 \"czt.hpp\"\n\n// returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))\n\
+    // Use        ij = binom(i,2)   + binom(-j,2) - binom(i-j,2)\n// instead of ij\
+    \ = binom(i+j,2) - binom(i,2)  - binom(j,2)\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {\n    if (n <= 0) return {};\n\
+    \    const int degF = degree(F);\n    shrink(F);\n    if (degF < 0) return std::vector<Tp>(n);\n\
     \    if (degF == 0 || a == 0) return std::vector<Tp>(n, F[0]);\n    if (a != 1)\
     \ {\n        // F(x) <- F(ax)\n        Tp aa = 1;\n        for (int i = 0; i <=\
     \ degF; ++i) F[i] *= aa, aa *= a;\n    }\n    if (c == 0) {\n        std::vector<Tp>\
@@ -355,7 +373,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/convolution_mod.1.test.cpp
   requiredBy: []
-  timestamp: '2024-06-22 10:58:08+08:00'
+  timestamp: '2024-08-03 13:26:56+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/convolution_mod.1.test.cpp

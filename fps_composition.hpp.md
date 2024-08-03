@@ -362,8 +362,8 @@ data:
   timestamp: '2024-06-02 11:00:30+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
+  - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
 documentation_of: fps_composition.hpp
 layout: document
 redirect_from:
