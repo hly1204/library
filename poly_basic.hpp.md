@@ -248,7 +248,7 @@ data:
     \ {Tp(0)};\n    const auto inv = B[degB].inv();\n    std::vector<Tp> Q(degQ +\
     \ 1);\n    for (int i = 0; i <= degQ; ++i) {\n        for (int j = 1; j <= std::min(i,\
     \ degB); ++j) Q[degQ - i] += B[degB - j] * Q[degQ - i + j];\n        Q[degQ -\
-    \ i] = A[degA - i] - Q[degQ - i] * inv;\n    }\n    return Q;\n}\n\n// returns\
+    \ i] = (A[degA - i] - Q[degQ - i]) * inv;\n    }\n    return Q;\n}\n\n// returns\
     \ (quotient, remainder)\ntemplate <typename Tp>\ninline std::pair<std::vector<Tp>,\
     \ std::vector<Tp>> euclidean_div(const std::vector<Tp> &A,\n                 \
     \                                                const std::vector<Tp> &B) {\n\
@@ -304,7 +304,7 @@ data:
     \ {Tp(0)};\n    const auto inv = B[degB].inv();\n    std::vector<Tp> Q(degQ +\
     \ 1);\n    for (int i = 0; i <= degQ; ++i) {\n        for (int j = 1; j <= std::min(i,\
     \ degB); ++j) Q[degQ - i] += B[degB - j] * Q[degQ - i + j];\n        Q[degQ -\
-    \ i] = A[degA - i] - Q[degQ - i] * inv;\n    }\n    return Q;\n}\n\n// returns\
+    \ i] = (A[degA - i] - Q[degQ - i]) * inv;\n    }\n    return Q;\n}\n\n// returns\
     \ (quotient, remainder)\ntemplate <typename Tp>\ninline std::pair<std::vector<Tp>,\
     \ std::vector<Tp>> euclidean_div(const std::vector<Tp> &A,\n                 \
     \                                                const std::vector<Tp> &B) {\n\
@@ -342,7 +342,7 @@ data:
   - subproduct_tree.hpp
   - czt.hpp
   - c_recursive.hpp
-  timestamp: '2024-08-03 13:26:56+08:00'
+  timestamp: '2024-08-03 14:01:08+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/multipoint_evaluation.0.test.cpp
