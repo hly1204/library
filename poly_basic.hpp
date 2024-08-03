@@ -71,7 +71,7 @@ inline std::vector<Tp> euclidean_div_quotient_naive(const std::vector<Tp> &A,
     std::vector<Tp> Q(degQ + 1);
     for (int i = 0; i <= degQ; ++i) {
         for (int j = 1; j <= std::min(i, degB); ++j) Q[degQ - i] += B[degB - j] * Q[degQ - i + j];
-        Q[degQ - i] = A[degA - i] - Q[degQ - i] * inv;
+        Q[degQ - i] = (A[degA - i] - Q[degQ - i]) * inv;
     }
     return Q;
 }
