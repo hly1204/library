@@ -137,6 +137,14 @@ public:
                 (*this)[1][0] * R[0][0] + (*this)[1][1] * R[1][0],
                 (*this)[1][0] * R[0][1] + (*this)[1][1] * R[1][1]};
     }
+
+    std::array<Tp, 2> operator*(const std::array<Tp, 2> &R) const {
+        return {(*this)[0][0] * R[0] + (*this)[0][1] * R[1],
+                (*this)[1][0] * R[0] + (*this)[1][1] * R[1]};
+    }
+
+    Tp det() const { return (*this)[0][0] * (*this)[1][1] - (*this)[0][1] * (*this)[1][0]; }
+    GCDMatrix adj() const { return {(*this)[1][1], -(*this)[0][1], -(*this)[1][0], (*this)[0][0]}; }
 };
 
 // returns M s.t. deg(M) <= d and deg(M21*A+M22*B) < max(deg(A),deg(B))-d
@@ -170,4 +178,25 @@ template <typename Tp>
 inline std::pair<Poly<Tp>, Poly<Tp>> inv_gcd(const Poly<Tp> &A, const Poly<Tp> &B) {
     const auto M = hgcd(A, B, std::max(A.deg(), B.deg()));
     return std::make_pair(M[0][0], M[0][0] * A + M[0][1] * B);
+}
+
+// returns P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B
+// where P,Q in F[x], deg(Q) is minimized
+// requires deg(A)<deg(B)
+template <typename Tp>
+inline std::pair<Poly<Tp>, Poly<Tp>> rational_function_approximation(const Poly<Tp> &A,
+                                                                     const Poly<Tp> &B, int k) {
+    if (A.deg() < 0 || A.deg() - B.deg() < -k) return std::make_pair(Poly<Tp>(), Poly<Tp>{Tp(1)});
+    auto M            = hgcd(A, B, k / 2);
+    const auto [C, D] = M * std::array{A, B};
+    if (D.deg() >= 0 && D.deg() - C.deg() >= -(k - (A.deg() - C.deg()) * 2))
+        M *= GCDMatrix<Poly<Tp>>({}, {Tp(1)}, {Tp(1)}, -(C / D));
+    return std::make_pair(M.adj()[1][0], M.adj()[0][0]);
+}
+
+// returns [x^([-k,-1])]A/B
+// requires deg(A)<deg(B)
+template <typename Tp>
+inline std::vector<Tp> rational_function_to_series(const Poly<Tp> &A, const Poly<Tp> &B, int k) {
+    return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).slice(0, k);
 }
