@@ -218,9 +218,9 @@ data:
   timestamp: '2024-07-26 23:01:15+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/formal_power_series/find_linear_recurrence.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
+  - test/formal_power_series/find_linear_recurrence.0.test.cpp
 documentation_of: sbpoly.hpp
 layout: document
 redirect_from:

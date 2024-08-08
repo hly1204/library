@@ -27,6 +27,9 @@ data:
     path: middle_product.hpp
     title: middle_product.hpp
   - icon: ':heavy_check_mark:'
+    path: poly.hpp
+    title: poly.hpp
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
   - icon: ':heavy_check_mark:'
@@ -69,6 +72,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/inv_of_polynomials.0.test.cpp
+    title: test/formal_power_series/inv_of_polynomials.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
@@ -251,42 +257,44 @@ data:
   isVerificationFile: false
   path: fft.hpp
   requiredBy:
-  - subproduct_tree.hpp
-  - poly_product.hpp
-  - eulerian_number.hpp
-  - middle_product.hpp
-  - poly_basic.hpp
-  - semi_relaxed_conv.hpp
-  - conv_mod.hpp
-  - fps_composition.hpp
-  - czt.hpp
-  - fps_basic.hpp
-  - fps_sqrt.hpp
   - c_recursive.hpp
+  - semi_relaxed_conv.hpp
+  - poly_product.hpp
+  - fps_sqrt.hpp
+  - fps_composition.hpp
+  - subproduct_tree.hpp
+  - poly.hpp
+  - fps_basic.hpp
+  - middle_product.hpp
+  - czt.hpp
+  - poly_basic.hpp
+  - conv_mod.hpp
+  - eulerian_number.hpp
   timestamp: '2024-05-17 19:15:49+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
-  - test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - test/formal_power_series/division_of_polynomials.0.test.cpp
-  - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
-  - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - test/formal_power_series/pow_of_formal_power_series.0.test.cpp
-  - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-  - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - test/formal_power_series/convolution_mod.0.test.cpp
-  - test/formal_power_series/log_of_formal_power_series.0.test.cpp
-  - test/formal_power_series/inv_of_formal_power_series.0.test.cpp
-  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/formal_power_series/exp_of_formal_power_series.0.test.cpp
-  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-  - test/formal_power_series/polynomial_interpolation.0.test.cpp
-  - test/formal_power_series/convolution_mod_1000000007.0.test.cpp
+  - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
+  - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
+  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/inv_of_polynomials.0.test.cpp
   - test/formal_power_series/convolution_mod.1.test.cpp
+  - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
+  - test/formal_power_series/pow_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/multipoint_evaluation.0.test.cpp
+  - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+  - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/division_of_polynomials.0.test.cpp
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/convolution_mod_1000000007.0.test.cpp
+  - test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
+  - test/formal_power_series/convolution_mod.0.test.cpp
+  - test/formal_power_series/polynomial_interpolation.0.test.cpp
+  - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/inv_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/log_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
 documentation_of: fft.hpp
 layout: document
 redirect_from:

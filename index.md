@@ -61,6 +61,9 @@ data:
       path: modlong.hpp
       title: modlong.hpp
     - icon: ':heavy_check_mark:'
+      path: poly.hpp
+      title: poly.hpp
+    - icon: ':heavy_check_mark:'
       path: poly_basic.hpp
       title: poly_basic.hpp
     - icon: ':warning:'
@@ -149,6 +152,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
       title: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/formal_power_series/inv_of_polynomials.0.test.cpp
+      title: test/formal_power_series/inv_of_polynomials.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
       title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp

@@ -11,66 +11,70 @@ data:
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
-    path: semi_relaxed_conv.hpp
-    title: semi_relaxed_conv.hpp
-  _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
-    path: c_recursive.hpp
-    title: c_recursive.hpp
-  - icon: ':heavy_check_mark:'
-    path: czt.hpp
-    title: czt.hpp
+    path: modint.hpp
+    title: modint.hpp
   - icon: ':heavy_check_mark:'
     path: poly.hpp
     title: poly.hpp
   - icon: ':heavy_check_mark:'
-    path: subproduct_tree.hpp
-    title: subproduct_tree.hpp
-  _extendedVerifiedWith:
+    path: poly_basic.hpp
+    title: poly_basic.hpp
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-    title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-    title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/convolution_mod.1.test.cpp
-    title: test/formal_power_series/convolution_mod.1.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/division_of_polynomials.0.test.cpp
-    title: test/formal_power_series/division_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/inv_of_polynomials.0.test.cpp
-    title: test/formal_power_series/inv_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-    title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/multipoint_evaluation.0.test.cpp
-    title: test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-    title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/polynomial_interpolation.0.test.cpp
-    title: test/formal_power_series/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-    title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
-    title: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-    title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+    path: semi_relaxed_conv.hpp
+    title: semi_relaxed_conv.hpp
+  _extendedRequiredBy: []
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
-  _pathExtension: hpp
+  _pathExtension: cpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    links: []
-  bundledCode: "#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
-    \ <algorithm>\n#include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n\
-    \    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
+    '*NOT_SPECIAL_COMMENTS*': ''
+    PROBLEM: https://judge.yosupo.jp/problem/inv_of_polynomials
+    links:
+    - https://judge.yosupo.jp/problem/inv_of_polynomials
+  bundledCode: "#line 1 \"test/formal_power_series/inv_of_polynomials.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_polynomials\"\n\n#line\
+    \ 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\ntemplate\
+    \ <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod`\
+    \ must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
+    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
+    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
+    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
+    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
+    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
+    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
+    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
+    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
+    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
+    \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
+    \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
+    \ if ((e >>= 1) == 0) return res;\n        }\n    }\n    ModInt inv() const {\n\
+    \        int x1 = 1, x3 = 0, a = val(), b = Mod;\n        while (b) {\n      \
+    \      int q = a / b, x1_old = x1, a_old = a;\n            x1 = x3, x3 = x1_old\
+    \ - x3 * q, a = b, b = a_old - b * q;\n        }\n        return from_raw(x1 <\
+    \ 0 ? x1 + (int)Mod : x1);\n    }\n    template <bool Odd = (Mod & 1)>\n    std::enable_if_t<Odd,\
+    \ ModInt> div_by_2() const {\n        if (v_ & 1) return from_raw((v_ + Mod) >>\
+    \ 1);\n        return from_raw(v_ >> 1);\n    }\n\n    ModInt &operator+=(const\
+    \ ModInt &a) {\n        if ((v_ += a.v_) >= Mod) v_ -= Mod;\n        return *this;\n\
+    \    }\n    ModInt &operator-=(const ModInt &a) {\n        if ((v_ += Mod - a.v_)\
+    \ >= Mod) v_ -= Mod;\n        return *this;\n    }\n    ModInt &operator*=(const\
+    \ ModInt &a) {\n        v_ = (unsigned long long)v_ * a.v_ % Mod;\n        return\
+    \ *this;\n    }\n    ModInt &operator/=(const ModInt &a) { return *this *= a.inv();\
+    \ }\n\n    friend ModInt operator+(const ModInt &a, const ModInt &b) { return\
+    \ ModInt(a) += b; }\n    friend ModInt operator-(const ModInt &a, const ModInt\
+    \ &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const ModInt &a,\
+    \ const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
+    \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
+    \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
+    \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
+    #line 2 \"poly.hpp\"\n\n#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\
+    \n\n#include <algorithm>\n#include <vector>\n\ntemplate <typename Tp>\nclass Binomial\
+    \ {\n    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
     \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
     \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
     \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
@@ -154,11 +158,11 @@ data:
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
     \    return convolution_fft(a, b);\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"\
-    semi_relaxed_conv.hpp\"\n\n#line 5 \"semi_relaxed_conv.hpp\"\n#include <type_traits>\n\
-    #include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\n\n// returns coefficients\
-    \ generated by closure\n// closure: gen(index, current_product)\ntemplate <typename\
-    \ Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp, Closure,\
-    \ int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
+    semi_relaxed_conv.hpp\"\n\n#line 6 \"semi_relaxed_conv.hpp\"\n#include <utility>\n\
+    #line 8 \"semi_relaxed_conv.hpp\"\n\n// returns coefficients generated by closure\n\
+    // closure: gen(index, current_product)\ntemplate <typename Tp, typename Closure>\n\
+    inline std::enable_if_t<std::is_invocable_r_v<Tp, Closure, int, const std::vector<Tp>\
+    \ &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
     \ std::vector<Tp> &A, Closure gen, int n) {\n    enum { BaseCaseSize = 32 };\n\
     \    static_assert((BaseCaseSize & (BaseCaseSize - 1)) == 0);\n\n    static const\
     \ int Block[]     = {16, 16, 16, 16, 16};\n    static const int BlockSize[] =\
@@ -280,94 +284,116 @@ data:
     \ < 0) return {Tp(0)};\n    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A,\
     \ B);\n\n    auto Q = div(std::vector(A.rend() - (degA + 1), A.rend()),\n    \
     \             std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n    std::reverse(Q.begin(),\
-    \ Q.end());\n    return Q;\n}\n"
-  code: "#pragma once\n\n#include \"binomial.hpp\"\n#include \"fft.hpp\"\n#include\
-    \ \"fps_basic.hpp\"\n#include <algorithm>\n#include <cassert>\n#include <utility>\n\
-    #include <vector>\n\ntemplate <typename Tp>\ninline int degree(const std::vector<Tp>\
-    \ &a) {\n    int n = (int)a.size() - 1;\n    while (n >= 0 && a[n] == 0) --n;\n\
-    \    return n;\n}\n\ntemplate <typename Tp>\ninline void shrink(std::vector<Tp>\
-    \ &a) {\n    a.resize(degree(a) + 1);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ taylor_shift(std::vector<Tp> a, Tp c) {\n    const int n = a.size();\n    auto\
-    \ &&bin  = Binomial<Tp>::get(n);\n    for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);\n\
-    \    Tp cc = 1;\n    std::vector<Tp> b(n);\n    for (int i = 0; i < n; ++i) {\n\
-    \        b[i] = cc * bin.inv_factorial(i);\n        cc *= c;\n    }\n    std::reverse(a.begin(),\
-    \ a.end());\n    auto ab = convolution(a, b);\n    ab.resize(n);\n    std::reverse(ab.begin(),\
-    \ ab.end());\n    for (int i = 0; i < n; ++i) ab[i] *= bin.inv_factorial(i);\n\
-    \    return ab;\n}\n\n// returns (quotient, remainder)\n// O(deg(Q)deg(B))\ntemplate\
-    \ <typename Tp>\ninline std::pair<std::vector<Tp>, std::vector<Tp>> euclidean_div_naive(const\
-    \ std::vector<Tp> &A,\n                                                      \
-    \                 const std::vector<Tp> &B) {\n    const int degA = degree(A);\n\
-    \    const int degB = degree(B);\n    assert(degB >= 0);\n    const int degQ =\
-    \ degA - degB;\n    if (degQ < 0) return {std::vector<Tp>{Tp(0)}, A};\n    std::vector<Tp>\
-    \ Q(degQ + 1), R = A;\n    const auto inv = B[degB].inv();\n    for (int i = degQ,\
-    \ n = degA; i >= 0; --i)\n        if ((Q[i] = R[n--] * inv) != 0)\n          \
-    \  for (int j = 0; j <= degB; ++j) R[i + j] -= Q[i] * B[j];\n    R.resize(degB);\n\
-    \    return {Q, R};\n}\n\n// O(min(deg(Q)^2,deg(Q)deg(B)))\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> euclidean_div_quotient_naive(const std::vector<Tp>\
-    \ &A,\n                                                    const std::vector<Tp>\
-    \ &B) {\n    const int degA = degree(A);\n    const int degB = degree(B);\n  \
-    \  assert(degB >= 0);\n    const int degQ = degA - degB;\n    if (degQ < 0) return\
-    \ {Tp(0)};\n    const auto inv = B[degB].inv();\n    std::vector<Tp> Q(degQ +\
-    \ 1);\n    for (int i = 0; i <= degQ; ++i) {\n        for (int j = 1; j <= std::min(i,\
-    \ degB); ++j) Q[degQ - i] += B[degB - j] * Q[degQ - i + j];\n        Q[degQ -\
-    \ i] = (A[degA - i] - Q[degQ - i]) * inv;\n    }\n    return Q;\n}\n\n// returns\
-    \ (quotient, remainder)\ntemplate <typename Tp>\ninline std::pair<std::vector<Tp>,\
-    \ std::vector<Tp>> euclidean_div(const std::vector<Tp> &A,\n                 \
-    \                                                const std::vector<Tp> &B) {\n\
-    \    const int degA = degree(A);\n    const int degB = degree(B);\n    assert(degB\
-    \ >= 0);\n    // A = Q*B + R => A/B = Q + R/B in R((x^(-1)))\n    const int degQ\
-    \ = degA - degB;\n    if (degQ < 0) return {std::vector<Tp>{Tp(0)}, A};\n    if\
-    \ (degQ < 60 || degB < 60) return euclidean_div_naive(A, B);\n\n    auto Q = div(std::vector(A.rend()\
-    \ - (degA + 1), A.rend()),\n                 std::vector(B.rend() - (degB + 1),\
-    \ B.rend()), degQ + 1);\n    std::reverse(Q.begin(), Q.end());\n\n    // returns\
-    \ a mod (x^n-1)\n    auto make_cyclic = [](const std::vector<Tp> &a, int n) {\n\
-    \        assert((n & (n - 1)) == 0);\n        std::vector<Tp> b(n);\n        for\
-    \ (int i = 0; i < (int)a.size(); ++i) b[i & (n - 1)] += a[i];\n        return\
-    \ b;\n    };\n\n    const int len      = fft_len(std::max(degB, 1));\n    const\
-    \ auto cyclicA = make_cyclic(A, len);\n    auto cyclicB       = make_cyclic(B,\
-    \ len);\n    auto cyclicQ       = make_cyclic(Q, len);\n\n    fft(cyclicQ);\n\
-    \    fft(cyclicB);\n    for (int i = 0; i < len; ++i) cyclicQ[i] *= cyclicB[i];\n\
-    \    inv_fft(cyclicQ);\n\n    // R = A - QB mod (x^n-1) (n >= degB)\n    std::vector<Tp>\
-    \ R(degB);\n    for (int i = 0; i < degB; ++i) R[i] = cyclicA[i] - cyclicQ[i];\n\
-    \    return {Q, R};\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> euclidean_div_quotient(const\
-    \ std::vector<Tp> &A, const std::vector<Tp> &B) {\n    const int degA = degree(A);\n\
-    \    const int degB = degree(B);\n    assert(degB >= 0);\n    // A = Q*B + R =>\
-    \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
-    \ < 0) return {Tp(0)};\n    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A,\
-    \ B);\n\n    auto Q = div(std::vector(A.rend() - (degA + 1), A.rend()),\n    \
-    \             std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n    std::reverse(Q.begin(),\
-    \ Q.end());\n    return Q;\n}\n"
+    \ Q.end());\n    return Q;\n}\n#line 5 \"poly.hpp\"\n#include <array>\n#line 8\
+    \ \"poly.hpp\"\n#include <tuple>\n#line 11 \"poly.hpp\"\n\ntemplate <typename\
+    \ Tp>\nclass Poly : public std::vector<Tp> {\n    using Base = std::vector<Tp>;\n\
+    \npublic:\n    using Base::Base;\n\n    static Poly from_vector(const std::vector<Tp>\
+    \ &V) { return Poly(V.begin(), V.end()); }\n\n    int deg() const { return degree(*this);\
+    \ }\n\n    int ord() const { return order(*this); }\n\n    Poly rev() const {\n\
+    \        const int d = deg();\n        Poly res(d + 1);\n        for (int i =\
+    \ d; i >= 0; --i) res[i] = Base::operator[](d - i);\n        return res;\n   \
+    \ }\n\n    Poly slice(int L, int R) const {\n        Poly res(R - L);\n      \
+    \  for (int i = L; i < std::min(R, (int)Base::size()); ++i) res[i - L] = Base::operator[](i);\n\
+    \        return res;\n    }\n\n    Poly trunc(int D) const {\n        Poly res(D);\n\
+    \        for (int i = 0; i < std::min(D, (int)Base::size()); ++i) res[i] = Base::operator[](i);\n\
+    \        return res;\n    }\n\n    Poly &shrink() {\n        Base::resize(deg()\
+    \ + 1);\n        return *this;\n    }\n\n    Poly lc() const {\n        const\
+    \ int d = deg();\n        return d == -1 ? Tp() : Base::operator[](d);\n    }\n\
+    \n    Poly operator-() const {\n        const int d = deg();\n        Poly res(d\
+    \ + 1);\n        for (int i = 0; i <= d; ++i) res[i] = -Base::operator[](i);\n\
+    \        res.shrink();\n        return res;\n    }\n\n    std::pair<Poly, Poly>\
+    \ divmod(const Poly &R) const {\n        const auto [q, r] = euclidean_div(*this,\
+    \ R);\n        return std::make_pair(from_vector(q), from_vector(r));\n    }\n\
+    \    Poly &operator+=(const Poly &R) {\n        if (Base::size() < R.size()) Base::resize(R.size());\n\
+    \        for (int i = 0; i < (int)R.size(); ++i) Base::operator[](i) += R[i];\n\
+    \        return shrink();\n    }\n    Poly &operator-=(const Poly &R) {\n    \
+    \    if (Base::size() < R.size()) Base::resize(R.size());\n        for (int i\
+    \ = 0; i < (int)R.size(); ++i) Base::operator[](i) -= R[i];\n        return shrink();\n\
+    \    }\n    Poly &operator*=(const Poly &R) {\n        Base::operator=(convolution(*this,\
+    \ R));\n        return shrink();\n    }\n    Poly &operator/=(const Poly &R) {\n\
+    \        Base::operator=(euclidean_div_quotient(*this, R));\n        return shrink();\n\
+    \    }\n    Poly &operator%=(const Poly &R) {\n        Base::operator=(divmod(R).second);\n\
+    \        return shrink();\n    }\n    Poly &operator<<=(int D) {\n        if (D\
+    \ > 0) {\n            Base::insert(Base::begin(), D, Tp());\n        } else if\
+    \ (D < 0) {\n            if (-D < (int)Base::size()) {\n                Base::erase(Base::begin(),\
+    \ Base::begin() + (-D));\n            } else {\n                Base::clear();\n\
+    \            }\n        }\n        return shrink();\n    }\n    Poly &operator>>=(int\
+    \ D) { return operator<<=(-D); }\n\n    friend Poly operator+(const Poly &L, const\
+    \ Poly &R) { return Poly(L) += R; }\n    friend Poly operator-(const Poly &L,\
+    \ const Poly &R) { return Poly(L) -= R; }\n    friend Poly operator*(const Poly\
+    \ &L, const Poly &R) { return Poly(L) *= R; }\n    friend Poly operator/(const\
+    \ Poly &L, const Poly &R) { return Poly(L) /= R; }\n    friend Poly operator%(const\
+    \ Poly &L, const Poly &R) { return Poly(L) %= R; }\n    friend Poly operator<<(const\
+    \ Poly &L, int D) { return Poly(L) <<= D; }\n    friend Poly operator>>(const\
+    \ Poly &L, int D) { return Poly(L) >>= D; }\n\n    friend std::ostream &operator<<(std::ostream\
+    \ &L, const Poly &R) {\n        L << '[';\n        const int d = R.deg();\n  \
+    \      if (d < 0) {\n            L << '0';\n        } else {\n            for\
+    \ (int i = 0; i <= d; ++i) {\n                L << R[i];\n                if (i\
+    \ == 1) L << \"*x\";\n                if (i > 1) L << \"*x^\" << i;\n        \
+    \        if (i != d) L << \" + \";\n            }\n        }\n        return L\
+    \ << ']';\n    }\n};\n\n// 2x2 matrix for Euclidean algorithm\ntemplate <typename\
+    \ Tp>\nclass GCDMatrix : public std::array<std::array<Tp, 2>, 2> {\npublic:\n\
+    \    GCDMatrix(const Tp &x00, const Tp &x01, const Tp &x10, const Tp &x11)\n \
+    \       : std::array<std::array<Tp, 2>, 2>{std::array{x00, x01}, std::array{x10,\
+    \ x11}} {}\n\n    GCDMatrix operator*(const GCDMatrix &R) const {\n        return\
+    \ {(*this)[0][0] * R[0][0] + (*this)[0][1] * R[1][0],\n                (*this)[0][0]\
+    \ * R[0][1] + (*this)[0][1] * R[1][1],\n                (*this)[1][0] * R[0][0]\
+    \ + (*this)[1][1] * R[1][0],\n                (*this)[1][0] * R[0][1] + (*this)[1][1]\
+    \ * R[1][1]};\n    }\n};\n\n// returns M s.t. deg(M) <= d and deg(M21*A+M22*B)\
+    \ < max(deg(A),deg(B))-d\n//                det(M) in {-1,1}\n// see:\n// [1]:\
+    \ Daniel J. Bernstein. Fast multiplication and its applications.\ntemplate <typename\
+    \ Tp>\ninline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const Poly<Tp> &B, int\
+    \ d) {\n    using Mat = GCDMatrix<Poly<Tp>>;\n    assert(!(A.deg() < 0 && B.deg()\
+    \ < 0));\n    if (A.deg() < B.deg()) return hgcd(B, A, d) * Mat({}, {Tp(1)}, {Tp(1)},\
+    \ {});\n    if (A.deg() < d) return hgcd(A, B, A.deg());\n    if (B.deg() < 0\
+    \ || B.deg() < A.deg() - d) return Mat({Tp(1)}, {}, {}, {Tp(1)});\n    if (int\
+    \ dd = A.deg() - d * 2; dd > 0) return hgcd(A >> dd, B >> dd, d);\n    if (d ==\
+    \ 0) return Mat({}, {Tp(1)}, {Tp(1)}, -(A / B));\n    const auto M = hgcd(A, B,\
+    \ d / 2);\n    const auto D = M[1][0] * A + M[1][1] * B;\n    if (D.deg() < A.deg()\
+    \ - d) return M;\n    const auto C      = M[0][0] * A + M[0][1] * B;\n    const\
+    \ auto [Q, R] = C.divmod(D);\n    return hgcd(D, R, D.deg() - (A.deg() - d)) *\
+    \ Mat({}, {Tp(1)}, {Tp(1)}, -Q) * M;\n}\n\ntemplate <typename Tp>\ninline std::tuple<Poly<Tp>,\
+    \ Poly<Tp>, Poly<Tp>> xgcd(const Poly<Tp> &A, const Poly<Tp> &B) {\n    const\
+    \ auto M = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_tuple(M[0][0],\
+    \ M[0][1], M[0][0] * A + M[0][1] * B);\n}\n\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>,\
+    \ Poly<Tp>> inv_gcd(const Poly<Tp> &A, const Poly<Tp> &B) {\n    const auto M\
+    \ = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_pair(M[0][0],\
+    \ M[0][0] * A + M[0][1] * B);\n}\n#line 6 \"test/formal_power_series/inv_of_polynomials.0.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
+    \    Poly<mint> A(n), B(m);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n\
+    \    for (int i = 0; i < m; ++i) std::cin >> B[i];\n    auto [I, G] = inv_gcd(A,\
+    \ B);\n    if (G.deg() == 0) {\n        I /= G;\n        std::cout << I.deg()\
+    \ + 1 << '\\n';\n        for (int i = 0; i <= I.deg(); ++i) std::cout << I[i]\
+    \ << ' ';\n    } else {\n        std::cout << \"-1\";\n    }\n    return 0;\n\
+    }\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_polynomials\"\n\n\
+    #include \"modint.hpp\"\n#include \"poly.hpp\"\n#include <iostream>\n\nint main()\
+    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
+    \ mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n    Poly<mint>\
+    \ A(n), B(m);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    for (int\
+    \ i = 0; i < m; ++i) std::cin >> B[i];\n    auto [I, G] = inv_gcd(A, B);\n   \
+    \ if (G.deg() == 0) {\n        I /= G;\n        std::cout << I.deg() + 1 << '\\\
+    n';\n        for (int i = 0; i <= I.deg(); ++i) std::cout << I[i] << ' ';\n  \
+    \  } else {\n        std::cout << \"-1\";\n    }\n    return 0;\n}\n"
   dependsOn:
+  - modint.hpp
+  - poly.hpp
+  - poly_basic.hpp
   - binomial.hpp
   - fft.hpp
   - fps_basic.hpp
   - semi_relaxed_conv.hpp
-  isVerificationFile: false
-  path: poly_basic.hpp
-  requiredBy:
-  - c_recursive.hpp
-  - subproduct_tree.hpp
-  - poly.hpp
-  - czt.hpp
-  timestamp: '2024-08-03 14:01:08+08:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - test/formal_power_series/inv_of_polynomials.0.test.cpp
-  - test/formal_power_series/convolution_mod.1.test.cpp
-  - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
-  - test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - test/formal_power_series/division_of_polynomials.0.test.cpp
-  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - test/formal_power_series/polynomial_interpolation.0.test.cpp
-  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-documentation_of: poly_basic.hpp
+  isVerificationFile: true
+  path: test/formal_power_series/inv_of_polynomials.0.test.cpp
+  requiredBy: []
+  timestamp: '2024-08-08 22:33:25+08:00'
+  verificationStatus: TEST_ACCEPTED
+  verifiedWith: []
+documentation_of: test/formal_power_series/inv_of_polynomials.0.test.cpp
 layout: document
 redirect_from:
-- /library/poly_basic.hpp
-- /library/poly_basic.hpp.html
-title: poly_basic.hpp
+- /verify/test/formal_power_series/inv_of_polynomials.0.test.cpp
+- /verify/test/formal_power_series/inv_of_polynomials.0.test.cpp.html
+title: test/formal_power_series/inv_of_polynomials.0.test.cpp
 ---
