@@ -46,7 +46,7 @@ public:
         return *this;
     }
 
-    Poly lc() const {
+    Tp lc() const {
         const int d = deg();
         return d == -1 ? Tp() : Base::operator[](d);
     }
