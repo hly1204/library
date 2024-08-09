@@ -16,8 +16,6 @@ class Poly : public std::vector<Tp> {
 public:
     using Base::Base;
 
-    static Poly from_vector(const std::vector<Tp> &V) { return Poly(V.begin(), V.end()); }
-
     int deg() const { return degree(*this); }
 
     int ord() const { return order(*this); }
@@ -61,7 +59,7 @@ public:
 
     std::pair<Poly, Poly> divmod(const Poly &R) const {
         const auto [q, r] = euclidean_div(*this, R);
-        return std::make_pair(from_vector(q), from_vector(r));
+        return std::make_pair(Poly(q.begin(), q.end()), Poly(r.begin(), r.end()));
     }
     Poly &operator+=(const Poly &R) {
         if (Base::size() < R.size()) Base::resize(R.size());
@@ -157,7 +155,7 @@ inline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const Poly<Tp> &B, int d) {
     assert(!(A.deg() < 0 && B.deg() < 0));
     if (A.deg() < B.deg()) return hgcd(B, A, d) * Mat({}, {Tp(1)}, {Tp(1)}, {});
     if (A.deg() < d) return hgcd(A, B, A.deg());
-    if (B.deg() < 0 || B.deg() < A.deg() - d) return Mat({Tp(1)}, {}, {}, {Tp(1)});
+    if (B.deg() < A.deg() - d) return Mat({Tp(1)}, {}, {}, {Tp(1)});
     if (int dd = A.deg() - d * 2; dd > 0) return hgcd(A >> dd, B >> dd, d);
     if (d == 0) return Mat({}, {Tp(1)}, {Tp(1)}, -(A / B));
     const auto M = hgcd(A, B, d / 2);
@@ -186,10 +184,9 @@ inline std::pair<Poly<Tp>, Poly<Tp>> inv_gcd(const Poly<Tp> &A, const Poly<Tp> &
 template <typename Tp>
 inline std::pair<Poly<Tp>, Poly<Tp>> rational_function_approximation(const Poly<Tp> &A,
                                                                      const Poly<Tp> &B, int k) {
-    if (A.deg() < 0 || A.deg() - B.deg() < -k) return std::make_pair(Poly<Tp>(), Poly<Tp>{Tp(1)});
-    auto M            = hgcd(A, B, k / 2);
-    const auto [C, D] = M * std::array{A, B};
-    if (D.deg() >= 0 && D.deg() - C.deg() >= -(k - (A.deg() - C.deg()) * 2))
+    auto M            = hgcd(B, A, k / 2);
+    const auto [C, D] = M * std::array{B, A};
+    if (D.deg() >= 0 && D.deg() - C.deg() >= -(k - (B.deg() - C.deg()) * 2))
         M = GCDMatrix<Poly<Tp>>({}, {Tp(1)}, {Tp(1)}, -(C / D)) * M;
     return std::make_pair(M.adj()[1][0], M.adj()[0][0]);
 }
