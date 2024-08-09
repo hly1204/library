@@ -190,7 +190,7 @@ inline std::pair<Poly<Tp>, Poly<Tp>> rational_function_approximation(const Poly<
     auto M            = hgcd(A, B, k / 2);
     const auto [C, D] = M * std::array{A, B};
     if (D.deg() >= 0 && D.deg() - C.deg() >= -(k - (A.deg() - C.deg()) * 2))
-        M *= GCDMatrix<Poly<Tp>>({}, {Tp(1)}, {Tp(1)}, -(C / D));
+        M = GCDMatrix<Poly<Tp>>({}, {Tp(1)}, {Tp(1)}, -(C / D)) * M;
     return std::make_pair(M.adj()[1][0], M.adj()[0][0]);
 }
 
