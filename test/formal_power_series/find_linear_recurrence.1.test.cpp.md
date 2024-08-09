@@ -371,7 +371,7 @@ data:
     \ < -k) return std::make_pair(Poly<Tp>(), Poly<Tp>{Tp(1)});\n    auto M      \
     \      = hgcd(A, B, k / 2);\n    const auto [C, D] = M * std::array{A, B};\n \
     \   if (D.deg() >= 0 && D.deg() - C.deg() >= -(k - (A.deg() - C.deg()) * 2))\n\
-    \        M *= GCDMatrix<Poly<Tp>>({}, {Tp(1)}, {Tp(1)}, -(C / D));\n    return\
+    \        M = GCDMatrix<Poly<Tp>>({}, {Tp(1)}, {Tp(1)}, -(C / D)) * M;\n    return\
     \ std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n}\n\n// returns [x^([-k,-1])]A/B\n\
     // requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::vector<Tp> rational_function_to_series(const\
     \ Poly<Tp> &A, const Poly<Tp> &B, int k) {\n    return (((A << k) / B).rev() <<\
@@ -405,7 +405,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/find_linear_recurrence.1.test.cpp
   requiredBy: []
-  timestamp: '2024-08-09 07:59:12+08:00'
+  timestamp: '2024-08-09 08:02:55+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/formal_power_series/find_linear_recurrence.1.test.cpp
