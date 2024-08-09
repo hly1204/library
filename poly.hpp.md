@@ -254,7 +254,7 @@ data:
     \ res[i - L] = Base::operator[](i);\n        return res;\n    }\n\n    Poly trunc(int\
     \ D) const {\n        Poly res(D);\n        for (int i = 0; i < std::min(D, (int)Base::size());\
     \ ++i) res[i] = Base::operator[](i);\n        return res;\n    }\n\n    Poly &shrink()\
-    \ {\n        Base::resize(deg() + 1);\n        return *this;\n    }\n\n    Poly\
+    \ {\n        Base::resize(deg() + 1);\n        return *this;\n    }\n\n    Tp\
     \ lc() const {\n        const int d = deg();\n        return d == -1 ? Tp() :\
     \ Base::operator[](d);\n    }\n\n    Poly operator-() const {\n        const int\
     \ d = deg();\n        Poly res(d + 1);\n        for (int i = 0; i <= d; ++i) res[i]\
@@ -348,9 +348,9 @@ data:
     \    }\n\n    Poly trunc(int D) const {\n        Poly res(D);\n        for (int\
     \ i = 0; i < std::min(D, (int)Base::size()); ++i) res[i] = Base::operator[](i);\n\
     \        return res;\n    }\n\n    Poly &shrink() {\n        Base::resize(deg()\
-    \ + 1);\n        return *this;\n    }\n\n    Poly lc() const {\n        const\
-    \ int d = deg();\n        return d == -1 ? Tp() : Base::operator[](d);\n    }\n\
-    \n    Poly operator-() const {\n        const int d = deg();\n        Poly res(d\
+    \ + 1);\n        return *this;\n    }\n\n    Tp lc() const {\n        const int\
+    \ d = deg();\n        return d == -1 ? Tp() : Base::operator[](d);\n    }\n\n\
+    \    Poly operator-() const {\n        const int d = deg();\n        Poly res(d\
     \ + 1);\n        for (int i = 0; i <= d; ++i) res[i] = -Base::operator[](i);\n\
     \        res.shrink();\n        return res;\n    }\n\n    std::pair<Poly, Poly>\
     \ divmod(const Poly &R) const {\n        const auto [q, r] = euclidean_div(*this,\
@@ -436,7 +436,7 @@ data:
   isVerificationFile: false
   path: poly.hpp
   requiredBy: []
-  timestamp: '2024-08-09 08:02:55+08:00'
+  timestamp: '2024-08-09 08:08:18+08:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/formal_power_series/inv_of_polynomials.0.test.cpp
