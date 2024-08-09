@@ -1,16 +1,16 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy:
@@ -20,7 +20,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: czt.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly.hpp
     title: poly.hpp
   - icon: ':heavy_check_mark:'
@@ -39,7 +39,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/division_of_polynomials.0.test.cpp
     title: test/formal_power_series/division_of_polynomials.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/find_linear_recurrence.1.test.cpp
     title: test/formal_power_series/find_linear_recurrence.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -66,9 +66,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
@@ -353,7 +353,7 @@ data:
   - poly.hpp
   - czt.hpp
   timestamp: '2024-08-03 14:01:08+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/formal_power_series/inv_of_polynomials.0.test.cpp
