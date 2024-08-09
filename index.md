@@ -9,7 +9,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: batch_inv.hpp
       title: batch_inv.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: binomial.hpp
       title: binomial.hpp
     - icon: ':heavy_check_mark:'
@@ -33,10 +33,10 @@ data:
     - icon: ':warning:'
       path: eulerian_number.hpp
       title: eulerian_number.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: fft.hpp
       title: fft.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: fps_basic.hpp
       title: fps_basic.hpp
     - icon: ':heavy_check_mark:'
@@ -54,16 +54,16 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
       path: modlong.hpp
       title: modlong.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: poly.hpp
       title: poly.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: poly_basic.hpp
       title: poly_basic.hpp
     - icon: ':warning:'
@@ -81,7 +81,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: sbpoly.hpp
       title: sbpoly.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: semi_relaxed_conv.hpp
       title: semi_relaxed_conv.hpp
     - icon: ':heavy_check_mark:'
@@ -149,6 +149,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/find_linear_recurrence.0.test.cpp
       title: test/formal_power_series/find_linear_recurrence.0.test.cpp
+    - icon: ':x:'
+      path: test/formal_power_series/find_linear_recurrence.1.test.cpp
+      title: test/formal_power_series/find_linear_recurrence.1.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
       title: test/formal_power_series/inv_of_formal_power_series.0.test.cpp

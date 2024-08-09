@@ -24,17 +24,17 @@ data:
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/inv_of_polynomials
+    PROBLEM: https://judge.yosupo.jp/problem/find_linear_recurrence
     links:
-    - https://judge.yosupo.jp/problem/inv_of_polynomials
-  bundledCode: "#line 1 \"test/formal_power_series/inv_of_polynomials.0.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_polynomials\"\n\n#line\
-    \ 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\ntemplate\
+    - https://judge.yosupo.jp/problem/find_linear_recurrence
+  bundledCode: "#line 1 \"test/formal_power_series/find_linear_recurrence.1.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/find_linear_recurrence\"\n\
+    \n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\ntemplate\
     \ <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod`\
     \ must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
     \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
@@ -375,24 +375,25 @@ data:
     \ std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n}\n\n// returns [x^([-k,-1])]A/B\n\
     // requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::vector<Tp> rational_function_to_series(const\
     \ Poly<Tp> &A, const Poly<Tp> &B, int k) {\n    return (((A << k) / B).rev() <<\
-    \ (B.deg() - A.deg() - 1)).slice(0, k);\n}\n#line 6 \"test/formal_power_series/inv_of_polynomials.0.test.cpp\"\
+    \ (B.deg() - A.deg() - 1)).slice(0, k);\n}\n#line 7 \"test/formal_power_series/find_linear_recurrence.1.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
-    \    Poly<mint> A(n), B(m);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n\
-    \    for (int i = 0; i < m; ++i) std::cin >> B[i];\n    auto [I, G] = inv_gcd(A,\
-    \ B);\n    if (G.deg() == 0) {\n        I /= G;\n        std::cout << I.deg()\
-    \ + 1 << '\\n';\n        for (int i = 0; i <= I.deg(); ++i) std::cout << I[i]\
-    \ << ' ';\n    } else {\n        std::cout << \"-1\";\n    }\n    return 0;\n\
-    }\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_polynomials\"\n\n\
-    #include \"modint.hpp\"\n#include \"poly.hpp\"\n#include <iostream>\n\nint main()\
-    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
-    \ mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n    Poly<mint>\
-    \ A(n), B(m);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    for (int\
-    \ i = 0; i < m; ++i) std::cin >> B[i];\n    auto [I, G] = inv_gcd(A, B);\n   \
-    \ if (G.deg() == 0) {\n        I /= G;\n        std::cout << I.deg() + 1 << '\\\
-    n';\n        for (int i = 0; i <= I.deg(); ++i) std::cout << I[i] << ' ';\n  \
-    \  } else {\n        std::cout << \"-1\";\n    }\n    return 0;\n}\n"
+    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
+    \ A(n);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    const auto [P,\
+    \ Q] = rational_function_approximation(Poly<mint>(A.rbegin(), A.rend()),\n   \
+    \                                                     Poly<mint>{mint(1)} << A.size(),\
+    \ A.size());\n    const auto res    = Q / Poly<mint>{Q.lc()};\n    std::cout <<\
+    \ res.deg() << '\\n';\n    for (int i = res.deg() - 1; i >= 0; --i) std::cout\
+    \ << -res[i] << ' ';\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/find_linear_recurrence\"\
+    \n\n#include \"modint.hpp\"\n#include \"poly.hpp\"\n#include <iostream>\n#include\
+    \ <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
+    \ A(n);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    const auto [P,\
+    \ Q] = rational_function_approximation(Poly<mint>(A.rbegin(), A.rend()),\n   \
+    \                                                     Poly<mint>{mint(1)} << A.size(),\
+    \ A.size());\n    const auto res    = Q / Poly<mint>{Q.lc()};\n    std::cout <<\
+    \ res.deg() << '\\n';\n    for (int i = res.deg() - 1; i >= 0; --i) std::cout\
+    \ << -res[i] << ' ';\n    return 0;\n}\n"
   dependsOn:
   - modint.hpp
   - poly.hpp
@@ -402,15 +403,15 @@ data:
   - fps_basic.hpp
   - semi_relaxed_conv.hpp
   isVerificationFile: true
-  path: test/formal_power_series/inv_of_polynomials.0.test.cpp
+  path: test/formal_power_series/find_linear_recurrence.1.test.cpp
   requiredBy: []
   timestamp: '2024-08-09 07:59:12+08:00'
-  verificationStatus: TEST_ACCEPTED
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/formal_power_series/inv_of_polynomials.0.test.cpp
+documentation_of: test/formal_power_series/find_linear_recurrence.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/formal_power_series/inv_of_polynomials.0.test.cpp
-- /verify/test/formal_power_series/inv_of_polynomials.0.test.cpp.html
-title: test/formal_power_series/inv_of_polynomials.0.test.cpp
+- /verify/test/formal_power_series/find_linear_recurrence.1.test.cpp
+- /verify/test/formal_power_series/find_linear_recurrence.1.test.cpp.html
+title: test/formal_power_series/find_linear_recurrence.1.test.cpp
 ---

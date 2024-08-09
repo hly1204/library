@@ -1,29 +1,32 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
+  - icon: ':x:'
+    path: test/formal_power_series/find_linear_recurrence.1.test.cpp
+    title: test/formal_power_series/find_linear_recurrence.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_polynomials.0.test.cpp
     title: test/formal_power_series/inv_of_polynomials.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"poly.hpp\"\n\n#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\
@@ -293,26 +296,44 @@ data:
     \ GCDMatrix &R) const {\n        return {(*this)[0][0] * R[0][0] + (*this)[0][1]\
     \ * R[1][0],\n                (*this)[0][0] * R[0][1] + (*this)[0][1] * R[1][1],\n\
     \                (*this)[1][0] * R[0][0] + (*this)[1][1] * R[1][0],\n        \
-    \        (*this)[1][0] * R[0][1] + (*this)[1][1] * R[1][1]};\n    }\n};\n\n//\
-    \ returns M s.t. deg(M) <= d and deg(M21*A+M22*B) < max(deg(A),deg(B))-d\n// \
-    \               det(M) in {-1,1}\n// see:\n// [1]: Daniel J. Bernstein. Fast multiplication\
-    \ and its applications.\ntemplate <typename Tp>\ninline GCDMatrix<Poly<Tp>> hgcd(const\
-    \ Poly<Tp> &A, const Poly<Tp> &B, int d) {\n    using Mat = GCDMatrix<Poly<Tp>>;\n\
-    \    assert(!(A.deg() < 0 && B.deg() < 0));\n    if (A.deg() < B.deg()) return\
-    \ hgcd(B, A, d) * Mat({}, {Tp(1)}, {Tp(1)}, {});\n    if (A.deg() < d) return\
-    \ hgcd(A, B, A.deg());\n    if (B.deg() < 0 || B.deg() < A.deg() - d) return Mat({Tp(1)},\
-    \ {}, {}, {Tp(1)});\n    if (int dd = A.deg() - d * 2; dd > 0) return hgcd(A >>\
-    \ dd, B >> dd, d);\n    if (d == 0) return Mat({}, {Tp(1)}, {Tp(1)}, -(A / B));\n\
-    \    const auto M = hgcd(A, B, d / 2);\n    const auto D = M[1][0] * A + M[1][1]\
-    \ * B;\n    if (D.deg() < A.deg() - d) return M;\n    const auto C      = M[0][0]\
-    \ * A + M[0][1] * B;\n    const auto [Q, R] = C.divmod(D);\n    return hgcd(D,\
-    \ R, D.deg() - (A.deg() - d)) * Mat({}, {Tp(1)}, {Tp(1)}, -Q) * M;\n}\n\ntemplate\
-    \ <typename Tp>\ninline std::tuple<Poly<Tp>, Poly<Tp>, Poly<Tp>> xgcd(const Poly<Tp>\
-    \ &A, const Poly<Tp> &B) {\n    const auto M = hgcd(A, B, std::max(A.deg(), B.deg()));\n\
+    \        (*this)[1][0] * R[0][1] + (*this)[1][1] * R[1][1]};\n    }\n\n    std::array<Tp,\
+    \ 2> operator*(const std::array<Tp, 2> &R) const {\n        return {(*this)[0][0]\
+    \ * R[0] + (*this)[0][1] * R[1],\n                (*this)[1][0] * R[0] + (*this)[1][1]\
+    \ * R[1]};\n    }\n\n    Tp det() const { return (*this)[0][0] * (*this)[1][1]\
+    \ - (*this)[0][1] * (*this)[1][0]; }\n    GCDMatrix adj() const { return {(*this)[1][1],\
+    \ -(*this)[0][1], -(*this)[1][0], (*this)[0][0]}; }\n};\n\n// returns M s.t. deg(M)\
+    \ <= d and deg(M21*A+M22*B) < max(deg(A),deg(B))-d\n//                det(M) in\
+    \ {-1,1}\n// see:\n// [1]: Daniel J. Bernstein. Fast multiplication and its applications.\n\
+    template <typename Tp>\ninline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const\
+    \ Poly<Tp> &B, int d) {\n    using Mat = GCDMatrix<Poly<Tp>>;\n    assert(!(A.deg()\
+    \ < 0 && B.deg() < 0));\n    if (A.deg() < B.deg()) return hgcd(B, A, d) * Mat({},\
+    \ {Tp(1)}, {Tp(1)}, {});\n    if (A.deg() < d) return hgcd(A, B, A.deg());\n \
+    \   if (B.deg() < 0 || B.deg() < A.deg() - d) return Mat({Tp(1)}, {}, {}, {Tp(1)});\n\
+    \    if (int dd = A.deg() - d * 2; dd > 0) return hgcd(A >> dd, B >> dd, d);\n\
+    \    if (d == 0) return Mat({}, {Tp(1)}, {Tp(1)}, -(A / B));\n    const auto M\
+    \ = hgcd(A, B, d / 2);\n    const auto D = M[1][0] * A + M[1][1] * B;\n    if\
+    \ (D.deg() < A.deg() - d) return M;\n    const auto C      = M[0][0] * A + M[0][1]\
+    \ * B;\n    const auto [Q, R] = C.divmod(D);\n    return hgcd(D, R, D.deg() -\
+    \ (A.deg() - d)) * Mat({}, {Tp(1)}, {Tp(1)}, -Q) * M;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::tuple<Poly<Tp>, Poly<Tp>, Poly<Tp>> xgcd(const Poly<Tp> &A,\
+    \ const Poly<Tp> &B) {\n    const auto M = hgcd(A, B, std::max(A.deg(), B.deg()));\n\
     \    return std::make_tuple(M[0][0], M[0][1], M[0][0] * A + M[0][1] * B);\n}\n\
     \ntemplate <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> inv_gcd(const Poly<Tp>\
     \ &A, const Poly<Tp> &B) {\n    const auto M = hgcd(A, B, std::max(A.deg(), B.deg()));\n\
-    \    return std::make_pair(M[0][0], M[0][0] * A + M[0][1] * B);\n}\n"
+    \    return std::make_pair(M[0][0], M[0][0] * A + M[0][1] * B);\n}\n\n// returns\
+    \ P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B\n// where P,Q in F[x], deg(Q) is\
+    \ minimized\n// requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>,\
+    \ Poly<Tp>> rational_function_approximation(const Poly<Tp> &A,\n             \
+    \                                                        const Poly<Tp> &B, int\
+    \ k) {\n    if (A.deg() < 0 || A.deg() - B.deg() < -k) return std::make_pair(Poly<Tp>(),\
+    \ Poly<Tp>{Tp(1)});\n    auto M            = hgcd(A, B, k / 2);\n    const auto\
+    \ [C, D] = M * std::array{A, B};\n    if (D.deg() >= 0 && D.deg() - C.deg() >=\
+    \ -(k - (A.deg() - C.deg()) * 2))\n        M *= GCDMatrix<Poly<Tp>>({}, {Tp(1)},\
+    \ {Tp(1)}, -(C / D));\n    return std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n\
+    }\n\n// returns [x^([-k,-1])]A/B\n// requires deg(A)<deg(B)\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> rational_function_to_series(const Poly<Tp> &A, const\
+    \ Poly<Tp> &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
+    \ - 1)).slice(0, k);\n}\n"
   code: "#pragma once\n\n#include \"poly_basic.hpp\"\n#include <algorithm>\n#include\
     \ <array>\n#include <cassert>\n#include <iostream>\n#include <tuple>\n#include\
     \ <utility>\n#include <vector>\n\ntemplate <typename Tp>\nclass Poly : public\
@@ -369,7 +390,12 @@ data:
     \ {(*this)[0][0] * R[0][0] + (*this)[0][1] * R[1][0],\n                (*this)[0][0]\
     \ * R[0][1] + (*this)[0][1] * R[1][1],\n                (*this)[1][0] * R[0][0]\
     \ + (*this)[1][1] * R[1][0],\n                (*this)[1][0] * R[0][1] + (*this)[1][1]\
-    \ * R[1][1]};\n    }\n};\n\n// returns M s.t. deg(M) <= d and deg(M21*A+M22*B)\
+    \ * R[1][1]};\n    }\n\n    std::array<Tp, 2> operator*(const std::array<Tp, 2>\
+    \ &R) const {\n        return {(*this)[0][0] * R[0] + (*this)[0][1] * R[1],\n\
+    \                (*this)[1][0] * R[0] + (*this)[1][1] * R[1]};\n    }\n\n    Tp\
+    \ det() const { return (*this)[0][0] * (*this)[1][1] - (*this)[0][1] * (*this)[1][0];\
+    \ }\n    GCDMatrix adj() const { return {(*this)[1][1], -(*this)[0][1], -(*this)[1][0],\
+    \ (*this)[0][0]}; }\n};\n\n// returns M s.t. deg(M) <= d and deg(M21*A+M22*B)\
     \ < max(deg(A),deg(B))-d\n//                det(M) in {-1,1}\n// see:\n// [1]:\
     \ Daniel J. Bernstein. Fast multiplication and its applications.\ntemplate <typename\
     \ Tp>\ninline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const Poly<Tp> &B, int\
@@ -388,7 +414,19 @@ data:
     \ M[0][1], M[0][0] * A + M[0][1] * B);\n}\n\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>,\
     \ Poly<Tp>> inv_gcd(const Poly<Tp> &A, const Poly<Tp> &B) {\n    const auto M\
     \ = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_pair(M[0][0],\
-    \ M[0][0] * A + M[0][1] * B);\n}\n"
+    \ M[0][0] * A + M[0][1] * B);\n}\n\n// returns P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B\n\
+    // where P,Q in F[x], deg(Q) is minimized\n// requires deg(A)<deg(B)\ntemplate\
+    \ <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_function_approximation(const\
+    \ Poly<Tp> &A,\n                                                             \
+    \        const Poly<Tp> &B, int k) {\n    if (A.deg() < 0 || A.deg() - B.deg()\
+    \ < -k) return std::make_pair(Poly<Tp>(), Poly<Tp>{Tp(1)});\n    auto M      \
+    \      = hgcd(A, B, k / 2);\n    const auto [C, D] = M * std::array{A, B};\n \
+    \   if (D.deg() >= 0 && D.deg() - C.deg() >= -(k - (A.deg() - C.deg()) * 2))\n\
+    \        M *= GCDMatrix<Poly<Tp>>({}, {Tp(1)}, {Tp(1)}, -(C / D));\n    return\
+    \ std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n}\n\n// returns [x^([-k,-1])]A/B\n\
+    // requires deg(A)<deg(B)\ntemplate <typename Tp>\ninline std::vector<Tp> rational_function_to_series(const\
+    \ Poly<Tp> &A, const Poly<Tp> &B, int k) {\n    return (((A << k) / B).rev() <<\
+    \ (B.deg() - A.deg() - 1)).slice(0, k);\n}\n"
   dependsOn:
   - poly_basic.hpp
   - binomial.hpp
@@ -398,10 +436,11 @@ data:
   isVerificationFile: false
   path: poly.hpp
   requiredBy: []
-  timestamp: '2024-08-08 22:33:25+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2024-08-09 07:59:12+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/formal_power_series/inv_of_polynomials.0.test.cpp
+  - test/formal_power_series/find_linear_recurrence.1.test.cpp
 documentation_of: poly.hpp
 layout: document
 redirect_from:

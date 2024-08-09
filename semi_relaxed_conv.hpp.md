@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
   _extendedRequiredBy:
@@ -14,7 +14,7 @@ data:
   - icon: ':warning:'
     path: eulerian_number.hpp
     title: eulerian_number.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
@@ -23,10 +23,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly.hpp
     title: poly.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
   - icon: ':heavy_check_mark:'
@@ -54,6 +54,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/find_linear_recurrence.1.test.cpp
+    title: test/formal_power_series/find_linear_recurrence.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
@@ -90,9 +93,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
@@ -257,7 +260,7 @@ data:
   - poly_basic.hpp
   - eulerian_number.hpp
   timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/formal_power_series/exp_of_formal_power_series.0.test.cpp
   - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
@@ -273,6 +276,7 @@ data:
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/division_of_polynomials.0.test.cpp
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/find_linear_recurrence.1.test.cpp
   - test/formal_power_series/polynomial_interpolation.0.test.cpp
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   - test/formal_power_series/inv_of_formal_power_series.0.test.cpp
