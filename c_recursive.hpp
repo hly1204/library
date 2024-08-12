@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fft.hpp"
+#include "fft_doubling.hpp"
 #include "fps_basic.hpp"
 #include "poly_basic.hpp"
 #include <algorithm>
@@ -13,18 +14,7 @@
 // A Simple and Fast Algorithm for Computing the N-th Term of a Linearly Recurrent Sequence
 template <typename Tp>
 inline Tp div_at(const std::vector<Tp> &P, std::vector<Tp> Q, long long k) {
-    auto iszero       = [](const std::vector<Tp> &a) { return order(a) == -1; };
-    auto fft_doubling = [](std::vector<Tp> &a) {
-        const int n = a.size();
-        a.resize(n * 2);
-        std::copy_n(a.begin(), n, a.begin() + n);
-        inv_fft_n(a.begin() + n, n);
-        Tp k         = 1;
-        const auto t = FftInfo<Tp>::get().root(n).at(n / 2);
-        for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;
-        fft_n(a.begin() + n, n);
-    };
-
+    auto iszero = [](const std::vector<Tp> &a) { return order(a) == -1; };
     assert(!iszero(Q));
     if (P.empty()) return 0;
     if (const int ordQ = order(Q)) {
@@ -97,30 +87,6 @@ inline std::vector<Tp> slice_coeff_rationalA(std::vector<Tp> P, std::vector<Tp> 
         return res;
     }
 
-    auto fft_doubling = [](std::vector<Tp> &a) {
-        const int n = a.size();
-        a.resize(n * 2);
-        std::copy_n(a.begin(), n, a.begin() + n);
-        inv_fft_n(a.begin() + n, n);
-        Tp k         = 1;
-        const auto t = FftInfo<Tp>::get().root(n).at(n / 2);
-        for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;
-        fft_n(a.begin() + n, n);
-    };
-
-    auto fft_doubling2 = [](std::vector<Tp> &a) {
-        const int n = a.size();
-        a.resize(n * 2);
-        std::copy_n(a.begin(), n, a.begin() + n);
-        inv_fft_n(a.begin() + n, n);
-        const std::vector b(a.begin() + n, a.end());
-        Tp k         = 1;
-        const auto t = FftInfo<Tp>::get().root(n).at(n / 2);
-        for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;
-        fft_n(a.begin() + n, n);
-        return b;
-    };
-
     auto fft_high = [](std::vector<Tp> &a) {
         const int n = a.size();
         inv_fft_n(a.begin() + n / 2, n / 2);
@@ -136,7 +102,7 @@ inline std::vector<Tp> slice_coeff_rationalA(std::vector<Tp> P, std::vector<Tp> 
 
     // returns DFT([x^[L,L+len/2)]1/Q)
     // len/2 > degQ, len/2 is even
-    auto rec = [len, &fft_doubling, &fft_high](auto &&rec, std::vector<Tp> dftQ, long long L) {
+    auto rec = [len, &fft_high](auto &&rec, std::vector<Tp> dftQ, long long L) {
         if (L <= 0) {
             inv_fft(dftQ);
             auto invQ = inv(dftQ, L + len / 2);
@@ -214,8 +180,8 @@ inline std::vector<Tp> slice_coeff_rationalA(std::vector<Tp> P, std::vector<Tp> 
 template <typename Tp>
 inline std::vector<Tp> slice_coeff_rational(const std::vector<Tp> &P, const std::vector<Tp> &Q,
                                             long long L, long long R) {
-    auto [q, r] = euclidean_div(P, Q);
-    auto res    = slice_coeff_rationalA(r, Q, L, R);
+    const auto [q, r] = euclidean_div(P, Q);
+    auto res          = slice_coeff_rationalA(r, Q, L, R);
     for (long long i = L; i < std::min<long long>(R, q.size()); ++i) res[i - L] += q[i];
     return res;
 }
