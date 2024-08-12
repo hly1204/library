@@ -1,38 +1,38 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft_doubling.hpp
     title: fft_doubling.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://arxiv.org/abs/2008.08822
@@ -118,11 +118,11 @@ data:
     \ * 2);\n    std::copy_n(a.begin(), n, a.begin() + n);\n    inv_fft_n(a.begin()\
     \ + n, n);\n    const std::vector<Tp> b(a.begin() + n, a.end());\n    Tp k   \
     \      = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n    for\
-    \ (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a + n, n);\n    return\
-    \ b;\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#line 5 \"binomial.hpp\"\
-    \n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_,\
-    \ invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\
-    \n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
+    \ (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a.begin() + n, n);\n\
+    \    return b;\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#line\
+    \ 5 \"binomial.hpp\"\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp>\
+    \ factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)}\
+    \ {}\n\n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
     \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
     \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
     \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
@@ -423,8 +423,8 @@ data:
   isVerificationFile: false
   path: c_recursive.hpp
   requiredBy: []
-  timestamp: '2024-08-12 20:41:37+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2024-08-12 20:46:28+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp

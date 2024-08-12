@@ -1,26 +1,26 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
   _extendedRequiredBy:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
     title: c_recursive.hpp
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"fft_doubling.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
@@ -105,8 +105,8 @@ data:
     \ * 2);\n    std::copy_n(a.begin(), n, a.begin() + n);\n    inv_fft_n(a.begin()\
     \ + n, n);\n    const std::vector<Tp> b(a.begin() + n, a.end());\n    Tp k   \
     \      = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n    for\
-    \ (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a + n, n);\n    return\
-    \ b;\n}\n"
+    \ (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a.begin() + n, n);\n\
+    \    return b;\n}\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include <algorithm>\n#include <cassert>\n\
     #include <iterator>\n#include <vector>\n\ntemplate <typename Iterator>\ninline\
     \ void fft_doubling_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
@@ -120,16 +120,16 @@ data:
     \ * 2);\n    std::copy_n(a.begin(), n, a.begin() + n);\n    inv_fft_n(a.begin()\
     \ + n, n);\n    const std::vector<Tp> b(a.begin() + n, a.end());\n    Tp k   \
     \      = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n    for\
-    \ (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a + n, n);\n    return\
-    \ b;\n}\n"
+    \ (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a.begin() + n, n);\n\
+    \    return b;\n}\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
   path: fft_doubling.hpp
   requiredBy:
   - c_recursive.hpp
-  timestamp: '2024-08-12 20:41:37+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2024-08-12 20:46:28+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
