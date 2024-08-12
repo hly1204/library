@@ -4,17 +4,26 @@ data:
   - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':question:'
+    path: c_recursive.hpp
+    title: c_recursive.hpp
   _extendedVerifiedWith:
+  - icon: ':x:'
+    path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+    title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-    title: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-  _isVerificationFailed: false
+    path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+    title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - icon: ':x:'
+    path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+    title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
-  bundledCode: "#line 2 \"poly_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
+  bundledCode: "#line 2 \"fft_doubling.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
     #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
     \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
     \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
@@ -83,33 +92,52 @@ data:
     \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 4 \"poly_product.hpp\"\n#include\
-    \ <utility>\n#line 6 \"poly_product.hpp\"\n\n// TODO: cache dft\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> poly_product(std::vector<std::vector<Tp>> L) {\n\
-    \    if (L.empty()) return {Tp(1)};\n    while (L.size() > 1) {\n        std::vector<std::vector<Tp>>\
-    \ t;\n        for (int i = 0; i + 1 < (int)L.size(); i += 2) t.push_back(convolution(L[i],\
-    \ L[i + 1]));\n        if (L.size() & 1) t.push_back(L.back());\n        L = std::move(t);\n\
-    \    }\n    return L[0];\n}\n"
-  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <utility>\n#include <vector>\n\
-    \n// TODO: cache dft\ntemplate <typename Tp>\ninline std::vector<Tp> poly_product(std::vector<std::vector<Tp>>\
-    \ L) {\n    if (L.empty()) return {Tp(1)};\n    while (L.size() > 1) {\n     \
-    \   std::vector<std::vector<Tp>> t;\n        for (int i = 0; i + 1 < (int)L.size();\
-    \ i += 2) t.push_back(convolution(L[i], L[i + 1]));\n        if (L.size() & 1)\
-    \ t.push_back(L.back());\n        L = std::move(t);\n    }\n    return L[0];\n\
-    }\n"
+    \    return convolution_fft(a, b);\n}\n#line 8 \"fft_doubling.hpp\"\n\ntemplate\
+    \ <typename Iterator>\ninline void fft_doubling_n(Iterator a, int n) {\n    using\
+    \ Tp = typename std::iterator_traits<Iterator>::value_type;\n    assert((n & (n\
+    \ - 1)) == 0);\n    std::copy_n(a, n, a + n);\n    inv_fft_n(a + n, n);\n    Tp\
+    \ k         = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n \
+    \   for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a + n, n);\n\
+    }\n\ntemplate <typename Tp>\ninline void fft_doubling(std::vector<Tp> &a) {\n\
+    \    const int n = a.size();\n    a.resize(n * 2);\n    fft_doubling_n(a.begin(),\
+    \ n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> fft_doubling2(std::vector<Tp>\
+    \ &a) {\n    const int n = a.size();\n    assert((n & (n - 1)) == 0);\n    a.resize(n\
+    \ * 2);\n    std::copy_n(a.begin(), n, a.begin() + n);\n    inv_fft_n(a.begin()\
+    \ + n, n);\n    const std::vector<Tp> b(a.begin() + n, a.end());\n    Tp k   \
+    \      = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n    for\
+    \ (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a + n, n);\n    return\
+    \ b;\n}\n"
+  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <algorithm>\n#include <cassert>\n\
+    #include <iterator>\n#include <vector>\n\ntemplate <typename Iterator>\ninline\
+    \ void fft_doubling_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
+    \    assert((n & (n - 1)) == 0);\n    std::copy_n(a, n, a + n);\n    inv_fft_n(a\
+    \ + n, n);\n    Tp k         = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n\
+    \ / 2);\n    for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a +\
+    \ n, n);\n}\n\ntemplate <typename Tp>\ninline void fft_doubling(std::vector<Tp>\
+    \ &a) {\n    const int n = a.size();\n    a.resize(n * 2);\n    fft_doubling_n(a.begin(),\
+    \ n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> fft_doubling2(std::vector<Tp>\
+    \ &a) {\n    const int n = a.size();\n    assert((n & (n - 1)) == 0);\n    a.resize(n\
+    \ * 2);\n    std::copy_n(a.begin(), n, a.begin() + n);\n    inv_fft_n(a.begin()\
+    \ + n, n);\n    const std::vector<Tp> b(a.begin() + n, a.end());\n    Tp k   \
+    \      = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n    for\
+    \ (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a + n, n);\n    return\
+    \ b;\n}\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
-  path: poly_product.hpp
-  requiredBy: []
-  timestamp: '2024-07-07 14:35:08+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  path: fft_doubling.hpp
+  requiredBy:
+  - c_recursive.hpp
+  timestamp: '2024-08-12 20:41:37+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
-  - test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-documentation_of: poly_product.hpp
+  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+documentation_of: fft_doubling.hpp
 layout: document
 redirect_from:
-- /library/poly_product.hpp
-- /library/poly_product.hpp.html
-title: poly_product.hpp
+- /library/fft_doubling.hpp
+- /library/fft_doubling.hpp.html
+title: fft_doubling.hpp
 ---

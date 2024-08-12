@@ -1,35 +1,38 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
+    path: fft_doubling.hpp
+    title: fft_doubling.hpp
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links:
     - https://arxiv.org/abs/2008.08822
@@ -102,23 +105,36 @@ data:
     \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"\
-    binomial.hpp\"\n\n#line 5 \"binomial.hpp\"\n\ntemplate <typename Tp>\nclass Binomial\
-    \ {\n    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
-    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
-    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
-    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
-    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
-    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
-    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
-    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
-    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
-    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
-    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
-    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
-    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
-    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
-    \ }\n};\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 5 \"semi_relaxed_conv.hpp\"\
+    \    return convolution_fft(a, b);\n}\n#line 2 \"fft_doubling.hpp\"\n\n#line 8\
+    \ \"fft_doubling.hpp\"\n\ntemplate <typename Iterator>\ninline void fft_doubling_n(Iterator\
+    \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
+    \    assert((n & (n - 1)) == 0);\n    std::copy_n(a, n, a + n);\n    inv_fft_n(a\
+    \ + n, n);\n    Tp k         = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n\
+    \ / 2);\n    for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a +\
+    \ n, n);\n}\n\ntemplate <typename Tp>\ninline void fft_doubling(std::vector<Tp>\
+    \ &a) {\n    const int n = a.size();\n    a.resize(n * 2);\n    fft_doubling_n(a.begin(),\
+    \ n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> fft_doubling2(std::vector<Tp>\
+    \ &a) {\n    const int n = a.size();\n    assert((n & (n - 1)) == 0);\n    a.resize(n\
+    \ * 2);\n    std::copy_n(a.begin(), n, a.begin() + n);\n    inv_fft_n(a.begin()\
+    \ + n, n);\n    const std::vector<Tp> b(a.begin() + n, a.end());\n    Tp k   \
+    \      = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n    for\
+    \ (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a + n, n);\n    return\
+    \ b;\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#line 5 \"binomial.hpp\"\
+    \n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_,\
+    \ invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\
+    \n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
+    \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
+    \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
+    \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
+    \ factorial_[i] = factorial_[i - 1] * i;\n            invfactorial_.back() = factorial_.back().inv();\n\
+    \            for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i\
+    \ + 1] * (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int\
+    \ n) {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
+    \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
+    \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
+    \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
+    \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
+    \ invfactorial_[n]; }\n};\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 5 \"semi_relaxed_conv.hpp\"\
     \n#include <type_traits>\n#include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\
     \n\n// returns coefficients generated by closure\n// closure: gen(index, current_product)\n\
     template <typename Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp,\
@@ -244,20 +260,92 @@ data:
     \ < 0) return {Tp(0)};\n    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A,\
     \ B);\n\n    auto Q = div(std::vector(A.rend() - (degA + 1), A.rend()),\n    \
     \             std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n    std::reverse(Q.begin(),\
-    \ Q.end());\n    return Q;\n}\n#line 9 \"c_recursive.hpp\"\n\n// returns [x^k]P/Q\n\
+    \ Q.end());\n    return Q;\n}\n#line 10 \"c_recursive.hpp\"\n\n// returns [x^k]P/Q\n\
     // see: https://arxiv.org/abs/2008.08822\n// Alin Bostan, Ryuhei Mori.\n// A Simple\
     \ and Fast Algorithm for Computing the N-th Term of a Linearly Recurrent Sequence\n\
     template <typename Tp>\ninline Tp div_at(const std::vector<Tp> &P, std::vector<Tp>\
-    \ Q, long long k) {\n    auto iszero       = [](const std::vector<Tp> &a) { return\
-    \ order(a) == -1; };\n    auto fft_doubling = [](std::vector<Tp> &a) {\n     \
-    \   const int n = a.size();\n        a.resize(n * 2);\n        std::copy_n(a.begin(),\
-    \ n, a.begin() + n);\n        inv_fft_n(a.begin() + n, n);\n        Tp k     \
-    \    = 1;\n        const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n    \
-    \    for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n        fft_n(a.begin()\
-    \ + n, n);\n    };\n\n    assert(!iszero(Q));\n    if (P.empty()) return 0;\n\
-    \    if (const int ordQ = order(Q)) {\n        Q.erase(Q.begin(), Q.begin() +\
-    \ ordQ);\n        k += ordQ;\n    }\n\n    assert(k >= 0);\n    if (k < (int)P.size())\
-    \ return div(P, Q, k + 1).at(k);\n\n    const int len = fft_len(std::max(P.size()\
+    \ Q, long long k) {\n    auto iszero = [](const std::vector<Tp> &a) { return order(a)\
+    \ == -1; };\n    assert(!iszero(Q));\n    if (P.empty()) return 0;\n    if (const\
+    \ int ordQ = order(Q)) {\n        Q.erase(Q.begin(), Q.begin() + ordQ);\n    \
+    \    k += ordQ;\n    }\n\n    assert(k >= 0);\n    if (k < (int)P.size()) return\
+    \ div(P, Q, k + 1).at(k);\n\n    const int len = fft_len(std::max(P.size() + Q.size(),\
+    \ Q.size() * 2) - 1);\n    std::vector<Tp> dftP(P), dftQ(Q);\n    dftP.resize(len);\n\
+    \    dftQ.resize(len);\n    fft(dftP);\n    fft(dftQ);\n\n    for (;;) {\n   \
+    \     if (k & 1) {\n            auto &&root = FftInfo<Tp>::get().inv_root(len\
+    \ / 2);\n            for (int i = 0; i < len; i += 2)\n                dftP[i\
+    \ / 2] =\n                    (dftP[i] * dftQ[i + 1] - dftP[i + 1] * dftQ[i]).div_by_2()\
+    \ * root[i / 2];\n        } else {\n            for (int i = 0; i < len; i +=\
+    \ 2)\n                dftP[i / 2] = (dftP[i] * dftQ[i + 1] + dftP[i + 1] * dftQ[i]).div_by_2();\n\
+    \        }\n        dftP.resize(len / 2);\n        for (int i = 0; i < len; i\
+    \ += 2) dftQ[i / 2] = dftQ[i] * dftQ[i + 1];\n        dftQ.resize(len / 2);\n\n\
+    \        k /= 2;\n        if (k < (int)P.size()) {\n            inv_fft(dftP);\n\
+    \            inv_fft(dftQ);\n            return div(dftP, dftQ, k + 1).at(k);\n\
+    \        }\n\n        fft_doubling(dftP);\n        fft_doubling(dftQ);\n    }\n\
+    }\n\n// returns [x^[L,R)]P/Q\n// P: polynomial\n// Q: non-zero polynomial\n//\
+    \ deg(P) < deg(Q)\ntemplate <typename Tp>\ninline std::vector<Tp> slice_coeff_rationalA(std::vector<Tp>\
+    \ P, std::vector<Tp> Q, long long L,\n                                       \
+    \      long long R) {\n    if (R <= L) return {};\n\n    if (const int ordQ =\
+    \ order(Q)) {\n        Q.erase(Q.begin(), Q.begin() + ordQ);\n        L += ordQ;\n\
+    \        R += ordQ;\n    }\n\n    assert(L >= 0);\n    if (L == 0) return div(P,\
+    \ Q, R - L);\n\n    const int degP = degree(P);\n    const int degQ = degree(Q);\n\
+    \    if (degP < 0) std::vector<Tp> res(R - L);\n    assert(degP < degQ);\n   \
+    \ if (degQ == 0) {\n        std::vector<Tp> res(R - L);\n        const auto iQ0\
+    \ = Q[0].inv();\n        for (long long i = L; i < R && i < (long long)P.size();\
+    \ ++i) res[i - L] = P[i] * iQ0;\n        return res;\n    }\n\n    auto fft_high\
+    \ = [](std::vector<Tp> &a) {\n        const int n = a.size();\n        inv_fft_n(a.begin()\
+    \ + n / 2, n / 2);\n        Tp k         = 1;\n        const auto t = FftInfo<Tp>::get().inv_root(n\
+    \ / 2).at(n / 4);\n        for (int i = 0; i < n / 2; ++i) a[i + n / 2] *= k,\
+    \ k *= t;\n        fft_n(a.begin() + n / 2, n / 2);\n        for (int i = 0; i\
+    \ < n / 2; ++i) a[i] = (a[i] - a[i + n / 2]).div_by_2();\n        a.resize(n /\
+    \ 2);\n    };\n\n    const int len = fft_len(degQ * 2 + 1);\n\n    // returns\
+    \ DFT([x^[L,L+len/2)]1/Q)\n    // len/2 > degQ, len/2 is even\n    auto rec =\
+    \ [len, &fft_high](auto &&rec, std::vector<Tp> dftQ, long long L) {\n        if\
+    \ (L <= 0) {\n            inv_fft(dftQ);\n            auto invQ = inv(dftQ, L\
+    \ + len / 2);\n            invQ.insert(invQ.begin(), -L, 0);\n            fft(invQ);\n\
+    \            return invQ;\n        }\n\n        if ((int)dftQ.size() < len) fft_doubling(dftQ);\n\
+    \        std::vector<Tp> dftV(len / 2);\n        for (int i = 0; i < len; i +=\
+    \ 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];\n        const auto dftT = rec(rec,\
+    \ dftV, (L - len / 2 + (L & 1)) / 2);\n\n        std::vector<Tp> dftU(len);\n\
+    \        if (L & 1) {\n            auto &&root = FftInfo<Tp>::get().root(len /\
+    \ 2);\n            for (int i = 0; i < len; i += 2) {\n                dftU[i]\
+    \     = dftT[i / 2] * dftQ[i + 1] * root[i / 2];\n                dftU[i + 1]\
+    \ = dftT[i / 2] * dftQ[i] * -root[i / 2];\n            }\n        } else {\n \
+    \           for (int i = 0; i < len; i += 2) {\n                dftU[i]     =\
+    \ dftT[i / 2] * dftQ[i + 1];\n                dftU[i + 1] = dftT[i / 2] * dftQ[i];\n\
+    \            }\n        }\n\n        fft_high(dftU);\n        return dftU;\n \
+    \   };\n\n    auto dftQ = Q;\n    dftQ.resize(len);\n    fft(dftQ);\n    auto\
+    \ dftinvQ    = rec(rec, dftQ, L - degP);\n    const auto invQ = fft_doubling2(dftinvQ);\
+    \ // [x^[L-degP,L-degP+(len/2))]1/Q\n    std::vector<Tp> U(len);\n    for (int\
+    \ i = 0; i < len; ++i) U[i] = dftQ[i] * dftinvQ[i];\n    inv_fft(U);\n    U.resize(degQ);\n\
+    \    // U/Q = invQ[L-degP..]\n    std::vector xinvQ(invQ.begin(), invQ.begin()\
+    \ + degP);\n    const int convlen = fft_len(degP + degQ);\n    xinvQ.resize(convlen);\n\
+    \    fft(xinvQ);\n    for (int i = 0; i < convlen; ++i) xinvQ[i] *= dftQ[i];\n\
+    \    inv_fft(xinvQ);\n    for (int i = degP; i < degQ; ++i) xinvQ[i] = U[i] -\
+    \ xinvQ[i];\n    for (int i = degQ; i < degP + degQ; ++i) xinvQ[i] = -xinvQ[i];\n\
+    \    xinvQ.erase(xinvQ.begin(), xinvQ.begin() + degP);\n    xinvQ = div(xinvQ,\
+    \ Q, degQ); // [x^[L,L+degQ)]1/Q\n    xinvQ.insert(xinvQ.begin(), invQ.begin(),\
+    \ invQ.begin() + degP);\n\n    xinvQ.resize(convlen);\n    P.resize(convlen);\n\
+    \    fft(xinvQ);\n    fft(P);\n    for (int i = 0; i < convlen; ++i) P[i] *= xinvQ[i];\n\
+    \    inv_fft(P);\n    P.erase(P.begin(), P.begin() + degP);\n    P.resize(degQ);\n\
+    \n    const int aconvlen = fft_len(degQ * 2);\n    P.resize(aconvlen);\n    fft(P);\n\
+    \    for (int i = 0; i < aconvlen; ++i) P[i] *= dftQ[i];\n    inv_fft(P);\n  \
+    \  P.resize(degQ);\n    return div(P, Q, R - L);\n}\n\n// returns [x^[L,R)]P/Q\n\
+    // P: polynomial\n// Q: non-zero polynomial\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ slice_coeff_rational(const std::vector<Tp> &P, const std::vector<Tp> &Q,\n \
+    \                                           long long L, long long R) {\n    const\
+    \ auto [q, r] = euclidean_div(P, Q);\n    auto res          = slice_coeff_rationalA(r,\
+    \ Q, L, R);\n    for (long long i = L; i < std::min<long long>(R, q.size()); ++i)\
+    \ res[i - L] += q[i];\n    return res;\n}\n"
+  code: "#pragma once\n\n#include \"fft.hpp\"\n#include \"fft_doubling.hpp\"\n#include\
+    \ \"fps_basic.hpp\"\n#include \"poly_basic.hpp\"\n#include <algorithm>\n#include\
+    \ <cassert>\n#include <vector>\n\n// returns [x^k]P/Q\n// see: https://arxiv.org/abs/2008.08822\n\
+    // Alin Bostan, Ryuhei Mori.\n// A Simple and Fast Algorithm for Computing the\
+    \ N-th Term of a Linearly Recurrent Sequence\ntemplate <typename Tp>\ninline Tp\
+    \ div_at(const std::vector<Tp> &P, std::vector<Tp> Q, long long k) {\n    auto\
+    \ iszero = [](const std::vector<Tp> &a) { return order(a) == -1; };\n    assert(!iszero(Q));\n\
+    \    if (P.empty()) return 0;\n    if (const int ordQ = order(Q)) {\n        Q.erase(Q.begin(),\
+    \ Q.begin() + ordQ);\n        k += ordQ;\n    }\n\n    assert(k >= 0);\n    if\
+    \ (k < (int)P.size()) return div(P, Q, k + 1).at(k);\n\n    const int len = fft_len(std::max(P.size()\
     \ + Q.size(), Q.size() * 2) - 1);\n    std::vector<Tp> dftP(P), dftQ(Q);\n   \
     \ dftP.resize(len);\n    dftQ.resize(len);\n    fft(dftP);\n    fft(dftQ);\n\n\
     \    for (;;) {\n        if (k & 1) {\n            auto &&root = FftInfo<Tp>::get().inv_root(len\
@@ -280,155 +368,54 @@ data:
     \    if (degP < 0) std::vector<Tp> res(R - L);\n    assert(degP < degQ);\n   \
     \ if (degQ == 0) {\n        std::vector<Tp> res(R - L);\n        const auto iQ0\
     \ = Q[0].inv();\n        for (long long i = L; i < R && i < (long long)P.size();\
-    \ ++i) res[i - L] = P[i] * iQ0;\n        return res;\n    }\n\n    auto fft_doubling\
-    \ = [](std::vector<Tp> &a) {\n        const int n = a.size();\n        a.resize(n\
-    \ * 2);\n        std::copy_n(a.begin(), n, a.begin() + n);\n        inv_fft_n(a.begin()\
-    \ + n, n);\n        Tp k         = 1;\n        const auto t = FftInfo<Tp>::get().root(n).at(n\
-    \ / 2);\n        for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n        fft_n(a.begin()\
-    \ + n, n);\n    };\n\n    auto fft_doubling2 = [](std::vector<Tp> &a) {\n    \
-    \    const int n = a.size();\n        a.resize(n * 2);\n        std::copy_n(a.begin(),\
-    \ n, a.begin() + n);\n        inv_fft_n(a.begin() + n, n);\n        const std::vector\
-    \ b(a.begin() + n, a.end());\n        Tp k         = 1;\n        const auto t\
-    \ = FftInfo<Tp>::get().root(n).at(n / 2);\n        for (int i = 0; i < n; ++i)\
-    \ a[i + n] *= k, k *= t;\n        fft_n(a.begin() + n, n);\n        return b;\n\
-    \    };\n\n    auto fft_high = [](std::vector<Tp> &a) {\n        const int n =\
-    \ a.size();\n        inv_fft_n(a.begin() + n / 2, n / 2);\n        Tp k      \
-    \   = 1;\n        const auto t = FftInfo<Tp>::get().inv_root(n / 2).at(n / 4);\n\
-    \        for (int i = 0; i < n / 2; ++i) a[i + n / 2] *= k, k *= t;\n        fft_n(a.begin()\
-    \ + n / 2, n / 2);\n        for (int i = 0; i < n / 2; ++i) a[i] = (a[i] - a[i\
-    \ + n / 2]).div_by_2();\n        a.resize(n / 2);\n    };\n\n    const int len\
-    \ = fft_len(degQ * 2 + 1);\n\n    // returns DFT([x^[L,L+len/2)]1/Q)\n    // len/2\
-    \ > degQ, len/2 is even\n    auto rec = [len, &fft_doubling, &fft_high](auto &&rec,\
-    \ std::vector<Tp> dftQ, long long L) {\n        if (L <= 0) {\n            inv_fft(dftQ);\n\
-    \            auto invQ = inv(dftQ, L + len / 2);\n            invQ.insert(invQ.begin(),\
-    \ -L, 0);\n            fft(invQ);\n            return invQ;\n        }\n\n   \
-    \     if ((int)dftQ.size() < len) fft_doubling(dftQ);\n        std::vector<Tp>\
-    \ dftV(len / 2);\n        for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i]\
-    \ * dftQ[i + 1];\n        const auto dftT = rec(rec, dftV, (L - len / 2 + (L &\
-    \ 1)) / 2);\n\n        std::vector<Tp> dftU(len);\n        if (L & 1) {\n    \
-    \        auto &&root = FftInfo<Tp>::get().root(len / 2);\n            for (int\
-    \ i = 0; i < len; i += 2) {\n                dftU[i]     = dftT[i / 2] * dftQ[i\
-    \ + 1] * root[i / 2];\n                dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i\
-    \ / 2];\n            }\n        } else {\n            for (int i = 0; i < len;\
-    \ i += 2) {\n                dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n      \
-    \          dftU[i + 1] = dftT[i / 2] * dftQ[i];\n            }\n        }\n\n\
-    \        fft_high(dftU);\n        return dftU;\n    };\n\n    auto dftQ = Q;\n\
-    \    dftQ.resize(len);\n    fft(dftQ);\n    auto dftinvQ    = rec(rec, dftQ, L\
-    \ - degP);\n    const auto invQ = fft_doubling2(dftinvQ); // [x^[L-degP,L-degP+(len/2))]1/Q\n\
-    \    std::vector<Tp> U(len);\n    for (int i = 0; i < len; ++i) U[i] = dftQ[i]\
-    \ * dftinvQ[i];\n    inv_fft(U);\n    U.resize(degQ);\n    // U/Q = invQ[L-degP..]\n\
-    \    std::vector xinvQ(invQ.begin(), invQ.begin() + degP);\n    const int convlen\
-    \ = fft_len(degP + degQ);\n    xinvQ.resize(convlen);\n    fft(xinvQ);\n    for\
-    \ (int i = 0; i < convlen; ++i) xinvQ[i] *= dftQ[i];\n    inv_fft(xinvQ);\n  \
-    \  for (int i = degP; i < degQ; ++i) xinvQ[i] = U[i] - xinvQ[i];\n    for (int\
-    \ i = degQ; i < degP + degQ; ++i) xinvQ[i] = -xinvQ[i];\n    xinvQ.erase(xinvQ.begin(),\
-    \ xinvQ.begin() + degP);\n    xinvQ = div(xinvQ, Q, degQ); // [x^[L,L+degQ)]1/Q\n\
-    \    xinvQ.insert(xinvQ.begin(), invQ.begin(), invQ.begin() + degP);\n\n    xinvQ.resize(convlen);\n\
-    \    P.resize(convlen);\n    fft(xinvQ);\n    fft(P);\n    for (int i = 0; i <\
-    \ convlen; ++i) P[i] *= xinvQ[i];\n    inv_fft(P);\n    P.erase(P.begin(), P.begin()\
-    \ + degP);\n    P.resize(degQ);\n\n    const int aconvlen = fft_len(degQ * 2);\n\
-    \    P.resize(aconvlen);\n    fft(P);\n    for (int i = 0; i < aconvlen; ++i)\
-    \ P[i] *= dftQ[i];\n    inv_fft(P);\n    P.resize(degQ);\n    return div(P, Q,\
-    \ R - L);\n}\n\n// returns [x^[L,R)]P/Q\n// P: polynomial\n// Q: non-zero polynomial\n\
-    template <typename Tp>\ninline std::vector<Tp> slice_coeff_rational(const std::vector<Tp>\
-    \ &P, const std::vector<Tp> &Q,\n                                            long\
-    \ long L, long long R) {\n    auto [q, r] = euclidean_div(P, Q);\n    auto res\
-    \    = slice_coeff_rationalA(r, Q, L, R);\n    for (long long i = L; i < std::min<long\
-    \ long>(R, q.size()); ++i) res[i - L] += q[i];\n    return res;\n}\n"
-  code: "#pragma once\n\n#include \"fft.hpp\"\n#include \"fps_basic.hpp\"\n#include\
-    \ \"poly_basic.hpp\"\n#include <algorithm>\n#include <cassert>\n#include <vector>\n\
-    \n// returns [x^k]P/Q\n// see: https://arxiv.org/abs/2008.08822\n// Alin Bostan,\
-    \ Ryuhei Mori.\n// A Simple and Fast Algorithm for Computing the N-th Term of\
-    \ a Linearly Recurrent Sequence\ntemplate <typename Tp>\ninline Tp div_at(const\
-    \ std::vector<Tp> &P, std::vector<Tp> Q, long long k) {\n    auto iszero     \
-    \  = [](const std::vector<Tp> &a) { return order(a) == -1; };\n    auto fft_doubling\
-    \ = [](std::vector<Tp> &a) {\n        const int n = a.size();\n        a.resize(n\
-    \ * 2);\n        std::copy_n(a.begin(), n, a.begin() + n);\n        inv_fft_n(a.begin()\
-    \ + n, n);\n        Tp k         = 1;\n        const auto t = FftInfo<Tp>::get().root(n).at(n\
-    \ / 2);\n        for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n        fft_n(a.begin()\
-    \ + n, n);\n    };\n\n    assert(!iszero(Q));\n    if (P.empty()) return 0;\n\
-    \    if (const int ordQ = order(Q)) {\n        Q.erase(Q.begin(), Q.begin() +\
-    \ ordQ);\n        k += ordQ;\n    }\n\n    assert(k >= 0);\n    if (k < (int)P.size())\
-    \ return div(P, Q, k + 1).at(k);\n\n    const int len = fft_len(std::max(P.size()\
-    \ + Q.size(), Q.size() * 2) - 1);\n    std::vector<Tp> dftP(P), dftQ(Q);\n   \
-    \ dftP.resize(len);\n    dftQ.resize(len);\n    fft(dftP);\n    fft(dftQ);\n\n\
-    \    for (;;) {\n        if (k & 1) {\n            auto &&root = FftInfo<Tp>::get().inv_root(len\
-    \ / 2);\n            for (int i = 0; i < len; i += 2)\n                dftP[i\
-    \ / 2] =\n                    (dftP[i] * dftQ[i + 1] - dftP[i + 1] * dftQ[i]).div_by_2()\
-    \ * root[i / 2];\n        } else {\n            for (int i = 0; i < len; i +=\
-    \ 2)\n                dftP[i / 2] = (dftP[i] * dftQ[i + 1] + dftP[i + 1] * dftQ[i]).div_by_2();\n\
-    \        }\n        dftP.resize(len / 2);\n        for (int i = 0; i < len; i\
-    \ += 2) dftQ[i / 2] = dftQ[i] * dftQ[i + 1];\n        dftQ.resize(len / 2);\n\n\
-    \        k /= 2;\n        if (k < (int)P.size()) {\n            inv_fft(dftP);\n\
-    \            inv_fft(dftQ);\n            return div(dftP, dftQ, k + 1).at(k);\n\
-    \        }\n\n        fft_doubling(dftP);\n        fft_doubling(dftQ);\n    }\n\
-    }\n\n// returns [x^[L,R)]P/Q\n// P: polynomial\n// Q: non-zero polynomial\n//\
-    \ deg(P) < deg(Q)\ntemplate <typename Tp>\ninline std::vector<Tp> slice_coeff_rationalA(std::vector<Tp>\
-    \ P, std::vector<Tp> Q, long long L,\n                                       \
-    \      long long R) {\n    if (R <= L) return {};\n\n    if (const int ordQ =\
-    \ order(Q)) {\n        Q.erase(Q.begin(), Q.begin() + ordQ);\n        L += ordQ;\n\
-    \        R += ordQ;\n    }\n\n    assert(L >= 0);\n    if (L == 0) return div(P,\
-    \ Q, R - L);\n\n    const int degP = degree(P);\n    const int degQ = degree(Q);\n\
-    \    if (degP < 0) std::vector<Tp> res(R - L);\n    assert(degP < degQ);\n   \
-    \ if (degQ == 0) {\n        std::vector<Tp> res(R - L);\n        const auto iQ0\
-    \ = Q[0].inv();\n        for (long long i = L; i < R && i < (long long)P.size();\
-    \ ++i) res[i - L] = P[i] * iQ0;\n        return res;\n    }\n\n    auto fft_doubling\
-    \ = [](std::vector<Tp> &a) {\n        const int n = a.size();\n        a.resize(n\
-    \ * 2);\n        std::copy_n(a.begin(), n, a.begin() + n);\n        inv_fft_n(a.begin()\
-    \ + n, n);\n        Tp k         = 1;\n        const auto t = FftInfo<Tp>::get().root(n).at(n\
-    \ / 2);\n        for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n        fft_n(a.begin()\
-    \ + n, n);\n    };\n\n    auto fft_doubling2 = [](std::vector<Tp> &a) {\n    \
-    \    const int n = a.size();\n        a.resize(n * 2);\n        std::copy_n(a.begin(),\
-    \ n, a.begin() + n);\n        inv_fft_n(a.begin() + n, n);\n        const std::vector\
-    \ b(a.begin() + n, a.end());\n        Tp k         = 1;\n        const auto t\
-    \ = FftInfo<Tp>::get().root(n).at(n / 2);\n        for (int i = 0; i < n; ++i)\
-    \ a[i + n] *= k, k *= t;\n        fft_n(a.begin() + n, n);\n        return b;\n\
-    \    };\n\n    auto fft_high = [](std::vector<Tp> &a) {\n        const int n =\
-    \ a.size();\n        inv_fft_n(a.begin() + n / 2, n / 2);\n        Tp k      \
-    \   = 1;\n        const auto t = FftInfo<Tp>::get().inv_root(n / 2).at(n / 4);\n\
-    \        for (int i = 0; i < n / 2; ++i) a[i + n / 2] *= k, k *= t;\n        fft_n(a.begin()\
-    \ + n / 2, n / 2);\n        for (int i = 0; i < n / 2; ++i) a[i] = (a[i] - a[i\
-    \ + n / 2]).div_by_2();\n        a.resize(n / 2);\n    };\n\n    const int len\
-    \ = fft_len(degQ * 2 + 1);\n\n    // returns DFT([x^[L,L+len/2)]1/Q)\n    // len/2\
-    \ > degQ, len/2 is even\n    auto rec = [len, &fft_doubling, &fft_high](auto &&rec,\
-    \ std::vector<Tp> dftQ, long long L) {\n        if (L <= 0) {\n            inv_fft(dftQ);\n\
-    \            auto invQ = inv(dftQ, L + len / 2);\n            invQ.insert(invQ.begin(),\
-    \ -L, 0);\n            fft(invQ);\n            return invQ;\n        }\n\n   \
-    \     if ((int)dftQ.size() < len) fft_doubling(dftQ);\n        std::vector<Tp>\
-    \ dftV(len / 2);\n        for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i]\
-    \ * dftQ[i + 1];\n        const auto dftT = rec(rec, dftV, (L - len / 2 + (L &\
-    \ 1)) / 2);\n\n        std::vector<Tp> dftU(len);\n        if (L & 1) {\n    \
-    \        auto &&root = FftInfo<Tp>::get().root(len / 2);\n            for (int\
-    \ i = 0; i < len; i += 2) {\n                dftU[i]     = dftT[i / 2] * dftQ[i\
-    \ + 1] * root[i / 2];\n                dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i\
-    \ / 2];\n            }\n        } else {\n            for (int i = 0; i < len;\
-    \ i += 2) {\n                dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n      \
-    \          dftU[i + 1] = dftT[i / 2] * dftQ[i];\n            }\n        }\n\n\
-    \        fft_high(dftU);\n        return dftU;\n    };\n\n    auto dftQ = Q;\n\
-    \    dftQ.resize(len);\n    fft(dftQ);\n    auto dftinvQ    = rec(rec, dftQ, L\
-    \ - degP);\n    const auto invQ = fft_doubling2(dftinvQ); // [x^[L-degP,L-degP+(len/2))]1/Q\n\
-    \    std::vector<Tp> U(len);\n    for (int i = 0; i < len; ++i) U[i] = dftQ[i]\
-    \ * dftinvQ[i];\n    inv_fft(U);\n    U.resize(degQ);\n    // U/Q = invQ[L-degP..]\n\
-    \    std::vector xinvQ(invQ.begin(), invQ.begin() + degP);\n    const int convlen\
-    \ = fft_len(degP + degQ);\n    xinvQ.resize(convlen);\n    fft(xinvQ);\n    for\
-    \ (int i = 0; i < convlen; ++i) xinvQ[i] *= dftQ[i];\n    inv_fft(xinvQ);\n  \
-    \  for (int i = degP; i < degQ; ++i) xinvQ[i] = U[i] - xinvQ[i];\n    for (int\
-    \ i = degQ; i < degP + degQ; ++i) xinvQ[i] = -xinvQ[i];\n    xinvQ.erase(xinvQ.begin(),\
-    \ xinvQ.begin() + degP);\n    xinvQ = div(xinvQ, Q, degQ); // [x^[L,L+degQ)]1/Q\n\
-    \    xinvQ.insert(xinvQ.begin(), invQ.begin(), invQ.begin() + degP);\n\n    xinvQ.resize(convlen);\n\
-    \    P.resize(convlen);\n    fft(xinvQ);\n    fft(P);\n    for (int i = 0; i <\
-    \ convlen; ++i) P[i] *= xinvQ[i];\n    inv_fft(P);\n    P.erase(P.begin(), P.begin()\
-    \ + degP);\n    P.resize(degQ);\n\n    const int aconvlen = fft_len(degQ * 2);\n\
-    \    P.resize(aconvlen);\n    fft(P);\n    for (int i = 0; i < aconvlen; ++i)\
-    \ P[i] *= dftQ[i];\n    inv_fft(P);\n    P.resize(degQ);\n    return div(P, Q,\
-    \ R - L);\n}\n\n// returns [x^[L,R)]P/Q\n// P: polynomial\n// Q: non-zero polynomial\n\
-    template <typename Tp>\ninline std::vector<Tp> slice_coeff_rational(const std::vector<Tp>\
-    \ &P, const std::vector<Tp> &Q,\n                                            long\
-    \ long L, long long R) {\n    auto [q, r] = euclidean_div(P, Q);\n    auto res\
-    \    = slice_coeff_rationalA(r, Q, L, R);\n    for (long long i = L; i < std::min<long\
-    \ long>(R, q.size()); ++i) res[i - L] += q[i];\n    return res;\n}\n"
+    \ ++i) res[i - L] = P[i] * iQ0;\n        return res;\n    }\n\n    auto fft_high\
+    \ = [](std::vector<Tp> &a) {\n        const int n = a.size();\n        inv_fft_n(a.begin()\
+    \ + n / 2, n / 2);\n        Tp k         = 1;\n        const auto t = FftInfo<Tp>::get().inv_root(n\
+    \ / 2).at(n / 4);\n        for (int i = 0; i < n / 2; ++i) a[i + n / 2] *= k,\
+    \ k *= t;\n        fft_n(a.begin() + n / 2, n / 2);\n        for (int i = 0; i\
+    \ < n / 2; ++i) a[i] = (a[i] - a[i + n / 2]).div_by_2();\n        a.resize(n /\
+    \ 2);\n    };\n\n    const int len = fft_len(degQ * 2 + 1);\n\n    // returns\
+    \ DFT([x^[L,L+len/2)]1/Q)\n    // len/2 > degQ, len/2 is even\n    auto rec =\
+    \ [len, &fft_high](auto &&rec, std::vector<Tp> dftQ, long long L) {\n        if\
+    \ (L <= 0) {\n            inv_fft(dftQ);\n            auto invQ = inv(dftQ, L\
+    \ + len / 2);\n            invQ.insert(invQ.begin(), -L, 0);\n            fft(invQ);\n\
+    \            return invQ;\n        }\n\n        if ((int)dftQ.size() < len) fft_doubling(dftQ);\n\
+    \        std::vector<Tp> dftV(len / 2);\n        for (int i = 0; i < len; i +=\
+    \ 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];\n        const auto dftT = rec(rec,\
+    \ dftV, (L - len / 2 + (L & 1)) / 2);\n\n        std::vector<Tp> dftU(len);\n\
+    \        if (L & 1) {\n            auto &&root = FftInfo<Tp>::get().root(len /\
+    \ 2);\n            for (int i = 0; i < len; i += 2) {\n                dftU[i]\
+    \     = dftT[i / 2] * dftQ[i + 1] * root[i / 2];\n                dftU[i + 1]\
+    \ = dftT[i / 2] * dftQ[i] * -root[i / 2];\n            }\n        } else {\n \
+    \           for (int i = 0; i < len; i += 2) {\n                dftU[i]     =\
+    \ dftT[i / 2] * dftQ[i + 1];\n                dftU[i + 1] = dftT[i / 2] * dftQ[i];\n\
+    \            }\n        }\n\n        fft_high(dftU);\n        return dftU;\n \
+    \   };\n\n    auto dftQ = Q;\n    dftQ.resize(len);\n    fft(dftQ);\n    auto\
+    \ dftinvQ    = rec(rec, dftQ, L - degP);\n    const auto invQ = fft_doubling2(dftinvQ);\
+    \ // [x^[L-degP,L-degP+(len/2))]1/Q\n    std::vector<Tp> U(len);\n    for (int\
+    \ i = 0; i < len; ++i) U[i] = dftQ[i] * dftinvQ[i];\n    inv_fft(U);\n    U.resize(degQ);\n\
+    \    // U/Q = invQ[L-degP..]\n    std::vector xinvQ(invQ.begin(), invQ.begin()\
+    \ + degP);\n    const int convlen = fft_len(degP + degQ);\n    xinvQ.resize(convlen);\n\
+    \    fft(xinvQ);\n    for (int i = 0; i < convlen; ++i) xinvQ[i] *= dftQ[i];\n\
+    \    inv_fft(xinvQ);\n    for (int i = degP; i < degQ; ++i) xinvQ[i] = U[i] -\
+    \ xinvQ[i];\n    for (int i = degQ; i < degP + degQ; ++i) xinvQ[i] = -xinvQ[i];\n\
+    \    xinvQ.erase(xinvQ.begin(), xinvQ.begin() + degP);\n    xinvQ = div(xinvQ,\
+    \ Q, degQ); // [x^[L,L+degQ)]1/Q\n    xinvQ.insert(xinvQ.begin(), invQ.begin(),\
+    \ invQ.begin() + degP);\n\n    xinvQ.resize(convlen);\n    P.resize(convlen);\n\
+    \    fft(xinvQ);\n    fft(P);\n    for (int i = 0; i < convlen; ++i) P[i] *= xinvQ[i];\n\
+    \    inv_fft(P);\n    P.erase(P.begin(), P.begin() + degP);\n    P.resize(degQ);\n\
+    \n    const int aconvlen = fft_len(degQ * 2);\n    P.resize(aconvlen);\n    fft(P);\n\
+    \    for (int i = 0; i < aconvlen; ++i) P[i] *= dftQ[i];\n    inv_fft(P);\n  \
+    \  P.resize(degQ);\n    return div(P, Q, R - L);\n}\n\n// returns [x^[L,R)]P/Q\n\
+    // P: polynomial\n// Q: non-zero polynomial\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ slice_coeff_rational(const std::vector<Tp> &P, const std::vector<Tp> &Q,\n \
+    \                                           long long L, long long R) {\n    const\
+    \ auto [q, r] = euclidean_div(P, Q);\n    auto res          = slice_coeff_rationalA(r,\
+    \ Q, L, R);\n    for (long long i = L; i < std::min<long long>(R, q.size()); ++i)\
+    \ res[i - L] += q[i];\n    return res;\n}\n"
   dependsOn:
   - fft.hpp
+  - fft_doubling.hpp
   - fps_basic.hpp
   - binomial.hpp
   - semi_relaxed_conv.hpp
@@ -436,8 +423,8 @@ data:
   isVerificationFile: false
   path: c_recursive.hpp
   requiredBy: []
-  timestamp: '2024-08-03 14:01:08+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2024-08-12 20:41:37+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
