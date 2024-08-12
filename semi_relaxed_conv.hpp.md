@@ -24,6 +24,9 @@ data:
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
   - icon: ':heavy_check_mark:'
+    path: mat_sparse.hpp
+    title: mat_sparse.hpp
+  - icon: ':heavy_check_mark:'
     path: poly.hpp
     title: poly.hpp
   - icon: ':heavy_check_mark:'
@@ -93,6 +96,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/sparse_matrix_det.0.test.cpp
+    title: test/matrix/sparse_matrix_det.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -251,6 +257,7 @@ data:
   path: semi_relaxed_conv.hpp
   requiredBy:
   - c_recursive.hpp
+  - mat_sparse.hpp
   - fps_sqrt.hpp
   - fps_composition.hpp
   - subproduct_tree.hpp
@@ -262,6 +269,7 @@ data:
   timestamp: '2024-06-02 11:00:30+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/matrix/sparse_matrix_det.0.test.cpp
   - test/formal_power_series/exp_of_formal_power_series.0.test.cpp
   - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
   - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp

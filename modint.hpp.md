@@ -102,6 +102,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/sparse_matrix_det.0.test.cpp
+    title: test/matrix/sparse_matrix_det.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -199,6 +202,7 @@ data:
   - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
   - test/matrix/matrix_det.0.test.cpp
+  - test/matrix/sparse_matrix_det.0.test.cpp
   - test/matrix/matrix_product.0.test.cpp
   - test/formal_power_series/exp_of_formal_power_series.0.test.cpp
   - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp

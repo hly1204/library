@@ -55,6 +55,9 @@ data:
       path: mat_basic.hpp
       title: mat_basic.hpp
     - icon: ':heavy_check_mark:'
+      path: mat_sparse.hpp
+      title: mat_sparse.hpp
+    - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
     - icon: ':heavy_check_mark:'
@@ -220,6 +223,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/matrix/pow_of_matrix.0.test.cpp
       title: test/matrix/pow_of_matrix.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/matrix/sparse_matrix_det.0.test.cpp
+      title: test/matrix/sparse_matrix_det.0.test.cpp
   - name: test/number_theory
     pages:
     - icon: ':heavy_check_mark:'

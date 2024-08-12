@@ -9,6 +9,9 @@ data:
     path: frobenius.hpp
     title: frobenius.hpp
   - icon: ':heavy_check_mark:'
+    path: mat_sparse.hpp
+    title: mat_sparse.hpp
+  - icon: ':heavy_check_mark:'
     path: random.hpp
     title: random.hpp
   - icon: ':heavy_check_mark:'
@@ -42,6 +45,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/sparse_matrix_det.0.test.cpp
+    title: test/matrix/sparse_matrix_det.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -88,6 +94,7 @@ data:
   path: rng.hpp
   requiredBy:
   - treap_node_base.hpp
+  - mat_sparse.hpp
   - frobenius.hpp
   - random.hpp
   - fps_sqrt.hpp
@@ -102,6 +109,7 @@ data:
   - test/data_structure/range_affine_range_sum.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
+  - test/matrix/sparse_matrix_det.0.test.cpp
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
 documentation_of: rng.hpp
 layout: document

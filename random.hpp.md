@@ -8,6 +8,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: frobenius.hpp
     title: frobenius.hpp
+  - icon: ':heavy_check_mark:'
+    path: mat_sparse.hpp
+    title: mat_sparse.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
@@ -15,6 +18,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/sparse_matrix_det.0.test.cpp
+    title: test/matrix/sparse_matrix_det.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -41,23 +47,31 @@ data:
     \ random_vector(int n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar\
     \ rng(std::random_device{}());\n    std::uniform_int_distribution<decltype(Tp::mod())>\
     \ dis(0, Tp::mod() - 1);\n    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n\
-    \    return res;\n}\n"
+    \    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> random_vector_without_zero(int\
+    \ n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar rng(std::random_device{}());\n\
+    \    std::uniform_int_distribution<decltype(Tp::mod())> dis(1, Tp::mod() - 1);\n\
+    \    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n    return res;\n}\n"
   code: "#pragma once\n\n#include \"rng.hpp\"\n#include <random>\n#include <vector>\n\
     \ntemplate <typename Tp>\ninline std::vector<Tp> random_vector(int n) {\n    std::vector<Tp>\
     \ res(n);\n    xoshiro256starstar rng(std::random_device{}());\n    std::uniform_int_distribution<decltype(Tp::mod())>\
     \ dis(0, Tp::mod() - 1);\n    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n\
-    \    return res;\n}\n"
+    \    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> random_vector_without_zero(int\
+    \ n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar rng(std::random_device{}());\n\
+    \    std::uniform_int_distribution<decltype(Tp::mod())> dis(1, Tp::mod() - 1);\n\
+    \    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n    return res;\n}\n"
   dependsOn:
   - rng.hpp
   isVerificationFile: false
   path: random.hpp
   requiredBy:
+  - mat_sparse.hpp
   - frobenius.hpp
-  timestamp: '2024-07-02 19:12:26+08:00'
+  timestamp: '2024-08-12 22:20:24+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
+  - test/matrix/sparse_matrix_det.0.test.cpp
 documentation_of: random.hpp
 layout: document
 redirect_from:

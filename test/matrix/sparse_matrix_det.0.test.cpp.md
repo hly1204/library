@@ -11,31 +11,39 @@ data:
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
+    path: mat_sparse.hpp
+    title: mat_sparse.hpp
+  - icon: ':heavy_check_mark:'
+    path: modint.hpp
+    title: modint.hpp
+  - icon: ':heavy_check_mark:'
+    path: poly.hpp
+    title: poly.hpp
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
   - icon: ':heavy_check_mark:'
+    path: random.hpp
+    title: random.hpp
+  - icon: ':heavy_check_mark:'
+    path: rng.hpp
+    title: rng.hpp
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
-    path: mat_sparse.hpp
-    title: mat_sparse.hpp
-  _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/find_linear_recurrence.1.test.cpp
-    title: test/formal_power_series/find_linear_recurrence.1.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/inv_of_polynomials.0.test.cpp
-    title: test/formal_power_series/inv_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/matrix/sparse_matrix_det.0.test.cpp
-    title: test/matrix/sparse_matrix_det.0.test.cpp
+  _extendedRequiredBy: []
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
-  _pathExtension: hpp
+  _pathExtension: cpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    links: []
-  bundledCode: "#line 2 \"poly.hpp\"\n\n#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\
+    '*NOT_SPECIAL_COMMENTS*': ''
+    PROBLEM: https://judge.yosupo.jp/problem/sparse_matrix_det
+    links:
+    - https://judge.yosupo.jp/problem/sparse_matrix_det
+  bundledCode: "#line 1 \"test/matrix/sparse_matrix_det.0.test.cpp\"\n#define PROBLEM\
+    \ \"https://judge.yosupo.jp/problem/sparse_matrix_det\"\n\n#line 2 \"mat_sparse.hpp\"\
+    \n\n#line 2 \"poly.hpp\"\n\n#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\
     \n\n#include <algorithm>\n#include <vector>\n\ntemplate <typename Tp>\nclass Binomial\
     \ {\n    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
     \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
@@ -337,118 +345,117 @@ data:
     }\n\n// returns [x^([-k,-1])]A/B\n// requires deg(A)<deg(B)\ntemplate <typename\
     \ Tp>\ninline std::vector<Tp> rational_function_to_series(const Poly<Tp> &A, const\
     \ Poly<Tp> &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
-    \ - 1)).slice(0, k);\n}\n"
-  code: "#pragma once\n\n#include \"poly_basic.hpp\"\n#include <algorithm>\n#include\
-    \ <array>\n#include <cassert>\n#include <iostream>\n#include <tuple>\n#include\
-    \ <utility>\n#include <vector>\n\ntemplate <typename Tp>\nclass Poly : public\
-    \ std::vector<Tp> {\n    using Base = std::vector<Tp>;\n\npublic:\n    using Base::Base;\n\
-    \n    int deg() const { return degree(*this); }\n\n    int ord() const { return\
-    \ order(*this); }\n\n    Poly rev() const {\n        const int d = deg();\n  \
-    \      Poly res(d + 1);\n        for (int i = d; i >= 0; --i) res[i] = Base::operator[](d\
-    \ - i);\n        return res;\n    }\n\n    Poly slice(int L, int R) const {\n\
-    \        Poly res(R - L);\n        for (int i = L; i < std::min(R, (int)Base::size());\
-    \ ++i) res[i - L] = Base::operator[](i);\n        return res;\n    }\n\n    Poly\
-    \ trunc(int D) const {\n        Poly res(D);\n        for (int i = 0; i < std::min(D,\
-    \ (int)Base::size()); ++i) res[i] = Base::operator[](i);\n        return res;\n\
-    \    }\n\n    Poly &shrink() {\n        Base::resize(deg() + 1);\n        return\
-    \ *this;\n    }\n\n    Tp lc() const {\n        const int d = deg();\n       \
-    \ return d == -1 ? Tp() : Base::operator[](d);\n    }\n\n    Poly operator-()\
-    \ const {\n        const int d = deg();\n        Poly res(d + 1);\n        for\
-    \ (int i = 0; i <= d; ++i) res[i] = -Base::operator[](i);\n        res.shrink();\n\
-    \        return res;\n    }\n\n    std::pair<Poly, Poly> divmod(const Poly &R)\
-    \ const {\n        const auto [q, r] = euclidean_div(*this, R);\n        return\
-    \ std::make_pair(Poly(q.begin(), q.end()), Poly(r.begin(), r.end()));\n    }\n\
-    \    Poly &operator+=(const Poly &R) {\n        if (Base::size() < R.size()) Base::resize(R.size());\n\
-    \        for (int i = 0; i < (int)R.size(); ++i) Base::operator[](i) += R[i];\n\
-    \        return shrink();\n    }\n    Poly &operator-=(const Poly &R) {\n    \
-    \    if (Base::size() < R.size()) Base::resize(R.size());\n        for (int i\
-    \ = 0; i < (int)R.size(); ++i) Base::operator[](i) -= R[i];\n        return shrink();\n\
-    \    }\n    Poly &operator*=(const Poly &R) {\n        Base::operator=(convolution(*this,\
-    \ R));\n        return shrink();\n    }\n    Poly &operator/=(const Poly &R) {\n\
-    \        Base::operator=(euclidean_div_quotient(*this, R));\n        return shrink();\n\
-    \    }\n    Poly &operator%=(const Poly &R) {\n        Base::operator=(divmod(R).second);\n\
-    \        return shrink();\n    }\n    Poly &operator<<=(int D) {\n        if (D\
-    \ > 0) {\n            Base::insert(Base::begin(), D, Tp());\n        } else if\
-    \ (D < 0) {\n            if (-D < (int)Base::size()) {\n                Base::erase(Base::begin(),\
-    \ Base::begin() + (-D));\n            } else {\n                Base::clear();\n\
-    \            }\n        }\n        return shrink();\n    }\n    Poly &operator>>=(int\
-    \ D) { return operator<<=(-D); }\n\n    friend Poly operator+(const Poly &L, const\
-    \ Poly &R) { return Poly(L) += R; }\n    friend Poly operator-(const Poly &L,\
-    \ const Poly &R) { return Poly(L) -= R; }\n    friend Poly operator*(const Poly\
-    \ &L, const Poly &R) { return Poly(L) *= R; }\n    friend Poly operator/(const\
-    \ Poly &L, const Poly &R) { return Poly(L) /= R; }\n    friend Poly operator%(const\
-    \ Poly &L, const Poly &R) { return Poly(L) %= R; }\n    friend Poly operator<<(const\
-    \ Poly &L, int D) { return Poly(L) <<= D; }\n    friend Poly operator>>(const\
-    \ Poly &L, int D) { return Poly(L) >>= D; }\n\n    friend std::ostream &operator<<(std::ostream\
-    \ &L, const Poly &R) {\n        L << '[';\n        const int d = R.deg();\n  \
-    \      if (d < 0) {\n            L << '0';\n        } else {\n            for\
-    \ (int i = 0; i <= d; ++i) {\n                L << R[i];\n                if (i\
-    \ == 1) L << \"*x\";\n                if (i > 1) L << \"*x^\" << i;\n        \
-    \        if (i != d) L << \" + \";\n            }\n        }\n        return L\
-    \ << ']';\n    }\n};\n\n// 2x2 matrix for Euclidean algorithm\ntemplate <typename\
-    \ Tp>\nclass GCDMatrix : public std::array<std::array<Tp, 2>, 2> {\npublic:\n\
-    \    GCDMatrix(const Tp &x00, const Tp &x01, const Tp &x10, const Tp &x11)\n \
-    \       : std::array<std::array<Tp, 2>, 2>{std::array{x00, x01}, std::array{x10,\
-    \ x11}} {}\n\n    GCDMatrix operator*(const GCDMatrix &R) const {\n        return\
-    \ {(*this)[0][0] * R[0][0] + (*this)[0][1] * R[1][0],\n                (*this)[0][0]\
-    \ * R[0][1] + (*this)[0][1] * R[1][1],\n                (*this)[1][0] * R[0][0]\
-    \ + (*this)[1][1] * R[1][0],\n                (*this)[1][0] * R[0][1] + (*this)[1][1]\
-    \ * R[1][1]};\n    }\n\n    std::array<Tp, 2> operator*(const std::array<Tp, 2>\
-    \ &R) const {\n        return {(*this)[0][0] * R[0] + (*this)[0][1] * R[1],\n\
-    \                (*this)[1][0] * R[0] + (*this)[1][1] * R[1]};\n    }\n\n    Tp\
-    \ det() const { return (*this)[0][0] * (*this)[1][1] - (*this)[0][1] * (*this)[1][0];\
-    \ }\n    GCDMatrix adj() const { return {(*this)[1][1], -(*this)[0][1], -(*this)[1][0],\
-    \ (*this)[0][0]}; }\n};\n\n// returns M s.t. deg(M) <= d and deg(M21*A+M22*B)\
-    \ < max(deg(A),deg(B))-d\n//                det(M) in {-1,1}\n// see:\n// [1]:\
-    \ Daniel J. Bernstein. Fast multiplication and its applications.\ntemplate <typename\
-    \ Tp>\ninline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const Poly<Tp> &B, int\
-    \ d) {\n    using Mat = GCDMatrix<Poly<Tp>>;\n    assert(!(A.deg() < 0 && B.deg()\
-    \ < 0));\n    if (A.deg() < B.deg()) return hgcd(B, A, d) * Mat({}, {Tp(1)}, {Tp(1)},\
-    \ {});\n    if (A.deg() < d) return hgcd(A, B, A.deg());\n    if (B.deg() < A.deg()\
-    \ - d) return Mat({Tp(1)}, {}, {}, {Tp(1)});\n    if (int dd = A.deg() - d * 2;\
-    \ dd > 0) return hgcd(A >> dd, B >> dd, d);\n    if (d == 0) return Mat({}, {Tp(1)},\
-    \ {Tp(1)}, -(A / B));\n    const auto M = hgcd(A, B, d / 2);\n    const auto D\
-    \ = M[1][0] * A + M[1][1] * B;\n    if (D.deg() < A.deg() - d) return M;\n   \
-    \ const auto C      = M[0][0] * A + M[0][1] * B;\n    const auto [Q, R] = C.divmod(D);\n\
-    \    return hgcd(D, R, D.deg() - (A.deg() - d)) * Mat({}, {Tp(1)}, {Tp(1)}, -Q)\
-    \ * M;\n}\n\ntemplate <typename Tp>\ninline std::tuple<Poly<Tp>, Poly<Tp>, Poly<Tp>>\
-    \ xgcd(const Poly<Tp> &A, const Poly<Tp> &B) {\n    const auto M = hgcd(A, B,\
-    \ std::max(A.deg(), B.deg()));\n    return std::make_tuple(M[0][0], M[0][1], M[0][0]\
-    \ * A + M[0][1] * B);\n}\n\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>,\
-    \ Poly<Tp>> inv_gcd(const Poly<Tp> &A, const Poly<Tp> &B) {\n    const auto M\
-    \ = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_pair(M[0][0],\
-    \ M[0][0] * A + M[0][1] * B);\n}\n\n// returns P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B\n\
-    // where P,Q in F[x], deg(Q) is minimized\n// requires deg(A)<deg(B)\ntemplate\
-    \ <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_function_approximation(const\
-    \ Poly<Tp> &A,\n                                                             \
-    \        const Poly<Tp> &B, int k) {\n    auto M            = hgcd(B, A, k / 2);\n\
-    \    const auto [C, D] = M * std::array{B, A};\n    if (D.deg() >= 0 && D.deg()\
-    \ - C.deg() >= -(k - (B.deg() - C.deg()) * 2))\n        M = GCDMatrix<Poly<Tp>>({},\
-    \ {Tp(1)}, {Tp(1)}, -(C / D)) * M;\n    return std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n\
-    }\n\n// returns [x^([-k,-1])]A/B\n// requires deg(A)<deg(B)\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> rational_function_to_series(const Poly<Tp> &A, const\
-    \ Poly<Tp> &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
-    \ - 1)).slice(0, k);\n}\n"
+    \ - 1)).slice(0, k);\n}\n#line 2 \"random.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include\
+    \ <cstdint>\n#include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n\
+    // original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
+    \n    static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64\
+    \ - k)); }\n\n    u64 s_[4];\n\n    u64 next() {\n        const u64 res = rotl(s_[1]\
+    \ * 5, 7) * 9;\n        const u64 t   = s_[1] << 17;\n        s_[2] ^= s_[0];\n\
+    \        s_[3] ^= s_[1];\n        s_[1] ^= s_[2];\n        s_[0] ^= s_[3];\n \
+    \       s_[2] ^= t;\n        s_[3] = rotl(s_[3], 45);\n        return res;\n \
+    \   }\n\npublic:\n    // see: https://prng.di.unimi.it/splitmix64.c\n    // original\
+    \ license CC0 1.0\n    explicit xoshiro256starstar(u64 seed) {\n        for (int\
+    \ i = 0; i < 4; ++i) {\n            u64 z = (seed += 0x9e3779b97f4a7c15);\n  \
+    \          z     = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n            z     =\
+    \ (z ^ (z >> 27)) * 0x94d049bb133111eb;\n            s_[i] = z ^ (z >> 31);\n\
+    \        }\n    }\n    // see: https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator\n\
+    \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
+    \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
+    \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"random.hpp\"\n#include\
+    \ <random>\n#line 6 \"random.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ random_vector(int n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar\
+    \ rng(std::random_device{}());\n    std::uniform_int_distribution<decltype(Tp::mod())>\
+    \ dis(0, Tp::mod() - 1);\n    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n\
+    \    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> random_vector_without_zero(int\
+    \ n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar rng(std::random_device{}());\n\
+    \    std::uniform_int_distribution<decltype(Tp::mod())> dis(1, Tp::mod() - 1);\n\
+    \    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n    return res;\n}\n#line\
+    \ 8 \"mat_sparse.hpp\"\n\ntemplate <typename Tp>\nusing SparseMatrix = std::vector<std::tuple<int,\
+    \ int, Tp>>;\n\ntemplate <typename Tp>\ninline std::vector<Tp> mat_apply(const\
+    \ SparseMatrix<Tp> &A, const std::vector<Tp> &b) {\n    const int n = b.size();\n\
+    \    std::vector<Tp> Ab(n);\n    for (auto &&[x, y, z] : A) Ab[x] += z * b[y];\n\
+    \    return Ab;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> minpoly(const\
+    \ SparseMatrix<Tp> &A, int n) {\n    const auto u = random_vector<Tp>(n);\n  \
+    \  auto v       = random_vector<Tp>(n);\n    // u^T A v\n    std::vector<Tp> proj(n\
+    \ * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n        for\
+    \ (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P, Q] = rational_function_approximation(Poly<Tp>(proj.rbegin(),\
+    \ proj.rend()),\n                                                        Poly<Tp>{Tp(1)}\
+    \ << (n * 2), n * 2);\n    assert(Q.deg() <= n);\n    return Q / Poly<Tp>{Q.lc()};\n\
+    }\n\ntemplate <typename Tp>\ninline Tp det(SparseMatrix<Tp> A, int n) {\n    const\
+    \ auto D = random_vector_without_zero<Tp>(n);\n    Tp detD      = 1;\n    for\
+    \ (int i = 0; i < n; ++i) detD *= D[i];\n    // preconditioner D = diag(D[0],\
+    \ ..., D[n-1])\n    for (auto &&[x, y, z] : A) z *= D[x];\n    return Tp((n &\
+    \ 1) ? -1 : 1) * minpoly(A, n).at(0) / detD;\n}\n#line 2 \"modint.hpp\"\n\n#line\
+    \ 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
+    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
+    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
+    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
+    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
+    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
+    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
+    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
+    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
+    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
+    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
+    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
+    \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
+    \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
+    \ if ((e >>= 1) == 0) return res;\n        }\n    }\n    ModInt inv() const {\n\
+    \        int x1 = 1, x3 = 0, a = val(), b = Mod;\n        while (b) {\n      \
+    \      int q = a / b, x1_old = x1, a_old = a;\n            x1 = x3, x3 = x1_old\
+    \ - x3 * q, a = b, b = a_old - b * q;\n        }\n        return from_raw(x1 <\
+    \ 0 ? x1 + (int)Mod : x1);\n    }\n    template <bool Odd = (Mod & 1)>\n    std::enable_if_t<Odd,\
+    \ ModInt> div_by_2() const {\n        if (v_ & 1) return from_raw((v_ + Mod) >>\
+    \ 1);\n        return from_raw(v_ >> 1);\n    }\n\n    ModInt &operator+=(const\
+    \ ModInt &a) {\n        if ((v_ += a.v_) >= Mod) v_ -= Mod;\n        return *this;\n\
+    \    }\n    ModInt &operator-=(const ModInt &a) {\n        if ((v_ += Mod - a.v_)\
+    \ >= Mod) v_ -= Mod;\n        return *this;\n    }\n    ModInt &operator*=(const\
+    \ ModInt &a) {\n        v_ = (unsigned long long)v_ * a.v_ % Mod;\n        return\
+    \ *this;\n    }\n    ModInt &operator/=(const ModInt &a) { return *this *= a.inv();\
+    \ }\n\n    friend ModInt operator+(const ModInt &a, const ModInt &b) { return\
+    \ ModInt(a) += b; }\n    friend ModInt operator-(const ModInt &a, const ModInt\
+    \ &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const ModInt &a,\
+    \ const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
+    \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
+    \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
+    \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
+    #line 6 \"test/matrix/sparse_matrix_det.0.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, k;\n\
+    \    std::cin >> n >> k;\n    SparseMatrix<mint> M;\n    while (k--) {\n     \
+    \   int x, y;\n        mint z;\n        std::cin >> x >> y >> z;\n        M.emplace_back(x,\
+    \ y, z);\n    }\n    std::cout << det(M, n);\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/sparse_matrix_det\"\n\n\
+    #include \"mat_sparse.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\n\
+    int main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n, k;\n    std::cin >> n >> k;\n\
+    \    SparseMatrix<mint> M;\n    while (k--) {\n        int x, y;\n        mint\
+    \ z;\n        std::cin >> x >> y >> z;\n        M.emplace_back(x, y, z);\n   \
+    \ }\n    std::cout << det(M, n);\n    return 0;\n}\n"
   dependsOn:
+  - mat_sparse.hpp
+  - poly.hpp
   - poly_basic.hpp
   - binomial.hpp
   - fft.hpp
   - fps_basic.hpp
   - semi_relaxed_conv.hpp
-  isVerificationFile: false
-  path: poly.hpp
-  requiredBy:
-  - mat_sparse.hpp
-  timestamp: '2024-08-09 22:33:09+08:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - test/matrix/sparse_matrix_det.0.test.cpp
-  - test/formal_power_series/inv_of_polynomials.0.test.cpp
-  - test/formal_power_series/find_linear_recurrence.1.test.cpp
-documentation_of: poly.hpp
+  - random.hpp
+  - rng.hpp
+  - modint.hpp
+  isVerificationFile: true
+  path: test/matrix/sparse_matrix_det.0.test.cpp
+  requiredBy: []
+  timestamp: '2024-08-12 22:20:24+08:00'
+  verificationStatus: TEST_ACCEPTED
+  verifiedWith: []
+documentation_of: test/matrix/sparse_matrix_det.0.test.cpp
 layout: document
 redirect_from:
-- /library/poly.hpp
-- /library/poly.hpp.html
-title: poly.hpp
+- /verify/test/matrix/sparse_matrix_det.0.test.cpp
+- /verify/test/matrix/sparse_matrix_det.0.test.cpp.html
+title: test/matrix/sparse_matrix_det.0.test.cpp
 ---
