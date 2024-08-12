@@ -36,6 +36,6 @@ inline std::vector<Tp> fft_doubling2(std::vector<Tp> &a) {
     Tp k         = 1;
     const auto t = FftInfo<Tp>::get().root(n).at(n / 2);
     for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;
-    fft_n(a + n, n);
+    fft_n(a.begin() + n, n);
     return b;
 }
