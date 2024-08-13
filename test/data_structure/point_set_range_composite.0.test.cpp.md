@@ -85,7 +85,7 @@ data:
     \n    // CRTP reimplement\n    void do_flip() {}\n    void do_propagate() {}\n\
     \    void do_update() {}\n\nprotected:\n    void base_flip() {\n        NeedFlip\
     \ = !NeedFlip;\n        std::swap(L, R);\n        derived()->do_flip();\n    }\n\
-    \    // base_propagate() is called to propagate the update infomation to child(ren).\n\
+    \    // base_propagate() is called to propagate the update information to child(ren).\n\
     \    // There is no need to update the infomation combined from child(ren)\n \
     \   // which should be done in base_update().\n    void base_propagate() {\n \
     \       derived()->do_propagate();\n        if (NeedFlip) {\n            NeedFlip\
@@ -177,7 +177,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/point_set_range_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-29 13:35:45+08:00'
+  timestamp: '2024-08-13 20:42:50+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/point_set_range_composite.0.test.cpp

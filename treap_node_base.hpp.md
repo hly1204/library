@@ -51,7 +51,7 @@ data:
     \n    // CRTP reimplement\n    void do_flip() {}\n    void do_propagate() {}\n\
     \    void do_update() {}\n\nprotected:\n    void base_flip() {\n        NeedFlip\
     \ = !NeedFlip;\n        std::swap(L, R);\n        derived()->do_flip();\n    }\n\
-    \    // base_propagate() is called to propagate the update infomation to child(ren).\n\
+    \    // base_propagate() is called to propagate the update information to child(ren).\n\
     \    // There is no need to update the infomation combined from child(ren)\n \
     \   // which should be done in base_update().\n    void base_propagate() {\n \
     \       derived()->do_propagate();\n        if (NeedFlip) {\n            NeedFlip\
@@ -103,8 +103,8 @@ data:
     \    void do_flip() {}\n    void do_propagate() {}\n    void do_update() {}\n\n\
     protected:\n    void base_flip() {\n        NeedFlip = !NeedFlip;\n        std::swap(L,\
     \ R);\n        derived()->do_flip();\n    }\n    // base_propagate() is called\
-    \ to propagate the update infomation to child(ren).\n    // There is no need to\
-    \ update the infomation combined from child(ren)\n    // which should be done\
+    \ to propagate the update information to child(ren).\n    // There is no need\
+    \ to update the infomation combined from child(ren)\n    // which should be done\
     \ in base_update().\n    void base_propagate() {\n        derived()->do_propagate();\n\
     \        if (NeedFlip) {\n            NeedFlip = false;\n            if (L) L->base_flip();\n\
     \            if (R) R->base_flip();\n        }\n    }\n    // base_update() is\
@@ -150,7 +150,7 @@ data:
   isVerificationFile: false
   path: treap_node_base.hpp
   requiredBy: []
-  timestamp: '2024-06-29 13:35:45+08:00'
+  timestamp: '2024-08-13 20:42:50+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/range_affine_point_get.0.test.cpp

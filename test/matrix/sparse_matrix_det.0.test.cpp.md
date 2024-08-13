@@ -376,11 +376,12 @@ data:
     \    std::vector<Tp> Ab(n);\n    for (auto &&[x, y, z] : A) Ab[x] += z * b[y];\n\
     \    return Ab;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> minpoly(const\
     \ SparseMatrix<Tp> &A, int n) {\n    const auto u = random_vector<Tp>(n);\n  \
-    \  auto v       = random_vector<Tp>(n);\n    // u^T A v\n    std::vector<Tp> proj(n\
-    \ * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n        for\
-    \ (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P, Q] = rational_function_approximation(Poly<Tp>(proj.rbegin(),\
-    \ proj.rend()),\n                                                        Poly<Tp>{Tp(1)}\
-    \ << (n * 2), n * 2);\n    assert(Q.deg() <= n);\n    return Q / Poly<Tp>{Q.lc()};\n\
+    \  auto v       = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp>\
+    \ proj(n * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n   \
+    \     for (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P,\
+    \ Q] = rational_function_approximation(Poly<Tp>(proj.rbegin(), proj.rend()),\n\
+    \                                                        Poly<Tp>{Tp(1)} << (n\
+    \ * 2), n * 2);\n    assert(Q.deg() <= n);\n    return Q / Poly<Tp>{Q.lc()};\n\
     }\n\ntemplate <typename Tp>\ninline Tp det(SparseMatrix<Tp> A, int n) {\n    const\
     \ auto D = random_vector_without_zero<Tp>(n);\n    Tp detD      = 1;\n    for\
     \ (int i = 0; i < n; ++i) detD *= D[i];\n    // preconditioner D = diag(D[0],\
@@ -449,7 +450,7 @@ data:
   isVerificationFile: true
   path: test/matrix/sparse_matrix_det.0.test.cpp
   requiredBy: []
-  timestamp: '2024-08-12 22:20:24+08:00'
+  timestamp: '2024-08-13 20:42:50+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/sparse_matrix_det.0.test.cpp
