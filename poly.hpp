@@ -49,6 +49,11 @@ public:
         return d == -1 ? Tp() : Base::operator[](d);
     }
 
+    Poly taylor_shift(Tp c) const {
+        Base::operator=(taylor_shift(*this, c));
+        return shrink();
+    }
+
     Poly operator-() const {
         const int d = deg();
         Poly res(d + 1);
