@@ -3,8 +3,8 @@
 #include "basis.hpp"
 #include "mat_basic.hpp"
 #include "modint.hpp"
+#include "poly.hpp"
 #include "random.hpp"
-#include "sbpoly.hpp"
 #include <iostream>
 
 int main() {
@@ -17,12 +17,12 @@ int main() {
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j) std::cin >> A[i][j];
     Basis<mint> B(n);
-    SBPoly<mint> cp = {mint(1)};
+    Poly<mint> cp = {mint(1)};
     while (B.size() < n) {
         int deg = 0;
         for (auto R = random_vector<mint>(n);; R = mat_apply(A, R)) {
             if (auto comb = B.insert(R)) {
-                SBPoly<mint> p(comb->begin() + (B.size() - deg), comb->begin() + B.size());
+                Poly<mint> p(comb->begin() + (B.size() - deg), comb->begin() + B.size());
                 p.emplace_back(1);
                 cp *= p;
                 break;

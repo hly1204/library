@@ -2,8 +2,8 @@
 
 #include "basis.hpp"
 #include "mat_basic.hpp"
+#include "poly.hpp"
 #include "random.hpp"
-#include "sbpoly.hpp"
 #include <cassert>
 #include <vector>
 
@@ -18,7 +18,7 @@ public:
     // * characteristic polynomial of A = prod_(j=0)^(k-1) p_j
     int N;
     Matrix<Tp> InvT;
-    std::vector<SBPoly<Tp>> P;
+    std::vector<Poly<Tp>> P;
     Matrix<Tp> T;
 
     // see:
@@ -42,7 +42,7 @@ public:
                     if (!P.empty() && deg > P.back().deg()) goto retry;
                     P.emplace_back(c->begin() + (B.size() - deg), c->begin() + B.size())
                         .emplace_back(1);
-                    const SBPoly<Tp> b(c->begin(), c->begin() + (B.size() - deg));
+                    const Poly<Tp> b(c->begin(), c->begin() + (B.size() - deg));
                     const auto [q, r] = b.divmod(P.back());
                     if (r.deg() >= 0) goto retry;
                     V.emplace_back(q).resize(N), V.back().at(B.size() - deg) = 1;
@@ -83,8 +83,8 @@ public:
     Matrix<Tp> pow(long long e) const {
         assert(e >= 0);
         // returns x^e mod p
-        auto pow_mod = [](auto &&pow_mod, long long e, const SBPoly<Tp> &p) {
-            if (e == 0) return SBPoly<Tp>{Tp(1)};
+        auto pow_mod = [](auto &&pow_mod, long long e, const Poly<Tp> &p) {
+            if (e == 0) return Poly<Tp>{Tp(1)};
             const auto half = pow_mod(pow_mod, e / 2, p);
             return ((half * half) << (e & 1)) % p;
         };

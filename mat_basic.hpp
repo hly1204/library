@@ -1,5 +1,7 @@
 #pragma once
 
+#include "poly.hpp"
+#include "random.hpp"
 #include <cassert>
 #include <optional>
 #include <utility>
@@ -161,4 +163,18 @@ inline std::vector<Tp> charpoly(const Matrix<Tp> &A) {
         }
     }
     return P[n];
+}
+
+template <typename Tp>
+inline std::vector<Tp> minpoly(const Matrix<Tp> &A, int n) {
+    const auto u = random_vector<Tp>(n);
+    auto v       = random_vector<Tp>(n);
+    // u^T A^([0..2n)) v
+    std::vector<Tp> proj(n * 2);
+    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)
+        for (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];
+    const auto [P, Q] = rational_function_approximation(Poly<Tp>(proj.rbegin(), proj.rend()),
+                                                        Poly<Tp>{Tp(1)} << (n * 2), n * 2);
+    assert(Q.deg() <= n);
+    return Q / Poly<Tp>{Q.lc()};
 }
