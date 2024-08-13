@@ -187,8 +187,8 @@ inline std::pair<Poly<Tp>, Poly<Tp>> inv_gcd(const Poly<Tp> &A, const Poly<Tp> &
 // where P,Q in F[x], deg(Q) is minimized
 // requires deg(A)<deg(B)
 template <typename Tp>
-inline std::pair<Poly<Tp>, Poly<Tp>> rational_function_approximation(const Poly<Tp> &A,
-                                                                     const Poly<Tp> &B, int k) {
+inline std::pair<Poly<Tp>, Poly<Tp>> rational_approximation(const Poly<Tp> &A, const Poly<Tp> &B,
+                                                            int k) {
     auto M            = hgcd(B, A, k / 2);
     const auto [C, D] = M * std::array{B, A};
     if (D.deg() >= 0 && D.deg() - C.deg() >= -(k - (B.deg() - C.deg()) * 2))
@@ -196,9 +196,15 @@ inline std::pair<Poly<Tp>, Poly<Tp>> rational_function_approximation(const Poly<
     return std::make_pair(M.adj()[1][0], M.adj()[0][0]);
 }
 
+template <typename Tp>
+inline std::pair<Poly<Tp>, Poly<Tp>> rational_reconstruction(const std::vector<Tp> &A) {
+    return rational_approximation(Poly<Tp>(A.rbegin(), A.rend()), Poly<Tp>{Tp(1)} << A.size(),
+                                  A.size());
+}
+
 // returns [x^([-k,-1])]A/B
 // requires deg(A)<deg(B)
 template <typename Tp>
-inline std::vector<Tp> rational_function_to_series(const Poly<Tp> &A, const Poly<Tp> &B, int k) {
+inline std::vector<Tp> fraction_to_series(const Poly<Tp> &A, const Poly<Tp> &B, int k) {
     return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).slice(0, k);
 }

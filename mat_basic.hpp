@@ -173,8 +173,7 @@ inline std::vector<Tp> minpoly(const Matrix<Tp> &A, int n) {
     std::vector<Tp> proj(n * 2);
     for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)
         for (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];
-    const auto [P, Q] = rational_function_approximation(Poly<Tp>(proj.rbegin(), proj.rend()),
-                                                        Poly<Tp>{Tp(1)} << (n * 2), n * 2);
+    const auto [P, Q] = rational_reconstruction(proj);
     assert(Q.deg() <= n);
     return Q / Poly<Tp>{Q.lc()};
 }
