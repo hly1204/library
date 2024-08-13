@@ -21,7 +21,7 @@ template <typename Tp>
 inline std::vector<Tp> minpoly(const SparseMatrix<Tp> &A, int n) {
     const auto u = random_vector<Tp>(n);
     auto v       = random_vector<Tp>(n);
-    // u^T A v
+    // u^T A^([0..2n)) v
     std::vector<Tp> proj(n * 2);
     for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)
         for (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];

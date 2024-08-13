@@ -29,7 +29,7 @@ protected:
         std::swap(L, R);
         derived()->do_flip();
     }
-    // base_propagate() is called to propagate the update infomation to child(ren).
+    // base_propagate() is called to propagate the update information to child(ren).
     // There is no need to update the infomation combined from child(ren)
     // which should be done in base_update().
     void base_propagate() {
