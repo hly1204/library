@@ -15,11 +15,20 @@ data:
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: basis.hpp
+    title: basis.hpp
+  - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
     title: c_recursive.hpp
   - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: czt.hpp
+  - icon: ':heavy_check_mark:'
+    path: frobenius.hpp
+    title: frobenius.hpp
+  - icon: ':heavy_check_mark:'
+    path: mat_basic.hpp
+    title: mat_basic.hpp
   - icon: ':heavy_check_mark:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
@@ -42,6 +51,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/division_of_polynomials.0.test.cpp
     title: test/formal_power_series/division_of_polynomials.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/find_linear_recurrence.0.test.cpp
+    title: test/formal_power_series/find_linear_recurrence.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/find_linear_recurrence.1.test.cpp
     title: test/formal_power_series/find_linear_recurrence.1.test.cpp
@@ -69,6 +81,24 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/characteristic_polynomial.0.test.cpp
+    title: test/matrix/characteristic_polynomial.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/characteristic_polynomial.1.test.cpp
+    title: test/matrix/characteristic_polynomial.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/inverse_matrix.0.test.cpp
+    title: test/matrix/inverse_matrix.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/matrix_det.0.test.cpp
+    title: test/matrix/matrix_det.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/matrix_product.0.test.cpp
+    title: test/matrix/matrix_product.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/pow_of_matrix.0.test.cpp
+    title: test/matrix/pow_of_matrix.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
@@ -356,13 +386,22 @@ data:
   requiredBy:
   - c_recursive.hpp
   - mat_sparse.hpp
+  - mat_basic.hpp
+  - frobenius.hpp
+  - basis.hpp
   - subproduct_tree.hpp
   - poly.hpp
   - czt.hpp
   timestamp: '2024-08-03 14:01:08+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/matrix/characteristic_polynomial.0.test.cpp
+  - test/matrix/inverse_matrix.0.test.cpp
+  - test/matrix/characteristic_polynomial.1.test.cpp
+  - test/matrix/pow_of_matrix.0.test.cpp
+  - test/matrix/matrix_det.0.test.cpp
   - test/matrix/sparse_matrix_det.0.test.cpp
+  - test/matrix/matrix_product.0.test.cpp
   - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/formal_power_series/inv_of_polynomials.0.test.cpp
   - test/formal_power_series/convolution_mod.1.test.cpp
@@ -372,6 +411,7 @@ data:
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/division_of_polynomials.0.test.cpp
+  - test/formal_power_series/find_linear_recurrence.0.test.cpp
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - test/formal_power_series/find_linear_recurrence.1.test.cpp
   - test/formal_power_series/polynomial_interpolation.0.test.cpp

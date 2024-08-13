@@ -3,11 +3,17 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: basis.hpp
+    title: basis.hpp
+  - icon: ':heavy_check_mark:'
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
   - icon: ':heavy_check_mark:'
     path: frobenius.hpp
     title: frobenius.hpp
+  - icon: ':heavy_check_mark:'
+    path: mat_basic.hpp
+    title: mat_basic.hpp
   - icon: ':heavy_check_mark:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
@@ -40,8 +46,20 @@ data:
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/matrix/characteristic_polynomial.0.test.cpp
+    title: test/matrix/characteristic_polynomial.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/inverse_matrix.0.test.cpp
+    title: test/matrix/inverse_matrix.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/matrix_det.0.test.cpp
+    title: test/matrix/matrix_det.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/matrix_product.0.test.cpp
+    title: test/matrix/matrix_product.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
@@ -95,9 +113,11 @@ data:
   requiredBy:
   - treap_node_base.hpp
   - mat_sparse.hpp
+  - mat_basic.hpp
   - frobenius.hpp
   - random.hpp
   - fps_sqrt.hpp
+  - basis.hpp
   - sqrt_mod.hpp
   timestamp: '2024-05-15 00:00:04+08:00'
   verificationStatus: LIBRARY_ALL_AC
@@ -107,9 +127,13 @@ data:
   - test/data_structure/range_reverse_range_sum.0.test.cpp
   - test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   - test/data_structure/range_affine_range_sum.0.test.cpp
+  - test/matrix/characteristic_polynomial.0.test.cpp
+  - test/matrix/inverse_matrix.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
+  - test/matrix/matrix_det.0.test.cpp
   - test/matrix/sparse_matrix_det.0.test.cpp
+  - test/matrix/matrix_product.0.test.cpp
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
 documentation_of: rng.hpp
 layout: document

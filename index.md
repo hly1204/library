@@ -85,9 +85,6 @@ data:
       path: rng.hpp
       title: rng.hpp
     - icon: ':heavy_check_mark:'
-      path: sbpoly.hpp
-      title: sbpoly.hpp
-    - icon: ':heavy_check_mark:'
       path: semi_relaxed_conv.hpp
       title: semi_relaxed_conv.hpp
     - icon: ':heavy_check_mark:'

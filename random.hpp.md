@@ -6,15 +6,33 @@ data:
     title: rng.hpp
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: basis.hpp
+    title: basis.hpp
+  - icon: ':heavy_check_mark:'
     path: frobenius.hpp
     title: frobenius.hpp
+  - icon: ':heavy_check_mark:'
+    path: mat_basic.hpp
+    title: mat_basic.hpp
   - icon: ':heavy_check_mark:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/matrix/characteristic_polynomial.0.test.cpp
+    title: test/matrix/characteristic_polynomial.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/inverse_matrix.0.test.cpp
+    title: test/matrix/inverse_matrix.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/matrix_det.0.test.cpp
+    title: test/matrix/matrix_det.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/matrix_product.0.test.cpp
+    title: test/matrix/matrix_product.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
@@ -65,13 +83,19 @@ data:
   path: random.hpp
   requiredBy:
   - mat_sparse.hpp
+  - mat_basic.hpp
   - frobenius.hpp
+  - basis.hpp
   timestamp: '2024-08-12 22:20:24+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/matrix/characteristic_polynomial.0.test.cpp
+  - test/matrix/inverse_matrix.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
+  - test/matrix/matrix_det.0.test.cpp
   - test/matrix/sparse_matrix_det.0.test.cpp
+  - test/matrix/matrix_product.0.test.cpp
 documentation_of: random.hpp
 layout: document
 redirect_from:
