@@ -88,9 +88,6 @@ data:
     path: test/formal_power_series/find_linear_recurrence.0.test.cpp
     title: test/formal_power_series/find_linear_recurrence.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/find_linear_recurrence.1.test.cpp
-    title: test/formal_power_series/find_linear_recurrence.1.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -342,7 +339,6 @@ data:
   - test/formal_power_series/division_of_polynomials.0.test.cpp
   - test/formal_power_series/find_linear_recurrence.0.test.cpp
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - test/formal_power_series/find_linear_recurrence.1.test.cpp
   - test/formal_power_series/convolution_mod_1000000007.0.test.cpp
   - test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
   - test/formal_power_series/convolution_mod.0.test.cpp

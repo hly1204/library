@@ -329,18 +329,21 @@ data:
     \ = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_pair(M[0][0],\
     \ M[0][0] * A + M[0][1] * B);\n}\n\n// returns P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B\n\
     // where P,Q in F[x], deg(Q) is minimized\n// requires deg(A)<deg(B)\ntemplate\
-    \ <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_function_approximation(const\
-    \ Poly<Tp> &A,\n                                                             \
-    \        const Poly<Tp> &B, int k) {\n    auto M            = hgcd(B, A, k / 2);\n\
-    \    const auto [C, D] = M * std::array{B, A};\n    if (D.deg() >= 0 && D.deg()\
-    \ - C.deg() >= -(k - (B.deg() - C.deg()) * 2))\n        M = GCDMatrix<Poly<Tp>>({},\
-    \ {Tp(1)}, {Tp(1)}, -(C / D)) * M;\n    return std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n\
+    \ <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_approximation(const\
+    \ Poly<Tp> &A, const Poly<Tp> &B,\n                                          \
+    \                  int k) {\n    auto M            = hgcd(B, A, k / 2);\n    const\
+    \ auto [C, D] = M * std::array{B, A};\n    if (D.deg() >= 0 && D.deg() - C.deg()\
+    \ >= -(k - (B.deg() - C.deg()) * 2))\n        M = GCDMatrix<Poly<Tp>>({}, {Tp(1)},\
+    \ {Tp(1)}, -(C / D)) * M;\n    return std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n\
+    }\n\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_reconstruction(const\
+    \ std::vector<Tp> &A) {\n    return rational_approximation(Poly<Tp>(A.rbegin(),\
+    \ A.rend()), Poly<Tp>{Tp(1)} << A.size(),\n                                  A.size());\n\
     }\n\n// returns [x^([-k,-1])]A/B\n// requires deg(A)<deg(B)\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> rational_function_to_series(const Poly<Tp> &A, const\
-    \ Poly<Tp> &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
-    \ - 1)).slice(0, k);\n}\n#line 2 \"random.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include\
-    \ <cstdint>\n#include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n\
-    // original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
+    \ Tp>\ninline std::vector<Tp> fraction_to_series(const Poly<Tp> &A, const Poly<Tp>\
+    \ &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).slice(0,\
+    \ k);\n}\n#line 2 \"random.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n\
+    #include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n//\
+    \ original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
     \n    static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64\
     \ - k)); }\n\n    u64 s_[4];\n\n    u64 next() {\n        const u64 res = rotl(s_[1]\
     \ * 5, 7) * 9;\n        const u64 t   = s_[1] << 17;\n        s_[2] ^= s_[0];\n\
@@ -372,14 +375,12 @@ data:
     \  auto v       = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp>\
     \ proj(n * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n   \
     \     for (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P,\
-    \ Q] = rational_function_approximation(Poly<Tp>(proj.rbegin(), proj.rend()),\n\
-    \                                                        Poly<Tp>{Tp(1)} << (n\
-    \ * 2), n * 2);\n    assert(Q.deg() <= n);\n    return Q / Poly<Tp>{Q.lc()};\n\
-    }\n\ntemplate <typename Tp>\ninline Tp det(SparseMatrix<Tp> A, int n) {\n    const\
-    \ auto D = random_vector_without_zero<Tp>(n);\n    Tp detD      = 1;\n    for\
-    \ (int i = 0; i < n; ++i) detD *= D[i];\n    // preconditioner D = diag(D[0],\
-    \ ..., D[n-1])\n    for (auto &&[x, y, z] : A) z *= D[x];\n    return Tp((n &\
-    \ 1) ? -1 : 1) * minpoly(A, n).at(0) / detD;\n}\n"
+    \ Q] = rational_reconstruction(proj);\n    assert(Q.deg() <= n);\n    return Q\
+    \ / Poly<Tp>{Q.lc()};\n}\n\ntemplate <typename Tp>\ninline Tp det(SparseMatrix<Tp>\
+    \ A, int n) {\n    const auto D = random_vector_without_zero<Tp>(n);\n    Tp detD\
+    \      = 1;\n    for (int i = 0; i < n; ++i) detD *= D[i];\n    // preconditioner\
+    \ D = diag(D[0], ..., D[n-1])\n    for (auto &&[x, y, z] : A) z *= D[x];\n   \
+    \ return Tp((n & 1) ? -1 : 1) * minpoly(A, n).at(0) / detD;\n}\n"
   code: "#pragma once\n\n#include \"poly.hpp\"\n#include \"random.hpp\"\n#include\
     \ <cassert>\n#include <tuple>\n#include <vector>\n\ntemplate <typename Tp>\nusing\
     \ SparseMatrix = std::vector<std::tuple<int, int, Tp>>;\n\ntemplate <typename\
@@ -390,14 +391,12 @@ data:
     \  const auto u = random_vector<Tp>(n);\n    auto v       = random_vector<Tp>(n);\n\
     \    // u^T A^([0..2n)) v\n    std::vector<Tp> proj(n * 2);\n    for (int i =\
     \ 0; i < n * 2; v = mat_apply(A, v), ++i)\n        for (int j = 0; j < n; ++j)\
-    \ proj[i] += u[j] * v[j];\n    const auto [P, Q] = rational_function_approximation(Poly<Tp>(proj.rbegin(),\
-    \ proj.rend()),\n                                                        Poly<Tp>{Tp(1)}\
-    \ << (n * 2), n * 2);\n    assert(Q.deg() <= n);\n    return Q / Poly<Tp>{Q.lc()};\n\
-    }\n\ntemplate <typename Tp>\ninline Tp det(SparseMatrix<Tp> A, int n) {\n    const\
-    \ auto D = random_vector_without_zero<Tp>(n);\n    Tp detD      = 1;\n    for\
-    \ (int i = 0; i < n; ++i) detD *= D[i];\n    // preconditioner D = diag(D[0],\
-    \ ..., D[n-1])\n    for (auto &&[x, y, z] : A) z *= D[x];\n    return Tp((n &\
-    \ 1) ? -1 : 1) * minpoly(A, n).at(0) / detD;\n}\n"
+    \ proj[i] += u[j] * v[j];\n    const auto [P, Q] = rational_reconstruction(proj);\n\
+    \    assert(Q.deg() <= n);\n    return Q / Poly<Tp>{Q.lc()};\n}\n\ntemplate <typename\
+    \ Tp>\ninline Tp det(SparseMatrix<Tp> A, int n) {\n    const auto D = random_vector_without_zero<Tp>(n);\n\
+    \    Tp detD      = 1;\n    for (int i = 0; i < n; ++i) detD *= D[i];\n    //\
+    \ preconditioner D = diag(D[0], ..., D[n-1])\n    for (auto &&[x, y, z] : A) z\
+    \ *= D[x];\n    return Tp((n & 1) ? -1 : 1) * minpoly(A, n).at(0) / detD;\n}\n"
   dependsOn:
   - poly.hpp
   - poly_basic.hpp
@@ -410,7 +409,7 @@ data:
   isVerificationFile: false
   path: mat_sparse.hpp
   requiredBy: []
-  timestamp: '2024-08-13 21:21:03+08:00'
+  timestamp: '2024-08-13 22:20:52+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/sparse_matrix_det.0.test.cpp

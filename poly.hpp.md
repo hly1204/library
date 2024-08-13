@@ -34,9 +34,6 @@ data:
     path: test/formal_power_series/find_linear_recurrence.0.test.cpp
     title: test/formal_power_series/find_linear_recurrence.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/find_linear_recurrence.1.test.cpp
-    title: test/formal_power_series/find_linear_recurrence.1.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_polynomials.0.test.cpp
     title: test/formal_power_series/inv_of_polynomials.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -359,16 +356,19 @@ data:
     \ = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_pair(M[0][0],\
     \ M[0][0] * A + M[0][1] * B);\n}\n\n// returns P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B\n\
     // where P,Q in F[x], deg(Q) is minimized\n// requires deg(A)<deg(B)\ntemplate\
-    \ <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_function_approximation(const\
-    \ Poly<Tp> &A,\n                                                             \
-    \        const Poly<Tp> &B, int k) {\n    auto M            = hgcd(B, A, k / 2);\n\
-    \    const auto [C, D] = M * std::array{B, A};\n    if (D.deg() >= 0 && D.deg()\
-    \ - C.deg() >= -(k - (B.deg() - C.deg()) * 2))\n        M = GCDMatrix<Poly<Tp>>({},\
-    \ {Tp(1)}, {Tp(1)}, -(C / D)) * M;\n    return std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n\
+    \ <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_approximation(const\
+    \ Poly<Tp> &A, const Poly<Tp> &B,\n                                          \
+    \                  int k) {\n    auto M            = hgcd(B, A, k / 2);\n    const\
+    \ auto [C, D] = M * std::array{B, A};\n    if (D.deg() >= 0 && D.deg() - C.deg()\
+    \ >= -(k - (B.deg() - C.deg()) * 2))\n        M = GCDMatrix<Poly<Tp>>({}, {Tp(1)},\
+    \ {Tp(1)}, -(C / D)) * M;\n    return std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n\
+    }\n\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_reconstruction(const\
+    \ std::vector<Tp> &A) {\n    return rational_approximation(Poly<Tp>(A.rbegin(),\
+    \ A.rend()), Poly<Tp>{Tp(1)} << A.size(),\n                                  A.size());\n\
     }\n\n// returns [x^([-k,-1])]A/B\n// requires deg(A)<deg(B)\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> rational_function_to_series(const Poly<Tp> &A, const\
-    \ Poly<Tp> &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
-    \ - 1)).slice(0, k);\n}\n"
+    \ Tp>\ninline std::vector<Tp> fraction_to_series(const Poly<Tp> &A, const Poly<Tp>\
+    \ &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).slice(0,\
+    \ k);\n}\n"
   code: "#pragma once\n\n#include \"poly_basic.hpp\"\n#include <algorithm>\n#include\
     \ <array>\n#include <cassert>\n#include <iostream>\n#include <tuple>\n#include\
     \ <utility>\n#include <vector>\n\ntemplate <typename Tp>\nclass Poly : public\
@@ -451,16 +451,19 @@ data:
     \ = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_pair(M[0][0],\
     \ M[0][0] * A + M[0][1] * B);\n}\n\n// returns P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B\n\
     // where P,Q in F[x], deg(Q) is minimized\n// requires deg(A)<deg(B)\ntemplate\
-    \ <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_function_approximation(const\
-    \ Poly<Tp> &A,\n                                                             \
-    \        const Poly<Tp> &B, int k) {\n    auto M            = hgcd(B, A, k / 2);\n\
-    \    const auto [C, D] = M * std::array{B, A};\n    if (D.deg() >= 0 && D.deg()\
-    \ - C.deg() >= -(k - (B.deg() - C.deg()) * 2))\n        M = GCDMatrix<Poly<Tp>>({},\
-    \ {Tp(1)}, {Tp(1)}, -(C / D)) * M;\n    return std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n\
+    \ <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_approximation(const\
+    \ Poly<Tp> &A, const Poly<Tp> &B,\n                                          \
+    \                  int k) {\n    auto M            = hgcd(B, A, k / 2);\n    const\
+    \ auto [C, D] = M * std::array{B, A};\n    if (D.deg() >= 0 && D.deg() - C.deg()\
+    \ >= -(k - (B.deg() - C.deg()) * 2))\n        M = GCDMatrix<Poly<Tp>>({}, {Tp(1)},\
+    \ {Tp(1)}, -(C / D)) * M;\n    return std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n\
+    }\n\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_reconstruction(const\
+    \ std::vector<Tp> &A) {\n    return rational_approximation(Poly<Tp>(A.rbegin(),\
+    \ A.rend()), Poly<Tp>{Tp(1)} << A.size(),\n                                  A.size());\n\
     }\n\n// returns [x^([-k,-1])]A/B\n// requires deg(A)<deg(B)\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> rational_function_to_series(const Poly<Tp> &A, const\
-    \ Poly<Tp> &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg()\
-    \ - 1)).slice(0, k);\n}\n"
+    \ Tp>\ninline std::vector<Tp> fraction_to_series(const Poly<Tp> &A, const Poly<Tp>\
+    \ &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).slice(0,\
+    \ k);\n}\n"
   dependsOn:
   - poly_basic.hpp
   - binomial.hpp
@@ -474,7 +477,7 @@ data:
   - mat_basic.hpp
   - frobenius.hpp
   - basis.hpp
-  timestamp: '2024-08-13 21:21:03+08:00'
+  timestamp: '2024-08-13 22:20:52+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/characteristic_polynomial.0.test.cpp
@@ -486,7 +489,6 @@ data:
   - test/matrix/matrix_product.0.test.cpp
   - test/formal_power_series/inv_of_polynomials.0.test.cpp
   - test/formal_power_series/find_linear_recurrence.0.test.cpp
-  - test/formal_power_series/find_linear_recurrence.1.test.cpp
 documentation_of: poly.hpp
 layout: document
 redirect_from:

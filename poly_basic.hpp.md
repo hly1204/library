@@ -55,9 +55,6 @@ data:
     path: test/formal_power_series/find_linear_recurrence.0.test.cpp
     title: test/formal_power_series/find_linear_recurrence.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/find_linear_recurrence.1.test.cpp
-    title: test/formal_power_series/find_linear_recurrence.1.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_polynomials.0.test.cpp
     title: test/formal_power_series/inv_of_polynomials.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -413,7 +410,6 @@ data:
   - test/formal_power_series/division_of_polynomials.0.test.cpp
   - test/formal_power_series/find_linear_recurrence.0.test.cpp
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - test/formal_power_series/find_linear_recurrence.1.test.cpp
   - test/formal_power_series/polynomial_interpolation.0.test.cpp
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
 documentation_of: poly_basic.hpp
