@@ -44,6 +44,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
+  - icon: ':warning:'
+    path: poly_interpolation_with_error.hpp
+    title: poly_interpolation_with_error.hpp
   - icon: ':heavy_check_mark:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
@@ -345,6 +348,7 @@ data:
   - poly.hpp
   - czt.hpp
   - poly_basic.hpp
+  - poly_interpolation_with_error.hpp
   - eulerian_number.hpp
   timestamp: '2024-06-02 11:00:30+08:00'
   verificationStatus: LIBRARY_ALL_AC

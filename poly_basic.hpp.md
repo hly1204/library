@@ -35,6 +35,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: poly.hpp
     title: poly.hpp
+  - icon: ':warning:'
+    path: poly_interpolation_with_error.hpp
+    title: poly_interpolation_with_error.hpp
   - icon: ':heavy_check_mark:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
@@ -389,6 +392,7 @@ data:
   - subproduct_tree.hpp
   - poly.hpp
   - czt.hpp
+  - poly_interpolation_with_error.hpp
   timestamp: '2024-08-03 14:01:08+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

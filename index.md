@@ -75,6 +75,9 @@ data:
     - icon: ':warning:'
       path: poly_interpolation.hpp
       title: poly_interpolation.hpp
+    - icon: ':warning:'
+      path: poly_interpolation_with_error.hpp
+      title: poly_interpolation_with_error.hpp
     - icon: ':heavy_check_mark:'
       path: poly_product.hpp
       title: poly_product.hpp

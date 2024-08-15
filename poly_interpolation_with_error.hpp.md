@@ -14,51 +14,54 @@ data:
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
+    path: poly.hpp
+    title: poly.hpp
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
   - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  _extendedRequiredBy:
-  - icon: ':warning:'
-    path: poly_interpolation_with_error.hpp
-    title: poly_interpolation_with_error.hpp
-  _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-    title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/multipoint_evaluation.0.test.cpp
-    title: test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/polynomial_interpolation.0.test.cpp
-    title: test/formal_power_series/polynomial_interpolation.0.test.cpp
+    path: subproduct_tree.hpp
+    title: subproduct_tree.hpp
+  _extendedRequiredBy: []
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':warning:'
   attributes:
-    links:
-    - https://noshi91.hatenablog.com/entry/2023/05/01/022946
-  bundledCode: "#line 2 \"subproduct_tree.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#include\
-    \ <cassert>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ batch_inv(const std::vector<Tp> &a) {\n    if (a.empty()) return {};\n    const\
-    \ int n = a.size();\n    std::vector<Tp> b(n);\n    Tp v = 1;\n    for (int i\
-    \ = 0; i < n; ++i) b[i] = v, v *= a[i];\n    assert(v != 0);\n    v = v.inv();\n\
-    \    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n    return b;\n}\n\
-    #line 2 \"fft.hpp\"\n\n#include <algorithm>\n#line 5 \"fft.hpp\"\n#include <iterator>\n\
-    #include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo\
-    \ {\n    static Tp least_quadratic_nonresidue() {\n        for (int i = 2;; ++i)\n\
-    \            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n    }\n\n\
-    \    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n    const\
-    \ Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n  \
-    \  mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
-    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
-    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
-    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
-    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
-    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
-    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
-    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+    links: []
+  bundledCode: "#line 2 \"poly_interpolation_with_error.hpp\"\n\n#line 2 \"poly.hpp\"\
+    \n\n#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n\
+    #include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp>\
+    \ factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)}\
+    \ {}\n\n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
+    \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
+    \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
+    \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
+    \ factorial_[i] = factorial_[i - 1] * i;\n            invfactorial_.back() = factorial_.back().inv();\n\
+    \            for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i\
+    \ + 1] * (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int\
+    \ n) {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
+    \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
+    \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
+    \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
+    \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
+    \ invfactorial_[n]; }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include\
+    \ <cassert>\n#include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate\
+    \ <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue() {\n\
+    \        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2)\
+    \ == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
+    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
+    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
+    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
+    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
+    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
+    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
+    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
+    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
+    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
     \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
     \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
     \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
@@ -115,42 +118,27 @@ data:
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
     \    return convolution_fft(a, b);\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"\
-    binomial.hpp\"\n\n#line 5 \"binomial.hpp\"\n\ntemplate <typename Tp>\nclass Binomial\
-    \ {\n    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
-    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
-    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
-    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
-    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
-    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
-    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
-    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
-    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
-    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
-    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
-    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
-    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
-    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
-    \ }\n};\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 5 \"semi_relaxed_conv.hpp\"\
-    \n#include <type_traits>\n#include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\
-    \n\n// returns coefficients generated by closure\n// closure: gen(index, current_product)\n\
-    template <typename Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp,\
-    \ Closure, int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\n\
-    semi_relaxed_convolution(const std::vector<Tp> &A, Closure gen, int n) {\n   \
-    \ enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize & (BaseCaseSize\
-    \ - 1)) == 0);\n\n    static const int Block[]     = {16, 16, 16, 16, 16};\n \
-    \   static const int BlockSize[] = {\n        BaseCaseSize,\n        BaseCaseSize\
-    \ * Block[0],\n        BaseCaseSize * Block[0] * Block[1],\n        BaseCaseSize\
-    \ * Block[0] * Block[1] * Block[2],\n        BaseCaseSize * Block[0] * Block[1]\
-    \ * Block[2] * Block[3],\n        BaseCaseSize * Block[0] * Block[1] * Block[2]\
-    \ * Block[3] * Block[4],\n    };\n\n    // returns (which_block, level)\n    auto\
-    \ blockinfo = [](int ind) {\n        int i = ind / BaseCaseSize, lv = 0;\n   \
-    \     while ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n        return std::make_pair(i\
-    \ & (Block[lv] - 1), lv);\n    };\n\n    std::vector<Tp> B(n), AB(n);\n    std::vector<std::vector<std::vector<Tp>>>\
-    \ dftA, dftB;\n\n    for (int i = 0; i < n; ++i) {\n        const int s = i &\
-    \ (BaseCaseSize - 1);\n\n        // blocked contribution\n        if (i >= BaseCaseSize\
-    \ && s == 0) {\n            const auto [j, lv]  = blockinfo(i);\n            const\
-    \ int blocksize = BlockSize[lv];\n\n            if (blocksize * j == i) {\n  \
-    \              if ((int)dftA.size() == lv) {\n                    dftA.emplace_back();\n\
+    semi_relaxed_conv.hpp\"\n\n#line 5 \"semi_relaxed_conv.hpp\"\n#include <type_traits>\n\
+    #include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\n\n// returns coefficients\
+    \ generated by closure\n// closure: gen(index, current_product)\ntemplate <typename\
+    \ Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp, Closure,\
+    \ int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
+    \ std::vector<Tp> &A, Closure gen, int n) {\n    enum { BaseCaseSize = 32 };\n\
+    \    static_assert((BaseCaseSize & (BaseCaseSize - 1)) == 0);\n\n    static const\
+    \ int Block[]     = {16, 16, 16, 16, 16};\n    static const int BlockSize[] =\
+    \ {\n        BaseCaseSize,\n        BaseCaseSize * Block[0],\n        BaseCaseSize\
+    \ * Block[0] * Block[1],\n        BaseCaseSize * Block[0] * Block[1] * Block[2],\n\
+    \        BaseCaseSize * Block[0] * Block[1] * Block[2] * Block[3],\n        BaseCaseSize\
+    \ * Block[0] * Block[1] * Block[2] * Block[3] * Block[4],\n    };\n\n    // returns\
+    \ (which_block, level)\n    auto blockinfo = [](int ind) {\n        int i = ind\
+    \ / BaseCaseSize, lv = 0;\n        while ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n\
+    \        return std::make_pair(i & (Block[lv] - 1), lv);\n    };\n\n    std::vector<Tp>\
+    \ B(n), AB(n);\n    std::vector<std::vector<std::vector<Tp>>> dftA, dftB;\n\n\
+    \    for (int i = 0; i < n; ++i) {\n        const int s = i & (BaseCaseSize -\
+    \ 1);\n\n        // blocked contribution\n        if (i >= BaseCaseSize && s ==\
+    \ 0) {\n            const auto [j, lv]  = blockinfo(i);\n            const int\
+    \ blocksize = BlockSize[lv];\n\n            if (blocksize * j == i) {\n      \
+    \          if ((int)dftA.size() == lv) {\n                    dftA.emplace_back();\n\
     \                    dftB.emplace_back(Block[lv] - 1);\n                }\n  \
     \              if ((j - 1) * blocksize < (int)A.size()) {\n                  \
     \  dftA[lv]\n                        .emplace_back(A.begin() + (j - 1) * blocksize,\n\
@@ -202,15 +190,15 @@ data:
     \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = log(a, n - o * e);\n    for (int\
     \ i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = exp(a, n - o * e);\n   \
     \ for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
-    \ o * e, 0);\n    return a;\n}\n#line 2 \"poly_basic.hpp\"\n\n#line 10 \"poly_basic.hpp\"\
-    \n\ntemplate <typename Tp>\ninline int degree(const std::vector<Tp> &a) {\n  \
-    \  int n = (int)a.size() - 1;\n    while (n >= 0 && a[n] == 0) --n;\n    return\
-    \ n;\n}\n\ntemplate <typename Tp>\ninline void shrink(std::vector<Tp> &a) {\n\
-    \    a.resize(degree(a) + 1);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ taylor_shift(std::vector<Tp> a, Tp c) {\n    const int n = a.size();\n    auto\
-    \ &&bin  = Binomial<Tp>::get(n);\n    for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);\n\
-    \    Tp cc = 1;\n    std::vector<Tp> b(n);\n    for (int i = 0; i < n; ++i) {\n\
-    \        b[i] = cc * bin.inv_factorial(i);\n        cc *= c;\n    }\n    std::reverse(a.begin(),\
+    \ o * e, 0);\n    return a;\n}\n#line 10 \"poly_basic.hpp\"\n\ntemplate <typename\
+    \ Tp>\ninline int degree(const std::vector<Tp> &a) {\n    int n = (int)a.size()\
+    \ - 1;\n    while (n >= 0 && a[n] == 0) --n;\n    return n;\n}\n\ntemplate <typename\
+    \ Tp>\ninline void shrink(std::vector<Tp> &a) {\n    a.resize(degree(a) + 1);\n\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> taylor_shift(std::vector<Tp>\
+    \ a, Tp c) {\n    const int n = a.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n\
+    \    for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);\n    Tp cc = 1;\n \
+    \   std::vector<Tp> b(n);\n    for (int i = 0; i < n; ++i) {\n        b[i] = cc\
+    \ * bin.inv_factorial(i);\n        cc *= c;\n    }\n    std::reverse(a.begin(),\
     \ a.end());\n    auto ab = convolution(a, b);\n    ab.resize(n);\n    std::reverse(ab.begin(),\
     \ ab.end());\n    for (int i = 0; i < n; ++i) ab[i] *= bin.inv_factorial(i);\n\
     \    return ab;\n}\n\n// returns (quotient, remainder)\n// O(deg(Q)deg(B))\ntemplate\
@@ -256,33 +244,133 @@ data:
     \ < 0) return {Tp(0)};\n    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A,\
     \ B);\n\n    auto Q = div(std::vector(A.rend() - (degA + 1), A.rend()),\n    \
     \             std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n    std::reverse(Q.begin(),\
-    \ Q.end());\n    return Q;\n}\n#line 10 \"subproduct_tree.hpp\"\n\ntemplate <typename\
-    \ Tp>\nclass SubproductTree {\npublic:\n    // LV=0   => T[0..S]  = DFT((x-X_0)..(x-X_(N-1))\
-    \     mod (x^S     - 1))\n    //        => T[S..2S] = (x-X_0)..(x-X_(N-1))   \
-    \      mod (x^S     + 1)  (* SPECIAL CASE)\n    // LV=1   => T[..]    = DFT((x-X_0)..(x-X_(S/2-1))\
-    \   mod (x^(S/2) - 1))\n    //        => T[..]    = DFT((x-X_(S/2))..(x-X_(N-1))\
-    \ mod (x^(S/2) - 1)) (* GENERAL CASE)\n    // LV=2.. => ..                   \
-    \                                      (* GENERAL CASE)\n    std::vector<Tp> T;\n\
-    \    int N;\n    int S;\n\n    explicit SubproductTree(const std::vector<Tp> &X)\n\
-    \        : N(X.size()), S(N == 0 ? 2 : std::max(fft_len(N), 2)) {\n        int\
-    \ LogS = 1;\n        while ((1 << LogS) < S) ++LogS;\n        T.assign((LogS +\
-    \ 1) * S * 2, 1);\n        for (int i = 0; i < N; ++i) {\n            T[LogS *\
-    \ S * 2 + i * 2]     = 1 - X[i];\n            T[LogS * S * 2 + i * 2 + 1] = -1\
-    \ - X[i];\n        }\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv,\
-    \ len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i) {\n           \
-    \     auto C = T.begin() + (lv * S * 2 + i * len * 2);       // current\n    \
-    \            auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
-    \                for (int j = 0; j < len; ++j) C[j] = C[len + j] = L[j] * L[len\
-    \ + j];\n                inv_fft_n(C + len, len);\n                if ((i + 1)\
-    \ * len <= N) C[len] -= 2;\n                if (lv) {\n                    Tp\
-    \ k         = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
-    \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
-    \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
-    \     }\n        }\n    }\n\n    std::vector<Tp> product() const {\n        std::vector\
-    \ res(T.begin() + S, T.begin() + S * 2);\n        if (N == S) {\n            res[0]\
-    \ += 1;\n            res.emplace_back(1);\n        }\n        res.resize(N + 1);\n\
-    \        return res;\n    }\n\n    // see:\n    // [1]: A. Bostan, Gr\xE9goire\
-    \ Lecerf, \xC9. Schost. Tellegen's principle into practice.\n    // [2]: D. Bernstein.\
+    \ Q.end());\n    return Q;\n}\n#line 5 \"poly.hpp\"\n#include <array>\n#line 7\
+    \ \"poly.hpp\"\n#include <iostream>\n#include <tuple>\n#line 11 \"poly.hpp\"\n\
+    \ntemplate <typename Tp>\nclass Poly : public std::vector<Tp> {\n    using Base\
+    \ = std::vector<Tp>;\n\npublic:\n    using Base::Base;\n\n    int deg() const\
+    \ { return degree(*this); }\n\n    int ord() const { return order(*this); }\n\n\
+    \    Poly rev() const {\n        const int d = deg();\n        Poly res(d + 1);\n\
+    \        for (int i = d; i >= 0; --i) res[i] = Base::operator[](d - i);\n    \
+    \    return res;\n    }\n\n    Poly slice(int L, int R) const {\n        Poly\
+    \ res(R - L);\n        for (int i = L; i < std::min(R, (int)Base::size()); ++i)\
+    \ res[i - L] = Base::operator[](i);\n        return res;\n    }\n\n    Poly trunc(int\
+    \ D) const {\n        Poly res(D);\n        for (int i = 0; i < std::min(D, (int)Base::size());\
+    \ ++i) res[i] = Base::operator[](i);\n        return res;\n    }\n\n    Poly &shrink()\
+    \ {\n        Base::resize(deg() + 1);\n        return *this;\n    }\n\n    Tp\
+    \ lc() const {\n        const int d = deg();\n        return d == -1 ? Tp() :\
+    \ Base::operator[](d);\n    }\n\n    Poly taylor_shift(Tp c) const {\n       \
+    \ Base::operator=(taylor_shift(*this, c));\n        return shrink();\n    }\n\n\
+    \    Poly operator-() const {\n        const int d = deg();\n        Poly res(d\
+    \ + 1);\n        for (int i = 0; i <= d; ++i) res[i] = -Base::operator[](i);\n\
+    \        res.shrink();\n        return res;\n    }\n\n    std::pair<Poly, Poly>\
+    \ divmod(const Poly &R) const {\n        const auto [q, r] = euclidean_div(*this,\
+    \ R);\n        return std::make_pair(Poly(q.begin(), q.end()), Poly(r.begin(),\
+    \ r.end()));\n    }\n    Poly &operator+=(const Poly &R) {\n        if (Base::size()\
+    \ < R.size()) Base::resize(R.size());\n        for (int i = 0; i < (int)R.size();\
+    \ ++i) Base::operator[](i) += R[i];\n        return shrink();\n    }\n    Poly\
+    \ &operator-=(const Poly &R) {\n        if (Base::size() < R.size()) Base::resize(R.size());\n\
+    \        for (int i = 0; i < (int)R.size(); ++i) Base::operator[](i) -= R[i];\n\
+    \        return shrink();\n    }\n    Poly &operator*=(const Poly &R) {\n    \
+    \    Base::operator=(convolution(*this, R));\n        return shrink();\n    }\n\
+    \    Poly &operator/=(const Poly &R) {\n        Base::operator=(euclidean_div_quotient(*this,\
+    \ R));\n        return shrink();\n    }\n    Poly &operator%=(const Poly &R) {\n\
+    \        Base::operator=(divmod(R).second);\n        return shrink();\n    }\n\
+    \    Poly &operator<<=(int D) {\n        if (D > 0) {\n            Base::insert(Base::begin(),\
+    \ D, Tp());\n        } else if (D < 0) {\n            if (-D < (int)Base::size())\
+    \ {\n                Base::erase(Base::begin(), Base::begin() + (-D));\n     \
+    \       } else {\n                Base::clear();\n            }\n        }\n \
+    \       return shrink();\n    }\n    Poly &operator>>=(int D) { return operator<<=(-D);\
+    \ }\n\n    friend Poly operator+(const Poly &L, const Poly &R) { return Poly(L)\
+    \ += R; }\n    friend Poly operator-(const Poly &L, const Poly &R) { return Poly(L)\
+    \ -= R; }\n    friend Poly operator*(const Poly &L, const Poly &R) { return Poly(L)\
+    \ *= R; }\n    friend Poly operator/(const Poly &L, const Poly &R) { return Poly(L)\
+    \ /= R; }\n    friend Poly operator%(const Poly &L, const Poly &R) { return Poly(L)\
+    \ %= R; }\n    friend Poly operator<<(const Poly &L, int D) { return Poly(L) <<=\
+    \ D; }\n    friend Poly operator>>(const Poly &L, int D) { return Poly(L) >>=\
+    \ D; }\n\n    friend std::ostream &operator<<(std::ostream &L, const Poly &R)\
+    \ {\n        L << '[';\n        const int d = R.deg();\n        if (d < 0) {\n\
+    \            L << '0';\n        } else {\n            for (int i = 0; i <= d;\
+    \ ++i) {\n                L << R[i];\n                if (i == 1) L << \"*x\"\
+    ;\n                if (i > 1) L << \"*x^\" << i;\n                if (i != d)\
+    \ L << \" + \";\n            }\n        }\n        return L << ']';\n    }\n};\n\
+    \n// 2x2 matrix for Euclidean algorithm\ntemplate <typename Tp>\nclass GCDMatrix\
+    \ : public std::array<std::array<Tp, 2>, 2> {\npublic:\n    GCDMatrix(const Tp\
+    \ &x00, const Tp &x01, const Tp &x10, const Tp &x11)\n        : std::array<std::array<Tp,\
+    \ 2>, 2>{std::array{x00, x01}, std::array{x10, x11}} {}\n\n    GCDMatrix operator*(const\
+    \ GCDMatrix &R) const {\n        return {(*this)[0][0] * R[0][0] + (*this)[0][1]\
+    \ * R[1][0],\n                (*this)[0][0] * R[0][1] + (*this)[0][1] * R[1][1],\n\
+    \                (*this)[1][0] * R[0][0] + (*this)[1][1] * R[1][0],\n        \
+    \        (*this)[1][0] * R[0][1] + (*this)[1][1] * R[1][1]};\n    }\n\n    std::array<Tp,\
+    \ 2> operator*(const std::array<Tp, 2> &R) const {\n        return {(*this)[0][0]\
+    \ * R[0] + (*this)[0][1] * R[1],\n                (*this)[1][0] * R[0] + (*this)[1][1]\
+    \ * R[1]};\n    }\n\n    Tp det() const { return (*this)[0][0] * (*this)[1][1]\
+    \ - (*this)[0][1] * (*this)[1][0]; }\n    GCDMatrix adj() const { return {(*this)[1][1],\
+    \ -(*this)[0][1], -(*this)[1][0], (*this)[0][0]}; }\n};\n\n// returns M s.t. deg(M)\
+    \ <= d and deg(M21*A+M22*B) < max(deg(A),deg(B))-d\n//                det(M) in\
+    \ {-1,1}\n// see:\n// [1]: Daniel J. Bernstein. Fast multiplication and its applications.\n\
+    template <typename Tp>\ninline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const\
+    \ Poly<Tp> &B, int d) {\n    using Mat = GCDMatrix<Poly<Tp>>;\n    assert(!(A.deg()\
+    \ < 0 && B.deg() < 0));\n    if (A.deg() < B.deg()) return hgcd(B, A, d) * Mat({},\
+    \ {Tp(1)}, {Tp(1)}, {});\n    if (A.deg() < d) return hgcd(A, B, A.deg());\n \
+    \   if (B.deg() < A.deg() - d) return Mat({Tp(1)}, {}, {}, {Tp(1)});\n    if (int\
+    \ dd = A.deg() - d * 2; dd > 0) return hgcd(A >> dd, B >> dd, d);\n    if (d ==\
+    \ 0) return Mat({}, {Tp(1)}, {Tp(1)}, -(A / B));\n    const auto M = hgcd(A, B,\
+    \ d / 2);\n    const auto D = M[1][0] * A + M[1][1] * B;\n    if (D.deg() < A.deg()\
+    \ - d) return M;\n    const auto C      = M[0][0] * A + M[0][1] * B;\n    const\
+    \ auto [Q, R] = C.divmod(D);\n    return hgcd(D, R, D.deg() - (A.deg() - d)) *\
+    \ Mat({}, {Tp(1)}, {Tp(1)}, -Q) * M;\n}\n\ntemplate <typename Tp>\ninline std::tuple<Poly<Tp>,\
+    \ Poly<Tp>, Poly<Tp>> xgcd(const Poly<Tp> &A, const Poly<Tp> &B) {\n    const\
+    \ auto M = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_tuple(M[0][0],\
+    \ M[0][1], M[0][0] * A + M[0][1] * B);\n}\n\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>,\
+    \ Poly<Tp>> inv_gcd(const Poly<Tp> &A, const Poly<Tp> &B) {\n    const auto M\
+    \ = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_pair(M[0][0],\
+    \ M[0][0] * A + M[0][1] * B);\n}\n\n// returns P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B\n\
+    // where P,Q in F[x], deg(Q) is minimized\n// requires deg(A)<deg(B)\ntemplate\
+    \ <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_approximation(const\
+    \ Poly<Tp> &A, const Poly<Tp> &B,\n                                          \
+    \                  int k) {\n    auto M            = hgcd(B, A, k / 2);\n    const\
+    \ auto [C, D] = M * std::array{B, A};\n    if (D.deg() >= 0 && D.deg() - C.deg()\
+    \ >= -(k - (B.deg() - C.deg()) * 2))\n        M = GCDMatrix<Poly<Tp>>({}, {Tp(1)},\
+    \ {Tp(1)}, -(C / D)) * M;\n    return std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n\
+    }\n\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_reconstruction(const\
+    \ std::vector<Tp> &A) {\n    return rational_approximation(Poly<Tp>(A.rbegin(),\
+    \ A.rend()), Poly<Tp>{Tp(1)} << A.size(),\n                                  A.size());\n\
+    }\n\n// returns [x^([-k,-1])]A/B\n// requires deg(A)<deg(B)\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> fraction_to_series(const Poly<Tp> &A, const Poly<Tp>\
+    \ &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).slice(0,\
+    \ k);\n}\n#line 2 \"subproduct_tree.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#line\
+    \ 5 \"batch_inv.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp> batch_inv(const\
+    \ std::vector<Tp> &a) {\n    if (a.empty()) return {};\n    const int n = a.size();\n\
+    \    std::vector<Tp> b(n);\n    Tp v = 1;\n    for (int i = 0; i < n; ++i) b[i]\
+    \ = v, v *= a[i];\n    assert(v != 0);\n    v = v.inv();\n    for (int i = n -\
+    \ 1; i >= 0; --i) b[i] *= v, v *= a[i];\n    return b;\n}\n#line 10 \"subproduct_tree.hpp\"\
+    \n\ntemplate <typename Tp>\nclass SubproductTree {\npublic:\n    // LV=0   =>\
+    \ T[0..S]  = DFT((x-X_0)..(x-X_(N-1))     mod (x^S     - 1))\n    //        =>\
+    \ T[S..2S] = (x-X_0)..(x-X_(N-1))         mod (x^S     + 1)  (* SPECIAL CASE)\n\
+    \    // LV=1   => T[..]    = DFT((x-X_0)..(x-X_(S/2-1))   mod (x^(S/2) - 1))\n\
+    \    //        => T[..]    = DFT((x-X_(S/2))..(x-X_(N-1)) mod (x^(S/2) - 1)) (*\
+    \ GENERAL CASE)\n    // LV=2.. => ..                                         \
+    \                (* GENERAL CASE)\n    std::vector<Tp> T;\n    int N;\n    int\
+    \ S;\n\n    explicit SubproductTree(const std::vector<Tp> &X)\n        : N(X.size()),\
+    \ S(N == 0 ? 2 : std::max(fft_len(N), 2)) {\n        int LogS = 1;\n        while\
+    \ ((1 << LogS) < S) ++LogS;\n        T.assign((LogS + 1) * S * 2, 1);\n      \
+    \  for (int i = 0; i < N; ++i) {\n            T[LogS * S * 2 + i * 2]     = 1\
+    \ - X[i];\n            T[LogS * S * 2 + i * 2 + 1] = -1 - X[i];\n        }\n \
+    \       for (int lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {\n        \
+    \    for (int i = 0; i < (1 << lv); ++i) {\n                auto C = T.begin()\
+    \ + (lv * S * 2 + i * len * 2);       // current\n                auto L = T.begin()\
+    \ + ((lv + 1) * S * 2 + i * len * 2); // left child\n                for (int\
+    \ j = 0; j < len; ++j) C[j] = C[len + j] = L[j] * L[len + j];\n              \
+    \  inv_fft_n(C + len, len);\n                if ((i + 1) * len <= N) C[len] -=\
+    \ 2;\n                if (lv) {\n                    Tp k         = 1;\n     \
+    \               const auto t = FftInfo<Tp>::get().root(len).at(len / 2);\n   \
+    \                 for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;\n   \
+    \                 fft_n(C + len, len);\n                }\n            }\n   \
+    \     }\n    }\n\n    std::vector<Tp> product() const {\n        std::vector res(T.begin()\
+    \ + S, T.begin() + S * 2);\n        if (N == S) {\n            res[0] += 1;\n\
+    \            res.emplace_back(1);\n        }\n        res.resize(N + 1);\n   \
+    \     return res;\n    }\n\n    // see:\n    // [1]: A. Bostan, Gr\xE9goire Lecerf,\
+    \ \xC9. Schost. Tellegen's principle into practice.\n    // [2]: D. Bernstein.\
     \ SCALED REMAINDER TREES.\n    std::vector<Tp> evaluation(const std::vector<Tp>\
     \ &F) const {\n        const int degF = degree(F);\n        const auto P   = product();\n\
     \        // find coefficients of x^(-1),...,x^(-N) of F/P in R((x^(-1)))\n   \
@@ -349,124 +437,45 @@ data:
     \ FftInfo<Tp>::get().root(len).at(len / 2);\n                    for (int j =\
     \ 0; j < len; ++j) C[len + j] *= k, k *= t;\n                    fft_n(C + len,\
     \ len);\n                }\n            }\n        }\n        return std::vector(res.begin()\
-    \ + S, res.begin() + (S + N));\n    }\n};\n"
-  code: "#pragma once\n\n#include \"batch_inv.hpp\"\n#include \"fft.hpp\"\n#include\
-    \ \"fps_basic.hpp\"\n#include \"poly_basic.hpp\"\n#include <algorithm>\n#include\
-    \ <cassert>\n#include <vector>\n\ntemplate <typename Tp>\nclass SubproductTree\
-    \ {\npublic:\n    // LV=0   => T[0..S]  = DFT((x-X_0)..(x-X_(N-1))     mod (x^S\
-    \     - 1))\n    //        => T[S..2S] = (x-X_0)..(x-X_(N-1))         mod (x^S\
-    \     + 1)  (* SPECIAL CASE)\n    // LV=1   => T[..]    = DFT((x-X_0)..(x-X_(S/2-1))\
-    \   mod (x^(S/2) - 1))\n    //        => T[..]    = DFT((x-X_(S/2))..(x-X_(N-1))\
-    \ mod (x^(S/2) - 1)) (* GENERAL CASE)\n    // LV=2.. => ..                   \
-    \                                      (* GENERAL CASE)\n    std::vector<Tp> T;\n\
-    \    int N;\n    int S;\n\n    explicit SubproductTree(const std::vector<Tp> &X)\n\
-    \        : N(X.size()), S(N == 0 ? 2 : std::max(fft_len(N), 2)) {\n        int\
-    \ LogS = 1;\n        while ((1 << LogS) < S) ++LogS;\n        T.assign((LogS +\
-    \ 1) * S * 2, 1);\n        for (int i = 0; i < N; ++i) {\n            T[LogS *\
-    \ S * 2 + i * 2]     = 1 - X[i];\n            T[LogS * S * 2 + i * 2 + 1] = -1\
-    \ - X[i];\n        }\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv,\
-    \ len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i) {\n           \
-    \     auto C = T.begin() + (lv * S * 2 + i * len * 2);       // current\n    \
-    \            auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
-    \                for (int j = 0; j < len; ++j) C[j] = C[len + j] = L[j] * L[len\
-    \ + j];\n                inv_fft_n(C + len, len);\n                if ((i + 1)\
-    \ * len <= N) C[len] -= 2;\n                if (lv) {\n                    Tp\
-    \ k         = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
-    \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
-    \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
-    \     }\n        }\n    }\n\n    std::vector<Tp> product() const {\n        std::vector\
-    \ res(T.begin() + S, T.begin() + S * 2);\n        if (N == S) {\n            res[0]\
-    \ += 1;\n            res.emplace_back(1);\n        }\n        res.resize(N + 1);\n\
-    \        return res;\n    }\n\n    // see:\n    // [1]: A. Bostan, Gr\xE9goire\
-    \ Lecerf, \xC9. Schost. Tellegen's principle into practice.\n    // [2]: D. Bernstein.\
-    \ SCALED REMAINDER TREES.\n    std::vector<Tp> evaluation(const std::vector<Tp>\
-    \ &F) const {\n        const int degF = degree(F);\n        const auto P   = product();\n\
-    \        // find coefficients of x^(-1),...,x^(-N) of F/P in R((x^(-1)))\n   \
-    \     auto res = div(std::vector(F.rend() - (degF + 1), F.rend()),\n         \
-    \              std::vector(P.rbegin(), P.rend()), degF + 1);\n        if (degF\
-    \ >= N) res.erase(res.begin(), res.begin() + (degF - N + 1));\n        std::reverse(res.begin(),\
-    \ res.end());\n        res.resize(N);\n        res.insert(res.begin(), S - N,\
-    \ 0); // res[S-1]=[x^(-1)]F/P, res[S-2]=[x^(-2)]F/P, ...\n        for (int lv\
-    \ = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {\n            std::vector<Tp>\
-    \ LL(len);\n            for (int i = 0; i < (1 << lv); ++i) {\n              \
-    \  auto C = res.begin() + i * len;                        // current\n       \
-    \         auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
-    \                fft_n(C, len);\n                for (int j = 0; j < len; ++j)\
-    \ LL[j] = C[j] * L[len + j], C[j] *= L[j];\n                inv_fft(LL);\n   \
-    \             inv_fft_n(C, len);\n                std::copy_n(LL.begin() + len\
-    \ / 2, len / 2, C);\n            }\n        }\n        res.resize(N);\n      \
-    \  return res;\n    }\n\n    std::vector<Tp> interpolation(const std::vector<Tp>\
-    \ &Y) const {\n        assert((int)Y.size() == N);\n        const auto invD =\
-    \ batch_inv(evaluation(deriv(product()))); // denominator => P'(x_i)\n       \
-    \ std::vector<Tp> res(S * 2);\n        for (int i = 0; i < N; ++i) res[i * 2]\
-    \ = res[i * 2 + 1] = Y[i] * invD[i];\n        int LogS = 1;\n        while ((1\
-    \ << LogS) < S) ++LogS;\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv,\
-    \ len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i) {\n           \
-    \     auto C = res.begin() + i * len * 2;                    // current\n    \
-    \            auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
-    \                for (int j = 0; j < len; ++j)\n                    C[j] = C[len\
-    \ + j] = C[j] * L[len + j] + C[len + j] * L[j];\n                inv_fft_n(C +\
-    \ len, len);\n                if (lv) {\n                    Tp k         = 1;\n\
-    \                    const auto t = FftInfo<Tp>::get().root(len).at(len / 2);\n\
-    \                    for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;\n\
-    \                    fft_n(C + len, len);\n                }\n            }\n\
-    \        }\n        return std::vector(res.begin() + S, res.begin() + (S + N));\n\
-    \    }\n\n    // see:\n    // [1]: A. Bostan, \xC9. Schost. Polynomial evaluation\
-    \ and interpolation on special sets of points.\n    // [2]: noshi91. \u8EE2\u7F6E\
-    \u539F\u7406\u306A\u3057\u3067 Monomial \u57FA\u5E95\u304B\u3089 Newton \u57FA\
-    \u5E95\u3078\u306E\u5909\u63DB.\n    //      https://noshi91.hatenablog.com/entry/2023/05/01/022946\n\
-    \    std::vector<Tp> monomial_to_newton(const std::vector<Tp> &F) const {\n  \
-    \      const int degF = degree(F);\n        assert(degF < N);\n        const auto\
-    \ P = product();\n        // find coefficients of x^(-1),...,x^(-N) of F/P in\
-    \ R((x^(-1)))\n        auto res = div(std::vector(F.rend() - (degF + 1), F.rend()),\n\
-    \                       std::vector(P.rbegin(), P.rend()), degF + 1);\n      \
-    \  std::reverse(res.begin(), res.end());\n        res.resize(N);\n        res.insert(res.begin(),\
-    \ S - N, 0); // res[S-1]=[x^(-1)]F/P, res[S-2]=[x^(-2)]F/P, ...\n        for (int\
-    \ lv = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {\n            std::vector<Tp>\
-    \ RR(len / 2);\n            for (int i = 0; i < (1 << lv); ++i) {\n          \
-    \      auto C = res.begin() + i * len;                              // current\n\
-    \                auto R = T.begin() + ((lv + 1) * S * 2 + (i * 2 + 1) * len);\
-    \ // right child\n                std::copy_n(C + len / 2, len / 2, RR.begin());\n\
-    \                fft_n(C, len);\n                for (int j = 0; j < len; ++j)\
-    \ C[j] *= R[j];\n                inv_fft_n(C, len);\n                std::copy_n(C\
-    \ + len / 2, len / 2, C);\n                std::copy_n(RR.begin(), len / 2, C\
-    \ + len / 2);\n            }\n        }\n        res.resize(N);\n        return\
-    \ res;\n    }\n\n    std::vector<Tp> newton_to_monomial(const std::vector<Tp>\
-    \ &F) const {\n        const int degF = degree(F);\n        assert(degF < N);\n\
-    \        std::vector<Tp> res(S * 2);\n        for (int i = 0; i <= degF; ++i)\
-    \ res[i * 2] = res[i * 2 + 1] = F[i];\n        int LogS = 1;\n        while ((1\
-    \ << LogS) < S) ++LogS;\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv,\
-    \ len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i) {\n           \
-    \     auto C = res.begin() + i * len * 2;                    // current\n    \
-    \            auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
-    \                for (int j = 0; j < len; ++j) C[j] = C[len + j] = C[j] + C[len\
-    \ + j] * L[j];\n                inv_fft_n(C + len, len);\n                if (lv)\
-    \ {\n                    Tp k         = 1;\n                    const auto t =\
-    \ FftInfo<Tp>::get().root(len).at(len / 2);\n                    for (int j =\
-    \ 0; j < len; ++j) C[len + j] *= k, k *= t;\n                    fft_n(C + len,\
-    \ len);\n                }\n            }\n        }\n        return std::vector(res.begin()\
-    \ + S, res.begin() + (S + N));\n    }\n};\n"
+    \ + S, res.begin() + (S + N));\n    }\n};\n#line 6 \"poly_interpolation_with_error.hpp\"\
+    \n\n// returns F s.t. n=X.size(), deg(F)<n-2t with at most t Y[i] corrupted for\
+    \ F(X[i])=Y[i]\ntemplate <typename Tp>\ninline std::vector<Tp> interpolation_with_error(const\
+    \ std::vector<Tp> &X, const std::vector<Tp> &Y,\n                            \
+    \                    int t) {\n    assert(X.size() == Y.size());\n    const SubproductTree<Tp>\
+    \ T(X);\n    const auto prod   = T.product();\n    const auto B      = T.interpolation(Y);\n\
+    \    const auto [P, Q] = rational_approximation(Poly<Tp>(B.begin(), B.end()),\n\
+    \                                               Poly<Tp>(prod.begin(), prod.end()),\
+    \ t * 2);\n    return Poly<Tp>(B.begin(), B.end()) - (P * Poly<Tp>(prod.begin(),\
+    \ prod.end())) / Q;\n}\n"
+  code: "#pragma once\n\n#include \"poly.hpp\"\n#include \"subproduct_tree.hpp\"\n\
+    #include <vector>\n\n// returns F s.t. n=X.size(), deg(F)<n-2t with at most t\
+    \ Y[i] corrupted for F(X[i])=Y[i]\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ interpolation_with_error(const std::vector<Tp> &X, const std::vector<Tp> &Y,\n\
+    \                                                int t) {\n    assert(X.size()\
+    \ == Y.size());\n    const SubproductTree<Tp> T(X);\n    const auto prod   = T.product();\n\
+    \    const auto B      = T.interpolation(Y);\n    const auto [P, Q] = rational_approximation(Poly<Tp>(B.begin(),\
+    \ B.end()),\n                                               Poly<Tp>(prod.begin(),\
+    \ prod.end()), t * 2);\n    return Poly<Tp>(B.begin(), B.end()) - (P * Poly<Tp>(prod.begin(),\
+    \ prod.end())) / Q;\n}\n"
   dependsOn:
-  - batch_inv.hpp
+  - poly.hpp
+  - poly_basic.hpp
+  - binomial.hpp
   - fft.hpp
   - fps_basic.hpp
-  - binomial.hpp
   - semi_relaxed_conv.hpp
-  - poly_basic.hpp
+  - subproduct_tree.hpp
+  - batch_inv.hpp
   isVerificationFile: false
-  path: subproduct_tree.hpp
-  requiredBy:
-  - poly_interpolation_with_error.hpp
-  timestamp: '2024-08-03 14:01:08+08:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - test/formal_power_series/polynomial_interpolation.0.test.cpp
-documentation_of: subproduct_tree.hpp
+  path: poly_interpolation_with_error.hpp
+  requiredBy: []
+  timestamp: '2024-08-15 19:30:12+08:00'
+  verificationStatus: LIBRARY_NO_TESTS
+  verifiedWith: []
+documentation_of: poly_interpolation_with_error.hpp
 layout: document
 redirect_from:
-- /library/subproduct_tree.hpp
-- /library/subproduct_tree.hpp.html
-title: subproduct_tree.hpp
+- /library/poly_interpolation_with_error.hpp
+- /library/poly_interpolation_with_error.hpp.html
+title: poly_interpolation_with_error.hpp
 ---

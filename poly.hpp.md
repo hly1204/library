@@ -29,6 +29,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
+  - icon: ':warning:'
+    path: poly_interpolation_with_error.hpp
+    title: poly_interpolation_with_error.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/find_linear_recurrence.0.test.cpp
@@ -477,6 +480,7 @@ data:
   - mat_basic.hpp
   - frobenius.hpp
   - basis.hpp
+  - poly_interpolation_with_error.hpp
   timestamp: '2024-08-13 22:20:52+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

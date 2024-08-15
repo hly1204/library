@@ -8,6 +8,9 @@ data:
   - icon: ':warning:'
     path: poly_interpolation.hpp
     title: poly_interpolation.hpp
+  - icon: ':warning:'
+    path: poly_interpolation_with_error.hpp
+    title: poly_interpolation_with_error.hpp
   - icon: ':heavy_check_mark:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
@@ -54,6 +57,7 @@ data:
   - subproduct_tree.hpp
   - czt.hpp
   - poly_interpolation.hpp
+  - poly_interpolation_with_error.hpp
   timestamp: '2024-06-16 14:16:14+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
