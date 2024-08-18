@@ -40,6 +40,30 @@ inline std::vector<Tp> unsigned_stirling_numbers_1st_row(int n) {
     return res;
 }
 
+// returns |s(0,k)|, ..., |s(n-1,k)|
+template <typename Tp>
+inline std::vector<Tp> unsigned_stirling_numbers_1st_column(int k, int n) {
+    assert(n >= 0);
+    auto &&bin = Binomial<Tp>::get(n);
+    std::vector<Tp> I(n);
+    for (int i = 1; i < n; ++i) I[i] = bin.inv(i);
+    auto res = pow(I, k, n);
+    Tp v     = 1;
+    for (int i = 1; i <= k; ++i) v *= i;
+    v = v.inv();
+    for (int i = 0; i < n; ++i) res[i] *= bin.factorial(i) * v;
+    return res;
+}
+
+// returns s(0,k), ..., s(n-1,k)
+template <typename Tp>
+inline std::vector<Tp> signed_stirling_numbers_1st_column(int k, int n) {
+    auto S = unsigned_stirling_numbers_1st_column<Tp>(k, n);
+    for (int i = 0; i < n; ++i)
+        if ((k - i) & 1) S[i] = -S[i];
+    return S;
+}
+
 // returns s(n,0), ..., s(n,n)
 template <typename Tp>
 inline std::vector<Tp> signed_stirling_numbers_1st_row(int n) {
@@ -62,6 +86,30 @@ inline std::vector<Tp> stirling_numbers_2nd_row(int n) {
     }
     res = convolution(res, R);
     res.resize(n + 1);
+    return res;
+}
+
+// returns S(0,k), ..., S(n-1,k)
+template <typename Tp>
+inline std::vector<Tp> stirling_numbers_2nd_column(int k, int n) {
+    assert(n >= 0);
+    if (n == 0) return {};
+    if (n <= k) return std::vector<Tp>(n);
+    if (k == 0) {
+        std::vector<Tp> res(n);
+        res[0] = 1;
+        return res;
+    }
+    int mask = 1 << 30;
+    while ((mask & n) == 0) mask >>= 1;
+    std::vector<Tp> res{Tp(-1), Tp(1)};
+    for (int d = 1; d != n;) {
+        res = convolution(res, taylor_shift(res, -Tp(d)));
+        d <<= 1;
+        if ((mask >>= 1) & n) res = convolution(res, std::vector<Tp>{-Tp(d |= 1), Tp(1)});
+    }
+    res = inv(std::vector(res.rbegin(), res.rend()), n - k);
+    res.insert(res.begin(), k, Tp(0));
     return res;
 }
 
