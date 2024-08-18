@@ -282,13 +282,13 @@ data:
     \ ++i) b[i] *= if1;\n    b.insert(b.begin(), 0);\n    return b;\n}\n#line 2 \"\
     fps_polya.hpp\"\n\n#line 7 \"fps_polya.hpp\"\n\n// returns SEQ(A)=1/(1-a)\ntemplate\
     \ <typename Tp>\ninline std::vector<Tp> polya_q(std::vector<Tp> a, int n) {\n\
-    \    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n    for\
-    \ (int i = 1; i < n; ++i) a[i] = -a[i];\n    return inv(a, n);\n}\n\n// returns\
-    \ MSET(A)=exp(a(x)+a(x^2)/2+a(x^3)/3+...)\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ polya_exp(std::vector<Tp> a, int n) {\n    if (n <= 0) return {};\n    a.resize(n);\n\
-    \    assert(a[0] == 0);\n    auto &&bin = Binomial<Tp>::get(n);\n    for (int\
-    \ i = n - 1; i > 0; --i)\n        for (int j = 2; i * j < n; ++j) a[i * j] +=\
-    \ a[i] * bin.inv(j);\n    return exp(a, n);\n}\n\n// returns PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)\n\
+    \    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n    a[0]\
+    \ = 1;\n    for (int i = 1; i < n; ++i) a[i] = -a[i];\n    return inv(a, n);\n\
+    }\n\n// returns MSET(A)=exp(a(x)+a(x^2)/2+a(x^3)/3+...)\ntemplate <typename Tp>\n\
+    inline std::vector<Tp> polya_exp(std::vector<Tp> a, int n) {\n    if (n <= 0)\
+    \ return {};\n    a.resize(n);\n    assert(a[0] == 0);\n    auto &&bin = Binomial<Tp>::get(n);\n\
+    \    for (int i = n - 1; i > 0; --i)\n        for (int j = 2; i * j < n; ++j)\
+    \ a[i * j] += a[i] * bin.inv(j);\n    return exp(a, n);\n}\n\n// returns PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)\n\
     template <typename Tp>\ninline std::vector<Tp> polya_exp_m(std::vector<Tp> a,\
     \ int n) {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n\
     \    auto &&bin = Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n\
@@ -460,7 +460,7 @@ data:
   isVerificationFile: true
   path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
   requiredBy: []
-  timestamp: '2024-08-18 18:01:41+08:00'
+  timestamp: '2024-08-18 20:29:24+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
