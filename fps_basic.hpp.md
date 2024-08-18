@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy:
@@ -23,13 +23,13 @@ data:
   - icon: ':warning:'
     path: eulerian_number.hpp
     title: eulerian_number.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: famous_sequence.hpp
     title: famous_sequence.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
     title: fps_composition.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_polya.hpp
     title: fps_polya.hpp
   - icon: ':heavy_check_mark:'
@@ -47,7 +47,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: poly.hpp
     title: poly.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
   - icon: ':warning:'
@@ -72,7 +72,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -156,9 +156,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
@@ -377,7 +377,7 @@ data:
   - poly_interpolation_with_error.hpp
   - eulerian_number.hpp
   timestamp: '2024-06-02 11:00:30+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp

@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: famous_sequence.hpp
     title: famous_sequence.hpp
   _extendedVerifiedWith:
@@ -18,12 +18,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"pow_table.hpp\"\n\n#include <vector>\n\n// returns 0^e,\
@@ -50,7 +50,7 @@ data:
   requiredBy:
   - famous_sequence.hpp
   timestamp: '2024-08-18 17:57:40+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp

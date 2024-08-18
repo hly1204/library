@@ -9,7 +9,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: batch_inv.hpp
       title: batch_inv.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: binomial.hpp
       title: binomial.hpp
     - icon: ':heavy_check_mark:'
@@ -33,22 +33,22 @@ data:
     - icon: ':warning:'
       path: eulerian_number.hpp
       title: eulerian_number.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: famous_sequence.hpp
       title: famous_sequence.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: fft.hpp
       title: fft.hpp
     - icon: ':heavy_check_mark:'
       path: fft_doubling.hpp
       title: fft_doubling.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: fps_basic.hpp
       title: fps_basic.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: fps_composition.hpp
       title: fps_composition.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: fps_polya.hpp
       title: fps_polya.hpp
     - icon: ':heavy_check_mark:'
@@ -66,7 +66,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -75,7 +75,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: poly.hpp
       title: poly.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: poly_basic.hpp
       title: poly_basic.hpp
     - icon: ':warning:'
@@ -87,7 +87,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: poly_product.hpp
       title: poly_product.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: pow_table.hpp
       title: pow_table.hpp
     - icon: ':heavy_check_mark:'
@@ -96,7 +96,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: rng.hpp
       title: rng.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: semi_relaxed_conv.hpp
       title: semi_relaxed_conv.hpp
     - icon: ':heavy_check_mark:'
@@ -149,7 +149,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
       title: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
       title: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
   - name: test/formal_power_series

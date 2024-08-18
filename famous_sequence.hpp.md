@@ -1,28 +1,28 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
     title: fps_composition.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_polya.hpp
     title: fps_polya.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: pow_table.hpp
     title: pow_table.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
@@ -39,12 +39,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://blog.csdn.net/EI_Captain/article/details/108586699
@@ -400,10 +400,10 @@ data:
     \ Tp>\ninline std::vector<Tp> stirling_numbers_2nd_column(int k, int n) {\n  \
     \  assert(n >= 0);\n    if (n == 0) return {};\n    if (n <= k) return std::vector<Tp>(n);\n\
     \    if (k == 0) {\n        std::vector<Tp> res(n);\n        res[0] = 1;\n   \
-    \     return res;\n    }\n    int mask = 1 << 30;\n    while ((mask & n) == 0)\
+    \     return res;\n    }\n    int mask = 1 << 30;\n    while ((mask & k) == 0)\
     \ mask >>= 1;\n    std::vector<Tp> res{Tp(-1), Tp(1)};\n    for (int d = 1; d\
-    \ != n;) {\n        res = convolution(res, taylor_shift(res, -Tp(d)));\n     \
-    \   d <<= 1;\n        if ((mask >>= 1) & n) res = convolution(res, std::vector<Tp>{-Tp(d\
+    \ != k;) {\n        res = convolution(res, taylor_shift(res, -Tp(d)));\n     \
+    \   d <<= 1;\n        if ((mask >>= 1) & k) res = convolution(res, std::vector<Tp>{-Tp(d\
     \ |= 1), Tp(1)});\n    }\n    res = inv(std::vector(res.rbegin(), res.rend()),\
     \ n - k);\n    res.insert(res.begin(), k, Tp(0));\n    return res;\n}\n\n// Eulerian\
     \ numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n// returns\
@@ -462,10 +462,10 @@ data:
     \ Tp>\ninline std::vector<Tp> stirling_numbers_2nd_column(int k, int n) {\n  \
     \  assert(n >= 0);\n    if (n == 0) return {};\n    if (n <= k) return std::vector<Tp>(n);\n\
     \    if (k == 0) {\n        std::vector<Tp> res(n);\n        res[0] = 1;\n   \
-    \     return res;\n    }\n    int mask = 1 << 30;\n    while ((mask & n) == 0)\
+    \     return res;\n    }\n    int mask = 1 << 30;\n    while ((mask & k) == 0)\
     \ mask >>= 1;\n    std::vector<Tp> res{Tp(-1), Tp(1)};\n    for (int d = 1; d\
-    \ != n;) {\n        res = convolution(res, taylor_shift(res, -Tp(d)));\n     \
-    \   d <<= 1;\n        if ((mask >>= 1) & n) res = convolution(res, std::vector<Tp>{-Tp(d\
+    \ != k;) {\n        res = convolution(res, taylor_shift(res, -Tp(d)));\n     \
+    \   d <<= 1;\n        if ((mask >>= 1) & k) res = convolution(res, std::vector<Tp>{-Tp(d\
     \ |= 1), Tp(1)});\n    }\n    res = inv(std::vector(res.rbegin(), res.rend()),\
     \ n - k);\n    res.insert(res.begin(), k, Tp(0));\n    return res;\n}\n\n// Eulerian\
     \ numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n// returns\
@@ -498,8 +498,8 @@ data:
   isVerificationFile: false
   path: famous_sequence.hpp
   requiredBy: []
-  timestamp: '2024-08-18 23:01:35+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2024-08-18 23:10:30+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp
