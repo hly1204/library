@@ -1,25 +1,25 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
     title: fps_composition.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_polya.hpp
     title: fps_polya.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
@@ -27,12 +27,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/partition_function.0.test.cpp
     title: test/enumerative_combinatorics/partition_function.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://blog.csdn.net/EI_Captain/article/details/108586699
@@ -350,13 +350,16 @@ data:
     \ number\ntemplate <typename Tp>\ninline std::vector<Tp> partition_function(int\
     \ n) {\n    assert(n >= 0);\n    std::vector<Tp> I(n);\n    for (int i = 1; i\
     \ < n; ++i) I[i] = 1;\n    return polya_exp(I, n);\n}\n\n// unsigned Stirling\
-    \ numbers of the first kind\ntemplate <typename Tp>\ninline std::vector<Tp> stirling_numbers_1st_row(int\
+    \ numbers of the first kind\ntemplate <typename Tp>\ninline std::vector<Tp> unsigned_stirling_numbers_1st_row(int\
     \ n) {\n    assert(n >= 0);\n    if (n == 0) return {Tp(1)};\n    int mask = 1\
     \ << 30;\n    while ((mask & n) == 0) mask >>= 1;\n    std::vector<Tp> res{Tp(),\
     \ Tp(1)};\n    for (int d = 1; d != n;) {\n        res = convolution(res, taylor_shift(res,\
     \ Tp(d)));\n        d <<= 1;\n        if ((mask >>= 1) & n) {\n            res\
-    \ = convolution(res, std::vector<Tp>{Tp(d), Tp(1)});\n            ++d;\n     \
-    \   }\n    }\n    return res;\n}\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
+    \ = convolution(res, std::vector<Tp>{Tp(d), Tp(1)});\n            d |= 1;\n  \
+    \      }\n    }\n    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ signed_stirling_numbers_1st_row(int n) {\n    auto S = unsigned_stirling_numbers_1st_row<Tp>(n);\n\
+    \    for (int i = 0; i <= n; ++i)\n        if ((n - i) & 1) S[i] = -S[i];\n  \
+    \  return S;\n}\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
     // returns A(n,0), ..., A(n,n)\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ eulerian_numbers_row(int n) {\n    std::vector<Tp> A(n + 1);\n    for (int i\
     \ = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);\n    auto AA = convolution(A, pow(std::vector<Tp>{Tp(1),\
@@ -381,13 +384,16 @@ data:
     // a.k.a. Pentagonal number\ntemplate <typename Tp>\ninline std::vector<Tp> partition_function(int\
     \ n) {\n    assert(n >= 0);\n    std::vector<Tp> I(n);\n    for (int i = 1; i\
     \ < n; ++i) I[i] = 1;\n    return polya_exp(I, n);\n}\n\n// unsigned Stirling\
-    \ numbers of the first kind\ntemplate <typename Tp>\ninline std::vector<Tp> stirling_numbers_1st_row(int\
+    \ numbers of the first kind\ntemplate <typename Tp>\ninline std::vector<Tp> unsigned_stirling_numbers_1st_row(int\
     \ n) {\n    assert(n >= 0);\n    if (n == 0) return {Tp(1)};\n    int mask = 1\
     \ << 30;\n    while ((mask & n) == 0) mask >>= 1;\n    std::vector<Tp> res{Tp(),\
     \ Tp(1)};\n    for (int d = 1; d != n;) {\n        res = convolution(res, taylor_shift(res,\
     \ Tp(d)));\n        d <<= 1;\n        if ((mask >>= 1) & n) {\n            res\
-    \ = convolution(res, std::vector<Tp>{Tp(d), Tp(1)});\n            ++d;\n     \
-    \   }\n    }\n    return res;\n}\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
+    \ = convolution(res, std::vector<Tp>{Tp(d), Tp(1)});\n            d |= 1;\n  \
+    \      }\n    }\n    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ signed_stirling_numbers_1st_row(int n) {\n    auto S = unsigned_stirling_numbers_1st_row<Tp>(n);\n\
+    \    for (int i = 0; i <= n; ++i)\n        if ((n - i) & 1) S[i] = -S[i];\n  \
+    \  return S;\n}\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
     // returns A(n,0), ..., A(n,n)\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ eulerian_numbers_row(int n) {\n    std::vector<Tp> A(n + 1);\n    for (int i\
     \ = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);\n    auto AA = convolution(A, pow(std::vector<Tp>{Tp(1),\
@@ -416,8 +422,8 @@ data:
   isVerificationFile: false
   path: famous_sequence.hpp
   requiredBy: []
-  timestamp: '2024-08-18 16:54:23+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2024-08-18 17:10:25+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
