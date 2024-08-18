@@ -19,7 +19,7 @@ data:
   - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
   - icon: ':question:'

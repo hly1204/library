@@ -23,6 +23,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: czt.hpp
+  - icon: ':question:'
+    path: famous_sequence.hpp
+    title: famous_sequence.hpp
   - icon: ':heavy_check_mark:'
     path: frobenius.hpp
     title: frobenius.hpp
@@ -42,6 +45,12 @@ data:
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/enumerative_combinatorics/partition_function.0.test.cpp
+    title: test/enumerative_combinatorics/partition_function.0.test.cpp
+  - icon: ':x:'
+    path: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
+    title: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
@@ -102,9 +111,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
@@ -384,6 +393,7 @@ data:
   isVerificationFile: false
   path: poly_basic.hpp
   requiredBy:
+  - famous_sequence.hpp
   - c_recursive.hpp
   - mat_sparse.hpp
   - mat_basic.hpp
@@ -394,8 +404,10 @@ data:
   - czt.hpp
   - poly_interpolation_with_error.hpp
   timestamp: '2024-08-03 14:01:08+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
+  - test/enumerative_combinatorics/partition_function.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
   - test/matrix/characteristic_polynomial.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp

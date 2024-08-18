@@ -22,7 +22,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: poly.hpp
     title: poly.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
   - icon: ':heavy_check_mark:'

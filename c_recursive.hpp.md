@@ -13,7 +13,7 @@ data:
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
   - icon: ':question:'
