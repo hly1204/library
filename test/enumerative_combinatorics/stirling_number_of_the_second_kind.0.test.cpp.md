@@ -33,21 +33,21 @@ data:
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/partition_function
+    PROBLEM: https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind
     links:
-    - https://judge.yosupo.jp/problem/partition_function
-  bundledCode: "#line 1 \"test/enumerative_combinatorics/partition_function.0.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/partition_function\"\n\n#line\
-    \ 2 \"famous_sequence.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n#include\
-    \ <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\ntemplate\
-    \ <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue() {\n\
-    \        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2)\
-    \ == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
+    - https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind
+  bundledCode: "#line 1 \"test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind\"\
+    \n\n#line 2 \"famous_sequence.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
+    #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
+    \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
+    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
+    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
     \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
     \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
     \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
@@ -435,17 +435,17 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 7 \"test/enumerative_combinatorics/partition_function.0.test.cpp\"\n\nint\
-    \ main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    #line 7 \"test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    const\
-    \ auto P = partition_function<mint>(n + 1);\n    for (int i = 0; i <= n; ++i)\
-    \ std::cout << P[i] << ' ';\n    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/partition_function\"\n\n\
-    #include \"famous_sequence.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\
+    \ auto S = stirling_numbers_2nd_row<mint>(n);\n    for (int i = 0; i <= n; ++i)\
+    \ std::cout << S[i] << ' ';\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind\"\
+    \n\n#include \"famous_sequence.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\
     #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
     \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n  \
-    \  std::cin >> n;\n    const auto P = partition_function<mint>(n + 1);\n    for\
-    \ (int i = 0; i <= n; ++i) std::cout << P[i] << ' ';\n    return 0;\n}\n"
+    \  std::cin >> n;\n    const auto S = stirling_numbers_2nd_row<mint>(n);\n   \
+    \ for (int i = 0; i <= n; ++i) std::cout << S[i] << ' ';\n    return 0;\n}\n"
   dependsOn:
   - famous_sequence.hpp
   - fft.hpp
@@ -458,15 +458,15 @@ data:
   - pow_table.hpp
   - modint.hpp
   isVerificationFile: true
-  path: test/enumerative_combinatorics/partition_function.0.test.cpp
+  path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
   requiredBy: []
   timestamp: '2024-08-18 17:57:40+08:00'
-  verificationStatus: TEST_ACCEPTED
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/enumerative_combinatorics/partition_function.0.test.cpp
+documentation_of: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/enumerative_combinatorics/partition_function.0.test.cpp
-- /verify/test/enumerative_combinatorics/partition_function.0.test.cpp.html
-title: test/enumerative_combinatorics/partition_function.0.test.cpp
+- /verify/test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
+- /verify/test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp.html
+title: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
 ---

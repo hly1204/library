@@ -1,31 +1,34 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: famous_sequence.hpp
     title: famous_sequence.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_composition.hpp
     title: fps_composition.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_polya.hpp
     title: fps_polya.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
+    path: pow_table.hpp
+    title: pow_table.hpp
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
@@ -346,22 +349,38 @@ data:
     \ < 0) return {Tp(0)};\n    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A,\
     \ B);\n\n    auto Q = div(std::vector(A.rend() - (degA + 1), A.rend()),\n    \
     \             std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n    std::reverse(Q.begin(),\
-    \ Q.end());\n    return Q;\n}\n#line 10 \"famous_sequence.hpp\"\n\n// returns\
-    \ P([0..n)) s.t. P(n)=#(ways writing a integer n as sum of positive integers)\n\
-    // see: https://mathworld.wolfram.com/PartitionFunctionP.html\n// a.k.a. Pentagonal\
-    \ number\ntemplate <typename Tp>\ninline std::vector<Tp> partition_function(int\
+    \ Q.end());\n    return Q;\n}\n#line 2 \"pow_table.hpp\"\n\n#line 4 \"pow_table.hpp\"\
+    \n\n// returns 0^e, 1^e, ..., (n-1)^e\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ pow_table(int e, int n) {\n    if (n <= 0) return {};\n    std::vector<bool>\
+    \ is_comp(n);\n    std::vector<int> p;\n    std::vector<Tp> res(n);\n    res[0]\
+    \ = (e == 0 ? Tp(1) : Tp()); // 0^0=1\n    if (n >= 2) res[1] = Tp(1);\n    for\
+    \ (int i = 2; i < n; ++i) {\n        if (!is_comp[i]) res[i] = Tp(p.emplace_back(i)).pow(e);\n\
+    \        for (int j = 0; j < (int)p.size() && i * p[j] < n; ++j) {\n         \
+    \   is_comp[i * p[j]] = true;\n            res[i * p[j]]     = res[i] * res[p[j]];\n\
+    \            if (i % p[j] == 0) break;\n        }\n    }\n    return res;\n}\n\
+    #line 11 \"famous_sequence.hpp\"\n\n// returns P([0..n)) s.t. P(n)=#(ways writing\
+    \ an integer n as sum of positive integers)\n// see: https://mathworld.wolfram.com/PartitionFunctionP.html\n\
+    // a.k.a. Pentagonal number\ntemplate <typename Tp>\ninline std::vector<Tp> partition_function(int\
     \ n) {\n    assert(n >= 0);\n    std::vector<Tp> I(n);\n    for (int i = 1; i\
-    \ < n; ++i) I[i] = 1;\n    return polya_exp(I, n);\n}\n\n// unsigned Stirling\
-    \ numbers of the first kind\ntemplate <typename Tp>\ninline std::vector<Tp> unsigned_stirling_numbers_1st_row(int\
-    \ n) {\n    assert(n >= 0);\n    if (n == 0) return {Tp(1)};\n    int mask = 1\
-    \ << 30;\n    while ((mask & n) == 0) mask >>= 1;\n    std::vector<Tp> res{Tp(),\
-    \ Tp(1)};\n    for (int d = 1; d != n;) {\n        res = convolution(res, taylor_shift(res,\
+    \ < n; ++i) I[i] = 1;\n    return polya_exp(I, n);\n}\n\n// returns |s(n,0)|,\
+    \ ..., |s(n,n)|\n// unsigned Stirling numbers of the first kind\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> unsigned_stirling_numbers_1st_row(int n) {\n   \
+    \ assert(n >= 0);\n    if (n == 0) return {Tp(1)};\n    int mask = 1 << 30;\n\
+    \    while ((mask & n) == 0) mask >>= 1;\n    std::vector<Tp> res{Tp(), Tp(1)};\n\
+    \    for (int d = 1; d != n;) {\n        res = convolution(res, taylor_shift(res,\
     \ Tp(d)));\n        d <<= 1;\n        if ((mask >>= 1) & n) {\n            res\
     \ = convolution(res, std::vector<Tp>{Tp(d), Tp(1)});\n            d |= 1;\n  \
-    \      }\n    }\n    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ signed_stirling_numbers_1st_row(int n) {\n    auto S = unsigned_stirling_numbers_1st_row<Tp>(n);\n\
-    \    for (int i = 0; i <= n; ++i)\n        if ((n - i) & 1) S[i] = -S[i];\n  \
-    \  return S;\n}\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
+    \      }\n    }\n    return res;\n}\n\n// returns s(n,0), ..., s(n,n)\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> signed_stirling_numbers_1st_row(int n)\
+    \ {\n    auto S = unsigned_stirling_numbers_1st_row<Tp>(n);\n    for (int i =\
+    \ 0; i <= n; ++i)\n        if ((n - i) & 1) S[i] = -S[i];\n    return S;\n}\n\n\
+    // returns S(n,0), ..., S(n,n)\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ stirling_numbers_2nd_row(int n) {\n    assert(n >= 0);\n    std::vector<Tp>\
+    \ res(n + 1), R(n + 1);\n    auto &&bin   = Binomial<Tp>::get(n);\n    const auto\
+    \ T = pow_table<Tp>(n, n + 1);\n    for (int i = 0; i <= n; ++i) {\n        R[i]\
+    \ = T[i] * (res[i] = bin.inv_factorial(i));\n        if (i & 1) res[i] = -res[i];\n\
+    \    }\n    res = convolution(res, R);\n    res.resize(n + 1);\n    return res;\n\
+    }\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
     // returns A(n,0), ..., A(n,n)\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ eulerian_numbers_row(int n) {\n    std::vector<Tp> A(n + 1);\n    for (int i\
     \ = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);\n    auto AA = convolution(A, pow(std::vector<Tp>{Tp(1),\
@@ -436,11 +455,12 @@ data:
   - fps_composition.hpp
   - fps_polya.hpp
   - poly_basic.hpp
+  - pow_table.hpp
   - modint.hpp
   isVerificationFile: true
   path: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
   requiredBy: []
-  timestamp: '2024-08-18 17:35:35+08:00'
+  timestamp: '2024-08-18 17:57:40+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
