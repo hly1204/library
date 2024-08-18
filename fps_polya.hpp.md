@@ -11,68 +11,71 @@ data:
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':question:'
-    path: modint.hpp
-    title: modint.hpp
-  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  _extendedRequiredBy: []
-  _extendedVerifiedWith: []
-  _isVerificationFailed: false
-  _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _extendedRequiredBy:
+  - icon: ':question:'
+    path: famous_sequence.hpp
+    title: famous_sequence.hpp
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/enumerative_combinatorics/partition_function.0.test.cpp
+    title: test/enumerative_combinatorics/partition_function.0.test.cpp
+  - icon: ':x:'
+    path: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
+    title: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
+  _isVerificationFailed: true
+  _pathExtension: hpp
+  _verificationStatusIcon: ':question:'
   attributes:
-    '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/log_of_formal_power_series
-    links:
-    - https://judge.yosupo.jp/problem/log_of_formal_power_series
-  bundledCode: "#line 1 \"test/formal_power_series/log_of_formal_power_series.0.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/log_of_formal_power_series\"\
-    \n\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n\
-    #include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp>\
-    \ factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)}\
-    \ {}\n\n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
-    \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
-    \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
-    \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
-    \ factorial_[i] = factorial_[i - 1] * i;\n            invfactorial_.back() = factorial_.back().inv();\n\
-    \            for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i\
-    \ + 1] * (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int\
-    \ n) {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
-    \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
-    \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
-    \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
-    \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
-    \ invfactorial_[n]; }\n};\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 2 \"fft.hpp\"\
-    \n\n#line 4 \"fft.hpp\"\n#include <cassert>\n#include <iterator>\n#include <memory>\n\
-    #line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp\
-    \ least_quadratic_nonresidue() {\n        for (int i = 2;; ++i)\n            if\
-    \ (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n    }\n\n    const int\
-    \ ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n    const Tp imag_;\n\
-    \    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n    mutable std::vector<Tp>\
-    \ invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n\
-    \          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >> ordlog2_)),\n\
-    \          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_ - 2))), invimag_(-imag_),\n\
-    \          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_} {}\n\npublic:\n    static\
-    \ const FftInfo &get() {\n        static FftInfo info;\n        return info;\n\
-    \    }\n\n    Tp imag() const { return imag_; }\n    Tp inv_imag() const { return\
-    \ invimag_; }\n    Tp zeta() const { return zeta_; }\n    Tp inv_zeta() const\
-    \ { return invzeta_; }\n    const std::vector<Tp> &root(int n) const {\n     \
-    \   // [0, n)\n        assert((n & (n - 1)) == 0);\n        if (const int s =\
-    \ root_.size(); s < n) {\n            root_.resize(n);\n            for (int i\
-    \ = __builtin_ctz(s); (1 << i) < n; ++i) {\n                const int j = 1 <<\
-    \ i;\n                root_[j]    = zeta_.pow(1LL << (ordlog2_ - i - 2));\n  \
-    \              for (int k = j + 1; k < j * 2; ++k) root_[k] = root_[k - j] * root_[j];\n\
-    \            }\n        }\n        return root_;\n    }\n    const std::vector<Tp>\
-    \ &inv_root(int n) const {\n        // [0, n)\n        assert((n & (n - 1)) ==\
-    \ 0);\n        if (const int s = invroot_.size(); s < n) {\n            invroot_.resize(n);\n\
-    \            for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n           \
-    \     const int j = 1 << i;\n                invroot_[j] = invzeta_.pow(1LL <<\
-    \ (ordlog2_ - i - 2));\n                for (int k = j + 1; k < j * 2; ++k) invroot_[k]\
-    \ = invroot_[k - j] * invroot_[j];\n            }\n        }\n        return invroot_;\n\
-    \    }\n};\n\ninline int fft_len(int n) {\n    --n;\n    n |= n >> 1, n |= n >>\
-    \ 2, n |= n >> 4, n |= n >> 8;\n    return (n | n >> 16) + 1;\n}\n\ntemplate <typename\
-    \ Iterator>\ninline void fft_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
+    links: []
+  bundledCode: "#line 2 \"fps_polya.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
+    \ <algorithm>\n#include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n\
+    \    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
+    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
+    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
+    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
+    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
+    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
+    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
+    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
+    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
+    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
+    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
+    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
+    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
+    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
+    \ }\n};\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line\
+    \ 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include <cassert>\n#include <iterator>\n\
+    #include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo\
+    \ {\n    static Tp least_quadratic_nonresidue() {\n        for (int i = 2;; ++i)\n\
+    \            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n    }\n\n\
+    \    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n    const\
+    \ Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n  \
+    \  mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
+    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
+    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
+    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
+    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
+    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
+    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
+    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+    \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
+    \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
+    \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
+    \  const int j = 1 << i;\n                root_[j]    = zeta_.pow(1LL << (ordlog2_\
+    \ - i - 2));\n                for (int k = j + 1; k < j * 2; ++k) root_[k] = root_[k\
+    \ - j] * root_[j];\n            }\n        }\n        return root_;\n    }\n \
+    \   const std::vector<Tp> &inv_root(int n) const {\n        // [0, n)\n      \
+    \  assert((n & (n - 1)) == 0);\n        if (const int s = invroot_.size(); s <\
+    \ n) {\n            invroot_.resize(n);\n            for (int i = __builtin_ctz(s);\
+    \ (1 << i) < n; ++i) {\n                const int j = 1 << i;\n              \
+    \  invroot_[j] = invzeta_.pow(1LL << (ordlog2_ - i - 2));\n                for\
+    \ (int k = j + 1; k < j * 2; ++k) invroot_[k] = invroot_[k - j] * invroot_[j];\n\
+    \            }\n        }\n        return invroot_;\n    }\n};\n\ninline int fft_len(int\
+    \ n) {\n    --n;\n    n |= n >> 1, n |= n >> 2, n |= n >> 4, n |= n >> 8;\n  \
+    \  return (n | n >> 16) + 1;\n}\n\ntemplate <typename Iterator>\ninline void fft_n(Iterator\
+    \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
     \    assert((n & (n - 1)) == 0);\n    for (int j = 0; j < n / 2; ++j) {\n    \
     \    auto u = a[j], v = a[j + n / 2];\n        a[j] = u + v, a[j + n / 2] = u\
     \ - v;\n    }\n    auto &&root = FftInfo<Tp>::get().root(n / 2);\n    for (int\
@@ -184,73 +187,58 @@ data:
     \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = log(a, n - o * e);\n    for (int\
     \ i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = exp(a, n - o * e);\n   \
     \ for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
-    \ o * e, 0);\n    return a;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
-    #line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
-    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
-    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
-    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
-    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
-    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
-    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
-    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
-    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
-    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
-    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
-    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
-    \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
-    \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
-    \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
-    \ if ((e >>= 1) == 0) return res;\n        }\n    }\n    ModInt inv() const {\n\
-    \        int x1 = 1, x3 = 0, a = val(), b = Mod;\n        while (b) {\n      \
-    \      int q = a / b, x1_old = x1, a_old = a;\n            x1 = x3, x3 = x1_old\
-    \ - x3 * q, a = b, b = a_old - b * q;\n        }\n        return from_raw(x1 <\
-    \ 0 ? x1 + (int)Mod : x1);\n    }\n    template <bool Odd = (Mod & 1)>\n    std::enable_if_t<Odd,\
-    \ ModInt> div_by_2() const {\n        if (v_ & 1) return from_raw((v_ + Mod) >>\
-    \ 1);\n        return from_raw(v_ >> 1);\n    }\n\n    ModInt &operator+=(const\
-    \ ModInt &a) {\n        if ((v_ += a.v_) >= Mod) v_ -= Mod;\n        return *this;\n\
-    \    }\n    ModInt &operator-=(const ModInt &a) {\n        if ((v_ += Mod - a.v_)\
-    \ >= Mod) v_ -= Mod;\n        return *this;\n    }\n    ModInt &operator*=(const\
-    \ ModInt &a) {\n        v_ = (unsigned long long)v_ * a.v_ % Mod;\n        return\
-    \ *this;\n    }\n    ModInt &operator/=(const ModInt &a) { return *this *= a.inv();\
-    \ }\n\n    friend ModInt operator+(const ModInt &a, const ModInt &b) { return\
-    \ ModInt(a) += b; }\n    friend ModInt operator-(const ModInt &a, const ModInt\
-    \ &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const ModInt &a,\
-    \ const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
-    \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
-    \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
-    \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
-    \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
-    \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
-    \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 7 \"test/formal_power_series/log_of_formal_power_series.0.test.cpp\"\n\n\
-    int main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
-    \ a(n);\n    for (int i = 0; i < n; ++i) std::cin >> a[i];\n    const auto loga\
-    \ = log(a, n);\n    for (int i = 0; i < n; ++i) std::cout << loga[i] << ' ';\n\
-    \    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/log_of_formal_power_series\"\
-    \n\n#include \"fps_basic.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\
-    #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
-    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n  \
-    \  std::cin >> n;\n    std::vector<mint> a(n);\n    for (int i = 0; i < n; ++i)\
-    \ std::cin >> a[i];\n    const auto loga = log(a, n);\n    for (int i = 0; i <\
-    \ n; ++i) std::cout << loga[i] << ' ';\n    return 0;\n}\n"
+    \ o * e, 0);\n    return a;\n}\n#line 7 \"fps_polya.hpp\"\n\n// returns SEQ(A)=1/(1-a)\n\
+    template <typename Tp>\ninline std::vector<Tp> polya_q(std::vector<Tp> a, int\
+    \ n) {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n\
+    \    for (int i = 1; i < (int)a.size(); ++i) a[i] = -a[i];\n    return inv(a,\
+    \ n);\n}\n\n// returns MSET(A)=exp(a(x)+a(x^2)/2+a(x^3)/3+...)\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> polya_exp(std::vector<Tp> a, int n) {\n    if (n\
+    \ <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n    auto &&bin =\
+    \ Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n        for (int\
+    \ j = 2; (long long)i * j < n; ++j) a[i * j] += a[i] * bin.inv(j);\n    return\
+    \ exp(a, n);\n}\n\n// returns PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> polya_exp_m(std::vector<Tp> a, int n)\
+    \ {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n  \
+    \  auto &&bin = Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n \
+    \       for (int j = 2; (long long)i * j < n; ++j)\n            if (j & 1) {\n\
+    \                a[i * j] += a[i] * bin.inv(j);\n            } else {\n      \
+    \          a[i * j] -= a[i] * bin.inv(j);\n            }\n    return exp(a, n);\n\
+    }\n"
+  code: "#pragma once\n\n#include \"binomial.hpp\"\n#include \"fps_basic.hpp\"\n#include\
+    \ <cassert>\n#include <vector>\n\n// returns SEQ(A)=1/(1-a)\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> polya_q(std::vector<Tp> a, int n) {\n    if (n <=\
+    \ 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n    for (int i = 1;\
+    \ i < (int)a.size(); ++i) a[i] = -a[i];\n    return inv(a, n);\n}\n\n// returns\
+    \ MSET(A)=exp(a(x)+a(x^2)/2+a(x^3)/3+...)\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ polya_exp(std::vector<Tp> a, int n) {\n    if (n <= 0) return {};\n    a.resize(n);\n\
+    \    assert(a[0] == 0);\n    auto &&bin = Binomial<Tp>::get(n);\n    for (int\
+    \ i = n - 1; i > 0; --i)\n        for (int j = 2; (long long)i * j < n; ++j) a[i\
+    \ * j] += a[i] * bin.inv(j);\n    return exp(a, n);\n}\n\n// returns PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)\n\
+    template <typename Tp>\ninline std::vector<Tp> polya_exp_m(std::vector<Tp> a,\
+    \ int n) {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n\
+    \    auto &&bin = Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n\
+    \        for (int j = 2; (long long)i * j < n; ++j)\n            if (j & 1) {\n\
+    \                a[i * j] += a[i] * bin.inv(j);\n            } else {\n      \
+    \          a[i * j] -= a[i] * bin.inv(j);\n            }\n    return exp(a, n);\n\
+    }\n"
   dependsOn:
-  - fps_basic.hpp
   - binomial.hpp
+  - fps_basic.hpp
   - semi_relaxed_conv.hpp
   - fft.hpp
-  - modint.hpp
-  isVerificationFile: true
-  path: test/formal_power_series/log_of_formal_power_series.0.test.cpp
-  requiredBy: []
-  timestamp: '2024-06-22 10:58:08+08:00'
-  verificationStatus: TEST_ACCEPTED
-  verifiedWith: []
-documentation_of: test/formal_power_series/log_of_formal_power_series.0.test.cpp
+  isVerificationFile: false
+  path: fps_polya.hpp
+  requiredBy:
+  - famous_sequence.hpp
+  timestamp: '2024-08-18 16:52:04+08:00'
+  verificationStatus: LIBRARY_SOME_WA
+  verifiedWith:
+  - test/enumerative_combinatorics/partition_function.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
+documentation_of: fps_polya.hpp
 layout: document
 redirect_from:
-- /verify/test/formal_power_series/log_of_formal_power_series.0.test.cpp
-- /verify/test/formal_power_series/log_of_formal_power_series.0.test.cpp.html
-title: test/formal_power_series/log_of_formal_power_series.0.test.cpp
+- /library/fps_polya.hpp
+- /library/fps_polya.hpp.html
+title: fps_polya.hpp
 ---

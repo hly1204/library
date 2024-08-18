@@ -11,15 +11,15 @@ data:
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':question:'
+    path: fps_composition.hpp
+    title: fps_composition.hpp
+  - icon: ':question:'
+    path: fps_polya.hpp
+    title: fps_polya.hpp
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  _extendedRequiredBy:
-  - icon: ':warning:'
-    path: eulerian_number.hpp
-    title: eulerian_number.hpp
-  - icon: ':question:'
-    path: famous_sequence.hpp
-    title: famous_sequence.hpp
+  _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/partition_function.0.test.cpp
@@ -27,49 +27,28 @@ data:
   - icon: ':x:'
     path: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-    title: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
-    title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
   _isVerificationFailed: true
   _pathExtension: hpp
   _verificationStatusIcon: ':question:'
   attributes:
     links:
-    - https://arxiv.org/abs/2404.05177
-    - https://noshi91.hatenablog.com/entry/2024/03/16/224034
-  bundledCode: "#line 2 \"fps_composition.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
-    \ <algorithm>\n#include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n\
-    \    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
-    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
-    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
-    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
-    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
-    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
-    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
-    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
-    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
-    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
-    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
-    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
-    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
-    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
-    \ }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include <cassert>\n#include\
-    \ <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\n\
-    class FftInfo {\n    static Tp least_quadratic_nonresidue() {\n        for (int\
-    \ i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n\
-    \    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n\
-    \    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n\
-    \    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
-    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
-    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
-    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
-    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
-    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
-    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
-    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+    - https://blog.csdn.net/EI_Captain/article/details/108586699
+    - https://mathworld.wolfram.com/PartitionFunctionP.html
+    - https://oeis.org/wiki/Eulerian_numbers,_triangle_of
+  bundledCode: "#line 2 \"famous_sequence.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
+    \ <algorithm>\n#include <cassert>\n#include <iterator>\n#include <memory>\n#include\
+    \ <vector>\n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
+    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
+    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
+    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
+    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
+    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
+    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
+    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
+    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
+    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
+    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
+    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
     \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
     \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
     \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
@@ -126,27 +105,42 @@ data:
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
     \    return convolution_fft(a, b);\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"\
-    semi_relaxed_conv.hpp\"\n\n#line 5 \"semi_relaxed_conv.hpp\"\n#include <type_traits>\n\
-    #include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\n\n// returns coefficients\
-    \ generated by closure\n// closure: gen(index, current_product)\ntemplate <typename\
-    \ Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp, Closure,\
-    \ int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
-    \ std::vector<Tp> &A, Closure gen, int n) {\n    enum { BaseCaseSize = 32 };\n\
-    \    static_assert((BaseCaseSize & (BaseCaseSize - 1)) == 0);\n\n    static const\
-    \ int Block[]     = {16, 16, 16, 16, 16};\n    static const int BlockSize[] =\
-    \ {\n        BaseCaseSize,\n        BaseCaseSize * Block[0],\n        BaseCaseSize\
-    \ * Block[0] * Block[1],\n        BaseCaseSize * Block[0] * Block[1] * Block[2],\n\
-    \        BaseCaseSize * Block[0] * Block[1] * Block[2] * Block[3],\n        BaseCaseSize\
-    \ * Block[0] * Block[1] * Block[2] * Block[3] * Block[4],\n    };\n\n    // returns\
-    \ (which_block, level)\n    auto blockinfo = [](int ind) {\n        int i = ind\
-    \ / BaseCaseSize, lv = 0;\n        while ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n\
-    \        return std::make_pair(i & (Block[lv] - 1), lv);\n    };\n\n    std::vector<Tp>\
-    \ B(n), AB(n);\n    std::vector<std::vector<std::vector<Tp>>> dftA, dftB;\n\n\
-    \    for (int i = 0; i < n; ++i) {\n        const int s = i & (BaseCaseSize -\
-    \ 1);\n\n        // blocked contribution\n        if (i >= BaseCaseSize && s ==\
-    \ 0) {\n            const auto [j, lv]  = blockinfo(i);\n            const int\
-    \ blocksize = BlockSize[lv];\n\n            if (blocksize * j == i) {\n      \
-    \          if ((int)dftA.size() == lv) {\n                    dftA.emplace_back();\n\
+    binomial.hpp\"\n\n#line 5 \"binomial.hpp\"\n\ntemplate <typename Tp>\nclass Binomial\
+    \ {\n    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
+    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
+    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
+    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
+    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
+    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
+    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
+    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
+    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
+    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
+    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
+    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
+    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
+    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
+    \ }\n};\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 5 \"semi_relaxed_conv.hpp\"\
+    \n#include <type_traits>\n#include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\
+    \n\n// returns coefficients generated by closure\n// closure: gen(index, current_product)\n\
+    template <typename Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp,\
+    \ Closure, int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\n\
+    semi_relaxed_convolution(const std::vector<Tp> &A, Closure gen, int n) {\n   \
+    \ enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize & (BaseCaseSize\
+    \ - 1)) == 0);\n\n    static const int Block[]     = {16, 16, 16, 16, 16};\n \
+    \   static const int BlockSize[] = {\n        BaseCaseSize,\n        BaseCaseSize\
+    \ * Block[0],\n        BaseCaseSize * Block[0] * Block[1],\n        BaseCaseSize\
+    \ * Block[0] * Block[1] * Block[2],\n        BaseCaseSize * Block[0] * Block[1]\
+    \ * Block[2] * Block[3],\n        BaseCaseSize * Block[0] * Block[1] * Block[2]\
+    \ * Block[3] * Block[4],\n    };\n\n    // returns (which_block, level)\n    auto\
+    \ blockinfo = [](int ind) {\n        int i = ind / BaseCaseSize, lv = 0;\n   \
+    \     while ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n        return std::make_pair(i\
+    \ & (Block[lv] - 1), lv);\n    };\n\n    std::vector<Tp> B(n), AB(n);\n    std::vector<std::vector<std::vector<Tp>>>\
+    \ dftA, dftB;\n\n    for (int i = 0; i < n; ++i) {\n        const int s = i &\
+    \ (BaseCaseSize - 1);\n\n        // blocked contribution\n        if (i >= BaseCaseSize\
+    \ && s == 0) {\n            const auto [j, lv]  = blockinfo(i);\n            const\
+    \ int blocksize = BlockSize[lv];\n\n            if (blocksize * j == i) {\n  \
+    \              if ((int)dftA.size() == lv) {\n                    dftA.emplace_back();\n\
     \                    dftB.emplace_back(Block[lv] - 1);\n                }\n  \
     \              if ((j - 1) * blocksize < (int)A.size()) {\n                  \
     \  dftA[lv]\n                        .emplace_back(A.begin() + (j - 1) * blocksize,\n\
@@ -198,92 +192,11 @@ data:
     \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = log(a, n - o * e);\n    for (int\
     \ i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = exp(a, n - o * e);\n   \
     \ for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
-    \ o * e, 0);\n    return a;\n}\n#line 9 \"fps_composition.hpp\"\n\n// returns\
-    \ f(g) mod x^n\n// see: https://arxiv.org/abs/2404.05177\n// Yasunori Kinoshita,\
-    \ Baitian Li. Power Series Composition in Near-Linear Time.\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<Tp>\
-    \ &g, int n) {\n    if (n <= 0) return {};\n    if (g.empty()) {\n        std::vector<Tp>\
-    \ res(n);\n        if (!f.empty()) res[0] = f[0];\n        return res;\n    }\n\
-    \n    // [y^(-1)] (f(y) / (-g(x) + y)) mod x^n\n    // R[x]((y^(-1)))\n    auto\
-    \ rec = [g0 = g[0]](auto &&rec, const std::vector<Tp> &P, const std::vector<Tp>\
-    \ &Q, int d,\n                           int n) {\n        if (n == 1) {\n   \
-    \         std::vector<Tp> invQ(d + 1);\n            auto &&bin = Binomial<Tp>::get(d\
-    \ * 2);\n            Tp gg      = 1;\n            for (int i = 0; i <= d; ++i)\
-    \ invQ[d - i] = bin.binom(d + i - 1, d - 1) * gg, gg *= g0;\n            // invQ[i]\
-    \ = [y^(-2d + i)]Q\n            // P[0,d-1] * invQ[-2d,-d] => [0,d-1] * [0,d]\n\
-    \            // take [-d,-1] => take [d,2d-1]\n            auto PinvQ = convolution(P,\
-    \ invQ);\n            PinvQ.erase(PinvQ.begin(), PinvQ.begin() + d);\n       \
-    \     PinvQ.resize(d);\n            return PinvQ;\n        }\n\n        std::vector<Tp>\
-    \ dftQ(d * n * 4);\n        for (int i = 0; i < d; ++i)\n            for (int\
-    \ j = 0; j < n; ++j) dftQ[i * (n * 2) + j] = Q[i * n + j];\n        dftQ[d * n\
-    \ * 2] = 1;\n        fft(dftQ);\n        std::vector<Tp> V(d * n * 2);\n     \
-    \   for (int i = 0; i < d * n * 4; i += 2) V[i / 2] = dftQ[i] * dftQ[i + 1];\n\
-    \        inv_fft(V);\n        V[0] -= 1;\n\n        for (int i = 1; i < d * 2;\
-    \ ++i)\n            for (int j = 0; j < n / 2; ++j) V[i * (n / 2) + j] = V[i *\
-    \ n + j];\n        V.resize(d * n);\n\n        const auto T = rec(rec, P, V, d\
-    \ * 2, n / 2);\n\n        std::vector<Tp> dftT(d * n * 2);\n        for (int i\
-    \ = 0; i < d * 2; ++i)\n            for (int j = 0; j < n / 2; ++j) dftT[i * n\
-    \ + j] = T[i * (n / 2) + j];\n        fft(dftT);\n\n        std::vector<Tp> U(d\
-    \ * n * 4);\n        for (int i = 0; i < d * n * 4; i += 2) {\n            U[i]\
-    \     = dftT[i / 2] * dftQ[i + 1];\n            U[i + 1] = dftT[i / 2] * dftQ[i];\n\
-    \        }\n        inv_fft(U);\n\n        // [-2d,d-1] => [0,3d-1]\n        //\
-    \ take [-d,-1] => take [d,2d-1]\n        for (int i = 0; i < d; ++i)\n       \
-    \     for (int j = 0; j < n; ++j) U[i * n + j] = U[(i + d) * (n * 2) + j];\n \
-    \       U.resize(d * n);\n        return U;\n    };\n\n    int k = 1;\n    while\
-    \ (k < std::max(n, (int)f.size())) k *= 2;\n    std::vector<Tp> Q(k);\n    for\
-    \ (int i = 0; i < std::min(k, (int)g.size()); ++i) Q[i] = -g[i];\n\n    auto res\
-    \ = rec(rec, f, Q, 1, k);\n    res.resize(n);\n    return res;\n}\n\n// returns\
-    \ [x^k]gf^0, [x^k]gf, ..., [x^k]gf^(n-1)\n// see: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
-    // noshi91. FPS \u306E\u5408\u6210\u3068\u9006\u95A2\u6570\u3001\u51AA\u4E57\u306E\
-    \u4FC2\u6570\u5217\u6319 \u0398(n (log(n))^2)\ntemplate <typename Tp>\ninline\
-    \ std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const std::vector<Tp>\
-    \ &g,\n                                              int k, int n) {\n    if (k\
-    \ < 0 || n <= 0) return {};\n    if (f.empty()) {\n        std::vector<Tp> res(n);\n\
-    \        if (k < (int)g.size()) res[0] = g[k];\n        return res;\n    }\n\n\
-    \    // [x^k] (g(x) / (-f(x) + y))\n    // R[x]((y^(-1)))\n    std::vector<Tp>\
-    \ P(g), Q(k + 1);\n    P.resize(k + 1);\n    for (int i = 0; i < std::min(k +\
-    \ 1, (int)f.size()); ++i) Q[i] = -f[i];\n\n    int d = 1;\n    for (; k; d *=\
-    \ 2, k /= 2) {\n        const int len = fft_len((d * 2) * ((k + 1) * 2) - 1);\n\
-    \        std::vector<Tp> dftP(len), dftQ(len);\n        for (int i = 0; i < d;\
-    \ ++i)\n            for (int j = 0; j <= k; ++j) {\n                dftP[i * ((k\
-    \ + 1) * 2) + j] = P[i * (k + 1) + j];\n                dftQ[i * ((k + 1) * 2)\
-    \ + j] = Q[i * (k + 1) + j];\n            }\n        dftQ[d * (k + 1) * 2] = 1;\n\
-    \        fft(dftP);\n        fft(dftQ);\n\n        P.resize(len / 2);\n      \
-    \  Q.resize(len / 2);\n        if (k & 1) {\n            auto &&root = FftInfo<Tp>::get().inv_root(len\
-    \ / 2);\n            for (int i = 0; i < len; i += 2) {\n                P[i /\
-    \ 2] = (dftP[i] * dftQ[i + 1] - dftP[i + 1] * dftQ[i]).div_by_2() * root[i / 2];\n\
-    \                Q[i / 2] = dftQ[i] * dftQ[i + 1];\n            }\n        } else\
-    \ {\n            for (int i = 0; i < len; i += 2) {\n                P[i / 2]\
-    \ = (dftP[i] * dftQ[i + 1] + dftP[i + 1] * dftQ[i]).div_by_2();\n            \
-    \    Q[i / 2] = dftQ[i] * dftQ[i + 1];\n            }\n        }\n        inv_fft(P);\n\
-    \        inv_fft(Q);\n        if (d * (k + 1) * 4 >= len) Q[(d * (k + 1) * 4)\
-    \ % len] -= 1;\n\n        for (int i = 1; i < d * 2; ++i)\n            for (int\
-    \ j = 0; j <= k / 2; ++j) {\n                P[i * (k / 2 + 1) + j] = P[i * (k\
-    \ + 1) + j];\n                Q[i * (k / 2 + 1) + j] = Q[i * (k + 1) + j];\n \
-    \           }\n        P.resize(d * 2 * (k / 2 + 1));\n        Q.resize(d * 2\
-    \ * (k / 2 + 1));\n    }\n\n    std::vector<Tp> invQ(n + 1);\n    auto &&bin =\
-    \ Binomial<Tp>::get(d + n);\n    Tp ff      = 1;\n    for (int i = 0; i <= n;\
-    \ ++i) invQ[n - i] = bin.binom(d + i - 1, d - 1) * ff, ff *= f[0];\n    // invQ[i]\
-    \ = [y^(-2d + i)]Q\n    // P[0,d-1] * invQ[-(d+n),-d] => [0,d-1] * [0,n]\n   \
-    \ auto PinvQ = convolution(P, invQ);\n    // take [-n,-1] => take [d,d+n-1]\n\
-    \    PinvQ.erase(PinvQ.begin(), PinvQ.begin() + d);\n    PinvQ.resize(n);\n  \
-    \  // output => [-1,-n] reverse\n    // before I just reverse it and mistaken\
-    \ something.\n    std::reverse(PinvQ.begin(), PinvQ.end());\n    return PinvQ;\n\
-    }\n\n// returns g s.t. f(g) = g(f) = x mod x^n\ntemplate <typename Tp>\ninline\
-    \ std::vector<Tp> reversion(std::vector<Tp> f, int n) {\n    if (n <= 0 || f.size()\
-    \ < 2) return {};\n    assert(f[1] != 0);\n    const auto if1 = f[1].inv();\n\
-    \    if (n == 1) return {Tp()};\n    f.resize(n);\n    Tp ff = 1;\n    for (int\
-    \ i = 1; i < n; ++i) f[i] *= ff *= if1;\n    auto a     = enum_kth_term_of_power(f,\
-    \ {Tp(1)}, n - 1, n);\n    auto &&bin = Binomial<Tp>::get(n);\n    for (int i\
-    \ = 1; i < n; ++i) a[i] *= (n - 1) * bin.inv(i);\n    auto b = pow(std::vector(a.rbegin(),\
-    \ a.rend() - 1), Tp(1 - n).inv().val(), n - 1);\n    for (int i = 0; i < n - 1;\
-    \ ++i) b[i] *= if1;\n    b.insert(b.begin(), 0);\n    return b;\n}\n"
-  code: "#pragma once\n\n#include \"binomial.hpp\"\n#include \"fft.hpp\"\n#include\
-    \ \"fps_basic.hpp\"\n#include <algorithm>\n#include <cassert>\n#include <vector>\n\
-    \n// returns f(g) mod x^n\n// see: https://arxiv.org/abs/2404.05177\n// Yasunori\
-    \ Kinoshita, Baitian Li. Power Series Composition in Near-Linear Time.\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> composition(const std::vector<Tp> &f,\
-    \ const std::vector<Tp> &g, int n) {\n    if (n <= 0) return {};\n    if (g.empty())\
+    \ o * e, 0);\n    return a;\n}\n#line 2 \"fps_composition.hpp\"\n\n#line 9 \"\
+    fps_composition.hpp\"\n\n// returns f(g) mod x^n\n// see: https://arxiv.org/abs/2404.05177\n\
+    // Yasunori Kinoshita, Baitian Li. Power Series Composition in Near-Linear Time.\n\
+    template <typename Tp>\ninline std::vector<Tp> composition(const std::vector<Tp>\
+    \ &f, const std::vector<Tp> &g, int n) {\n    if (n <= 0) return {};\n    if (g.empty())\
     \ {\n        std::vector<Tp> res(n);\n        if (!f.empty()) res[0] = f[0];\n\
     \        return res;\n    }\n\n    // [y^(-1)] (f(y) / (-g(x) + y)) mod x^n\n\
     \    // R[x]((y^(-1)))\n    auto rec = [g0 = g[0]](auto &&rec, const std::vector<Tp>\
@@ -358,28 +271,102 @@ data:
     \ {Tp(1)}, n - 1, n);\n    auto &&bin = Binomial<Tp>::get(n);\n    for (int i\
     \ = 1; i < n; ++i) a[i] *= (n - 1) * bin.inv(i);\n    auto b = pow(std::vector(a.rbegin(),\
     \ a.rend() - 1), Tp(1 - n).inv().val(), n - 1);\n    for (int i = 0; i < n - 1;\
-    \ ++i) b[i] *= if1;\n    b.insert(b.begin(), 0);\n    return b;\n}\n"
+    \ ++i) b[i] *= if1;\n    b.insert(b.begin(), 0);\n    return b;\n}\n#line 2 \"\
+    fps_polya.hpp\"\n\n#line 7 \"fps_polya.hpp\"\n\n// returns SEQ(A)=1/(1-a)\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> polya_q(std::vector<Tp> a, int n) {\n\
+    \    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n    for\
+    \ (int i = 1; i < (int)a.size(); ++i) a[i] = -a[i];\n    return inv(a, n);\n}\n\
+    \n// returns MSET(A)=exp(a(x)+a(x^2)/2+a(x^3)/3+...)\ntemplate <typename Tp>\n\
+    inline std::vector<Tp> polya_exp(std::vector<Tp> a, int n) {\n    if (n <= 0)\
+    \ return {};\n    a.resize(n);\n    assert(a[0] == 0);\n    auto &&bin = Binomial<Tp>::get(n);\n\
+    \    for (int i = n - 1; i > 0; --i)\n        for (int j = 2; (long long)i * j\
+    \ < n; ++j) a[i * j] += a[i] * bin.inv(j);\n    return exp(a, n);\n}\n\n// returns\
+    \ PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ polya_exp_m(std::vector<Tp> a, int n) {\n    if (n <= 0) return {};\n    a.resize(n);\n\
+    \    assert(a[0] == 0);\n    auto &&bin = Binomial<Tp>::get(n);\n    for (int\
+    \ i = n - 1; i > 0; --i)\n        for (int j = 2; (long long)i * j < n; ++j)\n\
+    \            if (j & 1) {\n                a[i * j] += a[i] * bin.inv(j);\n  \
+    \          } else {\n                a[i * j] -= a[i] * bin.inv(j);\n        \
+    \    }\n    return exp(a, n);\n}\n#line 9 \"famous_sequence.hpp\"\n\n// returns\
+    \ P([0..n)) s.t. P(n)=#(ways writing a integer n as sum of positive integers)\n\
+    // see: https://mathworld.wolfram.com/PartitionFunctionP.html\n// a.k.a. Pentagonal\
+    \ number\ntemplate <typename Tp>\ninline std::vector<Tp> partition_function(int\
+    \ n) {\n    assert(n >= 0);\n    std::vector<Tp> I(n);\n    for (int i = 1; i\
+    \ < n; ++i) I[i] = 1;\n    return polya_exp(I, n);\n}\n\n// unsigned Stirling\
+    \ numbers of the first kind\ntemplate <typename Tp>\ninline std::vector<Tp> stirling_numbers_1st_row(int\
+    \ n) {\n    assert(n >= 0);\n    if (n == 0) return {Tp(1)};\n    int mask = 1\
+    \ << 30;\n    while ((mask & n) == 0) mask >>= 1;\n    std::vector<Tp> res{Tp(),\
+    \ Tp(1)};\n    for (int d = 1; d != n;) {\n        res = convolution(res, taylor_shift(res,\
+    \ Tp(d)));\n        d <<= 1;\n        if ((mask >>= 1) & n) {\n            res\
+    \ = convolution(res, std::vector<Tp>{Tp(d), Tp(1)});\n            ++d;\n     \
+    \   }\n    }\n    return res;\n}\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
+    // returns A(n,0), ..., A(n,n)\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ eulerian_numbers_row(int n) {\n    std::vector<Tp> A(n + 1);\n    for (int i\
+    \ = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);\n    auto AA = convolution(A, pow(std::vector<Tp>{Tp(1),\
+    \ Tp(-1)}, n + 1, n + 1));\n    AA.resize(n + 1);\n    return AA;\n}\n\n// returns\
+    \ A(0,k), ..., A(m-1,k)\n// see:\n// [1]: Entropy Increaser. \u5E73\u79FB\u6307\
+    \u6570\u57FA\u53D8\u6362.\n//      https://blog.csdn.net/EI_Captain/article/details/108586699\n\
+    template <typename Tp>\ninline std::vector<Tp> eulerian_numbers_column(int k,\
+    \ int m) {\n    std::vector<Tp> A(k + 1), B(k + 1);\n    auto &&bin = Binomial<Tp>::get(std::max(k\
+    \ + 1, m));\n    for (int i = 0; i <= k; ++i) {\n        A[k - i] = Tp(-i - 1).pow(k\
+    \ - i) * bin.inv_factorial(k - i);\n        B[k - i] = Tp(-i).pow(k - i) * bin.inv_factorial(k\
+    \ - i);\n    }\n    std::vector<Tp> xe_neg_x(m); // xe^(-x)\n    for (int i =\
+    \ 1; i < m; ++i) {\n        xe_neg_x[i] = bin.inv_factorial(i - 1);\n        if\
+    \ ((i - 1) & 1) xe_neg_x[i] = -xe_neg_x[i];\n    }\n    auto AA = convolution(composition(A,\
+    \ xe_neg_x, m), exp(std::vector{Tp(0), Tp(k + 1)}, m));\n    auto BB = convolution(composition(B,\
+    \ xe_neg_x, m), exp(std::vector{Tp(0), Tp(k)}, m));\n    for (int i = 0; i < m;\
+    \ ++i) AA[i] = (AA[i] - BB[i]) * bin.factorial(i);\n    AA.resize(m);\n    return\
+    \ AA;\n}\n"
+  code: "#pragma once\n\n#include \"fft.hpp\"\n#include \"fps_basic.hpp\"\n#include\
+    \ \"fps_composition.hpp\"\n#include \"fps_polya.hpp\"\n#include <cassert>\n#include\
+    \ <vector>\n\n// returns P([0..n)) s.t. P(n)=#(ways writing a integer n as sum\
+    \ of positive integers)\n// see: https://mathworld.wolfram.com/PartitionFunctionP.html\n\
+    // a.k.a. Pentagonal number\ntemplate <typename Tp>\ninline std::vector<Tp> partition_function(int\
+    \ n) {\n    assert(n >= 0);\n    std::vector<Tp> I(n);\n    for (int i = 1; i\
+    \ < n; ++i) I[i] = 1;\n    return polya_exp(I, n);\n}\n\n// unsigned Stirling\
+    \ numbers of the first kind\ntemplate <typename Tp>\ninline std::vector<Tp> stirling_numbers_1st_row(int\
+    \ n) {\n    assert(n >= 0);\n    if (n == 0) return {Tp(1)};\n    int mask = 1\
+    \ << 30;\n    while ((mask & n) == 0) mask >>= 1;\n    std::vector<Tp> res{Tp(),\
+    \ Tp(1)};\n    for (int d = 1; d != n;) {\n        res = convolution(res, taylor_shift(res,\
+    \ Tp(d)));\n        d <<= 1;\n        if ((mask >>= 1) & n) {\n            res\
+    \ = convolution(res, std::vector<Tp>{Tp(d), Tp(1)});\n            ++d;\n     \
+    \   }\n    }\n    return res;\n}\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
+    // returns A(n,0), ..., A(n,n)\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ eulerian_numbers_row(int n) {\n    std::vector<Tp> A(n + 1);\n    for (int i\
+    \ = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);\n    auto AA = convolution(A, pow(std::vector<Tp>{Tp(1),\
+    \ Tp(-1)}, n + 1, n + 1));\n    AA.resize(n + 1);\n    return AA;\n}\n\n// returns\
+    \ A(0,k), ..., A(m-1,k)\n// see:\n// [1]: Entropy Increaser. \u5E73\u79FB\u6307\
+    \u6570\u57FA\u53D8\u6362.\n//      https://blog.csdn.net/EI_Captain/article/details/108586699\n\
+    template <typename Tp>\ninline std::vector<Tp> eulerian_numbers_column(int k,\
+    \ int m) {\n    std::vector<Tp> A(k + 1), B(k + 1);\n    auto &&bin = Binomial<Tp>::get(std::max(k\
+    \ + 1, m));\n    for (int i = 0; i <= k; ++i) {\n        A[k - i] = Tp(-i - 1).pow(k\
+    \ - i) * bin.inv_factorial(k - i);\n        B[k - i] = Tp(-i).pow(k - i) * bin.inv_factorial(k\
+    \ - i);\n    }\n    std::vector<Tp> xe_neg_x(m); // xe^(-x)\n    for (int i =\
+    \ 1; i < m; ++i) {\n        xe_neg_x[i] = bin.inv_factorial(i - 1);\n        if\
+    \ ((i - 1) & 1) xe_neg_x[i] = -xe_neg_x[i];\n    }\n    auto AA = convolution(composition(A,\
+    \ xe_neg_x, m), exp(std::vector{Tp(0), Tp(k + 1)}, m));\n    auto BB = convolution(composition(B,\
+    \ xe_neg_x, m), exp(std::vector{Tp(0), Tp(k)}, m));\n    for (int i = 0; i < m;\
+    \ ++i) AA[i] = (AA[i] - BB[i]) * bin.factorial(i);\n    AA.resize(m);\n    return\
+    \ AA;\n}\n"
   dependsOn:
-  - binomial.hpp
   - fft.hpp
   - fps_basic.hpp
+  - binomial.hpp
   - semi_relaxed_conv.hpp
+  - fps_composition.hpp
+  - fps_polya.hpp
   isVerificationFile: false
-  path: fps_composition.hpp
-  requiredBy:
-  - famous_sequence.hpp
-  - eulerian_number.hpp
-  timestamp: '2024-06-02 11:00:30+08:00'
+  path: famous_sequence.hpp
+  requiredBy: []
+  timestamp: '2024-08-18 16:52:04+08:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
-  - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-  - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
-documentation_of: fps_composition.hpp
+documentation_of: famous_sequence.hpp
 layout: document
 redirect_from:
-- /library/fps_composition.hpp
-- /library/fps_composition.hpp.html
-title: fps_composition.hpp
+- /library/famous_sequence.hpp
+- /library/famous_sequence.hpp.html
+title: famous_sequence.hpp
 ---
