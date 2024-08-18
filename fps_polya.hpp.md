@@ -193,37 +193,34 @@ data:
     \ o * e, 0);\n    return a;\n}\n#line 7 \"fps_polya.hpp\"\n\n// returns SEQ(A)=1/(1-a)\n\
     template <typename Tp>\ninline std::vector<Tp> polya_q(std::vector<Tp> a, int\
     \ n) {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n\
-    \    for (int i = 1; i < (int)a.size(); ++i) a[i] = -a[i];\n    return inv(a,\
-    \ n);\n}\n\n// returns MSET(A)=exp(a(x)+a(x^2)/2+a(x^3)/3+...)\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> polya_exp(std::vector<Tp> a, int n) {\n    if (n\
-    \ <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n    auto &&bin =\
-    \ Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n        for (int\
-    \ j = 2; (long long)i * j < n; ++j) a[i * j] += a[i] * bin.inv(j);\n    return\
-    \ exp(a, n);\n}\n\n// returns PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> polya_exp_m(std::vector<Tp> a, int n)\
-    \ {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n  \
-    \  auto &&bin = Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n \
-    \       for (int j = 2; (long long)i * j < n; ++j)\n            if (j & 1) {\n\
-    \                a[i * j] += a[i] * bin.inv(j);\n            } else {\n      \
-    \          a[i * j] -= a[i] * bin.inv(j);\n            }\n    return exp(a, n);\n\
-    }\n"
+    \    for (int i = 1; i < n; ++i) a[i] = -a[i];\n    return inv(a, n);\n}\n\n//\
+    \ returns MSET(A)=exp(a(x)+a(x^2)/2+a(x^3)/3+...)\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> polya_exp(std::vector<Tp> a, int n) {\n    if (n <= 0) return\
+    \ {};\n    a.resize(n);\n    assert(a[0] == 0);\n    auto &&bin = Binomial<Tp>::get(n);\n\
+    \    for (int i = n - 1; i > 0; --i)\n        for (int j = 2; i * j < n; ++j)\
+    \ a[i * j] += a[i] * bin.inv(j);\n    return exp(a, n);\n}\n\n// returns PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)\n\
+    template <typename Tp>\ninline std::vector<Tp> polya_exp_m(std::vector<Tp> a,\
+    \ int n) {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n\
+    \    auto &&bin = Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n\
+    \        for (int j = 2; i * j < n; ++j)\n            if (j & 1) {\n         \
+    \       a[i * j] += a[i] * bin.inv(j);\n            } else {\n               \
+    \ a[i * j] -= a[i] * bin.inv(j);\n            }\n    return exp(a, n);\n}\n"
   code: "#pragma once\n\n#include \"binomial.hpp\"\n#include \"fps_basic.hpp\"\n#include\
     \ <cassert>\n#include <vector>\n\n// returns SEQ(A)=1/(1-a)\ntemplate <typename\
     \ Tp>\ninline std::vector<Tp> polya_q(std::vector<Tp> a, int n) {\n    if (n <=\
     \ 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n    for (int i = 1;\
-    \ i < (int)a.size(); ++i) a[i] = -a[i];\n    return inv(a, n);\n}\n\n// returns\
-    \ MSET(A)=exp(a(x)+a(x^2)/2+a(x^3)/3+...)\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ polya_exp(std::vector<Tp> a, int n) {\n    if (n <= 0) return {};\n    a.resize(n);\n\
-    \    assert(a[0] == 0);\n    auto &&bin = Binomial<Tp>::get(n);\n    for (int\
-    \ i = n - 1; i > 0; --i)\n        for (int j = 2; (long long)i * j < n; ++j) a[i\
-    \ * j] += a[i] * bin.inv(j);\n    return exp(a, n);\n}\n\n// returns PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)\n\
-    template <typename Tp>\ninline std::vector<Tp> polya_exp_m(std::vector<Tp> a,\
-    \ int n) {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n\
+    \ i < n; ++i) a[i] = -a[i];\n    return inv(a, n);\n}\n\n// returns MSET(A)=exp(a(x)+a(x^2)/2+a(x^3)/3+...)\n\
+    template <typename Tp>\ninline std::vector<Tp> polya_exp(std::vector<Tp> a, int\
+    \ n) {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n\
     \    auto &&bin = Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n\
-    \        for (int j = 2; (long long)i * j < n; ++j)\n            if (j & 1) {\n\
-    \                a[i * j] += a[i] * bin.inv(j);\n            } else {\n      \
-    \          a[i * j] -= a[i] * bin.inv(j);\n            }\n    return exp(a, n);\n\
-    }\n"
+    \        for (int j = 2; i * j < n; ++j) a[i * j] += a[i] * bin.inv(j);\n    return\
+    \ exp(a, n);\n}\n\n// returns PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> polya_exp_m(std::vector<Tp> a, int n)\
+    \ {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n  \
+    \  auto &&bin = Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n \
+    \       for (int j = 2; i * j < n; ++j)\n            if (j & 1) {\n          \
+    \      a[i * j] += a[i] * bin.inv(j);\n            } else {\n                a[i\
+    \ * j] -= a[i] * bin.inv(j);\n            }\n    return exp(a, n);\n}\n"
   dependsOn:
   - binomial.hpp
   - fps_basic.hpp
@@ -233,7 +230,7 @@ data:
   path: fps_polya.hpp
   requiredBy:
   - famous_sequence.hpp
-  timestamp: '2024-08-18 16:52:04+08:00'
+  timestamp: '2024-08-18 17:35:35+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/enumerative_combinatorics/partition_function.0.test.cpp

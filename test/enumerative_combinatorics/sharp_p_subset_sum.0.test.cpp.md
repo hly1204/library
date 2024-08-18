@@ -191,20 +191,19 @@ data:
     \ o * e, 0);\n    return a;\n}\n#line 7 \"fps_polya.hpp\"\n\n// returns SEQ(A)=1/(1-a)\n\
     template <typename Tp>\ninline std::vector<Tp> polya_q(std::vector<Tp> a, int\
     \ n) {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n\
-    \    for (int i = 1; i < (int)a.size(); ++i) a[i] = -a[i];\n    return inv(a,\
-    \ n);\n}\n\n// returns MSET(A)=exp(a(x)+a(x^2)/2+a(x^3)/3+...)\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> polya_exp(std::vector<Tp> a, int n) {\n    if (n\
-    \ <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n    auto &&bin =\
-    \ Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n        for (int\
-    \ j = 2; (long long)i * j < n; ++j) a[i * j] += a[i] * bin.inv(j);\n    return\
-    \ exp(a, n);\n}\n\n// returns PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> polya_exp_m(std::vector<Tp> a, int n)\
-    \ {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n  \
-    \  auto &&bin = Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n \
-    \       for (int j = 2; (long long)i * j < n; ++j)\n            if (j & 1) {\n\
-    \                a[i * j] += a[i] * bin.inv(j);\n            } else {\n      \
-    \          a[i * j] -= a[i] * bin.inv(j);\n            }\n    return exp(a, n);\n\
-    }\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#line 5 \"modint.hpp\"\n\ntemplate\
+    \    for (int i = 1; i < n; ++i) a[i] = -a[i];\n    return inv(a, n);\n}\n\n//\
+    \ returns MSET(A)=exp(a(x)+a(x^2)/2+a(x^3)/3+...)\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> polya_exp(std::vector<Tp> a, int n) {\n    if (n <= 0) return\
+    \ {};\n    a.resize(n);\n    assert(a[0] == 0);\n    auto &&bin = Binomial<Tp>::get(n);\n\
+    \    for (int i = n - 1; i > 0; --i)\n        for (int j = 2; i * j < n; ++j)\
+    \ a[i * j] += a[i] * bin.inv(j);\n    return exp(a, n);\n}\n\n// returns PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)\n\
+    template <typename Tp>\ninline std::vector<Tp> polya_exp_m(std::vector<Tp> a,\
+    \ int n) {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n\
+    \    auto &&bin = Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n\
+    \        for (int j = 2; i * j < n; ++j)\n            if (j & 1) {\n         \
+    \       a[i * j] += a[i] * bin.inv(j);\n            } else {\n               \
+    \ a[i * j] -= a[i] * bin.inv(j);\n            }\n    return exp(a, n);\n}\n#line\
+    \ 2 \"modint.hpp\"\n\n#include <iostream>\n#line 5 \"modint.hpp\"\n\ntemplate\
     \ <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod`\
     \ must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
     \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
@@ -267,7 +266,7 @@ data:
   isVerificationFile: true
   path: test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2024-08-18 17:30:09+08:00'
+  timestamp: '2024-08-18 17:35:35+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
