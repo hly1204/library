@@ -11,7 +11,7 @@ int main() {
     using mint = ModInt<998244353>;
     int n;
     std::cin >> n;
-    const auto S = stirling_numbers_1st_row<mint>(n);
+    const auto S = signed_stirling_numbers_1st_row<mint>(n);
     for (int i = 0; i <= n; ++i) std::cout << S[i] << ' ';
     return 0;
 }

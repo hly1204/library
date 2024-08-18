@@ -21,7 +21,7 @@ inline std::vector<Tp> partition_function(int n) {
 
 // unsigned Stirling numbers of the first kind
 template <typename Tp>
-inline std::vector<Tp> stirling_numbers_1st_row(int n) {
+inline std::vector<Tp> unsigned_stirling_numbers_1st_row(int n) {
     assert(n >= 0);
     if (n == 0) return {Tp(1)};
     int mask = 1 << 30;
@@ -32,10 +32,18 @@ inline std::vector<Tp> stirling_numbers_1st_row(int n) {
         d <<= 1;
         if ((mask >>= 1) & n) {
             res = convolution(res, std::vector<Tp>{Tp(d), Tp(1)});
-            ++d;
+            d |= 1;
         }
     }
     return res;
+}
+
+template <typename Tp>
+inline std::vector<Tp> signed_stirling_numbers_1st_row(int n) {
+    auto S = unsigned_stirling_numbers_1st_row<Tp>(n);
+    for (int i = 0; i <= n; ++i)
+        if ((n - i) & 1) S[i] = -S[i];
+    return S;
 }
 
 // Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of
