@@ -5,10 +5,11 @@
 #include "fps_composition.hpp"
 #include "fps_polya.hpp"
 #include "poly_basic.hpp"
+#include "pow_table.hpp"
 #include <cassert>
 #include <vector>
 
-// returns P([0..n)) s.t. P(n)=#(ways writing a integer n as sum of positive integers)
+// returns P([0..n)) s.t. P(n)=#(ways writing an integer n as sum of positive integers)
 // see: https://mathworld.wolfram.com/PartitionFunctionP.html
 // a.k.a. Pentagonal number
 template <typename Tp>
@@ -19,6 +20,7 @@ inline std::vector<Tp> partition_function(int n) {
     return polya_exp(I, n);
 }
 
+// returns |s(n,0)|, ..., |s(n,n)|
 // unsigned Stirling numbers of the first kind
 template <typename Tp>
 inline std::vector<Tp> unsigned_stirling_numbers_1st_row(int n) {
@@ -38,12 +40,29 @@ inline std::vector<Tp> unsigned_stirling_numbers_1st_row(int n) {
     return res;
 }
 
+// returns s(n,0), ..., s(n,n)
 template <typename Tp>
 inline std::vector<Tp> signed_stirling_numbers_1st_row(int n) {
     auto S = unsigned_stirling_numbers_1st_row<Tp>(n);
     for (int i = 0; i <= n; ++i)
         if ((n - i) & 1) S[i] = -S[i];
     return S;
+}
+
+// returns S(n,0), ..., S(n,n)
+template <typename Tp>
+inline std::vector<Tp> stirling_numbers_2nd_row(int n) {
+    assert(n >= 0);
+    std::vector<Tp> res(n + 1), R(n + 1);
+    auto &&bin   = Binomial<Tp>::get(n);
+    const auto T = pow_table<Tp>(n, n + 1);
+    for (int i = 0; i <= n; ++i) {
+        R[i] = T[i] * (res[i] = bin.inv_factorial(i));
+        if (i & 1) res[i] = -res[i];
+    }
+    res = convolution(res, R);
+    res.resize(n + 1);
+    return res;
 }
 
 // Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of
