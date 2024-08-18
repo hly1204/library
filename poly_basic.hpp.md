@@ -1,16 +1,16 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy:
@@ -23,7 +23,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: czt.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: famous_sequence.hpp
     title: famous_sequence.hpp
   - icon: ':heavy_check_mark:'
@@ -51,7 +51,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -114,9 +114,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
@@ -407,7 +407,7 @@ data:
   - czt.hpp
   - poly_interpolation_with_error.hpp
   timestamp: '2024-08-03 14:01:08+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp

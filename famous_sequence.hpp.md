@@ -1,28 +1,28 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
     title: fps_composition.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_polya.hpp
     title: fps_polya.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: pow_table.hpp
     title: pow_table.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
@@ -33,12 +33,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://blog.csdn.net/EI_Captain/article/details/108586699
@@ -377,11 +377,11 @@ data:
     \ 0; i <= n; ++i)\n        if ((n - i) & 1) S[i] = -S[i];\n    return S;\n}\n\n\
     // returns S(n,0), ..., S(n,n)\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ stirling_numbers_2nd_row(int n) {\n    assert(n >= 0);\n    std::vector<Tp>\
-    \ res(n + 1), R(n + 1);\n    auto &&bin   = Binomial<Tp>::get(n);\n    const auto\
-    \ T = pow_table<Tp>(n, n + 1);\n    for (int i = 0; i <= n; ++i) {\n        R[i]\
-    \ = T[i] * (res[i] = bin.inv_factorial(i));\n        if (i & 1) res[i] = -res[i];\n\
-    \    }\n    res = convolution(res, R);\n    res.resize(n + 1);\n    return res;\n\
-    }\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
+    \ res(n + 1), R(n + 1);\n    auto &&bin   = Binomial<Tp>::get(n + 1);\n    const\
+    \ auto T = pow_table<Tp>(n, n + 1);\n    for (int i = 0; i <= n; ++i) {\n    \
+    \    R[i] = T[i] * (res[i] = bin.inv_factorial(i));\n        if (i & 1) res[i]\
+    \ = -res[i];\n    }\n    res = convolution(res, R);\n    res.resize(n + 1);\n\
+    \    return res;\n}\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
     // returns A(n,0), ..., A(n,n)\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ eulerian_numbers_row(int n) {\n    std::vector<Tp> A(n + 1);\n    for (int i\
     \ = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);\n    auto AA = convolution(A, pow(std::vector<Tp>{Tp(1),\
@@ -420,11 +420,11 @@ data:
     \ 0; i <= n; ++i)\n        if ((n - i) & 1) S[i] = -S[i];\n    return S;\n}\n\n\
     // returns S(n,0), ..., S(n,n)\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ stirling_numbers_2nd_row(int n) {\n    assert(n >= 0);\n    std::vector<Tp>\
-    \ res(n + 1), R(n + 1);\n    auto &&bin   = Binomial<Tp>::get(n);\n    const auto\
-    \ T = pow_table<Tp>(n, n + 1);\n    for (int i = 0; i <= n; ++i) {\n        R[i]\
-    \ = T[i] * (res[i] = bin.inv_factorial(i));\n        if (i & 1) res[i] = -res[i];\n\
-    \    }\n    res = convolution(res, R);\n    res.resize(n + 1);\n    return res;\n\
-    }\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
+    \ res(n + 1), R(n + 1);\n    auto &&bin   = Binomial<Tp>::get(n + 1);\n    const\
+    \ auto T = pow_table<Tp>(n, n + 1);\n    for (int i = 0; i <= n; ++i) {\n    \
+    \    R[i] = T[i] * (res[i] = bin.inv_factorial(i));\n        if (i & 1) res[i]\
+    \ = -res[i];\n    }\n    res = convolution(res, R);\n    res.resize(n + 1);\n\
+    \    return res;\n}\n\n// Eulerian numbers (OEIS) https://oeis.org/wiki/Eulerian_numbers,_triangle_of\n\
     // returns A(n,0), ..., A(n,n)\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ eulerian_numbers_row(int n) {\n    std::vector<Tp> A(n + 1);\n    for (int i\
     \ = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);\n    auto AA = convolution(A, pow(std::vector<Tp>{Tp(1),\
@@ -454,8 +454,8 @@ data:
   isVerificationFile: false
   path: famous_sequence.hpp
   requiredBy: []
-  timestamp: '2024-08-18 17:57:40+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2024-08-18 18:01:41+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp
