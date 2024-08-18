@@ -4,6 +4,7 @@
 #include "fps_basic.hpp"
 #include "fps_composition.hpp"
 #include "fps_polya.hpp"
+#include "poly_basic.hpp"
 #include <cassert>
 #include <vector>
 
