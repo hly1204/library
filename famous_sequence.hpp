@@ -54,7 +54,7 @@ template <typename Tp>
 inline std::vector<Tp> stirling_numbers_2nd_row(int n) {
     assert(n >= 0);
     std::vector<Tp> res(n + 1), R(n + 1);
-    auto &&bin   = Binomial<Tp>::get(n);
+    auto &&bin   = Binomial<Tp>::get(n + 1);
     const auto T = pow_table<Tp>(n, n + 1);
     for (int i = 0; i <= n; ++i) {
         R[i] = T[i] * (res[i] = bin.inv_factorial(i));
