@@ -101,12 +101,12 @@ inline std::vector<Tp> stirling_numbers_2nd_column(int k, int n) {
         return res;
     }
     int mask = 1 << 30;
-    while ((mask & n) == 0) mask >>= 1;
+    while ((mask & k) == 0) mask >>= 1;
     std::vector<Tp> res{Tp(-1), Tp(1)};
-    for (int d = 1; d != n;) {
+    for (int d = 1; d != k;) {
         res = convolution(res, taylor_shift(res, -Tp(d)));
         d <<= 1;
-        if ((mask >>= 1) & n) res = convolution(res, std::vector<Tp>{-Tp(d |= 1), Tp(1)});
+        if ((mask >>= 1) & k) res = convolution(res, std::vector<Tp>{-Tp(d |= 1), Tp(1)});
     }
     res = inv(std::vector(res.rbegin(), res.rend()), n - k);
     res.insert(res.begin(), k, Tp(0));
