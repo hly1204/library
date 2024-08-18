@@ -58,6 +58,9 @@ data:
     path: test/enumerative_combinatorics/partition_function.0.test.cpp
     title: test/enumerative_combinatorics/partition_function.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
+    title: test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -319,6 +322,7 @@ data:
   verifiedWith:
   - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
+  - test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
   - test/matrix/characteristic_polynomial.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp

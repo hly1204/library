@@ -11,45 +11,43 @@ data:
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
+    path: fps_polya.hpp
+    title: fps_polya.hpp
+  - icon: ':heavy_check_mark:'
+    path: modint.hpp
+    title: modint.hpp
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
-    path: famous_sequence.hpp
-    title: famous_sequence.hpp
-  _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/enumerative_combinatorics/partition_function.0.test.cpp
-    title: test/enumerative_combinatorics/partition_function.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
-    title: test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
-    title: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
+  _extendedRequiredBy: []
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
-  _pathExtension: hpp
+  _pathExtension: cpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    links: []
-  bundledCode: "#line 2 \"fps_polya.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
-    \ <algorithm>\n#include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n\
-    \    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
-    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
-    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
-    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
-    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
-    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
-    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
-    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
-    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
-    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
-    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
-    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
-    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
-    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
-    \ }\n};\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line\
-    \ 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include <cassert>\n#include <iterator>\n\
+    '*NOT_SPECIAL_COMMENTS*': ''
+    PROBLEM: https://judge.yosupo.jp/problem/sharp_p_subset_sum
+    links:
+    - https://judge.yosupo.jp/problem/sharp_p_subset_sum
+  bundledCode: "#line 1 \"test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/sharp_p_subset_sum\"\n\n#line\
+    \ 2 \"fps_polya.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n#include\
+    \ <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_,\
+    \ invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\
+    \n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
+    \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
+    \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
+    \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
+    \ factorial_[i] = factorial_[i - 1] * i;\n            invfactorial_.back() = factorial_.back().inv();\n\
+    \            for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i\
+    \ + 1] * (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int\
+    \ n) {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
+    \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
+    \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
+    \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
+    \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
+    \ invfactorial_[n]; }\n};\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"semi_relaxed_conv.hpp\"\
+    \n\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include <cassert>\n#include <iterator>\n\
     #include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\nclass FftInfo\
     \ {\n    static Tp least_quadratic_nonresidue() {\n        for (int i = 2;; ++i)\n\
     \            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n    }\n\n\
@@ -206,43 +204,76 @@ data:
     \       for (int j = 2; (long long)i * j < n; ++j)\n            if (j & 1) {\n\
     \                a[i * j] += a[i] * bin.inv(j);\n            } else {\n      \
     \          a[i * j] -= a[i] * bin.inv(j);\n            }\n    return exp(a, n);\n\
-    }\n"
-  code: "#pragma once\n\n#include \"binomial.hpp\"\n#include \"fps_basic.hpp\"\n#include\
-    \ <cassert>\n#include <vector>\n\n// returns SEQ(A)=1/(1-a)\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> polya_q(std::vector<Tp> a, int n) {\n    if (n <=\
-    \ 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n    for (int i = 1;\
-    \ i < (int)a.size(); ++i) a[i] = -a[i];\n    return inv(a, n);\n}\n\n// returns\
-    \ MSET(A)=exp(a(x)+a(x^2)/2+a(x^3)/3+...)\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ polya_exp(std::vector<Tp> a, int n) {\n    if (n <= 0) return {};\n    a.resize(n);\n\
-    \    assert(a[0] == 0);\n    auto &&bin = Binomial<Tp>::get(n);\n    for (int\
-    \ i = n - 1; i > 0; --i)\n        for (int j = 2; (long long)i * j < n; ++j) a[i\
-    \ * j] += a[i] * bin.inv(j);\n    return exp(a, n);\n}\n\n// returns PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)\n\
-    template <typename Tp>\ninline std::vector<Tp> polya_exp_m(std::vector<Tp> a,\
-    \ int n) {\n    if (n <= 0) return {};\n    a.resize(n);\n    assert(a[0] == 0);\n\
-    \    auto &&bin = Binomial<Tp>::get(n);\n    for (int i = n - 1; i > 0; --i)\n\
-    \        for (int j = 2; (long long)i * j < n; ++j)\n            if (j & 1) {\n\
-    \                a[i * j] += a[i] * bin.inv(j);\n            } else {\n      \
-    \          a[i * j] -= a[i] * bin.inv(j);\n            }\n    return exp(a, n);\n\
-    }\n"
+    }\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#line 5 \"modint.hpp\"\n\ntemplate\
+    \ <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod`\
+    \ must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
+    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
+    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
+    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
+    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
+    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
+    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
+    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
+    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
+    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
+    \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
+    \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
+    \ if ((e >>= 1) == 0) return res;\n        }\n    }\n    ModInt inv() const {\n\
+    \        int x1 = 1, x3 = 0, a = val(), b = Mod;\n        while (b) {\n      \
+    \      int q = a / b, x1_old = x1, a_old = a;\n            x1 = x3, x3 = x1_old\
+    \ - x3 * q, a = b, b = a_old - b * q;\n        }\n        return from_raw(x1 <\
+    \ 0 ? x1 + (int)Mod : x1);\n    }\n    template <bool Odd = (Mod & 1)>\n    std::enable_if_t<Odd,\
+    \ ModInt> div_by_2() const {\n        if (v_ & 1) return from_raw((v_ + Mod) >>\
+    \ 1);\n        return from_raw(v_ >> 1);\n    }\n\n    ModInt &operator+=(const\
+    \ ModInt &a) {\n        if ((v_ += a.v_) >= Mod) v_ -= Mod;\n        return *this;\n\
+    \    }\n    ModInt &operator-=(const ModInt &a) {\n        if ((v_ += Mod - a.v_)\
+    \ >= Mod) v_ -= Mod;\n        return *this;\n    }\n    ModInt &operator*=(const\
+    \ ModInt &a) {\n        v_ = (unsigned long long)v_ * a.v_ % Mod;\n        return\
+    \ *this;\n    }\n    ModInt &operator/=(const ModInt &a) { return *this *= a.inv();\
+    \ }\n\n    friend ModInt operator+(const ModInt &a, const ModInt &b) { return\
+    \ ModInt(a) += b; }\n    friend ModInt operator-(const ModInt &a, const ModInt\
+    \ &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const ModInt &a,\
+    \ const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
+    \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
+    \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
+    \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
+    #line 7 \"test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp\"\n\nint\
+    \ main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n, t;\n    std::cin >> n >> t;\n\
+    \    std::vector<mint> A(t + 1);\n    while (n--) {\n        int pos;\n      \
+    \  std::cin >> pos;\n        A[pos] += 1;\n    }\n    const auto res = polya_exp_m(A,\
+    \ t + 1);\n    for (int i = 1; i <= t; ++i) std::cout << res[i] << ' ';\n    return\
+    \ 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/sharp_p_subset_sum\"\n\n\
+    #include \"fps_polya.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n#include\
+    \ <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n, t;\n    std::cin >> n >> t;\n\
+    \    std::vector<mint> A(t + 1);\n    while (n--) {\n        int pos;\n      \
+    \  std::cin >> pos;\n        A[pos] += 1;\n    }\n    const auto res = polya_exp_m(A,\
+    \ t + 1);\n    for (int i = 1; i <= t; ++i) std::cout << res[i] << ' ';\n    return\
+    \ 0;\n}\n"
   dependsOn:
+  - fps_polya.hpp
   - binomial.hpp
   - fps_basic.hpp
   - semi_relaxed_conv.hpp
   - fft.hpp
-  isVerificationFile: false
-  path: fps_polya.hpp
-  requiredBy:
-  - famous_sequence.hpp
-  timestamp: '2024-08-18 16:52:04+08:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - test/enumerative_combinatorics/partition_function.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
-  - test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
-documentation_of: fps_polya.hpp
+  - modint.hpp
+  isVerificationFile: true
+  path: test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
+  requiredBy: []
+  timestamp: '2024-08-18 17:30:09+08:00'
+  verificationStatus: TEST_ACCEPTED
+  verifiedWith: []
+documentation_of: test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
 layout: document
 redirect_from:
-- /library/fps_polya.hpp
-- /library/fps_polya.hpp.html
-title: fps_polya.hpp
+- /verify/test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
+- /verify/test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp.html
+title: test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
 ---
