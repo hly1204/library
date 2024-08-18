@@ -11,7 +11,7 @@ inline std::vector<Tp> polya_q(std::vector<Tp> a, int n) {
     if (n <= 0) return {};
     a.resize(n);
     assert(a[0] == 0);
-    for (int i = 1; i < (int)a.size(); ++i) a[i] = -a[i];
+    for (int i = 1; i < n; ++i) a[i] = -a[i];
     return inv(a, n);
 }
 
@@ -23,7 +23,7 @@ inline std::vector<Tp> polya_exp(std::vector<Tp> a, int n) {
     assert(a[0] == 0);
     auto &&bin = Binomial<Tp>::get(n);
     for (int i = n - 1; i > 0; --i)
-        for (int j = 2; (long long)i * j < n; ++j) a[i * j] += a[i] * bin.inv(j);
+        for (int j = 2; i * j < n; ++j) a[i * j] += a[i] * bin.inv(j);
     return exp(a, n);
 }
 
@@ -35,7 +35,7 @@ inline std::vector<Tp> polya_exp_m(std::vector<Tp> a, int n) {
     assert(a[0] == 0);
     auto &&bin = Binomial<Tp>::get(n);
     for (int i = n - 1; i > 0; --i)
-        for (int j = 2; (long long)i * j < n; ++j)
+        for (int j = 2; i * j < n; ++j)
             if (j & 1) {
                 a[i * j] += a[i] * bin.inv(j);
             } else {
