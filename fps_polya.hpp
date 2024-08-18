@@ -11,6 +11,7 @@ inline std::vector<Tp> polya_q(std::vector<Tp> a, int n) {
     if (n <= 0) return {};
     a.resize(n);
     assert(a[0] == 0);
+    a[0] = 1;
     for (int i = 1; i < n; ++i) a[i] = -a[i];
     return inv(a, n);
 }
