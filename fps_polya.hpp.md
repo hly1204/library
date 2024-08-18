@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: famous_sequence.hpp
     title: famous_sequence.hpp
   _extendedVerifiedWith:
@@ -28,11 +28,17 @@ data:
     path: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
+    title: test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
+    title: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"fps_polya.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
@@ -235,12 +241,14 @@ data:
   requiredBy:
   - famous_sequence.hpp
   timestamp: '2024-08-18 20:29:24+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
   - test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
 documentation_of: fps_polya.hpp
 layout: document
 redirect_from:

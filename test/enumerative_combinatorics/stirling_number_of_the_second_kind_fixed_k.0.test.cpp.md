@@ -33,16 +33,16 @@ data:
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/stirling_number_of_the_first_kind
+    PROBLEM: https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind_fixed_k
     links:
-    - https://judge.yosupo.jp/problem/stirling_number_of_the_first_kind
-  bundledCode: "#line 1 \"test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/stirling_number_of_the_first_kind\"\
+    - https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind_fixed_k
+  bundledCode: "#line 1 \"test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind_fixed_k\"\
     \n\n#line 2 \"famous_sequence.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
     #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
     \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
@@ -454,17 +454,18 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 7 \"test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp\"\
+    #line 7 \"test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    const\
-    \ auto S = signed_stirling_numbers_1st_row<mint>(n);\n    for (int i = 0; i <=\
-    \ n; ++i) std::cout << S[i] << ' ';\n    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/stirling_number_of_the_first_kind\"\
+    \    using mint = ModInt<998244353>;\n    int n, k;\n    std::cin >> n >> k;\n\
+    \    const auto S = stirling_numbers_2nd_column<mint>(k, n + 1);\n    for (int\
+    \ i = k; i <= n; ++i) std::cout << S[i] << ' ';\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind_fixed_k\"\
     \n\n#include \"famous_sequence.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\
     #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
-    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n  \
-    \  std::cin >> n;\n    const auto S = signed_stirling_numbers_1st_row<mint>(n);\n\
-    \    for (int i = 0; i <= n; ++i) std::cout << S[i] << ' ';\n    return 0;\n}\n"
+    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, k;\n\
+    \    std::cin >> n >> k;\n    const auto S = stirling_numbers_2nd_column<mint>(k,\
+    \ n + 1);\n    for (int i = k; i <= n; ++i) std::cout << S[i] << ' ';\n    return\
+    \ 0;\n}\n"
   dependsOn:
   - famous_sequence.hpp
   - fft.hpp
@@ -477,15 +478,15 @@ data:
   - pow_table.hpp
   - modint.hpp
   isVerificationFile: true
-  path: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
+  path: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
   requiredBy: []
   timestamp: '2024-08-18 23:01:35+08:00'
-  verificationStatus: TEST_ACCEPTED
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
+documentation_of: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
-- /verify/test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp.html
-title: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
+- /verify/test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
+- /verify/test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp.html
+title: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
 ---
