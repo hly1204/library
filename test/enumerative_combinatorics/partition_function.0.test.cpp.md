@@ -360,14 +360,14 @@ data:
     \            if (i % p[j] == 0) break;\n        }\n    }\n    return res;\n}\n\
     #line 11 \"famous_sequence.hpp\"\n\n// returns P([0..n)) s.t. P(n)=#(ways writing\
     \ an integer n as sum of positive integers)\n// see: https://mathworld.wolfram.com/PartitionFunctionP.html\n\
-    // a.k.a. Pentagonal number\ntemplate <typename Tp>\ninline std::vector<Tp> partition_function(int\
-    \ n) {\n    assert(n >= 0);\n    std::vector<Tp> I(n);\n    for (int i = 1; i\
-    \ < n; ++i) I[i] = 1;\n    return polya_exp(I, n);\n}\n\n// returns |s(n,0)|,\
-    \ ..., |s(n,n)|\n// unsigned Stirling numbers of the first kind\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> unsigned_stirling_numbers_1st_row(int n) {\n   \
-    \ assert(n >= 0);\n    if (n == 0) return {Tp(1)};\n    int mask = 1 << 30;\n\
-    \    while ((mask & n) == 0) mask >>= 1;\n    std::vector<Tp> res{Tp(), Tp(1)};\n\
-    \    for (int d = 1; d != n;) {\n        res = convolution(res, taylor_shift(res,\
+    // see also Pentagonal number\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ partition_function(int n) {\n    assert(n >= 0);\n    std::vector<Tp> I(n);\n\
+    \    for (int i = 1; i < n; ++i) I[i] = 1;\n    return polya_exp(I, n);\n}\n\n\
+    // returns |s(n,0)|, ..., |s(n,n)|\n// unsigned Stirling numbers of the first\
+    \ kind\ntemplate <typename Tp>\ninline std::vector<Tp> unsigned_stirling_numbers_1st_row(int\
+    \ n) {\n    assert(n >= 0);\n    if (n == 0) return {Tp(1)};\n    int mask = 1\
+    \ << 30;\n    while ((mask & n) == 0) mask >>= 1;\n    std::vector<Tp> res{Tp(),\
+    \ Tp(1)};\n    for (int d = 1; d != n;) {\n        res = convolution(res, taylor_shift(res,\
     \ Tp(d)));\n        d <<= 1;\n        if ((mask >>= 1) & n) {\n            res\
     \ = convolution(res, std::vector<Tp>{Tp(d), Tp(1)});\n            d |= 1;\n  \
     \      }\n    }\n    return res;\n}\n\n// returns |s(0,k)|, ..., |s(n-1,k)|\n\
@@ -479,7 +479,7 @@ data:
   isVerificationFile: true
   path: test/enumerative_combinatorics/partition_function.0.test.cpp
   requiredBy: []
-  timestamp: '2024-08-18 23:10:30+08:00'
+  timestamp: '2024-08-22 07:31:34+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/enumerative_combinatorics/partition_function.0.test.cpp
