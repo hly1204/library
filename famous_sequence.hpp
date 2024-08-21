@@ -11,7 +11,7 @@
 
 // returns P([0..n)) s.t. P(n)=#(ways writing an integer n as sum of positive integers)
 // see: https://mathworld.wolfram.com/PartitionFunctionP.html
-// a.k.a. Pentagonal number
+// see also Pentagonal number
 template <typename Tp>
 inline std::vector<Tp> partition_function(int n) {
     assert(n >= 0);
