@@ -14,9 +14,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: czt.hpp
-  - icon: ':warning:'
-    path: eulerian_number.hpp
-    title: eulerian_number.hpp
   - icon: ':heavy_check_mark:'
     path: famous_sequence.hpp
     title: famous_sequence.hpp
@@ -325,7 +322,6 @@ data:
   - czt.hpp
   - poly_basic.hpp
   - poly_interpolation_with_error.hpp
-  - eulerian_number.hpp
   timestamp: '2024-06-02 11:00:30+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

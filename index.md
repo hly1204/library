@@ -30,9 +30,6 @@ data:
     - icon: ':heavy_check_mark:'
       path: disjoint_set.hpp
       title: disjoint_set.hpp
-    - icon: ':warning:'
-      path: eulerian_number.hpp
-      title: eulerian_number.hpp
     - icon: ':heavy_check_mark:'
       path: famous_sequence.hpp
       title: famous_sequence.hpp
