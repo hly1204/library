@@ -8,6 +8,7 @@
 #include <vector>
 
 // see: https://www.hirzels.com/martin/papers/debs17-tutorial.pdf
+// requires: Op(Op(A,B),C) = Op(A,Op(B,C))
 template <typename Tp, typename Op,
           std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp &>, int> = 0>
 class SWAG {
