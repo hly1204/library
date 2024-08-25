@@ -37,7 +37,7 @@ public:
         Front.pop();
     }
 
-    // returns F(Q[0],F(...,F(Q[N-2],Q[N-1]))
+    // returns F(...F(F(Q[0],Q[1]),Q[2]),...,Q[N-1])
     std::optional<Tp> query() const {
         if (empty()) return {};
         if (Front.empty()) return Agg;
