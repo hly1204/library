@@ -13,7 +13,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: fps_polya.hpp
     title: fps_polya.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
   - icon: ':heavy_check_mark:'

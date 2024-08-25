@@ -63,7 +63,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -102,6 +102,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: subproduct_tree.hpp
       title: subproduct_tree.hpp
+    - icon: ':x:'
+      path: swag.hpp
+      title: swag.hpp
     - icon: ':heavy_check_mark:'
       path: treap_node_base.hpp
       title: treap_node_base.hpp
@@ -117,6 +120,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/point_set_range_composite.0.test.cpp
       title: test/data_structure/point_set_range_composite.0.test.cpp
+    - icon: ':x:'
+      path: test/data_structure/queue_operate_all_composite.0.test.cpp
+      title: test/data_structure/queue_operate_all_composite.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/data_structure/range_affine_point_get.0.test.cpp
       title: test/data_structure/range_affine_point_get.0.test.cpp
