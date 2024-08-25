@@ -10,7 +10,7 @@ int main() {
     std::cin.tie(nullptr);
     using mint              = ModInt<998244353>;
     using LinearFunction    = std::array<mint, 2>;
-    const LinearFunction Id = {1, 0};
+    const LinearFunction Id = {0, 1};
     // L(R)
     auto composition = [](const LinearFunction &L, const LinearFunction &R) {
         return LinearFunction{L[0] + L[1] * R[0], L[1] * R[1]};
@@ -28,13 +28,13 @@ int main() {
         if (cmd == 0) {
             mint a, b;
             std::cin >> a >> b;
-            swag.push_back({a, b});
+            swag.push_back({b, a});
         } else if (cmd == 1) {
             swag.pop_front();
         } else {
             mint x;
             std::cin >> x;
-            std::cout << composition(swag.query().value_or(Id), {0, x}).at(0) << '\n';
+            std::cout << composition(swag.query().value_or(Id), {x, 0}).at(0) << '\n';
         }
     }
     return 0;
