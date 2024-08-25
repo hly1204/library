@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: swag.hpp
     title: swag.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/queue_operate_all_composite
@@ -76,33 +76,33 @@ data:
     \n#include <array>\n#line 7 \"test/data_structure/queue_operate_all_composite.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint              = ModInt<998244353>;\n    using LinearFunction  \
-    \  = std::array<mint, 2>;\n    const LinearFunction Id = {1, 0};\n    // L(R)\n\
+    \  = std::array<mint, 2>;\n    const LinearFunction Id = {0, 1};\n    // L(R)\n\
     \    auto composition = [](const LinearFunction &L, const LinearFunction &R) {\n\
     \        return LinearFunction{L[0] + L[1] * R[0], L[1] * R[1]};\n    };\n   \
     \ // R(L)\n    auto composition2 = [&](const LinearFunction &L, const LinearFunction\
     \ &R) {\n        return composition(R, L);\n    };\n    SWAG<LinearFunction, decltype(composition2)>\
     \ swag(composition2);\n    int Q;\n    std::cin >> Q;\n    while (Q--) {\n   \
     \     int cmd;\n        std::cin >> cmd;\n        if (cmd == 0) {\n          \
-    \  mint a, b;\n            std::cin >> a >> b;\n            swag.push_back({a,\
-    \ b});\n        } else if (cmd == 1) {\n            swag.pop_front();\n      \
+    \  mint a, b;\n            std::cin >> a >> b;\n            swag.push_back({b,\
+    \ a});\n        } else if (cmd == 1) {\n            swag.pop_front();\n      \
     \  } else {\n            mint x;\n            std::cin >> x;\n            std::cout\
-    \ << composition(swag.query().value_or(Id), {0, x}).at(0) << '\\n';\n        }\n\
+    \ << composition(swag.query().value_or(Id), {x, 0}).at(0) << '\\n';\n        }\n\
     \    }\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/queue_operate_all_composite\"\
     \n\n#include \"modint.hpp\"\n#include \"swag.hpp\"\n#include <array>\n#include\
     \ <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint              = ModInt<998244353>;\n    using LinearFunction  \
-    \  = std::array<mint, 2>;\n    const LinearFunction Id = {1, 0};\n    // L(R)\n\
+    \  = std::array<mint, 2>;\n    const LinearFunction Id = {0, 1};\n    // L(R)\n\
     \    auto composition = [](const LinearFunction &L, const LinearFunction &R) {\n\
     \        return LinearFunction{L[0] + L[1] * R[0], L[1] * R[1]};\n    };\n   \
     \ // R(L)\n    auto composition2 = [&](const LinearFunction &L, const LinearFunction\
     \ &R) {\n        return composition(R, L);\n    };\n    SWAG<LinearFunction, decltype(composition2)>\
     \ swag(composition2);\n    int Q;\n    std::cin >> Q;\n    while (Q--) {\n   \
     \     int cmd;\n        std::cin >> cmd;\n        if (cmd == 0) {\n          \
-    \  mint a, b;\n            std::cin >> a >> b;\n            swag.push_back({a,\
-    \ b});\n        } else if (cmd == 1) {\n            swag.pop_front();\n      \
+    \  mint a, b;\n            std::cin >> a >> b;\n            swag.push_back({b,\
+    \ a});\n        } else if (cmd == 1) {\n            swag.pop_front();\n      \
     \  } else {\n            mint x;\n            std::cin >> x;\n            std::cout\
-    \ << composition(swag.query().value_or(Id), {0, x}).at(0) << '\\n';\n        }\n\
+    \ << composition(swag.query().value_or(Id), {x, 0}).at(0) << '\\n';\n        }\n\
     \    }\n    return 0;\n}\n"
   dependsOn:
   - modint.hpp
@@ -110,8 +110,8 @@ data:
   isVerificationFile: true
   path: test/data_structure/queue_operate_all_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2024-08-25 15:01:57+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-08-25 15:11:24+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/queue_operate_all_composite.0.test.cpp
 layout: document
