@@ -57,8 +57,8 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 2 \"swag.hpp\"\n\n#include <cstddef>\n#include <optional>\n#include <stack>\n\
-    #line 7 \"swag.hpp\"\n#include <vector>\n\n// see: https://www.hirzels.com/martin/papers/debs17-tutorial.pdf\n\
+    #line 2 \"swag.hpp\"\n\n#include <cassert>\n#include <cstddef>\n#include <optional>\n\
+    #include <stack>\n#line 8 \"swag.hpp\"\n#include <vector>\n\n// see: https://www.hirzels.com/martin/papers/debs17-tutorial.pdf\n\
     template <typename Tp, typename Op,\n          std::enable_if_t<std::is_invocable_r_v<Tp,\
     \ Op, const Tp &, const Tp &>, int> = 0>\nclass SWAG {\npublic:\n    Op F;\n \
     \   std::stack<Tp, std::vector<Tp>> Front, Back;\n    std::optional<Tp> Agg;\n\
@@ -110,7 +110,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/queue_operate_all_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2024-08-25 15:00:24+08:00'
+  timestamp: '2024-08-25 15:01:57+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/data_structure/queue_operate_all_composite.0.test.cpp
