@@ -69,6 +69,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: modlong.hpp
       title: modlong.hpp
+    - icon: ':warning:'
+      path: monoid.hpp
+      title: monoid.hpp
     - icon: ':heavy_check_mark:'
       path: poly.hpp
       title: poly.hpp
