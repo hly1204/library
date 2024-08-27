@@ -1,11 +1,23 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: disjoint_sparse_table.hpp
+    title: disjoint_sparse_table.hpp
+  - icon: ':heavy_check_mark:'
+    path: sparse_table.hpp
+    title: sparse_table.hpp
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/data_structure/static_range_sum.0.test.cpp
+    title: test/data_structure/static_range_sum.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/data_structure/staticrmq.0.test.cpp
+    title: test/data_structure/staticrmq.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"monoid.hpp\"\n\n#include <type_traits>\n\ntemplate <typename\
@@ -23,10 +35,14 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: monoid.hpp
-  requiredBy: []
+  requiredBy:
+  - disjoint_sparse_table.hpp
+  - sparse_table.hpp
   timestamp: '2024-08-26 22:07:33+08:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/data_structure/staticrmq.0.test.cpp
+  - test/data_structure/static_range_sum.0.test.cpp
 documentation_of: monoid.hpp
 layout: document
 redirect_from:

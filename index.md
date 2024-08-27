@@ -31,6 +31,9 @@ data:
       path: disjoint_set.hpp
       title: disjoint_set.hpp
     - icon: ':heavy_check_mark:'
+      path: disjoint_sparse_table.hpp
+      title: disjoint_sparse_table.hpp
+    - icon: ':heavy_check_mark:'
       path: famous_sequence.hpp
       title: famous_sequence.hpp
     - icon: ':heavy_check_mark:'
@@ -69,7 +72,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: modlong.hpp
       title: modlong.hpp
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: monoid.hpp
       title: monoid.hpp
     - icon: ':heavy_check_mark:'
@@ -99,6 +102,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: semi_relaxed_conv.hpp
       title: semi_relaxed_conv.hpp
+    - icon: ':heavy_check_mark:'
+      path: sparse_table.hpp
+      title: sparse_table.hpp
     - icon: ':heavy_check_mark:'
       path: sqrt_mod.hpp
       title: sqrt_mod.hpp
@@ -135,6 +141,12 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/range_reverse_range_sum.0.test.cpp
       title: test/data_structure/range_reverse_range_sum.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/static_range_sum.0.test.cpp
+      title: test/data_structure/static_range_sum.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/staticrmq.0.test.cpp
+      title: test/data_structure/staticrmq.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/data_structure/unionfind.0.test.cpp
       title: test/data_structure/unionfind.0.test.cpp
