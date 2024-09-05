@@ -166,7 +166,9 @@ inline std::vector<Tp> charpoly(const Matrix<Tp> &A) {
 }
 
 template <typename Tp>
-inline std::vector<Tp> minpoly(const Matrix<Tp> &A, int n) {
+inline std::vector<Tp> minpoly(const Matrix<Tp> &A) {
+    assert(is_square_matrix(A));
+    const int n  = height(A);
     const auto u = random_vector<Tp>(n);
     auto v       = random_vector<Tp>(n);
     // u^T A^([0..2n)) v
