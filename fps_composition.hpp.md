@@ -377,11 +377,11 @@ data:
   timestamp: '2024-06-02 11:00:30+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
   - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
   - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
 documentation_of: fps_composition.hpp

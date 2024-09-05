@@ -153,11 +153,11 @@ data:
   timestamp: '2024-08-13 20:42:50+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/data_structure/range_affine_point_get.0.test.cpp
-  - test/data_structure/point_set_range_composite.0.test.cpp
   - test/data_structure/range_reverse_range_sum.0.test.cpp
   - test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   - test/data_structure/range_affine_range_sum.0.test.cpp
+  - test/data_structure/range_affine_point_get.0.test.cpp
+  - test/data_structure/point_set_range_composite.0.test.cpp
 documentation_of: treap_node_base.hpp
 layout: document
 redirect_from:

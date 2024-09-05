@@ -54,19 +54,19 @@ data:
   isVerificationFile: false
   path: batch_inv.hpp
   requiredBy:
+  - poly_interpolation_with_error.hpp
   - subproduct_tree.hpp
   - czt.hpp
   - poly_interpolation.hpp
-  - poly_interpolation_with_error.hpp
   timestamp: '2024-06-16 14:16:14+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/formal_power_series/convolution_mod.1.test.cpp
-  - test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/convolution_mod.1.test.cpp
+  - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - test/formal_power_series/polynomial_interpolation.0.test.cpp
+  - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/multipoint_evaluation.0.test.cpp
 documentation_of: batch_inv.hpp
 layout: document
 redirect_from:

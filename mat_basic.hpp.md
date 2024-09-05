@@ -450,12 +450,12 @@ data:
     \ = t * H[i - j - 1][i - 1];\n            if (prod == 0) continue;\n         \
     \   for (int k = 0; k < i - j; ++k) P[i][k] -= prod * P[i - j - 1][k];\n     \
     \   }\n    }\n    return P[n];\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ minpoly(const Matrix<Tp> &A, int n) {\n    const auto u = random_vector<Tp>(n);\n\
-    \    auto v       = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp>\
-    \ proj(n * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n   \
-    \     for (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P,\
-    \ Q] = rational_reconstruction(proj);\n    assert(Q.deg() <= n);\n    return Q\
-    \ / Poly<Tp>{Q.lc()};\n}\n"
+    \ minpoly(const Matrix<Tp> &A) {\n    assert(is_square_matrix(A));\n    const\
+    \ int n  = height(A);\n    const auto u = random_vector<Tp>(n);\n    auto v  \
+    \     = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp> proj(n\
+    \ * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n        for\
+    \ (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P, Q] = rational_reconstruction(proj);\n\
+    \    assert(Q.deg() <= n);\n    return Q / Poly<Tp>{Q.lc()};\n}\n"
   code: "#pragma once\n\n#include \"poly.hpp\"\n#include \"random.hpp\"\n#include\
     \ <cassert>\n#include <optional>\n#include <utility>\n#include <vector>\n\ntemplate\
     \ <typename Tp>\nusing Matrix = std::vector<std::vector<Tp>>;\n\ntemplate <typename\
@@ -520,12 +520,12 @@ data:
     \ = t * H[i - j - 1][i - 1];\n            if (prod == 0) continue;\n         \
     \   for (int k = 0; k < i - j; ++k) P[i][k] -= prod * P[i - j - 1][k];\n     \
     \   }\n    }\n    return P[n];\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ minpoly(const Matrix<Tp> &A, int n) {\n    const auto u = random_vector<Tp>(n);\n\
-    \    auto v       = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp>\
-    \ proj(n * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n   \
-    \     for (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P,\
-    \ Q] = rational_reconstruction(proj);\n    assert(Q.deg() <= n);\n    return Q\
-    \ / Poly<Tp>{Q.lc()};\n}\n"
+    \ minpoly(const Matrix<Tp> &A) {\n    assert(is_square_matrix(A));\n    const\
+    \ int n  = height(A);\n    const auto u = random_vector<Tp>(n);\n    auto v  \
+    \     = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp> proj(n\
+    \ * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n        for\
+    \ (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P, Q] = rational_reconstruction(proj);\n\
+    \    assert(Q.deg() <= n);\n    return Q / Poly<Tp>{Q.lc()};\n}\n"
   dependsOn:
   - poly.hpp
   - poly_basic.hpp
@@ -540,14 +540,14 @@ data:
   requiredBy:
   - frobenius.hpp
   - basis.hpp
-  timestamp: '2024-08-13 22:20:52+08:00'
+  timestamp: '2024-09-05 19:35:39+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/matrix/characteristic_polynomial.0.test.cpp
-  - test/matrix/inverse_matrix.0.test.cpp
+  - test/matrix/matrix_det.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
-  - test/matrix/matrix_det.0.test.cpp
+  - test/matrix/inverse_matrix.0.test.cpp
+  - test/matrix/characteristic_polynomial.0.test.cpp
   - test/matrix/matrix_product.0.test.cpp
 documentation_of: mat_basic.hpp
 layout: document

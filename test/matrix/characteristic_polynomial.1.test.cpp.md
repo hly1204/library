@@ -440,49 +440,50 @@ data:
     \ = t * H[i - j - 1][i - 1];\n            if (prod == 0) continue;\n         \
     \   for (int k = 0; k < i - j; ++k) P[i][k] -= prod * P[i - j - 1][k];\n     \
     \   }\n    }\n    return P[n];\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ minpoly(const Matrix<Tp> &A, int n) {\n    const auto u = random_vector<Tp>(n);\n\
-    \    auto v       = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp>\
-    \ proj(n * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n   \
-    \     for (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P,\
-    \ Q] = rational_reconstruction(proj);\n    assert(Q.deg() <= n);\n    return Q\
-    \ / Poly<Tp>{Q.lc()};\n}\n#line 7 \"basis.hpp\"\n\ntemplate <typename Tp>\nclass\
-    \ Basis {\npublic:\n    const int Dim;\n    Matrix<Tp> Vectors; // v_0, v_1, ...\n\
-    \    Matrix<Tp> Augmented;\n    Matrix<Tp> Reduced; // upper triangular matrix,\
-    \ diagonal of Reduced = (1,...,1)\n    // Augmented * Vectors = Reduced\n\n  \
-    \  explicit Basis(int dim) : Dim(dim), Augmented(dim), Reduced(dim) {}\n\n   \
-    \ int size() const { return Vectors.size(); }\n    int dim() const { return Dim;\
-    \ }\n\n    // if V is linear combination of v_0, ..., v_(k-1) then\n    // returns\
-    \ coefficients (a_0, ..., a_(k-1)) s.t. -(a_0v_0 + ... + a_(k-1)v_(k-1)) = V\n\
-    \    std::optional<std::vector<Tp>> insert(const std::vector<Tp> &V) {\n     \
-    \   std::vector<Tp> Aug(dim()), RV = V;\n        for (int i = 0; i < dim(); ++i)\
-    \ {\n            if (RV[i] == 0) continue;\n            if (Reduced[i].empty())\
-    \ {\n                Aug[size()]    = 1;\n                const auto inv = RV[i].inv();\n\
-    \                for (int j = i; j < dim(); ++j) RV[j] *= inv;\n             \
-    \   for (int j = 0; j < dim(); ++j) Aug[j] *= inv;\n                Augmented[i]\
-    \ = Aug, Reduced[i] = RV, Vectors.push_back(V);\n                return {};\n\
-    \            }\n            const auto v = RV[i];\n            for (int j = i;\
-    \ j < dim(); ++j) RV[j] -= v * Reduced[i][j];\n            for (int j = 0; j <\
-    \ dim(); ++j) Aug[j] -= v * Augmented[i][j];\n        }\n        return Aug;\n\
-    \    }\n\n    // returns A s.t. A^(-1)MA is the linear transform respect to the\
-    \ basis\n    Matrix<Tp> transition_matrix() const {\n        assert(size() ==\
-    \ dim());\n        return transpose(Vectors);\n    }\n\n    // returns A^(-1)\
-    \ s.t. A^(-1)MA is the linear transform respect to the basis\n    Matrix<Tp> inv_transition_matrix()\
-    \ const {\n        assert(size() == dim());\n        auto res = Augmented;\n \
-    \       for (int i = dim() - 1; i > 0; --i)\n            for (int j = i - 1; j\
-    \ >= 0; --j)\n                for (int k = 0; k < dim(); ++k) res[j][k] -= Reduced[j][i]\
-    \ * res[i][k];\n        return transpose(res);\n    }\n};\n#line 2 \"modint.hpp\"\
-    \n\n#line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
-    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
-    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
-    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
-    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
-    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
-    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
-    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
-    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
-    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
-    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
-    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ minpoly(const Matrix<Tp> &A) {\n    assert(is_square_matrix(A));\n    const\
+    \ int n  = height(A);\n    const auto u = random_vector<Tp>(n);\n    auto v  \
+    \     = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp> proj(n\
+    \ * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n        for\
+    \ (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P, Q] = rational_reconstruction(proj);\n\
+    \    assert(Q.deg() <= n);\n    return Q / Poly<Tp>{Q.lc()};\n}\n#line 7 \"basis.hpp\"\
+    \n\ntemplate <typename Tp>\nclass Basis {\npublic:\n    const int Dim;\n    Matrix<Tp>\
+    \ Vectors; // v_0, v_1, ...\n    Matrix<Tp> Augmented;\n    Matrix<Tp> Reduced;\
+    \ // upper triangular matrix, diagonal of Reduced = (1,...,1)\n    // Augmented\
+    \ * Vectors = Reduced\n\n    explicit Basis(int dim) : Dim(dim), Augmented(dim),\
+    \ Reduced(dim) {}\n\n    int size() const { return Vectors.size(); }\n    int\
+    \ dim() const { return Dim; }\n\n    // if V is linear combination of v_0, ...,\
+    \ v_(k-1) then\n    // returns coefficients (a_0, ..., a_(k-1)) s.t. -(a_0v_0\
+    \ + ... + a_(k-1)v_(k-1)) = V\n    std::optional<std::vector<Tp>> insert(const\
+    \ std::vector<Tp> &V) {\n        std::vector<Tp> Aug(dim()), RV = V;\n       \
+    \ for (int i = 0; i < dim(); ++i) {\n            if (RV[i] == 0) continue;\n \
+    \           if (Reduced[i].empty()) {\n                Aug[size()]    = 1;\n \
+    \               const auto inv = RV[i].inv();\n                for (int j = i;\
+    \ j < dim(); ++j) RV[j] *= inv;\n                for (int j = 0; j < dim(); ++j)\
+    \ Aug[j] *= inv;\n                Augmented[i] = Aug, Reduced[i] = RV, Vectors.push_back(V);\n\
+    \                return {};\n            }\n            const auto v = RV[i];\n\
+    \            for (int j = i; j < dim(); ++j) RV[j] -= v * Reduced[i][j];\n   \
+    \         for (int j = 0; j < dim(); ++j) Aug[j] -= v * Augmented[i][j];\n   \
+    \     }\n        return Aug;\n    }\n\n    // returns A s.t. A^(-1)MA is the linear\
+    \ transform respect to the basis\n    Matrix<Tp> transition_matrix() const {\n\
+    \        assert(size() == dim());\n        return transpose(Vectors);\n    }\n\
+    \n    // returns A^(-1) s.t. A^(-1)MA is the linear transform respect to the basis\n\
+    \    Matrix<Tp> inv_transition_matrix() const {\n        assert(size() == dim());\n\
+    \        auto res = Augmented;\n        for (int i = dim() - 1; i > 0; --i)\n\
+    \            for (int j = i - 1; j >= 0; --j)\n                for (int k = 0;\
+    \ k < dim(); ++k) res[j][k] -= Reduced[j][i] * res[i][k];\n        return transpose(res);\n\
+    \    }\n};\n#line 2 \"modint.hpp\"\n\n#line 5 \"modint.hpp\"\n\ntemplate <unsigned\
+    \ Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less\
+    \ than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
+    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
+    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
+    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
+    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
+    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
+    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
+    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
+    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
+    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
     \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
     \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
     \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
@@ -549,7 +550,7 @@ data:
   isVerificationFile: true
   path: test/matrix/characteristic_polynomial.1.test.cpp
   requiredBy: []
-  timestamp: '2024-08-13 22:20:52+08:00'
+  timestamp: '2024-09-05 19:35:39+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/characteristic_polynomial.1.test.cpp

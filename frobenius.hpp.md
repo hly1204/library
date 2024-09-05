@@ -438,45 +438,45 @@ data:
     \ = t * H[i - j - 1][i - 1];\n            if (prod == 0) continue;\n         \
     \   for (int k = 0; k < i - j; ++k) P[i][k] -= prod * P[i - j - 1][k];\n     \
     \   }\n    }\n    return P[n];\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ minpoly(const Matrix<Tp> &A, int n) {\n    const auto u = random_vector<Tp>(n);\n\
-    \    auto v       = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp>\
-    \ proj(n * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n   \
-    \     for (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P,\
-    \ Q] = rational_reconstruction(proj);\n    assert(Q.deg() <= n);\n    return Q\
-    \ / Poly<Tp>{Q.lc()};\n}\n#line 7 \"basis.hpp\"\n\ntemplate <typename Tp>\nclass\
-    \ Basis {\npublic:\n    const int Dim;\n    Matrix<Tp> Vectors; // v_0, v_1, ...\n\
-    \    Matrix<Tp> Augmented;\n    Matrix<Tp> Reduced; // upper triangular matrix,\
-    \ diagonal of Reduced = (1,...,1)\n    // Augmented * Vectors = Reduced\n\n  \
-    \  explicit Basis(int dim) : Dim(dim), Augmented(dim), Reduced(dim) {}\n\n   \
-    \ int size() const { return Vectors.size(); }\n    int dim() const { return Dim;\
-    \ }\n\n    // if V is linear combination of v_0, ..., v_(k-1) then\n    // returns\
-    \ coefficients (a_0, ..., a_(k-1)) s.t. -(a_0v_0 + ... + a_(k-1)v_(k-1)) = V\n\
-    \    std::optional<std::vector<Tp>> insert(const std::vector<Tp> &V) {\n     \
-    \   std::vector<Tp> Aug(dim()), RV = V;\n        for (int i = 0; i < dim(); ++i)\
-    \ {\n            if (RV[i] == 0) continue;\n            if (Reduced[i].empty())\
-    \ {\n                Aug[size()]    = 1;\n                const auto inv = RV[i].inv();\n\
-    \                for (int j = i; j < dim(); ++j) RV[j] *= inv;\n             \
-    \   for (int j = 0; j < dim(); ++j) Aug[j] *= inv;\n                Augmented[i]\
-    \ = Aug, Reduced[i] = RV, Vectors.push_back(V);\n                return {};\n\
-    \            }\n            const auto v = RV[i];\n            for (int j = i;\
-    \ j < dim(); ++j) RV[j] -= v * Reduced[i][j];\n            for (int j = 0; j <\
-    \ dim(); ++j) Aug[j] -= v * Augmented[i][j];\n        }\n        return Aug;\n\
-    \    }\n\n    // returns A s.t. A^(-1)MA is the linear transform respect to the\
-    \ basis\n    Matrix<Tp> transition_matrix() const {\n        assert(size() ==\
-    \ dim());\n        return transpose(Vectors);\n    }\n\n    // returns A^(-1)\
-    \ s.t. A^(-1)MA is the linear transform respect to the basis\n    Matrix<Tp> inv_transition_matrix()\
-    \ const {\n        assert(size() == dim());\n        auto res = Augmented;\n \
-    \       for (int i = dim() - 1; i > 0; --i)\n            for (int j = i - 1; j\
-    \ >= 0; --j)\n                for (int k = 0; k < dim(); ++k) res[j][k] -= Reduced[j][i]\
-    \ * res[i][k];\n        return transpose(res);\n    }\n};\n#line 9 \"frobenius.hpp\"\
-    \n\n// Compute the Frobenius form (rational canonical form) of a square matrix,\n\
-    // but the result is not always true.\ntemplate <typename Tp>\nclass Frobenius\
-    \ {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n    // where\
-    \ C_(p_j) is the companion matrix of monic polynomial P[j]\n    // *        minimal\
-    \ polynomial of A = p_0\n    // * characteristic polynomial of A = prod_(j=0)^(k-1)\
-    \ p_j\n    int N;\n    Matrix<Tp> InvT;\n    std::vector<Poly<Tp>> P;\n    Matrix<Tp>\
-    \ T;\n\n    // see:\n    // [1]: Elegia. A (Somehow) Simple (Randomized) Algorithm\
-    \ for Frobenius Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n\
+    \ minpoly(const Matrix<Tp> &A) {\n    assert(is_square_matrix(A));\n    const\
+    \ int n  = height(A);\n    const auto u = random_vector<Tp>(n);\n    auto v  \
+    \     = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp> proj(n\
+    \ * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n        for\
+    \ (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P, Q] = rational_reconstruction(proj);\n\
+    \    assert(Q.deg() <= n);\n    return Q / Poly<Tp>{Q.lc()};\n}\n#line 7 \"basis.hpp\"\
+    \n\ntemplate <typename Tp>\nclass Basis {\npublic:\n    const int Dim;\n    Matrix<Tp>\
+    \ Vectors; // v_0, v_1, ...\n    Matrix<Tp> Augmented;\n    Matrix<Tp> Reduced;\
+    \ // upper triangular matrix, diagonal of Reduced = (1,...,1)\n    // Augmented\
+    \ * Vectors = Reduced\n\n    explicit Basis(int dim) : Dim(dim), Augmented(dim),\
+    \ Reduced(dim) {}\n\n    int size() const { return Vectors.size(); }\n    int\
+    \ dim() const { return Dim; }\n\n    // if V is linear combination of v_0, ...,\
+    \ v_(k-1) then\n    // returns coefficients (a_0, ..., a_(k-1)) s.t. -(a_0v_0\
+    \ + ... + a_(k-1)v_(k-1)) = V\n    std::optional<std::vector<Tp>> insert(const\
+    \ std::vector<Tp> &V) {\n        std::vector<Tp> Aug(dim()), RV = V;\n       \
+    \ for (int i = 0; i < dim(); ++i) {\n            if (RV[i] == 0) continue;\n \
+    \           if (Reduced[i].empty()) {\n                Aug[size()]    = 1;\n \
+    \               const auto inv = RV[i].inv();\n                for (int j = i;\
+    \ j < dim(); ++j) RV[j] *= inv;\n                for (int j = 0; j < dim(); ++j)\
+    \ Aug[j] *= inv;\n                Augmented[i] = Aug, Reduced[i] = RV, Vectors.push_back(V);\n\
+    \                return {};\n            }\n            const auto v = RV[i];\n\
+    \            for (int j = i; j < dim(); ++j) RV[j] -= v * Reduced[i][j];\n   \
+    \         for (int j = 0; j < dim(); ++j) Aug[j] -= v * Augmented[i][j];\n   \
+    \     }\n        return Aug;\n    }\n\n    // returns A s.t. A^(-1)MA is the linear\
+    \ transform respect to the basis\n    Matrix<Tp> transition_matrix() const {\n\
+    \        assert(size() == dim());\n        return transpose(Vectors);\n    }\n\
+    \n    // returns A^(-1) s.t. A^(-1)MA is the linear transform respect to the basis\n\
+    \    Matrix<Tp> inv_transition_matrix() const {\n        assert(size() == dim());\n\
+    \        auto res = Augmented;\n        for (int i = dim() - 1; i > 0; --i)\n\
+    \            for (int j = i - 1; j >= 0; --j)\n                for (int k = 0;\
+    \ k < dim(); ++k) res[j][k] -= Reduced[j][i] * res[i][k];\n        return transpose(res);\n\
+    \    }\n};\n#line 9 \"frobenius.hpp\"\n\n// Compute the Frobenius form (rational\
+    \ canonical form) of a square matrix,\n// but the result is not always true.\n\
+    template <typename Tp>\nclass Frobenius {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n\
+    \    // where C_(p_j) is the companion matrix of monic polynomial P[j]\n    //\
+    \ *        minimal polynomial of A = p_0\n    // * characteristic polynomial of\
+    \ A = prod_(j=0)^(k-1) p_j\n    int N;\n    Matrix<Tp> InvT;\n    std::vector<Poly<Tp>>\
+    \ P;\n    Matrix<Tp> T;\n\n    // see:\n    // [1]: Elegia. A (Somehow) Simple\
+    \ (Randomized) Algorithm for Frobenius Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n\
     \    // [2]: Arne Storjohann. Algorithms for Matrix Canonical Forms.\n    // \
     \     https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf\n    explicit Frobenius(const\
     \ Matrix<Tp> &A) : N(height(A)) {\n        assert(N != 0);\n        assert(is_square_matrix(A));\n\
@@ -589,7 +589,7 @@ data:
   isVerificationFile: false
   path: frobenius.hpp
   requiredBy: []
-  timestamp: '2024-08-13 22:20:52+08:00'
+  timestamp: '2024-09-05 19:35:39+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp

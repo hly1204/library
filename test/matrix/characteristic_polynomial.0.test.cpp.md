@@ -437,24 +437,24 @@ data:
     \ = t * H[i - j - 1][i - 1];\n            if (prod == 0) continue;\n         \
     \   for (int k = 0; k < i - j; ++k) P[i][k] -= prod * P[i - j - 1][k];\n     \
     \   }\n    }\n    return P[n];\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ minpoly(const Matrix<Tp> &A, int n) {\n    const auto u = random_vector<Tp>(n);\n\
-    \    auto v       = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp>\
-    \ proj(n * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n   \
-    \     for (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P,\
-    \ Q] = rational_reconstruction(proj);\n    assert(Q.deg() <= n);\n    return Q\
-    \ / Poly<Tp>{Q.lc()};\n}\n#line 2 \"modint.hpp\"\n\n#line 5 \"modint.hpp\"\n\n\
-    template <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"\
-    `Mod` must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
-    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
-    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
-    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
-    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
-    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
-    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
-    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
-    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
-    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
-    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ minpoly(const Matrix<Tp> &A) {\n    assert(is_square_matrix(A));\n    const\
+    \ int n  = height(A);\n    const auto u = random_vector<Tp>(n);\n    auto v  \
+    \     = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp> proj(n\
+    \ * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n        for\
+    \ (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P, Q] = rational_reconstruction(proj);\n\
+    \    assert(Q.deg() <= n);\n    return Q / Poly<Tp>{Q.lc()};\n}\n#line 2 \"modint.hpp\"\
+    \n\n#line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
+    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
+    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
+    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
+    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
+    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
+    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
+    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
+    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
+    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
+    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
+    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
     \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
     \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
     \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
@@ -507,7 +507,7 @@ data:
   isVerificationFile: true
   path: test/matrix/characteristic_polynomial.0.test.cpp
   requiredBy: []
-  timestamp: '2024-08-13 22:20:52+08:00'
+  timestamp: '2024-09-05 19:35:39+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/characteristic_polynomial.0.test.cpp
