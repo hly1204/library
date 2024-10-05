@@ -1,23 +1,12 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sqrt_mod"
 
 #include "rng.hpp"
-#include <array>
+#include "xgcd.hpp"
 #include <iostream>
 #include <random>
-#include <utility>
-
-std::array<int, 2> inv_gcd(int a, int b) {
-    int x11 = 1, x21 = 0;
-    while (b) {
-        const int q = a / b;
-        x11         = std::exchange(x21, x11 - x21 * q);
-        a           = std::exchange(b, a - b * q);
-    }
-    return {x11, a};
-}
 
 int inv_mod(int a, int mod) {
-    const int res = std::get<0>(inv_gcd(a, mod));
+    const int res = inv_gcd(a, mod).inv;
     return res < 0 ? res + mod : res;
 }
 
