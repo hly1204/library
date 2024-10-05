@@ -1,14 +1,14 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/sqrt_mod
@@ -32,68 +32,68 @@ data:
     \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
     \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
     \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"test/number_theory/sqrt_mod.0.test.cpp\"\
-    \n#include <array>\n#include <iostream>\n#include <random>\n\nstd::array<int,\
-    \ 2> inv_gcd(int a, int b) {\n    int x11 = 1, x21 = 0;\n    while (b) {\n   \
-    \     const int q = a / b;\n        x11         = std::exchange(x21, x11 - x21\
-    \ * q);\n        a           = std::exchange(b, a - b * q);\n    }\n    return\
-    \ {x11, a};\n}\n\nint inv_mod(int a, int mod) {\n    const int res = std::get<0>(inv_gcd(a,\
-    \ mod));\n    return res < 0 ? res + mod : res;\n}\n\nint pow_mod(int a, int e,\
-    \ int mod) {\n    if (e < 0) return pow_mod(inv_mod(a, mod), -e, mod);\n    for\
-    \ (int res = 1;; a = (long long)a * a % mod) {\n        if (e & 1) res = (long\
-    \ long)res * a % mod;\n        if ((e /= 2) == 0) return res;\n    }\n}\n\n//\
-    \ Tonelli--Shanks's algorithm\n// see:\n// [1]: Daniel. J. Bernstein. Faster Square\
-    \ Roots in Annoying Finite Fields.\nint sqrt_mod(int a, int mod) {\n    // mod\
-    \ must be prime\n    if (a == 0 || mod == 2) return a;\n\n    auto is_square =\
-    \ [](int a, int mod) { return pow_mod(a, (mod - 1) / 2, mod) == 1; };\n\n    if\
-    \ (!is_square(a, mod)) return -1;\n\n    static xoshiro256starstar rng{std::random_device{}()};\n\
-    \    std::uniform_int_distribution<> dis(2, mod - 1);\n\n    int r;\n    do {\
-    \ r = dis(rng); } while (is_square(r, mod));\n\n    int n = 1, m = (mod - 1) /\
-    \ 2;\n    while (m % 2 == 0) ++n, m /= 2;\n    // mod = 2^n m\n\n    const int\
-    \ am = pow_mod(a, m, mod);\n    // ord(c) = 2^n\n    const int c = pow_mod(r,\
-    \ m, mod);\n\n    // find e such that a^m=c^e\n    int e = 0;\n    for (int i\
-    \ = 1, j = 2; i < n; ++i, j *= 2) {\n        if (pow_mod((long long)am * pow_mod(c,\
-    \ -e, mod) % mod, (mod - 1) / (m * j * 2), mod) == 1)\n            continue;\n\
-    \        e += j;\n    }\n\n    // now set m=2j+1 => a^(2j)a=c^e => a=c^ea^(-2j)\n\
-    \    return (long long)pow_mod(c, e / 2, mod) * pow_mod(a, -(m / 2), mod) % mod;\n\
-    }\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    int T;\n    std::cin >> T;\n    while (T--) {\n        int a, mod;\n    \
-    \    std::cin >> a >> mod;\n        std::cout << sqrt_mod(a, mod) << '\\n';\n\
-    \    }\n    return 0;\n}\n"
+    \n#include <array>\n#include <iostream>\n#include <random>\n#include <utility>\n\
+    \nstd::array<int, 2> inv_gcd(int a, int b) {\n    int x11 = 1, x21 = 0;\n    while\
+    \ (b) {\n        const int q = a / b;\n        x11         = std::exchange(x21,\
+    \ x11 - x21 * q);\n        a           = std::exchange(b, a - b * q);\n    }\n\
+    \    return {x11, a};\n}\n\nint inv_mod(int a, int mod) {\n    const int res =\
+    \ std::get<0>(inv_gcd(a, mod));\n    return res < 0 ? res + mod : res;\n}\n\n\
+    int pow_mod(int a, int e, int mod) {\n    if (e < 0) return pow_mod(inv_mod(a,\
+    \ mod), -e, mod);\n    for (int res = 1;; a = (long long)a * a % mod) {\n    \
+    \    if (e & 1) res = (long long)res * a % mod;\n        if ((e /= 2) == 0) return\
+    \ res;\n    }\n}\n\n// Tonelli--Shanks's algorithm\n// see:\n// [1]: Daniel. J.\
+    \ Bernstein. Faster Square Roots in Annoying Finite Fields.\nint sqrt_mod(int\
+    \ a, int mod) {\n    // mod must be prime\n    if (a == 0 || mod == 2) return\
+    \ a;\n\n    auto is_square = [](int a, int mod) { return pow_mod(a, (mod - 1)\
+    \ / 2, mod) == 1; };\n\n    if (!is_square(a, mod)) return -1;\n\n    static xoshiro256starstar\
+    \ rng{std::random_device{}()};\n    std::uniform_int_distribution<> dis(2, mod\
+    \ - 1);\n\n    int r;\n    do { r = dis(rng); } while (is_square(r, mod));\n\n\
+    \    int n = 1, m = (mod - 1) / 2;\n    while (m % 2 == 0) ++n, m /= 2;\n    //\
+    \ mod = 2^n m\n\n    const int am = pow_mod(a, m, mod);\n    // ord(c) = 2^n\n\
+    \    const int c = pow_mod(r, m, mod);\n\n    // find e such that a^m=c^e\n  \
+    \  int e = 0;\n    for (int i = 1, j = 2; i < n; ++i, j *= 2) {\n        if (pow_mod((long\
+    \ long)am * pow_mod(c, -e, mod) % mod, (mod - 1) / (m * j * 2), mod) == 1)\n \
+    \           continue;\n        e += j;\n    }\n\n    // now set m=2j+1 => a^(2j)a=c^e\
+    \ => a=c^ea^(-2j)\n    return (long long)pow_mod(c, e / 2, mod) * pow_mod(a, -(m\
+    \ / 2), mod) % mod;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    int T;\n    std::cin >> T;\n    while (T--) {\n\
+    \        int a, mod;\n        std::cin >> a >> mod;\n        std::cout << sqrt_mod(a,\
+    \ mod) << '\\n';\n    }\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/sqrt_mod\"\n\n#include\
-    \ \"rng.hpp\"\n#include <array>\n#include <iostream>\n#include <random>\n\nstd::array<int,\
-    \ 2> inv_gcd(int a, int b) {\n    int x11 = 1, x21 = 0;\n    while (b) {\n   \
-    \     const int q = a / b;\n        x11         = std::exchange(x21, x11 - x21\
-    \ * q);\n        a           = std::exchange(b, a - b * q);\n    }\n    return\
-    \ {x11, a};\n}\n\nint inv_mod(int a, int mod) {\n    const int res = std::get<0>(inv_gcd(a,\
-    \ mod));\n    return res < 0 ? res + mod : res;\n}\n\nint pow_mod(int a, int e,\
-    \ int mod) {\n    if (e < 0) return pow_mod(inv_mod(a, mod), -e, mod);\n    for\
-    \ (int res = 1;; a = (long long)a * a % mod) {\n        if (e & 1) res = (long\
-    \ long)res * a % mod;\n        if ((e /= 2) == 0) return res;\n    }\n}\n\n//\
-    \ Tonelli--Shanks's algorithm\n// see:\n// [1]: Daniel. J. Bernstein. Faster Square\
-    \ Roots in Annoying Finite Fields.\nint sqrt_mod(int a, int mod) {\n    // mod\
-    \ must be prime\n    if (a == 0 || mod == 2) return a;\n\n    auto is_square =\
-    \ [](int a, int mod) { return pow_mod(a, (mod - 1) / 2, mod) == 1; };\n\n    if\
-    \ (!is_square(a, mod)) return -1;\n\n    static xoshiro256starstar rng{std::random_device{}()};\n\
-    \    std::uniform_int_distribution<> dis(2, mod - 1);\n\n    int r;\n    do {\
-    \ r = dis(rng); } while (is_square(r, mod));\n\n    int n = 1, m = (mod - 1) /\
-    \ 2;\n    while (m % 2 == 0) ++n, m /= 2;\n    // mod = 2^n m\n\n    const int\
-    \ am = pow_mod(a, m, mod);\n    // ord(c) = 2^n\n    const int c = pow_mod(r,\
-    \ m, mod);\n\n    // find e such that a^m=c^e\n    int e = 0;\n    for (int i\
-    \ = 1, j = 2; i < n; ++i, j *= 2) {\n        if (pow_mod((long long)am * pow_mod(c,\
-    \ -e, mod) % mod, (mod - 1) / (m * j * 2), mod) == 1)\n            continue;\n\
-    \        e += j;\n    }\n\n    // now set m=2j+1 => a^(2j)a=c^e => a=c^ea^(-2j)\n\
-    \    return (long long)pow_mod(c, e / 2, mod) * pow_mod(a, -(m / 2), mod) % mod;\n\
-    }\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    int T;\n    std::cin >> T;\n    while (T--) {\n        int a, mod;\n    \
-    \    std::cin >> a >> mod;\n        std::cout << sqrt_mod(a, mod) << '\\n';\n\
-    \    }\n    return 0;\n}\n"
+    \ \"rng.hpp\"\n#include <array>\n#include <iostream>\n#include <random>\n#include\
+    \ <utility>\n\nstd::array<int, 2> inv_gcd(int a, int b) {\n    int x11 = 1, x21\
+    \ = 0;\n    while (b) {\n        const int q = a / b;\n        x11         = std::exchange(x21,\
+    \ x11 - x21 * q);\n        a           = std::exchange(b, a - b * q);\n    }\n\
+    \    return {x11, a};\n}\n\nint inv_mod(int a, int mod) {\n    const int res =\
+    \ std::get<0>(inv_gcd(a, mod));\n    return res < 0 ? res + mod : res;\n}\n\n\
+    int pow_mod(int a, int e, int mod) {\n    if (e < 0) return pow_mod(inv_mod(a,\
+    \ mod), -e, mod);\n    for (int res = 1;; a = (long long)a * a % mod) {\n    \
+    \    if (e & 1) res = (long long)res * a % mod;\n        if ((e /= 2) == 0) return\
+    \ res;\n    }\n}\n\n// Tonelli--Shanks's algorithm\n// see:\n// [1]: Daniel. J.\
+    \ Bernstein. Faster Square Roots in Annoying Finite Fields.\nint sqrt_mod(int\
+    \ a, int mod) {\n    // mod must be prime\n    if (a == 0 || mod == 2) return\
+    \ a;\n\n    auto is_square = [](int a, int mod) { return pow_mod(a, (mod - 1)\
+    \ / 2, mod) == 1; };\n\n    if (!is_square(a, mod)) return -1;\n\n    static xoshiro256starstar\
+    \ rng{std::random_device{}()};\n    std::uniform_int_distribution<> dis(2, mod\
+    \ - 1);\n\n    int r;\n    do { r = dis(rng); } while (is_square(r, mod));\n\n\
+    \    int n = 1, m = (mod - 1) / 2;\n    while (m % 2 == 0) ++n, m /= 2;\n    //\
+    \ mod = 2^n m\n\n    const int am = pow_mod(a, m, mod);\n    // ord(c) = 2^n\n\
+    \    const int c = pow_mod(r, m, mod);\n\n    // find e such that a^m=c^e\n  \
+    \  int e = 0;\n    for (int i = 1, j = 2; i < n; ++i, j *= 2) {\n        if (pow_mod((long\
+    \ long)am * pow_mod(c, -e, mod) % mod, (mod - 1) / (m * j * 2), mod) == 1)\n \
+    \           continue;\n        e += j;\n    }\n\n    // now set m=2j+1 => a^(2j)a=c^e\
+    \ => a=c^ea^(-2j)\n    return (long long)pow_mod(c, e / 2, mod) * pow_mod(a, -(m\
+    \ / 2), mod) % mod;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    int T;\n    std::cin >> T;\n    while (T--) {\n\
+    \        int a, mod;\n        std::cin >> a >> mod;\n        std::cout << sqrt_mod(a,\
+    \ mod) << '\\n';\n    }\n    return 0;\n}\n"
   dependsOn:
   - rng.hpp
   isVerificationFile: true
   path: test/number_theory/sqrt_mod.0.test.cpp
   requiredBy: []
-  timestamp: '2024-10-05 12:49:34+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-10-05 12:51:01+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/number_theory/sqrt_mod.0.test.cpp
 layout: document

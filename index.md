@@ -96,7 +96,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: random.hpp
       title: random.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: rng.hpp
       title: rng.hpp
     - icon: ':heavy_check_mark:'
@@ -272,7 +272,7 @@ data:
       title: test/matrix/sparse_matrix_det.0.test.cpp
   - name: test/number_theory
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/number_theory/sqrt_mod.0.test.cpp
       title: test/number_theory/sqrt_mod.0.test.cpp
     - icon: ':heavy_check_mark:'
