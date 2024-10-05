@@ -57,6 +57,9 @@ int sqrt_mod(int a, int mod) {
     // find e such that a^m=c^e
     int e = 0;
     for (int i = 1, j = 2; i < n; ++i, j *= 2) {
+        // One can reduce the constant factor by
+        // calculating something during the iteration,
+        // but it is not necessary.
         if (pow_mod((long long)am * pow_mod(c, -e, mod) % mod, (mod - 1) / (m * j * 2), mod) == 1)
             continue;
         e += j;
