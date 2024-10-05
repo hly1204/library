@@ -51,9 +51,11 @@ data:
     \    int n = 1, m = (mod - 1) / 2;\n    while (m % 2 == 0) ++n, m /= 2;\n    //\
     \ mod = 2^n m\n\n    const int am = pow_mod(a, m, mod);\n    // ord(c) = 2^n\n\
     \    const int c = pow_mod(r, m, mod);\n\n    // find e such that a^m=c^e\n  \
-    \  int e = 0;\n    for (int i = 1, j = 2; i < n; ++i, j *= 2) {\n        if (pow_mod((long\
-    \ long)am * pow_mod(c, -e, mod) % mod, (mod - 1) / (m * j * 2), mod) == 1)\n \
-    \           continue;\n        e += j;\n    }\n\n    // now set m=2j+1 => a^(2j)a=c^e\
+    \  int e = 0;\n    for (int i = 1, j = 2; i < n; ++i, j *= 2) {\n        // One\
+    \ can reduce the constant factor by\n        // calculating something during the\
+    \ iteration,\n        // but it is not necessary.\n        if (pow_mod((long long)am\
+    \ * pow_mod(c, -e, mod) % mod, (mod - 1) / (m * j * 2), mod) == 1)\n         \
+    \   continue;\n        e += j;\n    }\n\n    // now set m=2j+1 => a^(2j)a=c^e\
     \ => a=c^ea^(-2j)\n    return (long long)pow_mod(c, e / 2, mod) * pow_mod(a, -(m\
     \ / 2), mod) % mod;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    int T;\n    std::cin >> T;\n    while (T--) {\n\
@@ -79,9 +81,11 @@ data:
     \    int n = 1, m = (mod - 1) / 2;\n    while (m % 2 == 0) ++n, m /= 2;\n    //\
     \ mod = 2^n m\n\n    const int am = pow_mod(a, m, mod);\n    // ord(c) = 2^n\n\
     \    const int c = pow_mod(r, m, mod);\n\n    // find e such that a^m=c^e\n  \
-    \  int e = 0;\n    for (int i = 1, j = 2; i < n; ++i, j *= 2) {\n        if (pow_mod((long\
-    \ long)am * pow_mod(c, -e, mod) % mod, (mod - 1) / (m * j * 2), mod) == 1)\n \
-    \           continue;\n        e += j;\n    }\n\n    // now set m=2j+1 => a^(2j)a=c^e\
+    \  int e = 0;\n    for (int i = 1, j = 2; i < n; ++i, j *= 2) {\n        // One\
+    \ can reduce the constant factor by\n        // calculating something during the\
+    \ iteration,\n        // but it is not necessary.\n        if (pow_mod((long long)am\
+    \ * pow_mod(c, -e, mod) % mod, (mod - 1) / (m * j * 2), mod) == 1)\n         \
+    \   continue;\n        e += j;\n    }\n\n    // now set m=2j+1 => a^(2j)a=c^e\
     \ => a=c^ea^(-2j)\n    return (long long)pow_mod(c, e / 2, mod) * pow_mod(a, -(m\
     \ / 2), mod) % mod;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    int T;\n    std::cin >> T;\n    while (T--) {\n\
@@ -92,7 +96,7 @@ data:
   isVerificationFile: true
   path: test/number_theory/sqrt_mod.0.test.cpp
   requiredBy: []
-  timestamp: '2024-10-05 12:51:01+08:00'
+  timestamp: '2024-10-05 12:59:17+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/number_theory/sqrt_mod.0.test.cpp
