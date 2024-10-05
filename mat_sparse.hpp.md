@@ -19,7 +19,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: random.hpp
     title: random.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   - icon: ':heavy_check_mark:'

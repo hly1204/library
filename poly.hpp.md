@@ -476,23 +476,23 @@ data:
   isVerificationFile: false
   path: poly.hpp
   requiredBy:
-  - mat_basic.hpp
   - poly_interpolation_with_error.hpp
-  - frobenius.hpp
   - basis.hpp
+  - mat_basic.hpp
   - mat_sparse.hpp
+  - frobenius.hpp
   timestamp: '2024-08-13 22:20:52+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/formal_power_series/find_linear_recurrence.0.test.cpp
-  - test/formal_power_series/inv_of_polynomials.0.test.cpp
-  - test/matrix/matrix_det.0.test.cpp
-  - test/matrix/characteristic_polynomial.1.test.cpp
+  - test/matrix/matrix_product.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
-  - test/matrix/characteristic_polynomial.0.test.cpp
   - test/matrix/sparse_matrix_det.0.test.cpp
-  - test/matrix/matrix_product.0.test.cpp
+  - test/matrix/characteristic_polynomial.0.test.cpp
+  - test/matrix/characteristic_polynomial.1.test.cpp
+  - test/matrix/matrix_det.0.test.cpp
+  - test/formal_power_series/inv_of_polynomials.0.test.cpp
+  - test/formal_power_series/find_linear_recurrence.0.test.cpp
 documentation_of: poly.hpp
 layout: document
 redirect_from:

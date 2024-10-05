@@ -52,11 +52,11 @@ data:
   timestamp: '2024-08-18 17:57:40+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
-  - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
+  - test/enumerative_combinatorics/partition_function.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
 documentation_of: pow_table.hpp
 layout: document
 redirect_from:

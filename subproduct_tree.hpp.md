@@ -460,9 +460,9 @@ data:
   timestamp: '2024-08-03 14:01:08+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/formal_power_series/multipoint_evaluation.0.test.cpp
   - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - test/formal_power_series/polynomial_interpolation.0.test.cpp
-  - test/formal_power_series/multipoint_evaluation.0.test.cpp
 documentation_of: subproduct_tree.hpp
 layout: document
 redirect_from:

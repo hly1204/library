@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   _extendedRequiredBy:
@@ -82,20 +82,20 @@ data:
   isVerificationFile: false
   path: random.hpp
   requiredBy:
-  - mat_basic.hpp
-  - frobenius.hpp
   - basis.hpp
+  - mat_basic.hpp
   - mat_sparse.hpp
+  - frobenius.hpp
   timestamp: '2024-08-12 22:20:24+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/matrix/matrix_det.0.test.cpp
-  - test/matrix/characteristic_polynomial.1.test.cpp
+  - test/matrix/matrix_product.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
-  - test/matrix/characteristic_polynomial.0.test.cpp
   - test/matrix/sparse_matrix_det.0.test.cpp
-  - test/matrix/matrix_product.0.test.cpp
+  - test/matrix/characteristic_polynomial.0.test.cpp
+  - test/matrix/characteristic_polynomial.1.test.cpp
+  - test/matrix/matrix_det.0.test.cpp
 documentation_of: random.hpp
 layout: document
 redirect_from:
