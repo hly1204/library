@@ -46,6 +46,6 @@
 "test/matrix/matrix_product.0.test.cpp": "2024-09-05 19:35:39 +0800",
 "test/matrix/pow_of_matrix.0.test.cpp": "2024-09-05 19:35:39 +0800",
 "test/matrix/sparse_matrix_det.0.test.cpp": "2024-08-13 22:20:52 +0800",
-"test/number_theory/sqrt_mod.0.test.cpp": "2024-10-05 12:51:01 +0800",
+"test/number_theory/sqrt_mod.0.test.cpp": "2024-10-05 12:59:17 +0800",
 "test/number_theory/yukicoder187.0.test.cpp": "2024-07-20 11:57:39 +0800"
 }
