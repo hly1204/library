@@ -5,14 +5,14 @@ data:
     path: fft.hpp
     title: fft.hpp
   _extendedRequiredBy:
-  - icon: ':x:'
+  - icon: ':question:'
     path: czt.hpp
     title: czt.hpp
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/convolution_mod.1.test.cpp
     title: test/formal_power_series/convolution_mod.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - icon: ':x:'
@@ -20,7 +20,7 @@ data:
     title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"middle_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
@@ -121,7 +121,7 @@ data:
   requiredBy:
   - czt.hpp
   timestamp: '2024-05-24 19:10:06+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp

@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':question:'
     path: batch_inv.hpp
     title: batch_inv.hpp
   - icon: ':question:'
@@ -13,7 +13,7 @@ data:
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: middle_product.hpp
     title: middle_product.hpp
   - icon: ':question:'
@@ -24,10 +24,10 @@ data:
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/convolution_mod.1.test.cpp
     title: test/formal_power_series/convolution_mod.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - icon: ':x:'
@@ -35,7 +35,7 @@ data:
     title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links:
     - https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric
@@ -356,7 +356,7 @@ data:
   path: czt.hpp
   requiredBy: []
   timestamp: '2024-10-10 23:07:33+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp

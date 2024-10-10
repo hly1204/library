@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':question:'
     path: batch_inv.hpp
     title: batch_inv.hpp
   - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: czt.hpp
     title: czt.hpp
   - icon: ':question:'
@@ -16,7 +16,7 @@ data:
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: middle_product.hpp
     title: middle_product.hpp
   - icon: ':question:'

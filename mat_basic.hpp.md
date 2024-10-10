@@ -10,7 +10,7 @@ data:
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: poly.hpp
     title: poly.hpp
   - icon: ':question:'

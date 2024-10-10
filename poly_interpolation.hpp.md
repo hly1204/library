@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':question:'
     path: batch_inv.hpp
     title: batch_inv.hpp
   - icon: ':question:'
