@@ -113,7 +113,7 @@ data:
     \        if (i & 1) ee[i] = -ee[i];\n    }\n    auto ffp = convolution(egfF, ee);\n\
     \    ffp.resize(n);\n    return ffp;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ ffp_to_sample_points(const std::vector<Tp> &ffp, int n) {\n    auto &&bin =\
-    \ Binomial<Tp>::get(n);\n    std::vector<Tp> ee(std::min<int>(ee, ffp.size()));\n\
+    \ Binomial<Tp>::get(n);\n    std::vector<Tp> ee(std::min<int>(n, ffp.size()));\n\
     \    for (int i = 0; i < (int)ee.size(); ++i) ee[i] = bin.inv_factorial(i);\n\
     \    auto F = convolution(ffp, ee);\n    F.resize(n);\n    for (int i = 0; i <\
     \ n; ++i) F[i] *= bin.factorial(i);\n    return F;\n}\n\ntemplate <typename Tp>\n\
@@ -138,7 +138,7 @@ data:
   isVerificationFile: false
   path: shift_sample_points.hpp
   requiredBy: []
-  timestamp: '2024-10-10 22:55:09+08:00'
+  timestamp: '2024-10-10 22:57:36+08:00'
   verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
