@@ -36,8 +36,17 @@
 "test/formal_power_series/pow_of_formal_power_series.0.test.cpp": "2024-10-10 23:07:33 +0800",
 "test/formal_power_series/product_of_polynomial_sequence.0.test.cpp": "2024-07-07 14:35:08 +0800",
 "test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp": "2024-10-10 23:07:33 +0800",
+"test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp": "2024-10-10 23:07:33 +0800",
+"test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp": "2024-10-10 23:07:33 +0800",
+"test/matrix/characteristic_polynomial.0.test.cpp": "2024-10-10 23:07:33 +0800",
+"test/matrix/characteristic_polynomial.1.test.cpp": "2024-10-10 23:07:33 +0800",
+"test/matrix/inverse_matrix.0.test.cpp": "2024-10-10 23:07:33 +0800",
 "test/matrix/inverse_matrix_mod_2.0.test.cpp": "2024-07-20 12:58:03 +0800",
+"test/matrix/matrix_det.0.test.cpp": "2024-10-10 23:07:33 +0800",
 "test/matrix/matrix_det_mod_2.0.test.cpp": "2024-07-20 12:58:03 +0800",
+"test/matrix/matrix_product.0.test.cpp": "2024-10-10 23:07:33 +0800",
+"test/matrix/pow_of_matrix.0.test.cpp": "2024-10-10 23:07:33 +0800",
+"test/matrix/sparse_matrix_det.0.test.cpp": "2024-10-10 23:07:33 +0800",
 "test/number_theory/sqrt_mod.0.test.cpp": "2024-10-05 13:19:02 +0800",
 "test/number_theory/yukicoder187.0.test.cpp": "2024-10-05 13:19:02 +0800"
 }
