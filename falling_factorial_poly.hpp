@@ -23,7 +23,7 @@ inline std::vector<Tp> sample_points_to_ffp(const std::vector<Tp> &F) {
 template <typename Tp>
 inline std::vector<Tp> ffp_to_sample_points(const std::vector<Tp> &ffp, int n) {
     auto &&bin = Binomial<Tp>::get(n);
-    std::vector<Tp> ee(std::min<int>(ee, ffp.size()));
+    std::vector<Tp> ee(std::min<int>(n, ffp.size()));
     for (int i = 0; i < (int)ee.size(); ++i) ee[i] = bin.inv_factorial(i);
     auto F = convolution(ffp, ee);
     F.resize(n);
