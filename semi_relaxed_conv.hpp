@@ -51,7 +51,7 @@ semi_relaxed_convolution(const std::vector<Tp> &A, Closure gen, int n) {
                 if ((j - 1) * blocksize < (int)A.size()) {
                     dftA[lv]
                         .emplace_back(A.begin() + (j - 1) * blocksize,
-                                      A.begin() + std::min((j + 1) * blocksize, (int)A.size()))
+                                      A.begin() + std::min<int>((j + 1) * blocksize, A.size()))
                         .resize(blocksize * 2);
                     fft(dftA[lv][j - 1]);
                 } else {

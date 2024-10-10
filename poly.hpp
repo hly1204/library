@@ -29,13 +29,13 @@ public:
 
     Poly slice(int L, int R) const {
         Poly res(R - L);
-        for (int i = L; i < std::min(R, (int)Base::size()); ++i) res[i - L] = Base::operator[](i);
+        for (int i = L; i < std::min<int>(R, Base::size()); ++i) res[i - L] = Base::operator[](i);
         return res;
     }
 
     Poly trunc(int D) const {
         Poly res(D);
-        for (int i = 0; i < std::min(D, (int)Base::size()); ++i) res[i] = Base::operator[](i);
+        for (int i = 0; i < std::min<int>(D, Base::size()); ++i) res[i] = Base::operator[](i);
         return res;
     }
 

@@ -74,9 +74,9 @@ inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<T
     };
 
     int k = 1;
-    while (k < std::max(n, (int)f.size())) k *= 2;
+    while (k < std::max<int>(n, f.size())) k *= 2;
     std::vector<Tp> Q(k);
-    for (int i = 0; i < std::min(k, (int)g.size()); ++i) Q[i] = -g[i];
+    for (int i = 0; i < std::min<int>(k, g.size()); ++i) Q[i] = -g[i];
 
     auto res = rec(rec, f, Q, 1, k);
     res.resize(n);
@@ -100,7 +100,7 @@ inline std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const st
     // R[x]((y^(-1)))
     std::vector<Tp> P(g), Q(k + 1);
     P.resize(k + 1);
-    for (int i = 0; i < std::min(k + 1, (int)f.size()); ++i) Q[i] = -f[i];
+    for (int i = 0; i < std::min<int>(k + 1, f.size()); ++i) Q[i] = -f[i];
 
     int d = 1;
     for (; k; d *= 2, k /= 2) {
