@@ -2,26 +2,32 @@
 data:
   _extendedDependsOn:
   - icon: ':question:'
+    path: binomial.hpp
+    title: binomial.hpp
+  - icon: ':x:'
+    path: falling_factorial_poly.hpp
+    title: falling_factorial_poly.hpp
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
   - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
-    path: poly_product.hpp
-    title: poly_product.hpp
+  - icon: ':x:'
+    path: shift_sample_points.hpp
+    title: shift_sample_points.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/product_of_polynomial_sequence
+    PROBLEM: https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
     links:
-    - https://judge.yosupo.jp/problem/product_of_polynomial_sequence
-  bundledCode: "#line 1 \"test/formal_power_series/product_of_polynomial_sequence.0.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/product_of_polynomial_sequence\"\
+    - https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
+  bundledCode: "#line 1 \"test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial\"\
     \n\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\n\
     template <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"\
     `Mod` must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
@@ -60,11 +66,27 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 2 \"poly_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
-    \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
-    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
-    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
+    #line 2 \"shift_sample_points.hpp\"\n\n#line 2 \"falling_factorial_poly.hpp\"\n\
+    \n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n#include <vector>\n\ntemplate\
+    \ <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\
+    \n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\n    void preprocess(int\
+    \ n) {\n        if (const int nn = factorial_.size(); nn < n) {\n            int\
+    \ k = nn;\n            while (k < n) k *= 2;\n            k = std::min<long long>(k,\
+    \ Tp::mod());\n            factorial_.resize(k);\n            invfactorial_.resize(k);\n\
+    \            for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] *\
+    \ i;\n            invfactorial_.back() = factorial_.back().inv();\n          \
+    \  for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] *\
+    \ (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int n)\
+    \ {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
+    \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
+    \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
+    \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
+    \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
+    \ invfactorial_[n]; }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include\
+    \ <cassert>\n#include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate\
+    \ <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue() {\n\
+    \        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2)\
+    \ == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
     \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
     \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
     \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
@@ -129,42 +151,57 @@ data:
     \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 4 \"poly_product.hpp\"\n#include\
-    \ <utility>\n#line 6 \"poly_product.hpp\"\n\n// TODO: cache dft\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> poly_product(std::vector<std::vector<Tp>> L) {\n\
-    \    if (L.empty()) return {Tp(1)};\n    while (L.size() > 1) {\n        std::vector<std::vector<Tp>>\
-    \ t;\n        for (int i = 0; i + 1 < (int)L.size(); i += 2) t.push_back(convolution(L[i],\
-    \ L[i + 1]));\n        if (L.size() & 1) t.push_back(L.back());\n        L = std::move(t);\n\
-    \    }\n    return L[0];\n}\n#line 7 \"test/formal_power_series/product_of_polynomial_sequence.0.test.cpp\"\
+    \    return convolution_fft(a, b);\n}\n#line 7 \"falling_factorial_poly.hpp\"\n\
+    \ntemplate <typename Tp>\ninline std::vector<Tp> sample_points_to_ffp(const std::vector<Tp>\
+    \ &F) {\n    const int n = F.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n\
+    \    std::vector<Tp> egfF(F), ee(n);\n    for (int i = 0; i < n; ++i) {\n    \
+    \    egfF[i] *= bin.inv_factorial(i);\n        ee[i] = bin.inv_factorial(i);\n\
+    \        if (i & 1) ee[i] = -ee[i];\n    }\n    auto ffp = convolution(egfF, ee);\n\
+    \    ffp.resize(n);\n    return ffp;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ ffp_to_sample_points(const std::vector<Tp> &ffp, int n) {\n    auto &&bin =\
+    \ Binomial<Tp>::get(n);\n    std::vector<Tp> ee(std::min<int>(ee, ffp.size()));\n\
+    \    for (int i = 0; i < (int)ee.size(); ++i) ee[i] = bin.inv_factorial(i);\n\
+    \    auto F = convolution(ffp, ee);\n    F.resize(n);\n    for (int i = 0; i <\
+    \ n; ++i) F[i] *= bin.factorial(i);\n    return F;\n}\n\ntemplate <typename Tp>\n\
+    inline std::vector<Tp> shift_ffp(std::vector<Tp> ffp, Tp c) {\n    const int n\
+    \ = ffp.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp>\
+    \ C(n);\n    Tp cc = 1;\n    for (int i = 0; i < n; ++i) {\n        ffp[i] *=\
+    \ bin.factorial(i);\n        C[i] = cc * bin.inv_factorial(i);\n        cc *=\
+    \ c - i;\n    }\n    std::reverse(ffp.begin(), ffp.end());\n    auto res = convolution(ffp,\
+    \ C);\n    res.resize(n);\n    std::reverse(res.begin(), res.end());\n    for\
+    \ (int i = 0; i < n; ++i) res[i] *= bin.inv_factorial(i);\n    return res;\n}\n\
+    #line 5 \"shift_sample_points.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ shift_sample_points(const std::vector<Tp> &F, Tp c, int m) {\n    return ffp_to_sample_points(shift_ffp(sample_points_to_ffp(F),\
+    \ c), m);\n}\n#line 7 \"test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<std::vector<mint>>\
-    \ L;\n    while (n--) {\n        int d;\n        std::cin >> d;\n        auto\
-    \ &&p = L.emplace_back(d + 1);\n        for (int i = 0; i <= d; ++i) std::cin\
-    \ >> p[i];\n    }\n    const auto res = poly_product(L);\n    for (int i = 0;\
-    \ i < (int)res.size(); ++i) std::cout << res[i] << ' ';\n    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/product_of_polynomial_sequence\"\
-    \n\n#include \"modint.hpp\"\n#include \"poly_product.hpp\"\n#include <iostream>\n\
+    \    using mint = ModInt<998244353>;\n    int n, m;\n    mint c;\n    std::cin\
+    \ >> n >> m >> c;\n    std::vector<mint> F(n);\n    for (int i = 0; i < n; ++i)\
+    \ std::cin >> F[i];\n    const auto res = shift_sample_points(F, c, m);\n    for\
+    \ (int i = 0; i < m; ++i) std::cout << res[i] << ' ';\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial\"\
+    \n\n#include \"modint.hpp\"\n#include \"shift_sample_points.hpp\"\n#include <iostream>\n\
     #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
-    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n  \
-    \  std::cin >> n;\n    std::vector<std::vector<mint>> L;\n    while (n--) {\n\
-    \        int d;\n        std::cin >> d;\n        auto &&p = L.emplace_back(d +\
-    \ 1);\n        for (int i = 0; i <= d; ++i) std::cin >> p[i];\n    }\n    const\
-    \ auto res = poly_product(L);\n    for (int i = 0; i < (int)res.size(); ++i) std::cout\
-    \ << res[i] << ' ';\n    return 0;\n}\n"
+    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
+    \    mint c;\n    std::cin >> n >> m >> c;\n    std::vector<mint> F(n);\n    for\
+    \ (int i = 0; i < n; ++i) std::cin >> F[i];\n    const auto res = shift_sample_points(F,\
+    \ c, m);\n    for (int i = 0; i < m; ++i) std::cout << res[i] << ' ';\n    return\
+    \ 0;\n}\n"
   dependsOn:
   - modint.hpp
-  - poly_product.hpp
+  - shift_sample_points.hpp
+  - falling_factorial_poly.hpp
+  - binomial.hpp
   - fft.hpp
   isVerificationFile: true
-  path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
+  path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
   requiredBy: []
-  timestamp: '2024-07-07 14:35:08+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-10-10 22:55:09+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
+documentation_of: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-- /verify/test/formal_power_series/product_of_polynomial_sequence.0.test.cpp.html
-title: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
+- /verify/test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+- /verify/test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp.html
+title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
 ---

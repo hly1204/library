@@ -2,23 +2,45 @@
 data:
   _extendedDependsOn:
   - icon: ':question:'
+    path: binomial.hpp
+    title: binomial.hpp
+  - icon: ':x:'
+    path: falling_factorial_poly.hpp
+    title: falling_factorial_poly.hpp
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-    title: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+    title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
-  bundledCode: "#line 2 \"poly_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
-    \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
-    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
-    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
+  bundledCode: "#line 2 \"shift_sample_points.hpp\"\n\n#line 2 \"falling_factorial_poly.hpp\"\
+    \n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n#include <vector>\n\ntemplate\
+    \ <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\
+    \n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\n    void preprocess(int\
+    \ n) {\n        if (const int nn = factorial_.size(); nn < n) {\n            int\
+    \ k = nn;\n            while (k < n) k *= 2;\n            k = std::min<long long>(k,\
+    \ Tp::mod());\n            factorial_.resize(k);\n            invfactorial_.resize(k);\n\
+    \            for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] *\
+    \ i;\n            invfactorial_.back() = factorial_.back().inv();\n          \
+    \  for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] *\
+    \ (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int n)\
+    \ {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
+    \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
+    \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
+    \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
+    \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
+    \ invfactorial_[n]; }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include\
+    \ <cassert>\n#include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate\
+    \ <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue() {\n\
+    \        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2)\
+    \ == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
     \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
     \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
     \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
@@ -83,33 +105,47 @@ data:
     \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 4 \"poly_product.hpp\"\n#include\
-    \ <utility>\n#line 6 \"poly_product.hpp\"\n\n// TODO: cache dft\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> poly_product(std::vector<std::vector<Tp>> L) {\n\
-    \    if (L.empty()) return {Tp(1)};\n    while (L.size() > 1) {\n        std::vector<std::vector<Tp>>\
-    \ t;\n        for (int i = 0; i + 1 < (int)L.size(); i += 2) t.push_back(convolution(L[i],\
-    \ L[i + 1]));\n        if (L.size() & 1) t.push_back(L.back());\n        L = std::move(t);\n\
-    \    }\n    return L[0];\n}\n"
-  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <utility>\n#include <vector>\n\
-    \n// TODO: cache dft\ntemplate <typename Tp>\ninline std::vector<Tp> poly_product(std::vector<std::vector<Tp>>\
-    \ L) {\n    if (L.empty()) return {Tp(1)};\n    while (L.size() > 1) {\n     \
-    \   std::vector<std::vector<Tp>> t;\n        for (int i = 0; i + 1 < (int)L.size();\
-    \ i += 2) t.push_back(convolution(L[i], L[i + 1]));\n        if (L.size() & 1)\
-    \ t.push_back(L.back());\n        L = std::move(t);\n    }\n    return L[0];\n\
-    }\n"
+    \    return convolution_fft(a, b);\n}\n#line 7 \"falling_factorial_poly.hpp\"\n\
+    \ntemplate <typename Tp>\ninline std::vector<Tp> sample_points_to_ffp(const std::vector<Tp>\
+    \ &F) {\n    const int n = F.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n\
+    \    std::vector<Tp> egfF(F), ee(n);\n    for (int i = 0; i < n; ++i) {\n    \
+    \    egfF[i] *= bin.inv_factorial(i);\n        ee[i] = bin.inv_factorial(i);\n\
+    \        if (i & 1) ee[i] = -ee[i];\n    }\n    auto ffp = convolution(egfF, ee);\n\
+    \    ffp.resize(n);\n    return ffp;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ ffp_to_sample_points(const std::vector<Tp> &ffp, int n) {\n    auto &&bin =\
+    \ Binomial<Tp>::get(n);\n    std::vector<Tp> ee(std::min<int>(ee, ffp.size()));\n\
+    \    for (int i = 0; i < (int)ee.size(); ++i) ee[i] = bin.inv_factorial(i);\n\
+    \    auto F = convolution(ffp, ee);\n    F.resize(n);\n    for (int i = 0; i <\
+    \ n; ++i) F[i] *= bin.factorial(i);\n    return F;\n}\n\ntemplate <typename Tp>\n\
+    inline std::vector<Tp> shift_ffp(std::vector<Tp> ffp, Tp c) {\n    const int n\
+    \ = ffp.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp>\
+    \ C(n);\n    Tp cc = 1;\n    for (int i = 0; i < n; ++i) {\n        ffp[i] *=\
+    \ bin.factorial(i);\n        C[i] = cc * bin.inv_factorial(i);\n        cc *=\
+    \ c - i;\n    }\n    std::reverse(ffp.begin(), ffp.end());\n    auto res = convolution(ffp,\
+    \ C);\n    res.resize(n);\n    std::reverse(res.begin(), res.end());\n    for\
+    \ (int i = 0; i < n; ++i) res[i] *= bin.inv_factorial(i);\n    return res;\n}\n\
+    #line 5 \"shift_sample_points.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ shift_sample_points(const std::vector<Tp> &F, Tp c, int m) {\n    return ffp_to_sample_points(shift_ffp(sample_points_to_ffp(F),\
+    \ c), m);\n}\n"
+  code: "#pragma once\n\n#include \"falling_factorial_poly.hpp\"\n#include <vector>\n\
+    \ntemplate <typename Tp>\ninline std::vector<Tp> shift_sample_points(const std::vector<Tp>\
+    \ &F, Tp c, int m) {\n    return ffp_to_sample_points(shift_ffp(sample_points_to_ffp(F),\
+    \ c), m);\n}\n"
   dependsOn:
+  - falling_factorial_poly.hpp
+  - binomial.hpp
   - fft.hpp
   isVerificationFile: false
-  path: poly_product.hpp
+  path: shift_sample_points.hpp
   requiredBy: []
-  timestamp: '2024-07-07 14:35:08+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2024-10-10 22:55:09+08:00'
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
-  - test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-documentation_of: poly_product.hpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+documentation_of: shift_sample_points.hpp
 layout: document
 redirect_from:
-- /library/poly_product.hpp
-- /library/poly_product.hpp.html
-title: poly_product.hpp
+- /library/shift_sample_points.hpp
+- /library/shift_sample_points.hpp.html
+title: shift_sample_points.hpp
 ---

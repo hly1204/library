@@ -4,13 +4,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: batch_inv.hpp
     title: batch_inv.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
   - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: czt.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
   - icon: ':heavy_check_mark:'
@@ -19,7 +19,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: middle_product.hpp
     title: middle_product.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
   - icon: ':heavy_check_mark:'

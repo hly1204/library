@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
   - icon: ':heavy_check_mark:'
@@ -543,12 +543,12 @@ data:
   timestamp: '2024-09-05 19:35:39+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/matrix/matrix_product.0.test.cpp
-  - test/matrix/pow_of_matrix.0.test.cpp
-  - test/matrix/inverse_matrix.0.test.cpp
-  - test/matrix/characteristic_polynomial.0.test.cpp
-  - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/matrix_det.0.test.cpp
+  - test/matrix/inverse_matrix.0.test.cpp
+  - test/matrix/pow_of_matrix.0.test.cpp
+  - test/matrix/characteristic_polynomial.0.test.cpp
+  - test/matrix/matrix_product.0.test.cpp
+  - test/matrix/characteristic_polynomial.1.test.cpp
 documentation_of: mat_basic.hpp
 layout: document
 redirect_from:

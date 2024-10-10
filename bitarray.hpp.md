@@ -177,8 +177,8 @@ data:
   timestamp: '2024-07-20 12:58:03+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/matrix/matrix_det_mod_2.0.test.cpp
   - test/matrix/inverse_matrix_mod_2.0.test.cpp
+  - test/matrix/matrix_det_mod_2.0.test.cpp
 documentation_of: bitarray.hpp
 layout: document
 redirect_from:

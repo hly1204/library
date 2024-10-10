@@ -4,10 +4,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
   - icon: ':heavy_check_mark:'

@@ -9,7 +9,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: batch_inv.hpp
       title: batch_inv.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: binomial.hpp
       title: binomial.hpp
     - icon: ':heavy_check_mark:'
@@ -33,10 +33,13 @@ data:
     - icon: ':heavy_check_mark:'
       path: disjoint_sparse_table.hpp
       title: disjoint_sparse_table.hpp
+    - icon: ':x:'
+      path: falling_factorial_poly.hpp
+      title: falling_factorial_poly.hpp
     - icon: ':heavy_check_mark:'
       path: famous_sequence.hpp
       title: famous_sequence.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: fft.hpp
       title: fft.hpp
     - icon: ':heavy_check_mark:'
@@ -66,7 +69,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -102,6 +105,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: semi_relaxed_conv.hpp
       title: semi_relaxed_conv.hpp
+    - icon: ':x:'
+      path: shift_sample_points.hpp
+      title: shift_sample_points.hpp
     - icon: ':heavy_check_mark:'
       path: sparse_table.hpp
       title: sparse_table.hpp
@@ -238,6 +244,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
       title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+    - icon: ':x:'
+      path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+      title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
       title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp

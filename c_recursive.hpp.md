@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
   - icon: ':heavy_check_mark:'
@@ -426,9 +426,9 @@ data:
   timestamp: '2024-08-12 20:46:28+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
 documentation_of: c_recursive.hpp
 layout: document
 redirect_from:
