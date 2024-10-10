@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: batch_inv.hpp
     title: batch_inv.hpp
   - icon: ':question:'

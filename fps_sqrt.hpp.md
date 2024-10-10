@@ -7,26 +7,26 @@ data:
   - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: sqrt_mod.hpp
     title: sqrt_mod.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
   bundledCode: "#line 2 \"fps_sqrt.hpp\"\n\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"\
@@ -138,57 +138,57 @@ data:
     \                    dftB.emplace_back(Block[lv] - 1);\n                }\n  \
     \              if ((j - 1) * blocksize < (int)A.size()) {\n                  \
     \  dftA[lv]\n                        .emplace_back(A.begin() + (j - 1) * blocksize,\n\
-    \                                      A.begin() + std::min((j + 1) * blocksize,\
-    \ (int)A.size()))\n                        .resize(blocksize * 2);\n         \
-    \           fft(dftA[lv][j - 1]);\n                } else {\n                \
-    \    dftA[lv].emplace_back(blocksize * 2);\n                }\n            }\n\
-    \n            dftB[lv][j - 1].resize(blocksize * 2);\n            std::copy_n(B.begin()\
-    \ + (i - blocksize), blocksize, dftB[lv][j - 1].begin());\n            std::fill_n(dftB[lv][j\
-    \ - 1].begin() + blocksize, blocksize, 0);\n            fft(dftB[lv][j - 1]);\n\
-    \n            // middle product\n            std::vector<Tp> mp(blocksize * 2);\n\
-    \            for (int k = 0; k < j; ++k)\n                for (int l = 0; l <\
-    \ blocksize * 2; ++l)\n                    mp[l] += dftA[lv][j - 1 - k][l] * dftB[lv][k][l];\n\
-    \            inv_fft(mp);\n\n            for (int k = 0; k < blocksize && i +\
-    \ k < n; ++k) AB[i + k] += mp[k + blocksize];\n        }\n\n        // basecase\
-    \ contribution\n        for (int j = std::max(i - s, i - (int)A.size() + 1); j\
-    \ < i; ++j) AB[i] += A[i - j] * B[j];\n        B[i] = gen(i, AB);\n        if\
-    \ (!A.empty()) AB[i] += A[0] * B[i];\n    }\n\n    return B;\n}\n#line 7 \"fps_basic.hpp\"\
-    \n\ntemplate <typename Tp>\ninline int order(const std::vector<Tp> &a) {\n   \
-    \ for (int i = 0; i < (int)a.size(); ++i)\n        if (a[i] != 0) return i;\n\
-    \    return -1;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> inv(const\
-    \ std::vector<Tp> &a, int n) {\n    assert(!a.empty());\n    if (n <= 0) return\
-    \ {};\n    return semi_relaxed_convolution(\n        a, [v = a[0].inv()](int n,\
-    \ auto &&c) { return n == 0 ? v : -c[n] * v; }, n);\n}\n\ntemplate <typename Tp>\n\
-    inline std::vector<Tp> div(const std::vector<Tp> &a, const std::vector<Tp> &b,\
-    \ int n) {\n    assert(!b.empty());\n    if (n <= 0) return {};\n    return semi_relaxed_convolution(\n\
-    \        b,\n        [&, v = b[0].inv()](int n, auto &&c) {\n            if (n\
-    \ < (int)a.size()) return (a[n] - c[n]) * v;\n            return -c[n] * v;\n\
-    \        },\n        n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ deriv(const std::vector<Tp> &a) {\n    const int n = (int)a.size() - 1;\n  \
-    \  if (n <= 0) return {};\n    std::vector<Tp> res(n);\n    for (int i = 1; i\
-    \ <= n; ++i) res[i - 1] = a[i] * i;\n    return res;\n}\n\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> integr(const std::vector<Tp> &a, Tp c = {}) {\n\
-    \    const int n = a.size() + 1;\n    auto &&bin  = Binomial<Tp>::get(n);\n  \
-    \  std::vector<Tp> res(n);\n    res[0] = c;\n    for (int i = 1; i < n; ++i) res[i]\
-    \ = a[i - 1] * bin.inv(i);\n    return res;\n}\n\ntemplate <typename Tp>\ninline\
-    \ std::vector<Tp> log(const std::vector<Tp> &a, int n) {\n    return integr(div(deriv(a),\
-    \ a, n - 1));\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> exp(const std::vector<Tp>\
-    \ &a, int n) {\n    if (n <= 0) return {};\n    assert(!a.empty() && a[0] == 0);\n\
-    \    return semi_relaxed_convolution(\n        deriv(a),\n        [bin = Binomial<Tp>::get(n)](int\
-    \ n, auto &&c) {\n            return n == 0 ? Tp(1) : c[n - 1] * bin.inv(n);\n\
-    \        },\n        n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ pow(std::vector<Tp> a, long long e, int n) {\n    if (n <= 0) return {};\n \
-    \   if (e == 0) {\n        std::vector<Tp> res(n);\n        res[0] = 1;\n    \
-    \    return res;\n    }\n\n    const int o = order(a);\n    if (o < 0 || o > n\
-    \ / e || (o == n / e && n % e == 0)) return std::vector<Tp>(n);\n    if (o !=\
-    \ 0) a.erase(a.begin(), a.begin() + o);\n\n    const Tp ia0 = a[0].inv();\n  \
-    \  const Tp a0e = a[0].pow(e);\n    const Tp me  = e;\n\n    for (int i = 0; i\
-    \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = log(a, n - o * e);\n    for (int\
-    \ i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = exp(a, n - o * e);\n   \
-    \ for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
-    \ o * e, 0);\n    return a;\n}\n#line 2 \"sqrt_mod.hpp\"\n\n#line 2 \"rng.hpp\"\
-    \n\n#include <cstdint>\n#include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n\
-    // original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
+    \                                      A.begin() + std::min<int>((j + 1) * blocksize,\
+    \ A.size()))\n                        .resize(blocksize * 2);\n              \
+    \      fft(dftA[lv][j - 1]);\n                } else {\n                    dftA[lv].emplace_back(blocksize\
+    \ * 2);\n                }\n            }\n\n            dftB[lv][j - 1].resize(blocksize\
+    \ * 2);\n            std::copy_n(B.begin() + (i - blocksize), blocksize, dftB[lv][j\
+    \ - 1].begin());\n            std::fill_n(dftB[lv][j - 1].begin() + blocksize,\
+    \ blocksize, 0);\n            fft(dftB[lv][j - 1]);\n\n            // middle product\n\
+    \            std::vector<Tp> mp(blocksize * 2);\n            for (int k = 0; k\
+    \ < j; ++k)\n                for (int l = 0; l < blocksize * 2; ++l)\n       \
+    \             mp[l] += dftA[lv][j - 1 - k][l] * dftB[lv][k][l];\n            inv_fft(mp);\n\
+    \n            for (int k = 0; k < blocksize && i + k < n; ++k) AB[i + k] += mp[k\
+    \ + blocksize];\n        }\n\n        // basecase contribution\n        for (int\
+    \ j = std::max(i - s, i - (int)A.size() + 1); j < i; ++j) AB[i] += A[i - j] *\
+    \ B[j];\n        B[i] = gen(i, AB);\n        if (!A.empty()) AB[i] += A[0] * B[i];\n\
+    \    }\n\n    return B;\n}\n#line 7 \"fps_basic.hpp\"\n\ntemplate <typename Tp>\n\
+    inline int order(const std::vector<Tp> &a) {\n    for (int i = 0; i < (int)a.size();\
+    \ ++i)\n        if (a[i] != 0) return i;\n    return -1;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> inv(const std::vector<Tp> &a, int n) {\n    assert(!a.empty());\n\
+    \    if (n <= 0) return {};\n    return semi_relaxed_convolution(\n        a,\
+    \ [v = a[0].inv()](int n, auto &&c) { return n == 0 ? v : -c[n] * v; }, n);\n\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> div(const std::vector<Tp>\
+    \ &a, const std::vector<Tp> &b, int n) {\n    assert(!b.empty());\n    if (n <=\
+    \ 0) return {};\n    return semi_relaxed_convolution(\n        b,\n        [&,\
+    \ v = b[0].inv()](int n, auto &&c) {\n            if (n < (int)a.size()) return\
+    \ (a[n] - c[n]) * v;\n            return -c[n] * v;\n        },\n        n);\n\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> deriv(const std::vector<Tp>\
+    \ &a) {\n    const int n = (int)a.size() - 1;\n    if (n <= 0) return {};\n  \
+    \  std::vector<Tp> res(n);\n    for (int i = 1; i <= n; ++i) res[i - 1] = a[i]\
+    \ * i;\n    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> integr(const\
+    \ std::vector<Tp> &a, Tp c = {}) {\n    const int n = a.size() + 1;\n    auto\
+    \ &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp> res(n);\n    res[0] = c;\n\
+    \    for (int i = 1; i < n; ++i) res[i] = a[i - 1] * bin.inv(i);\n    return res;\n\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> log(const std::vector<Tp>\
+    \ &a, int n) {\n    return integr(div(deriv(a), a, n - 1));\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> exp(const std::vector<Tp> &a, int n) {\n    if (n\
+    \ <= 0) return {};\n    assert(!a.empty() && a[0] == 0);\n    return semi_relaxed_convolution(\n\
+    \        deriv(a),\n        [bin = Binomial<Tp>::get(n)](int n, auto &&c) {\n\
+    \            return n == 0 ? Tp(1) : c[n - 1] * bin.inv(n);\n        },\n    \
+    \    n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> pow(std::vector<Tp>\
+    \ a, long long e, int n) {\n    if (n <= 0) return {};\n    if (e == 0) {\n  \
+    \      std::vector<Tp> res(n);\n        res[0] = 1;\n        return res;\n   \
+    \ }\n\n    const int o = order(a);\n    if (o < 0 || o > n / e || (o == n / e\
+    \ && n % e == 0)) return std::vector<Tp>(n);\n    if (o != 0) a.erase(a.begin(),\
+    \ a.begin() + o);\n\n    const Tp ia0 = a[0].inv();\n    const Tp a0e = a[0].pow(e);\n\
+    \    const Tp me  = e;\n\n    for (int i = 0; i < (int)a.size(); ++i) a[i] *=\
+    \ ia0;\n    a = log(a, n - o * e);\n    for (int i = 0; i < (int)a.size(); ++i)\
+    \ a[i] *= me;\n    a = exp(a, n - o * e);\n    for (int i = 0; i < (int)a.size();\
+    \ ++i) a[i] *= a0e;\n\n    a.insert(a.begin(), o * e, 0);\n    return a;\n}\n\
+    #line 2 \"sqrt_mod.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n#include\
+    \ <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n// original\
+    \ license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
     \n    static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64\
     \ - k)); }\n\n    u64 s_[4];\n\n    u64 next() {\n        const u64 res = rotl(s_[1]\
     \ * 5, 7) * 9;\n        const u64 t   = s_[1] << 17;\n        s_[2] ^= s_[0];\n\
@@ -248,8 +248,8 @@ data:
   isVerificationFile: false
   path: fps_sqrt.hpp
   requiredBy: []
-  timestamp: '2024-06-02 13:23:25+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2024-10-10 23:07:33+08:00'
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
 documentation_of: fps_sqrt.hpp
