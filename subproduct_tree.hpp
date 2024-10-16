@@ -30,6 +30,7 @@ public:
             T[LogS * S * 2 + i * 2 + 1] = -1 - X[i];
         }
         for (int lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {
+            const auto t = FftInfo<Tp>::get().root(len).at(len / 2);
             for (int i = 0; i < (1 << lv); ++i) {
                 auto C = T.begin() + (lv * S * 2 + i * len * 2);       // current
                 auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child
@@ -37,8 +38,7 @@ public:
                 inv_fft_n(C + len, len);
                 if ((i + 1) * len <= N) C[len] -= 2;
                 if (lv) {
-                    Tp k         = 1;
-                    const auto t = FftInfo<Tp>::get().root(len).at(len / 2);
+                    Tp k = 1;
                     for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;
                     fft_n(C + len, len);
                 }
@@ -71,6 +71,7 @@ public:
         res.insert(res.begin(), S - N, 0); // res[S-1]=[x^(-1)]F/P, res[S-2]=[x^(-2)]F/P, ...
         fft(res);
         for (int lv = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {
+            const auto t = FftInfo<Tp>::get().inv_root(len / 2).at(len / 4);
             std::vector<Tp> LL(len);
             for (int i = 0; i < (1 << lv); ++i) {
                 auto C = res.begin() + i * len;                        // current
@@ -79,8 +80,7 @@ public:
                 // extract the higher part of DFT array
                 inv_fft_n(LL.begin() + len / 2, len / 2);
                 inv_fft_n(C + len / 2, len / 2);
-                Tp k         = 1;
-                const auto t = FftInfo<Tp>::get().inv_root(len / 2).at(len / 4);
+                Tp k = 1;
                 for (int j = 0; j < len / 2; ++j) {
                     LL[j + len / 2] *= k, C[j + len / 2] *= k;
                     k *= t;
@@ -105,6 +105,7 @@ public:
         int LogS = 1;
         while ((1 << LogS) < S) ++LogS;
         for (int lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {
+            const auto t = FftInfo<Tp>::get().root(len).at(len / 2);
             for (int i = 0; i < (1 << lv); ++i) {
                 auto C = res.begin() + i * len * 2;                    // current
                 auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child
@@ -112,8 +113,7 @@ public:
                     C[j] = C[len + j] = C[j] * L[len + j] + C[len + j] * L[j];
                 inv_fft_n(C + len, len);
                 if (lv) {
-                    Tp k         = 1;
-                    const auto t = FftInfo<Tp>::get().root(len).at(len / 2);
+                    Tp k = 1;
                     for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;
                     fft_n(C + len, len);
                 }
@@ -161,14 +161,14 @@ public:
         int LogS = 1;
         while ((1 << LogS) < S) ++LogS;
         for (int lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {
+            const auto t = FftInfo<Tp>::get().root(len).at(len / 2);
             for (int i = 0; i < (1 << lv); ++i) {
                 auto C = res.begin() + i * len * 2;                    // current
                 auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child
                 for (int j = 0; j < len; ++j) C[j] = C[len + j] = C[j] + C[len + j] * L[j];
                 inv_fft_n(C + len, len);
                 if (lv) {
-                    Tp k         = 1;
-                    const auto t = FftInfo<Tp>::get().root(len).at(len / 2);
+                    Tp k = 1;
                     for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;
                     fft_n(C + len, len);
                 }
