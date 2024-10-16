@@ -75,6 +75,7 @@ public:
             for (int i = 0; i < (1 << lv); ++i) {
                 auto C = res.begin() + i * len;                        // current
                 auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child
+                for (int j = 0; j < len; ++j) LL[j] = C[j] * L[len + j], C[j] *= L[j];
                 // extract the higher part of DFT array
                 inv_fft_n(LL.begin() + len / 2, len / 2);
                 inv_fft_n(C + len / 2, len / 2);
