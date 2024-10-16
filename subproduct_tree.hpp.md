@@ -1,22 +1,22 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: batch_inv.hpp
     title: batch_inv.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy:
@@ -27,15 +27,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://noshi91.hatenablog.com/entry/2023/05/01/022946
@@ -295,36 +295,38 @@ data:
     \    std::vector<Tp> LL(len);\n            for (int i = 0; i < (1 << lv); ++i)\
     \ {\n                auto C = res.begin() + i * len;                        //\
     \ current\n                auto L = T.begin() + ((lv + 1) * S * 2 + i * len *\
-    \ 2); // left child\n                // extract the higher part of DFT array\n\
-    \                inv_fft_n(LL.begin() + len / 2, len / 2);\n                inv_fft_n(C\
-    \ + len / 2, len / 2);\n                Tp k         = 1;\n                const\
-    \ auto t = FftInfo<Tp>::get().inv_root(len / 2).at(len / 4);\n               \
-    \ for (int j = 0; j < len / 2; ++j) {\n                    LL[j + len / 2] *=\
-    \ k, C[j + len / 2] *= k;\n                    k *= t;\n                }\n  \
-    \              fft_n(LL.begin() + len / 2, len / 2);\n                fft_n(C\
-    \ + len / 2, len / 2);\n                for (int j = 0; j < len / 2; ++j) {\n\
-    \                    C[j + len / 2] = (C[j] - C[j + len / 2]).div_by_2();\n  \
-    \                  C[j]           = (LL[j] - LL[j + len / 2]).div_by_2();\n  \
-    \              }\n            }\n        }\n        res.resize(N);\n        return\
-    \ res;\n    }\n\n    std::vector<Tp> interpolation(const std::vector<Tp> &Y) const\
-    \ {\n        assert((int)Y.size() == N);\n        const auto invD = batch_inv(evaluation(deriv(product())));\
-    \ // denominator => P'(x_i)\n        std::vector<Tp> res(S * 2);\n        for\
-    \ (int i = 0; i < N; ++i) res[i * 2] = res[i * 2 + 1] = Y[i] * invD[i];\n    \
-    \    int LogS = 1;\n        while ((1 << LogS) < S) ++LogS;\n        for (int\
-    \ lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {\n            for (int i =\
-    \ 0; i < (1 << lv); ++i) {\n                auto C = res.begin() + i * len * 2;\
-    \                    // current\n                auto L = T.begin() + ((lv + 1)\
-    \ * S * 2 + i * len * 2); // left child\n                for (int j = 0; j < len;\
-    \ ++j)\n                    C[j] = C[len + j] = C[j] * L[len + j] + C[len + j]\
-    \ * L[j];\n                inv_fft_n(C + len, len);\n                if (lv) {\n\
-    \                    Tp k         = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
-    \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
-    \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
-    \     }\n        }\n        return std::vector(res.begin() + S, res.begin() +\
-    \ (S + N));\n    }\n\n    // see:\n    // [1]: A. Bostan, \xC9. Schost. Polynomial\
-    \ evaluation and interpolation on special sets of points.\n    // [2]: noshi91.\
-    \ \u8EE2\u7F6E\u539F\u7406\u306A\u3057\u3067 Monomial \u57FA\u5E95\u304B\u3089\
-    \ Newton \u57FA\u5E95\u3078\u306E\u5909\u63DB.\n    //      https://noshi91.hatenablog.com/entry/2023/05/01/022946\n\
+    \ 2); // left child\n                for (int j = 0; j < len; ++j) LL[j] = C[j]\
+    \ * L[len + j], C[j] *= L[j];\n                // extract the higher part of DFT\
+    \ array\n                inv_fft_n(LL.begin() + len / 2, len / 2);\n         \
+    \       inv_fft_n(C + len / 2, len / 2);\n                Tp k         = 1;\n\
+    \                const auto t = FftInfo<Tp>::get().inv_root(len / 2).at(len /\
+    \ 4);\n                for (int j = 0; j < len / 2; ++j) {\n                 \
+    \   LL[j + len / 2] *= k, C[j + len / 2] *= k;\n                    k *= t;\n\
+    \                }\n                fft_n(LL.begin() + len / 2, len / 2);\n  \
+    \              fft_n(C + len / 2, len / 2);\n                for (int j = 0; j\
+    \ < len / 2; ++j) {\n                    C[j + len / 2] = (C[j] - C[j + len /\
+    \ 2]).div_by_2();\n                    C[j]           = (LL[j] - LL[j + len /\
+    \ 2]).div_by_2();\n                }\n            }\n        }\n        res.resize(N);\n\
+    \        return res;\n    }\n\n    std::vector<Tp> interpolation(const std::vector<Tp>\
+    \ &Y) const {\n        assert((int)Y.size() == N);\n        const auto invD =\
+    \ batch_inv(evaluation(deriv(product()))); // denominator => P'(x_i)\n       \
+    \ std::vector<Tp> res(S * 2);\n        for (int i = 0; i < N; ++i) res[i * 2]\
+    \ = res[i * 2 + 1] = Y[i] * invD[i];\n        int LogS = 1;\n        while ((1\
+    \ << LogS) < S) ++LogS;\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv,\
+    \ len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i) {\n           \
+    \     auto C = res.begin() + i * len * 2;                    // current\n    \
+    \            auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
+    \                for (int j = 0; j < len; ++j)\n                    C[j] = C[len\
+    \ + j] = C[j] * L[len + j] + C[len + j] * L[j];\n                inv_fft_n(C +\
+    \ len, len);\n                if (lv) {\n                    Tp k         = 1;\n\
+    \                    const auto t = FftInfo<Tp>::get().root(len).at(len / 2);\n\
+    \                    for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;\n\
+    \                    fft_n(C + len, len);\n                }\n            }\n\
+    \        }\n        return std::vector(res.begin() + S, res.begin() + (S + N));\n\
+    \    }\n\n    // see:\n    // [1]: A. Bostan, \xC9. Schost. Polynomial evaluation\
+    \ and interpolation on special sets of points.\n    // [2]: noshi91. \u8EE2\u7F6E\
+    \u539F\u7406\u306A\u3057\u3067 Monomial \u57FA\u5E95\u304B\u3089 Newton \u57FA\
+    \u5E95\u3078\u306E\u5909\u63DB.\n    //      https://noshi91.hatenablog.com/entry/2023/05/01/022946\n\
     \    std::vector<Tp> monomial_to_newton(const std::vector<Tp> &F) const {\n  \
     \      const int degF = degree(F);\n        assert(degF < N);\n        const auto\
     \ P = product();\n        // find coefficients of x^(-1),...,x^(-N) of F/P in\
@@ -397,36 +399,38 @@ data:
     \    std::vector<Tp> LL(len);\n            for (int i = 0; i < (1 << lv); ++i)\
     \ {\n                auto C = res.begin() + i * len;                        //\
     \ current\n                auto L = T.begin() + ((lv + 1) * S * 2 + i * len *\
-    \ 2); // left child\n                // extract the higher part of DFT array\n\
-    \                inv_fft_n(LL.begin() + len / 2, len / 2);\n                inv_fft_n(C\
-    \ + len / 2, len / 2);\n                Tp k         = 1;\n                const\
-    \ auto t = FftInfo<Tp>::get().inv_root(len / 2).at(len / 4);\n               \
-    \ for (int j = 0; j < len / 2; ++j) {\n                    LL[j + len / 2] *=\
-    \ k, C[j + len / 2] *= k;\n                    k *= t;\n                }\n  \
-    \              fft_n(LL.begin() + len / 2, len / 2);\n                fft_n(C\
-    \ + len / 2, len / 2);\n                for (int j = 0; j < len / 2; ++j) {\n\
-    \                    C[j + len / 2] = (C[j] - C[j + len / 2]).div_by_2();\n  \
-    \                  C[j]           = (LL[j] - LL[j + len / 2]).div_by_2();\n  \
-    \              }\n            }\n        }\n        res.resize(N);\n        return\
-    \ res;\n    }\n\n    std::vector<Tp> interpolation(const std::vector<Tp> &Y) const\
-    \ {\n        assert((int)Y.size() == N);\n        const auto invD = batch_inv(evaluation(deriv(product())));\
-    \ // denominator => P'(x_i)\n        std::vector<Tp> res(S * 2);\n        for\
-    \ (int i = 0; i < N; ++i) res[i * 2] = res[i * 2 + 1] = Y[i] * invD[i];\n    \
-    \    int LogS = 1;\n        while ((1 << LogS) < S) ++LogS;\n        for (int\
-    \ lv = LogS - 1, len = 2; lv >= 0; --lv, len *= 2) {\n            for (int i =\
-    \ 0; i < (1 << lv); ++i) {\n                auto C = res.begin() + i * len * 2;\
-    \                    // current\n                auto L = T.begin() + ((lv + 1)\
-    \ * S * 2 + i * len * 2); // left child\n                for (int j = 0; j < len;\
-    \ ++j)\n                    C[j] = C[len + j] = C[j] * L[len + j] + C[len + j]\
-    \ * L[j];\n                inv_fft_n(C + len, len);\n                if (lv) {\n\
-    \                    Tp k         = 1;\n                    const auto t = FftInfo<Tp>::get().root(len).at(len\
-    \ / 2);\n                    for (int j = 0; j < len; ++j) C[len + j] *= k, k\
-    \ *= t;\n                    fft_n(C + len, len);\n                }\n       \
-    \     }\n        }\n        return std::vector(res.begin() + S, res.begin() +\
-    \ (S + N));\n    }\n\n    // see:\n    // [1]: A. Bostan, \xC9. Schost. Polynomial\
-    \ evaluation and interpolation on special sets of points.\n    // [2]: noshi91.\
-    \ \u8EE2\u7F6E\u539F\u7406\u306A\u3057\u3067 Monomial \u57FA\u5E95\u304B\u3089\
-    \ Newton \u57FA\u5E95\u3078\u306E\u5909\u63DB.\n    //      https://noshi91.hatenablog.com/entry/2023/05/01/022946\n\
+    \ 2); // left child\n                for (int j = 0; j < len; ++j) LL[j] = C[j]\
+    \ * L[len + j], C[j] *= L[j];\n                // extract the higher part of DFT\
+    \ array\n                inv_fft_n(LL.begin() + len / 2, len / 2);\n         \
+    \       inv_fft_n(C + len / 2, len / 2);\n                Tp k         = 1;\n\
+    \                const auto t = FftInfo<Tp>::get().inv_root(len / 2).at(len /\
+    \ 4);\n                for (int j = 0; j < len / 2; ++j) {\n                 \
+    \   LL[j + len / 2] *= k, C[j + len / 2] *= k;\n                    k *= t;\n\
+    \                }\n                fft_n(LL.begin() + len / 2, len / 2);\n  \
+    \              fft_n(C + len / 2, len / 2);\n                for (int j = 0; j\
+    \ < len / 2; ++j) {\n                    C[j + len / 2] = (C[j] - C[j + len /\
+    \ 2]).div_by_2();\n                    C[j]           = (LL[j] - LL[j + len /\
+    \ 2]).div_by_2();\n                }\n            }\n        }\n        res.resize(N);\n\
+    \        return res;\n    }\n\n    std::vector<Tp> interpolation(const std::vector<Tp>\
+    \ &Y) const {\n        assert((int)Y.size() == N);\n        const auto invD =\
+    \ batch_inv(evaluation(deriv(product()))); // denominator => P'(x_i)\n       \
+    \ std::vector<Tp> res(S * 2);\n        for (int i = 0; i < N; ++i) res[i * 2]\
+    \ = res[i * 2 + 1] = Y[i] * invD[i];\n        int LogS = 1;\n        while ((1\
+    \ << LogS) < S) ++LogS;\n        for (int lv = LogS - 1, len = 2; lv >= 0; --lv,\
+    \ len *= 2) {\n            for (int i = 0; i < (1 << lv); ++i) {\n           \
+    \     auto C = res.begin() + i * len * 2;                    // current\n    \
+    \            auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child\n\
+    \                for (int j = 0; j < len; ++j)\n                    C[j] = C[len\
+    \ + j] = C[j] * L[len + j] + C[len + j] * L[j];\n                inv_fft_n(C +\
+    \ len, len);\n                if (lv) {\n                    Tp k         = 1;\n\
+    \                    const auto t = FftInfo<Tp>::get().root(len).at(len / 2);\n\
+    \                    for (int j = 0; j < len; ++j) C[len + j] *= k, k *= t;\n\
+    \                    fft_n(C + len, len);\n                }\n            }\n\
+    \        }\n        return std::vector(res.begin() + S, res.begin() + (S + N));\n\
+    \    }\n\n    // see:\n    // [1]: A. Bostan, \xC9. Schost. Polynomial evaluation\
+    \ and interpolation on special sets of points.\n    // [2]: noshi91. \u8EE2\u7F6E\
+    \u539F\u7406\u306A\u3057\u3067 Monomial \u57FA\u5E95\u304B\u3089 Newton \u57FA\
+    \u5E95\u3078\u306E\u5909\u63DB.\n    //      https://noshi91.hatenablog.com/entry/2023/05/01/022946\n\
     \    std::vector<Tp> monomial_to_newton(const std::vector<Tp> &F) const {\n  \
     \      const int degF = degree(F);\n        assert(degF < N);\n        const auto\
     \ P = product();\n        // find coefficients of x^(-1),...,x^(-N) of F/P in\
@@ -469,8 +473,8 @@ data:
   path: subproduct_tree.hpp
   requiredBy:
   - poly_interpolation_with_error.hpp
-  timestamp: '2024-10-16 22:14:09+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2024-10-16 22:17:26+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - test/formal_power_series/polynomial_interpolation.0.test.cpp

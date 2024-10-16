@@ -11,7 +11,7 @@ data:
   - icon: ':warning:'
     path: poly_interpolation_with_error.hpp
     title: poly_interpolation_with_error.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
   _extendedVerifiedWith:
@@ -21,21 +21,21 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/convolution_mod.1.test.cpp
     title: test/formal_power_series/convolution_mod.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"batch_inv.hpp\"\n\n#include <cassert>\n#include <vector>\n\
@@ -59,7 +59,7 @@ data:
   - subproduct_tree.hpp
   - czt.hpp
   timestamp: '2024-06-16 14:16:14+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - test/formal_power_series/polynomial_interpolation.0.test.cpp
