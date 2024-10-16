@@ -69,16 +69,27 @@ public:
         std::reverse(res.begin(), res.end());
         res.resize(N);
         res.insert(res.begin(), S - N, 0); // res[S-1]=[x^(-1)]F/P, res[S-2]=[x^(-2)]F/P, ...
+        fft(res);
         for (int lv = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {
             std::vector<Tp> LL(len);
             for (int i = 0; i < (1 << lv); ++i) {
                 auto C = res.begin() + i * len;                        // current
                 auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child
-                fft_n(C, len);
-                for (int j = 0; j < len; ++j) LL[j] = C[j] * L[len + j], C[j] *= L[j];
-                inv_fft(LL);
-                inv_fft_n(C, len);
-                std::copy_n(LL.begin() + len / 2, len / 2, C);
+                // extract the higher part of DFT array
+                inv_fft_n(LL.begin() + len / 2, len / 2);
+                inv_fft_n(C + len / 2, len / 2);
+                Tp k         = 1;
+                const auto t = FftInfo<Tp>::get().inv_root(len / 2).at(len / 4);
+                for (int j = 0; j < len / 2; ++j) {
+                    LL[j + len / 2] *= k, C[j + len / 2] *= k;
+                    k *= t;
+                }
+                fft_n(LL.begin() + len / 2, len / 2);
+                fft_n(C + len / 2, len / 2);
+                for (int j = 0; j < len / 2; ++j) {
+                    C[j + len / 2] = (C[j] - C[j + len / 2]).div_by_2();
+                    C[j]           = (LL[j] - LL[j + len / 2]).div_by_2();
+                }
             }
         }
         res.resize(N);
