@@ -48,7 +48,7 @@ inline void subset_moebius(std::vector<Tp> &a) {
 }
 
 template <typename Tp>
-std::vector<Tp> subset_convolution(const std::vector<Tp> &A, const std::vector<Tp> &B) {
+inline std::vector<Tp> subset_convolution(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     assert(A.size() == B.size());
     const int N = A.size();
     int LogN    = 0;
@@ -56,7 +56,7 @@ std::vector<Tp> subset_convolution(const std::vector<Tp> &A, const std::vector<T
     auto rankedA = to_ranked(A);
     auto rankedB = to_ranked(B);
 
-    // One can change subset_zeta here to sps_fft
+    // One can replace subset_zeta here to sps_fft
     for (int i = 0; i <= LogN; ++i) {
         subset_zeta(rankedA[i]);
         subset_zeta(rankedB[i]);
@@ -67,7 +67,7 @@ std::vector<Tp> subset_convolution(const std::vector<Tp> &A, const std::vector<T
         for (int j = 0; i + j <= LogN; ++j)
             for (int k = 0; k < N; ++k) rankedAB[i + j][k] += rankedA[i][k] * rankedB[j][k];
 
-    // One can change subset_moebius here to sps_inv_fft
+    // One can replace subset_moebius here to sps_inv_fft
     for (int i = 0; i <= LogN; ++i) subset_moebius(rankedAB[i]);
 
     return from_ranked(rankedAB);
