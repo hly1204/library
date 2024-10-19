@@ -20,7 +20,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/convolution_mod_1000000007
     links:
     - https://judge.yosupo.jp/problem/convolution_mod_1000000007
-  bundledCode: "#line 1 \"test/formal_power_series/convolution_mod_1000000007.0.test.cpp\"\
+  bundledCode: "#line 1 \"test/convolution/convolution_mod_1000000007.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod_1000000007\"\
     \n\n#line 2 \"conv_mod.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
     #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
@@ -156,8 +156,8 @@ data:
     \    const int m1    = mint1::mod() % modular;\n    for (int i = 0; i < n; ++i)\
     \ {\n        const mint0 k1 = (res0[i] - res1[i].val()) * im1;\n        res[i]\
     \         = (k1.val() % modular * m1 + res1[i].val()) % modular;\n    }\n    return\
-    \ res;\n}\n#line 6 \"test/formal_power_series/convolution_mod_1000000007.0.test.cpp\"\
-    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \ res;\n}\n#line 6 \"test/convolution/convolution_mod_1000000007.0.test.cpp\"\n\
+    \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n, m;\n    std::cin >> n >> m;\n    std::vector<int> f(n), g(m);\n  \
     \  for (int i = 0; i < n; ++i) std::cin >> f[i];\n    for (int i = 0; i < m; ++i)\
     \ std::cin >> g[i];\n    const auto fg = convolution_mod(f, g, 1000000007);\n\
@@ -176,15 +176,15 @@ data:
   - fft.hpp
   - modlong.hpp
   isVerificationFile: true
-  path: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
+  path: test/convolution/convolution_mod_1000000007.0.test.cpp
   requiredBy: []
-  timestamp: '2024-06-22 10:58:08+08:00'
+  timestamp: '2024-10-19 12:50:04+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
+documentation_of: test/convolution/convolution_mod_1000000007.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/formal_power_series/convolution_mod_1000000007.0.test.cpp
-- /verify/test/formal_power_series/convolution_mod_1000000007.0.test.cpp.html
-title: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
+- /verify/test/convolution/convolution_mod_1000000007.0.test.cpp
+- /verify/test/convolution/convolution_mod_1000000007.0.test.cpp.html
+title: test/convolution/convolution_mod_1000000007.0.test.cpp
 ---

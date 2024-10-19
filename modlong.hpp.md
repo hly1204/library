@@ -7,8 +7,8 @@ data:
     title: conv_mod.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
-    title: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
+    path: test/convolution/convolution_mod_1000000007.0.test.cpp
+    title: test/convolution/convolution_mod_1000000007.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -132,7 +132,7 @@ data:
   timestamp: '2024-05-15 00:00:04+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/formal_power_series/convolution_mod_1000000007.0.test.cpp
+  - test/convolution/convolution_mod_1000000007.0.test.cpp
 documentation_of: modlong.hpp
 layout: document
 redirect_from:

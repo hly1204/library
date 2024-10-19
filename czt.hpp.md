@@ -25,8 +25,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/convolution_mod.1.test.cpp
-    title: test/formal_power_series/convolution_mod.1.test.cpp
+    path: test/convolution/convolution_mod.1.test.cpp
+    title: test/convolution/convolution_mod.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
@@ -360,7 +360,7 @@ data:
   verifiedWith:
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - test/formal_power_series/convolution_mod.1.test.cpp
+  - test/convolution/convolution_mod.1.test.cpp
 documentation_of: czt.hpp
 layout: document
 redirect_from:

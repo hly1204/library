@@ -38,11 +38,11 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/convolution_mod
     links:
     - https://judge.yosupo.jp/problem/convolution_mod
-  bundledCode: "#line 1 \"test/formal_power_series/convolution_mod.1.test.cpp\"\n\
-    #define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod\"\n\n#line 2\
-    \ \"czt.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#include <cassert>\n#include <vector>\n\
-    \ntemplate <typename Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp>\
-    \ &a) {\n    if (a.empty()) return {};\n    const int n = a.size();\n    std::vector<Tp>\
+  bundledCode: "#line 1 \"test/convolution/convolution_mod.1.test.cpp\"\n#define PROBLEM\
+    \ \"https://judge.yosupo.jp/problem/convolution_mod\"\n\n#line 2 \"czt.hpp\"\n\
+    \n#line 2 \"batch_inv.hpp\"\n\n#include <cassert>\n#include <vector>\n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp> &a) {\n\
+    \    if (a.empty()) return {};\n    const int n = a.size();\n    std::vector<Tp>\
     \ b(n);\n    Tp v = 1;\n    for (int i = 0; i < n; ++i) b[i] = v, v *= a[i];\n\
     \    assert(v != 0);\n    v = v.inv();\n    for (int i = n - 1; i >= 0; --i) b[i]\
     \ *= v, v *= a[i];\n    return b;\n}\n#line 2 \"middle_product.hpp\"\n\n#line\
@@ -342,14 +342,14 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 7 \"test/formal_power_series/convolution_mod.1.test.cpp\"\n\nint main()\
-    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
-    \ mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n    std::vector<mint>\
-    \ a(n), b(m);\n    for (int i = 0; i < n; ++i) std::cin >> a[i];\n    for (int\
-    \ i = 0; i < m; ++i) std::cin >> b[i];\n    a = czt(a, mint(3), n + m - 1);\n\
-    \    b = czt(b, mint(3), n + m - 1);\n    for (int i = 0; i < n + m - 1; ++i)\
-    \ a[i] *= b[i];\n    a = inv_czt(a, mint(3));\n    for (int i = 0; i < n + m -\
-    \ 1; ++i) std::cout << a[i] << ' ';\n    return 0;\n}\n"
+    #line 7 \"test/convolution/convolution_mod.1.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
+    \    std::cin >> n >> m;\n    std::vector<mint> a(n), b(m);\n    for (int i =\
+    \ 0; i < n; ++i) std::cin >> a[i];\n    for (int i = 0; i < m; ++i) std::cin >>\
+    \ b[i];\n    a = czt(a, mint(3), n + m - 1);\n    b = czt(b, mint(3), n + m -\
+    \ 1);\n    for (int i = 0; i < n + m - 1; ++i) a[i] *= b[i];\n    a = inv_czt(a,\
+    \ mint(3));\n    for (int i = 0; i < n + m - 1; ++i) std::cout << a[i] << ' ';\n\
+    \    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod\"\n\n#include\
     \ \"czt.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n#include <vector>\n\
     \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
@@ -370,15 +370,15 @@ data:
   - semi_relaxed_conv.hpp
   - modint.hpp
   isVerificationFile: true
-  path: test/formal_power_series/convolution_mod.1.test.cpp
+  path: test/convolution/convolution_mod.1.test.cpp
   requiredBy: []
-  timestamp: '2024-10-10 23:07:33+08:00'
+  timestamp: '2024-10-19 12:50:04+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/formal_power_series/convolution_mod.1.test.cpp
+documentation_of: test/convolution/convolution_mod.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/formal_power_series/convolution_mod.1.test.cpp
-- /verify/test/formal_power_series/convolution_mod.1.test.cpp.html
-title: test/formal_power_series/convolution_mod.1.test.cpp
+- /verify/test/convolution/convolution_mod.1.test.cpp
+- /verify/test/convolution/convolution_mod.1.test.cpp.html
+title: test/convolution/convolution_mod.1.test.cpp
 ---

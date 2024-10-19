@@ -4,6 +4,18 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/convolution/bitwise_and_convolution.0.test.cpp
+    title: test/convolution/bitwise_and_convolution.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/convolution/bitwise_xor_convolution.0.test.cpp
+    title: test/convolution/bitwise_xor_convolution.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/convolution/convolution_mod.0.test.cpp
+    title: test/convolution/convolution_mod.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/convolution/convolution_mod.1.test.cpp
+    title: test/convolution/convolution_mod.1.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
     title: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -48,12 +60,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/convolution_mod.0.test.cpp
-    title: test/formal_power_series/convolution_mod.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/convolution_mod.1.test.cpp
-    title: test/formal_power_series/convolution_mod.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/division_of_polynomials.0.test.cpp
     title: test/formal_power_series/division_of_polynomials.0.test.cpp
@@ -126,6 +132,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/set_power_series/subset_convolution.0.test.cpp
+    title: test/set_power_series/subset_convolution.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -231,13 +240,11 @@ data:
   - test/formal_power_series/inv_of_formal_power_series.0.test.cpp
   - test/formal_power_series/polynomial_interpolation.0.test.cpp
   - test/formal_power_series/pow_of_formal_power_series.0.test.cpp
-  - test/formal_power_series/convolution_mod.0.test.cpp
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/inv_of_polynomials.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-  - test/formal_power_series/convolution_mod.1.test.cpp
   - test/formal_power_series/log_of_formal_power_series.0.test.cpp
   - test/formal_power_series/multipoint_evaluation.0.test.cpp
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
@@ -255,6 +262,11 @@ data:
   - test/data_structure/range_affine_range_sum.0.test.cpp
   - test/data_structure/point_set_range_composite.0.test.cpp
   - test/data_structure/queue_operate_all_composite.0.test.cpp
+  - test/convolution/convolution_mod.0.test.cpp
+  - test/convolution/convolution_mod.1.test.cpp
+  - test/convolution/bitwise_xor_convolution.0.test.cpp
+  - test/convolution/bitwise_and_convolution.0.test.cpp
+  - test/set_power_series/subset_convolution.0.test.cpp
 documentation_of: modint.hpp
 layout: document
 redirect_from:

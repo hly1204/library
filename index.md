@@ -16,6 +16,9 @@ data:
       path: bitarray.hpp
       title: bitarray.hpp
     - icon: ':heavy_check_mark:'
+      path: bitwise_conv.hpp
+      title: bitwise_conv.hpp
+    - icon: ':heavy_check_mark:'
       path: c_recursive.hpp
       title: c_recursive.hpp
     - icon: ':heavy_check_mark:'
@@ -112,11 +115,17 @@ data:
       path: sparse_table.hpp
       title: sparse_table.hpp
     - icon: ':heavy_check_mark:'
+      path: sps_fft.hpp
+      title: sps_fft.hpp
+    - icon: ':heavy_check_mark:'
       path: sqrt_mod.hpp
       title: sqrt_mod.hpp
     - icon: ':heavy_check_mark:'
       path: subproduct_tree.hpp
       title: subproduct_tree.hpp
+    - icon: ':heavy_check_mark:'
+      path: subset_conv.hpp
+      title: subset_conv.hpp
     - icon: ':heavy_check_mark:'
       path: swag.hpp
       title: swag.hpp
@@ -127,6 +136,23 @@ data:
       path: xgcd.hpp
       title: xgcd.hpp
   verificationCategories:
+  - name: test/convolution
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/convolution/bitwise_and_convolution.0.test.cpp
+      title: test/convolution/bitwise_and_convolution.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/convolution/bitwise_xor_convolution.0.test.cpp
+      title: test/convolution/bitwise_xor_convolution.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/convolution/convolution_mod.0.test.cpp
+      title: test/convolution/convolution_mod.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/convolution/convolution_mod.1.test.cpp
+      title: test/convolution/convolution_mod.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/convolution/convolution_mod_1000000007.0.test.cpp
+      title: test/convolution/convolution_mod_1000000007.0.test.cpp
   - name: test/data_structure
     pages:
     - icon: ':heavy_check_mark:'
@@ -190,15 +216,6 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
       title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/formal_power_series/convolution_mod.0.test.cpp
-      title: test/formal_power_series/convolution_mod.0.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/formal_power_series/convolution_mod.1.test.cpp
-      title: test/formal_power_series/convolution_mod.1.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
-      title: test/formal_power_series/convolution_mod_1000000007.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/division_of_polynomials.0.test.cpp
       title: test/formal_power_series/division_of_polynomials.0.test.cpp
@@ -287,6 +304,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/number_theory/yukicoder187.0.test.cpp
       title: test/number_theory/yukicoder187.0.test.cpp
+  - name: test/set_power_series
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/set_power_series/subset_convolution.0.test.cpp
+      title: test/set_power_series/subset_convolution.0.test.cpp
 layout: toppage
 ---
 [![License](https://img.shields.io/github/license/hly1204/library)](https://github.com/hly1204/library/blob/master/LICENSE) ![Standard](https://img.shields.io/badge/C%2B%2B-17-green)
