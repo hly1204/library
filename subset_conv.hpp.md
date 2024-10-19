@@ -38,15 +38,15 @@ data:
     \        for (int j = 0; j < n; j += i)\n            for (int k = j; k < j + i\
     \ / 2; ++k) a[k + i / 2] -= a[k];\n}\n\ntemplate <typename Tp>\ninline void subset_moebius(std::vector<Tp>\
     \ &a) {\n    subset_moebius_n(a.begin(), a.size());\n}\n\ntemplate <typename Tp>\n\
-    std::vector<Tp> subset_convolution(const std::vector<Tp> &A, const std::vector<Tp>\
+    inline std::vector<Tp> subset_convolution(const std::vector<Tp> &A, const std::vector<Tp>\
     \ &B) {\n    assert(A.size() == B.size());\n    const int N = A.size();\n    int\
     \ LogN    = 0;\n    while ((1 << LogN) != N) ++LogN;\n    auto rankedA = to_ranked(A);\n\
-    \    auto rankedB = to_ranked(B);\n\n    // One can change subset_zeta here to\
+    \    auto rankedB = to_ranked(B);\n\n    // One can replace subset_zeta here to\
     \ sps_fft\n    for (int i = 0; i <= LogN; ++i) {\n        subset_zeta(rankedA[i]);\n\
     \        subset_zeta(rankedB[i]);\n    }\n\n    std::vector rankedAB(LogN + 1,\
     \ std::vector<Tp>(N));\n    for (int i = 0; i <= LogN; ++i)\n        for (int\
     \ j = 0; i + j <= LogN; ++j)\n            for (int k = 0; k < N; ++k) rankedAB[i\
-    \ + j][k] += rankedA[i][k] * rankedB[j][k];\n\n    // One can change subset_moebius\
+    \ + j][k] += rankedA[i][k] * rankedB[j][k];\n\n    // One can replace subset_moebius\
     \ here to sps_inv_fft\n    for (int i = 0; i <= LogN; ++i) subset_moebius(rankedAB[i]);\n\
     \n    return from_ranked(rankedAB);\n}\n"
   code: "#pragma once\n\n#include <cassert>\n#include <vector>\n\ntemplate <typename\
@@ -66,16 +66,16 @@ data:
     \ 0);\n    for (int i = 2; i <= n; i *= 2)\n        for (int j = 0; j < n; j +=\
     \ i)\n            for (int k = j; k < j + i / 2; ++k) a[k + i / 2] -= a[k];\n\
     }\n\ntemplate <typename Tp>\ninline void subset_moebius(std::vector<Tp> &a) {\n\
-    \    subset_moebius_n(a.begin(), a.size());\n}\n\ntemplate <typename Tp>\nstd::vector<Tp>\
-    \ subset_convolution(const std::vector<Tp> &A, const std::vector<Tp> &B) {\n \
-    \   assert(A.size() == B.size());\n    const int N = A.size();\n    int LogN \
-    \   = 0;\n    while ((1 << LogN) != N) ++LogN;\n    auto rankedA = to_ranked(A);\n\
-    \    auto rankedB = to_ranked(B);\n\n    // One can change subset_zeta here to\
+    \    subset_moebius_n(a.begin(), a.size());\n}\n\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> subset_convolution(const std::vector<Tp> &A, const std::vector<Tp>\
+    \ &B) {\n    assert(A.size() == B.size());\n    const int N = A.size();\n    int\
+    \ LogN    = 0;\n    while ((1 << LogN) != N) ++LogN;\n    auto rankedA = to_ranked(A);\n\
+    \    auto rankedB = to_ranked(B);\n\n    // One can replace subset_zeta here to\
     \ sps_fft\n    for (int i = 0; i <= LogN; ++i) {\n        subset_zeta(rankedA[i]);\n\
     \        subset_zeta(rankedB[i]);\n    }\n\n    std::vector rankedAB(LogN + 1,\
     \ std::vector<Tp>(N));\n    for (int i = 0; i <= LogN; ++i)\n        for (int\
     \ j = 0; i + j <= LogN; ++j)\n            for (int k = 0; k < N; ++k) rankedAB[i\
-    \ + j][k] += rankedA[i][k] * rankedB[j][k];\n\n    // One can change subset_moebius\
+    \ + j][k] += rankedA[i][k] * rankedB[j][k];\n\n    // One can replace subset_moebius\
     \ here to sps_inv_fft\n    for (int i = 0; i <= LogN; ++i) subset_moebius(rankedAB[i]);\n\
     \n    return from_ranked(rankedAB);\n}\n"
   dependsOn: []
@@ -83,7 +83,7 @@ data:
   path: subset_conv.hpp
   requiredBy:
   - bitwise_conv.hpp
-  timestamp: '2024-10-19 12:50:04+08:00'
+  timestamp: '2024-10-19 12:59:03+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/bitwise_xor_convolution.0.test.cpp
