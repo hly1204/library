@@ -133,6 +133,9 @@ data:
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/set_power_series/exp_of_set_power_series.0.test.cpp
+    title: test/set_power_series/exp_of_set_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/set_power_series/subset_convolution.0.test.cpp
     title: test/set_power_series/subset_convolution.0.test.cpp
   _isVerificationFailed: false
@@ -266,6 +269,7 @@ data:
   - test/convolution/convolution_mod.1.test.cpp
   - test/convolution/bitwise_xor_convolution.0.test.cpp
   - test/convolution/bitwise_and_convolution.0.test.cpp
+  - test/set_power_series/exp_of_set_power_series.0.test.cpp
   - test/set_power_series/subset_convolution.0.test.cpp
 documentation_of: modint.hpp
 layout: document

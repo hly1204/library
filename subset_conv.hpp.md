@@ -5,6 +5,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: bitwise_conv.hpp
     title: bitwise_conv.hpp
+  - icon: ':heavy_check_mark:'
+    path: sps_basic.hpp
+    title: sps_basic.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/convolution/bitwise_and_convolution.0.test.cpp
@@ -12,6 +15,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/convolution/bitwise_xor_convolution.0.test.cpp
     title: test/convolution/bitwise_xor_convolution.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/set_power_series/exp_of_set_power_series.0.test.cpp
+    title: test/set_power_series/exp_of_set_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/set_power_series/subset_convolution.0.test.cpp
     title: test/set_power_series/subset_convolution.0.test.cpp
@@ -88,12 +94,14 @@ data:
   isVerificationFile: false
   path: subset_conv.hpp
   requiredBy:
+  - sps_basic.hpp
   - bitwise_conv.hpp
   timestamp: '2024-10-20 16:25:53+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/bitwise_xor_convolution.0.test.cpp
   - test/convolution/bitwise_and_convolution.0.test.cpp
+  - test/set_power_series/exp_of_set_power_series.0.test.cpp
   - test/set_power_series/subset_convolution.0.test.cpp
 documentation_of: subset_conv.hpp
 layout: document

@@ -115,6 +115,9 @@ data:
       path: sparse_table.hpp
       title: sparse_table.hpp
     - icon: ':heavy_check_mark:'
+      path: sps_basic.hpp
+      title: sps_basic.hpp
+    - icon: ':heavy_check_mark:'
       path: sps_fft.hpp
       title: sps_fft.hpp
     - icon: ':heavy_check_mark:'
@@ -306,6 +309,9 @@ data:
       title: test/number_theory/yukicoder187.0.test.cpp
   - name: test/set_power_series
     pages:
+    - icon: ':heavy_check_mark:'
+      path: test/set_power_series/exp_of_set_power_series.0.test.cpp
+      title: test/set_power_series/exp_of_set_power_series.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/set_power_series/subset_convolution.0.test.cpp
       title: test/set_power_series/subset_convolution.0.test.cpp
