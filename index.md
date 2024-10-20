@@ -72,7 +72,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -123,7 +123,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: subproduct_tree.hpp
       title: subproduct_tree.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: subset_conv.hpp
       title: subset_conv.hpp
     - icon: ':heavy_check_mark:'
@@ -306,7 +306,7 @@ data:
       title: test/number_theory/yukicoder187.0.test.cpp
   - name: test/set_power_series
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/set_power_series/subset_convolution.0.test.cpp
       title: test/set_power_series/subset_convolution.0.test.cpp
 layout: toppage

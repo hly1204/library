@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: subset_conv.hpp
     title: subset_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/subset_convolution
@@ -78,14 +78,16 @@ data:
     \ std::vector<Tp> subset_convolution(const std::vector<Tp> &A, const std::vector<Tp>\
     \ &B) {\n    assert(A.size() == B.size());\n    const int N = A.size();\n    int\
     \ LogN    = 0;\n    while ((1 << LogN) != N) ++LogN;\n    auto rankedA = to_ranked(A);\n\
-    \    auto rankedB = to_ranked(B);\n\n    // One can replace subset_zeta here to\
-    \ sps_fft\n    for (int i = 0; i <= LogN; ++i) {\n        subset_zeta(rankedA[i]);\n\
-    \        subset_zeta(rankedB[i]);\n    }\n\n    std::vector rankedAB(LogN + 1,\
-    \ std::vector<Tp>(N));\n    for (int i = 0; i <= LogN; ++i)\n        for (int\
-    \ j = 0; i + j <= LogN; ++j)\n            for (int k = 0; k < N; ++k) rankedAB[i\
-    \ + j][k] += rankedA[i][k] * rankedB[j][k];\n\n    // One can replace subset_moebius\
-    \ here to sps_inv_fft\n    for (int i = 0; i <= LogN; ++i) subset_moebius(rankedAB[i]);\n\
-    \n    return from_ranked(rankedAB);\n}\n#line 7 \"test/set_power_series/subset_convolution.0.test.cpp\"\
+    \    auto rankedB = to_ranked(B);\n\n    for (int i = 0; i <= LogN; ++i) {\n \
+    \       subset_zeta(rankedA[i]);\n        subset_zeta(rankedB[i]);\n    }\n\n\
+    \    // see: https://codeforces.com/blog/entry/126418\n    // see: https://oeis.org/A025480\n\
+    \    std::vector<int> map(LogN + 1);\n    for (int i = 0; i <= LogN; ++i) map[i]\
+    \ = (i & 1) ? map[i / 2] : i / 2;\n\n    std::vector rankedAB(LogN / 2 + 1, std::vector<Tp>(N));\n\
+    \    for (int i = 0; i <= LogN; ++i)\n        for (int j = 0; i + j <= LogN; ++j)\n\
+    \            for (int k = 0; k < N; ++k) rankedAB[map[i + j]][k] += rankedA[i][k]\
+    \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2 + 1; ++i) subset_moebius(rankedAB[i]);\n\
+    \n    std::vector<Tp> res(N);\n    for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
+    \    return res;\n}\n#line 7 \"test/set_power_series/subset_convolution.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
     \ a(1 << n), b(1 << n);\n    for (int i = 0; i < (1 << n); ++i) std::cin >> a[i];\n\
@@ -106,8 +108,8 @@ data:
   isVerificationFile: true
   path: test/set_power_series/subset_convolution.0.test.cpp
   requiredBy: []
-  timestamp: '2024-10-19 12:59:03+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-10-20 16:13:18+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/set_power_series/subset_convolution.0.test.cpp
 layout: document
