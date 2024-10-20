@@ -71,7 +71,7 @@ inline std::vector<Tp> subset_convolution(const std::vector<Tp> &A, const std::v
         for (int j = 0; i + j <= LogN; ++j)
             for (int k = 0; k < N; ++k) rankedAB[map[i + j]][k] += rankedA[i][k] * rankedB[j][k];
 
-    for (int i = 0; i <= LogN / 2 + 1; ++i) subset_moebius(rankedAB[i]);
+    for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);
 
     std::vector<Tp> res(N);
     for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];
