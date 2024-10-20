@@ -54,16 +54,16 @@ data:
     \ << i));\n        for (int j = 0; j < (1 << i); ++j) rankedA[__builtin_popcount(j)][j]\
     \ = A[j + (1 << i)];\n        for (int j = 0; j <= i; ++j) subset_zeta(rankedA[j]);\n\
     \n        for (int j = (1 << i) / 2; j < (1 << i); ++j) rankedExpA[__builtin_popcount(j)][j]\
-    \ = res[j];\n        for (int j = 0; i != 0 && j <= i; ++j) {\n            subset_zeta_n(rankedExpA[j].begin()\
-    \ + (1 << (i - 1)), 1 << (i - 1));\n            for (int k = 0; k < (1 << (i -\
-    \ 1)); ++k)\n                rankedExpA[j][k + (1 << (i - 1))] += rankedExpA[j][k];\n\
+    \ = res[j];\n        for (int j = 0; j <= i; ++j) {\n            subset_zeta_n(rankedExpA[j].begin()\
+    \ + (1 << i) / 2, (1 << i) / 2);\n            for (int k = 0; k < (1 << i) / 2;\
+    \ ++k)\n                rankedExpA[j][k + (1 << i) / 2] += rankedExpA[j][k];\n\
     \        }\n\n        std::vector<int> map(i + 1);\n        for (int j = 0; j\
     \ <= i; ++j) map[j] = (j & 1) ? map[j / 2] : j / 2;\n\n        std::vector ExpAA(i\
     \ / 2 + 1, std::vector<Tp>(1 << i));\n        for (int j = 0; j <= i; ++j)\n \
     \           for (int k = 0; j + k <= i; ++k)\n                for (int l = 0;\
     \ l < (1 << i); ++l)\n                    ExpAA[map[j + k]][l] += rankedExpA[j][l]\
     \ * rankedA[k][l];\n        for (int j = 0; j <= i / 2; ++j) subset_moebius(ExpAA[j]);\n\
-    \        for (int j = 0; j < (1 << i); ++j) res[j + (1 << i)] = ExpAA[map[__builtin_popcount(j)]][j];\n\
+    \n        for (int j = 0; j < (1 << i); ++j) res[j + (1 << i)] = ExpAA[map[__builtin_popcount(j)]][j];\n\
     \    }\n    return res;\n}\n"
   code: "#pragma once\n\n#include \"subset_conv.hpp\"\n#include <cassert>\n#include\
     \ <vector>\n\n// returns exp(0 + tx_1 + ...) in R[x_1,...,x_n]/(x_1^2,...,x_n^2)\n\
@@ -76,23 +76,23 @@ data:
     \ i); ++j) rankedA[__builtin_popcount(j)][j] = A[j + (1 << i)];\n        for (int\
     \ j = 0; j <= i; ++j) subset_zeta(rankedA[j]);\n\n        for (int j = (1 << i)\
     \ / 2; j < (1 << i); ++j) rankedExpA[__builtin_popcount(j)][j] = res[j];\n   \
-    \     for (int j = 0; i != 0 && j <= i; ++j) {\n            subset_zeta_n(rankedExpA[j].begin()\
-    \ + (1 << (i - 1)), 1 << (i - 1));\n            for (int k = 0; k < (1 << (i -\
-    \ 1)); ++k)\n                rankedExpA[j][k + (1 << (i - 1))] += rankedExpA[j][k];\n\
+    \     for (int j = 0; j <= i; ++j) {\n            subset_zeta_n(rankedExpA[j].begin()\
+    \ + (1 << i) / 2, (1 << i) / 2);\n            for (int k = 0; k < (1 << i) / 2;\
+    \ ++k)\n                rankedExpA[j][k + (1 << i) / 2] += rankedExpA[j][k];\n\
     \        }\n\n        std::vector<int> map(i + 1);\n        for (int j = 0; j\
     \ <= i; ++j) map[j] = (j & 1) ? map[j / 2] : j / 2;\n\n        std::vector ExpAA(i\
     \ / 2 + 1, std::vector<Tp>(1 << i));\n        for (int j = 0; j <= i; ++j)\n \
     \           for (int k = 0; j + k <= i; ++k)\n                for (int l = 0;\
     \ l < (1 << i); ++l)\n                    ExpAA[map[j + k]][l] += rankedExpA[j][l]\
     \ * rankedA[k][l];\n        for (int j = 0; j <= i / 2; ++j) subset_moebius(ExpAA[j]);\n\
-    \        for (int j = 0; j < (1 << i); ++j) res[j + (1 << i)] = ExpAA[map[__builtin_popcount(j)]][j];\n\
+    \n        for (int j = 0; j < (1 << i); ++j) res[j + (1 << i)] = ExpAA[map[__builtin_popcount(j)]][j];\n\
     \    }\n    return res;\n}\n"
   dependsOn:
   - subset_conv.hpp
   isVerificationFile: false
   path: sps_basic.hpp
   requiredBy: []
-  timestamp: '2024-10-20 18:15:25+08:00'
+  timestamp: '2024-10-20 18:19:08+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/set_power_series/exp_of_set_power_series.0.test.cpp
