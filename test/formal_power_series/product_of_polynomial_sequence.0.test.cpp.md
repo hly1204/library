@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
   - icon: ':heavy_check_mark:'

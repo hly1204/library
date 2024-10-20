@@ -132,12 +132,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/set_power_series/subset_convolution.0.test.cpp
     title: test/set_power_series/subset_convolution.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
@@ -221,7 +221,7 @@ data:
   path: modint.hpp
   requiredBy: []
   timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp

@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: sps_fft.hpp
     title: sps_fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: subset_conv.hpp
     title: subset_conv.hpp
   _extendedRequiredBy: []
@@ -61,7 +61,7 @@ data:
     \ = (i & 1) ? map[i / 2] : i / 2;\n\n    std::vector rankedAB(LogN / 2 + 1, std::vector<Tp>(N));\n\
     \    for (int i = 0; i <= LogN; ++i)\n        for (int j = 0; i + j <= LogN; ++j)\n\
     \            for (int k = 0; k < N; ++k) rankedAB[map[i + j]][k] += rankedA[i][k]\
-    \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2 + 1; ++i) subset_moebius(rankedAB[i]);\n\
+    \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);\n\
     \n    std::vector<Tp> res(N);\n    for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
     \    return res;\n}\n#line 5 \"bitwise_conv.hpp\"\n#include <algorithm>\n#line\
     \ 8 \"bitwise_conv.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp> bitwise_or_convolution(std::vector<Tp>\
@@ -98,7 +98,7 @@ data:
   isVerificationFile: false
   path: bitwise_conv.hpp
   requiredBy: []
-  timestamp: '2024-10-20 16:13:18+08:00'
+  timestamp: '2024-10-20 16:25:53+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/bitwise_xor_convolution.0.test.cpp

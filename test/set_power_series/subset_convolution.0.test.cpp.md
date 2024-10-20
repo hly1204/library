@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: subset_conv.hpp
     title: subset_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/subset_convolution
@@ -85,7 +85,7 @@ data:
     \ = (i & 1) ? map[i / 2] : i / 2;\n\n    std::vector rankedAB(LogN / 2 + 1, std::vector<Tp>(N));\n\
     \    for (int i = 0; i <= LogN; ++i)\n        for (int j = 0; i + j <= LogN; ++j)\n\
     \            for (int k = 0; k < N; ++k) rankedAB[map[i + j]][k] += rankedA[i][k]\
-    \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2 + 1; ++i) subset_moebius(rankedAB[i]);\n\
+    \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);\n\
     \n    std::vector<Tp> res(N);\n    for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
     \    return res;\n}\n#line 7 \"test/set_power_series/subset_convolution.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
@@ -108,8 +108,8 @@ data:
   isVerificationFile: true
   path: test/set_power_series/subset_convolution.0.test.cpp
   requiredBy: []
-  timestamp: '2024-10-20 16:13:18+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-10-20 16:25:53+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/set_power_series/subset_convolution.0.test.cpp
 layout: document

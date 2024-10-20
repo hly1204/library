@@ -12,12 +12,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/convolution/bitwise_xor_convolution.0.test.cpp
     title: test/convolution/bitwise_xor_convolution.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/set_power_series/subset_convolution.0.test.cpp
     title: test/set_power_series/subset_convolution.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://codeforces.com/blog/entry/126418
@@ -50,7 +50,7 @@ data:
     \ = (i & 1) ? map[i / 2] : i / 2;\n\n    std::vector rankedAB(LogN / 2 + 1, std::vector<Tp>(N));\n\
     \    for (int i = 0; i <= LogN; ++i)\n        for (int j = 0; i + j <= LogN; ++j)\n\
     \            for (int k = 0; k < N; ++k) rankedAB[map[i + j]][k] += rankedA[i][k]\
-    \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2 + 1; ++i) subset_moebius(rankedAB[i]);\n\
+    \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);\n\
     \n    std::vector<Tp> res(N);\n    for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
     \    return res;\n}\n"
   code: "#pragma once\n\n#include <cassert>\n#include <vector>\n\ntemplate <typename\
@@ -81,7 +81,7 @@ data:
     \ = (i & 1) ? map[i / 2] : i / 2;\n\n    std::vector rankedAB(LogN / 2 + 1, std::vector<Tp>(N));\n\
     \    for (int i = 0; i <= LogN; ++i)\n        for (int j = 0; i + j <= LogN; ++j)\n\
     \            for (int k = 0; k < N; ++k) rankedAB[map[i + j]][k] += rankedA[i][k]\
-    \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2 + 1; ++i) subset_moebius(rankedAB[i]);\n\
+    \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);\n\
     \n    std::vector<Tp> res(N);\n    for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
     \    return res;\n}\n"
   dependsOn: []
@@ -89,8 +89,8 @@ data:
   path: subset_conv.hpp
   requiredBy:
   - bitwise_conv.hpp
-  timestamp: '2024-10-20 16:13:18+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2024-10-20 16:25:53+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/bitwise_xor_convolution.0.test.cpp
   - test/convolution/bitwise_and_convolution.0.test.cpp
