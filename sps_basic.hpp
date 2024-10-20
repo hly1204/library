@@ -22,10 +22,10 @@ inline std::vector<Tp> sps_exp(const std::vector<Tp> &A) {
         for (int j = 0; j <= i; ++j) subset_zeta(rankedA[j]);
 
         for (int j = (1 << i) / 2; j < (1 << i); ++j) rankedExpA[__builtin_popcount(j)][j] = res[j];
-        for (int j = 0; i != 0 && j <= i; ++j) {
-            subset_zeta_n(rankedExpA[j].begin() + (1 << (i - 1)), 1 << (i - 1));
-            for (int k = 0; k < (1 << (i - 1)); ++k)
-                rankedExpA[j][k + (1 << (i - 1))] += rankedExpA[j][k];
+        for (int j = 0; j <= i; ++j) {
+            subset_zeta_n(rankedExpA[j].begin() + (1 << i) / 2, (1 << i) / 2);
+            for (int k = 0; k < (1 << i) / 2; ++k)
+                rankedExpA[j][k + (1 << i) / 2] += rankedExpA[j][k];
         }
 
         std::vector<int> map(i + 1);
@@ -37,6 +37,7 @@ inline std::vector<Tp> sps_exp(const std::vector<Tp> &A) {
                 for (int l = 0; l < (1 << i); ++l)
                     ExpAA[map[j + k]][l] += rankedExpA[j][l] * rankedA[k][l];
         for (int j = 0; j <= i / 2; ++j) subset_moebius(ExpAA[j]);
+
         for (int j = 0; j < (1 << i); ++j) res[j + (1 << i)] = ExpAA[map[__builtin_popcount(j)]][j];
     }
     return res;
