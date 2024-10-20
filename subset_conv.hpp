@@ -56,19 +56,24 @@ inline std::vector<Tp> subset_convolution(const std::vector<Tp> &A, const std::v
     auto rankedA = to_ranked(A);
     auto rankedB = to_ranked(B);
 
-    // One can replace subset_zeta here to sps_fft
     for (int i = 0; i <= LogN; ++i) {
         subset_zeta(rankedA[i]);
         subset_zeta(rankedB[i]);
     }
 
-    std::vector rankedAB(LogN + 1, std::vector<Tp>(N));
+    // see: https://codeforces.com/blog/entry/126418
+    // see: https://oeis.org/A025480
+    std::vector<int> map(LogN + 1);
+    for (int i = 0; i <= LogN; ++i) map[i] = (i & 1) ? map[i / 2] : i / 2;
+
+    std::vector rankedAB(LogN / 2 + 1, std::vector<Tp>(N));
     for (int i = 0; i <= LogN; ++i)
         for (int j = 0; i + j <= LogN; ++j)
-            for (int k = 0; k < N; ++k) rankedAB[i + j][k] += rankedA[i][k] * rankedB[j][k];
+            for (int k = 0; k < N; ++k) rankedAB[map[i + j]][k] += rankedA[i][k] * rankedB[j][k];
 
-    // One can replace subset_moebius here to sps_inv_fft
-    for (int i = 0; i <= LogN; ++i) subset_moebius(rankedAB[i]);
+    for (int i = 0; i <= LogN / 2 + 1; ++i) subset_moebius(rankedAB[i]);
 
-    return from_ranked(rankedAB);
+    std::vector<Tp> res(N);
+    for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];
+    return res;
 }
