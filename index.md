@@ -121,6 +121,9 @@ data:
       path: sps_fft.hpp
       title: sps_fft.hpp
     - icon: ':heavy_check_mark:'
+      path: sps_in_poly.hpp
+      title: sps_in_poly.hpp
+    - icon: ':heavy_check_mark:'
       path: sqrt_mod.hpp
       title: sqrt_mod.hpp
     - icon: ':heavy_check_mark:'
@@ -312,6 +315,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/set_power_series/exp_of_set_power_series.0.test.cpp
       title: test/set_power_series/exp_of_set_power_series.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
+      title: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/set_power_series/subset_convolution.0.test.cpp
       title: test/set_power_series/subset_convolution.0.test.cpp
