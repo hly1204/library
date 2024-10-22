@@ -7,6 +7,9 @@
 
 // returns F(G)
 // requires deg(F)<=n, G(0)=0
+// see:
+// [1]: Elegia. Optimal Algorithm on Polynomial Composite Set Power Series.
+//      https://codeforces.com/blog/entry/92183
 template <typename Tp>
 inline std::vector<Tp> sps_in_egf(const std::vector<Tp> &F, const std::vector<Tp> &G) {
     const int N = (int)F.size() - 1;
@@ -23,6 +26,7 @@ inline std::vector<Tp> sps_in_egf(const std::vector<Tp> &F, const std::vector<Tp
                                    std::vector(G.begin() + (1 << j), G.begin() + (2 << j)));
             std::copy(FG.begin(), FG.end(), R.begin() + (1 << j));
         }
+        // now R = F^((N-(i+1)))(G)
         R.swap(res);
     }
 
