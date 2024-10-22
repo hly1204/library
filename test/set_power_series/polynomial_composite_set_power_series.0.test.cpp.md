@@ -91,28 +91,30 @@ data:
     \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);\n\
     \n    std::vector<Tp> res(N);\n    for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
     \    return res;\n}\n#line 4 \"sps_in_poly.hpp\"\n#include <algorithm>\n#line\
-    \ 7 \"sps_in_poly.hpp\"\n\n// returns F(G)\n// requires deg(F)<=n, G(0)=0\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> sps_in_egf(const std::vector<Tp> &F, const\
-    \ std::vector<Tp> &G) {\n    const int N = (int)F.size() - 1;\n    assert((int)G.size()\
-    \ == (1 << N));\n    assert(G[0] == 0);\n\n    std::vector res = {F[N]};\n   \
-    \ for (int i = 0; i < N; ++i) {\n        std::vector<Tp> R(1 << (i + 1));\n  \
-    \      R[0] = F[N - (i + 1)];\n        for (int j = 0; j <= i; ++j) {\n      \
-    \      const auto FG =\n                subset_convolution(std::vector(res.begin(),\
-    \ res.begin() + (1 << j)),\n                                   std::vector(G.begin()\
-    \ + (1 << j), G.begin() + (2 << j)));\n            std::copy(FG.begin(), FG.end(),\
-    \ R.begin() + (1 << j));\n        }\n        R.swap(res);\n    }\n\n    return\
-    \ res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> sps_in_poly(std::vector<Tp>\
-    \ F, std::vector<Tp> G) {\n    const int N = G.size();\n    int LogN    = 0;\n\
-    \    while ((1 << LogN) != N) ++LogN;\n\n    if (G[0] != 0) {\n        std::vector<Tp>\
-    \ bin(LogN + 1), pw(F.size() + 1), FF(LogN + 1);\n        pw[0] = 1;\n       \
-    \ for (int i = 1; i < (int)pw.size(); ++i) pw[i] = pw[i - 1] * G[0];\n       \
-    \ G[0]   = 0;\n        bin[0] = 1;\n        for (int i = 0; i < (int)F.size();\
-    \ ++i) {\n            for (int j = 0; j <= std::min(LogN, i); ++j) FF[j] += F[i]\
-    \ * bin[j] * pw[i - j];\n            for (int j = LogN; j > 0; --j) bin[j] +=\
-    \ bin[j - 1];\n        }\n        FF.swap(F);\n    }\n\n    F.resize(LogN + 1);\n\
-    \    Tp c = 1;                                       // factorial\n    for (int\
-    \ i = 1; i <= LogN; ++i) F[i] *= c *= i; // to EGF\n    return sps_in_egf(F, G);\n\
-    }\n#line 7 \"test/set_power_series/polynomial_composite_set_power_series.0.test.cpp\"\
+    \ 7 \"sps_in_poly.hpp\"\n\n// returns F(G)\n// requires deg(F)<=n, G(0)=0\n//\
+    \ see:\n// [1]: Elegia. Optimal Algorithm on Polynomial Composite Set Power Series.\n\
+    //      https://codeforces.com/blog/entry/92183\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> sps_in_egf(const std::vector<Tp> &F, const std::vector<Tp> &G)\
+    \ {\n    const int N = (int)F.size() - 1;\n    assert((int)G.size() == (1 << N));\n\
+    \    assert(G[0] == 0);\n\n    std::vector res = {F[N]};\n    for (int i = 0;\
+    \ i < N; ++i) {\n        std::vector<Tp> R(1 << (i + 1));\n        R[0] = F[N\
+    \ - (i + 1)];\n        for (int j = 0; j <= i; ++j) {\n            const auto\
+    \ FG =\n                subset_convolution(std::vector(res.begin(), res.begin()\
+    \ + (1 << j)),\n                                   std::vector(G.begin() + (1\
+    \ << j), G.begin() + (2 << j)));\n            std::copy(FG.begin(), FG.end(),\
+    \ R.begin() + (1 << j));\n        }\n        // now R = F^((N-(i+1)))(G)\n   \
+    \     R.swap(res);\n    }\n\n    return res;\n}\n\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> sps_in_poly(std::vector<Tp> F, std::vector<Tp> G) {\n    const\
+    \ int N = G.size();\n    int LogN    = 0;\n    while ((1 << LogN) != N) ++LogN;\n\
+    \n    if (G[0] != 0) {\n        std::vector<Tp> bin(LogN + 1), pw(F.size() + 1),\
+    \ FF(LogN + 1);\n        pw[0] = 1;\n        for (int i = 1; i < (int)pw.size();\
+    \ ++i) pw[i] = pw[i - 1] * G[0];\n        G[0]   = 0;\n        bin[0] = 1;\n \
+    \       for (int i = 0; i < (int)F.size(); ++i) {\n            for (int j = 0;\
+    \ j <= std::min(LogN, i); ++j) FF[j] += F[i] * bin[j] * pw[i - j];\n         \
+    \   for (int j = LogN; j > 0; --j) bin[j] += bin[j - 1];\n        }\n        FF.swap(F);\n\
+    \    }\n\n    F.resize(LogN + 1);\n    Tp c = 1;                             \
+    \          // factorial\n    for (int i = 1; i <= LogN; ++i) F[i] *= c *= i; //\
+    \ to EGF\n    return sps_in_egf(F, G);\n}\n#line 7 \"test/set_power_series/polynomial_composite_set_power_series.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
     \    std::vector<mint> F(n), G(1 << m);\n    for (int i = 0; i < n; ++i) std::cin\
@@ -134,7 +136,7 @@ data:
   isVerificationFile: true
   path: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-10-22 23:05:35+08:00'
+  timestamp: '2024-10-22 23:09:40+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
