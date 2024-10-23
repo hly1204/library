@@ -16,18 +16,32 @@ inline std::vector<Tp> sps_in_egf(const std::vector<Tp> &F, const std::vector<Tp
     assert((int)G.size() == (1 << N));
     assert(G[0] == 0);
 
+    auto conv_ranked = [](const auto &rankedA, const auto &rankedB, int LogN, auto res) {
+        const int N = (1 << LogN);
+        std::vector<int> map(LogN + 1);
+        for (int i = 0; i <= LogN; ++i) map[i] = (i & 1) ? map[i / 2] : i / 2;
+        std::vector rankedAB(LogN / 2 + 1, std::vector<Tp>(N));
+        for (int i = 0; i <= LogN; ++i)
+            for (int j = 0; i + j <= LogN; ++j)
+                for (int k = 0; k < N; ++k)
+                    rankedAB[map[i + j]][k] += rankedA[i][k] * rankedB[j][k];
+        for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);
+        for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];
+    };
+
+    std::vector<std::vector<std::vector<Tp>>> rankedG;
     std::vector res = {F[N]};
     for (int i = 0; i < N; ++i) {
-        std::vector<Tp> R(1 << (i + 1));
-        R[0] = F[N - (i + 1)];
+        auto &&rankedGi = rankedG.emplace_back(
+            to_ranked(std::vector(G.begin() + (1 << i), G.begin() + (2 << i))));
+        auto rankedRes = to_ranked(res);
         for (int j = 0; j <= i; ++j) {
-            const auto FG =
-                subset_convolution(std::vector(res.begin(), res.begin() + (1 << j)),
-                                   std::vector(G.begin() + (1 << j), G.begin() + (2 << j)));
-            std::copy(FG.begin(), FG.end(), R.begin() + (1 << j));
+            subset_zeta(rankedGi[j]);
+            subset_zeta(rankedRes[j]);
         }
-        // now R = F^((N-(i+1)))(G)
-        R.swap(res);
+        res.resize(1 << (i + 1));
+        res[0] = F[N - (i + 1)];
+        for (int j = 0; j <= i; ++j) conv_ranked(rankedG[j], rankedRes, j, res.begin() + (1 << j));
     }
 
     return res;
