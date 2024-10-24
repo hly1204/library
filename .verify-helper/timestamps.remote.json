@@ -52,6 +52,7 @@
 "test/number_theory/sqrt_mod.0.test.cpp": "2024-10-05 13:19:02 +0800",
 "test/number_theory/yukicoder187.0.test.cpp": "2024-10-05 13:19:02 +0800",
 "test/set_power_series/exp_of_set_power_series.0.test.cpp": "2024-10-24 19:02:26 +0800",
+"test/set_power_series/inv_of_set_power_series.0.test.cpp": "2024-10-24 19:12:00 +0800",
 "test/set_power_series/log_of_set_power_series.0.test.cpp": "2024-10-24 19:02:26 +0800",
 "test/set_power_series/polynomial_composite_set_power_series.0.test.cpp": "2024-10-23 21:02:36 +0800",
 "test/set_power_series/subset_convolution.0.test.cpp": "2024-10-20 16:25:53 +0800"
