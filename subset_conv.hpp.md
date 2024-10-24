@@ -22,6 +22,9 @@ data:
     path: test/set_power_series/exp_of_set_power_series.0.test.cpp
     title: test/set_power_series/exp_of_set_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/set_power_series/log_of_set_power_series.0.test.cpp
+    title: test/set_power_series/log_of_set_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
     title: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -110,6 +113,7 @@ data:
   - test/convolution/bitwise_and_convolution.0.test.cpp
   - test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
   - test/set_power_series/exp_of_set_power_series.0.test.cpp
+  - test/set_power_series/log_of_set_power_series.0.test.cpp
   - test/set_power_series/subset_convolution.0.test.cpp
 documentation_of: subset_conv.hpp
 layout: document

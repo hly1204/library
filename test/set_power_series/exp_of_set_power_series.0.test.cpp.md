@@ -90,17 +90,57 @@ data:
     \            for (int k = 0; k < N; ++k) rankedAB[map[i + j]][k] += rankedA[i][k]\
     \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);\n\
     \n    std::vector<Tp> res(N);\n    for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
-    \    return res;\n}\n#line 6 \"sps_basic.hpp\"\n\n// returns exp(0 + tx_1 + ...)\
-    \ in R[x_1,...,x_n]/(x_1^2,...,x_n^2)\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ sps_exp(const std::vector<Tp> &A) {\n    const int N = A.size();\n    assert(N\
-    \ > 0);\n    assert((N & (N - 1)) == 0);\n    assert(A[0] == 0);\n    int LogN\
-    \ = 0;\n    while ((1 << LogN) != N) ++LogN;\n    std::vector<Tp> res(N);\n  \
-    \  res[0] = 1;\n    std::vector rankedExpA(LogN, std::vector<Tp>(N / 2));\n  \
-    \  for (int i = 0; i < LogN; ++i) {\n        std::vector rankedA(i + 1, std::vector<Tp>(1\
-    \ << i));\n        for (int j = 0; j < (1 << i); ++j) rankedA[__builtin_popcount(j)][j]\
+    \    return res;\n}\n#line 6 \"sps_basic.hpp\"\n\ntemplate <typename Tp>\nvoid\
+    \ convolution_ranked_inplace(std::vector<std::vector<Tp>> &rankedA,\n        \
+    \                        const std::vector<std::vector<Tp>> &rankedB, int LogN)\
+    \ {\n    const int N = (1 << LogN);\n    for (int i = LogN; i >= 0; --i) {\n \
+    \       for (int j = 0; j < N; ++j) rankedA[i][j] *= rankedB[0][j];\n        for\
+    \ (int j = 1; j <= i; ++j)\n            for (int k = 0; k < N; ++k) rankedA[i][k]\
+    \ += rankedA[i - j][k] * rankedB[j][k];\n    }\n}\n\ntemplate <typename Tp>\n\
+    inline std::vector<Tp> sps_inv(const std::vector<Tp> &A) {\n    const int N =\
+    \ A.size();\n    assert(N > 0);\n    assert((N & (N - 1)) == 0);\n    assert(A[0]\
+    \ != 0);\n    int LogN = 0;\n    while ((1 << LogN) != N) ++LogN;\n    std::vector<Tp>\
+    \ res(N);\n    res[0] = A[0].inv();\n    std::vector rankedInvA(LogN, std::vector<Tp>(N\
+    \ / 2));\n    for (int i = 0; i < LogN; ++i) {\n        std::vector rankedA(i\
+    \ + 1, std::vector<Tp>(1 << i));\n        for (int j = 0; j < (1 << i); ++j) rankedA[__builtin_popcount(j)][j]\
     \ = A[j + (1 << i)];\n        for (int j = 0; j <= i; ++j) subset_zeta(rankedA[j]);\n\
-    \n        for (int j = (1 << i) / 2; j < (1 << i); ++j) rankedExpA[__builtin_popcount(j)][j]\
-    \ = res[j];\n        for (int j = 0; j <= i; ++j) {\n            subset_zeta_n(rankedExpA[j].begin()\
+    \n        for (int j = (1 << i) / 2; j < (1 << i); ++j) rankedInvA[__builtin_popcount(j)][j]\
+    \ = res[j];\n        for (int j = 0; j <= i; ++j) {\n            subset_zeta_n(rankedInvA[j].begin()\
+    \ + (1 << i) / 2, (1 << i) / 2);\n            for (int k = 0; k < (1 << i) / 2;\
+    \ ++k)\n                rankedInvA[j][k + (1 << i) / 2] += rankedInvA[j][k];\n\
+    \        }\n\n        convolution_ranked_inplace(rankedA, rankedInvA, i);\n  \
+    \      convolution_ranked_inplace(rankedA, rankedInvA, i);\n\n        for (int\
+    \ j = 0; j <= i; ++j) subset_moebius(rankedA[j]);\n        for (int j = 0; j <\
+    \ (1 << i); ++j) res[j + (1 << i)] = -rankedA[__builtin_popcount(j)][j];\n   \
+    \ }\n    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> sps_log(const\
+    \ std::vector<Tp> &A) {\n    const int N = A.size();\n    assert(N > 0);\n   \
+    \ assert((N & (N - 1)) == 0);\n    assert(A[0] == 1);\n    int LogN = 0;\n   \
+    \ while ((1 << LogN) != N) ++LogN;\n    std::vector<Tp> res(N);\n    std::vector<Tp>\
+    \ invA = {Tp(1)};\n    invA.resize(N / 2);\n    std::vector rankedInvA(LogN, std::vector<Tp>(N\
+    \ / 2));\n    for (int i = 0; i < LogN; ++i) {\n        std::vector rankedA(i\
+    \ + 1, std::vector<Tp>(1 << i));\n        for (int j = 0; j < (1 << i); ++j) rankedA[__builtin_popcount(j)][j]\
+    \ = A[j + (1 << i)];\n        for (int j = 0; j <= i; ++j) subset_zeta(rankedA[j]);\n\
+    \n        for (int j = (1 << i) / 2; j < (1 << i); ++j)\n            rankedInvA[__builtin_popcount(j)][j]\
+    \ = invA[j];\n        for (int j = 0; j <= i; ++j) {\n            subset_zeta_n(rankedInvA[j].begin()\
+    \ + (1 << i) / 2, (1 << i) / 2);\n            for (int k = 0; k < (1 << i) / 2;\
+    \ ++k)\n                rankedInvA[j][k + (1 << i) / 2] += rankedInvA[j][k];\n\
+    \        }\n\n        convolution_ranked_inplace(rankedA, rankedInvA, i);\n  \
+    \      auto rankedLogA = rankedA;\n        for (int j = 0; j <= i; ++j) subset_moebius(rankedLogA[j]);\n\
+    \        for (int j = 0; j < (1 << i); ++j) res[j + (1 << i)] = rankedLogA[__builtin_popcount(j)][j];\n\
+    \        if (i == LogN - 1) break;\n        convolution_ranked_inplace(rankedA,\
+    \ rankedInvA, i);\n\n        for (int j = 0; j <= i; ++j) subset_moebius(rankedA[j]);\n\
+    \        for (int j = 0; j < (1 << i); ++j) invA[j + (1 << i)] = -rankedA[__builtin_popcount(j)][j];\n\
+    \    }\n    return res;\n}\n\n// returns exp(0 + tx_1 + ...) in R[x_1,...,x_n]/(x_1^2,...,x_n^2)\n\
+    template <typename Tp>\ninline std::vector<Tp> sps_exp(const std::vector<Tp> &A)\
+    \ {\n    const int N = A.size();\n    assert(N > 0);\n    assert((N & (N - 1))\
+    \ == 0);\n    assert(A[0] == 0);\n    int LogN = 0;\n    while ((1 << LogN) !=\
+    \ N) ++LogN;\n    std::vector<Tp> res(N);\n    res[0] = 1;\n    std::vector rankedExpA(LogN,\
+    \ std::vector<Tp>(N / 2));\n    for (int i = 0; i < LogN; ++i) {\n        std::vector\
+    \ rankedA(i + 1, std::vector<Tp>(1 << i));\n        for (int j = 0; j < (1 <<\
+    \ i); ++j) rankedA[__builtin_popcount(j)][j] = A[j + (1 << i)];\n        for (int\
+    \ j = 0; j <= i; ++j) subset_zeta(rankedA[j]);\n\n        for (int j = (1 << i)\
+    \ / 2; j < (1 << i); ++j) rankedExpA[__builtin_popcount(j)][j] = res[j];\n   \
+    \     for (int j = 0; j <= i; ++j) {\n            subset_zeta_n(rankedExpA[j].begin()\
     \ + (1 << i) / 2, (1 << i) / 2);\n            for (int k = 0; k < (1 << i) / 2;\
     \ ++k)\n                rankedExpA[j][k + (1 << i) / 2] += rankedExpA[j][k];\n\
     \        }\n\n        std::vector<int> map(i + 1);\n        for (int j = 0; j\
@@ -130,7 +170,7 @@ data:
   isVerificationFile: true
   path: test/set_power_series/exp_of_set_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-10-20 18:19:08+08:00'
+  timestamp: '2024-10-24 19:02:26+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/set_power_series/exp_of_set_power_series.0.test.cpp
