@@ -2,6 +2,7 @@
 
 #include "modint.hpp"
 #include "sps_basic.hpp"
+#include <cassert>
 #include <iostream>
 #include <vector>
 
