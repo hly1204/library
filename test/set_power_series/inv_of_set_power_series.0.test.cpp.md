@@ -150,7 +150,7 @@ data:
     \ l < (1 << i); ++l)\n                    ExpAA[map[j + k]][l] += rankedExpA[j][l]\
     \ * rankedA[k][l];\n        for (int j = 0; j <= i / 2; ++j) subset_moebius(ExpAA[j]);\n\
     \n        for (int j = 0; j < (1 << i); ++j) res[j + (1 << i)] = ExpAA[map[__builtin_popcount(j)]][j];\n\
-    \    }\n    return res;\n}\n#line 7 \"test/set_power_series/inv_of_set_power_series.0.test.cpp\"\
+    \    }\n    return res;\n}\n#line 8 \"test/set_power_series/inv_of_set_power_series.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
     \ a(1 << n);\n    for (int i = 0; i < (1 << n); ++i) std::cin >> a[i];\n    const\
@@ -158,11 +158,11 @@ data:
     \ (int i = 0; i < (1 << n); ++i) std::cout << expa[i] << ' ';\n    return 0;\n\
     }\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/exp_of_set_power_series\"\
-    \n\n#include \"modint.hpp\"\n#include \"sps_basic.hpp\"\n#include <iostream>\n\
-    #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
-    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n  \
-    \  std::cin >> n;\n    std::vector<mint> a(1 << n);\n    for (int i = 0; i < (1\
-    \ << n); ++i) std::cin >> a[i];\n    const auto expa = sps_exp(a);\n    assert(sps_inv(sps_inv(expa))\
+    \n\n#include \"modint.hpp\"\n#include \"sps_basic.hpp\"\n#include <cassert>\n\
+    #include <iostream>\n#include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
+    \    std::cin >> n;\n    std::vector<mint> a(1 << n);\n    for (int i = 0; i <\
+    \ (1 << n); ++i) std::cin >> a[i];\n    const auto expa = sps_exp(a);\n    assert(sps_inv(sps_inv(expa))\
     \ == expa);\n    for (int i = 0; i < (1 << n); ++i) std::cout << expa[i] << '\
     \ ';\n    return 0;\n}\n"
   dependsOn:
@@ -172,7 +172,7 @@ data:
   isVerificationFile: true
   path: test/set_power_series/inv_of_set_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-10-24 19:12:00+08:00'
+  timestamp: '2024-10-24 20:27:00+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/set_power_series/inv_of_set_power_series.0.test.cpp
