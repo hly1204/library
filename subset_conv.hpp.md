@@ -67,9 +67,10 @@ data:
     \    std::vector<int> map(LogN + 1);\n    for (int i = 0; i <= LogN; ++i) map[i]\
     \ = (i & 1) ? map[i / 2] : i / 2;\n\n    std::vector rankedAB(LogN / 2 + 1, std::vector<Tp>(N));\n\
     \    for (int i = 0; i <= LogN; ++i)\n        for (int j = 0; i + j <= LogN; ++j)\n\
-    \            for (int k = 0; k < N; ++k) rankedAB[map[i + j]][k] += rankedA[i][k]\
-    \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);\n\
-    \n    std::vector<Tp> res(N);\n    for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
+    \            for (int k = (1 << j) - 1; k < N; ++k)\n                rankedAB[map[i\
+    \ + j]][k] += rankedA[i][k] * rankedB[j][k];\n\n    for (int i = 0; i <= LogN\
+    \ / 2; ++i) subset_moebius(rankedAB[i]);\n\n    std::vector<Tp> res(N);\n    for\
+    \ (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
     \    return res;\n}\n"
   code: "#pragma once\n\n#include <cassert>\n#include <vector>\n\ntemplate <typename\
     \ Tp>\ninline std::vector<std::vector<Tp>> to_ranked(const std::vector<Tp> &A)\
@@ -98,9 +99,10 @@ data:
     \    std::vector<int> map(LogN + 1);\n    for (int i = 0; i <= LogN; ++i) map[i]\
     \ = (i & 1) ? map[i / 2] : i / 2;\n\n    std::vector rankedAB(LogN / 2 + 1, std::vector<Tp>(N));\n\
     \    for (int i = 0; i <= LogN; ++i)\n        for (int j = 0; i + j <= LogN; ++j)\n\
-    \            for (int k = 0; k < N; ++k) rankedAB[map[i + j]][k] += rankedA[i][k]\
-    \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);\n\
-    \n    std::vector<Tp> res(N);\n    for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
+    \            for (int k = (1 << j) - 1; k < N; ++k)\n                rankedAB[map[i\
+    \ + j]][k] += rankedA[i][k] * rankedB[j][k];\n\n    for (int i = 0; i <= LogN\
+    \ / 2; ++i) subset_moebius(rankedAB[i]);\n\n    std::vector<Tp> res(N);\n    for\
+    \ (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
     \    return res;\n}\n"
   dependsOn: []
   isVerificationFile: false
@@ -109,7 +111,7 @@ data:
   - sps_basic.hpp
   - bitwise_conv.hpp
   - sps_in_poly.hpp
-  timestamp: '2024-10-20 16:25:53+08:00'
+  timestamp: '2024-10-25 19:24:31+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/bitwise_xor_convolution.0.test.cpp

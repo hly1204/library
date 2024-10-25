@@ -87,9 +87,10 @@ data:
     \    std::vector<int> map(LogN + 1);\n    for (int i = 0; i <= LogN; ++i) map[i]\
     \ = (i & 1) ? map[i / 2] : i / 2;\n\n    std::vector rankedAB(LogN / 2 + 1, std::vector<Tp>(N));\n\
     \    for (int i = 0; i <= LogN; ++i)\n        for (int j = 0; i + j <= LogN; ++j)\n\
-    \            for (int k = 0; k < N; ++k) rankedAB[map[i + j]][k] += rankedA[i][k]\
-    \ * rankedB[j][k];\n\n    for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);\n\
-    \n    std::vector<Tp> res(N);\n    for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
+    \            for (int k = (1 << j) - 1; k < N; ++k)\n                rankedAB[map[i\
+    \ + j]][k] += rankedA[i][k] * rankedB[j][k];\n\n    for (int i = 0; i <= LogN\
+    \ / 2; ++i) subset_moebius(rankedAB[i]);\n\n    std::vector<Tp> res(N);\n    for\
+    \ (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
     \    return res;\n}\n#line 4 \"sps_in_poly.hpp\"\n#include <algorithm>\n#line\
     \ 7 \"sps_in_poly.hpp\"\n\n// returns F(G)\n// requires deg(F)<=n, G(0)=0\n//\
     \ see:\n// [1]: Elegia. Optimal Algorithm on Polynomial Composite Set Power Series.\n\
@@ -101,10 +102,10 @@ data:
     \       std::vector<int> map(LogN + 1);\n        for (int i = 0; i <= LogN; ++i)\
     \ map[i] = (i & 1) ? map[i / 2] : i / 2;\n        std::vector rankedAB(LogN /\
     \ 2 + 1, std::vector<Tp>(N));\n        for (int i = 0; i <= LogN; ++i)\n     \
-    \       for (int j = 0; i + j <= LogN; ++j)\n                for (int k = 0; k\
-    \ < N; ++k)\n                    rankedAB[map[i + j]][k] += rankedA[i][k] * rankedB[j][k];\n\
-    \        for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);\n  \
-    \      for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
+    \       for (int j = 0; i + j <= LogN; ++j)\n                for (int k = (1 <<\
+    \ j) - 1; k < N; ++k)\n                    rankedAB[map[i + j]][k] += rankedA[i][k]\
+    \ * rankedB[j][k];\n        for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);\n\
+    \        for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];\n\
     \    };\n\n    std::vector<std::vector<std::vector<Tp>>> rankedG;\n    std::vector\
     \ res = {F[N]};\n    for (int i = 0; i < N; ++i) {\n        auto &&rankedGi =\
     \ rankedG.emplace_back(\n            to_ranked(std::vector(G.begin() + (1 << i),\
@@ -146,7 +147,7 @@ data:
   isVerificationFile: true
   path: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-10-23 21:02:36+08:00'
+  timestamp: '2024-10-25 19:24:31+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
