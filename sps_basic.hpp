@@ -11,7 +11,8 @@ void convolution_ranked_inplace(std::vector<std::vector<Tp>> &rankedA,
     for (int i = LogN; i >= 0; --i) {
         for (int j = 0; j < N; ++j) rankedA[i][j] *= rankedB[0][j];
         for (int j = 1; j <= i; ++j)
-            for (int k = 0; k < N; ++k) rankedA[i][k] += rankedA[i - j][k] * rankedB[j][k];
+            for (int k = (1 << j) - 1; k < N; ++k)
+                rankedA[i][k] += rankedA[i - j][k] * rankedB[j][k];
     }
 }
 
@@ -115,7 +116,7 @@ inline std::vector<Tp> sps_exp(const std::vector<Tp> &A) {
         std::vector ExpAA(i / 2 + 1, std::vector<Tp>(1 << i));
         for (int j = 0; j <= i; ++j)
             for (int k = 0; j + k <= i; ++k)
-                for (int l = 0; l < (1 << i); ++l)
+                for (int l = (1 << k) - 1; l < (1 << i); ++l)
                     ExpAA[map[j + k]][l] += rankedExpA[j][l] * rankedA[k][l];
         for (int j = 0; j <= i / 2; ++j) subset_moebius(ExpAA[j]);
 

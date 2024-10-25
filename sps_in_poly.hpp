@@ -23,7 +23,7 @@ inline std::vector<Tp> sps_in_egf(const std::vector<Tp> &F, const std::vector<Tp
         std::vector rankedAB(LogN / 2 + 1, std::vector<Tp>(N));
         for (int i = 0; i <= LogN; ++i)
             for (int j = 0; i + j <= LogN; ++j)
-                for (int k = 0; k < N; ++k)
+                for (int k = (1 << j) - 1; k < N; ++k)
                     rankedAB[map[i + j]][k] += rankedA[i][k] * rankedB[j][k];
         for (int i = 0; i <= LogN / 2; ++i) subset_moebius(rankedAB[i]);
         for (int i = 0; i < N; ++i) res[i] = rankedAB[map[__builtin_popcount(i)]][i];
