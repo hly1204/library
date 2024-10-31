@@ -66,14 +66,13 @@ public:
     }
 
     // [L, R) in same block
-    Tp query_block(int L, int R) { return T[L + __builtin_ctz(StackNum[R - 1] >> (L % 32))]; }
+    Tp block(int L, int R) const { return T[L + __builtin_ctz(StackNum[R - 1] >> (L % 32))]; }
 
-    Tp query(int L, int R) {
+    Tp query(int L, int R) const {
         assert(L < R);
         const int BL = L / 32, BR = (R - 1) / 32;
-        if (BL == BR) return query_block(L, R);
-        if (BL + 1 == BR) return std::min(query_block(L, BR * 32), query_block(BR * 32, R), Cmp);
-        return std::min(
-            {query_block(L, (BL + 1) * 32), ST.query(BL + 1, BR), query_block(BR * 32, R)}, Cmp);
+        if (BL == BR) return block(L, R);
+        if (BL + 1 == BR) return std::min(block(L, BR * 32), block(BR * 32, R), Cmp);
+        return std::min({block(L, (BL + 1) * 32), ST.query(BL + 1, BR), block(BR * 32, R)}, Cmp);
     }
 };
