@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <functional>
 #include <vector>
 
 template <typename Tp, typename Comp = std::less<>>
