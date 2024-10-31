@@ -40,13 +40,12 @@ data:
     \          while (top > 0 && Cmp(A[i], A[sta[top - 1]])) stack_num ^= 1U << sta[--top];\n\
     \            D[i] = (stack_num |= 1U << (sta[top++] = i));\n        }\n      \
     \  return A[__builtin_ctz(stack_num)];\n    }\n\n    // [L, R) in same block\n\
-    \    Tp query_block(int L, int R) { return T[L + __builtin_ctz(StackNum[R - 1]\
-    \ >> (L % 32))]; }\n\n    Tp query(int L, int R) {\n        assert(L < R);\n \
-    \       const int BL = L / 32, BR = (R - 1) / 32;\n        if (BL == BR) return\
-    \ query_block(L, R);\n        if (BL + 1 == BR) return std::min(query_block(L,\
-    \ BR * 32), query_block(BR * 32, R), Cmp);\n        return std::min(\n       \
-    \     {query_block(L, (BL + 1) * 32), ST.query(BL + 1, BR), query_block(BR * 32,\
-    \ R)}, Cmp);\n    }\n};\n"
+    \    Tp block(int L, int R) const { return T[L + __builtin_ctz(StackNum[R - 1]\
+    \ >> (L % 32))]; }\n\n    Tp query(int L, int R) const {\n        assert(L < R);\n\
+    \        const int BL = L / 32, BR = (R - 1) / 32;\n        if (BL == BR) return\
+    \ block(L, R);\n        if (BL + 1 == BR) return std::min(block(L, BR * 32), block(BR\
+    \ * 32, R), Cmp);\n        return std::min({block(L, (BL + 1) * 32), ST.query(BL\
+    \ + 1, BR), block(BR * 32, R)}, Cmp);\n    }\n};\n"
   code: "#pragma once\n\n#include <algorithm>\n#include <cassert>\n#include <functional>\n\
     #include <vector>\n\ntemplate <typename Tp, typename Comp = std::less<>>\nclass\
     \ RMQ {\npublic:\n    class SparseTableInner {\n        const RMQ &Rmq;\n    \
@@ -75,18 +74,17 @@ data:
     \ < N; ++i) {\n            while (top > 0 && Cmp(A[i], A[sta[top - 1]])) stack_num\
     \ ^= 1U << sta[--top];\n            D[i] = (stack_num |= 1U << (sta[top++] = i));\n\
     \        }\n        return A[__builtin_ctz(stack_num)];\n    }\n\n    // [L, R)\
-    \ in same block\n    Tp query_block(int L, int R) { return T[L + __builtin_ctz(StackNum[R\
-    \ - 1] >> (L % 32))]; }\n\n    Tp query(int L, int R) {\n        assert(L < R);\n\
-    \        const int BL = L / 32, BR = (R - 1) / 32;\n        if (BL == BR) return\
-    \ query_block(L, R);\n        if (BL + 1 == BR) return std::min(query_block(L,\
-    \ BR * 32), query_block(BR * 32, R), Cmp);\n        return std::min(\n       \
-    \     {query_block(L, (BL + 1) * 32), ST.query(BL + 1, BR), query_block(BR * 32,\
-    \ R)}, Cmp);\n    }\n};\n"
+    \ in same block\n    Tp block(int L, int R) const { return T[L + __builtin_ctz(StackNum[R\
+    \ - 1] >> (L % 32))]; }\n\n    Tp query(int L, int R) const {\n        assert(L\
+    \ < R);\n        const int BL = L / 32, BR = (R - 1) / 32;\n        if (BL ==\
+    \ BR) return block(L, R);\n        if (BL + 1 == BR) return std::min(block(L,\
+    \ BR * 32), block(BR * 32, R), Cmp);\n        return std::min({block(L, (BL +\
+    \ 1) * 32), ST.query(BL + 1, BR), block(BR * 32, R)}, Cmp);\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: rmq.hpp
   requiredBy: []
-  timestamp: '2024-10-31 23:57:54+08:00'
+  timestamp: '2024-11-01 07:57:00+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/staticrmq.1.test.cpp
