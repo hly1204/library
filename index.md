@@ -103,6 +103,9 @@ data:
       path: random.hpp
       title: random.hpp
     - icon: ':heavy_check_mark:'
+      path: rmq.hpp
+      title: rmq.hpp
+    - icon: ':heavy_check_mark:'
       path: rng.hpp
       title: rng.hpp
     - icon: ':heavy_check_mark:'
@@ -185,6 +188,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/staticrmq.0.test.cpp
       title: test/data_structure/staticrmq.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/staticrmq.1.test.cpp
+      title: test/data_structure/staticrmq.1.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/data_structure/unionfind.0.test.cpp
       title: test/data_structure/unionfind.0.test.cpp
