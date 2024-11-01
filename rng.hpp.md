@@ -23,9 +23,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: sqrt_mod.hpp
     title: sqrt_mod.hpp
-  - icon: ':warning:'
-    path: test/matrix/inverse_matrix.0.test copy.cpp
-    title: test/matrix/inverse_matrix.0.test copy.cpp
   - icon: ':heavy_check_mark:'
     path: treap_node_base.hpp
     title: treap_node_base.hpp
@@ -48,6 +45,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/adjugate_matrix.0.test.cpp
+    title: test/matrix/adjugate_matrix.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.0.test.cpp
     title: test/matrix/characteristic_polynomial.0.test.cpp
@@ -117,7 +117,6 @@ data:
   isVerificationFile: false
   path: rng.hpp
   requiredBy:
-  - test/matrix/inverse_matrix.0.test copy.cpp
   - fps_sqrt.hpp
   - basis.hpp
   - mat_sparse.hpp
@@ -131,6 +130,7 @@ data:
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
+  - test/matrix/adjugate_matrix.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
   - test/matrix/characteristic_polynomial.0.test.cpp
   - test/matrix/matrix_product.0.test.cpp

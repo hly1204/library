@@ -32,10 +32,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: frobenius.hpp
     title: frobenius.hpp
-  - icon: ':warning:'
-    path: test/matrix/inverse_matrix.0.test copy.cpp
-    title: test/matrix/inverse_matrix.0.test copy.cpp
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/adjugate_matrix.0.test.cpp
+    title: test/matrix/adjugate_matrix.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
@@ -512,11 +512,11 @@ data:
   isVerificationFile: false
   path: basis.hpp
   requiredBy:
-  - test/matrix/inverse_matrix.0.test copy.cpp
   - frobenius.hpp
   timestamp: '2024-10-10 23:07:33+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/matrix/adjugate_matrix.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp
 documentation_of: basis.hpp

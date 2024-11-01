@@ -56,9 +56,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
-  - icon: ':warning:'
-    path: test/matrix/inverse_matrix.0.test copy.cpp
-    title: test/matrix/inverse_matrix.0.test copy.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/convolution/convolution_mod.1.test.cpp
@@ -142,6 +139,9 @@ data:
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/matrix/adjugate_matrix.0.test.cpp
+    title: test/matrix/adjugate_matrix.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.0.test.cpp
     title: test/matrix/characteristic_polynomial.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -203,7 +203,6 @@ data:
   isVerificationFile: false
   path: binomial.hpp
   requiredBy:
-  - test/matrix/inverse_matrix.0.test copy.cpp
   - shift_sample_points.hpp
   - fps_composition.hpp
   - fps_sqrt.hpp
@@ -227,6 +226,7 @@ data:
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
+  - test/matrix/adjugate_matrix.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
   - test/matrix/characteristic_polynomial.0.test.cpp
   - test/matrix/matrix_product.0.test.cpp

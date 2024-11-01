@@ -31,11 +31,11 @@ data:
   - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  _extendedRequiredBy:
-  - icon: ':warning:'
-    path: test/matrix/inverse_matrix.0.test copy.cpp
-    title: test/matrix/inverse_matrix.0.test copy.cpp
+  _extendedRequiredBy: []
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/adjugate_matrix.0.test.cpp
+    title: test/matrix/adjugate_matrix.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
@@ -615,11 +615,11 @@ data:
   - rng.hpp
   isVerificationFile: false
   path: frobenius.hpp
-  requiredBy:
-  - test/matrix/inverse_matrix.0.test copy.cpp
+  requiredBy: []
   timestamp: '2024-11-01 19:07:14+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/matrix/adjugate_matrix.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
 documentation_of: frobenius.hpp
 layout: document

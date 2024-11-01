@@ -41,11 +41,13 @@ data:
   _extendedVerifiedWith: []
   _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
+    '*NOT_SPECIAL_COMMENTS*': ''
+    PROBLEM: https://judge.yosupo.jp/problem/adjugate_matrix
     links:
     - https://judge.yosupo.jp/problem/adjugate_matrix
-  bundledCode: "#line 1 \"test/matrix/inverse_matrix.0.test copy.cpp\"\n#define PROBLEM\
+  bundledCode: "#line 1 \"test/matrix/adjugate_matrix.0.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.yosupo.jp/problem/adjugate_matrix\"\n\n#line 2 \"frobenius.hpp\"\
     \n\n#line 2 \"basis.hpp\"\n\n#line 2 \"mat_basic.hpp\"\n\n#line 2 \"poly.hpp\"\
     \n\n#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n\
@@ -574,7 +576,7 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 7 \"test/matrix/inverse_matrix.0.test copy.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    #line 7 \"test/matrix/adjugate_matrix.0.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
     \    std::cin >> n;\n    Matrix<mint> A(n, std::vector<mint>(n));\n    for (int\
     \ i = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cin >> A[i][j];\n\
@@ -606,16 +608,16 @@ data:
   - random.hpp
   - rng.hpp
   - modint.hpp
-  isVerificationFile: false
-  path: test/matrix/inverse_matrix.0.test copy.cpp
+  isVerificationFile: true
+  path: test/matrix/adjugate_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-01 19:07:14+08:00'
-  verificationStatus: LIBRARY_NO_TESTS
+  timestamp: '2024-11-01 19:09:13+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/matrix/inverse_matrix.0.test copy.cpp
+documentation_of: test/matrix/adjugate_matrix.0.test.cpp
 layout: document
 redirect_from:
-- /library/test/matrix/inverse_matrix.0.test copy.cpp
-- /library/test/matrix/inverse_matrix.0.test copy.cpp.html
-title: test/matrix/inverse_matrix.0.test copy.cpp
+- /verify/test/matrix/adjugate_matrix.0.test.cpp
+- /verify/test/matrix/adjugate_matrix.0.test.cpp.html
+title: test/matrix/adjugate_matrix.0.test.cpp
 ---

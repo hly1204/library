@@ -144,11 +144,6 @@ data:
     - icon: ':heavy_check_mark:'
       path: xgcd.hpp
       title: xgcd.hpp
-  - name: test/matrix
-    pages:
-    - icon: ':warning:'
-      path: test/matrix/inverse_matrix.0.test copy.cpp
-      title: test/matrix/inverse_matrix.0.test copy.cpp
   verificationCategories:
   - name: test/convolution
     pages:
@@ -286,6 +281,9 @@ data:
       title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   - name: test/matrix
     pages:
+    - icon: ':heavy_check_mark:'
+      path: test/matrix/adjugate_matrix.0.test.cpp
+      title: test/matrix/adjugate_matrix.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/matrix/characteristic_polynomial.0.test.cpp
       title: test/matrix/characteristic_polynomial.0.test.cpp
