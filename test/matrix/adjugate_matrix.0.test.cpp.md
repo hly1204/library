@@ -580,21 +580,24 @@ data:
     \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
     \    std::cin >> n;\n    Matrix<mint> A(n, std::vector<mint>(n));\n    for (int\
     \ i = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cin >> A[i][j];\n\
-    \    Frobenius<mint> F(A);\n    const auto res =\n        mat_mul(F.transition_matrix(),\n\
-    \                mat_mul(F.eval((F.charpoly() >> 1) * Poly<mint>{mint((n & 1)\
-    \ ? 1 : -1)}),\n                        F.inv_transition_matrix()));\n    for\
-    \ (int i = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cout << res[i][j]\
-    \ << \" \\n\"[j == n - 1];\n    return 0;\n}\n"
+    \    Frobenius<mint> F(A);\n    // P_A(x)=x^n+...+(-1)^n det(A)\n    // A adj(A)\
+    \ = adj(A) A = det(A) I\n    // A^n+...+(-1)^n det(A) I = O\n    const auto res\
+    \ =\n        mat_mul(F.transition_matrix(),\n                mat_mul(F.eval((F.charpoly()\
+    \ >> 1) * Poly<mint>{mint((n & 1) ? 1 : -1)}),\n                        F.inv_transition_matrix()));\n\
+    \    for (int i = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cout\
+    \ << res[i][j] << \" \\n\"[j == n - 1];\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/adjugate_matrix\"\n\n#include\
     \ \"frobenius.hpp\"\n#include \"mat_basic.hpp\"\n#include \"modint.hpp\"\n#include\
     \ <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    Matrix<mint>\
     \ A(n, std::vector<mint>(n));\n    for (int i = 0; i < n; ++i)\n        for (int\
-    \ j = 0; j < n; ++j) std::cin >> A[i][j];\n    Frobenius<mint> F(A);\n    const\
-    \ auto res =\n        mat_mul(F.transition_matrix(),\n                mat_mul(F.eval((F.charpoly()\
-    \ >> 1) * Poly<mint>{mint((n & 1) ? 1 : -1)}),\n                        F.inv_transition_matrix()));\n\
-    \    for (int i = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cout\
-    \ << res[i][j] << \" \\n\"[j == n - 1];\n    return 0;\n}\n"
+    \ j = 0; j < n; ++j) std::cin >> A[i][j];\n    Frobenius<mint> F(A);\n    // P_A(x)=x^n+...+(-1)^n\
+    \ det(A)\n    // A adj(A) = adj(A) A = det(A) I\n    // A^n+...+(-1)^n det(A)\
+    \ I = O\n    const auto res =\n        mat_mul(F.transition_matrix(),\n      \
+    \          mat_mul(F.eval((F.charpoly() >> 1) * Poly<mint>{mint((n & 1) ? 1 :\
+    \ -1)}),\n                        F.inv_transition_matrix()));\n    for (int i\
+    \ = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cout << res[i][j]\
+    \ << \" \\n\"[j == n - 1];\n    return 0;\n}\n"
   dependsOn:
   - frobenius.hpp
   - basis.hpp
@@ -611,7 +614,7 @@ data:
   isVerificationFile: true
   path: test/matrix/adjugate_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-01 19:09:13+08:00'
+  timestamp: '2024-11-01 20:35:01+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/adjugate_matrix.0.test.cpp
