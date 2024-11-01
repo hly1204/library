@@ -1,16 +1,16 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
   - icon: ':heavy_check_mark:'
     path: falling_factorial_poly.hpp
     title: falling_factorial_poly.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
   - icon: ':heavy_check_mark:'
