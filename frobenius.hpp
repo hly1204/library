@@ -5,6 +5,8 @@
 #include "poly.hpp"
 #include "random.hpp"
 #include <cassert>
+#include <functional>
+#include <numeric>
 #include <vector>
 
 // Compute the Frobenius form (rational canonical form) of a square matrix,
@@ -93,6 +95,29 @@ public:
             auto c = pow_mod(pow_mod, e, P[i]);
             for (int j = 0; j < P[i].deg(); c = (c << 1) % P[i], ++j)
                 for (int k = 0; k <= c.deg(); ++k) res[k + s][s + j] = c[k];
+        }
+        return res;
+    }
+
+    Poly<Tp> charpoly() const {
+        return std::accumulate(P.begin(), P.end(), Poly<Tp>{Tp(1)}, std::multiplies<>());
+    }
+
+    // returns F(F_A)
+    Matrix<Tp> eval(Poly<Tp> F) const {
+        // F %= this->charpoly();
+        Matrix<Tp> res(N, std::vector<Tp>(N));
+        if (F.deg() < 0) return res;
+        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {
+            std::vector<Poly<Tp>> pow_table(F.deg() + P[i].deg() + 1);
+            pow_table[0] = Poly<Tp>{Tp(1)};
+            for (int j = 1; j <= F.deg() + P[i].deg(); ++j)
+                pow_table[j] = (pow_table[j - 1] << 1) % P[i];
+            std::vector<Poly<Tp>> row(P[i].deg());
+            for (int j = 0; j <= F.deg(); ++j)
+                for (int k = 0; k < P[i].deg(); ++k) row[k] += Poly<Tp>{F[j]} * pow_table[j + k];
+            for (int j = 0; j < P[i].deg(); ++j)
+                for (int k = 0; k <= row[j].deg(); ++k) res[k + s][s + j] = row[j][k];
         }
         return res;
     }
