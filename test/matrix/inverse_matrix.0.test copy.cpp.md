@@ -2,6 +2,9 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: basis.hpp
+    title: basis.hpp
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
   - icon: ':heavy_check_mark:'
@@ -11,93 +14,69 @@ data:
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
-    path: poly_basic.hpp
-    title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
-    path: semi_relaxed_conv.hpp
-    title: semi_relaxed_conv.hpp
-  _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
-    path: basis.hpp
-    title: basis.hpp
-  - icon: ':heavy_check_mark:'
     path: frobenius.hpp
     title: frobenius.hpp
   - icon: ':heavy_check_mark:'
     path: mat_basic.hpp
     title: mat_basic.hpp
   - icon: ':heavy_check_mark:'
-    path: mat_sparse.hpp
-    title: mat_sparse.hpp
-  - icon: ':warning:'
-    path: poly_interpolation_with_error.hpp
-    title: poly_interpolation_with_error.hpp
-  - icon: ':warning:'
-    path: test/matrix/inverse_matrix.0.test copy.cpp
-    title: test/matrix/inverse_matrix.0.test copy.cpp
-  _extendedVerifiedWith:
+    path: modint.hpp
+    title: modint.hpp
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/find_linear_recurrence.0.test.cpp
-    title: test/formal_power_series/find_linear_recurrence.0.test.cpp
+    path: poly.hpp
+    title: poly.hpp
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/inv_of_polynomials.0.test.cpp
-    title: test/formal_power_series/inv_of_polynomials.0.test.cpp
+    path: poly_basic.hpp
+    title: poly_basic.hpp
   - icon: ':heavy_check_mark:'
-    path: test/matrix/characteristic_polynomial.0.test.cpp
-    title: test/matrix/characteristic_polynomial.0.test.cpp
+    path: random.hpp
+    title: random.hpp
   - icon: ':heavy_check_mark:'
-    path: test/matrix/characteristic_polynomial.1.test.cpp
-    title: test/matrix/characteristic_polynomial.1.test.cpp
+    path: rng.hpp
+    title: rng.hpp
   - icon: ':heavy_check_mark:'
-    path: test/matrix/inverse_matrix.0.test.cpp
-    title: test/matrix/inverse_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/matrix/matrix_det.0.test.cpp
-    title: test/matrix/matrix_det.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/matrix/matrix_product.0.test.cpp
-    title: test/matrix/matrix_product.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/matrix/pow_of_matrix.0.test.cpp
-    title: test/matrix/pow_of_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/matrix/sparse_matrix_det.0.test.cpp
-    title: test/matrix/sparse_matrix_det.0.test.cpp
+    path: semi_relaxed_conv.hpp
+    title: semi_relaxed_conv.hpp
+  _extendedRequiredBy: []
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
-  _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _pathExtension: cpp
+  _verificationStatusIcon: ':warning:'
   attributes:
-    links: []
-  bundledCode: "#line 2 \"poly.hpp\"\n\n#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\
-    \n\n#include <algorithm>\n#include <vector>\n\ntemplate <typename Tp>\nclass Binomial\
-    \ {\n    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
-    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
-    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
-    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
-    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
-    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
-    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
-    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
-    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
-    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
-    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
-    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
-    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
-    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
-    \ }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include <cassert>\n#include\
-    \ <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\n\
-    class FftInfo {\n    static Tp least_quadratic_nonresidue() {\n        for (int\
-    \ i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n\
-    \    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n\
-    \    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n\
-    \    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
-    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
-    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
-    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
-    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
-    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
-    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
-    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+    links:
+    - https://judge.yosupo.jp/problem/adjugate_matrix
+  bundledCode: "#line 1 \"test/matrix/inverse_matrix.0.test copy.cpp\"\n#define PROBLEM\
+    \ \"https://judge.yosupo.jp/problem/adjugate_matrix\"\n\n#line 2 \"frobenius.hpp\"\
+    \n\n#line 2 \"basis.hpp\"\n\n#line 2 \"mat_basic.hpp\"\n\n#line 2 \"poly.hpp\"\
+    \n\n#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n\
+    #include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp>\
+    \ factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)}\
+    \ {}\n\n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
+    \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
+    \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
+    \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
+    \ factorial_[i] = factorial_[i - 1] * i;\n            invfactorial_.back() = factorial_.back().inv();\n\
+    \            for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i\
+    \ + 1] * (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int\
+    \ n) {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
+    \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
+    \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
+    \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
+    \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
+    \ invfactorial_[n]; }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include\
+    \ <cassert>\n#include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate\
+    \ <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue() {\n\
+    \        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2)\
+    \ == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
+    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
+    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
+    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
+    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
+    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
+    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
+    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
+    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
+    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
     \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
     \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
     \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
@@ -373,133 +352,270 @@ data:
     }\n\n// returns [x^([-k,-1])]A/B\n// requires deg(A)<deg(B)\ntemplate <typename\
     \ Tp>\ninline std::vector<Tp> fraction_to_series(const Poly<Tp> &A, const Poly<Tp>\
     \ &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).slice(0,\
-    \ k);\n}\n"
-  code: "#pragma once\n\n#include \"poly_basic.hpp\"\n#include <algorithm>\n#include\
-    \ <array>\n#include <cassert>\n#include <iostream>\n#include <tuple>\n#include\
-    \ <utility>\n#include <vector>\n\ntemplate <typename Tp>\nclass Poly : public\
-    \ std::vector<Tp> {\n    using Base = std::vector<Tp>;\n\npublic:\n    using Base::Base;\n\
-    \n    int deg() const { return degree(*this); }\n\n    int ord() const { return\
-    \ order(*this); }\n\n    Poly rev() const {\n        const int d = deg();\n  \
-    \      Poly res(d + 1);\n        for (int i = d; i >= 0; --i) res[i] = Base::operator[](d\
-    \ - i);\n        return res;\n    }\n\n    Poly slice(int L, int R) const {\n\
-    \        Poly res(R - L);\n        for (int i = L; i < std::min<int>(R, Base::size());\
-    \ ++i) res[i - L] = Base::operator[](i);\n        return res;\n    }\n\n    Poly\
-    \ trunc(int D) const {\n        Poly res(D);\n        for (int i = 0; i < std::min<int>(D,\
-    \ Base::size()); ++i) res[i] = Base::operator[](i);\n        return res;\n   \
-    \ }\n\n    Poly &shrink() {\n        Base::resize(deg() + 1);\n        return\
-    \ *this;\n    }\n\n    Tp lc() const {\n        const int d = deg();\n       \
-    \ return d == -1 ? Tp() : Base::operator[](d);\n    }\n\n    Poly taylor_shift(Tp\
-    \ c) const {\n        Base::operator=(taylor_shift(*this, c));\n        return\
-    \ shrink();\n    }\n\n    Poly operator-() const {\n        const int d = deg();\n\
-    \        Poly res(d + 1);\n        for (int i = 0; i <= d; ++i) res[i] = -Base::operator[](i);\n\
-    \        res.shrink();\n        return res;\n    }\n\n    std::pair<Poly, Poly>\
-    \ divmod(const Poly &R) const {\n        const auto [q, r] = euclidean_div(*this,\
-    \ R);\n        return std::make_pair(Poly(q.begin(), q.end()), Poly(r.begin(),\
-    \ r.end()));\n    }\n    Poly &operator+=(const Poly &R) {\n        if (Base::size()\
-    \ < R.size()) Base::resize(R.size());\n        for (int i = 0; i < (int)R.size();\
-    \ ++i) Base::operator[](i) += R[i];\n        return shrink();\n    }\n    Poly\
-    \ &operator-=(const Poly &R) {\n        if (Base::size() < R.size()) Base::resize(R.size());\n\
-    \        for (int i = 0; i < (int)R.size(); ++i) Base::operator[](i) -= R[i];\n\
-    \        return shrink();\n    }\n    Poly &operator*=(const Poly &R) {\n    \
-    \    Base::operator=(convolution(*this, R));\n        return shrink();\n    }\n\
-    \    Poly &operator/=(const Poly &R) {\n        Base::operator=(euclidean_div_quotient(*this,\
-    \ R));\n        return shrink();\n    }\n    Poly &operator%=(const Poly &R) {\n\
-    \        Base::operator=(divmod(R).second);\n        return shrink();\n    }\n\
-    \    Poly &operator<<=(int D) {\n        if (D > 0) {\n            Base::insert(Base::begin(),\
-    \ D, Tp());\n        } else if (D < 0) {\n            if (-D < (int)Base::size())\
-    \ {\n                Base::erase(Base::begin(), Base::begin() + (-D));\n     \
-    \       } else {\n                Base::clear();\n            }\n        }\n \
-    \       return shrink();\n    }\n    Poly &operator>>=(int D) { return operator<<=(-D);\
-    \ }\n\n    friend Poly operator+(const Poly &L, const Poly &R) { return Poly(L)\
-    \ += R; }\n    friend Poly operator-(const Poly &L, const Poly &R) { return Poly(L)\
-    \ -= R; }\n    friend Poly operator*(const Poly &L, const Poly &R) { return Poly(L)\
-    \ *= R; }\n    friend Poly operator/(const Poly &L, const Poly &R) { return Poly(L)\
-    \ /= R; }\n    friend Poly operator%(const Poly &L, const Poly &R) { return Poly(L)\
-    \ %= R; }\n    friend Poly operator<<(const Poly &L, int D) { return Poly(L) <<=\
-    \ D; }\n    friend Poly operator>>(const Poly &L, int D) { return Poly(L) >>=\
-    \ D; }\n\n    friend std::ostream &operator<<(std::ostream &L, const Poly &R)\
-    \ {\n        L << '[';\n        const int d = R.deg();\n        if (d < 0) {\n\
-    \            L << '0';\n        } else {\n            for (int i = 0; i <= d;\
-    \ ++i) {\n                L << R[i];\n                if (i == 1) L << \"*x\"\
-    ;\n                if (i > 1) L << \"*x^\" << i;\n                if (i != d)\
-    \ L << \" + \";\n            }\n        }\n        return L << ']';\n    }\n};\n\
-    \n// 2x2 matrix for Euclidean algorithm\ntemplate <typename Tp>\nclass GCDMatrix\
-    \ : public std::array<std::array<Tp, 2>, 2> {\npublic:\n    GCDMatrix(const Tp\
-    \ &x00, const Tp &x01, const Tp &x10, const Tp &x11)\n        : std::array<std::array<Tp,\
-    \ 2>, 2>{std::array{x00, x01}, std::array{x10, x11}} {}\n\n    GCDMatrix operator*(const\
-    \ GCDMatrix &R) const {\n        return {(*this)[0][0] * R[0][0] + (*this)[0][1]\
-    \ * R[1][0],\n                (*this)[0][0] * R[0][1] + (*this)[0][1] * R[1][1],\n\
-    \                (*this)[1][0] * R[0][0] + (*this)[1][1] * R[1][0],\n        \
-    \        (*this)[1][0] * R[0][1] + (*this)[1][1] * R[1][1]};\n    }\n\n    std::array<Tp,\
-    \ 2> operator*(const std::array<Tp, 2> &R) const {\n        return {(*this)[0][0]\
-    \ * R[0] + (*this)[0][1] * R[1],\n                (*this)[1][0] * R[0] + (*this)[1][1]\
-    \ * R[1]};\n    }\n\n    Tp det() const { return (*this)[0][0] * (*this)[1][1]\
-    \ - (*this)[0][1] * (*this)[1][0]; }\n    GCDMatrix adj() const { return {(*this)[1][1],\
-    \ -(*this)[0][1], -(*this)[1][0], (*this)[0][0]}; }\n};\n\n// returns M s.t. deg(M)\
-    \ <= d and deg(M21*A+M22*B) < max(deg(A),deg(B))-d\n//                det(M) in\
-    \ {-1,1}\n// see:\n// [1]: Daniel J. Bernstein. Fast multiplication and its applications.\n\
-    template <typename Tp>\ninline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const\
-    \ Poly<Tp> &B, int d) {\n    using Mat = GCDMatrix<Poly<Tp>>;\n    assert(!(A.deg()\
-    \ < 0 && B.deg() < 0));\n    if (A.deg() < B.deg()) return hgcd(B, A, d) * Mat({},\
-    \ {Tp(1)}, {Tp(1)}, {});\n    if (A.deg() < d) return hgcd(A, B, A.deg());\n \
-    \   if (B.deg() < A.deg() - d) return Mat({Tp(1)}, {}, {}, {Tp(1)});\n    if (int\
-    \ dd = A.deg() - d * 2; dd > 0) return hgcd(A >> dd, B >> dd, d);\n    if (d ==\
-    \ 0) return Mat({}, {Tp(1)}, {Tp(1)}, -(A / B));\n    const auto M = hgcd(A, B,\
-    \ d / 2);\n    const auto D = M[1][0] * A + M[1][1] * B;\n    if (D.deg() < A.deg()\
-    \ - d) return M;\n    const auto C      = M[0][0] * A + M[0][1] * B;\n    const\
-    \ auto [Q, R] = C.divmod(D);\n    return hgcd(D, R, D.deg() - (A.deg() - d)) *\
-    \ Mat({}, {Tp(1)}, {Tp(1)}, -Q) * M;\n}\n\ntemplate <typename Tp>\ninline std::tuple<Poly<Tp>,\
-    \ Poly<Tp>, Poly<Tp>> xgcd(const Poly<Tp> &A, const Poly<Tp> &B) {\n    const\
-    \ auto M = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_tuple(M[0][0],\
-    \ M[0][1], M[0][0] * A + M[0][1] * B);\n}\n\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>,\
-    \ Poly<Tp>> inv_gcd(const Poly<Tp> &A, const Poly<Tp> &B) {\n    const auto M\
-    \ = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_pair(M[0][0],\
-    \ M[0][0] * A + M[0][1] * B);\n}\n\n// returns P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B\n\
-    // where P,Q in F[x], deg(Q) is minimized\n// requires deg(A)<deg(B)\ntemplate\
-    \ <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_approximation(const\
-    \ Poly<Tp> &A, const Poly<Tp> &B,\n                                          \
-    \                  int k) {\n    auto M            = hgcd(B, A, k / 2);\n    const\
-    \ auto [C, D] = M * std::array{B, A};\n    if (D.deg() >= 0 && D.deg() - C.deg()\
-    \ >= -(k - (B.deg() - C.deg()) * 2))\n        M = GCDMatrix<Poly<Tp>>({}, {Tp(1)},\
-    \ {Tp(1)}, -(C / D)) * M;\n    return std::make_pair(M.adj()[1][0], M.adj()[0][0]);\n\
-    }\n\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>, Poly<Tp>> rational_reconstruction(const\
-    \ std::vector<Tp> &A) {\n    return rational_approximation(Poly<Tp>(A.rbegin(),\
-    \ A.rend()), Poly<Tp>{Tp(1)} << A.size(),\n                                  A.size());\n\
-    }\n\n// returns [x^([-k,-1])]A/B\n// requires deg(A)<deg(B)\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> fraction_to_series(const Poly<Tp> &A, const Poly<Tp>\
-    \ &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).slice(0,\
-    \ k);\n}\n"
+    \ k);\n}\n#line 2 \"random.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n\
+    #include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n//\
+    \ original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
+    \n    static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64\
+    \ - k)); }\n\n    u64 s_[4];\n\n    u64 next() {\n        const u64 res = rotl(s_[1]\
+    \ * 5, 7) * 9;\n        const u64 t   = s_[1] << 17;\n        s_[2] ^= s_[0];\n\
+    \        s_[3] ^= s_[1];\n        s_[1] ^= s_[2];\n        s_[0] ^= s_[3];\n \
+    \       s_[2] ^= t;\n        s_[3] = rotl(s_[3], 45);\n        return res;\n \
+    \   }\n\npublic:\n    // see: https://prng.di.unimi.it/splitmix64.c\n    // original\
+    \ license CC0 1.0\n    explicit xoshiro256starstar(u64 seed) {\n        for (int\
+    \ i = 0; i < 4; ++i) {\n            u64 z = (seed += 0x9e3779b97f4a7c15);\n  \
+    \          z     = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n            z     =\
+    \ (z ^ (z >> 27)) * 0x94d049bb133111eb;\n            s_[i] = z ^ (z >> 31);\n\
+    \        }\n    }\n    // see: https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator\n\
+    \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
+    \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
+    \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"random.hpp\"\n#include\
+    \ <random>\n#line 6 \"random.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ random_vector(int n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar\
+    \ rng(std::random_device{}());\n    std::uniform_int_distribution<decltype(Tp::mod())>\
+    \ dis(0, Tp::mod() - 1);\n    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n\
+    \    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> random_vector_without_zero(int\
+    \ n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar rng(std::random_device{}());\n\
+    \    std::uniform_int_distribution<decltype(Tp::mod())> dis(1, Tp::mod() - 1);\n\
+    \    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n    return res;\n}\n#line\
+    \ 6 \"mat_basic.hpp\"\n#include <optional>\n#line 9 \"mat_basic.hpp\"\n\ntemplate\
+    \ <typename Tp>\nusing Matrix = std::vector<std::vector<Tp>>;\n\ntemplate <typename\
+    \ Tp>\ninline int width(const Matrix<Tp> &A) {\n    return A.empty() ? 0 : (int)A[0].size();\n\
+    }\n\ntemplate <typename Tp>\ninline int height(const Matrix<Tp> &A) {\n    return\
+    \ A.size();\n}\n\ntemplate <typename Tp>\ninline bool is_square_matrix(const Matrix<Tp>\
+    \ &A) {\n    return width(A) == height(A);\n}\n\ntemplate <typename Tp>\ninline\
+    \ Matrix<Tp> transpose(const Matrix<Tp> &A) {\n    const int w = width(A);\n \
+    \   const int h = height(A);\n    Matrix<Tp> TA(w, std::vector<Tp>(h));\n    for\
+    \ (int i = 0; i < h; ++i)\n        for (int j = 0; j < w; ++j) TA[j][i] = A[i][j];\n\
+    \    return TA;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> mat_apply(const\
+    \ Matrix<Tp> &A, const std::vector<Tp> &b) {\n    const int w = width(A);\n  \
+    \  const int h = height(A);\n    assert((int)b.size() == w);\n    std::vector<Tp>\
+    \ Ab(h);\n    for (int i = 0; i < h; ++i)\n        for (int j = 0; j < w; ++j)\
+    \ Ab[i] += A[i][j] * b[j];\n    return Ab;\n}\n\ntemplate <typename Tp>\ninline\
+    \ Matrix<Tp> mat_mul(const Matrix<Tp> &A, const Matrix<Tp> &B) {\n    const int\
+    \ wA = width(A);\n    const int hA = height(A);\n    assert(height(B) == wA);\n\
+    \    const int wB = width(B);\n    Matrix<Tp> res(hA, std::vector<Tp>(wB));\n\
+    \    for (int i = 0; i < hA; ++i)\n        for (int k = 0; k < wA; ++k)\n    \
+    \        for (int j = 0; j < wB; ++j) res[i][j] += A[i][k] * B[k][j];\n    return\
+    \ res;\n}\n\ntemplate <typename Tp>\ninline std::optional<Matrix<Tp>> mat_inv(Matrix<Tp>\
+    \ A) {\n    assert(is_square_matrix(A));\n    const int n = height(A);\n    for\
+    \ (int i = 0; i < n; ++i) {\n        A[i].resize(n * 2);\n        A[i][n + i]\
+    \ = 1;\n    }\n    for (int i = 0; i < n; ++i) {\n        int pivot = i;\n   \
+    \     for (; pivot < n; ++pivot)\n            if (A[pivot][i] != 0) break;\n \
+    \       if (pivot == n) return {};\n        if (pivot != i) A[pivot].swap(A[i]);\n\
+    \        if (A[i][i] != 1) {\n            const auto iv = A[i][i].inv();\n   \
+    \         for (int j = i; j < n * 2; ++j) A[i][j] *= iv;\n        }\n        for\
+    \ (int j = i + 1; j < n; ++j) {\n            const auto p = A[j][i];\n       \
+    \     if (p == 0) continue;\n            for (int k = i + 1; k < n * 2; ++k) A[j][k]\
+    \ -= p * A[i][k];\n        }\n    }\n    for (int i = n - 1; i > 0; --i) {\n \
+    \       for (int j = i - 1; j >= 0; --j) {\n            const auto p = A[j][i];\n\
+    \            if (p == 0) continue;\n            for (int k = n; k < n * 2; ++k)\
+    \ A[j][k] -= p * A[i][k];\n        }\n    }\n    for (int i = 0; i < n; ++i) A[i].erase(A[i].begin(),\
+    \ A[i].begin() + n);\n    return A;\n}\n\ntemplate <typename Tp>\ninline Tp det(Matrix<Tp>\
+    \ A) {\n    assert(is_square_matrix(A));\n    const int n = height(A);\n    Tp\
+    \ det      = 1;\n    bool neg    = false;\n    for (int i = 0; i < n; ++i) {\n\
+    \        int pivot = i;\n        for (; pivot < n; ++pivot)\n            if (A[pivot][i]\
+    \ != 0) break;\n        if (pivot == n) return 0;\n        if (pivot != i) {\n\
+    \            A[pivot].swap(A[i]);\n            neg = !neg;\n        }\n      \
+    \  det *= A[i][i];\n        const auto iv = A[i][i].inv();\n        for (int j\
+    \ = i + 1; j < n; ++j) {\n            const auto p = A[j][i] * iv;\n         \
+    \   if (p == 0) continue;\n            for (int k = i; k < n; ++k) A[j][k] -=\
+    \ p * A[i][k];\n        }\n    }\n    return neg ? -det : det;\n}\n\ntemplate\
+    \ <typename Tp>\ninline Matrix<Tp> to_upper_hessenberg(Matrix<Tp> A) {\n    assert(is_square_matrix(A));\n\
+    \    const int n = height(A);\n    for (int i = 0; i < n - 1; ++i) {\n       \
+    \ int pivot = i + 1;\n        for (; pivot < n; ++pivot)\n            if (A[pivot][i]\
+    \ != 0) break;\n        if (pivot == n) continue;\n        if (pivot != i + 1)\
+    \ {\n            A[pivot].swap(A[i + 1]);\n            for (int j = 0; j < n;\
+    \ ++j) std::swap(A[j][pivot], A[j][i + 1]);\n        }\n        const auto iv\
+    \ = A[i + 1][i].inv();\n        for (int j = i + 2; j < n; ++j) {\n          \
+    \  if (A[j][i] == 0) continue;\n            const auto v = A[j][i] * iv;\n   \
+    \         for (int k = i; k < n; ++k) A[j][k] -= v * A[i + 1][k];\n          \
+    \  for (int k = 0; k < n; ++k) A[k][i + 1] += v * A[k][j];\n        }\n    }\n\
+    \    return A;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> charpoly(const\
+    \ Matrix<Tp> &A) {\n    const auto H = to_upper_hessenberg(A);\n    const int\
+    \ n  = height(A);\n    std::vector<std::vector<Tp>> P(n + 1);\n    P[0] = {Tp(1)};\n\
+    \    for (int i = 1; i <= n; ++i) {\n        P[i].resize(i + 1);\n        for\
+    \ (int j = 0; j < i; ++j)\n            P[i][j] -= H[i - 1][i - 1] * P[i - 1][j],\
+    \ P[i][j + 1] += P[i - 1][j];\n        Tp t = 1;\n        for (int j = 1; j <\
+    \ i; ++j) {\n            t *= H[i - j][i - j - 1];\n            const auto prod\
+    \ = t * H[i - j - 1][i - 1];\n            if (prod == 0) continue;\n         \
+    \   for (int k = 0; k < i - j; ++k) P[i][k] -= prod * P[i - j - 1][k];\n     \
+    \   }\n    }\n    return P[n];\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ minpoly(const Matrix<Tp> &A) {\n    assert(is_square_matrix(A));\n    const\
+    \ int n  = height(A);\n    const auto u = random_vector<Tp>(n);\n    auto v  \
+    \     = random_vector<Tp>(n);\n    // u^T A^([0..2n)) v\n    std::vector<Tp> proj(n\
+    \ * 2);\n    for (int i = 0; i < n * 2; v = mat_apply(A, v), ++i)\n        for\
+    \ (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];\n    const auto [P, Q] = rational_reconstruction(proj);\n\
+    \    assert(Q.deg() <= n);\n    return Q / Poly<Tp>{Q.lc()};\n}\n#line 7 \"basis.hpp\"\
+    \n\ntemplate <typename Tp>\nclass Basis {\npublic:\n    const int Dim;\n    Matrix<Tp>\
+    \ Vectors; // v_0, v_1, ...\n    Matrix<Tp> Augmented;\n    Matrix<Tp> Reduced;\
+    \ // upper triangular matrix, diagonal of Reduced = (1,...,1)\n    // Augmented\
+    \ * Vectors = Reduced\n\n    explicit Basis(int dim) : Dim(dim), Augmented(dim),\
+    \ Reduced(dim) {}\n\n    int size() const { return Vectors.size(); }\n    int\
+    \ dim() const { return Dim; }\n\n    // if V is linear combination of v_0, ...,\
+    \ v_(k-1) then\n    // returns coefficients (a_0, ..., a_(k-1)) s.t. -(a_0v_0\
+    \ + ... + a_(k-1)v_(k-1)) = V\n    std::optional<std::vector<Tp>> insert(const\
+    \ std::vector<Tp> &V) {\n        std::vector<Tp> Aug(dim()), RV = V;\n       \
+    \ for (int i = 0; i < dim(); ++i) {\n            if (RV[i] == 0) continue;\n \
+    \           if (Reduced[i].empty()) {\n                Aug[size()]    = 1;\n \
+    \               const auto inv = RV[i].inv();\n                for (int j = i;\
+    \ j < dim(); ++j) RV[j] *= inv;\n                for (int j = 0; j < dim(); ++j)\
+    \ Aug[j] *= inv;\n                Augmented[i] = Aug, Reduced[i] = RV, Vectors.push_back(V);\n\
+    \                return {};\n            }\n            const auto v = RV[i];\n\
+    \            for (int j = i; j < dim(); ++j) RV[j] -= v * Reduced[i][j];\n   \
+    \         for (int j = 0; j < dim(); ++j) Aug[j] -= v * Augmented[i][j];\n   \
+    \     }\n        return Aug;\n    }\n\n    // returns A s.t. A^(-1)MA is the linear\
+    \ transform respect to the basis\n    Matrix<Tp> transition_matrix() const {\n\
+    \        assert(size() == dim());\n        return transpose(Vectors);\n    }\n\
+    \n    // returns A^(-1) s.t. A^(-1)MA is the linear transform respect to the basis\n\
+    \    Matrix<Tp> inv_transition_matrix() const {\n        assert(size() == dim());\n\
+    \        auto res = Augmented;\n        for (int i = dim() - 1; i > 0; --i)\n\
+    \            for (int j = i - 1; j >= 0; --j)\n                for (int k = 0;\
+    \ k < dim(); ++k) res[j][k] -= Reduced[j][i] * res[i][k];\n        return transpose(res);\n\
+    \    }\n};\n#line 8 \"frobenius.hpp\"\n#include <functional>\n#include <numeric>\n\
+    #line 11 \"frobenius.hpp\"\n\n// Compute the Frobenius form (rational canonical\
+    \ form) of a square matrix,\n// but the result is not always true.\ntemplate <typename\
+    \ Tp>\nclass Frobenius {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n\
+    \    // where C_(p_j) is the companion matrix of monic polynomial P[j]\n    //\
+    \ *        minimal polynomial of A = p_0\n    // * characteristic polynomial of\
+    \ A = prod_(j=0)^(k-1) p_j\n    int N;\n    Matrix<Tp> InvT;\n    std::vector<Poly<Tp>>\
+    \ P;\n    Matrix<Tp> T;\n\n    // see:\n    // [1]: Elegia. A (Somehow) Simple\
+    \ (Randomized) Algorithm for Frobenius Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n\
+    \    // [2]: Arne Storjohann. Algorithms for Matrix Canonical Forms.\n    // \
+    \     https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf\n    explicit Frobenius(const\
+    \ Matrix<Tp> &A) : N(height(A)) {\n        assert(N != 0);\n        assert(is_square_matrix(A));\n\
+    \    retry: // retry is not guaranteed to give the right result\n        Basis<Tp>\
+    \ B(N);\n        Matrix<Tp> A_B(N, std::vector<Tp>(N)); // linear transform respect\
+    \ to basis B\n        std::vector<std::vector<Tp>> V;        // vectors for new\
+    \ basis\n        P.clear();\n        while (B.size() < N) {\n            int deg\
+    \ = 0;\n            for (auto R = random_vector<Tp>(N);; R = mat_apply(A, R),\
+    \ ++deg)\n                if (const auto c = B.insert(R)) {\n                \
+    \    if (deg == 0) break;\n                    if (!P.empty() && deg > P.back().deg())\
+    \ goto retry;\n                    P.emplace_back(c->begin() + (B.size() - deg),\
+    \ c->begin() + B.size())\n                        .emplace_back(1);\n        \
+    \            const Poly<Tp> b(c->begin(), c->begin() + (B.size() - deg));\n  \
+    \                  const auto [q, r] = b.divmod(P.back());\n                 \
+    \   if (r.deg() >= 0) goto retry;\n                    V.emplace_back(q).resize(N),\
+    \ V.back().at(B.size() - deg) = 1;\n                    for (int i = B.size()\
+    \ - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n                    for (int\
+    \ i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n              \
+    \      break;\n                }\n        }\n        T = B.transition_matrix(),\
+    \ InvT = B.inv_transition_matrix();\n        if (P.size() == 1) return;\n    \
+    \    auto C = Matrix<Tp>(N, std::vector<Tp>(N));\n        for (int i = 0, j =\
+    \ 0; i < (int)V.size(); ++i) {\n            C[j++] = V[i];\n            for (int\
+    \ k = P[i].deg(); --k; ++j)\n                for (int l = 0; l < j; ++l)\n   \
+    \                 for (int m = 0; m < j; ++m) C[j][l] += A_B[l][m] * C[j - 1][m];\n\
+    \        }\n        for (int i = N - 1; i > 0; --i)\n            for (int j =\
+    \ i - 1; j >= 0; --j)\n                if (C[i][j] != 0)\n                   \
+    \ for (int k = 0; k < N; ++k)\n                        T[k][i] += C[i][j] * T[k][j],\
+    \ InvT[j][k] -= C[i][j] * InvT[i][k];\n    }\n\n    Matrix<Tp> transition_matrix()\
+    \ const { return T; }\n    Matrix<Tp> inv_transition_matrix() const { return InvT;\
+    \ }\n\n    Matrix<Tp> frobenius_form() const {\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n\
+    \        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n    \
+    \        for (int j = s; j < s + P[i].deg() - 1; ++j) res[j + 1][j] = 1;\n   \
+    \         for (int j = s; j < s + P[i].deg(); ++j) res[j][s + P[i].deg() - 1]\
+    \ = -P[i][j - s];\n        }\n        return res;\n    }\n\n    // returns (F_A)^e\n\
+    \    Matrix<Tp> pow(long long e) const {\n        assert(e >= 0);\n        //\
+    \ returns x^e mod p\n        auto pow_mod = [](auto &&pow_mod, long long e, const\
+    \ Poly<Tp> &p) {\n            if (e == 0) return Poly<Tp>{Tp(1)};\n          \
+    \  const auto half = pow_mod(pow_mod, e / 2, p);\n            return ((half *\
+    \ half) << (e & 1)) % p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n\
+    \        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n    \
+    \        auto c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j <\
+    \ P[i].deg(); c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <=\
+    \ c.deg(); ++k) res[k + s][s + j] = c[k];\n        }\n        return res;\n  \
+    \  }\n\n    Poly<Tp> charpoly() const {\n        return std::accumulate(P.begin(),\
+    \ P.end(), Poly<Tp>{Tp(1)}, std::multiplies<>());\n    }\n\n    // returns F(F_A)\n\
+    \    Matrix<Tp> eval(Poly<Tp> F) const {\n        // F %= this->charpoly();\n\
+    \        Matrix<Tp> res(N, std::vector<Tp>(N));\n        if (F.deg() < 0) return\
+    \ res;\n        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n\
+    \            std::vector<Poly<Tp>> pow_table(F.deg() + P[i].deg() + 1);\n    \
+    \        pow_table[0] = Poly<Tp>{Tp(1)};\n            for (int j = 1; j <= F.deg()\
+    \ + P[i].deg(); ++j)\n                pow_table[j] = (pow_table[j - 1] << 1) %\
+    \ P[i];\n            std::vector<Poly<Tp>> row(P[i].deg());\n            for (int\
+    \ j = 0; j <= F.deg(); ++j)\n                for (int k = 0; k < P[i].deg(); ++k)\
+    \ row[k] += Poly<Tp>{F[j]} * pow_table[j + k];\n            for (int j = 0; j\
+    \ < P[i].deg(); ++j)\n                for (int k = 0; k <= row[j].deg(); ++k)\
+    \ res[k + s][s + j] = row[j][k];\n        }\n        return res;\n    }\n};\n\
+    #line 2 \"modint.hpp\"\n\n#line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\n\
+    class ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\"\
+    );\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
+    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
+    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
+    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
+    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
+    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
+    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
+    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
+    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
+    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
+    \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
+    \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
+    \ if ((e >>= 1) == 0) return res;\n        }\n    }\n    ModInt inv() const {\n\
+    \        int x1 = 1, x3 = 0, a = val(), b = Mod;\n        while (b) {\n      \
+    \      int q = a / b, x1_old = x1, a_old = a;\n            x1 = x3, x3 = x1_old\
+    \ - x3 * q, a = b, b = a_old - b * q;\n        }\n        return from_raw(x1 <\
+    \ 0 ? x1 + (int)Mod : x1);\n    }\n    template <bool Odd = (Mod & 1)>\n    std::enable_if_t<Odd,\
+    \ ModInt> div_by_2() const {\n        if (v_ & 1) return from_raw((v_ + Mod) >>\
+    \ 1);\n        return from_raw(v_ >> 1);\n    }\n\n    ModInt &operator+=(const\
+    \ ModInt &a) {\n        if ((v_ += a.v_) >= Mod) v_ -= Mod;\n        return *this;\n\
+    \    }\n    ModInt &operator-=(const ModInt &a) {\n        if ((v_ += Mod - a.v_)\
+    \ >= Mod) v_ -= Mod;\n        return *this;\n    }\n    ModInt &operator*=(const\
+    \ ModInt &a) {\n        v_ = (unsigned long long)v_ * a.v_ % Mod;\n        return\
+    \ *this;\n    }\n    ModInt &operator/=(const ModInt &a) { return *this *= a.inv();\
+    \ }\n\n    friend ModInt operator+(const ModInt &a, const ModInt &b) { return\
+    \ ModInt(a) += b; }\n    friend ModInt operator-(const ModInt &a, const ModInt\
+    \ &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const ModInt &a,\
+    \ const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
+    \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
+    \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
+    \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
+    #line 7 \"test/matrix/inverse_matrix.0.test copy.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
+    \    std::cin >> n;\n    Matrix<mint> A(n, std::vector<mint>(n));\n    for (int\
+    \ i = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cin >> A[i][j];\n\
+    \    Frobenius<mint> F(A);\n    const auto res =\n        mat_mul(F.transition_matrix(),\n\
+    \                mat_mul(F.eval((F.charpoly() >> 1) * Poly<mint>{mint((n & 1)\
+    \ ? 1 : -1)}),\n                        F.inv_transition_matrix()));\n    for\
+    \ (int i = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cout << res[i][j]\
+    \ << \" \\n\"[j == n - 1];\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/adjugate_matrix\"\n\n#include\
+    \ \"frobenius.hpp\"\n#include \"mat_basic.hpp\"\n#include \"modint.hpp\"\n#include\
+    \ <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    Matrix<mint>\
+    \ A(n, std::vector<mint>(n));\n    for (int i = 0; i < n; ++i)\n        for (int\
+    \ j = 0; j < n; ++j) std::cin >> A[i][j];\n    Frobenius<mint> F(A);\n    const\
+    \ auto res =\n        mat_mul(F.transition_matrix(),\n                mat_mul(F.eval((F.charpoly()\
+    \ >> 1) * Poly<mint>{mint((n & 1) ? 1 : -1)}),\n                        F.inv_transition_matrix()));\n\
+    \    for (int i = 0; i < n; ++i)\n        for (int j = 0; j < n; ++j) std::cout\
+    \ << res[i][j] << \" \\n\"[j == n - 1];\n    return 0;\n}\n"
   dependsOn:
+  - frobenius.hpp
+  - basis.hpp
+  - mat_basic.hpp
+  - poly.hpp
   - poly_basic.hpp
   - binomial.hpp
   - fft.hpp
   - fps_basic.hpp
   - semi_relaxed_conv.hpp
+  - random.hpp
+  - rng.hpp
+  - modint.hpp
   isVerificationFile: false
-  path: poly.hpp
-  requiredBy:
-  - test/matrix/inverse_matrix.0.test copy.cpp
-  - basis.hpp
-  - mat_sparse.hpp
-  - poly_interpolation_with_error.hpp
-  - frobenius.hpp
-  - mat_basic.hpp
-  timestamp: '2024-10-10 23:07:33+08:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - test/matrix/matrix_det.0.test.cpp
-  - test/matrix/inverse_matrix.0.test.cpp
-  - test/matrix/pow_of_matrix.0.test.cpp
-  - test/matrix/characteristic_polynomial.0.test.cpp
-  - test/matrix/matrix_product.0.test.cpp
-  - test/matrix/characteristic_polynomial.1.test.cpp
-  - test/matrix/sparse_matrix_det.0.test.cpp
-  - test/formal_power_series/find_linear_recurrence.0.test.cpp
-  - test/formal_power_series/inv_of_polynomials.0.test.cpp
-documentation_of: poly.hpp
+  path: test/matrix/inverse_matrix.0.test copy.cpp
+  requiredBy: []
+  timestamp: '2024-11-01 19:07:14+08:00'
+  verificationStatus: LIBRARY_NO_TESTS
+  verifiedWith: []
+documentation_of: test/matrix/inverse_matrix.0.test copy.cpp
 layout: document
 redirect_from:
-- /library/poly.hpp
-- /library/poly.hpp.html
-title: poly.hpp
+- /library/test/matrix/inverse_matrix.0.test copy.cpp
+- /library/test/matrix/inverse_matrix.0.test copy.cpp.html
+title: test/matrix/inverse_matrix.0.test copy.cpp
 ---

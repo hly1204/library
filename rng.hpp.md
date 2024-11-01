@@ -23,6 +23,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: sqrt_mod.hpp
     title: sqrt_mod.hpp
+  - icon: ':warning:'
+    path: test/matrix/inverse_matrix.0.test copy.cpp
+    title: test/matrix/inverse_matrix.0.test copy.cpp
   - icon: ':heavy_check_mark:'
     path: treap_node_base.hpp
     title: treap_node_base.hpp
@@ -114,6 +117,7 @@ data:
   isVerificationFile: false
   path: rng.hpp
   requiredBy:
+  - test/matrix/inverse_matrix.0.test copy.cpp
   - fps_sqrt.hpp
   - basis.hpp
   - mat_sparse.hpp

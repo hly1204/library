@@ -144,6 +144,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: xgcd.hpp
       title: xgcd.hpp
+  - name: test/matrix
+    pages:
+    - icon: ':warning:'
+      path: test/matrix/inverse_matrix.0.test copy.cpp
+      title: test/matrix/inverse_matrix.0.test copy.cpp
   verificationCategories:
   - name: test/convolution
     pages:

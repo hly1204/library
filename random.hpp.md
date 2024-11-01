@@ -17,6 +17,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
+  - icon: ':warning:'
+    path: test/matrix/inverse_matrix.0.test copy.cpp
+    title: test/matrix/inverse_matrix.0.test copy.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.0.test.cpp
@@ -82,6 +85,7 @@ data:
   isVerificationFile: false
   path: random.hpp
   requiredBy:
+  - test/matrix/inverse_matrix.0.test copy.cpp
   - basis.hpp
   - mat_sparse.hpp
   - frobenius.hpp

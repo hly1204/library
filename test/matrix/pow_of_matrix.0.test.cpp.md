@@ -473,9 +473,10 @@ data:
     \        auto res = Augmented;\n        for (int i = dim() - 1; i > 0; --i)\n\
     \            for (int j = i - 1; j >= 0; --j)\n                for (int k = 0;\
     \ k < dim(); ++k) res[j][k] -= Reduced[j][i] * res[i][k];\n        return transpose(res);\n\
-    \    }\n};\n#line 9 \"frobenius.hpp\"\n\n// Compute the Frobenius form (rational\
-    \ canonical form) of a square matrix,\n// but the result is not always true.\n\
-    template <typename Tp>\nclass Frobenius {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n\
+    \    }\n};\n#line 8 \"frobenius.hpp\"\n#include <functional>\n#include <numeric>\n\
+    #line 11 \"frobenius.hpp\"\n\n// Compute the Frobenius form (rational canonical\
+    \ form) of a square matrix,\n// but the result is not always true.\ntemplate <typename\
+    \ Tp>\nclass Frobenius {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n\
     \    // where C_(p_j) is the companion matrix of monic polynomial P[j]\n    //\
     \ *        minimal polynomial of A = p_0\n    // * characteristic polynomial of\
     \ A = prod_(j=0)^(k-1) p_j\n    int N;\n    Matrix<Tp> InvT;\n    std::vector<Poly<Tp>>\
@@ -524,9 +525,22 @@ data:
     \        auto c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j <\
     \ P[i].deg(); c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <=\
     \ c.deg(); ++k) res[k + s][s + j] = c[k];\n        }\n        return res;\n  \
-    \  }\n};\n#line 2 \"modint.hpp\"\n\n#line 5 \"modint.hpp\"\n\ntemplate <unsigned\
-    \ Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less\
-    \ than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \  }\n\n    Poly<Tp> charpoly() const {\n        return std::accumulate(P.begin(),\
+    \ P.end(), Poly<Tp>{Tp(1)}, std::multiplies<>());\n    }\n\n    // returns F(F_A)\n\
+    \    Matrix<Tp> eval(Poly<Tp> F) const {\n        // F %= this->charpoly();\n\
+    \        Matrix<Tp> res(N, std::vector<Tp>(N));\n        if (F.deg() < 0) return\
+    \ res;\n        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n\
+    \            std::vector<Poly<Tp>> pow_table(F.deg() + P[i].deg() + 1);\n    \
+    \        pow_table[0] = Poly<Tp>{Tp(1)};\n            for (int j = 1; j <= F.deg()\
+    \ + P[i].deg(); ++j)\n                pow_table[j] = (pow_table[j - 1] << 1) %\
+    \ P[i];\n            std::vector<Poly<Tp>> row(P[i].deg());\n            for (int\
+    \ j = 0; j <= F.deg(); ++j)\n                for (int k = 0; k < P[i].deg(); ++k)\
+    \ row[k] += Poly<Tp>{F[j]} * pow_table[j + k];\n            for (int j = 0; j\
+    \ < P[i].deg(); ++j)\n                for (int k = 0; k <= row[j].deg(); ++k)\
+    \ res[k + s][s + j] = row[j][k];\n        }\n        return res;\n    }\n};\n\
+    #line 2 \"modint.hpp\"\n\n#line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\n\
+    class ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\"\
+    );\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
     \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
     \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
     \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
@@ -596,7 +610,7 @@ data:
   isVerificationFile: true
   path: test/matrix/pow_of_matrix.0.test.cpp
   requiredBy: []
-  timestamp: '2024-10-10 23:07:33+08:00'
+  timestamp: '2024-11-01 19:07:14+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/pow_of_matrix.0.test.cpp

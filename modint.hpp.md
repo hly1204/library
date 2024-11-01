@@ -1,7 +1,10 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':warning:'
+    path: test/matrix/inverse_matrix.0.test copy.cpp
+    title: test/matrix/inverse_matrix.0.test copy.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/convolution/bitwise_and_convolution.0.test.cpp
@@ -231,7 +234,8 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: modint.hpp
-  requiredBy: []
+  requiredBy:
+  - test/matrix/inverse_matrix.0.test copy.cpp
   timestamp: '2024-05-15 00:00:04+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

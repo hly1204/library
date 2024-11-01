@@ -31,7 +31,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':warning:'
+    path: test/matrix/inverse_matrix.0.test copy.cpp
+    title: test/matrix/inverse_matrix.0.test copy.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/matrix/pow_of_matrix.0.test.cpp
@@ -468,7 +471,74 @@ data:
     \        auto res = Augmented;\n        for (int i = dim() - 1; i > 0; --i)\n\
     \            for (int j = i - 1; j >= 0; --j)\n                for (int k = 0;\
     \ k < dim(); ++k) res[j][k] -= Reduced[j][i] * res[i][k];\n        return transpose(res);\n\
-    \    }\n};\n#line 9 \"frobenius.hpp\"\n\n// Compute the Frobenius form (rational\
+    \    }\n};\n#line 8 \"frobenius.hpp\"\n#include <functional>\n#include <numeric>\n\
+    #line 11 \"frobenius.hpp\"\n\n// Compute the Frobenius form (rational canonical\
+    \ form) of a square matrix,\n// but the result is not always true.\ntemplate <typename\
+    \ Tp>\nclass Frobenius {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n\
+    \    // where C_(p_j) is the companion matrix of monic polynomial P[j]\n    //\
+    \ *        minimal polynomial of A = p_0\n    // * characteristic polynomial of\
+    \ A = prod_(j=0)^(k-1) p_j\n    int N;\n    Matrix<Tp> InvT;\n    std::vector<Poly<Tp>>\
+    \ P;\n    Matrix<Tp> T;\n\n    // see:\n    // [1]: Elegia. A (Somehow) Simple\
+    \ (Randomized) Algorithm for Frobenius Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n\
+    \    // [2]: Arne Storjohann. Algorithms for Matrix Canonical Forms.\n    // \
+    \     https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf\n    explicit Frobenius(const\
+    \ Matrix<Tp> &A) : N(height(A)) {\n        assert(N != 0);\n        assert(is_square_matrix(A));\n\
+    \    retry: // retry is not guaranteed to give the right result\n        Basis<Tp>\
+    \ B(N);\n        Matrix<Tp> A_B(N, std::vector<Tp>(N)); // linear transform respect\
+    \ to basis B\n        std::vector<std::vector<Tp>> V;        // vectors for new\
+    \ basis\n        P.clear();\n        while (B.size() < N) {\n            int deg\
+    \ = 0;\n            for (auto R = random_vector<Tp>(N);; R = mat_apply(A, R),\
+    \ ++deg)\n                if (const auto c = B.insert(R)) {\n                \
+    \    if (deg == 0) break;\n                    if (!P.empty() && deg > P.back().deg())\
+    \ goto retry;\n                    P.emplace_back(c->begin() + (B.size() - deg),\
+    \ c->begin() + B.size())\n                        .emplace_back(1);\n        \
+    \            const Poly<Tp> b(c->begin(), c->begin() + (B.size() - deg));\n  \
+    \                  const auto [q, r] = b.divmod(P.back());\n                 \
+    \   if (r.deg() >= 0) goto retry;\n                    V.emplace_back(q).resize(N),\
+    \ V.back().at(B.size() - deg) = 1;\n                    for (int i = B.size()\
+    \ - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n                    for (int\
+    \ i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n              \
+    \      break;\n                }\n        }\n        T = B.transition_matrix(),\
+    \ InvT = B.inv_transition_matrix();\n        if (P.size() == 1) return;\n    \
+    \    auto C = Matrix<Tp>(N, std::vector<Tp>(N));\n        for (int i = 0, j =\
+    \ 0; i < (int)V.size(); ++i) {\n            C[j++] = V[i];\n            for (int\
+    \ k = P[i].deg(); --k; ++j)\n                for (int l = 0; l < j; ++l)\n   \
+    \                 for (int m = 0; m < j; ++m) C[j][l] += A_B[l][m] * C[j - 1][m];\n\
+    \        }\n        for (int i = N - 1; i > 0; --i)\n            for (int j =\
+    \ i - 1; j >= 0; --j)\n                if (C[i][j] != 0)\n                   \
+    \ for (int k = 0; k < N; ++k)\n                        T[k][i] += C[i][j] * T[k][j],\
+    \ InvT[j][k] -= C[i][j] * InvT[i][k];\n    }\n\n    Matrix<Tp> transition_matrix()\
+    \ const { return T; }\n    Matrix<Tp> inv_transition_matrix() const { return InvT;\
+    \ }\n\n    Matrix<Tp> frobenius_form() const {\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n\
+    \        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n    \
+    \        for (int j = s; j < s + P[i].deg() - 1; ++j) res[j + 1][j] = 1;\n   \
+    \         for (int j = s; j < s + P[i].deg(); ++j) res[j][s + P[i].deg() - 1]\
+    \ = -P[i][j - s];\n        }\n        return res;\n    }\n\n    // returns (F_A)^e\n\
+    \    Matrix<Tp> pow(long long e) const {\n        assert(e >= 0);\n        //\
+    \ returns x^e mod p\n        auto pow_mod = [](auto &&pow_mod, long long e, const\
+    \ Poly<Tp> &p) {\n            if (e == 0) return Poly<Tp>{Tp(1)};\n          \
+    \  const auto half = pow_mod(pow_mod, e / 2, p);\n            return ((half *\
+    \ half) << (e & 1)) % p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n\
+    \        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n    \
+    \        auto c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j <\
+    \ P[i].deg(); c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <=\
+    \ c.deg(); ++k) res[k + s][s + j] = c[k];\n        }\n        return res;\n  \
+    \  }\n\n    Poly<Tp> charpoly() const {\n        return std::accumulate(P.begin(),\
+    \ P.end(), Poly<Tp>{Tp(1)}, std::multiplies<>());\n    }\n\n    // returns F(F_A)\n\
+    \    Matrix<Tp> eval(Poly<Tp> F) const {\n        // F %= this->charpoly();\n\
+    \        Matrix<Tp> res(N, std::vector<Tp>(N));\n        if (F.deg() < 0) return\
+    \ res;\n        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n\
+    \            std::vector<Poly<Tp>> pow_table(F.deg() + P[i].deg() + 1);\n    \
+    \        pow_table[0] = Poly<Tp>{Tp(1)};\n            for (int j = 1; j <= F.deg()\
+    \ + P[i].deg(); ++j)\n                pow_table[j] = (pow_table[j - 1] << 1) %\
+    \ P[i];\n            std::vector<Poly<Tp>> row(P[i].deg());\n            for (int\
+    \ j = 0; j <= F.deg(); ++j)\n                for (int k = 0; k < P[i].deg(); ++k)\
+    \ row[k] += Poly<Tp>{F[j]} * pow_table[j + k];\n            for (int j = 0; j\
+    \ < P[i].deg(); ++j)\n                for (int k = 0; k <= row[j].deg(); ++k)\
+    \ res[k + s][s + j] = row[j][k];\n        }\n        return res;\n    }\n};\n"
+  code: "#pragma once\n\n#include \"basis.hpp\"\n#include \"mat_basic.hpp\"\n#include\
+    \ \"poly.hpp\"\n#include \"random.hpp\"\n#include <cassert>\n#include <functional>\n\
+    #include <numeric>\n#include <vector>\n\n// Compute the Frobenius form (rational\
     \ canonical form) of a square matrix,\n// but the result is not always true.\n\
     template <typename Tp>\nclass Frobenius {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n\
     \    // where C_(p_j) is the companion matrix of monic polynomial P[j]\n    //\
@@ -519,61 +589,19 @@ data:
     \        auto c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j <\
     \ P[i].deg(); c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <=\
     \ c.deg(); ++k) res[k + s][s + j] = c[k];\n        }\n        return res;\n  \
-    \  }\n};\n"
-  code: "#pragma once\n\n#include \"basis.hpp\"\n#include \"mat_basic.hpp\"\n#include\
-    \ \"poly.hpp\"\n#include \"random.hpp\"\n#include <cassert>\n#include <vector>\n\
-    \n// Compute the Frobenius form (rational canonical form) of a square matrix,\n\
-    // but the result is not always true.\ntemplate <typename Tp>\nclass Frobenius\
-    \ {\npublic:\n    // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))\n    // where\
-    \ C_(p_j) is the companion matrix of monic polynomial P[j]\n    // *        minimal\
-    \ polynomial of A = p_0\n    // * characteristic polynomial of A = prod_(j=0)^(k-1)\
-    \ p_j\n    int N;\n    Matrix<Tp> InvT;\n    std::vector<Poly<Tp>> P;\n    Matrix<Tp>\
-    \ T;\n\n    // see:\n    // [1]: Elegia. A (Somehow) Simple (Randomized) Algorithm\
-    \ for Frobenius Form of a Matrix.\n    //      https://codeforces.com/blog/entry/124815\n\
-    \    // [2]: Arne Storjohann. Algorithms for Matrix Canonical Forms.\n    // \
-    \     https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf\n    explicit Frobenius(const\
-    \ Matrix<Tp> &A) : N(height(A)) {\n        assert(N != 0);\n        assert(is_square_matrix(A));\n\
-    \    retry: // retry is not guaranteed to give the right result\n        Basis<Tp>\
-    \ B(N);\n        Matrix<Tp> A_B(N, std::vector<Tp>(N)); // linear transform respect\
-    \ to basis B\n        std::vector<std::vector<Tp>> V;        // vectors for new\
-    \ basis\n        P.clear();\n        while (B.size() < N) {\n            int deg\
-    \ = 0;\n            for (auto R = random_vector<Tp>(N);; R = mat_apply(A, R),\
-    \ ++deg)\n                if (const auto c = B.insert(R)) {\n                \
-    \    if (deg == 0) break;\n                    if (!P.empty() && deg > P.back().deg())\
-    \ goto retry;\n                    P.emplace_back(c->begin() + (B.size() - deg),\
-    \ c->begin() + B.size())\n                        .emplace_back(1);\n        \
-    \            const Poly<Tp> b(c->begin(), c->begin() + (B.size() - deg));\n  \
-    \                  const auto [q, r] = b.divmod(P.back());\n                 \
-    \   if (r.deg() >= 0) goto retry;\n                    V.emplace_back(q).resize(N),\
-    \ V.back().at(B.size() - deg) = 1;\n                    for (int i = B.size()\
-    \ - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;\n                    for (int\
-    \ i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);\n              \
-    \      break;\n                }\n        }\n        T = B.transition_matrix(),\
-    \ InvT = B.inv_transition_matrix();\n        if (P.size() == 1) return;\n    \
-    \    auto C = Matrix<Tp>(N, std::vector<Tp>(N));\n        for (int i = 0, j =\
-    \ 0; i < (int)V.size(); ++i) {\n            C[j++] = V[i];\n            for (int\
-    \ k = P[i].deg(); --k; ++j)\n                for (int l = 0; l < j; ++l)\n   \
-    \                 for (int m = 0; m < j; ++m) C[j][l] += A_B[l][m] * C[j - 1][m];\n\
-    \        }\n        for (int i = N - 1; i > 0; --i)\n            for (int j =\
-    \ i - 1; j >= 0; --j)\n                if (C[i][j] != 0)\n                   \
-    \ for (int k = 0; k < N; ++k)\n                        T[k][i] += C[i][j] * T[k][j],\
-    \ InvT[j][k] -= C[i][j] * InvT[i][k];\n    }\n\n    Matrix<Tp> transition_matrix()\
-    \ const { return T; }\n    Matrix<Tp> inv_transition_matrix() const { return InvT;\
-    \ }\n\n    Matrix<Tp> frobenius_form() const {\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n\
-    \        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n    \
-    \        for (int j = s; j < s + P[i].deg() - 1; ++j) res[j + 1][j] = 1;\n   \
-    \         for (int j = s; j < s + P[i].deg(); ++j) res[j][s + P[i].deg() - 1]\
-    \ = -P[i][j - s];\n        }\n        return res;\n    }\n\n    // returns (F_A)^e\n\
-    \    Matrix<Tp> pow(long long e) const {\n        assert(e >= 0);\n        //\
-    \ returns x^e mod p\n        auto pow_mod = [](auto &&pow_mod, long long e, const\
-    \ Poly<Tp> &p) {\n            if (e == 0) return Poly<Tp>{Tp(1)};\n          \
-    \  const auto half = pow_mod(pow_mod, e / 2, p);\n            return ((half *\
-    \ half) << (e & 1)) % p;\n        };\n        Matrix<Tp> res(N, std::vector<Tp>(N));\n\
-    \        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n    \
-    \        auto c = pow_mod(pow_mod, e, P[i]);\n            for (int j = 0; j <\
-    \ P[i].deg(); c = (c << 1) % P[i], ++j)\n                for (int k = 0; k <=\
-    \ c.deg(); ++k) res[k + s][s + j] = c[k];\n        }\n        return res;\n  \
-    \  }\n};\n"
+    \  }\n\n    Poly<Tp> charpoly() const {\n        return std::accumulate(P.begin(),\
+    \ P.end(), Poly<Tp>{Tp(1)}, std::multiplies<>());\n    }\n\n    // returns F(F_A)\n\
+    \    Matrix<Tp> eval(Poly<Tp> F) const {\n        // F %= this->charpoly();\n\
+    \        Matrix<Tp> res(N, std::vector<Tp>(N));\n        if (F.deg() < 0) return\
+    \ res;\n        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {\n\
+    \            std::vector<Poly<Tp>> pow_table(F.deg() + P[i].deg() + 1);\n    \
+    \        pow_table[0] = Poly<Tp>{Tp(1)};\n            for (int j = 1; j <= F.deg()\
+    \ + P[i].deg(); ++j)\n                pow_table[j] = (pow_table[j - 1] << 1) %\
+    \ P[i];\n            std::vector<Poly<Tp>> row(P[i].deg());\n            for (int\
+    \ j = 0; j <= F.deg(); ++j)\n                for (int k = 0; k < P[i].deg(); ++k)\
+    \ row[k] += Poly<Tp>{F[j]} * pow_table[j + k];\n            for (int j = 0; j\
+    \ < P[i].deg(); ++j)\n                for (int k = 0; k <= row[j].deg(); ++k)\
+    \ res[k + s][s + j] = row[j][k];\n        }\n        return res;\n    }\n};\n"
   dependsOn:
   - basis.hpp
   - mat_basic.hpp
@@ -587,8 +615,9 @@ data:
   - rng.hpp
   isVerificationFile: false
   path: frobenius.hpp
-  requiredBy: []
-  timestamp: '2024-10-10 23:07:33+08:00'
+  requiredBy:
+  - test/matrix/inverse_matrix.0.test copy.cpp
+  timestamp: '2024-11-01 19:07:14+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp
