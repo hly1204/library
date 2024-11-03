@@ -86,6 +86,31 @@ std::vector<MInt> sqrt(MInt A) {
   }
 }
 
+class Binomial {
+  std::vector<MInt> factorial_ = {MInt(1)};
+  std::vector<MInt> invfactorial_ = {MInt(1)};
+
+public:
+  void preprocess(int N) {
+    const int NN = factorial_.size();
+    if (NN < N) {
+      int k = NN;
+      while (k < N) k *= 2;
+      k = std::min<long long>(k, MInt::mod());
+      factorial_.resize(k);
+      invfactorial_.resize(k);
+      for (int i = NN; i < k; ++i) factorial_[i] = factorial_[i-1] * i;
+      invfactorial_.back() = factorial_.back().inv();
+      for (int i = k-2; i >= NN; --i) invfactorial_[i] = invfactorial_[i+1] * (i+1);
+    }
+  }
+
+  MInt binom(int N, int K) const { return N<K ? MInt() : factorial_[N]*invfactorial_[K]*invfactorial_[N-K]; }
+  MInt inv(int N) const { return factorial_[N-1] * invfactorial_[N]; }
+  MInt factorial(int N) const { return factorial_[N]; }
+  MInt inv_factorial(int N) const { return invfactorial_[N]; }
+} BIN;
+
 class FftInfo {
   const int ordlog2_ = __builtin_ctzll(MInt::mod()-1);
   const MInt zeta_ = quadratic_nonresidue().pow((MInt::mod()-1) >> ordlog2_);
@@ -297,6 +322,25 @@ public:
   MInt lc() const {
     const int D = deg();
     return D<0 ? MInt() : (*this)[D];
+  }
+
+  Poly taylor_shift(MInt c) const {
+    Poly A(*this);
+    const int N = A.size();
+    BIN.preprocess(N);
+    for (int i = 0; i < N; ++i) A[i] *= BIN.factorial(i);
+    MInt cc = 1;
+    Poly B(N);
+    for (int i = 0; i < N; ++i) {
+      B[i] = cc * BIN.inv_factorial(i);
+      cc *= c;
+    }
+    std::reverse(A.begin(), A.end());
+    Poly AB = A*B;
+    AB.resize(N);
+    std::reverse(AB.begin(), AB.end());
+    for (int i = 0; i < N; ++i) AB[i] *= BIN.inv_factorial(i);
+    return AB;
   }
 
   // FPS operation
