@@ -1,14 +1,14 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_998244353_portable.hpp
     title: poly_998244353_portable.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/division_of_polynomials
@@ -173,19 +173,19 @@ data:
     \    Poly cyclicB = make_cyclic(B, len);\n    Poly cyclicQ = make_cyclic(Q, len);\n\
     \    fft(cyclicB);\n    fft(cyclicQ);\n    for (int i = 0; i < len; ++i) cyclicB[i]\
     \ *= cyclicQ[i];\n    inv_fft(cyclicB);\n    // R=A-QB (mod (x^n - 1)) (n >= deg(B))\n\
-    \    for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicB[i];\n    cyclicA.shrink();\n\
-    \    return {Q, cyclicA};\n  }\n\n  Poly operator-() const {\n    const int D\
-    \ = deg();\n    Poly res(D+1);\n    for (int i = 0; i <= D; ++i) res[i] = -(*this)[i];\n\
-    \    return res;\n  }\n  Poly &operator+=(const Poly &B) {\n    if (size() < B.size())\
-    \ resize(B.size());\n    for (int i = 0; i < (int)B.size(); ++i) (*this)[i] +=\
-    \ B[i];\n    return shrink();\n  }\n  Poly &operator-=(const Poly &B) {\n    if\
-    \ (size() < B.size()) resize(B.size());\n    for (int i = 0; i < (int)B.size();\
-    \ ++i) (*this)[i] -= B[i];\n    return shrink();\n  }\n  Poly &operator*=(const\
-    \ Poly &B) {\n    if (deg() <= 60 || B.deg() <= 60) return mul_naive(B);\n   \
-    \ if (std::addressof(*this) == std::addressof(B)) return square_fft();\n    return\
-    \ mul_fft(B);\n  }\n  Poly &operator/=(const Poly &B) {\n    const int degA =\
-    \ deg();\n    const int degB = B.deg();\n    assert(degB >= 0);\n    const int\
-    \ degQ = degA-degB;\n    if (degQ <= 60 || degB <= 60) return *this = euclid_div_quotient_naive(B);\n\
+    \    for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicB[i];\n    cyclicA.resize(degB);\n\
+    \    cyclicA.shrink();\n    return {Q, cyclicA};\n  }\n\n  Poly operator-() const\
+    \ {\n    const int D = deg();\n    Poly res(D+1);\n    for (int i = 0; i <= D;\
+    \ ++i) res[i] = -(*this)[i];\n    return res;\n  }\n  Poly &operator+=(const Poly\
+    \ &B) {\n    if (size() < B.size()) resize(B.size());\n    for (int i = 0; i <\
+    \ (int)B.size(); ++i) (*this)[i] += B[i];\n    return shrink();\n  }\n  Poly &operator-=(const\
+    \ Poly &B) {\n    if (size() < B.size()) resize(B.size());\n    for (int i = 0;\
+    \ i < (int)B.size(); ++i) (*this)[i] -= B[i];\n    return shrink();\n  }\n  Poly\
+    \ &operator*=(const Poly &B) {\n    if (deg() <= 60 || B.deg() <= 60) return mul_naive(B);\n\
+    \    if (std::addressof(*this) == std::addressof(B)) return square_fft();\n  \
+    \  return mul_fft(B);\n  }\n  Poly &operator/=(const Poly &B) {\n    const int\
+    \ degA = deg();\n    const int degB = B.deg();\n    assert(degB >= 0);\n    const\
+    \ int degQ = degA-degB;\n    if (degQ <= 60 || degB <= 60) return *this = euclid_div_quotient_naive(B);\n\
     \    return *this = rev().div(B.rev(), degQ+1).rev(degQ+1);\n  }\n  Poly &operator%=(const\
     \ Poly &B) { return *this = std::get<1>(euclid_div(B)); }\n\n  Poly &operator<<=(int\
     \ D) {\n    if (D > 0) {\n      insert(begin(), D, MInt());\n    } else if (D\
@@ -203,7 +203,7 @@ data:
     \ {\n      L << '0';\n    } else {\n      for (int i = 0; i <= D; ++i) {\n   \
     \     L << R[i];\n        if (i == 1) L << \"*x\";\n        if (i >  1) L << \"\
     *x^\" << i;\n        if (i != D) L << \" + \";\n      }\n    }\n    return L <<\
-    \ ']';\n  }\n};\n\n}\n// clang-format on\n#line 5 \"test/poly_998244353_portable/division_of_polynomials.0.test.cpp\"\
+    \ ']';\n  }\n};\n\n}\n// clang-format on\n#line 6 \"test/poly_998244353_portable/division_of_polynomials.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using namespace hly;\n    int n, m;\n    std::cin >> n >> m;\n    Poly A(n),\
     \ B(m);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    for (int i = 0;\
@@ -213,22 +213,22 @@ data:
     \ << \" \\n\"[i == Q.deg()];\n    for (int i = 0; i <= R.deg(); ++i) std::cout\
     \ << R[i] << \" \\n\"[i == R.deg()];\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/division_of_polynomials\"\
-    \n\n#include \"poly_998244353_portable.hpp\"\n#include <iostream>\n\nint main()\
-    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
-    \ namespace hly;\n    int n, m;\n    std::cin >> n >> m;\n    Poly A(n), B(m);\n\
-    \    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    for (int i = 0; i < m;\
-    \ ++i) std::cin >> B[i];\n    auto [Q, R] = A.euclid_div(B);\n    assert(Q ==\
-    \ A / B);\n    assert(R == A % B);\n    std::cout << Q.deg() + 1 << ' ' << R.deg()\
-    \ + 1 << '\\n';\n    for (int i = 0; i <= Q.deg(); ++i) std::cout << Q[i] << \"\
-    \ \\n\"[i == Q.deg()];\n    for (int i = 0; i <= R.deg(); ++i) std::cout << R[i]\
-    \ << \" \\n\"[i == R.deg()];\n    return 0;\n}\n"
+    \n\n#include \"poly_998244353_portable.hpp\"\n#include <cassert>\n#include <iostream>\n\
+    \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using namespace hly;\n    int n, m;\n    std::cin >> n >> m;\n    Poly A(n),\
+    \ B(m);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    for (int i = 0;\
+    \ i < m; ++i) std::cin >> B[i];\n    auto [Q, R] = A.euclid_div(B);\n    assert(Q\
+    \ == A / B);\n    assert(R == A % B);\n    std::cout << Q.deg() + 1 << ' ' <<\
+    \ R.deg() + 1 << '\\n';\n    for (int i = 0; i <= Q.deg(); ++i) std::cout << Q[i]\
+    \ << \" \\n\"[i == Q.deg()];\n    for (int i = 0; i <= R.deg(); ++i) std::cout\
+    \ << R[i] << \" \\n\"[i == R.deg()];\n    return 0;\n}\n"
   dependsOn:
   - poly_998244353_portable.hpp
   isVerificationFile: true
   path: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-03 16:41:03+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-11-03 16:53:36+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
 layout: document

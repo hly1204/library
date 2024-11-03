@@ -84,7 +84,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: poly.hpp
       title: poly.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: poly_998244353_portable.hpp
       title: poly_998244353_portable.hpp
     - icon: ':heavy_check_mark:'
@@ -327,7 +327,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/poly_998244353_portable/convolution_mod.0.test.cpp
       title: test/poly_998244353_portable/convolution_mod.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
       title: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
     - icon: ':heavy_check_mark:'

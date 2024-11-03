@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_998244353_portable.hpp
     title: poly_998244353_portable.hpp
   _extendedRequiredBy: []
@@ -173,19 +173,19 @@ data:
     \    Poly cyclicB = make_cyclic(B, len);\n    Poly cyclicQ = make_cyclic(Q, len);\n\
     \    fft(cyclicB);\n    fft(cyclicQ);\n    for (int i = 0; i < len; ++i) cyclicB[i]\
     \ *= cyclicQ[i];\n    inv_fft(cyclicB);\n    // R=A-QB (mod (x^n - 1)) (n >= deg(B))\n\
-    \    for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicB[i];\n    cyclicA.shrink();\n\
-    \    return {Q, cyclicA};\n  }\n\n  Poly operator-() const {\n    const int D\
-    \ = deg();\n    Poly res(D+1);\n    for (int i = 0; i <= D; ++i) res[i] = -(*this)[i];\n\
-    \    return res;\n  }\n  Poly &operator+=(const Poly &B) {\n    if (size() < B.size())\
-    \ resize(B.size());\n    for (int i = 0; i < (int)B.size(); ++i) (*this)[i] +=\
-    \ B[i];\n    return shrink();\n  }\n  Poly &operator-=(const Poly &B) {\n    if\
-    \ (size() < B.size()) resize(B.size());\n    for (int i = 0; i < (int)B.size();\
-    \ ++i) (*this)[i] -= B[i];\n    return shrink();\n  }\n  Poly &operator*=(const\
-    \ Poly &B) {\n    if (deg() <= 60 || B.deg() <= 60) return mul_naive(B);\n   \
-    \ if (std::addressof(*this) == std::addressof(B)) return square_fft();\n    return\
-    \ mul_fft(B);\n  }\n  Poly &operator/=(const Poly &B) {\n    const int degA =\
-    \ deg();\n    const int degB = B.deg();\n    assert(degB >= 0);\n    const int\
-    \ degQ = degA-degB;\n    if (degQ <= 60 || degB <= 60) return *this = euclid_div_quotient_naive(B);\n\
+    \    for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicB[i];\n    cyclicA.resize(degB);\n\
+    \    cyclicA.shrink();\n    return {Q, cyclicA};\n  }\n\n  Poly operator-() const\
+    \ {\n    const int D = deg();\n    Poly res(D+1);\n    for (int i = 0; i <= D;\
+    \ ++i) res[i] = -(*this)[i];\n    return res;\n  }\n  Poly &operator+=(const Poly\
+    \ &B) {\n    if (size() < B.size()) resize(B.size());\n    for (int i = 0; i <\
+    \ (int)B.size(); ++i) (*this)[i] += B[i];\n    return shrink();\n  }\n  Poly &operator-=(const\
+    \ Poly &B) {\n    if (size() < B.size()) resize(B.size());\n    for (int i = 0;\
+    \ i < (int)B.size(); ++i) (*this)[i] -= B[i];\n    return shrink();\n  }\n  Poly\
+    \ &operator*=(const Poly &B) {\n    if (deg() <= 60 || B.deg() <= 60) return mul_naive(B);\n\
+    \    if (std::addressof(*this) == std::addressof(B)) return square_fft();\n  \
+    \  return mul_fft(B);\n  }\n  Poly &operator/=(const Poly &B) {\n    const int\
+    \ degA = deg();\n    const int degB = B.deg();\n    assert(degB >= 0);\n    const\
+    \ int degQ = degA-degB;\n    if (degQ <= 60 || degB <= 60) return *this = euclid_div_quotient_naive(B);\n\
     \    return *this = rev().div(B.rev(), degQ+1).rev(degQ+1);\n  }\n  Poly &operator%=(const\
     \ Poly &B) { return *this = std::get<1>(euclid_div(B)); }\n\n  Poly &operator<<=(int\
     \ D) {\n    if (D > 0) {\n      insert(begin(), D, MInt());\n    } else if (D\
@@ -222,7 +222,7 @@ data:
   isVerificationFile: true
   path: test/poly_998244353_portable/convolution_mod.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-03 16:41:03+08:00'
+  timestamp: '2024-11-03 16:53:36+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/poly_998244353_portable/convolution_mod.0.test.cpp

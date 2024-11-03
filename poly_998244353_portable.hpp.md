@@ -6,15 +6,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/poly_998244353_portable/convolution_mod.0.test.cpp
     title: test/poly_998244353_portable/convolution_mod.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
     title: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
     title: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://negiizhao.blog.uoj.ac/blog/4671
@@ -175,19 +175,19 @@ data:
     \    Poly cyclicB = make_cyclic(B, len);\n    Poly cyclicQ = make_cyclic(Q, len);\n\
     \    fft(cyclicB);\n    fft(cyclicQ);\n    for (int i = 0; i < len; ++i) cyclicB[i]\
     \ *= cyclicQ[i];\n    inv_fft(cyclicB);\n    // R=A-QB (mod (x^n - 1)) (n >= deg(B))\n\
-    \    for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicB[i];\n    cyclicA.shrink();\n\
-    \    return {Q, cyclicA};\n  }\n\n  Poly operator-() const {\n    const int D\
-    \ = deg();\n    Poly res(D+1);\n    for (int i = 0; i <= D; ++i) res[i] = -(*this)[i];\n\
-    \    return res;\n  }\n  Poly &operator+=(const Poly &B) {\n    if (size() < B.size())\
-    \ resize(B.size());\n    for (int i = 0; i < (int)B.size(); ++i) (*this)[i] +=\
-    \ B[i];\n    return shrink();\n  }\n  Poly &operator-=(const Poly &B) {\n    if\
-    \ (size() < B.size()) resize(B.size());\n    for (int i = 0; i < (int)B.size();\
-    \ ++i) (*this)[i] -= B[i];\n    return shrink();\n  }\n  Poly &operator*=(const\
-    \ Poly &B) {\n    if (deg() <= 60 || B.deg() <= 60) return mul_naive(B);\n   \
-    \ if (std::addressof(*this) == std::addressof(B)) return square_fft();\n    return\
-    \ mul_fft(B);\n  }\n  Poly &operator/=(const Poly &B) {\n    const int degA =\
-    \ deg();\n    const int degB = B.deg();\n    assert(degB >= 0);\n    const int\
-    \ degQ = degA-degB;\n    if (degQ <= 60 || degB <= 60) return *this = euclid_div_quotient_naive(B);\n\
+    \    for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicB[i];\n    cyclicA.resize(degB);\n\
+    \    cyclicA.shrink();\n    return {Q, cyclicA};\n  }\n\n  Poly operator-() const\
+    \ {\n    const int D = deg();\n    Poly res(D+1);\n    for (int i = 0; i <= D;\
+    \ ++i) res[i] = -(*this)[i];\n    return res;\n  }\n  Poly &operator+=(const Poly\
+    \ &B) {\n    if (size() < B.size()) resize(B.size());\n    for (int i = 0; i <\
+    \ (int)B.size(); ++i) (*this)[i] += B[i];\n    return shrink();\n  }\n  Poly &operator-=(const\
+    \ Poly &B) {\n    if (size() < B.size()) resize(B.size());\n    for (int i = 0;\
+    \ i < (int)B.size(); ++i) (*this)[i] -= B[i];\n    return shrink();\n  }\n  Poly\
+    \ &operator*=(const Poly &B) {\n    if (deg() <= 60 || B.deg() <= 60) return mul_naive(B);\n\
+    \    if (std::addressof(*this) == std::addressof(B)) return square_fft();\n  \
+    \  return mul_fft(B);\n  }\n  Poly &operator/=(const Poly &B) {\n    const int\
+    \ degA = deg();\n    const int degB = B.deg();\n    assert(degB >= 0);\n    const\
+    \ int degQ = degA-degB;\n    if (degQ <= 60 || degB <= 60) return *this = euclid_div_quotient_naive(B);\n\
     \    return *this = rev().div(B.rev(), degQ+1).rev(degQ+1);\n  }\n  Poly &operator%=(const\
     \ Poly &B) { return *this = std::get<1>(euclid_div(B)); }\n\n  Poly &operator<<=(int\
     \ D) {\n    if (D > 0) {\n      insert(begin(), D, MInt());\n    } else if (D\
@@ -363,19 +363,19 @@ data:
     \    Poly cyclicB = make_cyclic(B, len);\n    Poly cyclicQ = make_cyclic(Q, len);\n\
     \    fft(cyclicB);\n    fft(cyclicQ);\n    for (int i = 0; i < len; ++i) cyclicB[i]\
     \ *= cyclicQ[i];\n    inv_fft(cyclicB);\n    // R=A-QB (mod (x^n - 1)) (n >= deg(B))\n\
-    \    for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicB[i];\n    cyclicA.shrink();\n\
-    \    return {Q, cyclicA};\n  }\n\n  Poly operator-() const {\n    const int D\
-    \ = deg();\n    Poly res(D+1);\n    for (int i = 0; i <= D; ++i) res[i] = -(*this)[i];\n\
-    \    return res;\n  }\n  Poly &operator+=(const Poly &B) {\n    if (size() < B.size())\
-    \ resize(B.size());\n    for (int i = 0; i < (int)B.size(); ++i) (*this)[i] +=\
-    \ B[i];\n    return shrink();\n  }\n  Poly &operator-=(const Poly &B) {\n    if\
-    \ (size() < B.size()) resize(B.size());\n    for (int i = 0; i < (int)B.size();\
-    \ ++i) (*this)[i] -= B[i];\n    return shrink();\n  }\n  Poly &operator*=(const\
-    \ Poly &B) {\n    if (deg() <= 60 || B.deg() <= 60) return mul_naive(B);\n   \
-    \ if (std::addressof(*this) == std::addressof(B)) return square_fft();\n    return\
-    \ mul_fft(B);\n  }\n  Poly &operator/=(const Poly &B) {\n    const int degA =\
-    \ deg();\n    const int degB = B.deg();\n    assert(degB >= 0);\n    const int\
-    \ degQ = degA-degB;\n    if (degQ <= 60 || degB <= 60) return *this = euclid_div_quotient_naive(B);\n\
+    \    for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicB[i];\n    cyclicA.resize(degB);\n\
+    \    cyclicA.shrink();\n    return {Q, cyclicA};\n  }\n\n  Poly operator-() const\
+    \ {\n    const int D = deg();\n    Poly res(D+1);\n    for (int i = 0; i <= D;\
+    \ ++i) res[i] = -(*this)[i];\n    return res;\n  }\n  Poly &operator+=(const Poly\
+    \ &B) {\n    if (size() < B.size()) resize(B.size());\n    for (int i = 0; i <\
+    \ (int)B.size(); ++i) (*this)[i] += B[i];\n    return shrink();\n  }\n  Poly &operator-=(const\
+    \ Poly &B) {\n    if (size() < B.size()) resize(B.size());\n    for (int i = 0;\
+    \ i < (int)B.size(); ++i) (*this)[i] -= B[i];\n    return shrink();\n  }\n  Poly\
+    \ &operator*=(const Poly &B) {\n    if (deg() <= 60 || B.deg() <= 60) return mul_naive(B);\n\
+    \    if (std::addressof(*this) == std::addressof(B)) return square_fft();\n  \
+    \  return mul_fft(B);\n  }\n  Poly &operator/=(const Poly &B) {\n    const int\
+    \ degA = deg();\n    const int degB = B.deg();\n    assert(degB >= 0);\n    const\
+    \ int degQ = degA-degB;\n    if (degQ <= 60 || degB <= 60) return *this = euclid_div_quotient_naive(B);\n\
     \    return *this = rev().div(B.rev(), degQ+1).rev(degQ+1);\n  }\n  Poly &operator%=(const\
     \ Poly &B) { return *this = std::get<1>(euclid_div(B)); }\n\n  Poly &operator<<=(int\
     \ D) {\n    if (D > 0) {\n      insert(begin(), D, MInt());\n    } else if (D\
@@ -398,8 +398,8 @@ data:
   isVerificationFile: false
   path: poly_998244353_portable.hpp
   requiredBy: []
-  timestamp: '2024-11-03 16:41:03+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2024-11-03 16:53:36+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/poly_998244353_portable/division_of_polynomials.0.test.cpp
   - test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
