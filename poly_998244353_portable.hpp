@@ -40,8 +40,8 @@ public:
     int s = 1, t = 0, a = val(), b = Mod;
     while (b) {
       const int q = a/b;
-      s = std::exchange(t, s - t*q);
-      a = std::exchange(b, a - b*q);
+      s = std::exchange(t, s - q*t);
+      a = std::exchange(b, a - q*b);
     }
     return from_raw(s<0 ? s+(int)Mod : s);
   }
@@ -430,11 +430,11 @@ public:
     Poly cyclicQ = make_cyclic(Q, len);
     fft(cyclicB);
     fft(cyclicQ);
-    for (int i = 0; i < len; ++i) cyclicB[i] *= cyclicQ[i];
-    inv_fft(cyclicB);
-    // R=A-QB (mod (x^n - 1)) (n >= deg(B))
-    for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicB[i];
+    for (int i = 0; i < len; ++i) cyclicQ[i] *= cyclicB[i];
+    inv_fft(cyclicQ);
     cyclicA.resize(degB);
+    // R=A-QB (mod (x^n - 1)) (n >= deg(B))
+    for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicQ[i];
     cyclicA.shrink();
     return {Q, cyclicA};
   }
