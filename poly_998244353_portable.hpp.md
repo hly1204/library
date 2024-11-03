@@ -250,7 +250,7 @@ data:
     \ + j] = U[(i+D)*(N*2) + j];\n    U.resize(D*N);\n    return U;\n  };\n  const\
     \ int L = fft_len(N);\n  const MInt c = G.empty() ? MInt() : G[0];\n  Poly P,\
     \ Q;\n  if (c == 0) {\n    P = F.trunc(L);\n    Q = (-G).trunc(L);\n  } else {\n\
-    \    P = F.taylor_shift(-c).trunc(L);\n    Q = (-(G - Poly{c})).trunc(L);\n  }\n\
+    \    P = F.taylor_shift(c).trunc(L);\n    Q = (-(G - Poly{c})).trunc(L);\n  }\n\
     \  return rec(rec, P, Q, 1, L).trunc(N);\n}\n\n}\n// clang-format on\n"
   code: "// C++17 & GCC/Clang\n\n#include <algorithm>\n#include <array>\n#include\
     \ <cassert>\n#include <iostream>\n#include <iterator>\n#include <memory>\n#include\
@@ -477,13 +477,13 @@ data:
     \ + j] = U[(i+D)*(N*2) + j];\n    U.resize(D*N);\n    return U;\n  };\n  const\
     \ int L = fft_len(N);\n  const MInt c = G.empty() ? MInt() : G[0];\n  Poly P,\
     \ Q;\n  if (c == 0) {\n    P = F.trunc(L);\n    Q = (-G).trunc(L);\n  } else {\n\
-    \    P = F.taylor_shift(-c).trunc(L);\n    Q = (-(G - Poly{c})).trunc(L);\n  }\n\
+    \    P = F.taylor_shift(c).trunc(L);\n    Q = (-(G - Poly{c})).trunc(L);\n  }\n\
     \  return rec(rec, P, Q, 1, L).trunc(N);\n}\n\n}\n// clang-format on\n"
   dependsOn: []
   isVerificationFile: false
   path: poly_998244353_portable.hpp
   requiredBy: []
-  timestamp: '2024-11-03 20:41:23+08:00'
+  timestamp: '2024-11-03 20:58:39+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/poly_998244353_portable/division_of_polynomials.0.test.cpp

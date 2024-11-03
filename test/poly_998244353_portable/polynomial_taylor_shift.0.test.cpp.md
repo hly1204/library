@@ -241,7 +241,7 @@ data:
     \ + j] = U[(i+D)*(N*2) + j];\n    U.resize(D*N);\n    return U;\n  };\n  const\
     \ int L = fft_len(N);\n  const MInt c = G.empty() ? MInt() : G[0];\n  Poly P,\
     \ Q;\n  if (c == 0) {\n    P = F.trunc(L);\n    Q = (-G).trunc(L);\n  } else {\n\
-    \    P = F.taylor_shift(-c).trunc(L);\n    Q = (-(G - Poly{c})).trunc(L);\n  }\n\
+    \    P = F.taylor_shift(c).trunc(L);\n    Q = (-(G - Poly{c})).trunc(L);\n  }\n\
     \  return rec(rec, P, Q, 1, L).trunc(N);\n}\n\n}\n// clang-format on\n#line 5\
     \ \"test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp\"\n\nint main()\
     \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
@@ -259,7 +259,7 @@ data:
   isVerificationFile: true
   path: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-03 20:41:23+08:00'
+  timestamp: '2024-11-03 20:58:39+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
