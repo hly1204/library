@@ -11,39 +11,39 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/inv_of_formal_power_series
+    PROBLEM: https://judge.yosupo.jp/problem/polynomial_taylor_shift
     links:
-    - https://judge.yosupo.jp/problem/inv_of_formal_power_series
-  bundledCode: "#line 1 \"test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
-    \n\n#line 1 \"poly_998244353_portable.hpp\"\n// C++17 & GCC/Clang\n\n#include\
-    \ <algorithm>\n#include <array>\n#include <cassert>\n#include <iostream>\n#include\
-    \ <memory>\n#include <utility>\n#include <vector>\n\n// clang-format off\nnamespace\
-    \ hly {\n\ntemplate<unsigned Mod> class ZZ {\n  static_assert((Mod >> 31) == 0,\
-    \ \"`Mod` must less than 2^(31)\");\n  template<typename Int> static unsigned\
-    \ safe_mod(Int a) {\n    if ((a%=(int)Mod) < 0) a += (int)Mod;\n    return a;\n\
-    \  }\n  struct PrivateCtor {};\n  static inline PrivateCtor p{};\n  ZZ(PrivateCtor,\
-    \ unsigned a) : a_(a) {}\n  unsigned a_;\n\npublic:\n  static unsigned mod() {\
-    \ return Mod; }\n  static ZZ from_raw(unsigned a) { return ZZ(p, a); }\n  ZZ()\
-    \ : a_() {}\n  template<typename Int> ZZ(Int a) : a_(safe_mod(a)) {}\n  unsigned\
-    \ val() const { return a_; }\n  ZZ operator-() const { return from_raw(a_==0 ?\
-    \ a_ : Mod-a_); }\n  ZZ pow(long long e) const {\n    if (e<0) return inv().pow(-e);\n\
-    \    for (ZZ x(*this), y(from_raw(1));; x *= x) {\n      if (e&1) y *= x;\n  \
-    \    if ((e/=2) == 0) return y;\n    }\n  }\n  ZZ inv() const {\n    int s = 1,\
-    \ t = 0, a = val(), b = Mod;\n    while (b) {\n      const int q = a/b;\n    \
-    \  s = std::exchange(t, s - t*q);\n      a = std::exchange(b, a - b*q);\n    }\n\
-    \    return from_raw(s<0 ? s+(int)Mod : s);\n  }\n  ZZ &operator+=(const ZZ &R)\
-    \ { if ((a_+=R.a_) >= Mod) a_ -= Mod; return *this; }\n  ZZ &operator-=(const\
-    \ ZZ &R) { if ((a_+=Mod-R.a_) >= Mod) a_ -= Mod; return *this; }\n  ZZ &operator*=(const\
-    \ ZZ &R) { a_ = (unsigned long long)a_*R.a_ % Mod; return *this; }\n  ZZ &operator/=(const\
-    \ ZZ &R) { return *this *= R.inv(); }\n  friend ZZ operator+(const ZZ &L, const\
-    \ ZZ &R) { return ZZ(L) += R; }\n  friend ZZ operator-(const ZZ &L, const ZZ &R)\
-    \ { return ZZ(L) -= R; }\n  friend ZZ operator*(const ZZ &L, const ZZ &R) { return\
-    \ ZZ(L) *= R; }\n  friend ZZ operator/(const ZZ &L, const ZZ &R) { return ZZ(L)\
-    \ /= R; }\n  friend bool operator==(const ZZ &L, const ZZ &R) { return L.val()\
-    \ == R.val(); }\n  friend bool operator!=(const ZZ &L, const ZZ &R) { return L.val()\
-    \ != R.val(); }\n  friend std::istream &operator>>(std::istream &L, ZZ &R) { int\
-    \ a; L >> a; R.a_ = safe_mod(a); return L; }\n  friend std::ostream &operator<<(std::ostream\
+    - https://judge.yosupo.jp/problem/polynomial_taylor_shift
+  bundledCode: "#line 1 \"test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/polynomial_taylor_shift\"\n\
+    \n#line 1 \"poly_998244353_portable.hpp\"\n// C++17 & GCC/Clang\n\n#include <algorithm>\n\
+    #include <array>\n#include <cassert>\n#include <iostream>\n#include <memory>\n\
+    #include <utility>\n#include <vector>\n\n// clang-format off\nnamespace hly {\n\
+    \ntemplate<unsigned Mod> class ZZ {\n  static_assert((Mod >> 31) == 0, \"`Mod`\
+    \ must less than 2^(31)\");\n  template<typename Int> static unsigned safe_mod(Int\
+    \ a) {\n    if ((a%=(int)Mod) < 0) a += (int)Mod;\n    return a;\n  }\n  struct\
+    \ PrivateCtor {};\n  static inline PrivateCtor p{};\n  ZZ(PrivateCtor, unsigned\
+    \ a) : a_(a) {}\n  unsigned a_;\n\npublic:\n  static unsigned mod() { return Mod;\
+    \ }\n  static ZZ from_raw(unsigned a) { return ZZ(p, a); }\n  ZZ() : a_() {}\n\
+    \  template<typename Int> ZZ(Int a) : a_(safe_mod(a)) {}\n  unsigned val() const\
+    \ { return a_; }\n  ZZ operator-() const { return from_raw(a_==0 ? a_ : Mod-a_);\
+    \ }\n  ZZ pow(long long e) const {\n    if (e<0) return inv().pow(-e);\n    for\
+    \ (ZZ x(*this), y(from_raw(1));; x *= x) {\n      if (e&1) y *= x;\n      if ((e/=2)\
+    \ == 0) return y;\n    }\n  }\n  ZZ inv() const {\n    int s = 1, t = 0, a = val(),\
+    \ b = Mod;\n    while (b) {\n      const int q = a/b;\n      s = std::exchange(t,\
+    \ s - t*q);\n      a = std::exchange(b, a - b*q);\n    }\n    return from_raw(s<0\
+    \ ? s+(int)Mod : s);\n  }\n  ZZ &operator+=(const ZZ &R) { if ((a_+=R.a_) >= Mod)\
+    \ a_ -= Mod; return *this; }\n  ZZ &operator-=(const ZZ &R) { if ((a_+=Mod-R.a_)\
+    \ >= Mod) a_ -= Mod; return *this; }\n  ZZ &operator*=(const ZZ &R) { a_ = (unsigned\
+    \ long long)a_*R.a_ % Mod; return *this; }\n  ZZ &operator/=(const ZZ &R) { return\
+    \ *this *= R.inv(); }\n  friend ZZ operator+(const ZZ &L, const ZZ &R) { return\
+    \ ZZ(L) += R; }\n  friend ZZ operator-(const ZZ &L, const ZZ &R) { return ZZ(L)\
+    \ -= R; }\n  friend ZZ operator*(const ZZ &L, const ZZ &R) { return ZZ(L) *= R;\
+    \ }\n  friend ZZ operator/(const ZZ &L, const ZZ &R) { return ZZ(L) /= R; }\n\
+    \  friend bool operator==(const ZZ &L, const ZZ &R) { return L.val() == R.val();\
+    \ }\n  friend bool operator!=(const ZZ &L, const ZZ &R) { return L.val() != R.val();\
+    \ }\n  friend std::istream &operator>>(std::istream &L, ZZ &R) { int a; L >> a;\
+    \ R.a_ = safe_mod(a); return L; }\n  friend std::ostream &operator<<(std::ostream\
     \ &L, const ZZ &R) { return L << R.val(); }\n};\n\nusing MInt = ZZ<998244353>;\n\
     \n// only works for odd prime moduli\nbool is_square(MInt A) { return A.pow((A.mod()-1)/2)\
     \ != MInt::from_raw(A.mod()-1); }\nMInt quadratic_nonresidue() {\n  for (int i\
@@ -220,30 +220,30 @@ data:
     \ {\n      L << '0';\n    } else {\n      for (int i = 0; i <= D; ++i) {\n   \
     \     L << R[i];\n        if (i == 1) L << \"*x\";\n        if (i >  1) L << \"\
     *x^\" << i;\n        if (i != D) L << \" + \";\n      }\n    }\n    return L <<\
-    \ ']';\n  }\n};\n\n}\n// clang-format on\n#line 5 \"test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp\"\
+    \ ']';\n  }\n};\n\n}\n// clang-format on\n#line 5 \"test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using namespace hly;\n    int n;\n    std::cin >> n;\n    Poly A(n);\n  \
-    \  for (int i = 0; i < n; ++i) std::cin >> A[i];\n    const Poly invA = A.inv(n);\n\
-    \    for (int i = 0; i < n; ++i) std::cout << invA[i] << ' ';\n    return 0;\n\
-    }\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
+    \    using namespace hly;\n    int n;\n    MInt c;\n    std::cin >> n >> c;\n\
+    \    Poly A(n);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    const\
+    \ Poly B = A.taylor_shift(c);\n    for (int i = 0; i < n; ++i) std::cout << B[i]\
+    \ << ' ';\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/polynomial_taylor_shift\"\
     \n\n#include \"poly_998244353_portable.hpp\"\n#include <iostream>\n\nint main()\
     \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
-    \ namespace hly;\n    int n;\n    std::cin >> n;\n    Poly A(n);\n    for (int\
-    \ i = 0; i < n; ++i) std::cin >> A[i];\n    const Poly invA = A.inv(n);\n    for\
-    \ (int i = 0; i < n; ++i) std::cout << invA[i] << ' ';\n    return 0;\n}\n"
+    \ namespace hly;\n    int n;\n    MInt c;\n    std::cin >> n >> c;\n    Poly A(n);\n\
+    \    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    const Poly B = A.taylor_shift(c);\n\
+    \    for (int i = 0; i < n; ++i) std::cout << B[i] << ' ';\n    return 0;\n}\n"
   dependsOn:
   - poly_998244353_portable.hpp
   isVerificationFile: true
-  path: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
+  path: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
   requiredBy: []
   timestamp: '2024-11-03 17:36:29+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
+documentation_of: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
-- /verify/test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp.html
-title: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
+- /verify/test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
+- /verify/test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp.html
+title: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
 ---

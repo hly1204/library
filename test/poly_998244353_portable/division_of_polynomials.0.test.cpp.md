@@ -54,7 +54,18 @@ data:
     \ t = 1;\n  while (is_square(t*t - 4*A)) t += 1;\n  MInt k0 = 1, k1, k2 = -t,\
     \ k3 = A;\n  for (int e = (MInt::mod()+1) / 2;; k2 = k3+k3 - k2*k2, k3 *= k3)\
     \ {\n    if (e&1) k0 = k1 - k0*k2, k1 *= k3;\n    else k1 = k0*k3 - k1*k2;\n \
-    \   if ((e/=2) == 0) return {k0, -k0};\n  }\n}\n\nclass FftInfo {\n  const int\
+    \   if ((e/=2) == 0) return {k0, -k0};\n  }\n}\n\nclass Binomial {\n  std::vector<MInt>\
+    \ factorial_ = {MInt(1)};\n  std::vector<MInt> invfactorial_ = {MInt(1)};\n\n\
+    public:\n  void preprocess(int N) {\n    const int NN = factorial_.size();\n \
+    \   if (NN < N) {\n      int k = NN;\n      while (k < N) k *= 2;\n      k = std::min<long\
+    \ long>(k, MInt::mod());\n      factorial_.resize(k);\n      invfactorial_.resize(k);\n\
+    \      for (int i = NN; i < k; ++i) factorial_[i] = factorial_[i-1] * i;\n   \
+    \   invfactorial_.back() = factorial_.back().inv();\n      for (int i = k-2; i\
+    \ >= NN; --i) invfactorial_[i] = invfactorial_[i+1] * (i+1);\n    }\n  }\n\n \
+    \ MInt binom(int N, int K) const { return N<K ? MInt() : factorial_[N]*invfactorial_[K]*invfactorial_[N-K];\
+    \ }\n  MInt inv(int N) const { return factorial_[N-1] * invfactorial_[N]; }\n\
+    \  MInt factorial(int N) const { return factorial_[N]; }\n  MInt inv_factorial(int\
+    \ N) const { return invfactorial_[N]; }\n} BIN;\n\nclass FftInfo {\n  const int\
     \ ordlog2_ = __builtin_ctzll(MInt::mod()-1);\n  const MInt zeta_ = quadratic_nonresidue().pow((MInt::mod()-1)\
     \ >> ordlog2_);\n  const MInt invzeta_ = zeta_.inv();\n  const MInt imag_ = zeta_.pow(1LL\
     \ << (ordlog2_-2));\n  const MInt invimag_ = -imag_;\n  mutable std::vector<MInt>\
@@ -130,9 +141,15 @@ data:
     \ L; i < std::min<int>(R, size()); ++i) res[i-L] = (*this)[i];\n    return res;\n\
     \  }\n  Poly trunc(int D) const { return slice(0, D); }\n  Poly &shrink() {\n\
     \    resize(deg()+1);\n    return *this;\n  }\n  MInt lc() const {\n    const\
-    \ int D = deg();\n    return D<0 ? MInt() : (*this)[D];\n  }\n\n  // FPS operation\n\
-    \  // see:\n  // [1]: \u5173\u4E8E\u4F18\u5316\u5F62\u5F0F\u5E42\u7EA7\u6570\u8BA1\
-    \u7B97\u7684 Newton \u6CD5\u7684\u5E38\u6570\n  //      https://negiizhao.blog.uoj.ac/blog/4671\n\
+    \ int D = deg();\n    return D<0 ? MInt() : (*this)[D];\n  }\n\n  Poly taylor_shift(MInt\
+    \ c) const {\n    Poly A(*this);\n    const int N = A.size();\n    BIN.preprocess(N);\n\
+    \    for (int i = 0; i < N; ++i) A[i] *= BIN.factorial(i);\n    MInt cc = 1;\n\
+    \    Poly B(N);\n    for (int i = 0; i < N; ++i) {\n      B[i] = cc * BIN.inv_factorial(i);\n\
+    \      cc *= c;\n    }\n    std::reverse(A.begin(), A.end());\n    Poly AB = A*B;\n\
+    \    AB.resize(N);\n    std::reverse(AB.begin(), AB.end());\n    for (int i =\
+    \ 0; i < N; ++i) AB[i] *= BIN.inv_factorial(i);\n    return AB;\n  }\n\n  // FPS\
+    \ operation\n  // see:\n  // [1]: \u5173\u4E8E\u4F18\u5316\u5F62\u5F0F\u5E42\u7EA7\
+    \u6570\u8BA1\u7B97\u7684 Newton \u6CD5\u7684\u5E38\u6570\n  //      https://negiizhao.blog.uoj.ac/blog/4671\n\
     \  Poly inv(int N) const {\n    // total cost = 10 E(N)\n    assert(N >= 0);\n\
     \    assert(ord() == 0);\n    if (N == 0) return {};\n    const int len = fft_len(N);\n\
     \    Poly invL(len), shopA(len), shopB(len);\n    invL[0] = (*this)[0].inv();\n\
@@ -227,7 +244,7 @@ data:
   isVerificationFile: true
   path: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-03 16:53:36+08:00'
+  timestamp: '2024-11-03 17:36:29+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
