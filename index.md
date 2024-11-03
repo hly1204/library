@@ -84,6 +84,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: poly.hpp
       title: poly.hpp
+    - icon: ':question:'
+      path: poly_998244353_portable.hpp
+      title: poly_998244353_portable.hpp
     - icon: ':heavy_check_mark:'
       path: poly_basic.hpp
       title: poly_basic.hpp
@@ -319,6 +322,17 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/number_theory/yukicoder187.0.test.cpp
       title: test/number_theory/yukicoder187.0.test.cpp
+  - name: test/poly_998244353_portable
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/poly_998244353_portable/convolution_mod.0.test.cpp
+      title: test/poly_998244353_portable/convolution_mod.0.test.cpp
+    - icon: ':x:'
+      path: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
+      title: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
+      title: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
   - name: test/set_power_series
     pages:
     - icon: ':heavy_check_mark:'
