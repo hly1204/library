@@ -556,7 +556,7 @@ Poly composition(const Poly &F, const Poly &G, int N) {
     P = F.trunc(L);
     Q = (-G).trunc(L);
   } else {
-    P = F.taylor_shift(-c).trunc(L);
+    P = F.taylor_shift(c).trunc(L);
     Q = (-(G - Poly{c})).trunc(L);
   }
   return rec(rec, P, Q, 1, L).trunc(N);
