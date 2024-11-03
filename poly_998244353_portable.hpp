@@ -390,6 +390,7 @@ public:
     inv_fft(cyclicB);
     // R=A-QB (mod (x^n - 1)) (n >= deg(B))
     for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicB[i];
+    cyclicA.resize(degB);
     cyclicA.shrink();
     return {Q, cyclicA};
   }

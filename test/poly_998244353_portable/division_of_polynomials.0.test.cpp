@@ -1,6 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/division_of_polynomials"
 
 #include "poly_998244353_portable.hpp"
+#include <cassert>
 #include <iostream>
 
 int main() {
