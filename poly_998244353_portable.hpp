@@ -4,6 +4,7 @@
 #include <array>
 #include <cassert>
 #include <iostream>
+#include <iterator>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -353,13 +354,13 @@ public:
     assert(ord() == 0);
     if (N == 0) return {};
     const int len = fft_len(N);
-    Poly invL(len), shopA(len), shopB(len);
-    invL[0] = (*this)[0].inv();
+    Poly invA(len), shopA(len), shopB(len);
+    invA[0] = (*this)[0].inv();
     // total cost = cost of last iteration * 2
     for (int i = 2; i <= len; i *= 2) {
       std::fill(std::copy_n(begin(), std::min<int>(size(), i), shopA.begin()),
                 shopA.begin() + i, MInt());
-      std::copy_n(invL.begin(), i, shopB.begin());
+      std::copy_n(invA.begin(), i, shopB.begin());
       fft_n(shopA.begin(), i); // E(N)
       fft_n(shopB.begin(), i); // E(N)
       for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];
@@ -368,9 +369,10 @@ public:
       fft_n(shopA.begin(), i); // E(N)
       for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];
       inv_fft_n(shopA.begin(), i); // E(N)
-      for (int j = i/2; j < i; ++j) invL[j] = -shopA[j];
+      for (int j = i/2; j < i; ++j) invA[j] = -shopA[j];
     }
-    return invL.trunc(N);
+    invA.resize(N);
+    return invA;
   }
 
   // see:
@@ -503,6 +505,62 @@ public:
     return L << ']';
   }
 };
+
+// returns F(G) mod x^N
+// see:
+// [1]: Yasunori Kinoshita, Baitian Li. Power Series Composition in Near-Linear Time.
+//      https://arxiv.org/abs/2404.05177
+Poly composition(const Poly &F, const Poly &G, int N) {
+  if (N == 0) return {};
+  // [y^(-1)] (f(y) / (-g(x) + y)) mod x^N in R[x]((y^(-1)))
+  auto rec = [](auto &&rec, const Poly &P, const Poly &Q, int D, int N) {
+    assert((int)P.size() == D*N);
+    assert((int)Q.size() == D*N);
+    if (N == 1) return P;
+    Poly dftQ(D*N*4);
+    for (int i = 0; i < D; ++i)
+      for (int j = 0; j < N; ++j)
+        dftQ[i*N*2 + j] = Q[i*N + j];
+    dftQ[D*N*2] = 1;
+    fft(dftQ);
+    Poly V(D*N*2);
+    for (int i = 0; i < D*N*4; i += 2) V[i/2] = dftQ[i] * dftQ[i+1];
+    inv_fft(V);
+    V[0] -= 1;
+    for (int i = 1; i < D*2; ++i)
+      for (int j = 0; j < N/2; ++j)
+        V[i*(N/2) + j] = V[i*N + j];
+    V.resize(D*N);
+    const Poly T = rec(rec, P, V, D*2, N/2);
+    Poly dftT(D*N*2);
+    for (int i = 0; i < D*2; ++i)
+      for (int j = 0; j < N/2; ++j)
+        dftT[i*N + j] = T[i*(N/2) + j];
+    fft(dftT);
+    Poly U(D*N*4);
+    for (int i = 0; i < D*N*4; i += 2) {
+      U[i] = dftT[i/2] * dftQ[i+1];
+      U[i+1] = dftT[i/2] * dftQ[i];
+    }
+    inv_fft(U);
+    for (int i = 0; i < D; ++i)
+      for (int j = 0; j < N; ++j)
+        U[i*N + j] = U[(i+D)*(N*2) + j];
+    U.resize(D*N);
+    return U;
+  };
+  const int L = fft_len(N);
+  const MInt c = G.empty() ? MInt() : G[0];
+  Poly P, Q;
+  if (c == 0) {
+    P = F.trunc(L);
+    Q = (-G).trunc(L);
+  } else {
+    P = F.taylor_shift(-c).trunc(L);
+    Q = (-(G - Poly{c})).trunc(L);
+  }
+  return rec(rec, P, Q, 1, L).trunc(N);
+}
 
 }
 // clang-format on
