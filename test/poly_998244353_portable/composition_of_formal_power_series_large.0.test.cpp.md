@@ -11,16 +11,16 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/division_of_polynomials
+    PROBLEM: https://judge.yosupo.jp/problem/composition_of_formal_power_series_large
     links:
-    - https://judge.yosupo.jp/problem/division_of_polynomials
-  bundledCode: "#line 1 \"test/poly_998244353_portable/division_of_polynomials.0.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/division_of_polynomials\"\n\
-    \n#line 1 \"poly_998244353_portable.hpp\"\n// C++17 & GCC/Clang\n\n#include <algorithm>\n\
-    #include <array>\n#include <cassert>\n#include <iostream>\n#include <iterator>\n\
-    #include <memory>\n#include <utility>\n#include <vector>\n\n// clang-format off\n\
-    namespace hly {\n\ntemplate<unsigned Mod> class ZZ {\n  static_assert((Mod >>\
-    \ 31) == 0, \"`Mod` must less than 2^(31)\");\n  template<typename Int> static\
+    - https://judge.yosupo.jp/problem/composition_of_formal_power_series_large
+  bundledCode: "#line 1 \"test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/composition_of_formal_power_series_large\"\
+    \n\n#line 1 \"poly_998244353_portable.hpp\"\n// C++17 & GCC/Clang\n\n#include\
+    \ <algorithm>\n#include <array>\n#include <cassert>\n#include <iostream>\n#include\
+    \ <iterator>\n#include <memory>\n#include <utility>\n#include <vector>\n\n// clang-format\
+    \ off\nnamespace hly {\n\ntemplate<unsigned Mod> class ZZ {\n  static_assert((Mod\
+    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n  template<typename Int> static\
     \ unsigned safe_mod(Int a) {\n    if ((a%=(int)Mod) < 0) a += (int)Mod;\n    return\
     \ a;\n  }\n  struct PrivateCtor {};\n  static inline PrivateCtor p{};\n  ZZ(PrivateCtor,\
     \ unsigned a) : a_(a) {}\n  unsigned a_;\n\npublic:\n  static unsigned mod() {\
@@ -242,38 +242,32 @@ data:
     \ int L = fft_len(N);\n  const MInt c = G.empty() ? MInt() : G[0];\n  Poly P,\
     \ Q;\n  if (c == 0) {\n    P = F.trunc(L);\n    Q = (-G).trunc(L);\n  } else {\n\
     \    P = F.taylor_shift(-c).trunc(L);\n    Q = (-(G - Poly{c})).trunc(L);\n  }\n\
-    \  return rec(rec, P, Q, 1, L).trunc(N);\n}\n\n}\n// clang-format on\n#line 6\
-    \ \"test/poly_998244353_portable/division_of_polynomials.0.test.cpp\"\n\nint main()\
+    \  return rec(rec, P, Q, 1, L).trunc(N);\n}\n\n}\n// clang-format on\n#line 5\
+    \ \"test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using namespace hly;\n    int n;\n    std::cin >> n;\n    Poly F(n), G(n);\n\
+    \    for (int i = 0; i < n; ++i) std::cin >> F[i];\n    for (int i = 0; i < n;\
+    \ ++i) std::cin >> G[i];\n    const Poly GinF = composition(F, G, n);\n    for\
+    \ (int i = 0; i < n; ++i) std::cout << GinF[i] << ' ';\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/composition_of_formal_power_series_large\"\
+    \n\n#include \"poly_998244353_portable.hpp\"\n#include <iostream>\n\nint main()\
     \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
-    \ namespace hly;\n    int n, m;\n    std::cin >> n >> m;\n    Poly A(n), B(m);\n\
-    \    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    for (int i = 0; i < m;\
-    \ ++i) std::cin >> B[i];\n    auto [Q, R] = A.euclid_div(B);\n    assert(Q ==\
-    \ A / B);\n    assert(R == A % B);\n    std::cout << Q.deg() + 1 << ' ' << R.deg()\
-    \ + 1 << '\\n';\n    for (int i = 0; i <= Q.deg(); ++i) std::cout << Q[i] << \"\
-    \ \\n\"[i == Q.deg()];\n    for (int i = 0; i <= R.deg(); ++i) std::cout << R[i]\
-    \ << \" \\n\"[i == R.deg()];\n    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/division_of_polynomials\"\
-    \n\n#include \"poly_998244353_portable.hpp\"\n#include <cassert>\n#include <iostream>\n\
-    \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using namespace hly;\n    int n, m;\n    std::cin >> n >> m;\n    Poly A(n),\
-    \ B(m);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    for (int i = 0;\
-    \ i < m; ++i) std::cin >> B[i];\n    auto [Q, R] = A.euclid_div(B);\n    assert(Q\
-    \ == A / B);\n    assert(R == A % B);\n    std::cout << Q.deg() + 1 << ' ' <<\
-    \ R.deg() + 1 << '\\n';\n    for (int i = 0; i <= Q.deg(); ++i) std::cout << Q[i]\
-    \ << \" \\n\"[i == Q.deg()];\n    for (int i = 0; i <= R.deg(); ++i) std::cout\
-    \ << R[i] << \" \\n\"[i == R.deg()];\n    return 0;\n}\n"
+    \ namespace hly;\n    int n;\n    std::cin >> n;\n    Poly F(n), G(n);\n    for\
+    \ (int i = 0; i < n; ++i) std::cin >> F[i];\n    for (int i = 0; i < n; ++i) std::cin\
+    \ >> G[i];\n    const Poly GinF = composition(F, G, n);\n    for (int i = 0; i\
+    \ < n; ++i) std::cout << GinF[i] << ' ';\n    return 0;\n}\n"
   dependsOn:
   - poly_998244353_portable.hpp
   isVerificationFile: true
-  path: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
+  path: test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
   requiredBy: []
   timestamp: '2024-11-03 20:41:23+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
+documentation_of: test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/poly_998244353_portable/division_of_polynomials.0.test.cpp
-- /verify/test/poly_998244353_portable/division_of_polynomials.0.test.cpp.html
-title: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
+- /verify/test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
+- /verify/test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp.html
+title: test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
 ---
