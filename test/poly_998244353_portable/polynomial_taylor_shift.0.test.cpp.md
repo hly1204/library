@@ -31,7 +31,7 @@ data:
     \ (ZZ x(*this), y(from_raw(1));; x *= x) {\n      if (e&1) y *= x;\n      if ((e/=2)\
     \ == 0) return y;\n    }\n  }\n  ZZ inv() const {\n    int s = 1, t = 0, a = val(),\
     \ b = Mod;\n    while (b) {\n      const int q = a/b;\n      s = std::exchange(t,\
-    \ s - t*q);\n      a = std::exchange(b, a - b*q);\n    }\n    return from_raw(s<0\
+    \ s - q*t);\n      a = std::exchange(b, a - q*b);\n    }\n    return from_raw(s<0\
     \ ? s+(int)Mod : s);\n  }\n  ZZ &operator+=(const ZZ &R) { if ((a_+=R.a_) >= Mod)\
     \ a_ -= Mod; return *this; }\n  ZZ &operator-=(const ZZ &R) { if ((a_+=Mod-R.a_)\
     \ >= Mod) a_ -= Mod; return *this; }\n  ZZ &operator*=(const ZZ &R) { a_ = (unsigned\
@@ -188,39 +188,40 @@ data:
     \ ++i) B[i & (N-1)] += A[i];\n      return B;\n    };\n    assert(degB > 0);\n\
     \    const int len = fft_len(degB);\n    Poly cyclicA = make_cyclic(*this, len);\n\
     \    Poly cyclicB = make_cyclic(B, len);\n    Poly cyclicQ = make_cyclic(Q, len);\n\
-    \    fft(cyclicB);\n    fft(cyclicQ);\n    for (int i = 0; i < len; ++i) cyclicB[i]\
-    \ *= cyclicQ[i];\n    inv_fft(cyclicB);\n    // R=A-QB (mod (x^n - 1)) (n >= deg(B))\n\
-    \    for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicB[i];\n    cyclicA.resize(degB);\n\
-    \    cyclicA.shrink();\n    return {Q, cyclicA};\n  }\n\n  Poly operator-() const\
-    \ {\n    const int D = deg();\n    Poly res(D+1);\n    for (int i = 0; i <= D;\
-    \ ++i) res[i] = -(*this)[i];\n    return res;\n  }\n  Poly &operator+=(const Poly\
-    \ &B) {\n    if (size() < B.size()) resize(B.size());\n    for (int i = 0; i <\
-    \ (int)B.size(); ++i) (*this)[i] += B[i];\n    return shrink();\n  }\n  Poly &operator-=(const\
+    \    fft(cyclicB);\n    fft(cyclicQ);\n    for (int i = 0; i < len; ++i) cyclicQ[i]\
+    \ *= cyclicB[i];\n    inv_fft(cyclicQ);\n    cyclicA.resize(degB);\n    // R=A-QB\
+    \ (mod (x^n - 1)) (n >= deg(B))\n    for (int i = 0; i < degB; ++i) cyclicA[i]\
+    \ -= cyclicQ[i];\n    cyclicA.shrink();\n    return {Q, cyclicA};\n  }\n\n  Poly\
+    \ operator-() const {\n    const int D = deg();\n    Poly res(D+1);\n    for (int\
+    \ i = 0; i <= D; ++i) res[i] = -(*this)[i];\n    return res;\n  }\n  Poly &operator+=(const\
     \ Poly &B) {\n    if (size() < B.size()) resize(B.size());\n    for (int i = 0;\
-    \ i < (int)B.size(); ++i) (*this)[i] -= B[i];\n    return shrink();\n  }\n  Poly\
-    \ &operator*=(const Poly &B) {\n    if (deg() <= 60 || B.deg() <= 60) return mul_naive(B);\n\
-    \    if (std::addressof(*this) == std::addressof(B)) return square_fft();\n  \
-    \  return mul_fft(B);\n  }\n  Poly &operator/=(const Poly &B) {\n    const int\
-    \ degA = deg();\n    const int degB = B.deg();\n    assert(degB >= 0);\n    const\
-    \ int degQ = degA-degB;\n    if (degQ <= 60 || degB <= 60) return *this = euclid_div_quotient_naive(B);\n\
-    \    return *this = rev().div(B.rev(), degQ+1).rev(degQ+1);\n  }\n  Poly &operator%=(const\
-    \ Poly &B) { return *this = std::get<1>(euclid_div(B)); }\n\n  Poly &operator<<=(int\
-    \ D) {\n    if (D > 0) {\n      insert(begin(), D, MInt());\n    } else if (D\
-    \ < 0) {\n      if (-D < (int)size()) erase(begin(), begin() + (-D));\n      else\
-    \ clear();\n    }\n    return shrink();\n  }\n  Poly &operator>>=(int D) { return\
-    \ operator<<=(-D); }\n  friend Poly operator+(const Poly &L, const Poly &R) {\
-    \ return Poly(L) += R; }\n  friend Poly operator-(const Poly &L, const Poly &R)\
-    \ { return Poly(L) -= R; }\n  friend Poly operator*(const Poly &L, const Poly\
-    \ &R) { return Poly(L) *= R; }\n  friend Poly operator/(const Poly &L, const Poly\
-    \ &R) { return Poly(L) /= R; }\n  friend Poly operator%(const Poly &L, const Poly\
-    \ &R) { return Poly(L) %= R; }\n  friend Poly operator<<(const Poly &L, int D)\
-    \ { return Poly(L) <<= D; }\n  friend Poly operator>>(const Poly &L, int D) {\
-    \ return Poly(L) >>= D; }\n  friend std::ostream &operator<<(std::ostream &L,\
-    \ const Poly &R) {\n    L << '[';\n    const int D = R.deg();\n    if (D < 0)\
-    \ {\n      L << '0';\n    } else {\n      for (int i = 0; i <= D; ++i) {\n   \
-    \     L << R[i];\n        if (i == 1) L << \"*x\";\n        if (i >  1) L << \"\
-    *x^\" << i;\n        if (i != D) L << \" + \";\n      }\n    }\n    return L <<\
-    \ ']';\n  }\n};\n\n}\n// clang-format on\n#line 5 \"test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp\"\
+    \ i < (int)B.size(); ++i) (*this)[i] += B[i];\n    return shrink();\n  }\n  Poly\
+    \ &operator-=(const Poly &B) {\n    if (size() < B.size()) resize(B.size());\n\
+    \    for (int i = 0; i < (int)B.size(); ++i) (*this)[i] -= B[i];\n    return shrink();\n\
+    \  }\n  Poly &operator*=(const Poly &B) {\n    if (deg() <= 60 || B.deg() <= 60)\
+    \ return mul_naive(B);\n    if (std::addressof(*this) == std::addressof(B)) return\
+    \ square_fft();\n    return mul_fft(B);\n  }\n  Poly &operator/=(const Poly &B)\
+    \ {\n    const int degA = deg();\n    const int degB = B.deg();\n    assert(degB\
+    \ >= 0);\n    const int degQ = degA-degB;\n    if (degQ <= 60 || degB <= 60) return\
+    \ *this = euclid_div_quotient_naive(B);\n    return *this = rev().div(B.rev(),\
+    \ degQ+1).rev(degQ+1);\n  }\n  Poly &operator%=(const Poly &B) { return *this\
+    \ = std::get<1>(euclid_div(B)); }\n\n  Poly &operator<<=(int D) {\n    if (D >\
+    \ 0) {\n      insert(begin(), D, MInt());\n    } else if (D < 0) {\n      if (-D\
+    \ < (int)size()) erase(begin(), begin() + (-D));\n      else clear();\n    }\n\
+    \    return shrink();\n  }\n  Poly &operator>>=(int D) { return operator<<=(-D);\
+    \ }\n  friend Poly operator+(const Poly &L, const Poly &R) { return Poly(L) +=\
+    \ R; }\n  friend Poly operator-(const Poly &L, const Poly &R) { return Poly(L)\
+    \ -= R; }\n  friend Poly operator*(const Poly &L, const Poly &R) { return Poly(L)\
+    \ *= R; }\n  friend Poly operator/(const Poly &L, const Poly &R) { return Poly(L)\
+    \ /= R; }\n  friend Poly operator%(const Poly &L, const Poly &R) { return Poly(L)\
+    \ %= R; }\n  friend Poly operator<<(const Poly &L, int D) { return Poly(L) <<=\
+    \ D; }\n  friend Poly operator>>(const Poly &L, int D) { return Poly(L) >>= D;\
+    \ }\n  friend std::ostream &operator<<(std::ostream &L, const Poly &R) {\n   \
+    \ L << '[';\n    const int D = R.deg();\n    if (D < 0) {\n      L << '0';\n \
+    \   } else {\n      for (int i = 0; i <= D; ++i) {\n        L << R[i];\n     \
+    \   if (i == 1) L << \"*x\";\n        if (i >  1) L << \"*x^\" << i;\n       \
+    \ if (i != D) L << \" + \";\n      }\n    }\n    return L << ']';\n  }\n};\n\n\
+    }\n// clang-format on\n#line 5 \"test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using namespace hly;\n    int n;\n    MInt c;\n    std::cin >> n >> c;\n\
     \    Poly A(n);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    const\
@@ -237,7 +238,7 @@ data:
   isVerificationFile: true
   path: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-03 17:36:29+08:00'
+  timestamp: '2024-11-03 17:55:07+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
