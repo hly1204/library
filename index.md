@@ -337,6 +337,9 @@ data:
       path: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
       title: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp
+      title: test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
       title: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
   - name: test/set_power_series

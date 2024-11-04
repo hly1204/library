@@ -11,11 +11,11 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/inv_of_formal_power_series
+    PROBLEM: https://judge.yosupo.jp/problem/log_of_formal_power_series
     links:
-    - https://judge.yosupo.jp/problem/inv_of_formal_power_series
-  bundledCode: "#line 1 \"test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
+    - https://judge.yosupo.jp/problem/log_of_formal_power_series
+  bundledCode: "#line 1 \"test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/log_of_formal_power_series\"\
     \n\n#line 1 \"poly_998244353_portable.hpp\"\n// C++17 & GCC/Clang\n\n#include\
     \ <algorithm>\n#include <array>\n#include <cassert>\n#include <iostream>\n#include\
     \ <iterator>\n#include <memory>\n#include <utility>\n#include <vector>\n\n// clang-format\
@@ -251,30 +251,30 @@ data:
     \ + j] = U[(i+D)*(N*2) + j];\n    U.resize(D*N);\n    return U;\n  };\n  const\
     \ int L = fft_len(N);\n  const MInt c = G.empty() ? MInt() : G[0];\n  return rec(rec,\
     \ F.taylor_shift(c).trunc(L), (-(G - Poly{c})).trunc(L), 1, L).trunc(N);\n}\n\n\
-    }\n// clang-format on\n#line 5 \"test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp\"\
+    }\n// clang-format on\n#line 5 \"test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using namespace hly;\n    int n;\n    std::cin >> n;\n    Poly A(n);\n  \
-    \  for (int i = 0; i < n; ++i) std::cin >> A[i];\n    const Poly invA = A.inv(n);\n\
-    \    for (int i = 0; i < n; ++i) std::cout << invA[i] << ' ';\n    return 0;\n\
+    \  for (int i = 0; i < n; ++i) std::cin >> A[i];\n    const Poly logA = A.log(n);\n\
+    \    for (int i = 0; i < n; ++i) std::cout << logA[i] << ' ';\n    return 0;\n\
     }\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/log_of_formal_power_series\"\
     \n\n#include \"poly_998244353_portable.hpp\"\n#include <iostream>\n\nint main()\
     \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
     \ namespace hly;\n    int n;\n    std::cin >> n;\n    Poly A(n);\n    for (int\
-    \ i = 0; i < n; ++i) std::cin >> A[i];\n    const Poly invA = A.inv(n);\n    for\
-    \ (int i = 0; i < n; ++i) std::cout << invA[i] << ' ';\n    return 0;\n}\n"
+    \ i = 0; i < n; ++i) std::cin >> A[i];\n    const Poly logA = A.log(n);\n    for\
+    \ (int i = 0; i < n; ++i) std::cout << logA[i] << ' ';\n    return 0;\n}\n"
   dependsOn:
   - poly_998244353_portable.hpp
   isVerificationFile: true
-  path: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
+  path: test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp
   requiredBy: []
   timestamp: '2024-11-04 23:25:08+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
+documentation_of: test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
-- /verify/test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp.html
-title: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
+- /verify/test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp
+- /verify/test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp.html
+title: test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp
 ---
