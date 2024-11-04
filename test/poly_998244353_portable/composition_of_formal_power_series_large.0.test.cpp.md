@@ -142,14 +142,15 @@ data:
     \  }\n  Poly trunc(int D) const { return slice(0, D); }\n  Poly &shrink() {\n\
     \    resize(deg()+1);\n    return *this;\n  }\n  MInt lc() const {\n    const\
     \ int D = deg();\n    return D<0 ? MInt() : (*this)[D];\n  }\n\n  Poly taylor_shift(MInt\
-    \ c) const {\n    Poly A(*this);\n    const int N = A.size();\n    BIN.preprocess(N);\n\
-    \    for (int i = 0; i < N; ++i) A[i] *= BIN.factorial(i);\n    MInt cc = 1;\n\
-    \    Poly B(N);\n    for (int i = 0; i < N; ++i) {\n      B[i] = cc * BIN.inv_factorial(i);\n\
-    \      cc *= c;\n    }\n    std::reverse(A.begin(), A.end());\n    Poly AB = A*B;\n\
-    \    AB.resize(N);\n    std::reverse(AB.begin(), AB.end());\n    for (int i =\
-    \ 0; i < N; ++i) AB[i] *= BIN.inv_factorial(i);\n    return AB;\n  }\n\n  // FPS\
-    \ operation\n  // see:\n  // [1]: \u5173\u4E8E\u4F18\u5316\u5F62\u5F0F\u5E42\u7EA7\
-    \u6570\u8BA1\u7B97\u7684 Newton \u6CD5\u7684\u5E38\u6570\n  //      https://negiizhao.blog.uoj.ac/blog/4671\n\
+    \ c) const {\n    if (c == 0) return Poly(*this);\n    Poly A(*this);\n    const\
+    \ int N = A.size();\n    BIN.preprocess(N);\n    for (int i = 0; i < N; ++i) A[i]\
+    \ *= BIN.factorial(i);\n    MInt cc = 1;\n    Poly B(N);\n    for (int i = 0;\
+    \ i < N; ++i) {\n      B[i] = cc * BIN.inv_factorial(i);\n      cc *= c;\n   \
+    \ }\n    std::reverse(A.begin(), A.end());\n    A *= B;\n    A.resize(N);\n  \
+    \  std::reverse(A.begin(), A.end());\n    for (int i = 0; i < N; ++i) A[i] *=\
+    \ BIN.inv_factorial(i);\n    return A;\n  }\n\n  // FPS operation\n  // see:\n\
+    \  // [1]: \u5173\u4E8E\u4F18\u5316\u5F62\u5F0F\u5E42\u7EA7\u6570\u8BA1\u7B97\u7684\
+    \ Newton \u6CD5\u7684\u5E38\u6570\n  //      https://negiizhao.blog.uoj.ac/blog/4671\n\
     \  Poly inv(int N) const {\n    // total cost = 10 E(N)\n    assert(N >= 0);\n\
     \    assert(ord() == 0);\n    if (N == 0) return {};\n    const int len = fft_len(N);\n\
     \    Poly invA(len), shopA(len), shopB(len);\n    invA[0] = (*this)[0].inv();\n\
@@ -212,16 +213,17 @@ data:
     \ operator<<=(-D); }\n  friend Poly operator+(const Poly &L, const Poly &R) {\
     \ return Poly(L) += R; }\n  friend Poly operator-(const Poly &L, const Poly &R)\
     \ { return Poly(L) -= R; }\n  friend Poly operator*(const Poly &L, const Poly\
-    \ &R) { return Poly(L) *= R; }\n  friend Poly operator/(const Poly &L, const Poly\
-    \ &R) { return Poly(L) /= R; }\n  friend Poly operator%(const Poly &L, const Poly\
-    \ &R) { return Poly(L) %= R; }\n  friend Poly operator<<(const Poly &L, int D)\
-    \ { return Poly(L) <<= D; }\n  friend Poly operator>>(const Poly &L, int D) {\
-    \ return Poly(L) >>= D; }\n  friend std::ostream &operator<<(std::ostream &L,\
-    \ const Poly &R) {\n    L << '[';\n    const int D = R.deg();\n    if (D < 0)\
-    \ {\n      L << '0';\n    } else {\n      for (int i = 0; i <= D; ++i) {\n   \
-    \     L << R[i];\n        if (i == 1) L << \"*x\";\n        if (i >  1) L << \"\
-    *x^\" << i;\n        if (i != D) L << \" + \";\n      }\n    }\n    return L <<\
-    \ ']';\n  }\n};\n\n// returns F(G) mod x^N\n// see:\n// [1]: Yasunori Kinoshita,\
+    \ &R) { \n    if (std::addressof(L) == std::addressof(R)) {\n      Poly LL(L);\n\
+    \      return LL *= LL;\n    }\n    return Poly(L) *= R;\n  }\n  friend Poly operator/(const\
+    \ Poly &L, const Poly &R) { return Poly(L) /= R; }\n  friend Poly operator%(const\
+    \ Poly &L, const Poly &R) { return Poly(L) %= R; }\n  friend Poly operator<<(const\
+    \ Poly &L, int D) { return Poly(L) <<= D; }\n  friend Poly operator>>(const Poly\
+    \ &L, int D) { return Poly(L) >>= D; }\n  friend std::ostream &operator<<(std::ostream\
+    \ &L, const Poly &R) {\n    L << '[';\n    const int D = R.deg();\n    if (D <\
+    \ 0) {\n      L << '0';\n    } else {\n      for (int i = 0; i <= D; ++i) {\n\
+    \        L << R[i];\n        if (i == 1) L << \"*x\";\n        if (i >  1) L <<\
+    \ \"*x^\" << i;\n        if (i != D) L << \" + \";\n      }\n    }\n    return\
+    \ L << ']';\n  }\n};\n\n// returns F(G) mod x^N\n// see:\n// [1]: Yasunori Kinoshita,\
     \ Baitian Li. Power Series Composition in Near-Linear Time.\n//      https://arxiv.org/abs/2404.05177\n\
     Poly composition(const Poly &F, const Poly &G, int N) {\n  if (N == 0) return\
     \ {};\n  // [y^(-1)] (f(y) / (-g(x) + y)) mod x^N in R[x]((y^(-1)))\n  auto rec\
@@ -239,11 +241,9 @@ data:
     \ * dftQ[i+1];\n      U[i+1] = dftT[i/2] * dftQ[i];\n    }\n    inv_fft(U);\n\
     \    for (int i = 0; i < D; ++i)\n      for (int j = 0; j < N; ++j)\n        U[i*N\
     \ + j] = U[(i+D)*(N*2) + j];\n    U.resize(D*N);\n    return U;\n  };\n  const\
-    \ int L = fft_len(N);\n  const MInt c = G.empty() ? MInt() : G[0];\n  Poly P,\
-    \ Q;\n  if (c == 0) {\n    P = F.trunc(L);\n    Q = (-G).trunc(L);\n  } else {\n\
-    \    P = F.taylor_shift(c).trunc(L);\n    Q = (-(G - Poly{c})).trunc(L);\n  }\n\
-    \  return rec(rec, P, Q, 1, L).trunc(N);\n}\n\n}\n// clang-format on\n#line 5\
-    \ \"test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp\"\
+    \ int L = fft_len(N);\n  const MInt c = G.empty() ? MInt() : G[0];\n  return rec(rec,\
+    \ F.taylor_shift(c).trunc(L), (-(G - Poly{c})).trunc(L), 1, L).trunc(N);\n}\n\n\
+    }\n// clang-format on\n#line 5 \"test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using namespace hly;\n    int n;\n    std::cin >> n;\n    Poly F(n), G(n);\n\
     \    for (int i = 0; i < n; ++i) std::cin >> F[i];\n    for (int i = 0; i < n;\
@@ -261,7 +261,7 @@ data:
   isVerificationFile: true
   path: test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-03 20:58:39+08:00'
+  timestamp: '2024-11-04 19:30:20+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
