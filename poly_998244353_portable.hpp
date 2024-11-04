@@ -325,6 +325,22 @@ public:
     return D<0 ? MInt() : (*this)[D];
   }
 
+  Poly deriv() const {
+    const int N = (int)size()-1;
+    if (N <= 0) return {};
+    Poly res(N);
+    for (int i = 1; i <= N; ++i) res[i-1] = (*this)[i] * i;
+    return res;
+  }
+  Poly integr(MInt c = 0) const {
+    const int N = (int)size()+1;
+    BIN.preprocess(N);
+    Poly res(N);
+    res[0] = c;
+    for (int i = 1; i < N; ++i) res[i] = (*this)[i-1] * BIN.inv(i);
+    return res;
+  }
+
   Poly taylor_shift(MInt c) const {
     if (c == 0) return Poly(*this);
     Poly A(*this);
@@ -383,6 +399,7 @@ public:
     // total cost = 13 E(N)
     assert(N >= 0);
     assert(R.ord() == 0);
+    if (N == 0) return {};
     if (N == 1) return {(*this)[0]/R[0]};
     const int len = fft_len(N);
     Poly LdivR(len);
@@ -410,6 +427,14 @@ public:
     std::copy_n(shopC.begin() + len/2, len/2, LdivR.begin() + len/2);
     LdivR.resize(N);
     return LdivR;
+  }
+
+  Poly log(int N) const {
+    assert(N >= 0);
+    assert(ord() == 0);
+    assert((*this)[0] == 1);
+    if (N == 0) return {};
+    return deriv().div(*this, N-1).integr();
   }
 
   std::array<Poly, 2> euclid_div(const Poly &B) const {
