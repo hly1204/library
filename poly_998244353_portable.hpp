@@ -326,6 +326,7 @@ public:
   }
 
   Poly taylor_shift(MInt c) const {
+    if (c == 0) return Poly(*this);
     Poly A(*this);
     const int N = A.size();
     BIN.preprocess(N);
@@ -337,11 +338,11 @@ public:
       cc *= c;
     }
     std::reverse(A.begin(), A.end());
-    Poly AB = A*B;
-    AB.resize(N);
-    std::reverse(AB.begin(), AB.end());
-    for (int i = 0; i < N; ++i) AB[i] *= BIN.inv_factorial(i);
-    return AB;
+    A *= B;
+    A.resize(N);
+    std::reverse(A.begin(), A.end());
+    for (int i = 0; i < N; ++i) A[i] *= BIN.inv_factorial(i);
+    return A;
   }
 
   // FPS operation
@@ -484,7 +485,13 @@ public:
   Poly &operator>>=(int D) { return operator<<=(-D); }
   friend Poly operator+(const Poly &L, const Poly &R) { return Poly(L) += R; }
   friend Poly operator-(const Poly &L, const Poly &R) { return Poly(L) -= R; }
-  friend Poly operator*(const Poly &L, const Poly &R) { return Poly(L) *= R; }
+  friend Poly operator*(const Poly &L, const Poly &R) { 
+    if (std::addressof(L) == std::addressof(R)) {
+      Poly LL(L);
+      return LL *= LL;
+    }
+    return Poly(L) *= R;
+  }
   friend Poly operator/(const Poly &L, const Poly &R) { return Poly(L) /= R; }
   friend Poly operator%(const Poly &L, const Poly &R) { return Poly(L) %= R; }
   friend Poly operator<<(const Poly &L, int D) { return Poly(L) <<= D; }
@@ -551,15 +558,7 @@ Poly composition(const Poly &F, const Poly &G, int N) {
   };
   const int L = fft_len(N);
   const MInt c = G.empty() ? MInt() : G[0];
-  Poly P, Q;
-  if (c == 0) {
-    P = F.trunc(L);
-    Q = (-G).trunc(L);
-  } else {
-    P = F.taylor_shift(c).trunc(L);
-    Q = (-(G - Poly{c})).trunc(L);
-  }
-  return rec(rec, P, Q, 1, L).trunc(N);
+  return rec(rec, F.taylor_shift(c).trunc(L), (-(G - Poly{c})).trunc(L), 1, L).trunc(N);
 }
 
 }
