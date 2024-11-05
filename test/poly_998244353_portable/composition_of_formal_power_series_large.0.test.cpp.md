@@ -204,11 +204,11 @@ data:
     \    return Poly(res.begin(), res.end());\n  }\n\n  Poly pow1(long long e, int\
     \ N) const {\n    assert(N >= 0);\n    assert(ord() == 0);\n    assert((*this)[0]\
     \ == 1);\n    return log(N).mul(Poly{MInt(e)}).exp(N);\n  }\n\n  Poly pow(long\
-    \ long e, int N) {\n    assert(N >= 0);\n    if (e == 0) return Poly{MInt(1)}.trunc(N);\n\
-    \    const int O = ord();\n    if (O < 0 || O > N/e || (O == N/e && N%e == 0))\
-    \ return Poly(N);\n    return shr(O).mul(Poly{(*this)[O].inv()})\n           \
-    \      .pow1(e, N - O*e)\n                 .mul(Poly{(*this)[O].pow(e)})\n   \
-    \              .shl(O*e)\n                 .trunc(N);\n  }\n\n  std::array<Poly,\
+    \ long e, int N) {\n    assert(e >= 0);\n    assert(N >= 0);\n    if (e == 0)\
+    \ return Poly{MInt(1)}.trunc(N);\n    const int O = ord();\n    if (O < 0 || O\
+    \ > N/e || (O == N/e && N%e == 0)) return Poly(N);\n    return shr(O).mul(Poly{(*this)[O].inv()})\n\
+    \                 .pow1(e, N - O*e)\n                 .mul(Poly{(*this)[O].pow(e)})\n\
+    \                 .shl(O*e)\n                 .trunc(N);\n  }\n\n  std::array<Poly,\
     \ 2> euclid_div(const Poly &B) const {\n    const int degA = deg();\n    const\
     \ int degB = B.deg();\n    assert(degB >= 0);\n    const int degQ = degA-degB;\n\
     \    if (degQ < 0) return {Poly{}, *this};\n    if (degQ <= 60 || degB <= 60)\
@@ -287,7 +287,7 @@ data:
   isVerificationFile: true
   path: test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-05 20:40:06+08:00'
+  timestamp: '2024-11-05 20:53:43+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
