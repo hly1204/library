@@ -14,8 +14,8 @@ int main() {
     for (int i = 0; i < n; ++i) std::cin >> A[i];
     for (int i = 0; i < m; ++i) std::cin >> B[i];
     auto [Q, R] = A.euclid_div(B);
-    assert(Q == A / B);
-    assert(R == A % B);
+    assert(Q == A.quo(B));
+    assert(R == A.rem(B));
     std::cout << Q.deg() + 1 << ' ' << R.deg() + 1 << '\n';
     for (int i = 0; i <= Q.deg(); ++i) std::cout << Q[i] << " \n"[i == Q.deg()];
     for (int i = 0; i <= R.deg(); ++i) std::cout << R[i] << " \n"[i == R.deg()];

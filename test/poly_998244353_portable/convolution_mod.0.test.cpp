@@ -12,7 +12,7 @@ int main() {
     Poly A(n), B(m);
     for (int i = 0; i < n; ++i) std::cin >> A[i];
     for (int i = 0; i < m; ++i) std::cin >> B[i];
-    const Poly AB = (A * B).trunc(n + m - 1);
+    const Poly AB = A.mul(B).trunc(n + m - 1);
     for (int i = 0; i < n + m - 1; ++i) std::cout << AB[i] << " \n"[i == n + m - 1];
     return 0;
 }
