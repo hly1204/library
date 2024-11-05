@@ -162,6 +162,7 @@ inline std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const st
 template <typename Tp>
 inline std::vector<Tp> reversion(std::vector<Tp> f, int n) {
     if (n <= 0 || f.size() < 2) return {};
+    assert(f[0] == 0);
     assert(f[1] != 0);
     const auto if1 = f[1].inv();
     if (n == 1) return {Tp()};
