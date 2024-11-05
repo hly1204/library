@@ -84,9 +84,6 @@ data:
     - icon: ':heavy_check_mark:'
       path: poly.hpp
       title: poly.hpp
-    - icon: ':warning:'
-      path: poly_998244353_portable.hpp
-      title: poly_998244353_portable.hpp
     - icon: ':heavy_check_mark:'
       path: poly_basic.hpp
       title: poly_basic.hpp
