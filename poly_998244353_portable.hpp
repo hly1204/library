@@ -468,6 +468,7 @@ public:
   }
 
   Poly pow(long long e, int N) {
+    assert(e >= 0);
     assert(N >= 0);
     if (e == 0) return Poly{MInt(1)}.trunc(N);
     const int O = ord();
