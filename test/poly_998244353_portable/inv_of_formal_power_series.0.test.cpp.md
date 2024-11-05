@@ -18,32 +18,33 @@ data:
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
     \n\n#line 1 \"poly_998244353_portable.hpp\"\n// C++17 & GCC/Clang\n\n#include\
     \ <algorithm>\n#include <array>\n#include <cassert>\n#include <iostream>\n#include\
-    \ <iterator>\n#include <memory>\n#include <utility>\n#include <vector>\n\n// clang-format\
-    \ off\nnamespace hly {\n\ntemplate<unsigned Mod> class ZZ {\n  static_assert((Mod\
-    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n  template<typename Int> static\
-    \ unsigned safe_mod(Int a) {\n    if ((a%=(int)Mod) < 0) a += (int)Mod;\n    return\
-    \ a;\n  }\n  struct PrivateCtor {};\n  static inline PrivateCtor p{};\n  ZZ(PrivateCtor,\
-    \ unsigned a) : a_(a) {}\n  unsigned a_;\n\npublic:\n  static unsigned mod() {\
-    \ return Mod; }\n  static ZZ from_raw(unsigned a) { return ZZ(p, a); }\n  ZZ()\
-    \ : a_() {}\n  template<typename Int> ZZ(Int a) : a_(safe_mod(a)) {}\n  unsigned\
-    \ val() const { return a_; }\n  ZZ operator-() const { return from_raw(a_==0 ?\
-    \ a_ : Mod-a_); }\n  ZZ pow(long long e) const {\n    if (e<0) return inv().pow(-e);\n\
-    \    for (ZZ x(*this), y(from_raw(1));; x *= x) {\n      if (e&1) y *= x;\n  \
-    \    if ((e/=2) == 0) return y;\n    }\n  }\n  ZZ inv() const {\n    int s = 1,\
-    \ t = 0, a = val(), b = Mod;\n    while (b) {\n      const int q = a/b;\n    \
-    \  s = std::exchange(t, s - q*t);\n      a = std::exchange(b, a - q*b);\n    }\n\
-    \    return from_raw(s<0 ? s+(int)Mod : s);\n  }\n  ZZ &operator+=(const ZZ &R)\
-    \ { if ((a_+=R.a_) >= Mod) a_ -= Mod; return *this; }\n  ZZ &operator-=(const\
-    \ ZZ &R) { if ((a_+=Mod-R.a_) >= Mod) a_ -= Mod; return *this; }\n  ZZ &operator*=(const\
-    \ ZZ &R) { a_ = (unsigned long long)a_*R.a_ % Mod; return *this; }\n  ZZ &operator/=(const\
-    \ ZZ &R) { return *this *= R.inv(); }\n  friend ZZ operator+(const ZZ &L, const\
-    \ ZZ &R) { return ZZ(L) += R; }\n  friend ZZ operator-(const ZZ &L, const ZZ &R)\
-    \ { return ZZ(L) -= R; }\n  friend ZZ operator*(const ZZ &L, const ZZ &R) { return\
-    \ ZZ(L) *= R; }\n  friend ZZ operator/(const ZZ &L, const ZZ &R) { return ZZ(L)\
-    \ /= R; }\n  friend bool operator==(const ZZ &L, const ZZ &R) { return L.val()\
-    \ == R.val(); }\n  friend bool operator!=(const ZZ &L, const ZZ &R) { return L.val()\
-    \ != R.val(); }\n  friend std::istream &operator>>(std::istream &L, ZZ &R) { int\
-    \ a; L >> a; R.a_ = safe_mod(a); return L; }\n  friend std::ostream &operator<<(std::ostream\
+    \ <iterator>\n#include <memory>\n#include <tuple>\n#include <utility>\n#include\
+    \ <vector>\n\n// clang-format off\nnamespace hly {\n\ntemplate<unsigned Mod> class\
+    \ ZZ {\n  static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\");\n\
+    \  template<typename Int> static unsigned safe_mod(Int a) {\n    if ((a%=(int)Mod)\
+    \ < 0) a += (int)Mod;\n    return a;\n  }\n  struct PrivateCtor {};\n  static\
+    \ inline PrivateCtor p{};\n  ZZ(PrivateCtor, unsigned a) : a_(a) {}\n  unsigned\
+    \ a_;\n\npublic:\n  static unsigned mod() { return Mod; }\n  static ZZ from_raw(unsigned\
+    \ a) { return ZZ(p, a); }\n  ZZ() : a_() {}\n  template<typename Int> ZZ(Int a)\
+    \ : a_(safe_mod(a)) {}\n  unsigned val() const { return a_; }\n  ZZ operator-()\
+    \ const { return from_raw(a_==0 ? a_ : Mod-a_); }\n  ZZ pow(long long e) const\
+    \ {\n    if (e<0) return inv().pow(-e);\n    for (ZZ x(*this), y(from_raw(1));;\
+    \ x *= x) {\n      if (e&1) y *= x;\n      if ((e/=2) == 0) return y;\n    }\n\
+    \  }\n  ZZ inv() const {\n    int s = 1, t = 0, a = val(), b = Mod;\n    while\
+    \ (b) {\n      const int q = a/b;\n      s = std::exchange(t, s - q*t);\n    \
+    \  a = std::exchange(b, a - q*b);\n    }\n    return from_raw(s<0 ? s+(int)Mod\
+    \ : s);\n  }\n  ZZ &operator+=(const ZZ &R) { if ((a_+=R.a_) >= Mod) a_ -= Mod;\
+    \ return *this; }\n  ZZ &operator-=(const ZZ &R) { if ((a_+=Mod-R.a_) >= Mod)\
+    \ a_ -= Mod; return *this; }\n  ZZ &operator*=(const ZZ &R) { a_ = (unsigned long\
+    \ long)a_*R.a_ % Mod; return *this; }\n  ZZ &operator/=(const ZZ &R) { return\
+    \ *this *= R.inv(); }\n  friend ZZ operator+(const ZZ &L, const ZZ &R) { return\
+    \ ZZ(L) += R; }\n  friend ZZ operator-(const ZZ &L, const ZZ &R) { return ZZ(L)\
+    \ -= R; }\n  friend ZZ operator*(const ZZ &L, const ZZ &R) { return ZZ(L) *= R;\
+    \ }\n  friend ZZ operator/(const ZZ &L, const ZZ &R) { return ZZ(L) /= R; }\n\
+    \  friend bool operator==(const ZZ &L, const ZZ &R) { return L.val() == R.val();\
+    \ }\n  friend bool operator!=(const ZZ &L, const ZZ &R) { return L.val() != R.val();\
+    \ }\n  friend std::istream &operator>>(std::istream &L, ZZ &R) { int a; L >> a;\
+    \ R.a_ = safe_mod(a); return L; }\n  friend std::ostream &operator<<(std::ostream\
     \ &L, const ZZ &R) { return L << R.val(); }\n};\n\nusing MInt = ZZ<998244353>;\n\
     \n// only works for odd prime moduli\nbool is_square(MInt A) { return A.pow((A.mod()-1)/2)\
     \ != MInt::from_raw(A.mod()-1); }\nMInt quadratic_nonresidue() {\n  for (int i\
@@ -56,8 +57,8 @@ data:
     \ {\n    if (e&1) k0 = k1 - k0*k2, k1 *= k3;\n    else k1 = k0*k3 - k1*k2;\n \
     \   if ((e/=2) == 0) return {k0, -k0};\n  }\n}\n\nclass Binomial {\n  std::vector<MInt>\
     \ factorial_ = {MInt(1)};\n  std::vector<MInt> invfactorial_ = {MInt(1)};\n\n\
-    public:\n  void preprocess(int N) {\n    const int NN = factorial_.size();\n \
-    \   if (NN < N) {\n      int k = NN;\n      while (k < N) k *= 2;\n      k = std::min<long\
+    public:\n  void ensure(int N) {\n    const int NN = factorial_.size();\n    if\
+    \ (NN < N) {\n      int k = NN;\n      while (k < N) k *= 2;\n      k = std::min<long\
     \ long>(k, MInt::mod());\n      factorial_.resize(k);\n      invfactorial_.resize(k);\n\
     \      for (int i = NN; i < k; ++i) factorial_[i] = factorial_[i-1] * i;\n   \
     \   invfactorial_.back() = factorial_.back().inv();\n      for (int i = k-2; i\
@@ -103,28 +104,60 @@ data:
     \ N, FFT_INFO.inv_root(N/2));\n  const MInt iv = MInt(N).inv();\n  for (int i\
     \ = 0; i < N; ++i) A[i] *= iv;\n}\n\nvoid fft(std::vector<MInt> &A) { fft_n(A.begin(),\
     \ A.size()); }\nvoid inv_fft(std::vector<MInt> &A) { inv_fft_n(A.begin(), A.size());\
-    \ }\n\nclass Poly : public std::vector<MInt> {\n  using Base = std::vector<MInt>;\n\
-    \  using Base::Base;\n\n  Poly &mul_naive(const Poly &B) {\n    const int degA\
-    \ = deg();\n    const int degB = B.deg();\n    if (degA < 0 || degB < 0) {\n \
-    \     clear();\n      return *this;\n    }\n    Poly AB(degA+degB+1);\n    for\
-    \ (int i = 0; i <= degA; ++i)\n      for (int j = 0; j <= degB; ++j)\n       \
-    \ AB[i+j] += (*this)[i] * B[j];\n    swap(AB);\n    return *this;\n  }\n\n  Poly\
-    \ &mul_fft(Poly B) {\n    const int degA = deg();\n    const int degB = B.deg();\n\
-    \    if (degA < 0 || degB < 0) {\n      clear();\n      return *this;\n    }\n\
-    \    const int len = fft_len(degA+degB+1);\n    resize(len);\n    B.resize(len);\n\
-    \    fft(*this);\n    fft(B);\n    for (int i = 0; i < len; ++i) (*this)[i] *=\
-    \ B[i];\n    inv_fft(*this);\n    resize(degA+degB+1);\n    return *this;\n  }\n\
-    \n  Poly &square_fft() {\n    const int degA = deg();\n    if (degA < 0) return\
-    \ *this;\n    const int len = fft_len(degA*2 + 1);\n    resize(len);\n    fft(*this);\n\
-    \    for (int i = 0; i < len; ++i) (*this)[i] *= (*this)[i];\n    inv_fft(*this);\n\
-    \    resize(degA*2 + 1);\n    return *this;\n  }\n\n  // returns (quotient, remainder)\n\
-    \  // O(deg(Q)deg(B))\n  std::array<Poly, 2> euclid_div_naive(const Poly &B) const\
-    \ {\n    const int degA = deg();\n    const int degB = B.deg();\n    assert(degB\
-    \ >= 0);\n    const int degQ = degA-degB;\n    if (degQ < 0) return {Poly{}, *this};\n\
-    \    Poly Q(degQ+1), R(*this);\n    const MInt iv = B[degB].inv();\n    for (int\
-    \ i = degQ, n = degA; i >= 0; --i)\n      if ((Q[i] = R[n--] * iv) != 0)\n   \
-    \     for (int j = 0; j <= degB; ++j)\n          R[i+j] -= Q[i] * B[j];\n    R.resize(degB);\n\
-    \    return {Q, R};\n  }\n\n  // O(min(deg(Q)^2,deg(Q)deg(B)))\n  Poly euclid_div_quotient_naive(const\
+    \ }\n\n// returns coefficients generated by closure\n// closure: gen(index, current_product)\n\
+    template<typename Closure> std::vector<MInt>\nsemi_relaxed_conv(const std::vector<MInt>\
+    \ &A, Closure Gen, int N) {\n  enum { BaseCaseSize = 32 };\n  static_assert((BaseCaseSize\
+    \ & (BaseCaseSize - 1)) == 0);\n  static const int Block[] = {16, 16, 16, 16,\
+    \ 16};\n  // returns (which_block, level, blocksize)\n  auto blockinfo = [](int\
+    \ ind) {\n    int i = ind / BaseCaseSize, lv = 0, blocksize = BaseCaseSize;\n\
+    \    while ((i & (Block[lv] - 1)) == 0) i /= Block[lv], blocksize *= Block[lv],\
+    \ ++lv;\n    return std::make_tuple(i & (Block[lv]-1), lv, blocksize);\n  };\n\
+    \  std::vector<MInt> B(N), AB(N);\n  std::vector<std::vector<std::vector<MInt>>>\
+    \ dftA, dftB;\n  for (int i = 0; i < N; ++i) {\n    const int S = i & (BaseCaseSize-1);\n\
+    \    // blocked contribution\n    if (i >= BaseCaseSize && S == 0) {\n      const\
+    \ auto [j, lv, blocksize]  = blockinfo(i);\n      if (blocksize * j == i) {\n\
+    \        if ((int)dftA.size() == lv) {\n          dftA.emplace_back();\n     \
+    \     dftB.emplace_back(Block[lv]-1);\n        }\n        if ((j-1) * blocksize\
+    \ < (int)A.size()) {\n          dftA[lv].emplace_back(A.begin() + (j-1) * blocksize,\n\
+    \                                A.begin() + std::min<int>((j+1) * blocksize,\
+    \ A.size()))\n                  .resize(blocksize * 2);\n          fft(dftA[lv][j-1]);\n\
+    \        }\n      }\n      // if A is not empty, ...\n      if (!dftA[lv].empty())\
+    \ {\n        dftB[lv][j-1].resize(blocksize*2);\n        std::fill_n(std::copy_n(B.begin()\
+    \ + (i-blocksize), blocksize, dftB[lv][j-1].begin()), blocksize, MInt());\n  \
+    \      fft(dftB[lv][j-1]);\n        // middle product\n        std::vector<MInt>\
+    \ mp(blocksize*2);\n        for (int k = 0; k < std::min<int>(j, dftA[lv].size());\
+    \ ++k)\n          for (int l = 0; l < blocksize*2; ++l)\n            mp[l] +=\
+    \ dftA[lv][k][l] * dftB[lv][j-1-k][l];\n        inv_fft(mp);\n        for (int\
+    \ k = 0; k < blocksize && i+k < N; ++k) AB[i+k] += mp[k+blocksize];\n      }\n\
+    \    }\n    // basecase contribution\n    for (int j = std::max(i-S, i-(int)A.size()+1);\
+    \ j < i; ++j) AB[i] += A[i-j] * B[j];\n    B[i] = Gen(i, AB);\n    if (!A.empty())\
+    \ AB[i] += A[0] * B[i];\n  }\n  return B;\n}\n\n// Polynomial operations:\n//\
+    \    add(+), sub(-), mul(*), quo(/), rem(%), shl(<<=), shr(>>=) <- auto shrink\n\
+    //    taylor_shift                                               <- no shrink\n\
+    // Formal Power Series operations:\n//    inv, div, log, exp                 \
+    \                        <- no shrink\nclass Poly : public std::vector<MInt> {\n\
+    \  using Base = std::vector<MInt>;\n  using Base::Base;\n\n  Poly &mul_naive(const\
+    \ Poly &B) {\n    const int degA = deg();\n    const int degB = B.deg();\n   \
+    \ if (degA < 0 || degB < 0) {\n      clear();\n      return *this;\n    }\n  \
+    \  Poly AB(degA+degB+1);\n    for (int i = 0; i <= degA; ++i)\n      for (int\
+    \ j = 0; j <= degB; ++j)\n        AB[i+j] += (*this)[i] * B[j];\n    swap(AB);\n\
+    \    return *this;\n  }\n\n  Poly &mul_fft(Poly B) {\n    const int degA = deg();\n\
+    \    const int degB = B.deg();\n    if (degA < 0 || degB < 0) {\n      clear();\n\
+    \      return *this;\n    }\n    const int len = fft_len(degA+degB+1);\n    resize(len);\n\
+    \    B.resize(len);\n    fft(*this);\n    fft(B);\n    for (int i = 0; i < len;\
+    \ ++i) (*this)[i] *= B[i];\n    inv_fft(*this);\n    resize(degA+degB+1);\n  \
+    \  return *this;\n  }\n\n  Poly &square_fft() {\n    const int degA = deg();\n\
+    \    if (degA < 0) return *this;\n    const int len = fft_len(degA*2 + 1);\n \
+    \   resize(len);\n    fft(*this);\n    for (int i = 0; i < len; ++i) (*this)[i]\
+    \ *= (*this)[i];\n    inv_fft(*this);\n    resize(degA*2 + 1);\n    return *this;\n\
+    \  }\n\n  // returns (quotient, remainder)\n  // O(deg(Q)deg(B))\n  std::array<Poly,\
+    \ 2> euclid_div_naive(const Poly &B) const {\n    const int degA = deg();\n  \
+    \  const int degB = B.deg();\n    assert(degB >= 0);\n    const int degQ = degA-degB;\n\
+    \    if (degQ < 0) return {Poly{}, *this};\n    Poly Q(degQ+1), R(*this);\n  \
+    \  const MInt iv = B[degB].inv();\n    for (int i = degQ, n = degA; i >= 0; --i)\n\
+    \      if ((Q[i] = R[n--] * iv) != 0)\n        for (int j = 0; j <= degB; ++j)\n\
+    \          R[i+j] -= Q[i] * B[j];\n    R.resize(degB);\n    return {Q, R};\n \
+    \ }\n\n  // O(min(deg(Q)^2,deg(Q)deg(B)))\n  Poly euclid_div_quotient_naive(const\
     \ Poly &B) const {\n    const int degA = deg();\n    const int degB = B.deg();\n\
     \    assert(degB >= 0);\n    const int degQ = degA-degB;\n    if (degQ < 0) return\
     \ {};\n    Poly Q(degQ+1);\n    const MInt iv = B[degB].inv();\n    for (int i\
@@ -145,94 +178,79 @@ data:
     \ const {\n    const int N = (int)size()-1;\n    if (N <= 0) return {};\n    Poly\
     \ res(N);\n    for (int i = 1; i <= N; ++i) res[i-1] = (*this)[i] * i;\n    return\
     \ res;\n  }\n  Poly integr(MInt c = 0) const {\n    const int N = (int)size()+1;\n\
-    \    BIN.preprocess(N);\n    Poly res(N);\n    res[0] = c;\n    for (int i = 1;\
-    \ i < N; ++i) res[i] = (*this)[i-1] * BIN.inv(i);\n    return res;\n  }\n\n  Poly\
+    \    BIN.ensure(N);\n    Poly res(N);\n    res[0] = c;\n    for (int i = 1; i\
+    \ < N; ++i) res[i] = (*this)[i-1] * BIN.inv(i);\n    return res;\n  }\n\n  Poly\
     \ taylor_shift(MInt c) const {\n    if (c == 0) return Poly(*this);\n    Poly\
-    \ A(*this);\n    const int N = A.size();\n    BIN.preprocess(N);\n    for (int\
-    \ i = 0; i < N; ++i) A[i] *= BIN.factorial(i);\n    MInt cc = 1;\n    Poly B(N);\n\
+    \ A(*this);\n    const int N = A.size();\n    BIN.ensure(N);\n    for (int i =\
+    \ 0; i < N; ++i) A[i] *= BIN.factorial(i);\n    MInt cc = 1;\n    Poly B(N);\n\
     \    for (int i = 0; i < N; ++i) {\n      B[i] = cc * BIN.inv_factorial(i);\n\
-    \      cc *= c;\n    }\n    std::reverse(A.begin(), A.end());\n    A *= B;\n \
-    \   A.resize(N);\n    std::reverse(A.begin(), A.end());\n    for (int i = 0; i\
-    \ < N; ++i) A[i] *= BIN.inv_factorial(i);\n    return A;\n  }\n\n  // FPS operation\n\
-    \  // see:\n  // [1]: \u5173\u4E8E\u4F18\u5316\u5F62\u5F0F\u5E42\u7EA7\u6570\u8BA1\
-    \u7B97\u7684 Newton \u6CD5\u7684\u5E38\u6570\n  //      https://negiizhao.blog.uoj.ac/blog/4671\n\
-    \  Poly inv(int N) const {\n    // total cost = 10 E(N)\n    assert(N >= 0);\n\
-    \    assert(ord() == 0);\n    if (N == 0) return {};\n    const int len = fft_len(N);\n\
-    \    Poly invA(len), shopA(len), shopB(len);\n    invA[0] = (*this)[0].inv();\n\
-    \    // total cost = cost of last iteration * 2\n    for (int i = 2; i <= len;\
-    \ i *= 2) {\n      std::fill(std::copy_n(begin(), std::min<int>(size(), i), shopA.begin()),\n\
-    \                shopA.begin() + i, MInt());\n      std::copy_n(invA.begin(),\
-    \ i, shopB.begin());\n      fft_n(shopA.begin(), i); // E(N)\n      fft_n(shopB.begin(),\
-    \ i); // E(N)\n      for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];\n     \
-    \ inv_fft_n(shopA.begin(), i); // E(N)\n      std::fill_n(shopA.begin(), i/2,\
-    \ MInt());\n      fft_n(shopA.begin(), i); // E(N)\n      for (int j = 0; j <\
-    \ i; ++j) shopA[j] *= shopB[j];\n      inv_fft_n(shopA.begin(), i); // E(N)\n\
-    \      for (int j = i/2; j < i; ++j) invA[j] = -shopA[j];\n    }\n    invA.resize(N);\n\
-    \    return invA;\n  }\n\n  // see:\n  // [1]: \u5173\u4E8E\u4F18\u5316\u5F62\u5F0F\
-    \u5E42\u7EA7\u6570\u8BA1\u7B97\u7684 Newton \u6CD5\u7684\u5E38\u6570\n  //   \
-    \   https://negiizhao.blog.uoj.ac/blog/4671\n  Poly div(const Poly &R, int N)\
-    \ const {\n    // total cost = 13 E(N)\n    assert(N >= 0);\n    assert(R.ord()\
-    \ == 0);\n    if (N == 0) return {};\n    if (N == 1) return {(*this)[0]/R[0]};\n\
-    \    const int len = fft_len(N);\n    Poly LdivR(len);\n    Poly shopA = R.inv(len/2);\
-    \ // 5 E(N)\n    Poly shopB = trunc(len/2);\n    Poly shopC = R.trunc(len);\n\
-    \    shopA.resize(len);\n    fft(shopA); // E(N)\n    shopB.resize(len);\n   \
-    \ fft(shopB); // E(N)\n    for (int i = 0; i < len; ++i) shopB[i] *= shopA[i];\n\
-    \    inv_fft(shopB); // E(N)\n    std::copy_n(shopB.begin(), len/2, LdivR.begin());\n\
-    \    std::fill_n(shopB.begin() + len/2, len/2, MInt());\n    fft(shopB); // E(N)\n\
-    \    fft(shopC); // E(N)\n    for (int i = 0; i < len; ++i) shopC[i] *= shopB[i];\n\
-    \    inv_fft(shopC); // E(N)\n    std::fill_n(shopC.begin(), len/2, MInt());\n\
-    \    for (int i = len/2; i < std::min<int>(len, size()); ++i) shopC[i] = (*this)[i]\
-    \ - shopC[i];\n    for (int i = std::min<int>(len, size()); i < len; ++i) shopC[i]\
-    \ = -shopC[i];\n    fft(shopC); // E(N)\n    for (int i = 0; i < len; ++i) shopC[i]\
-    \ *= shopA[i];\n    inv_fft(shopC); // E(N)\n    std::copy_n(shopC.begin() + len/2,\
-    \ len/2, LdivR.begin() + len/2);\n    LdivR.resize(N);\n    return LdivR;\n  }\n\
-    \n  Poly log(int N) const {\n    assert(N >= 0);\n    assert(ord() == 0);\n  \
-    \  assert((*this)[0] == 1);\n    if (N == 0) return {};\n    return deriv().div(*this,\
-    \ N-1).integr();\n  }\n\n  std::array<Poly, 2> euclid_div(const Poly &B) const\
-    \ {\n    const int degA = deg();\n    const int degB = B.deg();\n    assert(degB\
-    \ >= 0);\n    const int degQ = degA-degB;\n    if (degQ < 0) return {Poly{}, *this};\n\
-    \    if (degQ <= 60 || degB <= 60) return euclid_div_naive(B);\n    const Poly\
-    \ Q = rev().div(B.rev(), degQ+1).rev(degQ+1);\n    auto make_cyclic = [](const\
-    \ Poly &A, int N) {\n      assert((N & (N-1)) == 0);\n      Poly B(N);\n     \
-    \ for (int i = 0; i < (int)A.size(); ++i) B[i & (N-1)] += A[i];\n      return\
-    \ B;\n    };\n    assert(degB > 0);\n    const int len = fft_len(degB);\n    Poly\
-    \ cyclicA = make_cyclic(*this, len);\n    Poly cyclicB = make_cyclic(B, len);\n\
-    \    Poly cyclicQ = make_cyclic(Q, len);\n    fft(cyclicB);\n    fft(cyclicQ);\n\
-    \    for (int i = 0; i < len; ++i) cyclicQ[i] *= cyclicB[i];\n    inv_fft(cyclicQ);\n\
-    \    cyclicA.resize(degB);\n    // R=A-QB (mod (x^n - 1)) (n >= deg(B))\n    for\
-    \ (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicQ[i];\n    cyclicA.shrink();\n\
-    \    return {Q, cyclicA};\n  }\n\n  Poly operator-() const {\n    const int D\
-    \ = deg();\n    Poly res(D+1);\n    for (int i = 0; i <= D; ++i) res[i] = -(*this)[i];\n\
-    \    return res;\n  }\n  Poly &operator+=(const Poly &B) {\n    if (size() < B.size())\
-    \ resize(B.size());\n    for (int i = 0; i < (int)B.size(); ++i) (*this)[i] +=\
-    \ B[i];\n    return shrink();\n  }\n  Poly &operator-=(const Poly &B) {\n    if\
-    \ (size() < B.size()) resize(B.size());\n    for (int i = 0; i < (int)B.size();\
-    \ ++i) (*this)[i] -= B[i];\n    return shrink();\n  }\n  Poly &operator*=(const\
-    \ Poly &B) {\n    if (deg() <= 60 || B.deg() <= 60) return mul_naive(B);\n   \
-    \ if (std::addressof(*this) == std::addressof(B)) return square_fft();\n    return\
-    \ mul_fft(B);\n  }\n  Poly &operator/=(const Poly &B) {\n    const int degA =\
-    \ deg();\n    const int degB = B.deg();\n    assert(degB >= 0);\n    const int\
-    \ degQ = degA-degB;\n    if (degQ <= 60 || degB <= 60) return *this = euclid_div_quotient_naive(B);\n\
-    \    return *this = rev().div(B.rev(), degQ+1).rev(degQ+1);\n  }\n  Poly &operator%=(const\
-    \ Poly &B) { return *this = std::get<1>(euclid_div(B)); }\n\n  Poly &operator<<=(int\
+    \      cc *= c;\n    }\n    std::reverse(A.begin(), A.end());\n    A.mul_assign(B);\n\
+    \    A.resize(N);\n    std::reverse(A.begin(), A.end());\n    for (int i = 0;\
+    \ i < N; ++i) A[i] *= BIN.inv_factorial(i);\n    return A;\n  }\n\n  Poly inv(int\
+    \ N) const {\n    assert(N >= 0);\n    assert(ord() == 0);\n    auto Gen = [iv\
+    \ = (*this)[0].inv()](int N, const std::vector<MInt> &C) {\n      return N==0\
+    \ ? iv : -C[N]*iv;\n    };\n    const std::vector<MInt> res = semi_relaxed_conv(*this,\
+    \ Gen, N);\n    return Poly(res.begin(), res.end());\n  }\n\n  Poly div(const\
+    \ Poly &R, int N) const {\n    assert(N >= 0);\n    assert(R.ord() == 0);\n  \
+    \  auto Gen = [this, iv = R[0].inv()](int N, const std::vector<MInt> &C) {\n \
+    \     return (N<(int)size() ? ((*this)[N]-C[N]) : -C[N]) * iv;\n    };\n    const\
+    \ std::vector<MInt> res = semi_relaxed_conv(R, Gen, N);\n    return Poly(res.begin(),\
+    \ res.end());\n  }\n\n  Poly log(int N) const {\n    assert(N >= 0);\n    assert(ord()\
+    \ == 0);\n    assert((*this)[0] == 1);\n    if (N == 0) return {};\n    return\
+    \ deriv().div(*this, N-1).integr();\n  }\n\n  Poly exp(int N) const {\n    assert(N\
+    \ >= 0);\n    assert(ord() != 0);\n    BIN.ensure(N);\n    auto Gen = [](int N,\
+    \ const std::vector<MInt> &C) {\n      return N==0 ? MInt(1) : C[N-1]*BIN.inv(N);\n\
+    \    };\n    const std::vector<MInt> res = semi_relaxed_conv(deriv(), Gen, N);\n\
+    \    return Poly(res.begin(), res.end());\n  }\n\n  Poly pow1(long long e, int\
+    \ N) const {\n    assert(N >= 0);\n    assert(ord() == 0);\n    assert((*this)[0]\
+    \ == 1);\n    return log(N).mul(Poly{MInt(e)}).exp(N);\n  }\n\n  Poly pow(long\
+    \ long e, int N) {\n    assert(N >= 0);\n    if (e == 0) return Poly{MInt(1)}.trunc(N);\n\
+    \    const int O = ord();\n    if (O < 0 || O > N/e || (O == N/e && N%e == 0))\
+    \ return Poly(N);\n    return shr(O).mul(Poly{(*this)[O].inv()})\n           \
+    \      .pow1(e, N - O*e)\n                 .mul(Poly{(*this)[O].pow(e)})\n   \
+    \              .shl(O*e)\n                 .trunc(N);\n  }\n\n  std::array<Poly,\
+    \ 2> euclid_div(const Poly &B) const {\n    const int degA = deg();\n    const\
+    \ int degB = B.deg();\n    assert(degB >= 0);\n    const int degQ = degA-degB;\n\
+    \    if (degQ < 0) return {Poly{}, *this};\n    if (degQ <= 60 || degB <= 60)\
+    \ return euclid_div_naive(B);\n    const Poly Q = rev().div(B.rev(), degQ+1).rev(degQ+1);\n\
+    \    auto make_cyclic = [](const Poly &A, int N) {\n      assert((N & (N-1)) ==\
+    \ 0);\n      Poly B(N);\n      for (int i = 0; i < (int)A.size(); ++i) B[i & (N-1)]\
+    \ += A[i];\n      return B;\n    };\n    assert(degB > 0);\n    const int len\
+    \ = fft_len(degB);\n    Poly cyclicA = make_cyclic(*this, len);\n    Poly cyclicB\
+    \ = make_cyclic(B, len);\n    Poly cyclicQ = make_cyclic(Q, len);\n    fft(cyclicB);\n\
+    \    fft(cyclicQ);\n    for (int i = 0; i < len; ++i) cyclicQ[i] *= cyclicB[i];\n\
+    \    inv_fft(cyclicQ);\n    cyclicA.resize(degB);\n    // R=A-QB (mod (x^n - 1))\
+    \ (n >= deg(B))\n    for (int i = 0; i < degB; ++i) cyclicA[i] -= cyclicQ[i];\n\
+    \    cyclicA.shrink();\n    return {Q, cyclicA};\n  }\n\n  Poly neg() const {\n\
+    \    const int D = deg();\n    Poly res(D+1);\n    for (int i = 0; i <= D; ++i)\
+    \ res[i] = -(*this)[i];\n    return res;\n  }\n  Poly add(const Poly &B) const\
+    \ { return Poly(*this).add_assign(B); }\n  Poly sub(const Poly &B) const { return\
+    \ Poly(*this).sub_assign(B); }\n  Poly mul(const Poly &B) const { return Poly(*this).mul_assign(B);\
+    \ }\n  Poly quo(const Poly &B) const { return Poly(*this).quo_assign(B); }\n \
+    \ Poly rem(const Poly &B) const { return Poly(*this).rem_assign(B); }\n  Poly\
+    \ shl(int D) const { return Poly(*this).shl_assign(D); }\n  Poly shr(int D) const\
+    \ { return Poly(*this).shr_assign(D); }\n\n  Poly &add_assign(const Poly &B) {\n\
+    \    if (size() < B.size()) resize(B.size());\n    for (int i = 0; i < (int)B.size();\
+    \ ++i) (*this)[i] += B[i];\n    return shrink();\n  }\n  Poly &sub_assign(const\
+    \ Poly &B) {\n    if (size() < B.size()) resize(B.size());\n    for (int i = 0;\
+    \ i < (int)B.size(); ++i) (*this)[i] -= B[i];\n    return shrink();\n  }\n  Poly\
+    \ &mul_assign(const Poly &B) {\n    if (deg() <= 60 || B.deg() <= 60) return mul_naive(B);\n\
+    \    if (std::addressof(*this) == std::addressof(B)) return square_fft();\n  \
+    \  return mul_fft(B);\n  }\n  Poly &quo_assign(const Poly &B) {\n    const int\
+    \ degA = deg();\n    const int degB = B.deg();\n    assert(degB >= 0);\n    const\
+    \ int degQ = degA-degB;\n    if (degQ <= 60 || degB <= 60) return *this = euclid_div_quotient_naive(B);\n\
+    \    return *this = rev().div(B.rev(), degQ+1).rev(degQ+1);\n  }\n  Poly &rem_assign(const\
+    \ Poly &B) { return *this = std::get<1>(euclid_div(B)); }\n  Poly &shl_assign(int\
     \ D) {\n    if (D > 0) {\n      insert(begin(), D, MInt());\n    } else if (D\
     \ < 0) {\n      if (-D < (int)size()) erase(begin(), begin() + (-D));\n      else\
-    \ clear();\n    }\n    return shrink();\n  }\n  Poly &operator>>=(int D) { return\
-    \ operator<<=(-D); }\n  friend Poly operator+(const Poly &L, const Poly &R) {\
-    \ return Poly(L) += R; }\n  friend Poly operator-(const Poly &L, const Poly &R)\
-    \ { return Poly(L) -= R; }\n  friend Poly operator*(const Poly &L, const Poly\
-    \ &R) { \n    if (std::addressof(L) == std::addressof(R)) {\n      Poly LL(L);\n\
-    \      return LL *= LL;\n    }\n    return Poly(L) *= R;\n  }\n  friend Poly operator/(const\
-    \ Poly &L, const Poly &R) { return Poly(L) /= R; }\n  friend Poly operator%(const\
-    \ Poly &L, const Poly &R) { return Poly(L) %= R; }\n  friend Poly operator<<(const\
-    \ Poly &L, int D) { return Poly(L) <<= D; }\n  friend Poly operator>>(const Poly\
-    \ &L, int D) { return Poly(L) >>= D; }\n  friend std::ostream &operator<<(std::ostream\
-    \ &L, const Poly &R) {\n    L << '[';\n    const int D = R.deg();\n    if (D <\
-    \ 0) {\n      L << '0';\n    } else {\n      for (int i = 0; i <= D; ++i) {\n\
-    \        L << R[i];\n        if (i == 1) L << \"*x\";\n        if (i >  1) L <<\
-    \ \"*x^\" << i;\n        if (i != D) L << \" + \";\n      }\n    }\n    return\
-    \ L << ']';\n  }\n};\n\n// returns F(G) mod x^N\n// see:\n// [1]: Yasunori Kinoshita,\
-    \ Baitian Li. Power Series Composition in Near-Linear Time.\n//      https://arxiv.org/abs/2404.05177\n\
+    \ clear();\n    }\n    return shrink();\n  }\n  Poly &shr_assign(int D) { return\
+    \ shl_assign(-D); }\n\n  friend std::ostream &operator<<(std::ostream &L, const\
+    \ Poly &R) {\n    L << '[';\n    const int D = R.deg();\n    if (D < 0) {\n  \
+    \    L << '0';\n    } else {\n      for (int i = 0; i <= D; ++i) {\n        L\
+    \ << R[i];\n        if (i == 1) L << \"*x\";\n        if (i >  1) L << \"*x^\"\
+    \ << i;\n        if (i != D) L << \" + \";\n      }\n    }\n    return L << ']';\n\
+    \  }\n};\n\n// returns F(G) mod x^N\n// see:\n// [1]: Yasunori Kinoshita, Baitian\
+    \ Li. Power Series Composition in Near-Linear Time.\n//      https://arxiv.org/abs/2404.05177\n\
     Poly composition(const Poly &F, const Poly &G, int N) {\n  if (N == 0) return\
     \ {};\n  // [y^(-1)] (f(y) / (-g(x) + y)) mod x^N in R[x]((y^(-1)))\n  auto rec\
     \ = [](auto &&rec, const Poly &P, const Poly &Q, int D, int N) {\n    assert((int)P.size()\
@@ -250,8 +268,8 @@ data:
     \    for (int i = 0; i < D; ++i)\n      for (int j = 0; j < N; ++j)\n        U[i*N\
     \ + j] = U[(i+D)*(N*2) + j];\n    U.resize(D*N);\n    return U;\n  };\n  const\
     \ int L = fft_len(N);\n  const MInt c = G.empty() ? MInt() : G[0];\n  return rec(rec,\
-    \ F.taylor_shift(c).trunc(L), (-(G - Poly{c})).trunc(L), 1, L).trunc(N);\n}\n\n\
-    }\n// clang-format on\n#line 5 \"test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp\"\
+    \ F.taylor_shift(c).trunc(L), G.sub(Poly{c}).neg().trunc(L), 1, L).trunc(N);\n\
+    }\n\n}\n// clang-format on\n#line 5 \"test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using namespace hly;\n    int n;\n    std::cin >> n;\n    Poly A(n);\n  \
     \  for (int i = 0; i < n; ++i) std::cin >> A[i];\n    const Poly invA = A.inv(n);\n\
@@ -268,7 +286,7 @@ data:
   isVerificationFile: true
   path: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-04 23:25:08+08:00'
+  timestamp: '2024-11-05 20:40:06+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp

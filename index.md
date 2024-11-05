@@ -334,6 +334,9 @@ data:
       path: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
       title: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/poly_998244353_portable/exp_of_formal_power_series.0.test.cpp
+      title: test/poly_998244353_portable/exp_of_formal_power_series.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
       title: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
     - icon: ':heavy_check_mark:'
