@@ -84,7 +84,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: poly.hpp
       title: poly.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':warning:'
       path: poly_998244353_portable.hpp
       title: poly_998244353_portable.hpp
     - icon: ':heavy_check_mark:'
@@ -322,32 +322,6 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/number_theory/yukicoder187.0.test.cpp
       title: test/number_theory/yukicoder187.0.test.cpp
-  - name: test/poly_998244353_portable
-    pages:
-    - icon: ':heavy_check_mark:'
-      path: test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
-      title: test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/poly_998244353_portable/convolution_mod.0.test.cpp
-      title: test/poly_998244353_portable/convolution_mod.0.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
-      title: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/poly_998244353_portable/exp_of_formal_power_series.0.test.cpp
-      title: test/poly_998244353_portable/exp_of_formal_power_series.0.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
-      title: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp
-      title: test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
-      title: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/poly_998244353_portable/pow_of_formal_power_series.0.test.cpp
-      title: test/poly_998244353_portable/pow_of_formal_power_series.0.test.cpp
   - name: test/set_power_series
     pages:
     - icon: ':heavy_check_mark:'

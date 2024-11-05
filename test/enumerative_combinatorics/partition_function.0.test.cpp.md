@@ -273,11 +273,11 @@ data:
     \ something.\n    std::reverse(PinvQ.begin(), PinvQ.end());\n    return PinvQ;\n\
     }\n\n// returns g s.t. f(g) = g(f) = x mod x^n\ntemplate <typename Tp>\ninline\
     \ std::vector<Tp> reversion(std::vector<Tp> f, int n) {\n    if (n <= 0 || f.size()\
-    \ < 2) return {};\n    assert(f[1] != 0);\n    const auto if1 = f[1].inv();\n\
-    \    if (n == 1) return {Tp()};\n    f.resize(n);\n    Tp ff = 1;\n    for (int\
-    \ i = 1; i < n; ++i) f[i] *= ff *= if1;\n    auto a     = enum_kth_term_of_power(f,\
-    \ {Tp(1)}, n - 1, n);\n    auto &&bin = Binomial<Tp>::get(n);\n    for (int i\
-    \ = 1; i < n; ++i) a[i] *= (n - 1) * bin.inv(i);\n    auto b = pow(std::vector(a.rbegin(),\
+    \ < 2) return {};\n    assert(f[0] == 0);\n    assert(f[1] != 0);\n    const auto\
+    \ if1 = f[1].inv();\n    if (n == 1) return {Tp()};\n    f.resize(n);\n    Tp\
+    \ ff = 1;\n    for (int i = 1; i < n; ++i) f[i] *= ff *= if1;\n    auto a    \
+    \ = enum_kth_term_of_power(f, {Tp(1)}, n - 1, n);\n    auto &&bin = Binomial<Tp>::get(n);\n\
+    \    for (int i = 1; i < n; ++i) a[i] *= (n - 1) * bin.inv(i);\n    auto b = pow(std::vector(a.rbegin(),\
     \ a.rend() - 1), Tp(1 - n).inv().val(), n - 1);\n    for (int i = 0; i < n - 1;\
     \ ++i) b[i] *= if1;\n    b.insert(b.begin(), 0);\n    return b;\n}\n#line 2 \"\
     fps_polya.hpp\"\n\n#line 7 \"fps_polya.hpp\"\n\n// returns SEQ(A)=1/(1-a)\ntemplate\
@@ -479,7 +479,7 @@ data:
   isVerificationFile: true
   path: test/enumerative_combinatorics/partition_function.0.test.cpp
   requiredBy: []
-  timestamp: '2024-10-10 23:07:33+08:00'
+  timestamp: '2024-11-05 23:00:29+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/enumerative_combinatorics/partition_function.0.test.cpp

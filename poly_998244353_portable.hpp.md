@@ -2,34 +2,10 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
-  _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
-    title: test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/poly_998244353_portable/convolution_mod.0.test.cpp
-    title: test/poly_998244353_portable/convolution_mod.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
-    title: test/poly_998244353_portable/division_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/poly_998244353_portable/exp_of_formal_power_series.0.test.cpp
-    title: test/poly_998244353_portable/exp_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
-    title: test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp
-    title: test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
-    title: test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/poly_998244353_portable/pow_of_formal_power_series.0.test.cpp
-    title: test/poly_998244353_portable/pow_of_formal_power_series.0.test.cpp
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':warning:'
   attributes:
     links:
     - https://arxiv.org/abs/2404.05177
@@ -545,16 +521,8 @@ data:
   path: poly_998244353_portable.hpp
   requiredBy: []
   timestamp: '2024-11-05 20:53:43+08:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - test/poly_998244353_portable/division_of_polynomials.0.test.cpp
-  - test/poly_998244353_portable/inv_of_formal_power_series.0.test.cpp
-  - test/poly_998244353_portable/pow_of_formal_power_series.0.test.cpp
-  - test/poly_998244353_portable/convolution_mod.0.test.cpp
-  - test/poly_998244353_portable/composition_of_formal_power_series_large.0.test.cpp
-  - test/poly_998244353_portable/log_of_formal_power_series.0.test.cpp
-  - test/poly_998244353_portable/polynomial_taylor_shift.0.test.cpp
-  - test/poly_998244353_portable/exp_of_formal_power_series.0.test.cpp
+  verificationStatus: LIBRARY_NO_TESTS
+  verifiedWith: []
 documentation_of: poly_998244353_portable.hpp
 layout: document
 redirect_from:
