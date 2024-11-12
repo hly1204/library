@@ -224,20 +224,20 @@ data:
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
     #line 8 \"test/enumerative_combinatorics/bell_number.0.test.cpp\"\n\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> bell_numbers(int n) {\n    if (n == 0)\
-    \ return {};\n    auto &&bin = Binomial<Tp>::get(n);\n    std::vector<Tp> ex(n);\n\
-    \    for (int i = 1; i < n; ++i) ex[i] = bin.inv_factorial(i);\n    auto res =\
-    \ exp(ex, n);\n    for (int i = 0; i < n; ++i) res[i] *= bin.factorial(i);\n \
-    \   return res;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n  \
-    \  std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n \
-    \   std::cin >> n;\n    const auto B = bell_numbers<mint>(n + 1);\n    for (int\
-    \ i = 0; i <= n; ++i) std::cout << B[i] << ' ';\n    return 0;\n}\n"
+    \ <typename Tp>\ninline std::vector<Tp> bell_numbers(int n) {\n    auto &&bin\
+    \ = Binomial<Tp>::get(n);\n    std::vector<Tp> ex(n);\n    for (int i = 1; i <\
+    \ n; ++i) ex[i] = bin.inv_factorial(i);\n    auto res = exp(ex, n);\n    for (int\
+    \ i = 0; i < n; ++i) res[i] *= bin.factorial(i);\n    return res;\n}\n\nint main()\
+    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
+    \ mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    const auto B\
+    \ = bell_numbers<mint>(n + 1);\n    for (int i = 0; i <= n; ++i) std::cout <<\
+    \ B[i] << ' ';\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/bell_number\"\n\n#include\
     \ \"binomial.hpp\"\n#include \"fps_basic.hpp\"\n#include \"modint.hpp\"\n#include\
     \ <iostream>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ bell_numbers(int n) {\n    if (n == 0) return {};\n    auto &&bin = Binomial<Tp>::get(n);\n\
-    \    std::vector<Tp> ex(n);\n    for (int i = 1; i < n; ++i) ex[i] = bin.inv_factorial(i);\n\
-    \    auto res = exp(ex, n);\n    for (int i = 0; i < n; ++i) res[i] *= bin.factorial(i);\n\
+    \ bell_numbers(int n) {\n    auto &&bin = Binomial<Tp>::get(n);\n    std::vector<Tp>\
+    \ ex(n);\n    for (int i = 1; i < n; ++i) ex[i] = bin.inv_factorial(i);\n    auto\
+    \ res = exp(ex, n);\n    for (int i = 0; i < n; ++i) res[i] *= bin.factorial(i);\n\
     \    return res;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n \
     \   std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
     \    std::cin >> n;\n    const auto B = bell_numbers<mint>(n + 1);\n    for (int\
@@ -251,7 +251,7 @@ data:
   isVerificationFile: true
   path: test/enumerative_combinatorics/bell_number.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-12 18:53:15+08:00'
+  timestamp: '2024-11-12 18:56:32+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/enumerative_combinatorics/bell_number.0.test.cpp
