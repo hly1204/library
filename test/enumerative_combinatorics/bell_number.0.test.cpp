@@ -8,7 +8,6 @@
 
 template <typename Tp>
 inline std::vector<Tp> bell_numbers(int n) {
-    if (n == 0) return {};
     auto &&bin = Binomial<Tp>::get(n);
     std::vector<Tp> ex(n);
     for (int i = 1; i < n; ++i) ex[i] = bin.inv_factorial(i);
