@@ -197,6 +197,9 @@ data:
   - name: test/enumerative_combinatorics
     pages:
     - icon: ':heavy_check_mark:'
+      path: test/enumerative_combinatorics/bell_number.0.test.cpp
+      title: test/enumerative_combinatorics/bell_number.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/enumerative_combinatorics/partition_function.0.test.cpp
       title: test/enumerative_combinatorics/partition_function.0.test.cpp
     - icon: ':heavy_check_mark:'

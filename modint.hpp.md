@@ -31,6 +31,9 @@ data:
     path: test/data_structure/range_affine_range_sum.0.test.cpp
     title: test/data_structure/range_affine_range_sum.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/enumerative_combinatorics/bell_number.0.test.cpp
+    title: test/enumerative_combinatorics/bell_number.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/partition_function.0.test.cpp
     title: test/enumerative_combinatorics/partition_function.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -272,6 +275,7 @@ data:
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
   - test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
+  - test/enumerative_combinatorics/bell_number.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
   - test/data_structure/range_affine_point_get.0.test.cpp
   - test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
