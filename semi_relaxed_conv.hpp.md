@@ -132,13 +132,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/matrix/adjugate_matrix.0.test.cpp
     title: test/matrix/adjugate_matrix.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.0.test.cpp
     title: test/matrix/characteristic_polynomial.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -150,7 +150,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/matrix_product.0.test.cpp
     title: test/matrix/matrix_product.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
   - icon: ':heavy_check_mark:'
