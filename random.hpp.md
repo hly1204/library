@@ -1,30 +1,30 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: frobenius.hpp
     title: frobenius.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: mat_basic.hpp
     title: mat_basic.hpp
   - icon: ':heavy_check_mark:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/adjugate_matrix.0.test.cpp
     title: test/matrix/adjugate_matrix.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.0.test.cpp
     title: test/matrix/characteristic_polynomial.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -42,9 +42,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"random.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n\
@@ -90,7 +90,7 @@ data:
   - frobenius.hpp
   - mat_basic.hpp
   timestamp: '2024-08-12 22:20:24+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
