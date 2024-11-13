@@ -23,7 +23,7 @@ public:
     Matrix<Tp> InvT;
     std::vector<Poly<Tp>> P;
     Matrix<Tp> T;
-    std::optional<Poly<Tp>> CharPoly;
+    mutable std::optional<Poly<Tp>> CharPoly;
 
     // see:
     // [1]: Elegia. A (Somehow) Simple (Randomized) Algorithm for Frobenius Form of a Matrix.
