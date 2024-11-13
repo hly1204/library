@@ -7,6 +7,7 @@
 #include <cassert>
 #include <functional>
 #include <numeric>
+#include <optional>
 #include <vector>
 
 // Compute the Frobenius form (rational canonical form) of a square matrix,
@@ -22,6 +23,7 @@ public:
     Matrix<Tp> InvT;
     std::vector<Poly<Tp>> P;
     Matrix<Tp> T;
+    std::optional<Poly<Tp>> CharPoly;
 
     // see:
     // [1]: Elegia. A (Somehow) Simple (Randomized) Algorithm for Frobenius Form of a Matrix.
@@ -99,12 +101,15 @@ public:
     }
 
     Poly<Tp> charpoly() const {
-        return std::accumulate(P.begin(), P.end(), Poly<Tp>{Tp(1)}, std::multiplies<>());
+        if (!CharPoly)
+            CharPoly.emplace(
+                std::accumulate(P.begin(), P.end(), Poly<Tp>{Tp(1)}, std::multiplies<>()));
+        return *CharPoly;
     }
 
     // returns F(F_A)
     Matrix<Tp> eval(Poly<Tp> F) const {
-        // F %= this->charpoly();
+        F %= this->charpoly();
         Matrix<Tp> res(N, std::vector<Tp>(N));
         if (F.deg() < 0) return res;
         for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {
