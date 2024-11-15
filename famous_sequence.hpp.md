@@ -28,6 +28,9 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/enumerative_combinatorics/bell_number.0.test.cpp
+    title: test/enumerative_combinatorics/bell_number.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/partition_function.0.test.cpp
     title: test/enumerative_combinatorics/partition_function.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -415,15 +418,19 @@ data:
     \u53D8\u6362.\n//      https://blog.csdn.net/EI_Captain/article/details/108586699\n\
     template <typename Tp>\ninline std::vector<Tp> eulerian_numbers_column(int k,\
     \ int m) {\n    std::vector<Tp> A(k + 1), B(k + 1);\n    auto &&bin = Binomial<Tp>::get(std::max(k\
-    \ + 1, m));\n    for (int i = 0; i <= k; ++i) {\n        A[k - i] = Tp(-i - 1).pow(k\
-    \ - i) * bin.inv_factorial(k - i);\n        B[k - i] = Tp(-i).pow(k - i) * bin.inv_factorial(k\
-    \ - i);\n    }\n    std::vector<Tp> xe_neg_x(m); // xe^(-x)\n    for (int i =\
-    \ 1; i < m; ++i) {\n        xe_neg_x[i] = bin.inv_factorial(i - 1);\n        if\
-    \ ((i - 1) & 1) xe_neg_x[i] = -xe_neg_x[i];\n    }\n    auto AA = convolution(composition(A,\
-    \ xe_neg_x, m), exp(std::vector{Tp(0), Tp(k + 1)}, m));\n    auto BB = convolution(composition(B,\
-    \ xe_neg_x, m), exp(std::vector{Tp(0), Tp(k)}, m));\n    for (int i = 0; i < m;\
-    \ ++i) AA[i] = (AA[i] - BB[i]) * bin.factorial(i);\n    AA.resize(m);\n    return\
-    \ AA;\n}\n"
+    \ + 1, m));\n    for (int i = 0; i <= k; ++i) A[k - i] = Tp(-i - 1).pow(k - i)\
+    \ * bin.inv_factorial(k - i);\n    for (int i = 1; i <= k; ++i) B[k - i] = Tp(-i).pow(k\
+    \ - i) * bin.inv_factorial(k - i);\n    std::vector<Tp> xe_neg_x(m); // xe^(-x)\n\
+    \    for (int i = 1; i < m; ++i) {\n        xe_neg_x[i] = bin.inv_factorial(i\
+    \ - 1);\n        if ((i - 1) & 1) xe_neg_x[i] = -xe_neg_x[i];\n    }\n    auto\
+    \ AA = convolution(composition(A, xe_neg_x, m), exp(std::vector{Tp(0), Tp(k +\
+    \ 1)}, m));\n    auto BB = convolution(composition(B, xe_neg_x, m), exp(std::vector{Tp(0),\
+    \ Tp(k)}, m));\n    for (int i = 0; i < m; ++i) AA[i] = (AA[i] - BB[i]) * bin.factorial(i);\n\
+    \    AA.resize(m);\n    return AA;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ bell_numbers(int n) {\n    auto &&bin = Binomial<Tp>::get(n);\n    std::vector<Tp>\
+    \ ex(n);\n    for (int i = 1; i < n; ++i) ex[i] = bin.inv_factorial(i);\n    auto\
+    \ res = exp(ex, n);\n    for (int i = 0; i < n; ++i) res[i] *= bin.factorial(i);\n\
+    \    return res;\n}\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include \"fps_basic.hpp\"\n#include\
     \ \"fps_composition.hpp\"\n#include \"fps_polya.hpp\"\n#include \"poly_basic.hpp\"\
     \n#include \"pow_table.hpp\"\n#include <cassert>\n#include <vector>\n\n// returns\
@@ -477,15 +484,19 @@ data:
     \u53D8\u6362.\n//      https://blog.csdn.net/EI_Captain/article/details/108586699\n\
     template <typename Tp>\ninline std::vector<Tp> eulerian_numbers_column(int k,\
     \ int m) {\n    std::vector<Tp> A(k + 1), B(k + 1);\n    auto &&bin = Binomial<Tp>::get(std::max(k\
-    \ + 1, m));\n    for (int i = 0; i <= k; ++i) {\n        A[k - i] = Tp(-i - 1).pow(k\
-    \ - i) * bin.inv_factorial(k - i);\n        B[k - i] = Tp(-i).pow(k - i) * bin.inv_factorial(k\
-    \ - i);\n    }\n    std::vector<Tp> xe_neg_x(m); // xe^(-x)\n    for (int i =\
-    \ 1; i < m; ++i) {\n        xe_neg_x[i] = bin.inv_factorial(i - 1);\n        if\
-    \ ((i - 1) & 1) xe_neg_x[i] = -xe_neg_x[i];\n    }\n    auto AA = convolution(composition(A,\
-    \ xe_neg_x, m), exp(std::vector{Tp(0), Tp(k + 1)}, m));\n    auto BB = convolution(composition(B,\
-    \ xe_neg_x, m), exp(std::vector{Tp(0), Tp(k)}, m));\n    for (int i = 0; i < m;\
-    \ ++i) AA[i] = (AA[i] - BB[i]) * bin.factorial(i);\n    AA.resize(m);\n    return\
-    \ AA;\n}\n"
+    \ + 1, m));\n    for (int i = 0; i <= k; ++i) A[k - i] = Tp(-i - 1).pow(k - i)\
+    \ * bin.inv_factorial(k - i);\n    for (int i = 1; i <= k; ++i) B[k - i] = Tp(-i).pow(k\
+    \ - i) * bin.inv_factorial(k - i);\n    std::vector<Tp> xe_neg_x(m); // xe^(-x)\n\
+    \    for (int i = 1; i < m; ++i) {\n        xe_neg_x[i] = bin.inv_factorial(i\
+    \ - 1);\n        if ((i - 1) & 1) xe_neg_x[i] = -xe_neg_x[i];\n    }\n    auto\
+    \ AA = convolution(composition(A, xe_neg_x, m), exp(std::vector{Tp(0), Tp(k +\
+    \ 1)}, m));\n    auto BB = convolution(composition(B, xe_neg_x, m), exp(std::vector{Tp(0),\
+    \ Tp(k)}, m));\n    for (int i = 0; i < m; ++i) AA[i] = (AA[i] - BB[i]) * bin.factorial(i);\n\
+    \    AA.resize(m);\n    return AA;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ bell_numbers(int n) {\n    auto &&bin = Binomial<Tp>::get(n);\n    std::vector<Tp>\
+    \ ex(n);\n    for (int i = 1; i < n; ++i) ex[i] = bin.inv_factorial(i);\n    auto\
+    \ res = exp(ex, n);\n    for (int i = 0; i < n; ++i) res[i] *= bin.factorial(i);\n\
+    \    return res;\n}\n"
   dependsOn:
   - fft.hpp
   - fps_basic.hpp
@@ -498,13 +509,14 @@ data:
   isVerificationFile: false
   path: famous_sequence.hpp
   requiredBy: []
-  timestamp: '2024-11-05 23:00:29+08:00'
+  timestamp: '2024-11-15 21:28:31+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
+  - test/enumerative_combinatorics/bell_number.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
 documentation_of: famous_sequence.hpp
 layout: document

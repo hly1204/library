@@ -19,6 +19,9 @@ data:
     title: famous_sequence.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/enumerative_combinatorics/bell_number.0.test.cpp
+    title: test/enumerative_combinatorics/bell_number.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/partition_function.0.test.cpp
     title: test/enumerative_combinatorics/partition_function.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -382,6 +385,7 @@ data:
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
+  - test/enumerative_combinatorics/bell_number.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
 documentation_of: fps_composition.hpp
 layout: document
