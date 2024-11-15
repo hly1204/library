@@ -132,10 +132,8 @@ template <typename Tp>
 inline std::vector<Tp> eulerian_numbers_column(int k, int m) {
     std::vector<Tp> A(k + 1), B(k + 1);
     auto &&bin = Binomial<Tp>::get(std::max(k + 1, m));
-    for (int i = 0; i <= k; ++i) {
-        A[k - i] = Tp(-i - 1).pow(k - i) * bin.inv_factorial(k - i);
-        B[k - i] = Tp(-i).pow(k - i) * bin.inv_factorial(k - i);
-    }
+    for (int i = 0; i <= k; ++i) A[k - i] = Tp(-i - 1).pow(k - i) * bin.inv_factorial(k - i);
+    for (int i = 1; i <= k; ++i) B[k - i] = Tp(-i).pow(k - i) * bin.inv_factorial(k - i);
     std::vector<Tp> xe_neg_x(m); // xe^(-x)
     for (int i = 1; i < m; ++i) {
         xe_neg_x[i] = bin.inv_factorial(i - 1);
@@ -146,4 +144,14 @@ inline std::vector<Tp> eulerian_numbers_column(int k, int m) {
     for (int i = 0; i < m; ++i) AA[i] = (AA[i] - BB[i]) * bin.factorial(i);
     AA.resize(m);
     return AA;
+}
+
+template <typename Tp>
+inline std::vector<Tp> bell_numbers(int n) {
+    auto &&bin = Binomial<Tp>::get(n);
+    std::vector<Tp> ex(n);
+    for (int i = 1; i < n; ++i) ex[i] = bin.inv_factorial(i);
+    auto res = exp(ex, n);
+    for (int i = 0; i < n; ++i) res[i] *= bin.factorial(i);
+    return res;
 }
