@@ -1,53 +1,53 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: c_recursive.hpp
     title: c_recursive.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: czt.hpp
     title: czt.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: famous_sequence.hpp
     title: famous_sequence.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_composition.hpp
     title: fps_composition.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_polya.hpp
     title: fps_polya.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: frobenius.hpp
     title: frobenius.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: mat_basic.hpp
     title: mat_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: poly.hpp
     title: poly.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
   - icon: ':warning:'
     path: poly_interpolation_with_error.hpp
     title: poly_interpolation_with_error.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
   _extendedVerifiedWith:
@@ -72,93 +72,93 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
     title: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
     title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/division_of_polynomials.0.test.cpp
     title: test/formal_power_series/division_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/find_linear_recurrence.0.test.cpp
     title: test/formal_power_series/find_linear_recurrence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/inv_of_polynomials.0.test.cpp
     title: test/formal_power_series/inv_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/log_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/log_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/multipoint_evaluation.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/polynomial_interpolation.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
     title: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/adjugate_matrix.0.test.cpp
     title: test/matrix/adjugate_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/characteristic_polynomial.0.test.cpp
     title: test/matrix/characteristic_polynomial.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/inverse_matrix.0.test.cpp
     title: test/matrix/inverse_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/matrix_det.0.test.cpp
     title: test/matrix/matrix_det.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/matrix_product.0.test.cpp
     title: test/matrix/matrix_product.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include\
@@ -231,12 +231,67 @@ data:
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
     \    return convolution_fft(a, b);\n}\n#line 5 \"semi_relaxed_conv.hpp\"\n#include\
-    \ <type_traits>\n#include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\n\n// returns\
+    \ <type_traits>\n#include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\n\ntemplate\
+    \ <typename Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp,\
+    \ Closure, int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\n\
+    semi_relaxed_convolution_naive(const std::vector<Tp> &A, Closure gen, int n) {\n\
+    \    std::vector<Tp> B(n), AB(n);\n    for (int i = 0; i < n; ++i) {\n       \
+    \ for (int j = std::max(0, i - (int)A.size() + 1); j < i; ++j) AB[i] += A[i -\
+    \ j] * B[j];\n        B[i] = gen(i, AB);\n        if (!A.empty()) AB[i] += A[0]\
+    \ * B[i];\n    }\n    return B;\n}\n\n// returns coefficients generated by closure\n\
+    // closure: gen(index, current_product)\ntemplate <typename Tp, typename Closure>\n\
+    inline std::enable_if_t<std::is_invocable_r_v<Tp, Closure, int, const std::vector<Tp>\
+    \ &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
+    \ std::vector<Tp> &A, Closure gen, int n) {\n    if (A.size() < 60) return semi_relaxed_convolution_naive(A,\
+    \ std::forward<Closure>(gen), n);\n    enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize\
+    \ & (BaseCaseSize - 1)) == 0);\n\n    static const int Block[]     = {16, 16,\
+    \ 16, 16, 16};\n    static const int BlockSize[] = {\n        BaseCaseSize,\n\
+    \        BaseCaseSize * Block[0],\n        BaseCaseSize * Block[0] * Block[1],\n\
+    \        BaseCaseSize * Block[0] * Block[1] * Block[2],\n        BaseCaseSize\
+    \ * Block[0] * Block[1] * Block[2] * Block[3],\n        BaseCaseSize * Block[0]\
+    \ * Block[1] * Block[2] * Block[3] * Block[4],\n    };\n\n    // returns (which_block,\
+    \ level)\n    auto blockinfo = [](int ind) {\n        int i = ind / BaseCaseSize,\
+    \ lv = 0;\n        while ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n    \
+    \    return std::make_pair(i & (Block[lv] - 1), lv);\n    };\n\n    std::vector<Tp>\
+    \ B(n), AB(n);\n    std::vector<std::vector<std::vector<Tp>>> dftA, dftB;\n\n\
+    \    for (int i = 0; i < n; ++i) {\n        const int s = i & (BaseCaseSize -\
+    \ 1);\n\n        // blocked contribution\n        if (i >= BaseCaseSize && s ==\
+    \ 0) {\n            const auto [j, lv]  = blockinfo(i);\n            const int\
+    \ blocksize = BlockSize[lv];\n\n            if (blocksize * j == i) {\n      \
+    \          if ((int)dftA.size() == lv) {\n                    dftA.emplace_back();\n\
+    \                    dftB.emplace_back(Block[lv] - 1);\n                }\n  \
+    \              if ((j - 1) * blocksize < (int)A.size()) {\n                  \
+    \  dftA[lv]\n                        .emplace_back(A.begin() + (j - 1) * blocksize,\n\
+    \                                      A.begin() + std::min<int>((j + 1) * blocksize,\
+    \ A.size()))\n                        .resize(blocksize * 2);\n              \
+    \      fft(dftA[lv][j - 1]);\n                }\n            }\n\n           \
+    \ if (!dftA[lv].empty()) {\n                dftB[lv][j - 1].resize(blocksize *\
+    \ 2);\n                std::copy_n(B.begin() + (i - blocksize), blocksize, dftB[lv][j\
+    \ - 1].begin());\n                std::fill_n(dftB[lv][j - 1].begin() + blocksize,\
+    \ blocksize, 0);\n                fft(dftB[lv][j - 1]);\n\n                //\
+    \ middle product\n                std::vector<Tp> mp(blocksize * 2);\n       \
+    \         for (int k = 0; k < std::min<int>(j, dftA[lv].size()); ++k)\n      \
+    \              for (int l = 0; l < blocksize * 2; ++l)\n                     \
+    \   mp[l] += dftA[lv][k][l] * dftB[lv][j - 1 - k][l];\n                inv_fft(mp);\n\
+    \n                for (int k = 0; k < blocksize && i + k < n; ++k) AB[i + k] +=\
+    \ mp[k + blocksize];\n            }\n        }\n\n        // basecase contribution\n\
+    \        for (int j = std::max(i - s, i - (int)A.size() + 1); j < i; ++j) AB[i]\
+    \ += A[i - j] * B[j];\n        B[i] = gen(i, AB);\n        if (!A.empty()) AB[i]\
+    \ += A[0] * B[i];\n    }\n\n    return B;\n}\n"
+  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <algorithm>\n#include <type_traits>\n\
+    #include <utility>\n#include <vector>\n\ntemplate <typename Tp, typename Closure>\n\
+    inline std::enable_if_t<std::is_invocable_r_v<Tp, Closure, int, const std::vector<Tp>\
+    \ &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution_naive(const\
+    \ std::vector<Tp> &A, Closure gen, int n) {\n    std::vector<Tp> B(n), AB(n);\n\
+    \    for (int i = 0; i < n; ++i) {\n        for (int j = std::max(0, i - (int)A.size()\
+    \ + 1); j < i; ++j) AB[i] += A[i - j] * B[j];\n        B[i] = gen(i, AB);\n  \
+    \      if (!A.empty()) AB[i] += A[0] * B[i];\n    }\n    return B;\n}\n\n// returns\
     \ coefficients generated by closure\n// closure: gen(index, current_product)\n\
     template <typename Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp,\
     \ Closure, int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\n\
     semi_relaxed_convolution(const std::vector<Tp> &A, Closure gen, int n) {\n   \
-    \ enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize & (BaseCaseSize\
+    \ if (A.size() < 60) return semi_relaxed_convolution_naive(A, std::forward<Closure>(gen),\
+    \ n);\n    enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize & (BaseCaseSize\
     \ - 1)) == 0);\n\n    static const int Block[]     = {16, 16, 16, 16, 16};\n \
     \   static const int BlockSize[] = {\n        BaseCaseSize,\n        BaseCaseSize\
     \ * Block[0],\n        BaseCaseSize * Block[0] * Block[1],\n        BaseCaseSize\
@@ -256,58 +311,20 @@ data:
     \  dftA[lv]\n                        .emplace_back(A.begin() + (j - 1) * blocksize,\n\
     \                                      A.begin() + std::min<int>((j + 1) * blocksize,\
     \ A.size()))\n                        .resize(blocksize * 2);\n              \
-    \      fft(dftA[lv][j - 1]);\n                } else {\n                    dftA[lv].emplace_back(blocksize\
-    \ * 2);\n                }\n            }\n\n            dftB[lv][j - 1].resize(blocksize\
-    \ * 2);\n            std::copy_n(B.begin() + (i - blocksize), blocksize, dftB[lv][j\
-    \ - 1].begin());\n            std::fill_n(dftB[lv][j - 1].begin() + blocksize,\
-    \ blocksize, 0);\n            fft(dftB[lv][j - 1]);\n\n            // middle product\n\
-    \            std::vector<Tp> mp(blocksize * 2);\n            for (int k = 0; k\
-    \ < j; ++k)\n                for (int l = 0; l < blocksize * 2; ++l)\n       \
-    \             mp[l] += dftA[lv][j - 1 - k][l] * dftB[lv][k][l];\n            inv_fft(mp);\n\
-    \n            for (int k = 0; k < blocksize && i + k < n; ++k) AB[i + k] += mp[k\
-    \ + blocksize];\n        }\n\n        // basecase contribution\n        for (int\
-    \ j = std::max(i - s, i - (int)A.size() + 1); j < i; ++j) AB[i] += A[i - j] *\
-    \ B[j];\n        B[i] = gen(i, AB);\n        if (!A.empty()) AB[i] += A[0] * B[i];\n\
-    \    }\n\n    return B;\n}\n"
-  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <algorithm>\n#include <type_traits>\n\
-    #include <utility>\n#include <vector>\n\n// returns coefficients generated by\
-    \ closure\n// closure: gen(index, current_product)\ntemplate <typename Tp, typename\
-    \ Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp, Closure, int, const\
-    \ std::vector<Tp> &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
-    \ std::vector<Tp> &A, Closure gen, int n) {\n    enum { BaseCaseSize = 32 };\n\
-    \    static_assert((BaseCaseSize & (BaseCaseSize - 1)) == 0);\n\n    static const\
-    \ int Block[]     = {16, 16, 16, 16, 16};\n    static const int BlockSize[] =\
-    \ {\n        BaseCaseSize,\n        BaseCaseSize * Block[0],\n        BaseCaseSize\
-    \ * Block[0] * Block[1],\n        BaseCaseSize * Block[0] * Block[1] * Block[2],\n\
-    \        BaseCaseSize * Block[0] * Block[1] * Block[2] * Block[3],\n        BaseCaseSize\
-    \ * Block[0] * Block[1] * Block[2] * Block[3] * Block[4],\n    };\n\n    // returns\
-    \ (which_block, level)\n    auto blockinfo = [](int ind) {\n        int i = ind\
-    \ / BaseCaseSize, lv = 0;\n        while ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n\
-    \        return std::make_pair(i & (Block[lv] - 1), lv);\n    };\n\n    std::vector<Tp>\
-    \ B(n), AB(n);\n    std::vector<std::vector<std::vector<Tp>>> dftA, dftB;\n\n\
-    \    for (int i = 0; i < n; ++i) {\n        const int s = i & (BaseCaseSize -\
-    \ 1);\n\n        // blocked contribution\n        if (i >= BaseCaseSize && s ==\
-    \ 0) {\n            const auto [j, lv]  = blockinfo(i);\n            const int\
-    \ blocksize = BlockSize[lv];\n\n            if (blocksize * j == i) {\n      \
-    \          if ((int)dftA.size() == lv) {\n                    dftA.emplace_back();\n\
-    \                    dftB.emplace_back(Block[lv] - 1);\n                }\n  \
-    \              if ((j - 1) * blocksize < (int)A.size()) {\n                  \
-    \  dftA[lv]\n                        .emplace_back(A.begin() + (j - 1) * blocksize,\n\
-    \                                      A.begin() + std::min<int>((j + 1) * blocksize,\
-    \ A.size()))\n                        .resize(blocksize * 2);\n              \
-    \      fft(dftA[lv][j - 1]);\n                } else {\n                    dftA[lv].emplace_back(blocksize\
-    \ * 2);\n                }\n            }\n\n            dftB[lv][j - 1].resize(blocksize\
-    \ * 2);\n            std::copy_n(B.begin() + (i - blocksize), blocksize, dftB[lv][j\
-    \ - 1].begin());\n            std::fill_n(dftB[lv][j - 1].begin() + blocksize,\
-    \ blocksize, 0);\n            fft(dftB[lv][j - 1]);\n\n            // middle product\n\
-    \            std::vector<Tp> mp(blocksize * 2);\n            for (int k = 0; k\
-    \ < j; ++k)\n                for (int l = 0; l < blocksize * 2; ++l)\n       \
-    \             mp[l] += dftA[lv][j - 1 - k][l] * dftB[lv][k][l];\n            inv_fft(mp);\n\
-    \n            for (int k = 0; k < blocksize && i + k < n; ++k) AB[i + k] += mp[k\
-    \ + blocksize];\n        }\n\n        // basecase contribution\n        for (int\
-    \ j = std::max(i - s, i - (int)A.size() + 1); j < i; ++j) AB[i] += A[i - j] *\
-    \ B[j];\n        B[i] = gen(i, AB);\n        if (!A.empty()) AB[i] += A[0] * B[i];\n\
-    \    }\n\n    return B;\n}\n"
+    \      fft(dftA[lv][j - 1]);\n                }\n            }\n\n           \
+    \ if (!dftA[lv].empty()) {\n                dftB[lv][j - 1].resize(blocksize *\
+    \ 2);\n                std::copy_n(B.begin() + (i - blocksize), blocksize, dftB[lv][j\
+    \ - 1].begin());\n                std::fill_n(dftB[lv][j - 1].begin() + blocksize,\
+    \ blocksize, 0);\n                fft(dftB[lv][j - 1]);\n\n                //\
+    \ middle product\n                std::vector<Tp> mp(blocksize * 2);\n       \
+    \         for (int k = 0; k < std::min<int>(j, dftA[lv].size()); ++k)\n      \
+    \              for (int l = 0; l < blocksize * 2; ++l)\n                     \
+    \   mp[l] += dftA[lv][k][l] * dftB[lv][j - 1 - k][l];\n                inv_fft(mp);\n\
+    \n                for (int k = 0; k < blocksize && i + k < n; ++k) AB[i + k] +=\
+    \ mp[k + blocksize];\n            }\n        }\n\n        // basecase contribution\n\
+    \        for (int j = std::max(i - s, i - (int)A.size() + 1); j < i; ++j) AB[i]\
+    \ += A[i - j] * B[j];\n        B[i] = gen(i, AB);\n        if (!A.empty()) AB[i]\
+    \ += A[0] * B[i];\n    }\n\n    return B;\n}\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
@@ -328,8 +345,8 @@ data:
   - poly_basic.hpp
   - czt.hpp
   - mat_basic.hpp
-  timestamp: '2024-10-10 23:07:33+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2024-11-20 23:04:26+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp

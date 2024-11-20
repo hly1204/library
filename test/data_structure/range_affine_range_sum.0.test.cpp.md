@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   - icon: ':heavy_check_mark:'
@@ -86,11 +86,11 @@ data:
     \    void do_update() {}\n\nprotected:\n    void base_flip() {\n        NeedFlip\
     \ = !NeedFlip;\n        std::swap(L, R);\n        derived()->do_flip();\n    }\n\
     \    // base_propagate() is called to propagate the update information to child(ren).\n\
-    \    // There is no need to update the infomation combined from child(ren)\n \
-    \   // which should be done in base_update().\n    void base_propagate() {\n \
-    \       derived()->do_propagate();\n        if (NeedFlip) {\n            NeedFlip\
+    \    // There is no need to update the information combined from child(ren)\n\
+    \    // which should be done in base_update().\n    void base_propagate() {\n\
+    \        derived()->do_propagate();\n        if (NeedFlip) {\n            NeedFlip\
     \ = false;\n            if (L) L->base_flip();\n            if (R) R->base_flip();\n\
-    \        }\n    }\n    // base_update() is called to update the infomation combined\
+    \        }\n    }\n    // base_update() is called to update the information combined\
     \ from child(ren).\n    void base_update() {\n        Size = 1;\n        if (L)\
     \ Size += L->Size;\n        if (R) Size += R->Size;\n        derived()->do_update();\n\
     \    }\n\n    static TreapNodeBase *base_join(TreapNodeBase *a, TreapNodeBase\
@@ -177,7 +177,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2024-08-13 20:42:50+08:00'
+  timestamp: '2024-11-20 23:04:26+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_affine_range_sum.0.test.cpp
