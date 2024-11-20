@@ -10,7 +10,7 @@ data:
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_polya.hpp
     title: fps_polya.hpp
   - icon: ':question:'

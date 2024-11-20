@@ -5,7 +5,7 @@ data:
   - icon: ':x:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: c_recursive.hpp
     title: c_recursive.hpp
   - icon: ':question:'
@@ -14,16 +14,16 @@ data:
   - icon: ':heavy_check_mark:'
     path: falling_factorial_poly.hpp
     title: falling_factorial_poly.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: famous_sequence.hpp
     title: famous_sequence.hpp
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
     title: fps_composition.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_polya.hpp
     title: fps_polya.hpp
   - icon: ':x:'
@@ -53,7 +53,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: shift_sample_points.hpp
     title: shift_sample_points.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
   _extendedVerifiedWith:
@@ -78,25 +78,25 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
     title: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
     title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/division_of_polynomials.0.test.cpp
     title: test/formal_power_series/division_of_polynomials.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
   - icon: ':x:'

@@ -5,11 +5,11 @@ data:
     path: fft.hpp
     title: fft.hpp
   _extendedRequiredBy:
-  - icon: ':x:'
+  - icon: ':question:'
     path: c_recursive.hpp
     title: c_recursive.hpp
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - icon: ':x:'
@@ -20,7 +20,7 @@ data:
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"fft_doubling.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
@@ -129,7 +129,7 @@ data:
   requiredBy:
   - c_recursive.hpp
   timestamp: '2024-08-12 20:46:28+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp

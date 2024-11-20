@@ -10,16 +10,16 @@ data:
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
     title: fps_composition.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_polya.hpp
     title: fps_polya.hpp
   - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: pow_table.hpp
     title: pow_table.hpp
   - icon: ':question:'
@@ -42,12 +42,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://blog.csdn.net/EI_Captain/article/details/108586699
@@ -519,7 +519,7 @@ data:
   path: famous_sequence.hpp
   requiredBy: []
   timestamp: '2024-11-20 23:04:26+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp

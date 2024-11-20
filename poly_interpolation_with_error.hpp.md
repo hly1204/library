@@ -22,7 +22,7 @@ data:
   - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
   _extendedRequiredBy: []
