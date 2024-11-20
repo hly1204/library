@@ -25,7 +25,7 @@ template <typename Tp, typename Closure>
 inline std::enable_if_t<std::is_invocable_r_v<Tp, Closure, int, const std::vector<Tp> &>,
                         std::vector<Tp>>
 semi_relaxed_convolution(const std::vector<Tp> &A, Closure gen, int n) {
-    if (A.size() < 60) return semi_relaxed_convolution_naive(A, std::forward<Closure>(gen), n);
+    if (A.size() < 60) return semi_relaxed_convolution_naive(A, gen, n);
     enum { BaseCaseSize = 32 };
     static_assert((BaseCaseSize & (BaseCaseSize - 1)) == 0);
 
