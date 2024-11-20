@@ -80,6 +80,7 @@ int main() {
             auto [R0, R1, R2] = TreapNode::split(root, l, r - l);
             std::cout << R1->Sum << '\n';
             root = TreapNode::join(R0, R1, R2);
+            break;
         }
         default: break;
         }

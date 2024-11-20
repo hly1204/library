@@ -30,7 +30,7 @@ protected:
         derived()->do_flip();
     }
     // base_propagate() is called to propagate the update information to child(ren).
-    // There is no need to update the infomation combined from child(ren)
+    // There is no need to update the information combined from child(ren)
     // which should be done in base_update().
     void base_propagate() {
         derived()->do_propagate();
@@ -40,7 +40,7 @@ protected:
             if (R) R->base_flip();
         }
     }
-    // base_update() is called to update the infomation combined from child(ren).
+    // base_update() is called to update the information combined from child(ren).
     void base_update() {
         Size = 1;
         if (L) Size += L->Size;

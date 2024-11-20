@@ -177,5 +177,5 @@ inline std::vector<Tp> minpoly(const Matrix<Tp> &A) {
         for (int j = 0; j < n; ++j) proj[i] += u[j] * v[j];
     const auto [P, Q] = rational_reconstruction(proj);
     assert(Q.deg() <= n);
-    return Q / Poly<Tp>{Q.lc()};
+    return Q.monic();
 }

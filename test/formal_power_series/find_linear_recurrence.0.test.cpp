@@ -14,7 +14,7 @@ int main() {
     std::vector<mint> A(n);
     for (int i = 0; i < n; ++i) std::cin >> A[i];
     const auto [P, Q] = rational_reconstruction(A);
-    const auto res    = Q / Poly<mint>{Q.lc()};
+    const auto res    = Q.monic();
     std::cout << res.deg() << '\n';
     for (int i = res.deg() - 1; i >= 0; --i) std::cout << -res[i] << ' ';
     return 0;

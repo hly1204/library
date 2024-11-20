@@ -49,6 +49,15 @@ public:
         return d == -1 ? Tp() : Base::operator[](d);
     }
 
+    Poly monic() const {
+        const int d = deg();
+        assert(d >= 0);
+        const auto iv = Base::operator[](d).inv();
+        Poly res(*this);
+        for (int i = 0; i <= d; ++i) res[i] *= iv;
+        return res;
+    }
+
     Poly taylor_shift(Tp c) const {
         Base::operator=(taylor_shift(*this, c));
         return shrink();
