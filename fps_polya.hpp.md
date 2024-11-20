@@ -143,12 +143,12 @@ data:
     inline std::enable_if_t<std::is_invocable_r_v<Tp, Closure, int, const std::vector<Tp>\
     \ &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
     \ std::vector<Tp> &A, Closure gen, int n) {\n    if (A.size() < 60) return semi_relaxed_convolution_naive(A,\
-    \ std::forward<Closure>(gen), n);\n    enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize\
-    \ & (BaseCaseSize - 1)) == 0);\n\n    static const int Block[]     = {16, 16,\
-    \ 16, 16, 16};\n    static const int BlockSize[] = {\n        BaseCaseSize,\n\
-    \        BaseCaseSize * Block[0],\n        BaseCaseSize * Block[0] * Block[1],\n\
-    \        BaseCaseSize * Block[0] * Block[1] * Block[2],\n        BaseCaseSize\
-    \ * Block[0] * Block[1] * Block[2] * Block[3],\n        BaseCaseSize * Block[0]\
+    \ gen, n);\n    enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize &\
+    \ (BaseCaseSize - 1)) == 0);\n\n    static const int Block[]     = {16, 16, 16,\
+    \ 16, 16};\n    static const int BlockSize[] = {\n        BaseCaseSize,\n    \
+    \    BaseCaseSize * Block[0],\n        BaseCaseSize * Block[0] * Block[1],\n \
+    \       BaseCaseSize * Block[0] * Block[1] * Block[2],\n        BaseCaseSize *\
+    \ Block[0] * Block[1] * Block[2] * Block[3],\n        BaseCaseSize * Block[0]\
     \ * Block[1] * Block[2] * Block[3] * Block[4],\n    };\n\n    // returns (which_block,\
     \ level)\n    auto blockinfo = [](int ind) {\n        int i = ind / BaseCaseSize,\
     \ lv = 0;\n        while ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n    \
@@ -251,7 +251,7 @@ data:
   path: fps_polya.hpp
   requiredBy:
   - famous_sequence.hpp
-  timestamp: '2024-11-20 23:04:26+08:00'
+  timestamp: '2024-11-20 23:45:47+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/enumerative_combinatorics/partition_function.0.test.cpp

@@ -18,9 +18,9 @@ data:
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/exp_of_formal_power_series
@@ -125,12 +125,12 @@ data:
     inline std::enable_if_t<std::is_invocable_r_v<Tp, Closure, int, const std::vector<Tp>\
     \ &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
     \ std::vector<Tp> &A, Closure gen, int n) {\n    if (A.size() < 60) return semi_relaxed_convolution_naive(A,\
-    \ std::forward<Closure>(gen), n);\n    enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize\
-    \ & (BaseCaseSize - 1)) == 0);\n\n    static const int Block[]     = {16, 16,\
-    \ 16, 16, 16};\n    static const int BlockSize[] = {\n        BaseCaseSize,\n\
-    \        BaseCaseSize * Block[0],\n        BaseCaseSize * Block[0] * Block[1],\n\
-    \        BaseCaseSize * Block[0] * Block[1] * Block[2],\n        BaseCaseSize\
-    \ * Block[0] * Block[1] * Block[2] * Block[3],\n        BaseCaseSize * Block[0]\
+    \ gen, n);\n    enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize &\
+    \ (BaseCaseSize - 1)) == 0);\n\n    static const int Block[]     = {16, 16, 16,\
+    \ 16, 16};\n    static const int BlockSize[] = {\n        BaseCaseSize,\n    \
+    \    BaseCaseSize * Block[0],\n        BaseCaseSize * Block[0] * Block[1],\n \
+    \       BaseCaseSize * Block[0] * Block[1] * Block[2],\n        BaseCaseSize *\
+    \ Block[0] * Block[1] * Block[2] * Block[3],\n        BaseCaseSize * Block[0]\
     \ * Block[1] * Block[2] * Block[3] * Block[4],\n    };\n\n    // returns (which_block,\
     \ level)\n    auto blockinfo = [](int ind) {\n        int i = ind / BaseCaseSize,\
     \ lv = 0;\n        while ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n    \
@@ -253,8 +253,8 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-20 23:04:26+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-11-20 23:45:47+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
 layout: document

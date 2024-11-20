@@ -157,16 +157,16 @@ data:
     template <typename Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp,\
     \ Closure, int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\n\
     semi_relaxed_convolution(const std::vector<Tp> &A, Closure gen, int n) {\n   \
-    \ if (A.size() < 60) return semi_relaxed_convolution_naive(A, std::forward<Closure>(gen),\
-    \ n);\n    enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize & (BaseCaseSize\
-    \ - 1)) == 0);\n\n    static const int Block[]     = {16, 16, 16, 16, 16};\n \
-    \   static const int BlockSize[] = {\n        BaseCaseSize,\n        BaseCaseSize\
-    \ * Block[0],\n        BaseCaseSize * Block[0] * Block[1],\n        BaseCaseSize\
-    \ * Block[0] * Block[1] * Block[2],\n        BaseCaseSize * Block[0] * Block[1]\
-    \ * Block[2] * Block[3],\n        BaseCaseSize * Block[0] * Block[1] * Block[2]\
-    \ * Block[3] * Block[4],\n    };\n\n    // returns (which_block, level)\n    auto\
-    \ blockinfo = [](int ind) {\n        int i = ind / BaseCaseSize, lv = 0;\n   \
-    \     while ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n        return std::make_pair(i\
+    \ if (A.size() < 60) return semi_relaxed_convolution_naive(A, gen, n);\n    enum\
+    \ { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize & (BaseCaseSize - 1))\
+    \ == 0);\n\n    static const int Block[]     = {16, 16, 16, 16, 16};\n    static\
+    \ const int BlockSize[] = {\n        BaseCaseSize,\n        BaseCaseSize * Block[0],\n\
+    \        BaseCaseSize * Block[0] * Block[1],\n        BaseCaseSize * Block[0]\
+    \ * Block[1] * Block[2],\n        BaseCaseSize * Block[0] * Block[1] * Block[2]\
+    \ * Block[3],\n        BaseCaseSize * Block[0] * Block[1] * Block[2] * Block[3]\
+    \ * Block[4],\n    };\n\n    // returns (which_block, level)\n    auto blockinfo\
+    \ = [](int ind) {\n        int i = ind / BaseCaseSize, lv = 0;\n        while\
+    \ ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n        return std::make_pair(i\
     \ & (Block[lv] - 1), lv);\n    };\n\n    std::vector<Tp> B(n), AB(n);\n    std::vector<std::vector<std::vector<Tp>>>\
     \ dftA, dftB;\n\n    for (int i = 0; i < n; ++i) {\n        const int s = i &\
     \ (BaseCaseSize - 1);\n\n        // blocked contribution\n        if (i >= BaseCaseSize\
@@ -553,7 +553,7 @@ data:
   requiredBy:
   - basis.hpp
   - frobenius.hpp
-  timestamp: '2024-11-20 23:04:26+08:00'
+  timestamp: '2024-11-20 23:45:47+08:00'
   verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp

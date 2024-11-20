@@ -14,7 +14,7 @@ data:
   - icon: ':x:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':question:'
+  - icon: ':x:'
     path: c_recursive.hpp
     title: c_recursive.hpp
   - icon: ':question:'
@@ -23,7 +23,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: famous_sequence.hpp
     title: famous_sequence.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_composition.hpp
     title: fps_composition.hpp
   - icon: ':heavy_check_mark:'
@@ -50,7 +50,7 @@ data:
   - icon: ':warning:'
     path: poly_interpolation_with_error.hpp
     title: poly_interpolation_with_error.hpp
-  - icon: ':question:'
+  - icon: ':x:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
   _extendedVerifiedWith:
@@ -81,19 +81,19 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
     title: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
     title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/division_of_polynomials.0.test.cpp
     title: test/formal_power_series/division_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
   - icon: ':x:'
@@ -262,12 +262,12 @@ data:
     inline std::enable_if_t<std::is_invocable_r_v<Tp, Closure, int, const std::vector<Tp>\
     \ &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
     \ std::vector<Tp> &A, Closure gen, int n) {\n    if (A.size() < 60) return semi_relaxed_convolution_naive(A,\
-    \ std::forward<Closure>(gen), n);\n    enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize\
-    \ & (BaseCaseSize - 1)) == 0);\n\n    static const int Block[]     = {16, 16,\
-    \ 16, 16, 16};\n    static const int BlockSize[] = {\n        BaseCaseSize,\n\
-    \        BaseCaseSize * Block[0],\n        BaseCaseSize * Block[0] * Block[1],\n\
-    \        BaseCaseSize * Block[0] * Block[1] * Block[2],\n        BaseCaseSize\
-    \ * Block[0] * Block[1] * Block[2] * Block[3],\n        BaseCaseSize * Block[0]\
+    \ gen, n);\n    enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize &\
+    \ (BaseCaseSize - 1)) == 0);\n\n    static const int Block[]     = {16, 16, 16,\
+    \ 16, 16};\n    static const int BlockSize[] = {\n        BaseCaseSize,\n    \
+    \    BaseCaseSize * Block[0],\n        BaseCaseSize * Block[0] * Block[1],\n \
+    \       BaseCaseSize * Block[0] * Block[1] * Block[2],\n        BaseCaseSize *\
+    \ Block[0] * Block[1] * Block[2] * Block[3],\n        BaseCaseSize * Block[0]\
     \ * Block[1] * Block[2] * Block[3] * Block[4],\n    };\n\n    // returns (which_block,\
     \ level)\n    auto blockinfo = [](int ind) {\n        int i = ind / BaseCaseSize,\
     \ lv = 0;\n        while ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n    \
@@ -386,7 +386,7 @@ data:
   - poly_basic.hpp
   - czt.hpp
   - mat_basic.hpp
-  timestamp: '2024-11-20 23:04:26+08:00'
+  timestamp: '2024-11-20 23:45:47+08:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp

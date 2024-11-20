@@ -18,7 +18,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: bitwise_conv.hpp
       title: bitwise_conv.hpp
-    - icon: ':question:'
+    - icon: ':x:'
       path: c_recursive.hpp
       title: c_recursive.hpp
     - icon: ':heavy_check_mark:'
@@ -45,13 +45,13 @@ data:
     - icon: ':question:'
       path: fft.hpp
       title: fft.hpp
-    - icon: ':question:'
+    - icon: ':x:'
       path: fft_doubling.hpp
       title: fft_doubling.hpp
     - icon: ':question:'
       path: fps_basic.hpp
       title: fps_basic.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: fps_composition.hpp
       title: fps_composition.hpp
     - icon: ':heavy_check_mark:'
@@ -129,7 +129,7 @@ data:
     - icon: ':x:'
       path: sqrt_mod.hpp
       title: sqrt_mod.hpp
-    - icon: ':question:'
+    - icon: ':x:'
       path: subproduct_tree.hpp
       title: subproduct_tree.hpp
     - icon: ':heavy_check_mark:'
@@ -222,19 +222,19 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
       title: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
       title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
       title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
       title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/formal_power_series/division_of_polynomials.0.test.cpp
       title: test/formal_power_series/division_of_polynomials.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
       title: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
     - icon: ':x:'
