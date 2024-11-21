@@ -1,25 +1,25 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   - icon: ':heavy_check_mark:'

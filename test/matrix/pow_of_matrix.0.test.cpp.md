@@ -1,47 +1,47 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: frobenius.hpp
     title: frobenius.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: mat_basic.hpp
     title: mat_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly.hpp
     title: poly.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: random.hpp
     title: random.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/pow_of_matrix
@@ -622,7 +622,7 @@ data:
   path: test/matrix/pow_of_matrix.0.test.cpp
   requiredBy: []
   timestamp: '2024-11-20 23:45:47+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/pow_of_matrix.0.test.cpp
 layout: document
