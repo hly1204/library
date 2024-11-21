@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':question:'
     path: basis.hpp
     title: basis.hpp
   - icon: ':question:'
@@ -13,7 +13,7 @@ data:
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: mat_basic.hpp
     title: mat_basic.hpp
   - icon: ':question:'
@@ -22,7 +22,7 @@ data:
   - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: random.hpp
     title: random.hpp
   - icon: ':question:'
@@ -33,7 +33,7 @@ data:
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/matrix/adjugate_matrix.0.test.cpp
     title: test/matrix/adjugate_matrix.0.test.cpp
   - icon: ':x:'
@@ -44,7 +44,7 @@ data:
     title: test/matrix/pow_of_matrix.0.test.cpp
   _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links:
     - https://codeforces.com/blog/entry/124815
@@ -633,7 +633,7 @@ data:
   path: frobenius.hpp
   requiredBy: []
   timestamp: '2024-11-20 23:45:47+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/matrix/adjugate_matrix.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
