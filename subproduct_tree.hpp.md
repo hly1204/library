@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: batch_inv.hpp
     title: batch_inv.hpp
   - icon: ':question:'
@@ -27,15 +27,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://noshi91.hatenablog.com/entry/2023/05/01/022946
@@ -481,7 +481,7 @@ data:
   requiredBy:
   - poly_interpolation_with_error.hpp
   timestamp: '2024-11-20 23:45:47+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - test/formal_power_series/polynomial_interpolation.0.test.cpp

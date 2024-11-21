@@ -81,31 +81,31 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/log_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/log_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
     title: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
     title: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   - icon: ':heavy_check_mark:'

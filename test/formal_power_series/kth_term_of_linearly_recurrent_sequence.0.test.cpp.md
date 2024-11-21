@@ -4,13 +4,13 @@ data:
   - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
     title: c_recursive.hpp
   - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft_doubling.hpp
     title: fft_doubling.hpp
   - icon: ':question:'

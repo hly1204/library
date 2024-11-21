@@ -4,13 +4,13 @@ data:
   - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
     title: c_recursive.hpp
   - icon: ':question:'
     path: fft.hpp
     title: fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft_doubling.hpp
     title: fft_doubling.hpp
   - icon: ':question:'
@@ -27,9 +27,9 @@ data:
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
@@ -416,7 +416,7 @@ data:
   path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   requiredBy: []
   timestamp: '2024-11-20 23:45:47+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
 layout: document
