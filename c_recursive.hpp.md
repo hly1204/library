@@ -326,7 +326,7 @@ data:
     \ 2)\n                dftP[i / 2] = (dftP[i] * dftQ[i + 1] + dftP[i + 1] * dftQ[i]).div_by_2();\n\
     \        }\n        dftP.resize(len / 2);\n        for (int i = 0; i < len; i\
     \ += 2) dftQ[i / 2] = dftQ[i] * dftQ[i + 1];\n        dftQ.resize(len / 2);\n\n\
-    \        k /= 2;\n        if (k < (int)P.size()) {\n            inv_fft(dftP);\n\
+    \        k /= 2;\n        if (k < (long long)P.size()) {\n            inv_fft(dftP);\n\
     \            inv_fft(dftQ);\n            return div(dftP, dftQ, k + 1).at(k);\n\
     \        }\n\n        fft_doubling(dftP);\n        fft_doubling(dftQ);\n    }\n\
     }\n\n// returns [x^[L,R)]P/Q\n// P: polynomial\n// Q: non-zero polynomial\n//\
@@ -403,7 +403,7 @@ data:
     \ 2)\n                dftP[i / 2] = (dftP[i] * dftQ[i + 1] + dftP[i + 1] * dftQ[i]).div_by_2();\n\
     \        }\n        dftP.resize(len / 2);\n        for (int i = 0; i < len; i\
     \ += 2) dftQ[i / 2] = dftQ[i] * dftQ[i + 1];\n        dftQ.resize(len / 2);\n\n\
-    \        k /= 2;\n        if (k < (int)P.size()) {\n            inv_fft(dftP);\n\
+    \        k /= 2;\n        if (k < (long long)P.size()) {\n            inv_fft(dftP);\n\
     \            inv_fft(dftQ);\n            return div(dftP, dftQ, k + 1).at(k);\n\
     \        }\n\n        fft_doubling(dftP);\n        fft_doubling(dftQ);\n    }\n\
     }\n\n// returns [x^[L,R)]P/Q\n// P: polynomial\n// Q: non-zero polynomial\n//\
@@ -434,7 +434,7 @@ data:
   isVerificationFile: false
   path: c_recursive.hpp
   requiredBy: []
-  timestamp: '2024-11-26 01:21:25+08:00'
+  timestamp: '2024-11-26 07:26:32+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
