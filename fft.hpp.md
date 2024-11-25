@@ -130,6 +130,9 @@ data:
     path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.1.test.cpp
+    title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.1.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/log_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/log_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -384,6 +387,7 @@ data:
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
   - test/formal_power_series/log_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.1.test.cpp
   - test/formal_power_series/multipoint_evaluation.0.test.cpp
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
