@@ -11,7 +11,6 @@ std::vector<Tp> inv_graeffe(const std::vector<Tp> &Q, int n) {
     assert(!Q.empty());
     assert(Q[0] != 0);
     if (n <= 0) return {};
-    if (n == 1) return {Q[0].inv()};
 
     // 12 E(n)
     auto rec = [](auto &&rec, std::vector<Tp> Q) {
