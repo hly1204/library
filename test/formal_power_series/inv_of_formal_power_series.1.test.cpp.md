@@ -1,0 +1,183 @@
+---
+data:
+  _extendedDependsOn:
+  - icon: ':heavy_check_mark:'
+    path: fft.hpp
+    title: fft.hpp
+  - icon: ':heavy_check_mark:'
+    path: modint.hpp
+    title: modint.hpp
+  _extendedRequiredBy: []
+  _extendedVerifiedWith: []
+  _isVerificationFailed: false
+  _pathExtension: cpp
+  _verificationStatusIcon: ':heavy_check_mark:'
+  attributes:
+    '*NOT_SPECIAL_COMMENTS*': ''
+    PROBLEM: https://judge.yosupo.jp/problem/inv_of_formal_power_series
+    links:
+    - https://judge.yosupo.jp/problem/inv_of_formal_power_series
+  bundledCode: "#line 1 \"test/formal_power_series/inv_of_formal_power_series.1.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
+    \n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n#include <cassert>\n#include\
+    \ <iterator>\n#include <memory>\n#include <vector>\n\ntemplate <typename Tp>\n\
+    class FftInfo {\n    static Tp least_quadratic_nonresidue() {\n        for (int\
+    \ i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n\
+    \    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n\
+    \    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n\
+    \    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
+    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
+    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
+    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
+    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
+    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
+    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
+    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+    \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
+    \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
+    \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
+    \  const int j = 1 << i;\n                root_[j]    = zeta_.pow(1LL << (ordlog2_\
+    \ - i - 2));\n                for (int k = j + 1; k < j * 2; ++k) root_[k] = root_[k\
+    \ - j] * root_[j];\n            }\n        }\n        return root_;\n    }\n \
+    \   const std::vector<Tp> &inv_root(int n) const {\n        // [0, n)\n      \
+    \  assert((n & (n - 1)) == 0);\n        if (const int s = invroot_.size(); s <\
+    \ n) {\n            invroot_.resize(n);\n            for (int i = __builtin_ctz(s);\
+    \ (1 << i) < n; ++i) {\n                const int j = 1 << i;\n              \
+    \  invroot_[j] = invzeta_.pow(1LL << (ordlog2_ - i - 2));\n                for\
+    \ (int k = j + 1; k < j * 2; ++k) invroot_[k] = invroot_[k - j] * invroot_[j];\n\
+    \            }\n        }\n        return invroot_;\n    }\n};\n\ninline int fft_len(int\
+    \ n) {\n    --n;\n    n |= n >> 1, n |= n >> 2, n |= n >> 4, n |= n >> 8;\n  \
+    \  return (n | n >> 16) + 1;\n}\n\ntemplate <typename Iterator>\ninline void fft_n(Iterator\
+    \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
+    \    assert((n & (n - 1)) == 0);\n    for (int j = 0; j < n / 2; ++j) {\n    \
+    \    auto u = a[j], v = a[j + n / 2];\n        a[j] = u + v, a[j + n / 2] = u\
+    \ - v;\n    }\n    auto &&root = FftInfo<Tp>::get().root(n / 2);\n    for (int\
+    \ i = n / 2; i >= 2; i /= 2) {\n        for (int j = 0; j < i / 2; ++j) {\n  \
+    \          auto u = a[j], v = a[j + i / 2];\n            a[j] = u + v, a[j + i\
+    \ / 2] = u - v;\n        }\n        for (int j = i, m = 1; j < n; j += i, ++m)\n\
+    \            for (int k = j; k < j + i / 2; ++k) {\n                auto u = a[k],\
+    \ v = a[k + i / 2] * root[m];\n                a[k] = u + v, a[k + i / 2] = u\
+    \ - v;\n            }\n    }\n}\n\ntemplate <typename Tp>\ninline void fft(std::vector<Tp>\
+    \ &a) {\n    fft_n(a.begin(), a.size());\n}\n\ntemplate <typename Iterator>\n\
+    inline void inv_fft_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
+    \    assert((n & (n - 1)) == 0);\n    auto &&root = FftInfo<Tp>::get().inv_root(n\
+    \ / 2);\n    for (int i = 2; i < n; i *= 2) {\n        for (int j = 0; j < i /\
+    \ 2; ++j) {\n            auto u = a[j], v = a[j + i / 2];\n            a[j] =\
+    \ u + v, a[j + i / 2] = u - v;\n        }\n        for (int j = i, m = 1; j <\
+    \ n; j += i, ++m)\n            for (int k = j; k < j + i / 2; ++k) {\n       \
+    \         auto u = a[k], v = a[k + i / 2];\n                a[k] = u + v, a[k\
+    \ + i / 2] = (u - v) * root[m];\n            }\n    }\n    const Tp iv = Tp::mod()\
+    \ - Tp::mod() / n;\n    for (int j = 0; j < n / 2; ++j) {\n        auto u = a[j]\
+    \ * iv, v = a[j + n / 2] * iv;\n        a[j] = u + v, a[j + n / 2] = u - v;\n\
+    \    }\n}\n\ntemplate <typename Tp>\ninline void inv_fft(std::vector<Tp> &a) {\n\
+    \    inv_fft_n(a.begin(), a.size());\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ convolution_fft(std::vector<Tp> a, std::vector<Tp> b) {\n    if (a.empty() ||\
+    \ b.empty()) return {};\n    const int n   = a.size();\n    const int m   = b.size();\n\
+    \    const int len = fft_len(n + m - 1);\n    a.resize(len);\n    b.resize(len);\n\
+    \    fft(a);\n    fft(b);\n    for (int i = 0; i < len; ++i) a[i] *= b[i];\n \
+    \   inv_fft(a);\n    a.resize(n + m - 1);\n    return a;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> square_fft(std::vector<Tp> a) {\n    if (a.empty())\
+    \ return {};\n    const int n   = a.size();\n    const int len = fft_len(n * 2\
+    \ - 1);\n    a.resize(len);\n    fft(a);\n    for (int i = 0; i < len; ++i) a[i]\
+    \ *= a[i];\n    inv_fft(a);\n    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> convolution_naive(const std::vector<Tp>\
+    \ &a, const std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n\
+    \    const int n = a.size();\n    const int m = b.size();\n    std::vector<Tp>\
+    \ res(n + m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j\
+    \ < m; ++j) res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
+    \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
+    \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
+    \    return convolution_fft(a, b);\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
+    #include <type_traits>\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
+    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
+    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
+    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
+    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
+    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
+    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
+    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
+    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
+    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
+    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
+    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
+    \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
+    \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
+    \ if ((e >>= 1) == 0) return res;\n        }\n    }\n    ModInt inv() const {\n\
+    \        int x1 = 1, x3 = 0, a = val(), b = Mod;\n        while (b) {\n      \
+    \      int q = a / b, x1_old = x1, a_old = a;\n            x1 = x3, x3 = x1_old\
+    \ - x3 * q, a = b, b = a_old - b * q;\n        }\n        return from_raw(x1 <\
+    \ 0 ? x1 + (int)Mod : x1);\n    }\n    template <bool Odd = (Mod & 1)>\n    std::enable_if_t<Odd,\
+    \ ModInt> div_by_2() const {\n        if (v_ & 1) return from_raw((v_ + Mod) >>\
+    \ 1);\n        return from_raw(v_ >> 1);\n    }\n\n    ModInt &operator+=(const\
+    \ ModInt &a) {\n        if ((v_ += a.v_) >= Mod) v_ -= Mod;\n        return *this;\n\
+    \    }\n    ModInt &operator-=(const ModInt &a) {\n        if ((v_ += Mod - a.v_)\
+    \ >= Mod) v_ -= Mod;\n        return *this;\n    }\n    ModInt &operator*=(const\
+    \ ModInt &a) {\n        v_ = (unsigned long long)v_ * a.v_ % Mod;\n        return\
+    \ *this;\n    }\n    ModInt &operator/=(const ModInt &a) { return *this *= a.inv();\
+    \ }\n\n    friend ModInt operator+(const ModInt &a, const ModInt &b) { return\
+    \ ModInt(a) += b; }\n    friend ModInt operator-(const ModInt &a, const ModInt\
+    \ &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const ModInt &a,\
+    \ const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
+    \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
+    \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
+    \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
+    #line 8 \"test/formal_power_series/inv_of_formal_power_series.1.test.cpp\"\n\n\
+    template <typename Tp>\nstd::vector<Tp> inv_graeffe(const std::vector<Tp> &Q,\
+    \ int n) {\n    assert(!Q.empty());\n    assert(Q[0] != 0);\n    if (n <= 0) return\
+    \ {};\n    if (n == 1) return {Q[0].inv()};\n\n    // 12 E(n)\n    auto rec =\
+    \ [](auto &&rec, std::vector<Tp> Q) {\n        const int n = Q.size();\n     \
+    \   if (n == 1) return std::vector{Q[0].inv()};\n        Q.resize(n * 2);\n  \
+    \      fft(Q); // 2 E(n)\n        std::vector<Tp> V(n);\n        for (int i =\
+    \ 0; i < n * 2; i += 2) V[i / 2] = Q[i] * Q[i + 1];\n        inv_fft(V); // 1\
+    \ E(n)\n        V.resize(n / 2);\n        auto T = rec(rec, V);\n        T.resize(n);\n\
+    \        fft(T); // 1 E(n)\n        for (int i = 0; i < n * 2; i += 2) {\n   \
+    \         auto u = Q[i], v = Q[i + 1];\n            Q[i] = T[i / 2] * v, Q[i +\
+    \ 1] = T[i / 2] * u;\n        }\n        inv_fft(Q); // 2 E(n)\n        Q.resize(n);\n\
+    \        return Q;\n    };\n\n    auto QQ = Q;\n    QQ.resize(fft_len(n));\n \
+    \   auto res = rec(rec, QQ);\n    res.resize(n);\n    return res;\n}\n\nint main()\
+    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
+    \ mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
+    \ a(n);\n    for (int i = 0; i < n; ++i) std::cin >> a[i];\n    const auto inva\
+    \ = inv_graeffe(a, n);\n    for (int i = 0; i < n; ++i) std::cout << inva[i] <<\
+    \ ' ';\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
+    \n\n#include \"fft.hpp\"\n#include \"modint.hpp\"\n#include <cassert>\n#include\
+    \ <iostream>\n#include <vector>\n\ntemplate <typename Tp>\nstd::vector<Tp> inv_graeffe(const\
+    \ std::vector<Tp> &Q, int n) {\n    assert(!Q.empty());\n    assert(Q[0] != 0);\n\
+    \    if (n <= 0) return {};\n    if (n == 1) return {Q[0].inv()};\n\n    // 12\
+    \ E(n)\n    auto rec = [](auto &&rec, std::vector<Tp> Q) {\n        const int\
+    \ n = Q.size();\n        if (n == 1) return std::vector{Q[0].inv()};\n       \
+    \ Q.resize(n * 2);\n        fft(Q); // 2 E(n)\n        std::vector<Tp> V(n);\n\
+    \        for (int i = 0; i < n * 2; i += 2) V[i / 2] = Q[i] * Q[i + 1];\n    \
+    \    inv_fft(V); // 1 E(n)\n        V.resize(n / 2);\n        auto T = rec(rec,\
+    \ V);\n        T.resize(n);\n        fft(T); // 1 E(n)\n        for (int i = 0;\
+    \ i < n * 2; i += 2) {\n            auto u = Q[i], v = Q[i + 1];\n           \
+    \ Q[i] = T[i / 2] * v, Q[i + 1] = T[i / 2] * u;\n        }\n        inv_fft(Q);\
+    \ // 2 E(n)\n        Q.resize(n);\n        return Q;\n    };\n\n    auto QQ =\
+    \ Q;\n    QQ.resize(fft_len(n));\n    auto res = rec(rec, QQ);\n    res.resize(n);\n\
+    \    return res;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n \
+    \   std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
+    \    std::cin >> n;\n    std::vector<mint> a(n);\n    for (int i = 0; i < n; ++i)\
+    \ std::cin >> a[i];\n    const auto inva = inv_graeffe(a, n);\n    for (int i\
+    \ = 0; i < n; ++i) std::cout << inva[i] << ' ';\n    return 0;\n}\n"
+  dependsOn:
+  - fft.hpp
+  - modint.hpp
+  isVerificationFile: true
+  path: test/formal_power_series/inv_of_formal_power_series.1.test.cpp
+  requiredBy: []
+  timestamp: '2024-11-26 20:41:46+08:00'
+  verificationStatus: TEST_ACCEPTED
+  verifiedWith: []
+documentation_of: test/formal_power_series/inv_of_formal_power_series.1.test.cpp
+layout: document
+redirect_from:
+- /verify/test/formal_power_series/inv_of_formal_power_series.1.test.cpp
+- /verify/test/formal_power_series/inv_of_formal_power_series.1.test.cpp.html
+title: test/formal_power_series/inv_of_formal_power_series.1.test.cpp
+---
