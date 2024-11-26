@@ -129,32 +129,30 @@ data:
     #line 8 \"test/formal_power_series/inv_of_formal_power_series.1.test.cpp\"\n\n\
     template <typename Tp>\nstd::vector<Tp> inv_graeffe(const std::vector<Tp> &Q,\
     \ int n) {\n    assert(!Q.empty());\n    assert(Q[0] != 0);\n    if (n <= 0) return\
-    \ {};\n    if (n == 1) return {Q[0].inv()};\n\n    // 12 E(n)\n    auto rec =\
-    \ [](auto &&rec, std::vector<Tp> Q) {\n        const int n = Q.size();\n     \
-    \   if (n == 1) return std::vector{Q[0].inv()};\n        Q.resize(n * 2);\n  \
-    \      fft(Q); // 2 E(n)\n        std::vector<Tp> V(n);\n        for (int i =\
-    \ 0; i < n * 2; i += 2) V[i / 2] = Q[i] * Q[i + 1];\n        inv_fft(V); // 1\
-    \ E(n)\n        V.resize(n / 2);\n        auto T = rec(rec, V);\n        T.resize(n);\n\
-    \        fft(T); // 1 E(n)\n        for (int i = 0; i < n * 2; i += 2) {\n   \
-    \         auto u = Q[i], v = Q[i + 1];\n            Q[i] = T[i / 2] * v, Q[i +\
-    \ 1] = T[i / 2] * u;\n        }\n        inv_fft(Q); // 2 E(n)\n        Q.resize(n);\n\
-    \        return Q;\n    };\n\n    auto QQ = Q;\n    QQ.resize(fft_len(n));\n \
-    \   auto res = rec(rec, QQ);\n    res.resize(n);\n    return res;\n}\n\nint main()\
-    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
-    \ mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
-    \ a(n);\n    for (int i = 0; i < n; ++i) std::cin >> a[i];\n    const auto inva\
-    \ = inv_graeffe(a, n);\n    for (int i = 0; i < n; ++i) std::cout << inva[i] <<\
-    \ ' ';\n    return 0;\n}\n"
+    \ {};\n\n    // 12 E(n)\n    auto rec = [](auto &&rec, std::vector<Tp> Q) {\n\
+    \        const int n = Q.size();\n        if (n == 1) return std::vector{Q[0].inv()};\n\
+    \        Q.resize(n * 2);\n        fft(Q); // 2 E(n)\n        std::vector<Tp>\
+    \ V(n);\n        for (int i = 0; i < n * 2; i += 2) V[i / 2] = Q[i] * Q[i + 1];\n\
+    \        inv_fft(V); // 1 E(n)\n        V.resize(n / 2);\n        auto T = rec(rec,\
+    \ V);\n        T.resize(n);\n        fft(T); // 1 E(n)\n        for (int i = 0;\
+    \ i < n * 2; i += 2) {\n            auto u = Q[i], v = Q[i + 1];\n           \
+    \ Q[i] = T[i / 2] * v, Q[i + 1] = T[i / 2] * u;\n        }\n        inv_fft(Q);\
+    \ // 2 E(n)\n        Q.resize(n);\n        return Q;\n    };\n\n    auto QQ =\
+    \ Q;\n    QQ.resize(fft_len(n));\n    auto res = rec(rec, QQ);\n    res.resize(n);\n\
+    \    return res;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n \
+    \   std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n\
+    \    std::cin >> n;\n    std::vector<mint> a(n);\n    for (int i = 0; i < n; ++i)\
+    \ std::cin >> a[i];\n    const auto inva = inv_graeffe(a, n);\n    for (int i\
+    \ = 0; i < n; ++i) std::cout << inva[i] << ' ';\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
     \n\n#include \"fft.hpp\"\n#include \"modint.hpp\"\n#include <cassert>\n#include\
     \ <iostream>\n#include <vector>\n\ntemplate <typename Tp>\nstd::vector<Tp> inv_graeffe(const\
     \ std::vector<Tp> &Q, int n) {\n    assert(!Q.empty());\n    assert(Q[0] != 0);\n\
-    \    if (n <= 0) return {};\n    if (n == 1) return {Q[0].inv()};\n\n    // 12\
-    \ E(n)\n    auto rec = [](auto &&rec, std::vector<Tp> Q) {\n        const int\
-    \ n = Q.size();\n        if (n == 1) return std::vector{Q[0].inv()};\n       \
-    \ Q.resize(n * 2);\n        fft(Q); // 2 E(n)\n        std::vector<Tp> V(n);\n\
-    \        for (int i = 0; i < n * 2; i += 2) V[i / 2] = Q[i] * Q[i + 1];\n    \
-    \    inv_fft(V); // 1 E(n)\n        V.resize(n / 2);\n        auto T = rec(rec,\
+    \    if (n <= 0) return {};\n\n    // 12 E(n)\n    auto rec = [](auto &&rec, std::vector<Tp>\
+    \ Q) {\n        const int n = Q.size();\n        if (n == 1) return std::vector{Q[0].inv()};\n\
+    \        Q.resize(n * 2);\n        fft(Q); // 2 E(n)\n        std::vector<Tp>\
+    \ V(n);\n        for (int i = 0; i < n * 2; i += 2) V[i / 2] = Q[i] * Q[i + 1];\n\
+    \        inv_fft(V); // 1 E(n)\n        V.resize(n / 2);\n        auto T = rec(rec,\
     \ V);\n        T.resize(n);\n        fft(T); // 1 E(n)\n        for (int i = 0;\
     \ i < n * 2; i += 2) {\n            auto u = Q[i], v = Q[i + 1];\n           \
     \ Q[i] = T[i / 2] * v, Q[i + 1] = T[i / 2] * u;\n        }\n        inv_fft(Q);\
@@ -171,7 +169,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/inv_of_formal_power_series.1.test.cpp
   requiredBy: []
-  timestamp: '2024-11-26 20:41:46+08:00'
+  timestamp: '2024-11-26 20:50:26+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/inv_of_formal_power_series.1.test.cpp
