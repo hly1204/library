@@ -346,16 +346,15 @@ data:
     \ long L, long long R) {\n    assert(L >= 0);\n    assert(order(Q) == 0);\n  \
     \  const int degP = degree(P);\n    if (degP < 0) return std::vector<Tp>(R - L);\n\
     \    const int degQ = degree(Q);\n    const int N    = std::max(degP + 1, degQ);\n\
-    \    // [x^(-k)]P(x^(-1))/Q(x^(-1))\n    // [x^0](x^kP(x^(-1)))/Q(x^(-1))\n  \
-    \  // P0 := x^(N-1)P((x^(-1))), Q0 := x^NQ(x^(-1))\n    // [x^(-1)]x^k(P0)/(Q0)\
-    \ = [x^(-1)](x^kP0 mod Q0)/Q0\n    auto P0 = P, Q0 = Q;\n    P0.resize(N);\n \
-    \   std::reverse(P0.begin(), P0.end());\n    Q0.resize(N + 1);\n    std::reverse(Q0.begin(),\
-    \ Q0.end());\n    auto [q, r] = euclidean_div(convolution(xk_mod(L, Q0), P0),\
-    \ Q0);\n    r.resize(N);\n    std::reverse(r.begin(), r.end());\n    std::reverse(Q0.begin(),\
-    \ Q0.end());\n    return div(r, Q0, R - L);\n}\n\n// returns [x^k]P/Q\ntemplate\
-    \ <typename Tp>\ninline Tp div_at(const std::vector<Tp> &P, const std::vector<Tp>\
-    \ &Q, long long k) {\n    return slice_coeff_rational(P, Q, k, k + 1).at(0);\n\
-    }\n"
+    \    // for single k>=0:\n    // [x^(-k)]P(x^(-1))/Q(x^(-1))\n    // [x^0](x^k\
+    \ P(x^(-1)))/Q(x^(-1))\n    // P0 := x^(N-1) P((x^(-1))), Q0 := x^N Q(x^(-1))\n\
+    \    // [x^(-1)](x^k P0)/(Q0) = [x^(-1)](x^k P0 mod Q0)/Q0\n    auto P0 = P, Q0\
+    \ = Q;\n    P0.resize(N);\n    std::reverse(P0.begin(), P0.end());\n    Q0.resize(N\
+    \ + 1);\n    std::reverse(Q0.begin(), Q0.end());\n    auto [q, r] = euclidean_div(convolution(xk_mod(L,\
+    \ Q0), P0), Q0);\n    r.resize(N);\n    std::reverse(r.begin(), r.end());\n  \
+    \  return div(r, Q, R - L);\n}\n\n// returns [x^k]P/Q\ntemplate <typename Tp>\n\
+    inline Tp div_at(const std::vector<Tp> &P, const std::vector<Tp> &Q, long long\
+    \ k) {\n    return slice_coeff_rational(P, Q, k, k + 1).at(0);\n}\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include \"fft_doubling.hpp\"\n#include\
     \ \"fps_basic.hpp\"\n#include \"poly_basic.hpp\"\n#include <algorithm>\n#include\
     \ <cassert>\n#include <vector>\n\n// see:\n// [1]: Alin Bostan, Ryuhei Mori.\n\
@@ -432,16 +431,15 @@ data:
     \ long L, long long R) {\n    assert(L >= 0);\n    assert(order(Q) == 0);\n  \
     \  const int degP = degree(P);\n    if (degP < 0) return std::vector<Tp>(R - L);\n\
     \    const int degQ = degree(Q);\n    const int N    = std::max(degP + 1, degQ);\n\
-    \    // [x^(-k)]P(x^(-1))/Q(x^(-1))\n    // [x^0](x^kP(x^(-1)))/Q(x^(-1))\n  \
-    \  // P0 := x^(N-1)P((x^(-1))), Q0 := x^NQ(x^(-1))\n    // [x^(-1)]x^k(P0)/(Q0)\
-    \ = [x^(-1)](x^kP0 mod Q0)/Q0\n    auto P0 = P, Q0 = Q;\n    P0.resize(N);\n \
-    \   std::reverse(P0.begin(), P0.end());\n    Q0.resize(N + 1);\n    std::reverse(Q0.begin(),\
-    \ Q0.end());\n    auto [q, r] = euclidean_div(convolution(xk_mod(L, Q0), P0),\
-    \ Q0);\n    r.resize(N);\n    std::reverse(r.begin(), r.end());\n    std::reverse(Q0.begin(),\
-    \ Q0.end());\n    return div(r, Q0, R - L);\n}\n\n// returns [x^k]P/Q\ntemplate\
-    \ <typename Tp>\ninline Tp div_at(const std::vector<Tp> &P, const std::vector<Tp>\
-    \ &Q, long long k) {\n    return slice_coeff_rational(P, Q, k, k + 1).at(0);\n\
-    }\n"
+    \    // for single k>=0:\n    // [x^(-k)]P(x^(-1))/Q(x^(-1))\n    // [x^0](x^k\
+    \ P(x^(-1)))/Q(x^(-1))\n    // P0 := x^(N-1) P((x^(-1))), Q0 := x^N Q(x^(-1))\n\
+    \    // [x^(-1)](x^k P0)/(Q0) = [x^(-1)](x^k P0 mod Q0)/Q0\n    auto P0 = P, Q0\
+    \ = Q;\n    P0.resize(N);\n    std::reverse(P0.begin(), P0.end());\n    Q0.resize(N\
+    \ + 1);\n    std::reverse(Q0.begin(), Q0.end());\n    auto [q, r] = euclidean_div(convolution(xk_mod(L,\
+    \ Q0), P0), Q0);\n    r.resize(N);\n    std::reverse(r.begin(), r.end());\n  \
+    \  return div(r, Q, R - L);\n}\n\n// returns [x^k]P/Q\ntemplate <typename Tp>\n\
+    inline Tp div_at(const std::vector<Tp> &P, const std::vector<Tp> &Q, long long\
+    \ k) {\n    return slice_coeff_rational(P, Q, k, k + 1).at(0);\n}\n"
   dependsOn:
   - fft.hpp
   - fft_doubling.hpp
@@ -452,7 +450,7 @@ data:
   isVerificationFile: false
   path: c_recursive.hpp
   requiredBy: []
-  timestamp: '2024-11-27 23:54:48+08:00'
+  timestamp: '2024-11-28 00:24:36+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
