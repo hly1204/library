@@ -8,6 +8,11 @@
 #include <cassert>
 #include <vector>
 
+// see:
+// [1]: Alin Bostan, Ryuhei Mori.
+//      A Simple and Fast Algorithm for Computing the N-th Term of a Linearly Recurrent Sequence.
+//      https://arxiv.org/abs/2008.08822
+
 template <typename Tp>
 inline void fft_high(std::vector<Tp> &a) {
     const int n = a.size();
@@ -154,92 +159,11 @@ inline std::vector<Tp> xk_mod(long long k, const std::vector<Tp> &Q) {
     dftU.resize(degQ);
     dftU.resize(len);
     fft(dftU);
-    // [-deg(Q),-1] * [0,deg(Q)] => take [0,deg(Q))
-    // [0,deg(Q))   * [0,deg(Q)] => take [deg(Q),2deg(Q))
     for (int i = 0; i < len; ++i) dftU[i] *= dftQ[i];
     inv_fft(dftU);
     dftU.resize(degQ);
     std::reverse(dftU.begin(), dftU.end());
     return dftU;
-}
-
-// returns [x^k]P/Q
-// see: https://arxiv.org/abs/2008.08822
-// Alin Bostan, Ryuhei Mori.
-// A Simple and Fast Algorithm for Computing the N-th Term of a Linearly Recurrent Sequence
-template <typename Tp>
-inline Tp div_at(const std::vector<Tp> &P, std::vector<Tp> Q, long long k) {
-    auto iszero = [](const std::vector<Tp> &a) { return order(a) == -1; };
-    assert(!iszero(Q));
-    if (P.empty()) return 0;
-    if (const int ordQ = order(Q)) {
-        Q.erase(Q.begin(), Q.begin() + ordQ);
-        k += ordQ;
-    }
-
-    assert(k >= 0);
-    if (k < (long long)P.size()) return div(P, Q, k + 1).at(k);
-
-    const int len = fft_len(std::max(P.size() + Q.size(), Q.size() * 2) - 1);
-    std::vector<Tp> dftP(P), dftQ(Q);
-    dftP.resize(len);
-    dftQ.resize(len);
-    fft(dftP);
-    fft(dftQ);
-
-    for (;;) {
-        if (k & 1) {
-            auto &&root = FftInfo<Tp>::get().inv_root(len / 2);
-            for (int i = 0; i < len; i += 2)
-                dftP[i / 2] =
-                    (dftP[i] * dftQ[i + 1] - dftP[i + 1] * dftQ[i]).div_by_2() * root[i / 2];
-        } else {
-            for (int i = 0; i < len; i += 2)
-                dftP[i / 2] = (dftP[i] * dftQ[i + 1] + dftP[i + 1] * dftQ[i]).div_by_2();
-        }
-        dftP.resize(len / 2);
-        for (int i = 0; i < len; i += 2) dftQ[i / 2] = dftQ[i] * dftQ[i + 1];
-        dftQ.resize(len / 2);
-
-        k /= 2;
-        if (k < (long long)P.size()) {
-            inv_fft(dftP);
-            inv_fft(dftQ);
-            return div(dftP, dftQ, k + 1).at(k);
-        }
-
-        fft_doubling(dftP);
-        fft_doubling(dftQ);
-    }
-}
-
-// returns [x^[L,R)]P/Q
-// P: polynomial
-// Q: non-zero polynomial
-// deg(P) < deg(Q)
-template <typename Tp>
-inline std::vector<Tp> slice_coeff_rationalA(std::vector<Tp> P, std::vector<Tp> Q, long long L,
-                                             long long R) {
-    if (R <= L) return {};
-    if (const int ordQ = order(Q)) {
-        Q.erase(Q.begin(), Q.begin() + ordQ);
-        L += ordQ;
-        R += ordQ;
-    }
-    assert(L >= 0);
-
-    const int degP = degree(P);
-    const int degQ = degree(Q);
-    if (degP < 0) return std::vector<Tp>(R - L);
-    assert(degP < degQ);
-
-    const std::vector<Tp> revQ(Q.rend() - (degQ + 1), Q.rend());
-    P.resize(degQ);
-    std::reverse(P.begin(), P.end());
-    auto [q, r] = euclidean_div(convolution(xk_mod(L, revQ), P), revQ);
-    r.resize(degQ);
-    std::reverse(r.begin(), r.end());
-    return div(r, Q, R - L);
 }
 
 // returns [x^[L,R)]P/Q
@@ -248,8 +172,30 @@ inline std::vector<Tp> slice_coeff_rationalA(std::vector<Tp> P, std::vector<Tp> 
 template <typename Tp>
 inline std::vector<Tp> slice_coeff_rational(const std::vector<Tp> &P, const std::vector<Tp> &Q,
                                             long long L, long long R) {
-    const auto [q, r] = euclidean_div(P, Q);
-    auto res          = slice_coeff_rationalA(r, Q, L, R);
-    for (long long i = L; i < std::min<long long>(R, q.size()); ++i) res[i - L] += q[i];
-    return res;
+    assert(L >= 0);
+    assert(order(Q) == 0);
+    const int degP = degree(P);
+    if (degP < 0) return std::vector<Tp>(R - L);
+    const int degQ = degree(Q);
+    const int N    = std::max(degP + 1, degQ);
+    // [x^(-k)]P(x^(-1))/Q(x^(-1))
+    // [x^0](x^kP(x^(-1)))/Q(x^(-1))
+    // P0 := x^(N-1)P((x^(-1))), Q0 := x^NQ(x^(-1))
+    // [x^(-1)]x^k(P0)/(Q0) = [x^(-1)](x^kP0 mod Q0)/Q0
+    auto P0 = P, Q0 = Q;
+    P0.resize(N);
+    std::reverse(P0.begin(), P0.end());
+    Q0.resize(N + 1);
+    std::reverse(Q0.begin(), Q0.end());
+    auto [q, r] = euclidean_div(convolution(xk_mod(L, Q0), P0), Q0);
+    r.resize(N);
+    std::reverse(r.begin(), r.end());
+    std::reverse(Q0.begin(), Q0.end());
+    return div(r, Q0, R - L);
+}
+
+// returns [x^k]P/Q
+template <typename Tp>
+inline Tp div_at(const std::vector<Tp> &P, const std::vector<Tp> &Q, long long k) {
+    return slice_coeff_rational(P, Q, k, k + 1).at(0);
 }
