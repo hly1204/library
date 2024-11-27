@@ -178,10 +178,11 @@ inline std::vector<Tp> slice_coeff_rational(const std::vector<Tp> &P, const std:
     if (degP < 0) return std::vector<Tp>(R - L);
     const int degQ = degree(Q);
     const int N    = std::max(degP + 1, degQ);
+    // for single k>=0:
     // [x^(-k)]P(x^(-1))/Q(x^(-1))
-    // [x^0](x^kP(x^(-1)))/Q(x^(-1))
-    // P0 := x^(N-1)P((x^(-1))), Q0 := x^NQ(x^(-1))
-    // [x^(-1)]x^k(P0)/(Q0) = [x^(-1)](x^kP0 mod Q0)/Q0
+    // [x^0](x^k P(x^(-1)))/Q(x^(-1))
+    // P0 := x^(N-1) P((x^(-1))), Q0 := x^N Q(x^(-1))
+    // [x^(-1)](x^k P0)/(Q0) = [x^(-1)](x^k P0 mod Q0)/Q0
     auto P0 = P, Q0 = Q;
     P0.resize(N);
     std::reverse(P0.begin(), P0.end());
@@ -190,8 +191,7 @@ inline std::vector<Tp> slice_coeff_rational(const std::vector<Tp> &P, const std:
     auto [q, r] = euclidean_div(convolution(xk_mod(L, Q0), P0), Q0);
     r.resize(N);
     std::reverse(r.begin(), r.end());
-    std::reverse(Q0.begin(), Q0.end());
-    return div(r, Q0, R - L);
+    return div(r, Q, R - L);
 }
 
 // returns [x^k]P/Q
