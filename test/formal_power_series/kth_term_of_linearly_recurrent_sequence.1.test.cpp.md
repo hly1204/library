@@ -270,93 +270,123 @@ data:
     \ < 0) return {Tp(0)};\n    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A,\
     \ B);\n\n    auto Q = div(std::vector(A.rend() - (degA + 1), A.rend()),\n    \
     \             std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n    std::reverse(Q.begin(),\
-    \ Q.end());\n    return Q;\n}\n#line 10 \"c_recursive.hpp\"\n\n// returns x^k\
+    \ Q.end());\n    return Q;\n}\n#line 10 \"c_recursive.hpp\"\n\ntemplate <typename\
+    \ Tp>\ninline void fft_high(std::vector<Tp> &a) {\n    const int n = a.size();\n\
+    \    inv_fft_n(a.begin() + n / 2, n / 2);\n    Tp k         = 1;\n    const auto\
+    \ t = FftInfo<Tp>::get().inv_root(n / 2).at(n / 4);\n    for (int i = 0; i < n\
+    \ / 2; ++i) a[i + n / 2] *= k, k *= t;\n    fft_n(a.begin() + n / 2, n / 2);\n\
+    \    for (int i = 0; i < n / 2; ++i) a[i] = (a[i] - a[i + n / 2]).div_by_2();\n\
+    \    a.resize(n / 2);\n}\n\n// returns DFT([x^[L,L+len/2)]1/Q)\n// 1/Q in R[[x]]\n\
+    // requires len/2 > deg(Q), len/2 is even\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ bostan_mori_power_series(std::vector<Tp> dftQ, long long L) {\n    const int\
+    \ len = dftQ.size() * 2;\n    if (L <= -(len / 2LL)) return std::vector<Tp>(len\
+    \ / 2);\n    if (L <= 0) {\n        inv_fft(dftQ);\n        auto invQ = inv(dftQ,\
+    \ L + len / 2);\n        invQ.insert(invQ.begin(), -L, 0);\n        fft(invQ);\n\
+    \        return invQ;\n    }\n\n    fft_doubling(dftQ);\n    std::vector<Tp> dftV(len\
+    \ / 2);\n    for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i +\
+    \ 1];\n    const auto dftT = bostan_mori_power_series(dftV, (L - len / 2 + (L\
+    \ & 1)) / 2);\n\n    std::vector<Tp> dftU(len);\n    if (L & 1) {\n        auto\
+    \ &&root = FftInfo<Tp>::get().root(len / 2);\n        for (int i = 0; i < len;\
+    \ i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i + 1] * root[i / 2];\n\
+    \            dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i / 2];\n        }\n\
+    \    } else {\n        for (int i = 0; i < len; i += 2) {\n            dftU[i]\
+    \     = dftT[i / 2] * dftQ[i + 1];\n            dftU[i + 1] = dftT[i / 2] * dftQ[i];\n\
+    \        }\n    }\n\n    fft_high(dftU);\n    return dftU;\n}\n\n// returns DFT([x^[-len/2,0)]x^k/Q)\n\
+    // x^k/Q in R((x^(-1)))\n// requires len/2 > degQ, len/2 is even\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp>\
+    \ dftQ, long long k) {\n    assert(k >= 0);\n    const int len = dftQ.size() *\
+    \ 2;\n    if (k < len / 2LL) {\n        inv_fft(dftQ);\n        const int degQ\
+    \ = degree(dftQ);\n        dftQ.resize(degQ + 1);\n        std::reverse(dftQ.begin(),\
+    \ dftQ.end());\n        auto invQ = inv(dftQ, len / 2 - degQ + k + 1);\n     \
+    \   std::reverse(invQ.begin(), invQ.end());\n        invQ.resize(len / 2);\n \
+    \       fft(invQ);\n        return invQ;\n    }\n\n    fft_doubling(dftQ);\n \
+    \   std::vector<Tp> dftV(len / 2);\n    for (int i = 0; i < len; i += 2) dftV[i\
+    \ / 2] = dftQ[i] * dftQ[i + 1];\n    const auto dftT = bostan_mori_reversed_laurent_series(dftV,\
+    \ k / 2);\n\n    std::vector<Tp> dftU(len);\n    if (k & 1) {\n        auto &&root\
+    \ = FftInfo<Tp>::get().root(len / 2);\n        for (int i = 0; i < len; i += 2)\
+    \ {\n            dftU[i]     = dftT[i / 2] * dftQ[i + 1] * root[i / 2];\n    \
+    \        dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i / 2];\n        }\n    }\
+    \ else {\n        for (int i = 0; i < len; i += 2) {\n            dftU[i]    \
+    \ = dftT[i / 2] * dftQ[i + 1];\n            dftU[i + 1] = dftT[i / 2] * dftQ[i];\n\
+    \        }\n    }\n\n    fft_high(dftU);\n    return dftU;\n}\n\n// returns x^k\
     \ mod Q\ntemplate <typename Tp>\ninline std::vector<Tp> xk_mod(long long k, const\
     \ std::vector<Tp> &Q) {\n    assert(k >= 0);\n    const int degQ = degree(Q);\n\
     \    assert(degQ >= 0);\n    if (degQ == 0) return {};\n    if (k < degQ) {\n\
     \        std::vector<Tp> res(degQ);\n        res[k] = 1;\n        return res;\n\
-    \    }\n\n    // x^k/Q = ... + a_0x^(-1) + ... + a_(deg(Q)-1)x^(-deg(Q)) + ...\
-    \ in R((x^(-1)))\n    // x^(-k)/Q(x^(-1)) = ... + a_0x + ... + a_(deg(Q)-1)x^(deg(Q))\
-    \ + ... in R((x))\n    // 1/Q(x^(-1)) = ... + a_0x^(k+1) + ... + a_(deg(Q)-1)x^(deg(Q)+k+1)\
-    \ + ... in R((x))\n    // 1/(x^(deg(Q))Q(x^(-1))) = ... + a_0x^(k+1-deg(Q)) +\
-    \ ... in R[[x]]\n\n    auto fft_high = [](std::vector<Tp> &a) {\n        const\
-    \ int n = a.size();\n        inv_fft_n(a.begin() + n / 2, n / 2);\n        Tp\
-    \ k         = 1;\n        const auto t = FftInfo<Tp>::get().inv_root(n / 2).at(n\
-    \ / 4);\n        for (int i = 0; i < n / 2; ++i) a[i + n / 2] *= k, k *= t;\n\
-    \        fft_n(a.begin() + n / 2, n / 2);\n        for (int i = 0; i < n / 2;\
-    \ ++i) a[i] = (a[i] - a[i + n / 2]).div_by_2();\n        a.resize(n / 2);\n  \
-    \  };\n\n    const int len = fft_len(degQ * 2 + 1);\n\n    // returns DFT([x^[L,L+len/2)]1/Q)\n\
-    \    // len/2 > deg(Q), len/2 is even\n    auto rec = [len, &fft_high](auto &&rec,\
-    \ std::vector<Tp> dftQ, long long L) {\n        if (L <= 0) {\n            inv_fft(dftQ);\n\
-    \            auto invQ = inv(dftQ, L + len / 2);\n            invQ.insert(invQ.begin(),\
-    \ -L, 0);\n            fft(invQ);\n            return invQ;\n        }\n\n   \
-    \     if ((int)dftQ.size() < len) fft_doubling(dftQ);\n        std::vector<Tp>\
-    \ dftV(len / 2);\n        for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i]\
-    \ * dftQ[i + 1];\n        const auto dftT = rec(rec, dftV, (L - len / 2 + (L &\
-    \ 1)) / 2);\n\n        std::vector<Tp> dftU(len);\n        if (L & 1) {\n    \
-    \        auto &&root = FftInfo<Tp>::get().root(len / 2);\n            for (int\
-    \ i = 0; i < len; i += 2) {\n                dftU[i]     = dftT[i / 2] * dftQ[i\
-    \ + 1] * root[i / 2];\n                dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i\
-    \ / 2];\n            }\n        } else {\n            for (int i = 0; i < len;\
-    \ i += 2) {\n                dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n      \
-    \          dftU[i + 1] = dftT[i / 2] * dftQ[i];\n            }\n        }\n\n\
-    \        fft_high(dftU);\n        return dftU;\n    };\n\n    auto dftQ = std::vector(Q.rend()\
-    \ - (degQ + 1), Q.rend());\n    dftQ.resize(len);\n    fft(dftQ);\n    auto dftinvQ\
-    \ = rec(rec, dftQ, k + 1 - degQ);\n    inv_fft(dftinvQ);\n    dftinvQ.resize(degQ);\n\
-    \    std::reverse(dftinvQ.begin(), dftinvQ.end());\n    // [-deg(Q),-1] * [0,deg(Q)]\
-    \ => take [0,deg(Q))\n    // [0,deg(Q))   * [0,deg(Q)] => take [deg(Q),2deg(Q))\n\
-    \    auto res = convolution(dftinvQ, Q);\n    res.erase(res.begin(), res.begin()\
-    \ + degQ);\n    res.resize(degQ);\n    return res;\n}\n\n// returns [x^k]P/Q\n\
-    // see: https://arxiv.org/abs/2008.08822\n// Alin Bostan, Ryuhei Mori.\n// A Simple\
-    \ and Fast Algorithm for Computing the N-th Term of a Linearly Recurrent Sequence\n\
-    template <typename Tp>\ninline Tp div_at(const std::vector<Tp> &P, std::vector<Tp>\
-    \ Q, long long k) {\n    auto iszero = [](const std::vector<Tp> &a) { return order(a)\
-    \ == -1; };\n    assert(!iszero(Q));\n    if (P.empty()) return 0;\n    if (const\
-    \ int ordQ = order(Q)) {\n        Q.erase(Q.begin(), Q.begin() + ordQ);\n    \
-    \    k += ordQ;\n    }\n\n    assert(k >= 0);\n    if (k < (long long)P.size())\
-    \ return div(P, Q, k + 1).at(k);\n\n    const int len = fft_len(std::max(P.size()\
-    \ + Q.size(), Q.size() * 2) - 1);\n    std::vector<Tp> dftP(P), dftQ(Q);\n   \
-    \ dftP.resize(len);\n    dftQ.resize(len);\n    fft(dftP);\n    fft(dftQ);\n\n\
-    \    for (;;) {\n        if (k & 1) {\n            auto &&root = FftInfo<Tp>::get().inv_root(len\
-    \ / 2);\n            for (int i = 0; i < len; i += 2)\n                dftP[i\
-    \ / 2] =\n                    (dftP[i] * dftQ[i + 1] - dftP[i + 1] * dftQ[i]).div_by_2()\
-    \ * root[i / 2];\n        } else {\n            for (int i = 0; i < len; i +=\
-    \ 2)\n                dftP[i / 2] = (dftP[i] * dftQ[i + 1] + dftP[i + 1] * dftQ[i]).div_by_2();\n\
-    \        }\n        dftP.resize(len / 2);\n        for (int i = 0; i < len; i\
-    \ += 2) dftQ[i / 2] = dftQ[i] * dftQ[i + 1];\n        dftQ.resize(len / 2);\n\n\
-    \        k /= 2;\n        if (k < (long long)P.size()) {\n            inv_fft(dftP);\n\
-    \            inv_fft(dftQ);\n            return div(dftP, dftQ, k + 1).at(k);\n\
-    \        }\n\n        fft_doubling(dftP);\n        fft_doubling(dftQ);\n    }\n\
-    }\n\n// returns [x^[L,R)]P/Q\n// P: polynomial\n// Q: non-zero polynomial\n//\
-    \ deg(P) < deg(Q)\ntemplate <typename Tp>\ninline std::vector<Tp> slice_coeff_rationalA(std::vector<Tp>\
-    \ P, std::vector<Tp> Q, long long L,\n                                       \
-    \      long long R) {\n    if (R <= L) return {};\n    if (const int ordQ = order(Q))\
-    \ {\n        Q.erase(Q.begin(), Q.begin() + ordQ);\n        L += ordQ;\n     \
-    \   R += ordQ;\n    }\n    assert(L >= 0);\n\n    const int degP = degree(P);\n\
-    \    const int degQ = degree(Q);\n    if (degP < 0) return std::vector<Tp>(R -\
-    \ L);\n    assert(degP < degQ);\n\n    const std::vector<Tp> revQ(Q.rend() - (degQ\
-    \ + 1), Q.rend());\n    P.resize(degQ);\n    std::reverse(P.begin(), P.end());\n\
-    \    auto [q, r] = euclidean_div(convolution(xk_mod(L, revQ), P), revQ);\n   \
-    \ r.resize(degQ);\n    std::reverse(r.begin(), r.end());\n    return div(r, Q,\
-    \ R - L);\n}\n\n// returns [x^[L,R)]P/Q\n// P: polynomial\n// Q: non-zero polynomial\n\
-    template <typename Tp>\ninline std::vector<Tp> slice_coeff_rational(const std::vector<Tp>\
-    \ &P, const std::vector<Tp> &Q,\n                                            long\
-    \ long L, long long R) {\n    const auto [q, r] = euclidean_div(P, Q);\n    auto\
-    \ res          = slice_coeff_rationalA(r, Q, L, R);\n    for (long long i = L;\
-    \ i < std::min<long long>(R, q.size()); ++i) res[i - L] += q[i];\n    return res;\n\
-    }\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#line 5 \"modint.hpp\"\n\ntemplate\
-    \ <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod`\
-    \ must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
-    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
-    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
-    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
-    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
-    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
-    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
-    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
-    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
-    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
-    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \    }\n\n    const int len = fft_len(degQ * 2 + 1);\n    if (k < len / 2LL) {\n\
+    \        auto invQ = inv(std::vector(Q.rend() - (degQ + 1), Q.rend()), k + 1);\n\
+    \        std::reverse(invQ.begin(), invQ.end());\n        invQ.resize(degQ);\n\
+    \        auto res = convolution(invQ, Q);\n        res.erase(res.begin(), res.begin()\
+    \ + degQ);\n        res.resize(degQ);\n        return res;\n    }\n\n    // x^k/Q\
+    \ = ... + a_0x^(-1) + ... + a_(deg(Q)-1)x^(-deg(Q)) + ... in R((x^(-1)))\n   \
+    \ // x^(-k)/Q(x^(-1)) = ... + a_0x + ... + a_(deg(Q)-1)x^(deg(Q)) + ... in R((x))\n\
+    \    // 1/Q(x^(-1)) = ... + a_0x^(k+1) + ... + a_(deg(Q)-1)x^(deg(Q)+k+1) + ...\
+    \ in R((x))\n    // 1/(x^(deg(Q))Q(x^(-1))) = ... + a_0x^(k+1-deg(Q)) + ... in\
+    \ R[[x]]\n\n    auto dftQ = std::vector(Q.rend() - (degQ + 1), Q.rend());\n  \
+    \  dftQ.resize(len);\n    fft(dftQ);\n    std::vector<Tp> dftV(len / 2);\n   \
+    \ for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];\n    const\
+    \ long long L = k + 1 - degQ;\n    const auto dftT   = bostan_mori_power_series(dftV,\
+    \ (L - len / 2 + (L & 1)) / 2);\n    std::vector<Tp> dftU(len);\n    if (L & 1)\
+    \ {\n        auto &&root = FftInfo<Tp>::get().root(len / 2);\n        for (int\
+    \ i = 0; i < len; i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i +\
+    \ 1] * root[i / 2];\n            dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i\
+    \ / 2];\n        }\n    } else {\n        for (int i = 0; i < len; i += 2) {\n\
+    \            dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n            dftU[i + 1]\
+    \ = dftT[i / 2] * dftQ[i];\n        }\n    }\n    inv_fft(dftU);\n    dftU.erase(dftU.begin(),\
+    \ dftU.begin() + len / 2);\n    dftU.resize(degQ);\n    dftU.resize(len);\n  \
+    \  fft(dftU);\n    // [-deg(Q),-1] * [0,deg(Q)] => take [0,deg(Q))\n    // [0,deg(Q))\
+    \   * [0,deg(Q)] => take [deg(Q),2deg(Q))\n    for (int i = 0; i < len; ++i) dftU[i]\
+    \ *= dftQ[i];\n    inv_fft(dftU);\n    dftU.resize(degQ);\n    std::reverse(dftU.begin(),\
+    \ dftU.end());\n    return dftU;\n}\n\n// returns [x^k]P/Q\n// see: https://arxiv.org/abs/2008.08822\n\
+    // Alin Bostan, Ryuhei Mori.\n// A Simple and Fast Algorithm for Computing the\
+    \ N-th Term of a Linearly Recurrent Sequence\ntemplate <typename Tp>\ninline Tp\
+    \ div_at(const std::vector<Tp> &P, std::vector<Tp> Q, long long k) {\n    auto\
+    \ iszero = [](const std::vector<Tp> &a) { return order(a) == -1; };\n    assert(!iszero(Q));\n\
+    \    if (P.empty()) return 0;\n    if (const int ordQ = order(Q)) {\n        Q.erase(Q.begin(),\
+    \ Q.begin() + ordQ);\n        k += ordQ;\n    }\n\n    assert(k >= 0);\n    if\
+    \ (k < (long long)P.size()) return div(P, Q, k + 1).at(k);\n\n    const int len\
+    \ = fft_len(std::max(P.size() + Q.size(), Q.size() * 2) - 1);\n    std::vector<Tp>\
+    \ dftP(P), dftQ(Q);\n    dftP.resize(len);\n    dftQ.resize(len);\n    fft(dftP);\n\
+    \    fft(dftQ);\n\n    for (;;) {\n        if (k & 1) {\n            auto &&root\
+    \ = FftInfo<Tp>::get().inv_root(len / 2);\n            for (int i = 0; i < len;\
+    \ i += 2)\n                dftP[i / 2] =\n                    (dftP[i] * dftQ[i\
+    \ + 1] - dftP[i + 1] * dftQ[i]).div_by_2() * root[i / 2];\n        } else {\n\
+    \            for (int i = 0; i < len; i += 2)\n                dftP[i / 2] = (dftP[i]\
+    \ * dftQ[i + 1] + dftP[i + 1] * dftQ[i]).div_by_2();\n        }\n        dftP.resize(len\
+    \ / 2);\n        for (int i = 0; i < len; i += 2) dftQ[i / 2] = dftQ[i] * dftQ[i\
+    \ + 1];\n        dftQ.resize(len / 2);\n\n        k /= 2;\n        if (k < (long\
+    \ long)P.size()) {\n            inv_fft(dftP);\n            inv_fft(dftQ);\n \
+    \           return div(dftP, dftQ, k + 1).at(k);\n        }\n\n        fft_doubling(dftP);\n\
+    \        fft_doubling(dftQ);\n    }\n}\n\n// returns [x^[L,R)]P/Q\n// P: polynomial\n\
+    // Q: non-zero polynomial\n// deg(P) < deg(Q)\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> slice_coeff_rationalA(std::vector<Tp> P, std::vector<Tp> Q,\
+    \ long long L,\n                                             long long R) {\n\
+    \    if (R <= L) return {};\n    if (const int ordQ = order(Q)) {\n        Q.erase(Q.begin(),\
+    \ Q.begin() + ordQ);\n        L += ordQ;\n        R += ordQ;\n    }\n    assert(L\
+    \ >= 0);\n\n    const int degP = degree(P);\n    const int degQ = degree(Q);\n\
+    \    if (degP < 0) return std::vector<Tp>(R - L);\n    assert(degP < degQ);\n\n\
+    \    const std::vector<Tp> revQ(Q.rend() - (degQ + 1), Q.rend());\n    P.resize(degQ);\n\
+    \    std::reverse(P.begin(), P.end());\n    auto [q, r] = euclidean_div(convolution(xk_mod(L,\
+    \ revQ), P), revQ);\n    r.resize(degQ);\n    std::reverse(r.begin(), r.end());\n\
+    \    return div(r, Q, R - L);\n}\n\n// returns [x^[L,R)]P/Q\n// P: polynomial\n\
+    // Q: non-zero polynomial\ntemplate <typename Tp>\ninline std::vector<Tp> slice_coeff_rational(const\
+    \ std::vector<Tp> &P, const std::vector<Tp> &Q,\n                            \
+    \                long long L, long long R) {\n    const auto [q, r] = euclidean_div(P,\
+    \ Q);\n    auto res          = slice_coeff_rationalA(r, Q, L, R);\n    for (long\
+    \ long i = L; i < std::min<long long>(R, q.size()); ++i) res[i - L] += q[i];\n\
+    \    return res;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#line 5 \"\
+    modint.hpp\"\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
+    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
+    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
+    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
+    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
+    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
+    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
+    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
+    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
+    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
+    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
+    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
     \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
     \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
     \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
@@ -413,7 +443,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.1.test.cpp
   requiredBy: []
-  timestamp: '2024-11-26 07:26:32+08:00'
+  timestamp: '2024-11-27 23:26:40+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.1.test.cpp
