@@ -65,7 +65,7 @@ inline std::vector<Tp> bostan_mori_power_series(std::vector<Tp> dftQ, long long 
 
 // returns DFT([x^[-len/2,0)]x^k/Q)
 // x^k/Q in R((x^(-1)))
-// requires len/2 > degQ, len/2 is even
+// requires len/2 > degQ
 template <typename Tp>
 inline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp> dftQ, long long k) {
     assert(k >= 0);
@@ -168,7 +168,7 @@ inline std::vector<Tp> xk_mod(long long k, const std::vector<Tp> &Q) {
 
 // returns [x^[L,R)]P/Q
 // P: polynomial
-// Q: non-zero polynomial
+// Q: non-zero polynomial, ord(Q)=0
 template <typename Tp>
 inline std::vector<Tp> slice_coeff_rational(const std::vector<Tp> &P, const std::vector<Tp> &Q,
                                             long long L, long long R) {
