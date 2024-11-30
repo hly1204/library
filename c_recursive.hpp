@@ -26,16 +26,23 @@ inline void fft_high(std::vector<Tp> &a) {
 }
 
 // returns DFT([x^[L,L+len/2)]1/Q)
-// 1/Q in R[[x]]
+// 1/Q in R((x))
 // requires len/2 > deg(Q), len/2 is even
 template <typename Tp>
-inline std::vector<Tp> bostan_mori_power_series(std::vector<Tp> dftQ, long long L) {
+inline std::vector<Tp> bostan_mori_laurent_series(std::vector<Tp> dftQ, long long L) {
     const int len = dftQ.size() * 2;
     if (L <= -(len / 2LL)) return std::vector<Tp>(len / 2);
     if (L <= 0) {
         inv_fft(dftQ);
-        auto invQ = inv(dftQ, L + len / 2);
-        invQ.insert(invQ.begin(), -L, 0);
+        const int ordQ = order(dftQ);
+        auto invQ      = inv(std::vector(dftQ.begin() + ordQ, dftQ.end()), L + len / 2 + ordQ);
+        if (-ordQ < (int)L) {
+            // ?x^(-ord(Q)) + ... + ?x^L + ... + ?x^(L+len/2-1)
+            invQ.erase(invQ.begin(), invQ.begin() + (L + ordQ));
+        } else {
+            // ?x^L + ... + ?x^(-ord(Q)) + ... + ?x^(L+len/2-1)
+            invQ.insert(invQ.begin(), -ordQ - L, 0);
+        }
         fft(invQ);
         return invQ;
     }
@@ -43,7 +50,8 @@ inline std::vector<Tp> bostan_mori_power_series(std::vector<Tp> dftQ, long long 
     fft_doubling(dftQ);
     std::vector<Tp> dftV(len / 2);
     for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];
-    const auto dftT = bostan_mori_power_series(dftV, (L - len / 2 + (L & 1)) / 2);
+    const auto dftT =
+        bostan_mori_laurent_series(dftV, (L - len / 2 + (L & 1)) / 2 /* ceil((L-len/2)/2) */);
 
     std::vector<Tp> dftU(len);
     if (L & 1) {
@@ -129,18 +137,13 @@ inline std::vector<Tp> xk_mod(long long k, const std::vector<Tp> &Q) {
         return res;
     }
 
-    // x^k/Q = ... + a_0x^(-1) + ... + a_(deg(Q)-1)x^(-deg(Q)) + ... in R((x^(-1)))
-    // x^(-k)/Q(x^(-1)) = ... + a_0x + ... + a_(deg(Q)-1)x^(deg(Q)) + ... in R((x))
-    // 1/Q(x^(-1)) = ... + a_0x^(k+1) + ... + a_(deg(Q)-1)x^(deg(Q)+k+1) + ... in R((x))
-    // 1/(x^(deg(Q))Q(x^(-1))) = ... + a_0x^(k+1-deg(Q)) + ... in R[[x]]
-
     auto dftQ = std::vector(Q.rend() - (degQ + 1), Q.rend());
     dftQ.resize(len);
     fft(dftQ);
     std::vector<Tp> dftV(len / 2);
     for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];
     const long long L = k + 1 - degQ;
-    const auto dftT   = bostan_mori_power_series(dftV, (L - len / 2 + (L & 1)) / 2);
+    const auto dftT   = bostan_mori_laurent_series(dftV, (L - len / 2 + (L & 1)) / 2);
     std::vector<Tp> dftU(len);
     if (L & 1) {
         auto &&root = FftInfo<Tp>::get().root(len / 2);
@@ -178,11 +181,6 @@ inline std::vector<Tp> slice_coeff_rational(const std::vector<Tp> &P, const std:
     if (degP < 0) return std::vector<Tp>(R - L);
     const int degQ = degree(Q);
     const int N    = std::max(degP + 1, degQ);
-    // for single k>=0:
-    // [x^(-k)]P(x^(-1))/Q(x^(-1))
-    // [x^0](x^k P(x^(-1)))/Q(x^(-1))
-    // P0 := x^(N-1) P((x^(-1))), Q0 := x^N Q(x^(-1))
-    // [x^(-1)](x^k P0)/(Q0) = [x^(-1)](x^k P0 mod Q0)/Q0
     auto P0 = P, Q0 = Q;
     P0.resize(N);
     std::reverse(P0.begin(), P0.end());
@@ -195,6 +193,8 @@ inline std::vector<Tp> slice_coeff_rational(const std::vector<Tp> &P, const std:
 }
 
 // returns [x^k]P/Q
+// P: polynomial
+// Q: non-zero polynomial, ord(Q)=0
 template <typename Tp>
 inline Tp div_at(const std::vector<Tp> &P, const std::vector<Tp> &Q, long long k) {
     return slice_coeff_rational(P, Q, k, k + 1).at(0);
