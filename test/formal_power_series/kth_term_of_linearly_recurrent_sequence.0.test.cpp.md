@@ -12,7 +12,7 @@ data:
     title: FFT
   - icon: ':heavy_check_mark:'
     path: fft_doubling.hpp
-    title: fft_doubling.hpp
+    title: FFT Doubling
   - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
