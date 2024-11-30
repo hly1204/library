@@ -39,7 +39,7 @@ f _ 1(x)
 \end{bmatrix}
 $$
 
-and we simply know that this step is invertible if $\begin{bmatrix}1&c \\ 1&-c \end{bmatrix}$ is invertible.
+and we simply know that this step is invertible if $\begin{bmatrix}1&c \\\\ 1&-c \end{bmatrix}$ is invertible.
 
 We use the notation $\zeta _ n=\exp\left(\frac{2\pi\mathrm{i}}{2}\right)$. For the number theory transformation (a.k.a. NTT), we mostly use prime numbers called FFT primes $p$ and computing in field $\mathbb{F} _ p$, which has element of order $2^k$ with sufficient large $k$, so we could compute DFT for polynomials over $\mathbb{F} _ p\left\lbrack x\right\rbrack$ of length $2^k$.
 
@@ -52,9 +52,9 @@ $$
 \end{aligned}
 $$
 
-We don't need to explain how to compute IDFT which is the inverse function of DFT, just note that $\begin{bmatrix}1&c \\ 1&-c \end{bmatrix}^{-1}=\dfrac{1}{2}\begin{bmatrix}1&c^{-1} \\ 1&-c^{-1} \end{bmatrix}^{\intercal}$. But there is a little difference between Gauss's classical FFT algorithm and the defination of DFT, we will finally have the result in a [bit-reversed permutation](https://en.wikipedia.org/wiki/Bit-reversal_permutation) of $\left\lbrack A(1),A\left(\zeta _ {n}\right),\dots,A\left(\zeta _ n^{n-1}\right)\right\rbrack$.
+We don't need to explain how to compute IDFT which is the inverse function of DFT, just note that $\begin{bmatrix}1&c \\\\ 1&-c \end{bmatrix}^{-1}=\dfrac{1}{2}\begin{bmatrix}1&c^{-1} \\\\ 1&-c^{-1} \end{bmatrix}^{\intercal}$. But there is a little difference between Gauss's classical FFT algorithm and the defination of DFT, we will finally have the result in a [bit-reversed permutation](https://en.wikipedia.org/wiki/Bit-reversal_permutation) of $\left\lbrack A(1),A\left(\zeta _ {n}\right),\dots,A\left(\zeta _ n^{n-1}\right)\right\rbrack$.
 
-By the way, if we don't take the inversion of entries of $\begin{bmatrix}1&c^{-1} \\ 1&-c^{-1} \end{bmatrix}^{\intercal}$, we will get the transposed algorithm of IDFT which is
+By the way, if we don't take the inversion of entries of $\begin{bmatrix}1&c^{-1} \\\\ 1&-c^{-1} \end{bmatrix}^{\intercal}$, we will get the transposed algorithm of IDFT which is
 
 $$
 \operatorname{\mathsf{IDFT}} _ n^{\intercal}\left(A(x)\right)=\frac{1}{n}\operatorname{\mathsf{DFT}} _ n\left(x^nA\left(x^{-1}\right)\right)
