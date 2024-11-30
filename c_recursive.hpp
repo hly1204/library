@@ -31,11 +31,12 @@ inline void fft_high(std::vector<Tp> &a) {
 template <typename Tp>
 inline std::vector<Tp> bostan_mori_laurent_series(std::vector<Tp> dftQ, long long L) {
     const int len = dftQ.size() * 2;
-    if (L <= -(len / 2LL)) return std::vector<Tp>(len / 2);
     if (L <= 0) {
         inv_fft(dftQ);
         const int ordQ = order(dftQ);
-        auto invQ      = inv(std::vector(dftQ.begin() + ordQ, dftQ.end()), L + len / 2 + ordQ);
+        assert(ordQ >= 0);
+        if (L + len / 2 <= -ordQ) return std::vector<Tp>(len / 2);
+        auto invQ = inv(std::vector(dftQ.begin() + ordQ, dftQ.end()), L + len / 2 + ordQ);
         if (-ordQ < (int)L) {
             // ?x^(-ord(Q)) + ... + ?x^L + ... + ?x^(L+len/2-1)
             invQ.erase(invQ.begin(), invQ.begin() + (L + ordQ));
@@ -81,6 +82,7 @@ inline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp> dftQ,
     if (k < len / 2LL) {
         inv_fft(dftQ);
         const int degQ = degree(dftQ);
+        assert(degQ >= 0);
         dftQ.resize(degQ + 1);
         std::reverse(dftQ.begin(), dftQ.end());
         auto invQ = inv(dftQ, len / 2 - degQ + k + 1);
