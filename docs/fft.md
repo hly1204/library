@@ -125,12 +125,12 @@ I suggest to use the following C++ code to make the bit-reversed permutation.
 #include <utility>
 template <typename Tp>
 void revbin(Tp a[], int n) {
-  if (n == 0) return;
-  for (int i = 0, j = 0;;) {
-    if (i < j) std::swap(a[i], a[j]);
-    if (++i == n) break;
-    for (int k = n >> 1; ((j ^= k) & k) == 0; k >>= 1) {}
-  }
+    if (n == 0) return;
+    for (int i = 0, j = 0;;) {
+        if (i < j) std::swap(a[i], a[j]);
+        if (++i == n) break;
+        for (int k = n >> 1; ((j ^= k) & k) == 0; k >>= 1) {}
+    }
 }
 ```
 
@@ -159,6 +159,6 @@ Note that the input is in bit-reversal order, so we are able to avoid explicit b
 
 ## References
 
-1. Daniel J. Bernstein. "[The tangent FFT](https://cr.yp.to/papers.html#tangentfft)." Pages 291–300 in Applied Algebra, Algebraic Algorithms and Error-Correcting Codes, 17th International Symposium, AAECC-17, Bangalore, India, December 16–20, 2007, Proceedings, edited by Serdar Boztas, Hsiao-feng Lu, Lecture Notes in Computer Science 4851, Springer, 2007, ISBN 978-3-540-77223-1.
+1. Daniel J. Bernstein. "The tangent FFT." Pages 291–300 in Applied Algebra, Algebraic Algorithms and Error-Correcting Codes, 17th International Symposium, AAECC-17, Bangalore, India, December 16–20, 2007, Proceedings, edited by Serdar Boztas, Hsiao-feng Lu, Lecture Notes in Computer Science 4851, Springer, 2007, ISBN 978-3-540-77223-1. url: <https://cr.yp.to/papers.html#tangentfft>
 
-1. Daniel J. Bernstein. "[Fast multiplication and its applications](https://cr.yp.to/papers.html#multapps)." Pages 325–384 in Algorithmic number theory: lattices, number fields, curves and cryptography, edited by Joe Buhler, Peter Stevenhagen, Cambridge University Press, 2008, ISBN 978-0521808545.
+1. Daniel J. Bernstein. "Fast multiplication and its applications." Pages 325–384 in Algorithmic number theory: lattices, number fields, curves and cryptography, edited by Joe Buhler, Peter Stevenhagen, Cambridge University Press, 2008, ISBN 978-0521808545. url: <https://cr.yp.to/papers.html#multapps>
