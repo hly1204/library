@@ -103,13 +103,7 @@ data:
     \   for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a + n, n);\n\
     }\n\ntemplate <typename Tp>\ninline void fft_doubling(std::vector<Tp> &a) {\n\
     \    const int n = a.size();\n    a.resize(n * 2);\n    fft_doubling_n(a.begin(),\
-    \ n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> fft_doubling2(std::vector<Tp>\
-    \ &a) {\n    const int n = a.size();\n    assert((n & (n - 1)) == 0);\n    a.resize(n\
-    \ * 2);\n    std::copy_n(a.begin(), n, a.begin() + n);\n    inv_fft_n(a.begin()\
-    \ + n, n);\n    const std::vector<Tp> b(a.begin() + n, a.end());\n    Tp k   \
-    \      = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n    for\
-    \ (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a.begin() + n, n);\n\
-    \    return b;\n}\n"
+    \ n);\n}\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include <algorithm>\n#include <cassert>\n\
     #include <iterator>\n#include <vector>\n\ntemplate <typename Iterator>\ninline\
     \ void fft_doubling_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
@@ -118,20 +112,14 @@ data:
     \ / 2);\n    for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a +\
     \ n, n);\n}\n\ntemplate <typename Tp>\ninline void fft_doubling(std::vector<Tp>\
     \ &a) {\n    const int n = a.size();\n    a.resize(n * 2);\n    fft_doubling_n(a.begin(),\
-    \ n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> fft_doubling2(std::vector<Tp>\
-    \ &a) {\n    const int n = a.size();\n    assert((n & (n - 1)) == 0);\n    a.resize(n\
-    \ * 2);\n    std::copy_n(a.begin(), n, a.begin() + n);\n    inv_fft_n(a.begin()\
-    \ + n, n);\n    const std::vector<Tp> b(a.begin() + n, a.end());\n    Tp k   \
-    \      = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n    for\
-    \ (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a.begin() + n, n);\n\
-    \    return b;\n}\n"
+    \ n);\n}\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
   path: fft_doubling.hpp
   requiredBy:
   - c_recursive.hpp
-  timestamp: '2024-08-12 20:46:28+08:00'
+  timestamp: '2024-11-30 21:12:38+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp

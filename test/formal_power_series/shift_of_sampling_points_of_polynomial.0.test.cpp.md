@@ -114,14 +114,8 @@ data:
     \ / 2);\n    for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a +\
     \ n, n);\n}\n\ntemplate <typename Tp>\ninline void fft_doubling(std::vector<Tp>\
     \ &a) {\n    const int n = a.size();\n    a.resize(n * 2);\n    fft_doubling_n(a.begin(),\
-    \ n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> fft_doubling2(std::vector<Tp>\
-    \ &a) {\n    const int n = a.size();\n    assert((n & (n - 1)) == 0);\n    a.resize(n\
-    \ * 2);\n    std::copy_n(a.begin(), n, a.begin() + n);\n    inv_fft_n(a.begin()\
-    \ + n, n);\n    const std::vector<Tp> b(a.begin() + n, a.end());\n    Tp k   \
-    \      = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n    for\
-    \ (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a.begin() + n, n);\n\
-    \    return b;\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#line\
-    \ 5 \"binomial.hpp\"\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp>\
+    \ n);\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#line 5 \"\
+    binomial.hpp\"\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp>\
     \ factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)}\
     \ {}\n\n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
     \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
@@ -421,7 +415,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-30 14:01:15+08:00'
+  timestamp: '2024-11-30 21:12:38+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
