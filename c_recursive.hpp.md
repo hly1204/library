@@ -281,23 +281,27 @@ data:
     \   for (int i = 0; i < n / 2; ++i) a[i + n / 2] *= k, k *= t;\n    fft_n(a.begin()\
     \ + n / 2, n / 2);\n    for (int i = 0; i < n / 2; ++i) a[i] = (a[i] - a[i + n\
     \ / 2]).div_by_2();\n    a.resize(n / 2);\n}\n\n// returns DFT([x^[L,L+len/2)]1/Q)\n\
-    // 1/Q in R[[x]]\n// requires len/2 > deg(Q), len/2 is even\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> bostan_mori_power_series(std::vector<Tp> dftQ, long\
-    \ long L) {\n    const int len = dftQ.size() * 2;\n    if (L <= -(len / 2LL))\
+    // 1/Q in R((x))\n// requires len/2 > deg(Q), len/2 is even\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> bostan_mori_laurent_series(std::vector<Tp> dftQ,\
+    \ long long L) {\n    const int len = dftQ.size() * 2;\n    if (L <= -(len / 2LL))\
     \ return std::vector<Tp>(len / 2);\n    if (L <= 0) {\n        inv_fft(dftQ);\n\
-    \        auto invQ = inv(dftQ, L + len / 2);\n        invQ.insert(invQ.begin(),\
-    \ -L, 0);\n        fft(invQ);\n        return invQ;\n    }\n\n    fft_doubling(dftQ);\n\
+    \        const int ordQ = order(dftQ);\n        auto invQ      = inv(std::vector(dftQ.begin()\
+    \ + ordQ, dftQ.end()), L + len / 2 + ordQ);\n        if (-ordQ < (int)L) {\n \
+    \           // ?x^(-ord(Q)) + ... + ?x^L + ... + ?x^(L+len/2-1)\n            invQ.erase(invQ.begin(),\
+    \ invQ.begin() + (L + ordQ));\n        } else {\n            // ?x^L + ... + ?x^(-ord(Q))\
+    \ + ... + ?x^(L+len/2-1)\n            invQ.insert(invQ.begin(), -ordQ - L, 0);\n\
+    \        }\n        fft(invQ);\n        return invQ;\n    }\n\n    fft_doubling(dftQ);\n\
     \    std::vector<Tp> dftV(len / 2);\n    for (int i = 0; i < len; i += 2) dftV[i\
-    \ / 2] = dftQ[i] * dftQ[i + 1];\n    const auto dftT = bostan_mori_power_series(dftV,\
-    \ (L - len / 2 + (L & 1)) / 2);\n\n    std::vector<Tp> dftU(len);\n    if (L &\
-    \ 1) {\n        auto &&root = FftInfo<Tp>::get().root(len / 2);\n        for (int\
-    \ i = 0; i < len; i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i +\
-    \ 1] * root[i / 2];\n            dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i\
-    \ / 2];\n        }\n    } else {\n        for (int i = 0; i < len; i += 2) {\n\
-    \            dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n            dftU[i + 1]\
-    \ = dftT[i / 2] * dftQ[i];\n        }\n    }\n\n    fft_high(dftU);\n    return\
-    \ dftU;\n}\n\n// returns DFT([x^[-len/2,0)]x^k/Q)\n// x^k/Q in R((x^(-1)))\n//\
-    \ requires len/2 > degQ\ntemplate <typename Tp>\ninline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp>\
+    \ / 2] = dftQ[i] * dftQ[i + 1];\n    const auto dftT =\n        bostan_mori_laurent_series(dftV,\
+    \ (L - len / 2 + (L & 1)) / 2 /* ceil((L-len/2)/2) */);\n\n    std::vector<Tp>\
+    \ dftU(len);\n    if (L & 1) {\n        auto &&root = FftInfo<Tp>::get().root(len\
+    \ / 2);\n        for (int i = 0; i < len; i += 2) {\n            dftU[i]     =\
+    \ dftT[i / 2] * dftQ[i + 1] * root[i / 2];\n            dftU[i + 1] = dftT[i /\
+    \ 2] * dftQ[i] * -root[i / 2];\n        }\n    } else {\n        for (int i =\
+    \ 0; i < len; i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n\
+    \            dftU[i + 1] = dftT[i / 2] * dftQ[i];\n        }\n    }\n\n    fft_high(dftU);\n\
+    \    return dftU;\n}\n\n// returns DFT([x^[-len/2,0)]x^k/Q)\n// x^k/Q in R((x^(-1)))\n\
+    // requires len/2 > degQ\ntemplate <typename Tp>\ninline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp>\
     \ dftQ, long long k) {\n    assert(k >= 0);\n    const int len = dftQ.size() *\
     \ 2;\n    if (k < len / 2LL) {\n        inv_fft(dftQ);\n        const int degQ\
     \ = degree(dftQ);\n        dftQ.resize(degQ + 1);\n        std::reverse(dftQ.begin(),\
@@ -321,22 +325,18 @@ data:
     \        auto invQ = inv(std::vector(Q.rend() - (degQ + 1), Q.rend()), k + 1);\n\
     \        std::reverse(invQ.begin(), invQ.end());\n        invQ.resize(degQ);\n\
     \        auto res = convolution(invQ, Q);\n        res.erase(res.begin(), res.begin()\
-    \ + degQ);\n        res.resize(degQ);\n        return res;\n    }\n\n    // x^k/Q\
-    \ = ... + a_0x^(-1) + ... + a_(deg(Q)-1)x^(-deg(Q)) + ... in R((x^(-1)))\n   \
-    \ // x^(-k)/Q(x^(-1)) = ... + a_0x + ... + a_(deg(Q)-1)x^(deg(Q)) + ... in R((x))\n\
-    \    // 1/Q(x^(-1)) = ... + a_0x^(k+1) + ... + a_(deg(Q)-1)x^(deg(Q)+k+1) + ...\
-    \ in R((x))\n    // 1/(x^(deg(Q))Q(x^(-1))) = ... + a_0x^(k+1-deg(Q)) + ... in\
-    \ R[[x]]\n\n    auto dftQ = std::vector(Q.rend() - (degQ + 1), Q.rend());\n  \
-    \  dftQ.resize(len);\n    fft(dftQ);\n    std::vector<Tp> dftV(len / 2);\n   \
-    \ for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];\n    const\
-    \ long long L = k + 1 - degQ;\n    const auto dftT   = bostan_mori_power_series(dftV,\
-    \ (L - len / 2 + (L & 1)) / 2);\n    std::vector<Tp> dftU(len);\n    if (L & 1)\
-    \ {\n        auto &&root = FftInfo<Tp>::get().root(len / 2);\n        for (int\
-    \ i = 0; i < len; i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i +\
-    \ 1] * root[i / 2];\n            dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i\
-    \ / 2];\n        }\n    } else {\n        for (int i = 0; i < len; i += 2) {\n\
-    \            dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n            dftU[i + 1]\
-    \ = dftT[i / 2] * dftQ[i];\n        }\n    }\n    inv_fft(dftU);\n    dftU.erase(dftU.begin(),\
+    \ + degQ);\n        res.resize(degQ);\n        return res;\n    }\n\n    auto\
+    \ dftQ = std::vector(Q.rend() - (degQ + 1), Q.rend());\n    dftQ.resize(len);\n\
+    \    fft(dftQ);\n    std::vector<Tp> dftV(len / 2);\n    for (int i = 0; i < len;\
+    \ i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];\n    const long long L = k + 1\
+    \ - degQ;\n    const auto dftT   = bostan_mori_laurent_series(dftV, (L - len /\
+    \ 2 + (L & 1)) / 2);\n    std::vector<Tp> dftU(len);\n    if (L & 1) {\n     \
+    \   auto &&root = FftInfo<Tp>::get().root(len / 2);\n        for (int i = 0; i\
+    \ < len; i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i + 1] * root[i\
+    \ / 2];\n            dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i / 2];\n   \
+    \     }\n    } else {\n        for (int i = 0; i < len; i += 2) {\n          \
+    \  dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n            dftU[i + 1] = dftT[i\
+    \ / 2] * dftQ[i];\n        }\n    }\n    inv_fft(dftU);\n    dftU.erase(dftU.begin(),\
     \ dftU.begin() + len / 2);\n    dftU.resize(degQ);\n    dftU.resize(len);\n  \
     \  fft(dftU);\n    for (int i = 0; i < len; ++i) dftU[i] *= dftQ[i];\n    inv_fft(dftU);\n\
     \    dftU.resize(degQ);\n    std::reverse(dftU.begin(), dftU.end());\n    return\
@@ -346,16 +346,14 @@ data:
     \                long long L, long long R) {\n    assert(L >= 0);\n    assert(order(Q)\
     \ == 0);\n    const int degP = degree(P);\n    if (degP < 0) return std::vector<Tp>(R\
     \ - L);\n    const int degQ = degree(Q);\n    const int N    = std::max(degP +\
-    \ 1, degQ);\n    // for single k>=0:\n    // [x^(-k)]P(x^(-1))/Q(x^(-1))\n   \
-    \ // [x^0](x^k P(x^(-1)))/Q(x^(-1))\n    // P0 := x^(N-1) P((x^(-1))), Q0 := x^N\
-    \ Q(x^(-1))\n    // [x^(-1)](x^k P0)/(Q0) = [x^(-1)](x^k P0 mod Q0)/Q0\n    auto\
-    \ P0 = P, Q0 = Q;\n    P0.resize(N);\n    std::reverse(P0.begin(), P0.end());\n\
-    \    Q0.resize(N + 1);\n    std::reverse(Q0.begin(), Q0.end());\n    auto [q,\
-    \ r] = euclidean_div(convolution(xk_mod(L, Q0), P0), Q0);\n    r.resize(N);\n\
+    \ 1, degQ);\n    auto P0 = P, Q0 = Q;\n    P0.resize(N);\n    std::reverse(P0.begin(),\
+    \ P0.end());\n    Q0.resize(N + 1);\n    std::reverse(Q0.begin(), Q0.end());\n\
+    \    auto [q, r] = euclidean_div(convolution(xk_mod(L, Q0), P0), Q0);\n    r.resize(N);\n\
     \    std::reverse(r.begin(), r.end());\n    return div(r, Q, R - L);\n}\n\n//\
-    \ returns [x^k]P/Q\ntemplate <typename Tp>\ninline Tp div_at(const std::vector<Tp>\
-    \ &P, const std::vector<Tp> &Q, long long k) {\n    return slice_coeff_rational(P,\
-    \ Q, k, k + 1).at(0);\n}\n"
+    \ returns [x^k]P/Q\n// P: polynomial\n// Q: non-zero polynomial, ord(Q)=0\ntemplate\
+    \ <typename Tp>\ninline Tp div_at(const std::vector<Tp> &P, const std::vector<Tp>\
+    \ &Q, long long k) {\n    return slice_coeff_rational(P, Q, k, k + 1).at(0);\n\
+    }\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include \"fft_doubling.hpp\"\n#include\
     \ \"fps_basic.hpp\"\n#include \"poly_basic.hpp\"\n#include <algorithm>\n#include\
     \ <cassert>\n#include <vector>\n\n// see:\n// [1]: Alin Bostan, Ryuhei Mori.\n\
@@ -366,62 +364,63 @@ data:
     \ t = FftInfo<Tp>::get().inv_root(n / 2).at(n / 4);\n    for (int i = 0; i < n\
     \ / 2; ++i) a[i + n / 2] *= k, k *= t;\n    fft_n(a.begin() + n / 2, n / 2);\n\
     \    for (int i = 0; i < n / 2; ++i) a[i] = (a[i] - a[i + n / 2]).div_by_2();\n\
-    \    a.resize(n / 2);\n}\n\n// returns DFT([x^[L,L+len/2)]1/Q)\n// 1/Q in R[[x]]\n\
+    \    a.resize(n / 2);\n}\n\n// returns DFT([x^[L,L+len/2)]1/Q)\n// 1/Q in R((x))\n\
     // requires len/2 > deg(Q), len/2 is even\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ bostan_mori_power_series(std::vector<Tp> dftQ, long long L) {\n    const int\
+    \ bostan_mori_laurent_series(std::vector<Tp> dftQ, long long L) {\n    const int\
     \ len = dftQ.size() * 2;\n    if (L <= -(len / 2LL)) return std::vector<Tp>(len\
-    \ / 2);\n    if (L <= 0) {\n        inv_fft(dftQ);\n        auto invQ = inv(dftQ,\
-    \ L + len / 2);\n        invQ.insert(invQ.begin(), -L, 0);\n        fft(invQ);\n\
-    \        return invQ;\n    }\n\n    fft_doubling(dftQ);\n    std::vector<Tp> dftV(len\
-    \ / 2);\n    for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i +\
-    \ 1];\n    const auto dftT = bostan_mori_power_series(dftV, (L - len / 2 + (L\
-    \ & 1)) / 2);\n\n    std::vector<Tp> dftU(len);\n    if (L & 1) {\n        auto\
-    \ &&root = FftInfo<Tp>::get().root(len / 2);\n        for (int i = 0; i < len;\
-    \ i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i + 1] * root[i / 2];\n\
-    \            dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i / 2];\n        }\n\
-    \    } else {\n        for (int i = 0; i < len; i += 2) {\n            dftU[i]\
-    \     = dftT[i / 2] * dftQ[i + 1];\n            dftU[i + 1] = dftT[i / 2] * dftQ[i];\n\
-    \        }\n    }\n\n    fft_high(dftU);\n    return dftU;\n}\n\n// returns DFT([x^[-len/2,0)]x^k/Q)\n\
-    // x^k/Q in R((x^(-1)))\n// requires len/2 > degQ\ntemplate <typename Tp>\ninline\
-    \ std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp> dftQ, long\
-    \ long k) {\n    assert(k >= 0);\n    const int len = dftQ.size() * 2;\n    if\
-    \ (k < len / 2LL) {\n        inv_fft(dftQ);\n        const int degQ = degree(dftQ);\n\
-    \        dftQ.resize(degQ + 1);\n        std::reverse(dftQ.begin(), dftQ.end());\n\
-    \        auto invQ = inv(dftQ, len / 2 - degQ + k + 1);\n        std::reverse(invQ.begin(),\
-    \ invQ.end());\n        invQ.resize(len / 2);\n        fft(invQ);\n        return\
-    \ invQ;\n    }\n\n    fft_doubling(dftQ);\n    std::vector<Tp> dftV(len / 2);\n\
-    \    for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];\n \
-    \   const auto dftT = bostan_mori_reversed_laurent_series(dftV, k / 2);\n\n  \
-    \  std::vector<Tp> dftU(len);\n    if (k & 1) {\n        auto &&root = FftInfo<Tp>::get().root(len\
+    \ / 2);\n    if (L <= 0) {\n        inv_fft(dftQ);\n        const int ordQ = order(dftQ);\n\
+    \        auto invQ      = inv(std::vector(dftQ.begin() + ordQ, dftQ.end()), L\
+    \ + len / 2 + ordQ);\n        if (-ordQ < (int)L) {\n            // ?x^(-ord(Q))\
+    \ + ... + ?x^L + ... + ?x^(L+len/2-1)\n            invQ.erase(invQ.begin(), invQ.begin()\
+    \ + (L + ordQ));\n        } else {\n            // ?x^L + ... + ?x^(-ord(Q)) +\
+    \ ... + ?x^(L+len/2-1)\n            invQ.insert(invQ.begin(), -ordQ - L, 0);\n\
+    \        }\n        fft(invQ);\n        return invQ;\n    }\n\n    fft_doubling(dftQ);\n\
+    \    std::vector<Tp> dftV(len / 2);\n    for (int i = 0; i < len; i += 2) dftV[i\
+    \ / 2] = dftQ[i] * dftQ[i + 1];\n    const auto dftT =\n        bostan_mori_laurent_series(dftV,\
+    \ (L - len / 2 + (L & 1)) / 2 /* ceil((L-len/2)/2) */);\n\n    std::vector<Tp>\
+    \ dftU(len);\n    if (L & 1) {\n        auto &&root = FftInfo<Tp>::get().root(len\
     \ / 2);\n        for (int i = 0; i < len; i += 2) {\n            dftU[i]     =\
     \ dftT[i / 2] * dftQ[i + 1] * root[i / 2];\n            dftU[i + 1] = dftT[i /\
     \ 2] * dftQ[i] * -root[i / 2];\n        }\n    } else {\n        for (int i =\
     \ 0; i < len; i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n\
     \            dftU[i + 1] = dftT[i / 2] * dftQ[i];\n        }\n    }\n\n    fft_high(dftU);\n\
-    \    return dftU;\n}\n\n// returns x^k mod Q\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ xk_mod(long long k, const std::vector<Tp> &Q) {\n    assert(k >= 0);\n    const\
-    \ int degQ = degree(Q);\n    assert(degQ >= 0);\n    if (degQ == 0) return {};\n\
-    \    if (k < degQ) {\n        std::vector<Tp> res(degQ);\n        res[k] = 1;\n\
-    \        return res;\n    }\n\n    const int len = fft_len(degQ * 2 + 1);\n  \
-    \  if (k < len / 2LL) {\n        auto invQ = inv(std::vector(Q.rend() - (degQ\
-    \ + 1), Q.rend()), k + 1);\n        std::reverse(invQ.begin(), invQ.end());\n\
-    \        invQ.resize(degQ);\n        auto res = convolution(invQ, Q);\n      \
-    \  res.erase(res.begin(), res.begin() + degQ);\n        res.resize(degQ);\n  \
-    \      return res;\n    }\n\n    // x^k/Q = ... + a_0x^(-1) + ... + a_(deg(Q)-1)x^(-deg(Q))\
-    \ + ... in R((x^(-1)))\n    // x^(-k)/Q(x^(-1)) = ... + a_0x + ... + a_(deg(Q)-1)x^(deg(Q))\
-    \ + ... in R((x))\n    // 1/Q(x^(-1)) = ... + a_0x^(k+1) + ... + a_(deg(Q)-1)x^(deg(Q)+k+1)\
-    \ + ... in R((x))\n    // 1/(x^(deg(Q))Q(x^(-1))) = ... + a_0x^(k+1-deg(Q)) +\
-    \ ... in R[[x]]\n\n    auto dftQ = std::vector(Q.rend() - (degQ + 1), Q.rend());\n\
-    \    dftQ.resize(len);\n    fft(dftQ);\n    std::vector<Tp> dftV(len / 2);\n \
-    \   for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];\n  \
-    \  const long long L = k + 1 - degQ;\n    const auto dftT   = bostan_mori_power_series(dftV,\
-    \ (L - len / 2 + (L & 1)) / 2);\n    std::vector<Tp> dftU(len);\n    if (L & 1)\
-    \ {\n        auto &&root = FftInfo<Tp>::get().root(len / 2);\n        for (int\
-    \ i = 0; i < len; i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i +\
-    \ 1] * root[i / 2];\n            dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i\
-    \ / 2];\n        }\n    } else {\n        for (int i = 0; i < len; i += 2) {\n\
-    \            dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n            dftU[i + 1]\
-    \ = dftT[i / 2] * dftQ[i];\n        }\n    }\n    inv_fft(dftU);\n    dftU.erase(dftU.begin(),\
+    \    return dftU;\n}\n\n// returns DFT([x^[-len/2,0)]x^k/Q)\n// x^k/Q in R((x^(-1)))\n\
+    // requires len/2 > degQ\ntemplate <typename Tp>\ninline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp>\
+    \ dftQ, long long k) {\n    assert(k >= 0);\n    const int len = dftQ.size() *\
+    \ 2;\n    if (k < len / 2LL) {\n        inv_fft(dftQ);\n        const int degQ\
+    \ = degree(dftQ);\n        dftQ.resize(degQ + 1);\n        std::reverse(dftQ.begin(),\
+    \ dftQ.end());\n        auto invQ = inv(dftQ, len / 2 - degQ + k + 1);\n     \
+    \   std::reverse(invQ.begin(), invQ.end());\n        invQ.resize(len / 2);\n \
+    \       fft(invQ);\n        return invQ;\n    }\n\n    fft_doubling(dftQ);\n \
+    \   std::vector<Tp> dftV(len / 2);\n    for (int i = 0; i < len; i += 2) dftV[i\
+    \ / 2] = dftQ[i] * dftQ[i + 1];\n    const auto dftT = bostan_mori_reversed_laurent_series(dftV,\
+    \ k / 2);\n\n    std::vector<Tp> dftU(len);\n    if (k & 1) {\n        auto &&root\
+    \ = FftInfo<Tp>::get().root(len / 2);\n        for (int i = 0; i < len; i += 2)\
+    \ {\n            dftU[i]     = dftT[i / 2] * dftQ[i + 1] * root[i / 2];\n    \
+    \        dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i / 2];\n        }\n    }\
+    \ else {\n        for (int i = 0; i < len; i += 2) {\n            dftU[i]    \
+    \ = dftT[i / 2] * dftQ[i + 1];\n            dftU[i + 1] = dftT[i / 2] * dftQ[i];\n\
+    \        }\n    }\n\n    fft_high(dftU);\n    return dftU;\n}\n\n// returns x^k\
+    \ mod Q\ntemplate <typename Tp>\ninline std::vector<Tp> xk_mod(long long k, const\
+    \ std::vector<Tp> &Q) {\n    assert(k >= 0);\n    const int degQ = degree(Q);\n\
+    \    assert(degQ >= 0);\n    if (degQ == 0) return {};\n    if (k < degQ) {\n\
+    \        std::vector<Tp> res(degQ);\n        res[k] = 1;\n        return res;\n\
+    \    }\n\n    const int len = fft_len(degQ * 2 + 1);\n    if (k < len / 2LL) {\n\
+    \        auto invQ = inv(std::vector(Q.rend() - (degQ + 1), Q.rend()), k + 1);\n\
+    \        std::reverse(invQ.begin(), invQ.end());\n        invQ.resize(degQ);\n\
+    \        auto res = convolution(invQ, Q);\n        res.erase(res.begin(), res.begin()\
+    \ + degQ);\n        res.resize(degQ);\n        return res;\n    }\n\n    auto\
+    \ dftQ = std::vector(Q.rend() - (degQ + 1), Q.rend());\n    dftQ.resize(len);\n\
+    \    fft(dftQ);\n    std::vector<Tp> dftV(len / 2);\n    for (int i = 0; i < len;\
+    \ i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];\n    const long long L = k + 1\
+    \ - degQ;\n    const auto dftT   = bostan_mori_laurent_series(dftV, (L - len /\
+    \ 2 + (L & 1)) / 2);\n    std::vector<Tp> dftU(len);\n    if (L & 1) {\n     \
+    \   auto &&root = FftInfo<Tp>::get().root(len / 2);\n        for (int i = 0; i\
+    \ < len; i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i + 1] * root[i\
+    \ / 2];\n            dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i / 2];\n   \
+    \     }\n    } else {\n        for (int i = 0; i < len; i += 2) {\n          \
+    \  dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n            dftU[i + 1] = dftT[i\
+    \ / 2] * dftQ[i];\n        }\n    }\n    inv_fft(dftU);\n    dftU.erase(dftU.begin(),\
     \ dftU.begin() + len / 2);\n    dftU.resize(degQ);\n    dftU.resize(len);\n  \
     \  fft(dftU);\n    for (int i = 0; i < len; ++i) dftU[i] *= dftQ[i];\n    inv_fft(dftU);\n\
     \    dftU.resize(degQ);\n    std::reverse(dftU.begin(), dftU.end());\n    return\
@@ -431,16 +430,14 @@ data:
     \                long long L, long long R) {\n    assert(L >= 0);\n    assert(order(Q)\
     \ == 0);\n    const int degP = degree(P);\n    if (degP < 0) return std::vector<Tp>(R\
     \ - L);\n    const int degQ = degree(Q);\n    const int N    = std::max(degP +\
-    \ 1, degQ);\n    // for single k>=0:\n    // [x^(-k)]P(x^(-1))/Q(x^(-1))\n   \
-    \ // [x^0](x^k P(x^(-1)))/Q(x^(-1))\n    // P0 := x^(N-1) P((x^(-1))), Q0 := x^N\
-    \ Q(x^(-1))\n    // [x^(-1)](x^k P0)/(Q0) = [x^(-1)](x^k P0 mod Q0)/Q0\n    auto\
-    \ P0 = P, Q0 = Q;\n    P0.resize(N);\n    std::reverse(P0.begin(), P0.end());\n\
-    \    Q0.resize(N + 1);\n    std::reverse(Q0.begin(), Q0.end());\n    auto [q,\
-    \ r] = euclidean_div(convolution(xk_mod(L, Q0), P0), Q0);\n    r.resize(N);\n\
+    \ 1, degQ);\n    auto P0 = P, Q0 = Q;\n    P0.resize(N);\n    std::reverse(P0.begin(),\
+    \ P0.end());\n    Q0.resize(N + 1);\n    std::reverse(Q0.begin(), Q0.end());\n\
+    \    auto [q, r] = euclidean_div(convolution(xk_mod(L, Q0), P0), Q0);\n    r.resize(N);\n\
     \    std::reverse(r.begin(), r.end());\n    return div(r, Q, R - L);\n}\n\n//\
-    \ returns [x^k]P/Q\ntemplate <typename Tp>\ninline Tp div_at(const std::vector<Tp>\
-    \ &P, const std::vector<Tp> &Q, long long k) {\n    return slice_coeff_rational(P,\
-    \ Q, k, k + 1).at(0);\n}\n"
+    \ returns [x^k]P/Q\n// P: polynomial\n// Q: non-zero polynomial, ord(Q)=0\ntemplate\
+    \ <typename Tp>\ninline Tp div_at(const std::vector<Tp> &P, const std::vector<Tp>\
+    \ &Q, long long k) {\n    return slice_coeff_rational(P, Q, k, k + 1).at(0);\n\
+    }\n"
   dependsOn:
   - fft.hpp
   - fft_doubling.hpp
@@ -451,7 +448,7 @@ data:
   isVerificationFile: false
   path: c_recursive.hpp
   requiredBy: []
-  timestamp: '2024-11-28 21:33:21+08:00'
+  timestamp: '2024-11-30 13:49:11+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
