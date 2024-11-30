@@ -54,7 +54,7 @@ $$
 
 We don't need to explain how to compute IDFT which is the inverse function of DFT, just note that $\begin{bmatrix}1&c \\\\ 1&-c \end{bmatrix}^{-1}=\dfrac{1}{2}\begin{bmatrix}1&c^{-1} \\\\ 1&-c^{-1} \end{bmatrix}^{\intercal}$. But there is a little difference between Gauss's classical FFT algorithm and the definition of DFT, we will finally have the result in a [bit-reversed permutation](https://en.wikipedia.org/wiki/Bit-reversal_permutation) of $\left\lbrack A(1),A\left(\zeta _ {n}\right),\dots,A\left(\zeta _ n^{n-1}\right)\right\rbrack$.
 
-By the way, if we don't take the inversion of entries of $\begin{bmatrix}1&c^{-1} \\\\ 1&-c^{-1} \end{bmatrix}^{\intercal}$, we will get the transposed algorithm of IDFT which is
+By the way, if we don't take the inversion of entries of $\frac{1}{2}\begin{bmatrix}1&c^{-1} \\\\ 1&-c^{-1} \end{bmatrix}^{\intercal}$, we will get the transposed algorithm of IDFT which is
 
 $$
 \operatorname{\mathsf{IDFT}} _ n^{\intercal}\left(A(x)\right)=\frac{1}{n}\operatorname{\mathsf{DFT}} _ n\left(x^nA\left(x^{-1}\right)\right)
