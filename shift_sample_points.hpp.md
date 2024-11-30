@@ -9,7 +9,7 @@ data:
     title: falling_factorial_poly.hpp
   - icon: ':heavy_check_mark:'
     path: fft.hpp
-    title: fft.hpp
+    title: FFT
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'

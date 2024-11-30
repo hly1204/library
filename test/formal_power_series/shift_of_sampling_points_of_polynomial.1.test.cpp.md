@@ -9,7 +9,7 @@ data:
     title: falling_factorial_poly.hpp
   - icon: ':heavy_check_mark:'
     path: fft.hpp
-    title: fft.hpp
+    title: FFT
   - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp

@@ -9,7 +9,7 @@ data:
     title: famous_sequence.hpp
   - icon: ':heavy_check_mark:'
     path: fft.hpp
-    title: fft.hpp
+    title: FFT
   - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp

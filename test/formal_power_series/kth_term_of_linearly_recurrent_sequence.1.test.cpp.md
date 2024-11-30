@@ -9,7 +9,7 @@ data:
     title: c_recursive.hpp
   - icon: ':heavy_check_mark:'
     path: fft.hpp
-    title: fft.hpp
+    title: FFT
   - icon: ':heavy_check_mark:'
     path: fft_doubling.hpp
     title: fft_doubling.hpp

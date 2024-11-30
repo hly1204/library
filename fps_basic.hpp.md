@@ -6,7 +6,7 @@ data:
     title: binomial.hpp
   - icon: ':heavy_check_mark:'
     path: fft.hpp
-    title: fft.hpp
+    title: FFT
   - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp

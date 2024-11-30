@@ -3,7 +3,7 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: fft.hpp
-    title: fft.hpp
+    title: FFT
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: czt.hpp

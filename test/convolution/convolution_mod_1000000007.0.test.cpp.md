@@ -6,7 +6,7 @@ data:
     title: conv_mod.hpp
   - icon: ':heavy_check_mark:'
     path: fft.hpp
-    title: fft.hpp
+    title: FFT
   - icon: ':heavy_check_mark:'
     path: modlong.hpp
     title: modlong.hpp
