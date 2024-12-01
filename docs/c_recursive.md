@@ -183,7 +183,7 @@ $$
 \end{aligned}
 $$
 
-If we know $\left\lbrack x^{\left\lbrack -\deg Q,0\right)}\right\rbrack\frac{x^k}{Q(x)}$, then we could compute $x^k\bmod{Q(x)}$, Bostan–Mori's algorithm showed that
+If we know $\left\lbrack x^{\left\lbrack -\deg Q,0\right)}\right\rbrack\frac{x^k}{Q(x)}$, then we could compute $x^k\bmod{Q(x)}$ by a simple convolution, Bostan–Mori's algorithm showed that
 
 $$
 \frac{x^k}{Q(x)}=\frac{x^k}{Q(x)Q(-x)}\cdot Q(-x)
@@ -240,7 +240,7 @@ $$
 \end{aligned}
 $$
 
-Let $\tilde{P}(x):=x^{n-1}P\left(x^{-1}\right),\tilde{Q}(x):=x^nQ\left(x^{-1}\right)$ for sufficient large $n$ such that $\tilde{P},\tilde{Q}\in\mathbb{C}\left\lbrack x\right\rbrack$ we have
+Let $\tilde{P}(x):=x^{n-1}P\left(x^{-1}\right),\tilde{Q}(x):=x^nQ\left(x^{-1}\right)$ for sufficient large $n$ such that $\tilde{P},\tilde{Q}\in\mathbb{C}\left\lbrack x\right\rbrack$, we have
 
 $$
 \begin{aligned}
