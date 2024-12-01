@@ -1,36 +1,30 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
-    path: binomial.hpp
-    title: binomial.hpp
-  - icon: ':heavy_check_mark:'
-    path: falling_factorial_poly.hpp
-    title: falling_factorial_poly.hpp
   - icon: ':question:'
     path: fft.hpp
     title: FFT
   - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
-    path: shift_sample_points.hpp
-    title: shift_sample_points.hpp
+  - icon: ':x:'
+    path: radix4_fft.hpp
+    title: radix4_fft.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
+    PROBLEM: https://judge.yosupo.jp/problem/convolution_mod
     links:
-    - https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
-  bundledCode: "#line 1 \"test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial\"\
-    \n\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\n\
-    template <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"\
-    `Mod` must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    - https://judge.yosupo.jp/problem/convolution_mod
+  bundledCode: "#line 1 \"test/convolution/convolution_mod.2.test.cpp\"\n#define PROBLEM\
+    \ \"https://judge.yosupo.jp/problem/convolution_mod\"\n\n#line 2 \"modint.hpp\"\
+    \n\n#include <iostream>\n#include <type_traits>\n\ntemplate <unsigned Mod>\nclass\
+    \ ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\"\
+    );\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
     \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
     \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
     \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
@@ -66,24 +60,8 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 2 \"shift_sample_points.hpp\"\n\n#line 2 \"falling_factorial_poly.hpp\"\n\
-    \n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n#include <vector>\n\ntemplate\
-    \ <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\
-    \n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\n    void preprocess(int\
-    \ n) {\n        if (const int nn = factorial_.size(); nn < n) {\n            int\
-    \ k = nn;\n            while (k < n) k *= 2;\n            k = std::min<long long>(k,\
-    \ Tp::mod());\n            factorial_.resize(k);\n            invfactorial_.resize(k);\n\
-    \            for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] *\
-    \ i;\n            invfactorial_.back() = factorial_.back().inv();\n          \
-    \  for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] *\
-    \ (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int n)\
-    \ {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
-    \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
-    \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
-    \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
-    \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
-    \ invfactorial_[n]; }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include\
-    \ <cassert>\n#include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate\
+    #line 2 \"radix4_fft.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n#include\
+    \ <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\ntemplate\
     \ <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue() {\n\
     \        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2)\
     \ == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
@@ -151,57 +129,85 @@ data:
     \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
     \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
     \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 7 \"falling_factorial_poly.hpp\"\n\
-    \ntemplate <typename Tp>\ninline std::vector<Tp> sample_points_to_ffp(const std::vector<Tp>\
-    \ &F) {\n    const int n = F.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n\
-    \    std::vector<Tp> egfF(F), ee(n);\n    for (int i = 0; i < n; ++i) {\n    \
-    \    egfF[i] *= bin.inv_factorial(i);\n        ee[i] = bin.inv_factorial(i);\n\
-    \        if (i & 1) ee[i] = -ee[i];\n    }\n    auto ffp = convolution(egfF, ee);\n\
-    \    ffp.resize(n);\n    return ffp;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ ffp_to_sample_points(const std::vector<Tp> &ffp, int n) {\n    auto &&bin =\
-    \ Binomial<Tp>::get(n);\n    std::vector<Tp> ee(n);\n    for (int i = 0; i < n;\
-    \ ++i) ee[i] = bin.inv_factorial(i);\n    auto F = convolution(std::vector(ffp.begin(),\
-    \ ffp.begin() + std::min<int>(n, ffp.size())), ee);\n    F.resize(n);\n    for\
-    \ (int i = 0; i < n; ++i) F[i] *= bin.factorial(i);\n    return F;\n}\n\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> shift_ffp(std::vector<Tp> ffp, Tp c) {\n\
-    \    const int n = ffp.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp>\
-    \ C(n);\n    Tp cc = 1;\n    for (int i = 0; i < n; ++i) {\n        ffp[i] *=\
-    \ bin.factorial(i);\n        C[i] = cc * bin.inv_factorial(i);\n        cc *=\
-    \ c - i;\n    }\n    std::reverse(ffp.begin(), ffp.end());\n    auto res = convolution(ffp,\
-    \ C);\n    res.resize(n);\n    std::reverse(res.begin(), res.end());\n    for\
-    \ (int i = 0; i < n; ++i) res[i] *= bin.inv_factorial(i);\n    return res;\n}\n\
-    #line 5 \"shift_sample_points.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ shift_sample_points(const std::vector<Tp> &F, Tp c, int m) {\n    return ffp_to_sample_points(shift_ffp(sample_points_to_ffp(F),\
-    \ c), m);\n}\n#line 7 \"test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp\"\
+    \    return convolution_fft(a, b);\n}\n#line 7 \"radix4_fft.hpp\"\n\n// same as\
+    \ fft_n(a, n)\ntemplate <typename Iterator>\ninline void radix4_fft_n(Iterator\
+    \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
+    \    assert((n & (n - 1)) == 0);\n    const int bn = __builtin_ctz(n);\n    if\
+    \ (bn & 1) {\n        for (int i = 0; i < n / 2; ++i) {\n            auto a0 =\
+    \ a[i], a1 = a[i + n / 2];\n            a[i] = a0 + a1, a[i + n / 2] = a0 - a1;\n\
+    \        }\n    }\n    auto &&root = FftInfo<Tp>::get().root(n / 2);\n    for\
+    \ (int i = n >> (bn & 1); i >= 4; i /= 4) {\n        const int i4 = i / 4;\n \
+    \       for (int k = 0; k < i4; ++k) {\n            auto a0 = a[k + i4 * 0], a1\
+    \ = a[k + i4 * 1];\n            auto a2 = a[k + i4 * 2], a3 = a[k + i4 * 3];\n\
+    \            auto a02p = a0 + a2, a02m = a0 - a2;\n            auto a13p = a1\
+    \ + a3, a13m = (a1 - a3) * FftInfo<Tp>::get().imag();\n            a[k + i4 *\
+    \ 0] = a02p + a13p, a[k + i4 * 1] = a02p - a13p;\n            a[k + i4 * 2] =\
+    \ a02m + a13m, a[k + i4 * 3] = a02m - a13m;\n        }\n        for (int j = i,\
+    \ m = 2; j < n; j += i, m += 2) {\n            auto r = root[m], r2 = r * r, r3\
+    \ = r2 * r;\n            for (int k = j; k < j + i4; ++k) {\n                auto\
+    \ a0 = a[k + i4 * 0], a1 = a[k + i4 * 1] * r;\n                auto a2 = a[k +\
+    \ i4 * 2] * r2, a3 = a[k + i4 * 3] * r3;\n                auto a02p = a0 + a2,\
+    \ a02m = a0 - a2;\n                auto a13p = a1 + a3, a13m = (a1 - a3) * FftInfo<Tp>::get().imag();\n\
+    \                a[k + i4 * 0] = a02p + a13p, a[k + i4 * 1] = a02p - a13p;\n \
+    \               a[k + i4 * 2] = a02m + a13m, a[k + i4 * 3] = a02m - a13m;\n  \
+    \          }\n        }\n    }\n}\n\ntemplate <typename Tp>\ninline void radix4_fft(std::vector<Tp>\
+    \ &a) {\n    radix4_fft_n(a.begin(), a.size());\n}\n\n// same as inv_fft_n(a,\
+    \ n)\ntemplate <typename Iterator>\ninline void radix4_inv_fft_n(Iterator a, int\
+    \ n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
+    \    assert((n & (n - 1)) == 0);\n    const int bn = __builtin_ctz(n);\n    auto\
+    \ &&root  = FftInfo<Tp>::get().inv_root(n / 2);\n    for (int i = 4; i <= (n >>\
+    \ (bn & 1)); i *= 4) {\n        const int i4 = i / 4;\n        for (int k = 0;\
+    \ k < i4; ++k) {\n            auto a0 = a[k + i4 * 0], a1 = a[k + i4 * 1];\n \
+    \           auto a2 = a[k + i4 * 2], a3 = a[k + i4 * 3];\n            auto a01p\
+    \ = a0 + a1, a01m = a0 - a1;\n            auto a23p = a2 + a3, a23m = (a2 - a3)\
+    \ * FftInfo<Tp>::get().imag();\n            a[k + i4 * 0] = a01p + a23p, a[k +\
+    \ i4 * 1] = a01m - a23m;\n            a[k + i4 * 2] = a01p - a23p, a[k + i4 *\
+    \ 3] = a01m + a23m;\n        }\n        for (int j = i, m = 2; j < n; j += i,\
+    \ m += 2) {\n            auto r = root[m], r2 = r * r, r3 = r2 * r;\n        \
+    \    for (int k = j; k < j + i4; ++k) {\n                auto a0 = a[k + i4 *\
+    \ 0], a1 = a[k + i4 * 1];\n                auto a2 = a[k + i4 * 2], a3 = a[k +\
+    \ i4 * 3];\n                auto a01p = a0 + a1, a01m = a0 - a1;\n           \
+    \     auto a23p = a2 + a3, a23m = (a2 - a3) * FftInfo<Tp>::get().imag();\n   \
+    \             a[k + i4 * 0] = a01p + a23p, a[k + i4 * 1] = (a01m - a23m) * r;\n\
+    \                a[k + i4 * 2] = (a01p - a23p) * r2, a[k + i4 * 3] = (a01m + a23m)\
+    \ * r3;\n            }\n        }\n    }\n    if (bn & 1) {\n        for (int\
+    \ i = 0; i < n / 2; ++i) {\n            auto a0 = a[i], a1 = a[i + n / 2];\n \
+    \           a[i] = a0 + a1, a[i + n / 2] = a0 - a1;\n        }\n    }\n    const\
+    \ Tp iv = Tp::mod() - Tp::mod() / n;\n    for (int i = 0; i < n; ++i) a[i] *=\
+    \ iv;\n}\n\ntemplate <typename Tp>\ninline void radix4_inv_fft(std::vector<Tp>\
+    \ &a) {\n    radix4_inv_fft_n(a.begin(), a.size());\n}\n#line 7 \"test/convolution/convolution_mod.2.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using mint = ModInt<998244353>;\n    int n, m;\n    mint c;\n    std::cin\
-    \ >> n >> m >> c;\n    std::vector<mint> F(n);\n    for (int i = 0; i < n; ++i)\
-    \ std::cin >> F[i];\n    const auto res = shift_sample_points(F, c, m);\n    for\
-    \ (int i = 0; i < m; ++i) std::cout << res[i] << ' ';\n    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial\"\
-    \n\n#include \"modint.hpp\"\n#include \"shift_sample_points.hpp\"\n#include <iostream>\n\
-    #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
-    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
-    \    mint c;\n    std::cin >> n >> m >> c;\n    std::vector<mint> F(n);\n    for\
-    \ (int i = 0; i < n; ++i) std::cin >> F[i];\n    const auto res = shift_sample_points(F,\
-    \ c, m);\n    for (int i = 0; i < m; ++i) std::cout << res[i] << ' ';\n    return\
+    \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
+    \    std::vector<mint> a(n), b(m);\n    for (int i = 0; i < n; ++i) std::cin >>\
+    \ a[i];\n    for (int i = 0; i < m; ++i) std::cin >> b[i];\n    const int len\
+    \ = fft_len(n + m - 1);\n    a.resize(len);\n    b.resize(len);\n    radix4_fft(a);\n\
+    \    radix4_fft(b);\n    for (int i = 0; i < len; ++i) a[i] *= b[i];\n    radix4_inv_fft(a);\n\
+    \    for (int i = 0; i < n + m - 1; ++i) std::cout << a[i] << ' ';\n    return\
+    \ 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod\"\n\n#include\
+    \ \"modint.hpp\"\n#include \"radix4_fft.hpp\"\n#include <iostream>\n#include <vector>\n\
+    \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
+    \    std::vector<mint> a(n), b(m);\n    for (int i = 0; i < n; ++i) std::cin >>\
+    \ a[i];\n    for (int i = 0; i < m; ++i) std::cin >> b[i];\n    const int len\
+    \ = fft_len(n + m - 1);\n    a.resize(len);\n    b.resize(len);\n    radix4_fft(a);\n\
+    \    radix4_fft(b);\n    for (int i = 0; i < len; ++i) a[i] *= b[i];\n    radix4_inv_fft(a);\n\
+    \    for (int i = 0; i < n + m - 1; ++i) std::cout << a[i] << ' ';\n    return\
     \ 0;\n}\n"
   dependsOn:
   - modint.hpp
-  - shift_sample_points.hpp
-  - falling_factorial_poly.hpp
-  - binomial.hpp
+  - radix4_fft.hpp
   - fft.hpp
   isVerificationFile: true
-  path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+  path: test/convolution/convolution_mod.2.test.cpp
   requiredBy: []
-  timestamp: '2024-10-10 23:07:33+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-12-01 23:35:43+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+documentation_of: test/convolution/convolution_mod.2.test.cpp
 layout: document
 redirect_from:
-- /verify/test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-- /verify/test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp.html
-title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+- /verify/test/convolution/convolution_mod.2.test.cpp
+- /verify/test/convolution/convolution_mod.2.test.cpp.html
+title: test/convolution/convolution_mod.2.test.cpp
 ---

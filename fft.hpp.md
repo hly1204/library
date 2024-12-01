@@ -59,6 +59,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: poly_product.hpp
     title: poly_product.hpp
+  - icon: ':x:'
+    path: radix4_fft.hpp
+    title: radix4_fft.hpp
   - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
@@ -75,6 +78,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/convolution/convolution_mod.1.test.cpp
     title: test/convolution/convolution_mod.1.test.cpp
+  - icon: ':x:'
+    path: test/convolution/convolution_mod.2.test.cpp
+    title: test/convolution/convolution_mod.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/convolution/convolution_mod_1000000007.0.test.cpp
     title: test/convolution/convolution_mod_1000000007.0.test.cpp
@@ -192,9 +198,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"fft.hpp\"\n\n#include <algorithm>\n#include <cassert>\n\
@@ -352,6 +358,7 @@ data:
   - poly.hpp
   - conv_mod.hpp
   - poly_product.hpp
+  - radix4_fft.hpp
   - subproduct_tree.hpp
   - semi_relaxed_conv.hpp
   - frobenius.hpp
@@ -364,7 +371,7 @@ data:
   - mat_basic.hpp
   - fft_doubling.hpp
   timestamp: '2024-05-17 19:15:49+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
@@ -405,6 +412,7 @@ data:
   - test/enumerative_combinatorics/bell_number.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
   - test/convolution/convolution_mod.0.test.cpp
+  - test/convolution/convolution_mod.2.test.cpp
   - test/convolution/convolution_mod.1.test.cpp
   - test/convolution/convolution_mod_1000000007.0.test.cpp
 documentation_of: fft.hpp
