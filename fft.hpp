@@ -76,19 +76,15 @@ template <typename Iterator>
 inline void fft_n(Iterator a, int n) {
     using Tp = typename std::iterator_traits<Iterator>::value_type;
     assert((n & (n - 1)) == 0);
-    for (int j = 0; j < n / 2; ++j) {
-        auto u = a[j], v = a[j + n / 2];
-        a[j] = u + v, a[j + n / 2] = u - v;
-    }
     auto &&root = FftInfo<Tp>::get().root(n / 2);
-    for (int i = n / 2; i >= 2; i /= 2) {
-        for (int j = 0; j < i / 2; ++j) {
-            auto u = a[j], v = a[j + i / 2];
-            a[j] = u + v, a[j + i / 2] = u - v;
+    for (int i = n; i >= 2; i /= 2) {
+        for (int k = 0; k < i / 2; ++k) {
+            const auto u = a[k], v = a[k + i / 2];
+            a[k] = u + v, a[k + i / 2] = u - v;
         }
         for (int j = i, m = 1; j < n; j += i, ++m)
             for (int k = j; k < j + i / 2; ++k) {
-                auto u = a[k], v = a[k + i / 2] * root[m];
+                const auto u = a[k], v = a[k + i / 2] * root[m];
                 a[k] = u + v, a[k + i / 2] = u - v;
             }
     }
@@ -104,22 +100,19 @@ inline void inv_fft_n(Iterator a, int n) {
     using Tp = typename std::iterator_traits<Iterator>::value_type;
     assert((n & (n - 1)) == 0);
     auto &&root = FftInfo<Tp>::get().inv_root(n / 2);
-    for (int i = 2; i < n; i *= 2) {
+    for (int i = 2; i <= n; i *= 2) {
         for (int j = 0; j < i / 2; ++j) {
-            auto u = a[j], v = a[j + i / 2];
+            const auto u = a[j], v = a[j + i / 2];
             a[j] = u + v, a[j + i / 2] = u - v;
         }
         for (int j = i, m = 1; j < n; j += i, ++m)
             for (int k = j; k < j + i / 2; ++k) {
-                auto u = a[k], v = a[k + i / 2];
+                const auto u = a[k], v = a[k + i / 2];
                 a[k] = u + v, a[k + i / 2] = (u - v) * root[m];
             }
     }
-    const Tp iv = Tp::mod() - Tp::mod() / n;
-    for (int j = 0; j < n / 2; ++j) {
-        auto u = a[j] * iv, v = a[j + n / 2] * iv;
-        a[j] = u + v, a[j + n / 2] = u - v;
-    }
+    const Tp iv = Tp::mod() - (Tp::mod() - 1) / n;
+    for (int i = 0; i < n; ++i) a[i] *= iv;
 }
 
 template <typename Tp>
