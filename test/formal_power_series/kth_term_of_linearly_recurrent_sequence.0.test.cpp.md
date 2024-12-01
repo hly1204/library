@@ -1,35 +1,35 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: c_recursive.hpp
     title: C-recursive Sequence
   - icon: ':question:'
     path: fft.hpp
     title: FFT
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: fft_doubling.hpp
     title: FFT Doubling
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence
@@ -67,64 +67,62 @@ data:
     \ n) {\n    --n;\n    n |= n >> 1, n |= n >> 2, n |= n >> 4, n |= n >> 8;\n  \
     \  return (n | n >> 16) + 1;\n}\n\ntemplate <typename Iterator>\ninline void fft_n(Iterator\
     \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
-    \    assert((n & (n - 1)) == 0);\n    for (int j = 0; j < n / 2; ++j) {\n    \
-    \    auto u = a[j], v = a[j + n / 2];\n        a[j] = u + v, a[j + n / 2] = u\
-    \ - v;\n    }\n    auto &&root = FftInfo<Tp>::get().root(n / 2);\n    for (int\
-    \ i = n / 2; i >= 2; i /= 2) {\n        for (int j = 0; j < i / 2; ++j) {\n  \
-    \          auto u = a[j], v = a[j + i / 2];\n            a[j] = u + v, a[j + i\
-    \ / 2] = u - v;\n        }\n        for (int j = i, m = 1; j < n; j += i, ++m)\n\
-    \            for (int k = j; k < j + i / 2; ++k) {\n                auto u = a[k],\
-    \ v = a[k + i / 2] * root[m];\n                a[k] = u + v, a[k + i / 2] = u\
-    \ - v;\n            }\n    }\n}\n\ntemplate <typename Tp>\ninline void fft(std::vector<Tp>\
-    \ &a) {\n    fft_n(a.begin(), a.size());\n}\n\ntemplate <typename Iterator>\n\
-    inline void inv_fft_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
-    \    assert((n & (n - 1)) == 0);\n    auto &&root = FftInfo<Tp>::get().inv_root(n\
-    \ / 2);\n    for (int i = 2; i < n; i *= 2) {\n        for (int j = 0; j < i /\
-    \ 2; ++j) {\n            auto u = a[j], v = a[j + i / 2];\n            a[j] =\
-    \ u + v, a[j + i / 2] = u - v;\n        }\n        for (int j = i, m = 1; j <\
-    \ n; j += i, ++m)\n            for (int k = j; k < j + i / 2; ++k) {\n       \
-    \         auto u = a[k], v = a[k + i / 2];\n                a[k] = u + v, a[k\
+    \    assert((n & (n - 1)) == 0);\n    auto &&root = FftInfo<Tp>::get().root(n\
+    \ / 2);\n    for (int i = n; i >= 2; i /= 2) {\n        for (int k = 0; k < i\
+    \ / 2; ++k) {\n            const auto u = a[k], v = a[k + i / 2];\n          \
+    \  a[k] = u + v, a[k + i / 2] = u - v;\n        }\n        for (int j = i, m =\
+    \ 1; j < n; j += i, ++m)\n            for (int k = j; k < j + i / 2; ++k) {\n\
+    \                const auto u = a[k], v = a[k + i / 2] * root[m];\n          \
+    \      a[k] = u + v, a[k + i / 2] = u - v;\n            }\n    }\n}\n\ntemplate\
+    \ <typename Tp>\ninline void fft(std::vector<Tp> &a) {\n    fft_n(a.begin(), a.size());\n\
+    }\n\ntemplate <typename Iterator>\ninline void inv_fft_n(Iterator a, int n) {\n\
+    \    using Tp = typename std::iterator_traits<Iterator>::value_type;\n    assert((n\
+    \ & (n - 1)) == 0);\n    auto &&root = FftInfo<Tp>::get().inv_root(n / 2);\n \
+    \   for (int i = 2; i <= n; i *= 2) {\n        for (int j = 0; j < i / 2; ++j)\
+    \ {\n            const auto u = a[j], v = a[j + i / 2];\n            a[j] = u\
+    \ + v, a[j + i / 2] = u - v;\n        }\n        for (int j = i, m = 1; j < n;\
+    \ j += i, ++m)\n            for (int k = j; k < j + i / 2; ++k) {\n          \
+    \      const auto u = a[k], v = a[k + i / 2];\n                a[k] = u + v, a[k\
     \ + i / 2] = (u - v) * root[m];\n            }\n    }\n    const Tp iv = Tp::mod()\
-    \ - Tp::mod() / n;\n    for (int j = 0; j < n / 2; ++j) {\n        auto u = a[j]\
-    \ * iv, v = a[j + n / 2] * iv;\n        a[j] = u + v, a[j + n / 2] = u - v;\n\
-    \    }\n}\n\ntemplate <typename Tp>\ninline void inv_fft(std::vector<Tp> &a) {\n\
-    \    inv_fft_n(a.begin(), a.size());\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ convolution_fft(std::vector<Tp> a, std::vector<Tp> b) {\n    if (a.empty() ||\
-    \ b.empty()) return {};\n    const int n   = a.size();\n    const int m   = b.size();\n\
-    \    const int len = fft_len(n + m - 1);\n    a.resize(len);\n    b.resize(len);\n\
-    \    fft(a);\n    fft(b);\n    for (int i = 0; i < len; ++i) a[i] *= b[i];\n \
-    \   inv_fft(a);\n    a.resize(n + m - 1);\n    return a;\n}\n\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> square_fft(std::vector<Tp> a) {\n    if (a.empty())\
-    \ return {};\n    const int n   = a.size();\n    const int len = fft_len(n * 2\
-    \ - 1);\n    a.resize(len);\n    fft(a);\n    for (int i = 0; i < len; ++i) a[i]\
-    \ *= a[i];\n    inv_fft(a);\n    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> convolution_naive(const std::vector<Tp>\
-    \ &a, const std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n\
-    \    const int n = a.size();\n    const int m = b.size();\n    std::vector<Tp>\
-    \ res(n + m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j\
-    \ < m; ++j) res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
-    \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
-    \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 2 \"fft_doubling.hpp\"\n\n#line 8\
-    \ \"fft_doubling.hpp\"\n\ntemplate <typename Iterator>\ninline void fft_doubling_n(Iterator\
-    \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
-    \    assert((n & (n - 1)) == 0);\n    std::copy_n(a, n, a + n);\n    inv_fft_n(a\
-    \ + n, n);\n    Tp k         = 1;\n    const auto t = FftInfo<Tp>::get().root(n).at(n\
-    \ / 2);\n    for (int i = 0; i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a +\
-    \ n, n);\n}\n\ntemplate <typename Tp>\ninline void fft_doubling(std::vector<Tp>\
-    \ &a) {\n    const int n = a.size();\n    a.resize(n * 2);\n    fft_doubling_n(a.begin(),\
-    \ n);\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#line 5 \"\
-    binomial.hpp\"\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp>\
-    \ factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)}\
-    \ {}\n\n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
-    \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
-    \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
-    \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
-    \ factorial_[i] = factorial_[i - 1] * i;\n            invfactorial_.back() = factorial_.back().inv();\n\
-    \            for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i\
-    \ + 1] * (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int\
-    \ n) {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
+    \ - (Tp::mod() - 1) / n;\n    for (int i = 0; i < n; ++i) a[i] *= iv;\n}\n\ntemplate\
+    \ <typename Tp>\ninline void inv_fft(std::vector<Tp> &a) {\n    inv_fft_n(a.begin(),\
+    \ a.size());\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> convolution_fft(std::vector<Tp>\
+    \ a, std::vector<Tp> b) {\n    if (a.empty() || b.empty()) return {};\n    const\
+    \ int n   = a.size();\n    const int m   = b.size();\n    const int len = fft_len(n\
+    \ + m - 1);\n    a.resize(len);\n    b.resize(len);\n    fft(a);\n    fft(b);\n\
+    \    for (int i = 0; i < len; ++i) a[i] *= b[i];\n    inv_fft(a);\n    a.resize(n\
+    \ + m - 1);\n    return a;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ square_fft(std::vector<Tp> a) {\n    if (a.empty()) return {};\n    const int\
+    \ n   = a.size();\n    const int len = fft_len(n * 2 - 1);\n    a.resize(len);\n\
+    \    fft(a);\n    for (int i = 0; i < len; ++i) a[i] *= a[i];\n    inv_fft(a);\n\
+    \    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> convolution_naive(const std::vector<Tp> &a, const std::vector<Tp>\
+    \ &b) {\n    if (a.empty() || b.empty()) return {};\n    const int n = a.size();\n\
+    \    const int m = b.size();\n    std::vector<Tp> res(n + m - 1);\n    for (int\
+    \ i = 0; i < n; ++i)\n        for (int j = 0; j < m; ++j) res[i + j] += a[i] *\
+    \ b[j];\n    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n    if (std::min(a.size(),\
+    \ b.size()) < 60) return convolution_naive(a, b);\n    if (std::addressof(a) ==\
+    \ std::addressof(b)) return square_fft(a);\n    return convolution_fft(a, b);\n\
+    }\n#line 2 \"fft_doubling.hpp\"\n\n#line 8 \"fft_doubling.hpp\"\n\ntemplate <typename\
+    \ Iterator>\ninline void fft_doubling_n(Iterator a, int n) {\n    using Tp = typename\
+    \ std::iterator_traits<Iterator>::value_type;\n    assert((n & (n - 1)) == 0);\n\
+    \    std::copy_n(a, n, a + n);\n    inv_fft_n(a + n, n);\n    Tp k         = 1;\n\
+    \    const auto t = FftInfo<Tp>::get().root(n).at(n / 2);\n    for (int i = 0;\
+    \ i < n; ++i) a[i + n] *= k, k *= t;\n    fft_n(a + n, n);\n}\n\ntemplate <typename\
+    \ Tp>\ninline void fft_doubling(std::vector<Tp> &a) {\n    const int n = a.size();\n\
+    \    a.resize(n * 2);\n    fft_doubling_n(a.begin(), n);\n}\n#line 2 \"fps_basic.hpp\"\
+    \n\n#line 2 \"binomial.hpp\"\n\n#line 5 \"binomial.hpp\"\n\ntemplate <typename\
+    \ Tp>\nclass Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\n  \
+    \  Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\n    void preprocess(int\
+    \ n) {\n        if (const int nn = factorial_.size(); nn < n) {\n            int\
+    \ k = nn;\n            while (k < n) k *= 2;\n            k = std::min<long long>(k,\
+    \ Tp::mod());\n            factorial_.resize(k);\n            invfactorial_.resize(k);\n\
+    \            for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] *\
+    \ i;\n            invfactorial_.back() = factorial_.back().inv();\n          \
+    \  for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] *\
+    \ (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int n)\
+    \ {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
     \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
     \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
     \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
@@ -413,8 +411,8 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-30 21:12:38+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-12-01 23:46:11+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
 layout: document

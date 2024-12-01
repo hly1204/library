@@ -1,47 +1,47 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
   - icon: ':question:'
     path: fft.hpp
     title: FFT
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: c_recursive.hpp
     title: C-recursive Sequence
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: czt.hpp
     title: czt.hpp
   - icon: ':heavy_check_mark:'
     path: famous_sequence.hpp
     title: famous_sequence.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: frobenius.hpp
     title: frobenius.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: mat_basic.hpp
     title: mat_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: poly.hpp
     title: poly.hpp
   - icon: ':warning:'
     path: poly_interpolation_with_error.hpp
     title: poly_interpolation_with_error.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
   _extendedVerifiedWith:
@@ -66,72 +66,72 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
     title: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/division_of_polynomials.0.test.cpp
     title: test/formal_power_series/division_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/find_linear_recurrence.0.test.cpp
     title: test/formal_power_series/find_linear_recurrence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/inv_of_polynomials.0.test.cpp
     title: test/formal_power_series/inv_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.1.test.cpp
     title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/multipoint_evaluation.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/polynomial_interpolation.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
     title: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/adjugate_matrix.0.test.cpp
     title: test/matrix/adjugate_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/characteristic_polynomial.0.test.cpp
     title: test/matrix/characteristic_polynomial.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/inverse_matrix.0.test.cpp
     title: test/matrix/inverse_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/matrix_det.0.test.cpp
     title: test/matrix/matrix_det.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/matrix_product.0.test.cpp
     title: test/matrix/matrix_product.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
@@ -180,74 +180,72 @@ data:
     \ n) {\n    --n;\n    n |= n >> 1, n |= n >> 2, n |= n >> 4, n |= n >> 8;\n  \
     \  return (n | n >> 16) + 1;\n}\n\ntemplate <typename Iterator>\ninline void fft_n(Iterator\
     \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
-    \    assert((n & (n - 1)) == 0);\n    for (int j = 0; j < n / 2; ++j) {\n    \
-    \    auto u = a[j], v = a[j + n / 2];\n        a[j] = u + v, a[j + n / 2] = u\
-    \ - v;\n    }\n    auto &&root = FftInfo<Tp>::get().root(n / 2);\n    for (int\
-    \ i = n / 2; i >= 2; i /= 2) {\n        for (int j = 0; j < i / 2; ++j) {\n  \
-    \          auto u = a[j], v = a[j + i / 2];\n            a[j] = u + v, a[j + i\
-    \ / 2] = u - v;\n        }\n        for (int j = i, m = 1; j < n; j += i, ++m)\n\
-    \            for (int k = j; k < j + i / 2; ++k) {\n                auto u = a[k],\
-    \ v = a[k + i / 2] * root[m];\n                a[k] = u + v, a[k + i / 2] = u\
-    \ - v;\n            }\n    }\n}\n\ntemplate <typename Tp>\ninline void fft(std::vector<Tp>\
-    \ &a) {\n    fft_n(a.begin(), a.size());\n}\n\ntemplate <typename Iterator>\n\
-    inline void inv_fft_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
-    \    assert((n & (n - 1)) == 0);\n    auto &&root = FftInfo<Tp>::get().inv_root(n\
-    \ / 2);\n    for (int i = 2; i < n; i *= 2) {\n        for (int j = 0; j < i /\
-    \ 2; ++j) {\n            auto u = a[j], v = a[j + i / 2];\n            a[j] =\
-    \ u + v, a[j + i / 2] = u - v;\n        }\n        for (int j = i, m = 1; j <\
-    \ n; j += i, ++m)\n            for (int k = j; k < j + i / 2; ++k) {\n       \
-    \         auto u = a[k], v = a[k + i / 2];\n                a[k] = u + v, a[k\
+    \    assert((n & (n - 1)) == 0);\n    auto &&root = FftInfo<Tp>::get().root(n\
+    \ / 2);\n    for (int i = n; i >= 2; i /= 2) {\n        for (int k = 0; k < i\
+    \ / 2; ++k) {\n            const auto u = a[k], v = a[k + i / 2];\n          \
+    \  a[k] = u + v, a[k + i / 2] = u - v;\n        }\n        for (int j = i, m =\
+    \ 1; j < n; j += i, ++m)\n            for (int k = j; k < j + i / 2; ++k) {\n\
+    \                const auto u = a[k], v = a[k + i / 2] * root[m];\n          \
+    \      a[k] = u + v, a[k + i / 2] = u - v;\n            }\n    }\n}\n\ntemplate\
+    \ <typename Tp>\ninline void fft(std::vector<Tp> &a) {\n    fft_n(a.begin(), a.size());\n\
+    }\n\ntemplate <typename Iterator>\ninline void inv_fft_n(Iterator a, int n) {\n\
+    \    using Tp = typename std::iterator_traits<Iterator>::value_type;\n    assert((n\
+    \ & (n - 1)) == 0);\n    auto &&root = FftInfo<Tp>::get().inv_root(n / 2);\n \
+    \   for (int i = 2; i <= n; i *= 2) {\n        for (int j = 0; j < i / 2; ++j)\
+    \ {\n            const auto u = a[j], v = a[j + i / 2];\n            a[j] = u\
+    \ + v, a[j + i / 2] = u - v;\n        }\n        for (int j = i, m = 1; j < n;\
+    \ j += i, ++m)\n            for (int k = j; k < j + i / 2; ++k) {\n          \
+    \      const auto u = a[k], v = a[k + i / 2];\n                a[k] = u + v, a[k\
     \ + i / 2] = (u - v) * root[m];\n            }\n    }\n    const Tp iv = Tp::mod()\
-    \ - Tp::mod() / n;\n    for (int j = 0; j < n / 2; ++j) {\n        auto u = a[j]\
-    \ * iv, v = a[j + n / 2] * iv;\n        a[j] = u + v, a[j + n / 2] = u - v;\n\
-    \    }\n}\n\ntemplate <typename Tp>\ninline void inv_fft(std::vector<Tp> &a) {\n\
-    \    inv_fft_n(a.begin(), a.size());\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ convolution_fft(std::vector<Tp> a, std::vector<Tp> b) {\n    if (a.empty() ||\
-    \ b.empty()) return {};\n    const int n   = a.size();\n    const int m   = b.size();\n\
-    \    const int len = fft_len(n + m - 1);\n    a.resize(len);\n    b.resize(len);\n\
-    \    fft(a);\n    fft(b);\n    for (int i = 0; i < len; ++i) a[i] *= b[i];\n \
-    \   inv_fft(a);\n    a.resize(n + m - 1);\n    return a;\n}\n\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> square_fft(std::vector<Tp> a) {\n    if (a.empty())\
-    \ return {};\n    const int n   = a.size();\n    const int len = fft_len(n * 2\
-    \ - 1);\n    a.resize(len);\n    fft(a);\n    for (int i = 0; i < len; ++i) a[i]\
-    \ *= a[i];\n    inv_fft(a);\n    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> convolution_naive(const std::vector<Tp>\
-    \ &a, const std::vector<Tp> &b) {\n    if (a.empty() || b.empty()) return {};\n\
-    \    const int n = a.size();\n    const int m = b.size();\n    std::vector<Tp>\
-    \ res(n + m - 1);\n    for (int i = 0; i < n; ++i)\n        for (int j = 0; j\
-    \ < m; ++j) res[i + j] += a[i] * b[j];\n    return res;\n}\n\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
-    \ &b) {\n    if (std::min(a.size(), b.size()) < 60) return convolution_naive(a,\
-    \ b);\n    if (std::addressof(a) == std::addressof(b)) return square_fft(a);\n\
-    \    return convolution_fft(a, b);\n}\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"\
-    semi_relaxed_conv.hpp\"\n\n#line 5 \"semi_relaxed_conv.hpp\"\n#include <type_traits>\n\
-    #include <utility>\n#line 8 \"semi_relaxed_conv.hpp\"\n\ntemplate <typename Tp,\
-    \ typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp, Closure,\
-    \ int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution_naive(const\
-    \ std::vector<Tp> &A, Closure gen, int n) {\n    std::vector<Tp> B(n), AB(n);\n\
-    \    for (int i = 0; i < n; ++i) {\n        for (int j = std::max(0, i - (int)A.size()\
-    \ + 1); j < i; ++j) AB[i] += A[i - j] * B[j];\n        B[i] = gen(i, AB);\n  \
-    \      if (!A.empty()) AB[i] += A[0] * B[i];\n    }\n    return B;\n}\n\n// returns\
-    \ coefficients generated by closure\n// closure: gen(index, current_product)\n\
-    template <typename Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp,\
+    \ - (Tp::mod() - 1) / n;\n    for (int i = 0; i < n; ++i) a[i] *= iv;\n}\n\ntemplate\
+    \ <typename Tp>\ninline void inv_fft(std::vector<Tp> &a) {\n    inv_fft_n(a.begin(),\
+    \ a.size());\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> convolution_fft(std::vector<Tp>\
+    \ a, std::vector<Tp> b) {\n    if (a.empty() || b.empty()) return {};\n    const\
+    \ int n   = a.size();\n    const int m   = b.size();\n    const int len = fft_len(n\
+    \ + m - 1);\n    a.resize(len);\n    b.resize(len);\n    fft(a);\n    fft(b);\n\
+    \    for (int i = 0; i < len; ++i) a[i] *= b[i];\n    inv_fft(a);\n    a.resize(n\
+    \ + m - 1);\n    return a;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ square_fft(std::vector<Tp> a) {\n    if (a.empty()) return {};\n    const int\
+    \ n   = a.size();\n    const int len = fft_len(n * 2 - 1);\n    a.resize(len);\n\
+    \    fft(a);\n    for (int i = 0; i < len; ++i) a[i] *= a[i];\n    inv_fft(a);\n\
+    \    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> convolution_naive(const std::vector<Tp> &a, const std::vector<Tp>\
+    \ &b) {\n    if (a.empty() || b.empty()) return {};\n    const int n = a.size();\n\
+    \    const int m = b.size();\n    std::vector<Tp> res(n + m - 1);\n    for (int\
+    \ i = 0; i < n; ++i)\n        for (int j = 0; j < m; ++j) res[i + j] += a[i] *\
+    \ b[j];\n    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n    if (std::min(a.size(),\
+    \ b.size()) < 60) return convolution_naive(a, b);\n    if (std::addressof(a) ==\
+    \ std::addressof(b)) return square_fft(a);\n    return convolution_fft(a, b);\n\
+    }\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"semi_relaxed_conv.hpp\"\n\n#line 5 \"\
+    semi_relaxed_conv.hpp\"\n#include <type_traits>\n#include <utility>\n#line 8 \"\
+    semi_relaxed_conv.hpp\"\n\ntemplate <typename Tp, typename Closure>\ninline std::enable_if_t<std::is_invocable_r_v<Tp,\
     \ Closure, int, const std::vector<Tp> &>,\n                        std::vector<Tp>>\n\
-    semi_relaxed_convolution(const std::vector<Tp> &A, Closure gen, int n) {\n   \
-    \ if (A.size() < 60) return semi_relaxed_convolution_naive(A, gen, n);\n    enum\
-    \ { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize & (BaseCaseSize - 1))\
-    \ == 0);\n\n    static const int Block[]     = {16, 16, 16, 16, 16};\n    static\
-    \ const int BlockSize[] = {\n        BaseCaseSize,\n        BaseCaseSize * Block[0],\n\
-    \        BaseCaseSize * Block[0] * Block[1],\n        BaseCaseSize * Block[0]\
-    \ * Block[1] * Block[2],\n        BaseCaseSize * Block[0] * Block[1] * Block[2]\
-    \ * Block[3],\n        BaseCaseSize * Block[0] * Block[1] * Block[2] * Block[3]\
-    \ * Block[4],\n    };\n\n    // returns (which_block, level)\n    auto blockinfo\
-    \ = [](int ind) {\n        int i = ind / BaseCaseSize, lv = 0;\n        while\
-    \ ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n        return std::make_pair(i\
-    \ & (Block[lv] - 1), lv);\n    };\n\n    std::vector<Tp> B(n), AB(n);\n    std::vector<std::vector<std::vector<Tp>>>\
-    \ dftA, dftB;\n\n    for (int i = 0; i < n; ++i) {\n        const int s = i &\
-    \ (BaseCaseSize - 1);\n\n        // blocked contribution\n        if (i >= BaseCaseSize\
-    \ && s == 0) {\n            const auto [j, lv]  = blockinfo(i);\n            const\
-    \ int blocksize = BlockSize[lv];\n\n            if (blocksize * j == i) {\n  \
-    \              if ((int)dftA.size() == lv) {\n                    dftA.emplace_back();\n\
+    semi_relaxed_convolution_naive(const std::vector<Tp> &A, Closure gen, int n) {\n\
+    \    std::vector<Tp> B(n), AB(n);\n    for (int i = 0; i < n; ++i) {\n       \
+    \ for (int j = std::max(0, i - (int)A.size() + 1); j < i; ++j) AB[i] += A[i -\
+    \ j] * B[j];\n        B[i] = gen(i, AB);\n        if (!A.empty()) AB[i] += A[0]\
+    \ * B[i];\n    }\n    return B;\n}\n\n// returns coefficients generated by closure\n\
+    // closure: gen(index, current_product)\ntemplate <typename Tp, typename Closure>\n\
+    inline std::enable_if_t<std::is_invocable_r_v<Tp, Closure, int, const std::vector<Tp>\
+    \ &>,\n                        std::vector<Tp>>\nsemi_relaxed_convolution(const\
+    \ std::vector<Tp> &A, Closure gen, int n) {\n    if (A.size() < 60) return semi_relaxed_convolution_naive(A,\
+    \ gen, n);\n    enum { BaseCaseSize = 32 };\n    static_assert((BaseCaseSize &\
+    \ (BaseCaseSize - 1)) == 0);\n\n    static const int Block[]     = {16, 16, 16,\
+    \ 16, 16};\n    static const int BlockSize[] = {\n        BaseCaseSize,\n    \
+    \    BaseCaseSize * Block[0],\n        BaseCaseSize * Block[0] * Block[1],\n \
+    \       BaseCaseSize * Block[0] * Block[1] * Block[2],\n        BaseCaseSize *\
+    \ Block[0] * Block[1] * Block[2] * Block[3],\n        BaseCaseSize * Block[0]\
+    \ * Block[1] * Block[2] * Block[3] * Block[4],\n    };\n\n    // returns (which_block,\
+    \ level)\n    auto blockinfo = [](int ind) {\n        int i = ind / BaseCaseSize,\
+    \ lv = 0;\n        while ((i & (Block[lv] - 1)) == 0) i /= Block[lv++];\n    \
+    \    return std::make_pair(i & (Block[lv] - 1), lv);\n    };\n\n    std::vector<Tp>\
+    \ B(n), AB(n);\n    std::vector<std::vector<std::vector<Tp>>> dftA, dftB;\n\n\
+    \    for (int i = 0; i < n; ++i) {\n        const int s = i & (BaseCaseSize -\
+    \ 1);\n\n        // blocked contribution\n        if (i >= BaseCaseSize && s ==\
+    \ 0) {\n            const auto [j, lv]  = blockinfo(i);\n            const int\
+    \ blocksize = BlockSize[lv];\n\n            if (blocksize * j == i) {\n      \
+    \          if ((int)dftA.size() == lv) {\n                    dftA.emplace_back();\n\
     \                    dftB.emplace_back(Block[lv] - 1);\n                }\n  \
     \              if ((j - 1) * blocksize < (int)A.size()) {\n                  \
     \  dftA[lv]\n                        .emplace_back(A.begin() + (j - 1) * blocksize,\n\
@@ -428,8 +426,8 @@ data:
   - famous_sequence.hpp
   - czt.hpp
   - mat_basic.hpp
-  timestamp: '2024-11-20 23:45:47+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2024-12-01 23:46:11+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
