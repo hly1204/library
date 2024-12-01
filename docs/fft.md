@@ -211,7 +211,7 @@ $$
 
 FFT doubling is described in another document.
 
-#### Extract/Modify single coefficient of FFT
+#### Extract/Modify single coefficient of FFT (NOT USEFUL)
 
 Consider the simple case first: Given $\operatorname{\mathsf{FFT}} _ n\left(A(x)\right)$ and define $A(x):=\sum _ {j=0}^{n-1}a _ j x^j$, but we don't know the coefficients of $A(x)$ and we want to know $A(0)$, this could be done in $O(n)$. Consider $A(x)+A(-x)=2\sum _ {j=0}^{n/2-1}a _ {2j}x^{2j}=B\left(x^2\right)$ and $B(1)+B(-1)=A(1)+A(-1)+A(\mathrm{i})+A(-\mathrm{i})$, finally we will have $\sum _ {j=0}^{n-1}A\left(\zeta _ {n}^j\right)=nA(0)$. Since we can compute $\operatorname{\mathsf{FFT}} _ n\left(x^kA(x)\bmod{\left(x^n - 1\right)}\right)$ in $O(n)$, we are able to extract or modify single coefficient of FFT.
 
@@ -255,7 +255,7 @@ typename std::iterator_traits<Iterator>::value_type extract_coeff_from_fft(Itera
 }
 ```
 
-#### Compute the transposed IFFT from FFT
+#### Compute the transposed IFFT from FFT (NOT USEFUL)
 
 We are given $\operatorname{\mathsf{FFT}} _ n\left(A(x)\right)$, and we want to compute $\operatorname{\mathsf{FFT}} _ n\left(x^nA\left(x^{-1}\right)\right)$. It could be done in $O(n)$.
 
