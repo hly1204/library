@@ -73,26 +73,51 @@ data:
     \ n) {\n    --n;\n    n |= n >> 1, n |= n >> 2, n |= n >> 4, n |= n >> 8;\n  \
     \  return (n | n >> 16) + 1;\n}\n\ntemplate <typename Iterator>\ninline void fft_n(Iterator\
     \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
-    \    assert((n & (n - 1)) == 0);\n    auto &&root = FftInfo<Tp>::get().root(n\
-    \ / 2);\n    for (int i = n; i >= 2; i /= 2) {\n        for (int k = 0; k < i\
-    \ / 2; ++k) {\n            const auto u = a[k], v = a[k + i / 2];\n          \
-    \  a[k] = u + v, a[k + i / 2] = u - v;\n        }\n        for (int j = i, m =\
-    \ 1; j < n; j += i, ++m)\n            for (int k = j; k < j + i / 2; ++k) {\n\
-    \                const auto u = a[k], v = a[k + i / 2] * root[m];\n          \
-    \      a[k] = u + v, a[k + i / 2] = u - v;\n            }\n    }\n}\n\ntemplate\
-    \ <typename Tp>\ninline void fft(std::vector<Tp> &a) {\n    fft_n(a.begin(), a.size());\n\
-    }\n\ntemplate <typename Iterator>\ninline void inv_fft_n(Iterator a, int n) {\n\
-    \    using Tp = typename std::iterator_traits<Iterator>::value_type;\n    assert((n\
-    \ & (n - 1)) == 0);\n    auto &&root = FftInfo<Tp>::get().inv_root(n / 2);\n \
-    \   for (int i = 2; i <= n; i *= 2) {\n        for (int j = 0; j < i / 2; ++j)\
-    \ {\n            const auto u = a[j], v = a[j + i / 2];\n            a[j] = u\
-    \ + v, a[j + i / 2] = u - v;\n        }\n        for (int j = i, m = 1; j < n;\
-    \ j += i, ++m)\n            for (int k = j; k < j + i / 2; ++k) {\n          \
-    \      const auto u = a[k], v = a[k + i / 2];\n                a[k] = u + v, a[k\
-    \ + i / 2] = (u - v) * root[m];\n            }\n    }\n    const Tp iv = Tp::mod()\
-    \ - (Tp::mod() - 1) / n;\n    for (int i = 0; i < n; ++i) a[i] *= iv;\n}\n\ntemplate\
-    \ <typename Tp>\ninline void inv_fft(std::vector<Tp> &a) {\n    inv_fft_n(a.begin(),\
-    \ a.size());\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> convolution_fft(std::vector<Tp>\
+    \    assert((n & (n - 1)) == 0);\n    const int bn = __builtin_ctz(n);\n    if\
+    \ (bn & 1) {\n        for (int i = 0; i < n / 2; ++i) {\n            const auto\
+    \ a0 = a[i], a1 = a[i + n / 2];\n            a[i] = a0 + a1, a[i + n / 2] = a0\
+    \ - a1;\n        }\n    }\n    auto &&root = FftInfo<Tp>::get().root(n / 2);\n\
+    \    for (int i = n >> (bn & 1); i >= 4; i /= 4) {\n        const int i4 = i /\
+    \ 4;\n        for (int k = 0; k < i4; ++k) {\n            const auto a0 = a[k\
+    \ + i4 * 0], a1 = a[k + i4 * 1];\n            const auto a2 = a[k + i4 * 2], a3\
+    \ = a[k + i4 * 3];\n            const auto a02p = a0 + a2, a02m = a0 - a2;\n \
+    \           const auto a13p = a1 + a3, a13m = (a1 - a3) * FftInfo<Tp>::get().imag();\n\
+    \            a[k + i4 * 0] = a02p + a13p, a[k + i4 * 1] = a02p - a13p;\n     \
+    \       a[k + i4 * 2] = a02m + a13m, a[k + i4 * 3] = a02m - a13m;\n        }\n\
+    \        for (int j = i, m = 2; j < n; j += i, m += 2) {\n            const auto\
+    \ r = root[m], r2 = r * r, r3 = r2 * r;\n            for (int k = j; k < j + i4;\
+    \ ++k) {\n                const auto a0 = a[k + i4 * 0], a1 = a[k + i4 * 1] *\
+    \ r;\n                const auto a2 = a[k + i4 * 2] * r2, a3 = a[k + i4 * 3] *\
+    \ r3;\n                const auto a02p = a0 + a2, a02m = a0 - a2;\n          \
+    \      const auto a13p = a1 + a3, a13m = (a1 - a3) * FftInfo<Tp>::get().imag();\n\
+    \                a[k + i4 * 0] = a02p + a13p, a[k + i4 * 1] = a02p - a13p;\n \
+    \               a[k + i4 * 2] = a02m + a13m, a[k + i4 * 3] = a02m - a13m;\n  \
+    \          }\n        }\n    }\n}\n\ntemplate <typename Tp>\ninline void fft(std::vector<Tp>\
+    \ &a) {\n    fft_n(a.begin(), a.size());\n}\n\ntemplate <typename Iterator>\n\
+    inline void inv_fft_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
+    \    assert((n & (n - 1)) == 0);\n    const int bn = __builtin_ctz(n);\n    auto\
+    \ &&root  = FftInfo<Tp>::get().inv_root(n / 2);\n    for (int i = 4; i <= (n >>\
+    \ (bn & 1)); i *= 4) {\n        const int i4 = i / 4;\n        for (int k = 0;\
+    \ k < i4; ++k) {\n            const auto a0 = a[k + i4 * 0], a1 = a[k + i4 * 1];\n\
+    \            const auto a2 = a[k + i4 * 2], a3 = a[k + i4 * 3];\n            const\
+    \ auto a01p = a0 + a1, a01m = a0 - a1;\n            const auto a23p = a2 + a3,\
+    \ a23m = (a2 - a3) * FftInfo<Tp>::get().imag();\n            a[k + i4 * 0] = a01p\
+    \ + a23p, a[k + i4 * 1] = a01m - a23m;\n            a[k + i4 * 2] = a01p - a23p,\
+    \ a[k + i4 * 3] = a01m + a23m;\n        }\n        for (int j = i, m = 2; j <\
+    \ n; j += i, m += 2) {\n            const auto r = root[m], r2 = r * r, r3 = r2\
+    \ * r;\n            for (int k = j; k < j + i4; ++k) {\n                const\
+    \ auto a0 = a[k + i4 * 0], a1 = a[k + i4 * 1];\n                const auto a2\
+    \ = a[k + i4 * 2], a3 = a[k + i4 * 3];\n                const auto a01p = a0 +\
+    \ a1, a01m = a0 - a1;\n                const auto a23p = a2 + a3, a23m = (a2 -\
+    \ a3) * FftInfo<Tp>::get().imag();\n                a[k + i4 * 0] = a01p + a23p,\
+    \ a[k + i4 * 1] = (a01m - a23m) * r;\n                a[k + i4 * 2] = (a01p -\
+    \ a23p) * r2, a[k + i4 * 3] = (a01m + a23m) * r3;\n            }\n        }\n\
+    \    }\n    if (bn & 1) {\n        for (int i = 0; i < n / 2; ++i) {\n       \
+    \     const auto a0 = a[i], a1 = a[i + n / 2];\n            a[i] = a0 + a1, a[i\
+    \ + n / 2] = a0 - a1;\n        }\n    }\n    const Tp iv = Tp::mod() - (Tp::mod()\
+    \ - 1) / n;\n    for (int i = 0; i < n; ++i) a[i] *= iv;\n}\n\ntemplate <typename\
+    \ Tp>\ninline void inv_fft(std::vector<Tp> &a) {\n    inv_fft_n(a.begin(), a.size());\n\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> convolution_fft(std::vector<Tp>\
     \ a, std::vector<Tp> b) {\n    if (a.empty() || b.empty()) return {};\n    const\
     \ int n   = a.size();\n    const int m   = b.size();\n    const int len = fft_len(n\
     \ + m - 1);\n    a.resize(len);\n    b.resize(len);\n    fft(a);\n    fft(b);\n\
@@ -489,7 +514,7 @@ data:
   isVerificationFile: true
   path: test/enumerative_combinatorics/bell_number.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-01 23:46:11+08:00'
+  timestamp: '2024-12-02 00:00:45+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/enumerative_combinatorics/bell_number.0.test.cpp
