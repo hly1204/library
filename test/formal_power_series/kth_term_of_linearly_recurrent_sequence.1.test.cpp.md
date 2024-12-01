@@ -6,7 +6,7 @@ data:
     title: binomial.hpp
   - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
-    title: c_recursive.hpp
+    title: C-recursive Sequence
   - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT

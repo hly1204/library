@@ -16,7 +16,7 @@ data:
     title: basis.hpp
   - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
-    title: c_recursive.hpp
+    title: C-recursive Sequence
   - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: czt.hpp

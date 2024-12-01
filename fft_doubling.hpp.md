@@ -7,7 +7,7 @@ data:
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
-    title: c_recursive.hpp
+    title: C-recursive Sequence
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
