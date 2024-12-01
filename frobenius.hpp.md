@@ -16,7 +16,7 @@ data:
   - icon: ':x:'
     path: mat_basic.hpp
     title: mat_basic.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: poly.hpp
     title: poly.hpp
   - icon: ':question:'
