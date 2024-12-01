@@ -7,38 +7,40 @@
 #include <vector>
 
 template <typename Tp>
-std::vector<Tp> inv_graeffe(const std::vector<Tp> &Q, int n) {
+std::vector<Tp> inv_graeffe(std::vector<Tp> Q, int n) {
     assert(!Q.empty());
     assert(Q[0] != 0);
     if (n <= 0) return {};
 
-    // 12 E(n)
     auto rec = [](auto &&rec, std::vector<Tp> Q) {
         const int n = Q.size();
         if (n == 1) return std::vector{Q[0].inv()};
-        Q.resize(n * 2);
-        fft(Q); // 2 E(n)
-        std::vector<Tp> V(n);
-        for (int i = 0; i < n * 2; i += 2) V[i / 2] = Q[i] * Q[i + 1];
-        inv_fft(V); // 1 E(n)
-        V.resize(n / 2);
-        auto T = rec(rec, V);
-        T.resize(n);
-        fft(T); // 1 E(n)
-        for (int i = 0; i < n * 2; i += 2) {
+        const int len = fft_len(n * 2 - 1);
+        // deg(Q) <= n-1, len > 2deg(Q), len/2 > deg(Q)
+        Q.resize(len);
+        fft(Q);
+        std::vector<Tp> V(len / 2);
+        for (int i = 0; i < len; i += 2) V[i / 2] = Q[i] * Q[i + 1];
+        inv_fft(V);
+        V.resize((n + 1) / 2);
+        auto T = rec(rec, std::vector(V.begin(), V.begin() + n / 2));
+        T.resize(len / 2);
+        if (n & 1) {
+            for (int i = 1; i <= n / 2; ++i) T[n / 2] += V[i] * T[n / 2 - i];
+            T[n / 2] /= -V[0];
+        }
+        fft(T);
+        for (int i = 0; i < len; i += 2) {
             auto u = Q[i], v = Q[i + 1];
             Q[i] = T[i / 2] * v, Q[i + 1] = T[i / 2] * u;
         }
-        inv_fft(Q); // 2 E(n)
+        inv_fft(Q);
         Q.resize(n);
         return Q;
     };
 
-    auto QQ = Q;
-    QQ.resize(fft_len(n));
-    auto res = rec(rec, QQ);
-    res.resize(n);
-    return res;
+    Q.resize(n);
+    return rec(rec, Q);
 }
 
 int main() {

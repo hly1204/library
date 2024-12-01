@@ -122,9 +122,11 @@ $\left\lbrack A(1),A\left(\zeta _ {n}\right),\dots,A\left(\zeta _ n^{n-1}\right)
 I suggest to use the following C++ code to make the bit-reversed permutation.
 
 ```c++
+#include <cassert>
 #include <utility>
-template <typename Tp>
-void revbin(Tp a[], int n) {
+template <typename Iterator>
+void revbin(Iterator a, int n) {
+    assert((n & (n - 1)) == 0);
     if (n == 0) return;
     for (int i = 0, j = 0;;) {
         if (i < j) std::swap(a[i], a[j]);
@@ -157,8 +159,138 @@ $$
 
 Note that the input is in bit-reversal order, so we are able to avoid explicit bit-reverse step by using the above pseudocode.
 
+### Basic tricks
+
+#### Extract the odd/even part of FFT
+
+These tricks could be used in various algorithms, and they are very simple. If one use the Gauss's original FFT algorithm, $A(-c)$ is next to $A(c)$.
+
+$$
+\begin{array}{ll}
+&\textbf{Algorithm }\operatorname{\mathsf{FFTEven}}\text{:} \\
+&\textbf{Input}\text{: }\left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {2n}^{2n-1}\right) \right\rbrack,n\text{ is a power of }2,\deg A\lt 2n\text{.} \\
+&\textbf{Output}\text{: }\left\lbrack B(1),B(-1),\dots,B\left(\zeta _ {n}^{n-1}\right)\right\rbrack\text{ where }B(x^2)=\frac{1}{2}\left(A(x)+A(-x)\right)\text{.} \\
+1&\textbf{return }\frac{1}{2}\left\lbrack A(1)+A(-1),A(\mathrm{i})+A(-\mathrm{i}),\dots,A\left(\zeta _ {2n}^{n-1}\right)+A\left(-\zeta _ {2n}^{n-1}\right)\right\rbrack
+\end{array}
+$$
+
+$$
+\begin{array}{ll}
+&\textbf{Algorithm }\operatorname{\mathsf{FFTOdd}}\text{:} \\
+&\textbf{Input}\text{: }\left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {2n}^{2n-1}\right) \right\rbrack,n\text{ is a power of }2,\deg A\lt 2n\text{.} \\
+&\textbf{Output}\text{: }\left\lbrack B(1),B(-1),\dots,B\left(\zeta _ {n}^{n-1}\right)\right\rbrack\text{ where }B(x^2)=\frac{1}{2x}\left(A(x)-A(-x)\right)\text{.} \\
+1&\textbf{return }\frac{1}{2}\left\lbrack \left(A(1)-A(-1)\right)/1,\left(A(\mathrm{i})-A(-\mathrm{i})\right)/\mathrm{i},\dots,\left(A\left(\zeta _ {2n}^{n-1}\right)-A\left(-\zeta _ {2n}^{n-1}\right)\right)/\zeta _ {2n}^{n-1}\right\rbrack
+\end{array}
+$$
+
+#### Extract the low/high part of FFT
+
+$$
+\begin{array}{ll}
+&\textbf{Algorithm }\operatorname{\mathsf{FFTLow}}\text{:} \\
+&\textbf{Input}\text{: }\left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {2n}^{2n-1}\right) \right\rbrack,n\text{ is a power of }2,\deg A\lt 2n\text{.} \\
+&\textbf{Output}\text{: }\left\lbrack B(1),B(-1),\dots,B\left(\zeta _ {n}^{n-1}\right)\right\rbrack\text{ where }B(x)=A(x)\bmod{x^n}\text{.} \\
+1&C(\zeta _ {2n}x) \gets \operatorname{\mathsf{IFFT}} _ n\left(\left\lbrack A\left(\zeta _ {2n}\right),A\left(-\zeta _ {2n}\right),\dots,A\left(\zeta _ {2n}^{2n-1}\right)\right\rbrack\right) \\
+2&\left\lbrack C(1),C(-1),\dots,C\left(\zeta _ {n}^{n-1}\right)\right\rbrack \gets \operatorname{\mathsf{FFT}} _ n\left(C(x)\right) \\
+3&\textbf{return }\frac{1}{2}\left\lbrack A(1)+C(1),A(-1)+C(-1),\dots,A\left(\zeta _ {n}^{n-1}\right)+C\left(\zeta _ {n}^{n-1}\right)\right\rbrack
+\end{array}
+$$
+
+$$
+\begin{array}{ll}
+&\textbf{Algorithm }\operatorname{\mathsf{FFTHigh}}\text{:} \\
+&\textbf{Input}\text{: }\left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {2n}^{2n-1}\right) \right\rbrack,n\text{ is a power of }2,\deg A\lt 2n\text{.} \\
+&\textbf{Output}\text{: }\left\lbrack B(1),B(-1),\dots,B\left(\zeta _ {n}^{n-1}\right)\right\rbrack\text{ where }B(x)=\left(A(x)-\left(A(x)\bmod{x^n}\right)\right)/x^n\text{.} \\
+1&C(\zeta _ {2n}x) \gets \operatorname{\mathsf{IFFT}} _ n\left(\left\lbrack A\left(\zeta _ {2n}\right),A\left(-\zeta _ {2n}\right),\dots,A\left(\zeta _ {2n}^{2n-1}\right)\right\rbrack\right) \\
+2&\left\lbrack C(1),C(-1),\dots,C\left(\zeta _ {n}^{n-1}\right)\right\rbrack \gets \operatorname{\mathsf{FFT}} _ n\left(C(x)\right) \\
+3&\textbf{return }\frac{1}{2}\left\lbrack A(1)-C(1),A(-1)-C(-1),\dots,A\left(\zeta _ {n}^{n-1}\right)-C\left(\zeta _ {n}^{n-1}\right)\right\rbrack
+\end{array}
+$$
+
+#### FFT Doubling
+
+FFT doubling is described in another document.
+
+#### Extract/Modify single coefficient of FFT
+
+Consider the simple case first: Given $\operatorname{\mathsf{FFT}} _ n\left(A(x)\right)$ and define $A(x):=\sum _ {j=0}^{n-1}a _ j x^j$, but we don't know the coefficients of $A(x)$ and we want to know $A(0)$, this could be done in $O(n)$. Consider $A(x)+A(-x)=2\sum _ {j=0}^{n/2-1}a _ {2j}x^{2j}=B\left(x^2\right)$ and $B(1)+B(-1)=A(1)+A(-1)+A(\mathrm{i})+A(-\mathrm{i})$, finally we will have $\sum _ {j=0}^{n-1}A\left(\zeta _ {n}^j\right)=nA(0)$. Since we can compute $\operatorname{\mathsf{FFT}} _ n\left(x^kA(x)\bmod{\left(x^n - 1\right)}\right)$ in $O(n)$, we are able to extract or modify single coefficient of FFT.
+
+```c++
+#include "fft.hpp" // this file
+#include <cassert>
+#include <iterator>
+#include <utility>
+#include <vector>
+
+template <typename Iterator>
+void revbin(Iterator a, int n) {
+    assert((n & (n - 1)) == 0);
+    if (n == 0) return;
+    for (int i = 0, j = 0;;) {
+        if (i < j) std::swap(a[i], a[j]);
+        if (++i == n) break;
+        for (int k = n >> 1; ((j ^= k) & k) == 0; k >>= 1) {}
+    }
+}
+
+template <typename Iterator>
+typename std::iterator_traits<Iterator>::value_type extract_coeff_from_fft(Iterator a, int n,
+                                                                           int k) {
+    using Tp = typename std::iterator_traits<Iterator>::value_type;
+    assert(k < n);
+    if (n == 0) return 0;
+    assert((n & (n - 1)) == 0);
+    std::vector<Tp> revbin_pow_table(n);
+    {
+        Tp v         = 1;
+        const auto t = FftInfo<Tp>::get().inv_root(n / 2).at(n / 4);
+        std::vector<Tp> pow_table(n);
+        for (int i = 0; i < n; ++i) pow_table[i] = v, v *= t;
+        for (int i = 0; i < n; ++i) revbin_pow_table[i] = pow_table[((long long)k * i) & (n - 1)];
+        revbin(revbin_pow_table.begin(), n);
+    }
+    Tp res;
+    for (int i = 0; i < n; ++i) res += a[i] * revbin_pow_table[i];
+    return res / n;
+}
+```
+
+#### Compute the transposed IFFT from FFT
+
+We are given $\operatorname{\mathsf{FFT}} _ n\left(A(x)\right)$, and we want to compute $\operatorname{\mathsf{FFT}} _ n\left(x^nA\left(x^{-1}\right)\right)$. It could be done in $O(n)$.
+
+```c++
+#include <algorithm>
+#include <cassert>
+#include <utility>
+
+template <typename Iterator>
+void revbin(Iterator a, int n) {
+    assert((n & (n - 1)) == 0);
+    if (n == 0) return;
+    for (int i = 0, j = 0;;) {
+        if (i < j) std::swap(a[i], a[j]);
+        if (++i == n) break;
+        for (int k = n >> 1; ((j ^= k) & k) == 0; k >>= 1) {}
+    }
+}
+
+template <typename Iterator>
+void transform(Iterator a, int n) {
+    assert((n & (n - 1)) == 0);
+    if (n == 0) return;
+    revbin(a, n);
+    std::reverse(a + 1, a + n);
+    revbin(a, n);
+}
+```
+
 ## References
 
 1. Daniel J. Bernstein. "The tangent FFT." Pages 291–300 in Applied Algebra, Algebraic Algorithms and Error-Correcting Codes, 17th International Symposium, AAECC-17, Bangalore, India, December 16–20, 2007, Proceedings, edited by Serdar Boztas, Hsiao-feng Lu, Lecture Notes in Computer Science 4851, Springer, 2007, ISBN 978-3-540-77223-1. url: <https://cr.yp.to/papers.html#tangentfft>
 
-1. Daniel J. Bernstein. "Fast multiplication and its applications." Pages 325–384 in Algorithmic number theory: lattices, number fields, curves and cryptography, edited by Joe Buhler, Peter Stevenhagen, Cambridge University Press, 2008, ISBN 978-0521808545. url: <https://cr.yp.to/papers.html#multapps>
+2. Daniel J. Bernstein. "Fast multiplication and its applications." Pages 325–384 in Algorithmic number theory: lattices, number fields, curves and cryptography, edited by Joe Buhler, Peter Stevenhagen, Cambridge University Press, 2008, ISBN 978-0521808545. url: <https://cr.yp.to/papers.html#multapps>
+
+3. Alin Bostan, Ryuhei Mori. A Simple and Fast Algorithm for Computing the N-th Term of a Linearly Recurrent Sequence. SOSA 2021: 118-132 url: <https://arxiv.org/abs/2008.08822>
+
+4. noshi91. FFT の回数を削減するテクニック集. url: <https://noshi91.hatenablog.com/entry/2023/12/10/163348>
