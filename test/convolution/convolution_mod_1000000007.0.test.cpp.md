@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: conv_mod.hpp
     title: conv_mod.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT
   - icon: ':heavy_check_mark:'
