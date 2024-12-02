@@ -1,7 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence"
 
 #include "c_recursive.hpp"
-#include "fft.hpp"
 #include "modint.hpp"
 #include <iostream>
 #include <vector>
@@ -20,8 +19,9 @@ int main() {
         std::cin >> Q[i];
         Q[i] = -Q[i];
     }
-    auto P = convolution(Q, init_v);
-    P.resize(d);
-    std::cout << div_at(P, Q, k) << '\n';
+    const auto M = xk_mod(k, std::vector(Q.rbegin(), Q.rend()));
+    mint res;
+    for (int i = 0; i < (int)M.size(); ++i) res += M[i] * init_v[i];
+    std::cout << res << '\n';
     return 0;
 }
