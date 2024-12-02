@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fft.hpp"
+#include <algorithm>
 #include <cassert>
 #include <vector>
 
@@ -17,14 +18,14 @@ inline std::vector<Tp> middle_product(std::vector<Tp> f, std::vector<Tp> g) {
     const int m = f.size();
     const int n = g.size();
     assert(m >= n);
+    std::reverse(g.begin(), g.end());
     const int len = fft_len(m);
     f.resize(len);
     g.resize(len);
-    fft(f);
+    transposed_inv_fft(f);
     fft(g);
     for (int i = 0; i < len; ++i) f[i] *= g[i];
-    inv_fft(f);
-    f.erase(f.begin(), f.begin() + (n - 1));
+    transposed_fft(f);
     f.resize(m - n + 1);
     return f;
 }
