@@ -156,27 +156,27 @@ data:
     \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n    if (std::min(a.size(),\
     \ b.size()) < 60) return convolution_naive(a, b);\n    if (std::addressof(a) ==\
     \ std::addressof(b)) return square_fft(a);\n    return convolution_fft(a, b);\n\
-    }\n#line 6 \"middle_product.hpp\"\n\n// see:\n// [1]: Guillaume Hanrot, Michel\
+    }\n#line 7 \"middle_product.hpp\"\n\n// see:\n// [1]: Guillaume Hanrot, Michel\
     \ Quercia, Paul Zimmermann. The Middle Product Algorithm I.\n// [2]: Alin Bostan,\
     \ Gr\xE9goire Lecerf, \xC9ric Schost. Tellegen's principle into practice.\n\n\
     // returns (fg)_(n-1),...,(fg)_(m-1)\n// f: f_0 + ... + f_(m-1)x^(m-1)\n// g:\
     \ g_0 + ... + g_(n-1)x^(n-1)\n// m >= n\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ middle_product(std::vector<Tp> f, std::vector<Tp> g) {\n    const int m = f.size();\n\
-    \    const int n = g.size();\n    assert(m >= n);\n    const int len = fft_len(m);\n\
-    \    f.resize(len);\n    g.resize(len);\n    fft(f);\n    fft(g);\n    for (int\
-    \ i = 0; i < len; ++i) f[i] *= g[i];\n    inv_fft(f);\n    f.erase(f.begin(),\
-    \ f.begin() + (n - 1));\n    f.resize(m - n + 1);\n    return f;\n}\n#line 2 \"\
-    poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#line 5 \"binomial.hpp\"\n\ntemplate\
-    \ <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\
-    \n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\n    void preprocess(int\
-    \ n) {\n        if (const int nn = factorial_.size(); nn < n) {\n            int\
-    \ k = nn;\n            while (k < n) k *= 2;\n            k = std::min<long long>(k,\
-    \ Tp::mod());\n            factorial_.resize(k);\n            invfactorial_.resize(k);\n\
-    \            for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] *\
-    \ i;\n            invfactorial_.back() = factorial_.back().inv();\n          \
-    \  for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] *\
-    \ (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int n)\
-    \ {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
+    \    const int n = g.size();\n    assert(m >= n);\n    std::reverse(g.begin(),\
+    \ g.end());\n    const int len = fft_len(m);\n    f.resize(len);\n    g.resize(len);\n\
+    \    transposed_inv_fft(f);\n    fft(g);\n    for (int i = 0; i < len; ++i) f[i]\
+    \ *= g[i];\n    transposed_fft(f);\n    f.resize(m - n + 1);\n    return f;\n\
+    }\n#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#line 5 \"binomial.hpp\"\
+    \n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_,\
+    \ invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\
+    \n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
+    \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
+    \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
+    \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
+    \ factorial_[i] = factorial_[i - 1] * i;\n            invfactorial_.back() = factorial_.back().inv();\n\
+    \            for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i\
+    \ + 1] * (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int\
+    \ n) {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
     \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
     \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
     \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
@@ -404,7 +404,7 @@ data:
   isVerificationFile: false
   path: czt.hpp
   requiredBy: []
-  timestamp: '2024-12-02 23:15:40+08:00'
+  timestamp: '2024-12-02 23:35:27+08:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp

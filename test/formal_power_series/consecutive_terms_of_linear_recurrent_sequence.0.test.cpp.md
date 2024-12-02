@@ -4,13 +4,13 @@ data:
   - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: c_recursive.hpp
     title: C-recursive Sequence
   - icon: ':question:'
     path: fft.hpp
     title: FFT
-  - icon: ':x:'
+  - icon: ':question:'
     path: fft_doubling.hpp
     title: FFT Doubling
   - icon: ':question:'
@@ -27,9 +27,9 @@ data:
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/consecutive_terms_of_linear_recurrent_sequence
@@ -458,7 +458,7 @@ data:
   path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   requiredBy: []
   timestamp: '2024-12-02 23:15:40+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
 layout: document
