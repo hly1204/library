@@ -72,9 +72,13 @@ inline int fft_len(int n) {
     return (n | n >> 16) + 1;
 }
 
+namespace detail {
+
 template <typename Iterator>
-inline void fft_n(Iterator a, int n) {
-    using Tp = typename std::iterator_traits<Iterator>::value_type;
+inline void
+butterfly_n(Iterator a, int n,
+            const std::vector<typename std::iterator_traits<Iterator>::value_type> &root) {
+    assert(n > 0);
     assert((n & (n - 1)) == 0);
     const int bn = __builtin_ctz(n);
     if (bn & 1) {
@@ -83,14 +87,13 @@ inline void fft_n(Iterator a, int n) {
             a[i] = a0 + a1, a[i + n / 2] = a0 - a1;
         }
     }
-    auto &&root = FftInfo<Tp>::get().root(n / 2);
     for (int i = n >> (bn & 1); i >= 4; i /= 4) {
         const int i4 = i / 4;
         for (int k = 0; k < i4; ++k) {
             const auto a0 = a[k + i4 * 0], a1 = a[k + i4 * 1];
             const auto a2 = a[k + i4 * 2], a3 = a[k + i4 * 3];
             const auto a02p = a0 + a2, a02m = a0 - a2;
-            const auto a13p = a1 + a3, a13m = (a1 - a3) * FftInfo<Tp>::get().imag();
+            const auto a13p = a1 + a3, a13m = (a1 - a3) * root[1];
             a[k + i4 * 0] = a02p + a13p, a[k + i4 * 1] = a02p - a13p;
             a[k + i4 * 2] = a02m + a13m, a[k + i4 * 3] = a02m - a13m;
         }
@@ -100,7 +103,7 @@ inline void fft_n(Iterator a, int n) {
                 const auto a0 = a[k + i4 * 0], a1 = a[k + i4 * 1] * r;
                 const auto a2 = a[k + i4 * 2] * r2, a3 = a[k + i4 * 3] * r3;
                 const auto a02p = a0 + a2, a02m = a0 - a2;
-                const auto a13p = a1 + a3, a13m = (a1 - a3) * FftInfo<Tp>::get().imag();
+                const auto a13p = a1 + a3, a13m = (a1 - a3) * root[1];
                 a[k + i4 * 0] = a02p + a13p, a[k + i4 * 1] = a02p - a13p;
                 a[k + i4 * 2] = a02m + a13m, a[k + i4 * 3] = a02m - a13m;
             }
@@ -108,26 +111,22 @@ inline void fft_n(Iterator a, int n) {
     }
 }
 
-template <typename Tp>
-inline void fft(std::vector<Tp> &a) {
-    fft_n(a.begin(), a.size());
-}
-
 template <typename Iterator>
-inline void inv_fft_n(Iterator a, int n) {
-    using Tp = typename std::iterator_traits<Iterator>::value_type;
+inline void
+inv_butterfly_n(Iterator a, int n,
+                const std::vector<typename std::iterator_traits<Iterator>::value_type> &root) {
+    assert(n > 0);
     assert((n & (n - 1)) == 0);
     const int bn = __builtin_ctz(n);
-    auto &&root  = FftInfo<Tp>::get().inv_root(n / 2);
     for (int i = 4; i <= (n >> (bn & 1)); i *= 4) {
         const int i4 = i / 4;
         for (int k = 0; k < i4; ++k) {
             const auto a0 = a[k + i4 * 0], a1 = a[k + i4 * 1];
             const auto a2 = a[k + i4 * 2], a3 = a[k + i4 * 3];
             const auto a01p = a0 + a1, a01m = a0 - a1;
-            const auto a23p = a2 + a3, a23m = (a2 - a3) * FftInfo<Tp>::get().imag();
-            a[k + i4 * 0] = a01p + a23p, a[k + i4 * 1] = a01m - a23m;
-            a[k + i4 * 2] = a01p - a23p, a[k + i4 * 3] = a01m + a23m;
+            const auto a23p = a2 + a3, a23m = (a2 - a3) * root[1];
+            a[k + i4 * 0] = a01p + a23p, a[k + i4 * 1] = a01m + a23m;
+            a[k + i4 * 2] = a01p - a23p, a[k + i4 * 3] = a01m - a23m;
         }
         for (int j = i, m = 2; j < n; j += i, m += 2) {
             const auto r = root[m], r2 = r * r, r3 = r2 * r;
@@ -135,9 +134,9 @@ inline void inv_fft_n(Iterator a, int n) {
                 const auto a0 = a[k + i4 * 0], a1 = a[k + i4 * 1];
                 const auto a2 = a[k + i4 * 2], a3 = a[k + i4 * 3];
                 const auto a01p = a0 + a1, a01m = a0 - a1;
-                const auto a23p = a2 + a3, a23m = (a2 - a3) * FftInfo<Tp>::get().imag();
-                a[k + i4 * 0] = a01p + a23p, a[k + i4 * 1] = (a01m - a23m) * r;
-                a[k + i4 * 2] = (a01p - a23p) * r2, a[k + i4 * 3] = (a01m + a23m) * r3;
+                const auto a23p = a2 + a3, a23m = (a2 - a3) * root[1];
+                a[k + i4 * 0] = a01p + a23p, a[k + i4 * 1] = (a01m + a23m) * r;
+                a[k + i4 * 2] = (a01p - a23p) * r2, a[k + i4 * 3] = (a01m - a23m) * r3;
             }
         }
     }
@@ -147,6 +146,27 @@ inline void inv_fft_n(Iterator a, int n) {
             a[i] = a0 + a1, a[i + n / 2] = a0 - a1;
         }
     }
+}
+
+} // namespace detail
+
+// FFT_n: A(x) |-> bit-reversed order of [A(1), A(zeta_n), ..., A(zeta_n^(n-1))]
+template <typename Iterator>
+inline void fft_n(Iterator a, int n) {
+    using Tp = typename std::iterator_traits<Iterator>::value_type;
+    detail::butterfly_n(a, n, FftInfo<Tp>::get().root(n / 2));
+}
+
+template <typename Tp>
+inline void fft(std::vector<Tp> &a) {
+    fft_n(a.begin(), a.size());
+}
+
+// IFFT_n: bit-reversed order of [A(1), A(zeta_n), ..., A(zeta_n^(n-1))] |-> A(x)
+template <typename Iterator>
+inline void inv_fft_n(Iterator a, int n) {
+    using Tp = typename std::iterator_traits<Iterator>::value_type;
+    detail::inv_butterfly_n(a, n, FftInfo<Tp>::get().inv_root(n / 2));
     const Tp iv = Tp::mod() - (Tp::mod() - 1) / n;
     for (int i = 0; i < n; ++i) a[i] *= iv;
 }
@@ -154,6 +174,32 @@ inline void inv_fft_n(Iterator a, int n) {
 template <typename Tp>
 inline void inv_fft(std::vector<Tp> &a) {
     inv_fft_n(a.begin(), a.size());
+}
+
+// IFFT_n^T: A(x) |-> 1/n FFT_n((x^n A(x)) mod (x^n - 1))
+template <typename Iterator>
+inline void transposed_inv_fft_n(Iterator a, int n) {
+    using Tp    = typename std::iterator_traits<Iterator>::value_type;
+    const Tp iv = Tp::mod() - (Tp::mod() - 1) / n;
+    for (int i = 0; i < n; ++i) a[i] *= iv;
+    detail::butterfly_n(a, n, FftInfo<Tp>::get().inv_root(n / 2));
+}
+
+template <typename Tp>
+inline void transposed_inv_fft(std::vector<Tp> &a) {
+    transposed_inv_fft_n(a.begin(), a.size());
+}
+
+// FFT_n^T : FFT_n((x^n A(x)) mod (x^n - 1)) |-> n A(x)
+template <typename Iterator>
+inline void transposed_fft_n(Iterator a, int n) {
+    using Tp = typename std::iterator_traits<Iterator>::value_type;
+    detail::inv_butterfly_n(a, n, FftInfo<Tp>::get().root(n / 2));
+}
+
+template <typename Tp>
+inline void transposed_fft(std::vector<Tp> &a) {
+    transposed_fft_n(a.begin(), a.size());
 }
 
 template <typename Tp>
