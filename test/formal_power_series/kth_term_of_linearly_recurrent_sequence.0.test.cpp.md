@@ -27,9 +27,9 @@ data:
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence
@@ -426,23 +426,25 @@ data:
     \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
     \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
     \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 8 \"test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp\"\
+    #line 7 \"test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int d;\n    long long k;\n    std::cin\
     \ >> d >> k;\n    std::vector<mint> Q(d + 1), init_v(d);\n    for (int i = 0;\
     \ i < d; ++i) std::cin >> init_v[i];\n    Q[0] = 1;\n    for (int i = 1; i <=\
-    \ d; ++i) {\n        std::cin >> Q[i];\n        Q[i] = -Q[i];\n    }\n    auto\
-    \ P = convolution(Q, init_v);\n    P.resize(d);\n    std::cout << div_at(P, Q,\
-    \ k) << '\\n';\n    return 0;\n}\n"
+    \ d; ++i) {\n        std::cin >> Q[i];\n        Q[i] = -Q[i];\n    }\n    const\
+    \ auto M = xk_mod(k, std::vector(Q.rbegin(), Q.rend()));\n    mint res;\n    for\
+    \ (int i = 0; i < (int)M.size(); ++i) res += M[i] * init_v[i];\n    std::cout\
+    \ << res << '\\n';\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence\"\
-    \n\n#include \"c_recursive.hpp\"\n#include \"fft.hpp\"\n#include \"modint.hpp\"\
-    \n#include <iostream>\n#include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int d;\n\
-    \    long long k;\n    std::cin >> d >> k;\n    std::vector<mint> Q(d + 1), init_v(d);\n\
+    \n\n#include \"c_recursive.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\
+    #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
+    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int d;\n  \
+    \  long long k;\n    std::cin >> d >> k;\n    std::vector<mint> Q(d + 1), init_v(d);\n\
     \    for (int i = 0; i < d; ++i) std::cin >> init_v[i];\n    Q[0] = 1;\n    for\
     \ (int i = 1; i <= d; ++i) {\n        std::cin >> Q[i];\n        Q[i] = -Q[i];\n\
-    \    }\n    auto P = convolution(Q, init_v);\n    P.resize(d);\n    std::cout\
-    \ << div_at(P, Q, k) << '\\n';\n    return 0;\n}\n"
+    \    }\n    const auto M = xk_mod(k, std::vector(Q.rbegin(), Q.rend()));\n   \
+    \ mint res;\n    for (int i = 0; i < (int)M.size(); ++i) res += M[i] * init_v[i];\n\
+    \    std::cout << res << '\\n';\n    return 0;\n}\n"
   dependsOn:
   - c_recursive.hpp
   - fft.hpp
@@ -455,8 +457,8 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-02 23:15:40+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-12-02 23:47:01+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
 layout: document
