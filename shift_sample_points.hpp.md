@@ -4,7 +4,7 @@ data:
   - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: falling_factorial_poly.hpp
     title: falling_factorial_poly.hpp
   - icon: ':question:'
@@ -12,12 +12,12 @@ data:
     title: FFT
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"shift_sample_points.hpp\"\n\n#line 2 \"falling_factorial_poly.hpp\"\
@@ -162,7 +162,7 @@ data:
   path: shift_sample_points.hpp
   requiredBy: []
   timestamp: '2024-12-02 00:00:45+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
 documentation_of: shift_sample_points.hpp

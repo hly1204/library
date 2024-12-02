@@ -10,7 +10,7 @@ data:
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
   - icon: ':question:'
@@ -22,14 +22,14 @@ data:
   - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: sqrt_mod.hpp
     title: sqrt_mod.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/sqrt_of_formal_power_series
@@ -330,7 +330,7 @@ data:
   path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   requiredBy: []
   timestamp: '2024-12-02 00:00:45+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
 layout: document
