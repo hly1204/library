@@ -22,7 +22,7 @@ data:
   - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: random.hpp
     title: random.hpp
   - icon: ':question:'

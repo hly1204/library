@@ -310,7 +310,7 @@ data:
     \n\n// see:\n// [1]: Alin Bostan, Ryuhei Mori.\n//      A Simple and Fast Algorithm\
     \ for Computing the N-th Term of a Linearly Recurrent Sequence.\n//      https://arxiv.org/abs/2008.08822\n\
     \ntemplate <typename Tp>\ninline std::vector<Tp> fps_inv_newton(const std::vector<Tp>\
-    \ &a, int n) {\n    assert(!a.empty());\n    if (a <= 0) return {};\n    const\
+    \ &a, int n) {\n    assert(!a.empty());\n    if (n <= 0) return {};\n    const\
     \ int len = fft_len(n);\n    std::vector<Tp> invA(len), shopA(len), shopB(len);\n\
     \    invA[0] = a[0].inv();\n    for (int i = 2; i <= len; i *= 2) {\n        std::fill(std::copy_n(a.begin(),\
     \ std::min<int>(a.size(), i), shopA.begin()),\n                  shopA.begin()\
@@ -468,7 +468,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-03 20:03:27+08:00'
+  timestamp: '2024-12-03 20:17:59+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp

@@ -16,7 +16,7 @@ data:
   - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: random.hpp
     title: random.hpp
   - icon: ':question:'
@@ -26,14 +26,14 @@ data:
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy:
-  - icon: ':x:'
+  - icon: ':question:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: frobenius.hpp
     title: frobenius.hpp
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/matrix/adjugate_matrix.0.test.cpp
     title: test/matrix/adjugate_matrix.0.test.cpp
   - icon: ':x:'
@@ -56,7 +56,7 @@ data:
     title: test/matrix/pow_of_matrix.0.test.cpp
   _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"mat_basic.hpp\"\n\n#line 2 \"poly.hpp\"\n\n#line 2 \"poly_basic.hpp\"\
@@ -597,7 +597,7 @@ data:
   - basis.hpp
   - frobenius.hpp
   timestamp: '2024-12-03 19:25:39+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
