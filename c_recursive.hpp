@@ -16,7 +16,7 @@
 template <typename Tp>
 inline std::vector<Tp> fps_inv_newton(const std::vector<Tp> &a, int n) {
     assert(!a.empty());
-    if (a <= 0) return {};
+    if (n <= 0) return {};
     const int len = fft_len(n);
     std::vector<Tp> invA(len), shopA(len), shopB(len);
     invA[0] = a[0].inv();
