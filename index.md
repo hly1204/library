@@ -51,7 +51,7 @@ data:
     - icon: ':question:'
       path: fps_basic.hpp
       title: fps_basic.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: fps_composition.hpp
       title: fps_composition.hpp
     - icon: ':heavy_check_mark:'
@@ -222,7 +222,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
       title: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
       title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
     - icon: ':x:'

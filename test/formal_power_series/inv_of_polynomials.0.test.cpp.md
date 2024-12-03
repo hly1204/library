@@ -237,11 +237,11 @@ data:
     \ if (!dftA[lv].empty()) {\n                dftB[lv][j - 1].resize(blocksize *\
     \ 2);\n                std::copy_n(B.begin() + (i - blocksize), blocksize, dftB[lv][j\
     \ - 1].begin());\n                std::fill_n(dftB[lv][j - 1].begin() + blocksize,\
-    \ blocksize, 0);\n                fft(dftB[lv][j - 1]);\n\n                //\
-    \ middle product\n                std::vector<Tp> mp(blocksize * 2);\n       \
-    \         for (int k = 0; k < std::min<int>(j, dftA[lv].size()); ++k)\n      \
-    \              for (int l = 0; l < blocksize * 2; ++l)\n                     \
-    \   mp[l] += dftA[lv][k][l] * dftB[lv][j - 1 - k][l];\n                inv_fft(mp);\n\
+    \ blocksize, Tp(0));\n                fft(dftB[lv][j - 1]);\n\n              \
+    \  // middle product\n                std::vector<Tp> mp(blocksize * 2);\n   \
+    \             for (int k = 0; k < std::min<int>(j, dftA[lv].size()); ++k)\n  \
+    \                  for (int l = 0; l < blocksize * 2; ++l)\n                 \
+    \       mp[l] += dftA[lv][k][l] * dftB[lv][j - 1 - k][l];\n                inv_fft(mp);\n\
     \n                for (int k = 0; k < blocksize && i + k < n; ++k) AB[i + k] +=\
     \ mp[k + blocksize];\n            }\n        }\n\n        // basecase contribution\n\
     \        for (int j = std::max(i - s, i - (int)A.size() + 1); j < i; ++j) AB[i]\
@@ -249,11 +249,11 @@ data:
     \ += A[0] * B[i];\n    }\n\n    return B;\n}\n#line 7 \"fps_basic.hpp\"\n\ntemplate\
     \ <typename Tp>\ninline int order(const std::vector<Tp> &a) {\n    for (int i\
     \ = 0; i < (int)a.size(); ++i)\n        if (a[i] != 0) return i;\n    return -1;\n\
-    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> inv(const std::vector<Tp>\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> fps_inv(const std::vector<Tp>\
     \ &a, int n) {\n    assert(!a.empty());\n    if (n <= 0) return {};\n    return\
     \ semi_relaxed_convolution(\n        a, [v = a[0].inv()](int n, auto &&c) { return\
     \ n == 0 ? v : -c[n] * v; }, n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ div(const std::vector<Tp> &a, const std::vector<Tp> &b, int n) {\n    assert(!b.empty());\n\
+    \ fps_div(const std::vector<Tp> &a, const std::vector<Tp> &b, int n) {\n    assert(!b.empty());\n\
     \    if (n <= 0) return {};\n    return semi_relaxed_convolution(\n        b,\n\
     \        [&, v = b[0].inv()](int n, auto &&c) {\n            if (n < (int)a.size())\
     \ return (a[n] - c[n]) * v;\n            return -c[n] * v;\n        },\n     \
@@ -264,30 +264,31 @@ data:
     \ std::vector<Tp> &a, Tp c = {}) {\n    const int n = a.size() + 1;\n    auto\
     \ &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp> res(n);\n    res[0] = c;\n\
     \    for (int i = 1; i < n; ++i) res[i] = a[i - 1] * bin.inv(i);\n    return res;\n\
-    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> log(const std::vector<Tp>\
-    \ &a, int n) {\n    return integr(div(deriv(a), a, n - 1));\n}\n\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> exp(const std::vector<Tp> &a, int n) {\n    if (n\
-    \ <= 0) return {};\n    assert(!a.empty() && a[0] == 0);\n    return semi_relaxed_convolution(\n\
-    \        deriv(a),\n        [bin = Binomial<Tp>::get(n)](int n, auto &&c) {\n\
-    \            return n == 0 ? Tp(1) : c[n - 1] * bin.inv(n);\n        },\n    \
-    \    n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> pow(std::vector<Tp>\
-    \ a, long long e, int n) {\n    if (n <= 0) return {};\n    if (e == 0) {\n  \
-    \      std::vector<Tp> res(n);\n        res[0] = 1;\n        return res;\n   \
-    \ }\n\n    const int o = order(a);\n    if (o < 0 || o > n / e || (o == n / e\
-    \ && n % e == 0)) return std::vector<Tp>(n);\n    if (o != 0) a.erase(a.begin(),\
-    \ a.begin() + o);\n\n    const Tp ia0 = a[0].inv();\n    const Tp a0e = a[0].pow(e);\n\
-    \    const Tp me  = e;\n\n    for (int i = 0; i < (int)a.size(); ++i) a[i] *=\
-    \ ia0;\n    a = log(a, n - o * e);\n    for (int i = 0; i < (int)a.size(); ++i)\
-    \ a[i] *= me;\n    a = exp(a, n - o * e);\n    for (int i = 0; i < (int)a.size();\
-    \ ++i) a[i] *= a0e;\n\n    a.insert(a.begin(), o * e, 0);\n    return a;\n}\n\
-    #line 10 \"poly_basic.hpp\"\n\ntemplate <typename Tp>\ninline int degree(const\
-    \ std::vector<Tp> &a) {\n    int n = (int)a.size() - 1;\n    while (n >= 0 &&\
-    \ a[n] == 0) --n;\n    return n;\n}\n\ntemplate <typename Tp>\ninline void shrink(std::vector<Tp>\
-    \ &a) {\n    a.resize(degree(a) + 1);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ taylor_shift(std::vector<Tp> a, Tp c) {\n    const int n = a.size();\n    auto\
-    \ &&bin  = Binomial<Tp>::get(n);\n    for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);\n\
-    \    Tp cc = 1;\n    std::vector<Tp> b(n);\n    for (int i = 0; i < n; ++i) {\n\
-    \        b[i] = cc * bin.inv_factorial(i);\n        cc *= c;\n    }\n    std::reverse(a.begin(),\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> fps_log(const std::vector<Tp>\
+    \ &a, int n) {\n    return integr(fps_div(deriv(a), a, n - 1));\n}\n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> fps_exp(const std::vector<Tp> &a, int\
+    \ n) {\n    if (n <= 0) return {};\n    assert(!a.empty() && a[0] == 0);\n   \
+    \ return semi_relaxed_convolution(\n        deriv(a),\n        [bin = Binomial<Tp>::get(n)](int\
+    \ n, auto &&c) {\n            return n == 0 ? Tp(1) : c[n - 1] * bin.inv(n);\n\
+    \        },\n        n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ fps_pow(std::vector<Tp> a, long long e, int n) {\n    if (n <= 0) return {};\n\
+    \    if (e == 0) {\n        std::vector<Tp> res(n);\n        res[0] = 1;\n   \
+    \     return res;\n    }\n\n    const int o = order(a);\n    if (o < 0 || o >\
+    \ n / e || (o == n / e && n % e == 0)) return std::vector<Tp>(n);\n    if (o !=\
+    \ 0) a.erase(a.begin(), a.begin() + o);\n\n    const Tp ia0 = a[0].inv();\n  \
+    \  const Tp a0e = a[0].pow(e);\n    const Tp me  = e;\n\n    for (int i = 0; i\
+    \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = fps_log(a, n - o * e);\n    for\
+    \ (int i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = fps_exp(a, n - o *\
+    \ e);\n    for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
+    \ o * e, Tp(0));\n    return a;\n}\n#line 10 \"poly_basic.hpp\"\n\ntemplate <typename\
+    \ Tp>\ninline int degree(const std::vector<Tp> &a) {\n    int n = (int)a.size()\
+    \ - 1;\n    while (n >= 0 && a[n] == 0) --n;\n    return n;\n}\n\ntemplate <typename\
+    \ Tp>\ninline void shrink(std::vector<Tp> &a) {\n    a.resize(degree(a) + 1);\n\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> taylor_shift(std::vector<Tp>\
+    \ a, Tp c) {\n    const int n = a.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n\
+    \    for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);\n    Tp cc = 1;\n \
+    \   std::vector<Tp> b(n);\n    for (int i = 0; i < n; ++i) {\n        b[i] = cc\
+    \ * bin.inv_factorial(i);\n        cc *= c;\n    }\n    std::reverse(a.begin(),\
     \ a.end());\n    auto ab = convolution(a, b);\n    ab.resize(n);\n    std::reverse(ab.begin(),\
     \ ab.end());\n    for (int i = 0; i < n; ++i) ab[i] *= bin.inv_factorial(i);\n\
     \    return ab;\n}\n\n// returns (quotient, remainder)\n// O(deg(Q)deg(B))\ntemplate\
@@ -314,14 +315,14 @@ data:
     \    const int degA = degree(A);\n    const int degB = degree(B);\n    assert(degB\
     \ >= 0);\n    // A = Q*B + R => A/B = Q + R/B in R((x^(-1)))\n    const int degQ\
     \ = degA - degB;\n    if (degQ < 0) return {std::vector<Tp>{Tp(0)}, A};\n    if\
-    \ (degQ < 60 || degB < 60) return euclidean_div_naive(A, B);\n\n    auto Q = div(std::vector(A.rend()\
-    \ - (degA + 1), A.rend()),\n                 std::vector(B.rend() - (degB + 1),\
-    \ B.rend()), degQ + 1);\n    std::reverse(Q.begin(), Q.end());\n\n    // returns\
-    \ a mod (x^n-1)\n    auto make_cyclic = [](const std::vector<Tp> &a, int n) {\n\
-    \        assert((n & (n - 1)) == 0);\n        std::vector<Tp> b(n);\n        for\
-    \ (int i = 0; i < (int)a.size(); ++i) b[i & (n - 1)] += a[i];\n        return\
-    \ b;\n    };\n\n    const int len      = fft_len(std::max(degB, 1));\n    const\
-    \ auto cyclicA = make_cyclic(A, len);\n    auto cyclicB       = make_cyclic(B,\
+    \ (degQ < 60 || degB < 60) return euclidean_div_naive(A, B);\n\n    auto Q = fps_div(std::vector(A.rend()\
+    \ - (degA + 1), A.rend()),\n                     std::vector(B.rend() - (degB\
+    \ + 1), B.rend()), degQ + 1);\n    std::reverse(Q.begin(), Q.end());\n\n    //\
+    \ returns a mod (x^n-1)\n    auto make_cyclic = [](const std::vector<Tp> &a, int\
+    \ n) {\n        assert((n & (n - 1)) == 0);\n        std::vector<Tp> b(n);\n \
+    \       for (int i = 0; i < (int)a.size(); ++i) b[i & (n - 1)] += a[i];\n    \
+    \    return b;\n    };\n\n    const int len      = fft_len(std::max(degB, 1));\n\
+    \    const auto cyclicA = make_cyclic(A, len);\n    auto cyclicB       = make_cyclic(B,\
     \ len);\n    auto cyclicQ       = make_cyclic(Q, len);\n\n    fft(cyclicQ);\n\
     \    fft(cyclicB);\n    for (int i = 0; i < len; ++i) cyclicQ[i] *= cyclicB[i];\n\
     \    inv_fft(cyclicQ);\n\n    // R = A - QB mod (x^n-1) (n >= degB)\n    std::vector<Tp>\
@@ -331,89 +332,89 @@ data:
     \    const int degB = degree(B);\n    assert(degB >= 0);\n    // A = Q*B + R =>\
     \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
     \ < 0) return {Tp(0)};\n    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A,\
-    \ B);\n\n    auto Q = div(std::vector(A.rend() - (degA + 1), A.rend()),\n    \
-    \             std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n    std::reverse(Q.begin(),\
-    \ Q.end());\n    return Q;\n}\n#line 5 \"poly.hpp\"\n#include <array>\n#line 8\
-    \ \"poly.hpp\"\n#include <tuple>\n#line 11 \"poly.hpp\"\n\ntemplate <typename\
-    \ Tp>\nclass Poly : public std::vector<Tp> {\n    using Base = std::vector<Tp>;\n\
-    \npublic:\n    using Base::Base;\n\n    int deg() const { return degree(*this);\
-    \ }\n\n    int ord() const { return order(*this); }\n\n    Poly rev() const {\n\
-    \        const int d = deg();\n        Poly res(d + 1);\n        for (int i =\
-    \ d; i >= 0; --i) res[i] = Base::operator[](d - i);\n        return res;\n   \
-    \ }\n\n    Poly slice(int L, int R) const {\n        Poly res(R - L);\n      \
-    \  for (int i = L; i < std::min<int>(R, Base::size()); ++i) res[i - L] = Base::operator[](i);\n\
-    \        return res;\n    }\n\n    Poly trunc(int D) const {\n        Poly res(D);\n\
-    \        for (int i = 0; i < std::min<int>(D, Base::size()); ++i) res[i] = Base::operator[](i);\n\
-    \        return res;\n    }\n\n    Poly &shrink() {\n        Base::resize(deg()\
-    \ + 1);\n        return *this;\n    }\n\n    Tp lc() const {\n        const int\
-    \ d = deg();\n        return d == -1 ? Tp() : Base::operator[](d);\n    }\n\n\
-    \    Poly monic() const {\n        const int d = deg();\n        assert(d >= 0);\n\
-    \        const auto iv = Base::operator[](d).inv();\n        Poly res(*this);\n\
-    \        for (int i = 0; i <= d; ++i) res[i] *= iv;\n        return res;\n   \
-    \ }\n\n    Poly taylor_shift(Tp c) const {\n        Base::operator=(taylor_shift(*this,\
-    \ c));\n        return shrink();\n    }\n\n    Poly operator-() const {\n    \
-    \    const int d = deg();\n        Poly res(d + 1);\n        for (int i = 0; i\
-    \ <= d; ++i) res[i] = -Base::operator[](i);\n        res.shrink();\n        return\
-    \ res;\n    }\n\n    std::pair<Poly, Poly> divmod(const Poly &R) const {\n   \
-    \     const auto [q, r] = euclidean_div(*this, R);\n        return std::make_pair(Poly(q.begin(),\
-    \ q.end()), Poly(r.begin(), r.end()));\n    }\n    Poly &operator+=(const Poly\
-    \ &R) {\n        if (Base::size() < R.size()) Base::resize(R.size());\n      \
-    \  for (int i = 0; i < (int)R.size(); ++i) Base::operator[](i) += R[i];\n    \
-    \    return shrink();\n    }\n    Poly &operator-=(const Poly &R) {\n        if\
-    \ (Base::size() < R.size()) Base::resize(R.size());\n        for (int i = 0; i\
-    \ < (int)R.size(); ++i) Base::operator[](i) -= R[i];\n        return shrink();\n\
-    \    }\n    Poly &operator*=(const Poly &R) {\n        Base::operator=(convolution(*this,\
-    \ R));\n        return shrink();\n    }\n    Poly &operator/=(const Poly &R) {\n\
-    \        Base::operator=(euclidean_div_quotient(*this, R));\n        return shrink();\n\
-    \    }\n    Poly &operator%=(const Poly &R) {\n        Base::operator=(divmod(R).second);\n\
-    \        return shrink();\n    }\n    Poly &operator<<=(int D) {\n        if (D\
-    \ > 0) {\n            Base::insert(Base::begin(), D, Tp());\n        } else if\
-    \ (D < 0) {\n            if (-D < (int)Base::size()) {\n                Base::erase(Base::begin(),\
-    \ Base::begin() + (-D));\n            } else {\n                Base::clear();\n\
-    \            }\n        }\n        return shrink();\n    }\n    Poly &operator>>=(int\
-    \ D) { return operator<<=(-D); }\n\n    friend Poly operator+(const Poly &L, const\
-    \ Poly &R) { return Poly(L) += R; }\n    friend Poly operator-(const Poly &L,\
-    \ const Poly &R) { return Poly(L) -= R; }\n    friend Poly operator*(const Poly\
-    \ &L, const Poly &R) { return Poly(L) *= R; }\n    friend Poly operator/(const\
-    \ Poly &L, const Poly &R) { return Poly(L) /= R; }\n    friend Poly operator%(const\
-    \ Poly &L, const Poly &R) { return Poly(L) %= R; }\n    friend Poly operator<<(const\
-    \ Poly &L, int D) { return Poly(L) <<= D; }\n    friend Poly operator>>(const\
-    \ Poly &L, int D) { return Poly(L) >>= D; }\n\n    friend std::ostream &operator<<(std::ostream\
-    \ &L, const Poly &R) {\n        L << '[';\n        const int d = R.deg();\n  \
-    \      if (d < 0) {\n            L << '0';\n        } else {\n            for\
-    \ (int i = 0; i <= d; ++i) {\n                L << R[i];\n                if (i\
-    \ == 1) L << \"*x\";\n                if (i > 1) L << \"*x^\" << i;\n        \
-    \        if (i != d) L << \" + \";\n            }\n        }\n        return L\
-    \ << ']';\n    }\n};\n\n// 2x2 matrix for Euclidean algorithm\ntemplate <typename\
-    \ Tp>\nclass GCDMatrix : public std::array<std::array<Tp, 2>, 2> {\npublic:\n\
-    \    GCDMatrix(const Tp &x00, const Tp &x01, const Tp &x10, const Tp &x11)\n \
-    \       : std::array<std::array<Tp, 2>, 2>{std::array{x00, x01}, std::array{x10,\
-    \ x11}} {}\n\n    GCDMatrix operator*(const GCDMatrix &R) const {\n        return\
-    \ {(*this)[0][0] * R[0][0] + (*this)[0][1] * R[1][0],\n                (*this)[0][0]\
-    \ * R[0][1] + (*this)[0][1] * R[1][1],\n                (*this)[1][0] * R[0][0]\
-    \ + (*this)[1][1] * R[1][0],\n                (*this)[1][0] * R[0][1] + (*this)[1][1]\
-    \ * R[1][1]};\n    }\n\n    std::array<Tp, 2> operator*(const std::array<Tp, 2>\
-    \ &R) const {\n        return {(*this)[0][0] * R[0] + (*this)[0][1] * R[1],\n\
-    \                (*this)[1][0] * R[0] + (*this)[1][1] * R[1]};\n    }\n\n    Tp\
-    \ det() const { return (*this)[0][0] * (*this)[1][1] - (*this)[0][1] * (*this)[1][0];\
-    \ }\n    GCDMatrix adj() const { return {(*this)[1][1], -(*this)[0][1], -(*this)[1][0],\
-    \ (*this)[0][0]}; }\n};\n\n// returns M s.t. deg(M) <= d and deg(M21*A+M22*B)\
-    \ < max(deg(A),deg(B))-d\n//                det(M) in {-1,1}\n// see:\n// [1]:\
-    \ Daniel J. Bernstein. Fast multiplication and its applications.\ntemplate <typename\
-    \ Tp>\ninline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const Poly<Tp> &B, int\
-    \ d) {\n    using Mat = GCDMatrix<Poly<Tp>>;\n    assert(!(A.deg() < 0 && B.deg()\
-    \ < 0));\n    if (A.deg() < B.deg()) return hgcd(B, A, d) * Mat({}, {Tp(1)}, {Tp(1)},\
-    \ {});\n    if (A.deg() < d) return hgcd(A, B, A.deg());\n    if (B.deg() < A.deg()\
-    \ - d) return Mat({Tp(1)}, {}, {}, {Tp(1)});\n    if (int dd = A.deg() - d * 2;\
-    \ dd > 0) return hgcd(A >> dd, B >> dd, d);\n    if (d == 0) return Mat({}, {Tp(1)},\
-    \ {Tp(1)}, -(A / B));\n    const auto M = hgcd(A, B, d / 2);\n    const auto D\
-    \ = M[1][0] * A + M[1][1] * B;\n    if (D.deg() < A.deg() - d) return M;\n   \
-    \ const auto C      = M[0][0] * A + M[0][1] * B;\n    const auto [Q, R] = C.divmod(D);\n\
-    \    return hgcd(D, R, D.deg() - (A.deg() - d)) * Mat({}, {Tp(1)}, {Tp(1)}, -Q)\
-    \ * M;\n}\n\ntemplate <typename Tp>\ninline std::tuple<Poly<Tp>, Poly<Tp>, Poly<Tp>>\
-    \ xgcd(const Poly<Tp> &A, const Poly<Tp> &B) {\n    const auto M = hgcd(A, B,\
-    \ std::max(A.deg(), B.deg()));\n    return std::make_tuple(M[0][0], M[0][1], M[0][0]\
-    \ * A + M[0][1] * B);\n}\n\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>,\
+    \ B);\n\n    auto Q = fps_div(std::vector(A.rend() - (degA + 1), A.rend()),\n\
+    \                     std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n\
+    \    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 5 \"poly.hpp\"\
+    \n#include <array>\n#line 8 \"poly.hpp\"\n#include <tuple>\n#line 11 \"poly.hpp\"\
+    \n\ntemplate <typename Tp>\nclass Poly : public std::vector<Tp> {\n    using Base\
+    \ = std::vector<Tp>;\n\npublic:\n    using Base::Base;\n\n    int deg() const\
+    \ { return degree(*this); }\n\n    int ord() const { return order(*this); }\n\n\
+    \    Poly rev() const {\n        const int d = deg();\n        Poly res(d + 1);\n\
+    \        for (int i = d; i >= 0; --i) res[i] = Base::operator[](d - i);\n    \
+    \    return res;\n    }\n\n    Poly slice(int L, int R) const {\n        Poly\
+    \ res(R - L);\n        for (int i = L; i < std::min<int>(R, Base::size()); ++i)\
+    \ res[i - L] = Base::operator[](i);\n        return res;\n    }\n\n    Poly trunc(int\
+    \ D) const {\n        Poly res(D);\n        for (int i = 0; i < std::min<int>(D,\
+    \ Base::size()); ++i) res[i] = Base::operator[](i);\n        return res;\n   \
+    \ }\n\n    Poly &shrink() {\n        Base::resize(deg() + 1);\n        return\
+    \ *this;\n    }\n\n    Tp lc() const {\n        const int d = deg();\n       \
+    \ return d == -1 ? Tp() : Base::operator[](d);\n    }\n\n    Poly monic() const\
+    \ {\n        const int d = deg();\n        assert(d >= 0);\n        const auto\
+    \ iv = Base::operator[](d).inv();\n        Poly res(*this);\n        for (int\
+    \ i = 0; i <= d; ++i) res[i] *= iv;\n        return res;\n    }\n\n    Poly taylor_shift(Tp\
+    \ c) const {\n        Base::operator=(taylor_shift(*this, c));\n        return\
+    \ shrink();\n    }\n\n    Poly operator-() const {\n        const int d = deg();\n\
+    \        Poly res(d + 1);\n        for (int i = 0; i <= d; ++i) res[i] = -Base::operator[](i);\n\
+    \        res.shrink();\n        return res;\n    }\n\n    std::pair<Poly, Poly>\
+    \ divmod(const Poly &R) const {\n        const auto [q, r] = euclidean_div(*this,\
+    \ R);\n        return std::make_pair(Poly(q.begin(), q.end()), Poly(r.begin(),\
+    \ r.end()));\n    }\n    Poly &operator+=(const Poly &R) {\n        if (Base::size()\
+    \ < R.size()) Base::resize(R.size());\n        for (int i = 0; i < (int)R.size();\
+    \ ++i) Base::operator[](i) += R[i];\n        return shrink();\n    }\n    Poly\
+    \ &operator-=(const Poly &R) {\n        if (Base::size() < R.size()) Base::resize(R.size());\n\
+    \        for (int i = 0; i < (int)R.size(); ++i) Base::operator[](i) -= R[i];\n\
+    \        return shrink();\n    }\n    Poly &operator*=(const Poly &R) {\n    \
+    \    Base::operator=(convolution(*this, R));\n        return shrink();\n    }\n\
+    \    Poly &operator/=(const Poly &R) {\n        Base::operator=(euclidean_div_quotient(*this,\
+    \ R));\n        return shrink();\n    }\n    Poly &operator%=(const Poly &R) {\n\
+    \        Base::operator=(divmod(R).second);\n        return shrink();\n    }\n\
+    \    Poly &operator<<=(int D) {\n        if (D > 0) {\n            Base::insert(Base::begin(),\
+    \ D, Tp(0));\n        } else if (D < 0) {\n            if (-D < (int)Base::size())\
+    \ {\n                Base::erase(Base::begin(), Base::begin() + (-D));\n     \
+    \       } else {\n                Base::clear();\n            }\n        }\n \
+    \       return shrink();\n    }\n    Poly &operator>>=(int D) { return operator<<=(-D);\
+    \ }\n\n    friend Poly operator+(const Poly &L, const Poly &R) { return Poly(L)\
+    \ += R; }\n    friend Poly operator-(const Poly &L, const Poly &R) { return Poly(L)\
+    \ -= R; }\n    friend Poly operator*(const Poly &L, const Poly &R) { return Poly(L)\
+    \ *= R; }\n    friend Poly operator/(const Poly &L, const Poly &R) { return Poly(L)\
+    \ /= R; }\n    friend Poly operator%(const Poly &L, const Poly &R) { return Poly(L)\
+    \ %= R; }\n    friend Poly operator<<(const Poly &L, int D) { return Poly(L) <<=\
+    \ D; }\n    friend Poly operator>>(const Poly &L, int D) { return Poly(L) >>=\
+    \ D; }\n\n    friend std::ostream &operator<<(std::ostream &L, const Poly &R)\
+    \ {\n        L << '[';\n        const int d = R.deg();\n        if (d < 0) {\n\
+    \            L << '0';\n        } else {\n            for (int i = 0; i <= d;\
+    \ ++i) {\n                L << R[i];\n                if (i == 1) L << \"*x\"\
+    ;\n                if (i > 1) L << \"*x^\" << i;\n                if (i != d)\
+    \ L << \" + \";\n            }\n        }\n        return L << ']';\n    }\n};\n\
+    \n// 2x2 matrix for Euclidean algorithm\ntemplate <typename Tp>\nclass GCDMatrix\
+    \ : public std::array<std::array<Tp, 2>, 2> {\npublic:\n    GCDMatrix(const Tp\
+    \ &x00, const Tp &x01, const Tp &x10, const Tp &x11)\n        : std::array<std::array<Tp,\
+    \ 2>, 2>{std::array{x00, x01}, std::array{x10, x11}} {}\n\n    GCDMatrix operator*(const\
+    \ GCDMatrix &R) const {\n        return {(*this)[0][0] * R[0][0] + (*this)[0][1]\
+    \ * R[1][0],\n                (*this)[0][0] * R[0][1] + (*this)[0][1] * R[1][1],\n\
+    \                (*this)[1][0] * R[0][0] + (*this)[1][1] * R[1][0],\n        \
+    \        (*this)[1][0] * R[0][1] + (*this)[1][1] * R[1][1]};\n    }\n\n    std::array<Tp,\
+    \ 2> operator*(const std::array<Tp, 2> &R) const {\n        return {(*this)[0][0]\
+    \ * R[0] + (*this)[0][1] * R[1],\n                (*this)[1][0] * R[0] + (*this)[1][1]\
+    \ * R[1]};\n    }\n\n    Tp det() const { return (*this)[0][0] * (*this)[1][1]\
+    \ - (*this)[0][1] * (*this)[1][0]; }\n    GCDMatrix adj() const { return {(*this)[1][1],\
+    \ -(*this)[0][1], -(*this)[1][0], (*this)[0][0]}; }\n};\n\n// returns M s.t. deg(M)\
+    \ <= d and deg(M21*A+M22*B) < max(deg(A),deg(B))-d\n//                det(M) in\
+    \ {-1,1}\n// see:\n// [1]: Daniel J. Bernstein. Fast multiplication and its applications.\n\
+    template <typename Tp>\ninline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const\
+    \ Poly<Tp> &B, int d) {\n    using Mat = GCDMatrix<Poly<Tp>>;\n    assert(!(A.deg()\
+    \ < 0 && B.deg() < 0));\n    if (A.deg() < B.deg()) return hgcd(B, A, d) * Mat({},\
+    \ {Tp(1)}, {Tp(1)}, {});\n    if (A.deg() < d) return hgcd(A, B, A.deg());\n \
+    \   if (B.deg() < A.deg() - d) return Mat({Tp(1)}, {}, {}, {Tp(1)});\n    if (int\
+    \ dd = A.deg() - d * 2; dd > 0) return hgcd(A >> dd, B >> dd, d);\n    if (d ==\
+    \ 0) return Mat({}, {Tp(1)}, {Tp(1)}, -(A / B));\n    const auto M = hgcd(A, B,\
+    \ d / 2);\n    const auto D = M[1][0] * A + M[1][1] * B;\n    if (D.deg() < A.deg()\
+    \ - d) return M;\n    const auto C      = M[0][0] * A + M[0][1] * B;\n    const\
+    \ auto [Q, R] = C.divmod(D);\n    return hgcd(D, R, D.deg() - (A.deg() - d)) *\
+    \ Mat({}, {Tp(1)}, {Tp(1)}, -Q) * M;\n}\n\ntemplate <typename Tp>\ninline std::tuple<Poly<Tp>,\
+    \ Poly<Tp>, Poly<Tp>> xgcd(const Poly<Tp> &A, const Poly<Tp> &B) {\n    const\
+    \ auto M = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_tuple(M[0][0],\
+    \ M[0][1], M[0][0] * A + M[0][1] * B);\n}\n\ntemplate <typename Tp>\ninline std::pair<Poly<Tp>,\
     \ Poly<Tp>> inv_gcd(const Poly<Tp> &A, const Poly<Tp> &B) {\n    const auto M\
     \ = hgcd(A, B, std::max(A.deg(), B.deg()));\n    return std::make_pair(M[0][0],\
     \ M[0][0] * A + M[0][1] * B);\n}\n\n// returns P,Q s.t. [x^([-k,-1])]P/Q=[x^([-k,-1])]A/B\n\
@@ -459,7 +460,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/inv_of_polynomials.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-03 09:02:32+08:00'
+  timestamp: '2024-12-03 19:25:39+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/formal_power_series/inv_of_polynomials.0.test.cpp

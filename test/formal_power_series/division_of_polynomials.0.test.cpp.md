@@ -233,11 +233,11 @@ data:
     \ if (!dftA[lv].empty()) {\n                dftB[lv][j - 1].resize(blocksize *\
     \ 2);\n                std::copy_n(B.begin() + (i - blocksize), blocksize, dftB[lv][j\
     \ - 1].begin());\n                std::fill_n(dftB[lv][j - 1].begin() + blocksize,\
-    \ blocksize, 0);\n                fft(dftB[lv][j - 1]);\n\n                //\
-    \ middle product\n                std::vector<Tp> mp(blocksize * 2);\n       \
-    \         for (int k = 0; k < std::min<int>(j, dftA[lv].size()); ++k)\n      \
-    \              for (int l = 0; l < blocksize * 2; ++l)\n                     \
-    \   mp[l] += dftA[lv][k][l] * dftB[lv][j - 1 - k][l];\n                inv_fft(mp);\n\
+    \ blocksize, Tp(0));\n                fft(dftB[lv][j - 1]);\n\n              \
+    \  // middle product\n                std::vector<Tp> mp(blocksize * 2);\n   \
+    \             for (int k = 0; k < std::min<int>(j, dftA[lv].size()); ++k)\n  \
+    \                  for (int l = 0; l < blocksize * 2; ++l)\n                 \
+    \       mp[l] += dftA[lv][k][l] * dftB[lv][j - 1 - k][l];\n                inv_fft(mp);\n\
     \n                for (int k = 0; k < blocksize && i + k < n; ++k) AB[i + k] +=\
     \ mp[k + blocksize];\n            }\n        }\n\n        // basecase contribution\n\
     \        for (int j = std::max(i - s, i - (int)A.size() + 1); j < i; ++j) AB[i]\
@@ -245,11 +245,11 @@ data:
     \ += A[0] * B[i];\n    }\n\n    return B;\n}\n#line 7 \"fps_basic.hpp\"\n\ntemplate\
     \ <typename Tp>\ninline int order(const std::vector<Tp> &a) {\n    for (int i\
     \ = 0; i < (int)a.size(); ++i)\n        if (a[i] != 0) return i;\n    return -1;\n\
-    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> inv(const std::vector<Tp>\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> fps_inv(const std::vector<Tp>\
     \ &a, int n) {\n    assert(!a.empty());\n    if (n <= 0) return {};\n    return\
     \ semi_relaxed_convolution(\n        a, [v = a[0].inv()](int n, auto &&c) { return\
     \ n == 0 ? v : -c[n] * v; }, n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ div(const std::vector<Tp> &a, const std::vector<Tp> &b, int n) {\n    assert(!b.empty());\n\
+    \ fps_div(const std::vector<Tp> &a, const std::vector<Tp> &b, int n) {\n    assert(!b.empty());\n\
     \    if (n <= 0) return {};\n    return semi_relaxed_convolution(\n        b,\n\
     \        [&, v = b[0].inv()](int n, auto &&c) {\n            if (n < (int)a.size())\
     \ return (a[n] - c[n]) * v;\n            return -c[n] * v;\n        },\n     \
@@ -260,30 +260,31 @@ data:
     \ std::vector<Tp> &a, Tp c = {}) {\n    const int n = a.size() + 1;\n    auto\
     \ &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp> res(n);\n    res[0] = c;\n\
     \    for (int i = 1; i < n; ++i) res[i] = a[i - 1] * bin.inv(i);\n    return res;\n\
-    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> log(const std::vector<Tp>\
-    \ &a, int n) {\n    return integr(div(deriv(a), a, n - 1));\n}\n\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> exp(const std::vector<Tp> &a, int n) {\n    if (n\
-    \ <= 0) return {};\n    assert(!a.empty() && a[0] == 0);\n    return semi_relaxed_convolution(\n\
-    \        deriv(a),\n        [bin = Binomial<Tp>::get(n)](int n, auto &&c) {\n\
-    \            return n == 0 ? Tp(1) : c[n - 1] * bin.inv(n);\n        },\n    \
-    \    n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> pow(std::vector<Tp>\
-    \ a, long long e, int n) {\n    if (n <= 0) return {};\n    if (e == 0) {\n  \
-    \      std::vector<Tp> res(n);\n        res[0] = 1;\n        return res;\n   \
-    \ }\n\n    const int o = order(a);\n    if (o < 0 || o > n / e || (o == n / e\
-    \ && n % e == 0)) return std::vector<Tp>(n);\n    if (o != 0) a.erase(a.begin(),\
-    \ a.begin() + o);\n\n    const Tp ia0 = a[0].inv();\n    const Tp a0e = a[0].pow(e);\n\
-    \    const Tp me  = e;\n\n    for (int i = 0; i < (int)a.size(); ++i) a[i] *=\
-    \ ia0;\n    a = log(a, n - o * e);\n    for (int i = 0; i < (int)a.size(); ++i)\
-    \ a[i] *= me;\n    a = exp(a, n - o * e);\n    for (int i = 0; i < (int)a.size();\
-    \ ++i) a[i] *= a0e;\n\n    a.insert(a.begin(), o * e, 0);\n    return a;\n}\n\
-    #line 10 \"poly_basic.hpp\"\n\ntemplate <typename Tp>\ninline int degree(const\
-    \ std::vector<Tp> &a) {\n    int n = (int)a.size() - 1;\n    while (n >= 0 &&\
-    \ a[n] == 0) --n;\n    return n;\n}\n\ntemplate <typename Tp>\ninline void shrink(std::vector<Tp>\
-    \ &a) {\n    a.resize(degree(a) + 1);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ taylor_shift(std::vector<Tp> a, Tp c) {\n    const int n = a.size();\n    auto\
-    \ &&bin  = Binomial<Tp>::get(n);\n    for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);\n\
-    \    Tp cc = 1;\n    std::vector<Tp> b(n);\n    for (int i = 0; i < n; ++i) {\n\
-    \        b[i] = cc * bin.inv_factorial(i);\n        cc *= c;\n    }\n    std::reverse(a.begin(),\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> fps_log(const std::vector<Tp>\
+    \ &a, int n) {\n    return integr(fps_div(deriv(a), a, n - 1));\n}\n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> fps_exp(const std::vector<Tp> &a, int\
+    \ n) {\n    if (n <= 0) return {};\n    assert(!a.empty() && a[0] == 0);\n   \
+    \ return semi_relaxed_convolution(\n        deriv(a),\n        [bin = Binomial<Tp>::get(n)](int\
+    \ n, auto &&c) {\n            return n == 0 ? Tp(1) : c[n - 1] * bin.inv(n);\n\
+    \        },\n        n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ fps_pow(std::vector<Tp> a, long long e, int n) {\n    if (n <= 0) return {};\n\
+    \    if (e == 0) {\n        std::vector<Tp> res(n);\n        res[0] = 1;\n   \
+    \     return res;\n    }\n\n    const int o = order(a);\n    if (o < 0 || o >\
+    \ n / e || (o == n / e && n % e == 0)) return std::vector<Tp>(n);\n    if (o !=\
+    \ 0) a.erase(a.begin(), a.begin() + o);\n\n    const Tp ia0 = a[0].inv();\n  \
+    \  const Tp a0e = a[0].pow(e);\n    const Tp me  = e;\n\n    for (int i = 0; i\
+    \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = fps_log(a, n - o * e);\n    for\
+    \ (int i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = fps_exp(a, n - o *\
+    \ e);\n    for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
+    \ o * e, Tp(0));\n    return a;\n}\n#line 10 \"poly_basic.hpp\"\n\ntemplate <typename\
+    \ Tp>\ninline int degree(const std::vector<Tp> &a) {\n    int n = (int)a.size()\
+    \ - 1;\n    while (n >= 0 && a[n] == 0) --n;\n    return n;\n}\n\ntemplate <typename\
+    \ Tp>\ninline void shrink(std::vector<Tp> &a) {\n    a.resize(degree(a) + 1);\n\
+    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> taylor_shift(std::vector<Tp>\
+    \ a, Tp c) {\n    const int n = a.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n\
+    \    for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);\n    Tp cc = 1;\n \
+    \   std::vector<Tp> b(n);\n    for (int i = 0; i < n; ++i) {\n        b[i] = cc\
+    \ * bin.inv_factorial(i);\n        cc *= c;\n    }\n    std::reverse(a.begin(),\
     \ a.end());\n    auto ab = convolution(a, b);\n    ab.resize(n);\n    std::reverse(ab.begin(),\
     \ ab.end());\n    for (int i = 0; i < n; ++i) ab[i] *= bin.inv_factorial(i);\n\
     \    return ab;\n}\n\n// returns (quotient, remainder)\n// O(deg(Q)deg(B))\ntemplate\
@@ -310,14 +311,14 @@ data:
     \    const int degA = degree(A);\n    const int degB = degree(B);\n    assert(degB\
     \ >= 0);\n    // A = Q*B + R => A/B = Q + R/B in R((x^(-1)))\n    const int degQ\
     \ = degA - degB;\n    if (degQ < 0) return {std::vector<Tp>{Tp(0)}, A};\n    if\
-    \ (degQ < 60 || degB < 60) return euclidean_div_naive(A, B);\n\n    auto Q = div(std::vector(A.rend()\
-    \ - (degA + 1), A.rend()),\n                 std::vector(B.rend() - (degB + 1),\
-    \ B.rend()), degQ + 1);\n    std::reverse(Q.begin(), Q.end());\n\n    // returns\
-    \ a mod (x^n-1)\n    auto make_cyclic = [](const std::vector<Tp> &a, int n) {\n\
-    \        assert((n & (n - 1)) == 0);\n        std::vector<Tp> b(n);\n        for\
-    \ (int i = 0; i < (int)a.size(); ++i) b[i & (n - 1)] += a[i];\n        return\
-    \ b;\n    };\n\n    const int len      = fft_len(std::max(degB, 1));\n    const\
-    \ auto cyclicA = make_cyclic(A, len);\n    auto cyclicB       = make_cyclic(B,\
+    \ (degQ < 60 || degB < 60) return euclidean_div_naive(A, B);\n\n    auto Q = fps_div(std::vector(A.rend()\
+    \ - (degA + 1), A.rend()),\n                     std::vector(B.rend() - (degB\
+    \ + 1), B.rend()), degQ + 1);\n    std::reverse(Q.begin(), Q.end());\n\n    //\
+    \ returns a mod (x^n-1)\n    auto make_cyclic = [](const std::vector<Tp> &a, int\
+    \ n) {\n        assert((n & (n - 1)) == 0);\n        std::vector<Tp> b(n);\n \
+    \       for (int i = 0; i < (int)a.size(); ++i) b[i & (n - 1)] += a[i];\n    \
+    \    return b;\n    };\n\n    const int len      = fft_len(std::max(degB, 1));\n\
+    \    const auto cyclicA = make_cyclic(A, len);\n    auto cyclicB       = make_cyclic(B,\
     \ len);\n    auto cyclicQ       = make_cyclic(Q, len);\n\n    fft(cyclicQ);\n\
     \    fft(cyclicB);\n    for (int i = 0; i < len; ++i) cyclicQ[i] *= cyclicB[i];\n\
     \    inv_fft(cyclicQ);\n\n    // R = A - QB mod (x^n-1) (n >= degB)\n    std::vector<Tp>\
@@ -327,9 +328,9 @@ data:
     \    const int degB = degree(B);\n    assert(degB >= 0);\n    // A = Q*B + R =>\
     \ A/B = Q + R/B in R((x^(-1)))\n    const int degQ = degA - degB;\n    if (degQ\
     \ < 0) return {Tp(0)};\n    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A,\
-    \ B);\n\n    auto Q = div(std::vector(A.rend() - (degA + 1), A.rend()),\n    \
-    \             std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n    std::reverse(Q.begin(),\
-    \ Q.end());\n    return Q;\n}\n#line 7 \"test/formal_power_series/division_of_polynomials.0.test.cpp\"\
+    \ B);\n\n    auto Q = fps_div(std::vector(A.rend() - (degA + 1), A.rend()),\n\
+    \                     std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n\
+    \    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 7 \"test/formal_power_series/division_of_polynomials.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
     \    std::vector<mint> f(n), g(m);\n    for (int i = 0; i < n; ++i) std::cin >>\
@@ -359,7 +360,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/division_of_polynomials.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-03 09:02:32+08:00'
+  timestamp: '2024-12-03 19:25:39+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/formal_power_series/division_of_polynomials.0.test.cpp

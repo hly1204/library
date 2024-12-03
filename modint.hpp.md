@@ -54,7 +54,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
     title: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
     title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - icon: ':x:'

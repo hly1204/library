@@ -20,7 +20,7 @@ data:
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
     title: fps_composition.hpp
   - icon: ':heavy_check_mark:'
@@ -78,7 +78,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
     title: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
     title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - icon: ':x:'
@@ -309,11 +309,11 @@ data:
     \ if (!dftA[lv].empty()) {\n                dftB[lv][j - 1].resize(blocksize *\
     \ 2);\n                std::copy_n(B.begin() + (i - blocksize), blocksize, dftB[lv][j\
     \ - 1].begin());\n                std::fill_n(dftB[lv][j - 1].begin() + blocksize,\
-    \ blocksize, 0);\n                fft(dftB[lv][j - 1]);\n\n                //\
-    \ middle product\n                std::vector<Tp> mp(blocksize * 2);\n       \
-    \         for (int k = 0; k < std::min<int>(j, dftA[lv].size()); ++k)\n      \
-    \              for (int l = 0; l < blocksize * 2; ++l)\n                     \
-    \   mp[l] += dftA[lv][k][l] * dftB[lv][j - 1 - k][l];\n                inv_fft(mp);\n\
+    \ blocksize, Tp(0));\n                fft(dftB[lv][j - 1]);\n\n              \
+    \  // middle product\n                std::vector<Tp> mp(blocksize * 2);\n   \
+    \             for (int k = 0; k < std::min<int>(j, dftA[lv].size()); ++k)\n  \
+    \                  for (int l = 0; l < blocksize * 2; ++l)\n                 \
+    \       mp[l] += dftA[lv][k][l] * dftB[lv][j - 1 - k][l];\n                inv_fft(mp);\n\
     \n                for (int k = 0; k < blocksize && i + k < n; ++k) AB[i + k] +=\
     \ mp[k + blocksize];\n            }\n        }\n\n        // basecase contribution\n\
     \        for (int j = std::max(i - s, i - (int)A.size() + 1); j < i; ++j) AB[i]\
@@ -356,11 +356,11 @@ data:
     \ if (!dftA[lv].empty()) {\n                dftB[lv][j - 1].resize(blocksize *\
     \ 2);\n                std::copy_n(B.begin() + (i - blocksize), blocksize, dftB[lv][j\
     \ - 1].begin());\n                std::fill_n(dftB[lv][j - 1].begin() + blocksize,\
-    \ blocksize, 0);\n                fft(dftB[lv][j - 1]);\n\n                //\
-    \ middle product\n                std::vector<Tp> mp(blocksize * 2);\n       \
-    \         for (int k = 0; k < std::min<int>(j, dftA[lv].size()); ++k)\n      \
-    \              for (int l = 0; l < blocksize * 2; ++l)\n                     \
-    \   mp[l] += dftA[lv][k][l] * dftB[lv][j - 1 - k][l];\n                inv_fft(mp);\n\
+    \ blocksize, Tp(0));\n                fft(dftB[lv][j - 1]);\n\n              \
+    \  // middle product\n                std::vector<Tp> mp(blocksize * 2);\n   \
+    \             for (int k = 0; k < std::min<int>(j, dftA[lv].size()); ++k)\n  \
+    \                  for (int l = 0; l < blocksize * 2; ++l)\n                 \
+    \       mp[l] += dftA[lv][k][l] * dftB[lv][j - 1 - k][l];\n                inv_fft(mp);\n\
     \n                for (int k = 0; k < blocksize && i + k < n; ++k) AB[i + k] +=\
     \ mp[k + blocksize];\n            }\n        }\n\n        // basecase contribution\n\
     \        for (int j = std::max(i - s, i - (int)A.size() + 1); j < i; ++j) AB[i]\
@@ -386,7 +386,7 @@ data:
   - poly_basic.hpp
   - czt.hpp
   - mat_basic.hpp
-  timestamp: '2024-12-03 09:02:32+08:00'
+  timestamp: '2024-12-03 19:25:39+08:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
