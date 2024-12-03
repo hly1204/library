@@ -4,13 +4,13 @@ data:
   - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
     title: C-recursive Sequence
   - icon: ':question:'
     path: fft.hpp
     title: FFT
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: fft_doubling.hpp
     title: FFT Doubling
   - icon: ':question:'
@@ -27,9 +27,9 @@ data:
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence
@@ -317,7 +317,7 @@ data:
     \ + i, Tp(0));\n        std::copy_n(invA.begin(), i, shopB.begin());\n       \
     \ fft_n(shopA.begin(), i);\n        fft_n(shopB.begin(), i);\n        for (int\
     \ j = 0; j < i; ++j) shopA[j] *= shopB[j];\n        inv_fft_n(shopA.begin(), i);\n\
-    \        std::fill_n(shopA.begin(), i / 2, MInt());\n        fft_n(shopA.begin(),\
+    \        std::fill_n(shopA.begin(), i / 2, Tp(0));\n        fft_n(shopA.begin(),\
     \ i);\n        for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];\n        inv_fft_n(shopA.begin(),\
     \ i);\n        for (int j = i / 2; j < i; ++j) invA[j] = -shopA[j];\n    }\n \
     \   invA.resize(n);\n    return invA;\n}\n\ntemplate <typename Tp>\ninline void\
@@ -468,8 +468,8 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-03 20:17:59+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-12-03 20:33:41+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
 layout: document
