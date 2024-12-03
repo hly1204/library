@@ -285,6 +285,21 @@ void transform(Iterator a, int n) {
 }
 ```
 
+## Classical Radix-4 (I)FFT
+
+The transformation can be viewed as
+
+$$
+\begin{aligned}
+\mathbb{C}\left\lbrack x\right\rbrack/\left(x^{4m} - b^4\right) &\to \mathbb{C}\left\lbrack x\right\rbrack/\left(x^{m} - b\right) \\
+&\times \mathbb{C}\left\lbrack x\right\rbrack/\left(x^{m} + b\right) \\
+&\times \mathbb{C}\left\lbrack x\right\rbrack/\left(x^{m} - \mathrm{i} b\right) \\
+&\times \mathbb{C}\left\lbrack x\right\rbrack/\left(x^{m} + \mathrm{i} b\right) \\
+\end{aligned}
+$$
+
+showed by Bernstein. If one use the matrix to represent one step, it's very easy to implement. We omit the details which are verbose but simple.
+
 ## References
 
 1. Daniel J. Bernstein. "The tangent FFT." Pages 291–300 in Applied Algebra, Algebraic Algorithms and Error-Correcting Codes, 17th International Symposium, AAECC-17, Bangalore, India, December 16–20, 2007, Proceedings, edited by Serdar Boztas, Hsiao-feng Lu, Lecture Notes in Computer Science 4851, Springer, 2007, ISBN 978-3-540-77223-1. url: <https://cr.yp.to/papers.html#tangentfft>
