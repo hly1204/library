@@ -217,7 +217,9 @@ $$
 \end{array}
 $$
 
-If we want make the algorithm faster, make the input and output in FFT.
+If we want make the algorithm faster, make the input and output in FFT. We omit the details.
+
+An alternative way is that we could consider as formal Laurent series, this also works. I have implemented such an algorithm used in computing $x^k\bmod{Q(x)}$. The implementation maybe a little weird.
 
 #### Connection between $\mathbb{C}\left(\left(x\right)\right)$ and $\mathbb{C}\left(\left(x^{-1}\right)\right)$
 
