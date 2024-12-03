@@ -1,32 +1,32 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: sqrt_mod.hpp
     title: sqrt_mod.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"fps_sqrt.hpp\"\n\n#line 2 \"fps_basic.hpp\"\n\n#line 2 \"\
@@ -265,29 +265,29 @@ data:
     \ {\n            k1 = k0 * k3 - k1 * k2;\n        }\n        if ((e >>= 1) ==\
     \ 0) return {k0, -k0};\n        k2 = k3 + k3 - k2 * k2, k3 *= k3;\n    }\n}\n\
     #line 5 \"fps_sqrt.hpp\"\n#include <optional>\n#line 7 \"fps_sqrt.hpp\"\n\ntemplate\
-    \ <typename Tp>\ninline std::optional<std::vector<Tp>> sqrt(const std::vector<Tp>\
-    \ &a, int n) {\n    const int o = order(a);\n    if (o < 0) return std::vector<Tp>(n);\n\
-    \    const auto cv = sqrt_mod_prime(a[o]);\n    if (cv.empty()) return {};\n \
-    \   return sqrt_hint(a, n, cv[0]);\n}\n\ntemplate <typename Tp>\ninline std::optional<std::vector<Tp>>\
-    \ sqrt_hint(const std::vector<Tp> &a, int n, Tp c) {\n    const int o = order(a);\n\
-    \    if (o < 0) return std::vector<Tp>(n);\n    if ((o & 1) || c * c != a[o])\
-    \ return {};\n    std::vector sqrta(a.begin() + o, a.end());\n    const auto iv\
-    \ = sqrta[0].inv();\n    for (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i]\
-    \ *= iv;\n    sqrta = pow(sqrta, Tp(1).div_by_2().val(), n - o / 2);\n    for\
-    \ (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i] *= c;\n    sqrta.insert(sqrta.begin(),\
-    \ o / 2, Tp(0));\n    return sqrta;\n}\n"
-  code: "#pragma once\n\n#include \"fps_basic.hpp\"\n#include \"sqrt_mod.hpp\"\n#include\
-    \ <optional>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::optional<std::vector<Tp>>\
-    \ sqrt(const std::vector<Tp> &a, int n) {\n    const int o = order(a);\n    if\
-    \ (o < 0) return std::vector<Tp>(n);\n    const auto cv = sqrt_mod_prime(a[o]);\n\
-    \    if (cv.empty()) return {};\n    return sqrt_hint(a, n, cv[0]);\n}\n\ntemplate\
-    \ <typename Tp>\ninline std::optional<std::vector<Tp>> sqrt_hint(const std::vector<Tp>\
+    \ <typename Tp>\ninline std::optional<std::vector<Tp>> fps_sqrt_hint(const std::vector<Tp>\
     \ &a, int n, Tp c) {\n    const int o = order(a);\n    if (o < 0) return std::vector<Tp>(n);\n\
     \    if ((o & 1) || c * c != a[o]) return {};\n    std::vector sqrta(a.begin()\
     \ + o, a.end());\n    const auto iv = sqrta[0].inv();\n    for (int i = 0; i <\
-    \ (int)sqrta.size(); ++i) sqrta[i] *= iv;\n    sqrta = pow(sqrta, Tp(1).div_by_2().val(),\
+    \ (int)sqrta.size(); ++i) sqrta[i] *= iv;\n    sqrta = fps_pow(sqrta, Tp(1).div_by_2().val(),\
     \ n - o / 2);\n    for (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i] *= c;\n\
-    \    sqrta.insert(sqrta.begin(), o / 2, Tp(0));\n    return sqrta;\n}\n"
+    \    sqrta.insert(sqrta.begin(), o / 2, Tp(0));\n    return sqrta;\n}\n\ntemplate\
+    \ <typename Tp>\ninline std::optional<std::vector<Tp>> fps_sqrt(const std::vector<Tp>\
+    \ &a, int n) {\n    const int o = order(a);\n    if (o < 0) return std::vector<Tp>(n);\n\
+    \    const auto cv = sqrt_mod_prime(a[o]);\n    if (cv.empty()) return {};\n \
+    \   return fps_sqrt_hint(a, n, cv[0]);\n}\n"
+  code: "#pragma once\n\n#include \"fps_basic.hpp\"\n#include \"sqrt_mod.hpp\"\n#include\
+    \ <optional>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::optional<std::vector<Tp>>\
+    \ fps_sqrt_hint(const std::vector<Tp> &a, int n, Tp c) {\n    const int o = order(a);\n\
+    \    if (o < 0) return std::vector<Tp>(n);\n    if ((o & 1) || c * c != a[o])\
+    \ return {};\n    std::vector sqrta(a.begin() + o, a.end());\n    const auto iv\
+    \ = sqrta[0].inv();\n    for (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i]\
+    \ *= iv;\n    sqrta = fps_pow(sqrta, Tp(1).div_by_2().val(), n - o / 2);\n   \
+    \ for (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i] *= c;\n    sqrta.insert(sqrta.begin(),\
+    \ o / 2, Tp(0));\n    return sqrta;\n}\n\ntemplate <typename Tp>\ninline std::optional<std::vector<Tp>>\
+    \ fps_sqrt(const std::vector<Tp> &a, int n) {\n    const int o = order(a);\n \
+    \   if (o < 0) return std::vector<Tp>(n);\n    const auto cv = sqrt_mod_prime(a[o]);\n\
+    \    if (cv.empty()) return {};\n    return fps_sqrt_hint(a, n, cv[0]);\n}\n"
   dependsOn:
   - fps_basic.hpp
   - binomial.hpp
@@ -298,8 +298,8 @@ data:
   isVerificationFile: false
   path: fps_sqrt.hpp
   requiredBy: []
-  timestamp: '2024-12-03 19:25:39+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2024-12-03 20:49:21+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
 documentation_of: fps_sqrt.hpp

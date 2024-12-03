@@ -1,35 +1,35 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: sqrt_mod.hpp
     title: sqrt_mod.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/sqrt_of_formal_power_series
@@ -273,29 +273,30 @@ data:
     \ {\n            k1 = k0 * k3 - k1 * k2;\n        }\n        if ((e >>= 1) ==\
     \ 0) return {k0, -k0};\n        k2 = k3 + k3 - k2 * k2, k3 *= k3;\n    }\n}\n\
     #line 5 \"fps_sqrt.hpp\"\n#include <optional>\n#line 7 \"fps_sqrt.hpp\"\n\ntemplate\
-    \ <typename Tp>\ninline std::optional<std::vector<Tp>> sqrt(const std::vector<Tp>\
+    \ <typename Tp>\ninline std::optional<std::vector<Tp>> fps_sqrt_hint(const std::vector<Tp>\
+    \ &a, int n, Tp c) {\n    const int o = order(a);\n    if (o < 0) return std::vector<Tp>(n);\n\
+    \    if ((o & 1) || c * c != a[o]) return {};\n    std::vector sqrta(a.begin()\
+    \ + o, a.end());\n    const auto iv = sqrta[0].inv();\n    for (int i = 0; i <\
+    \ (int)sqrta.size(); ++i) sqrta[i] *= iv;\n    sqrta = fps_pow(sqrta, Tp(1).div_by_2().val(),\
+    \ n - o / 2);\n    for (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i] *= c;\n\
+    \    sqrta.insert(sqrta.begin(), o / 2, Tp(0));\n    return sqrta;\n}\n\ntemplate\
+    \ <typename Tp>\ninline std::optional<std::vector<Tp>> fps_sqrt(const std::vector<Tp>\
     \ &a, int n) {\n    const int o = order(a);\n    if (o < 0) return std::vector<Tp>(n);\n\
     \    const auto cv = sqrt_mod_prime(a[o]);\n    if (cv.empty()) return {};\n \
-    \   return sqrt_hint(a, n, cv[0]);\n}\n\ntemplate <typename Tp>\ninline std::optional<std::vector<Tp>>\
-    \ sqrt_hint(const std::vector<Tp> &a, int n, Tp c) {\n    const int o = order(a);\n\
-    \    if (o < 0) return std::vector<Tp>(n);\n    if ((o & 1) || c * c != a[o])\
-    \ return {};\n    std::vector sqrta(a.begin() + o, a.end());\n    const auto iv\
-    \ = sqrta[0].inv();\n    for (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i]\
-    \ *= iv;\n    sqrta = pow(sqrta, Tp(1).div_by_2().val(), n - o / 2);\n    for\
-    \ (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i] *= c;\n    sqrta.insert(sqrta.begin(),\
-    \ o / 2, Tp(0));\n    return sqrta;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
-    #line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
-    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
-    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
-    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
-    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
-    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
-    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
-    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
-    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
-    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
-    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
-    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \   return fps_sqrt_hint(a, n, cv[0]);\n}\n#line 2 \"modint.hpp\"\n\n#include\
+    \ <iostream>\n#line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\nclass ModInt\
+    \ {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\");\n \
+    \   template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
+    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
+    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
+    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
+    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
+    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
+    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
+    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
+    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
+    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
     \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
     \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
     \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
@@ -325,17 +326,17 @@ data:
     int main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
     \ a(n);\n    for (int i = 0; i < n; ++i) std::cin >> a[i];\n    if (const auto\
-    \ sqrta = sqrt(a, n)) {\n        for (int i = 0; i < n; ++i) std::cout << sqrta->at(i)\
-    \ << ' ';\n    } else {\n        std::cout << \"-1\";\n    }\n    return 0;\n\
-    }\n"
+    \ sqrta = fps_sqrt(a, n)) {\n        for (int i = 0; i < n; ++i) std::cout <<\
+    \ sqrta->at(i) << ' ';\n    } else {\n        std::cout << \"-1\";\n    }\n  \
+    \  return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/sqrt_of_formal_power_series\"\
     \n\n#include \"fps_sqrt.hpp\"\n#include \"modint.hpp\"\n#include <iostream>\n\
     #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
     \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n;\n  \
     \  std::cin >> n;\n    std::vector<mint> a(n);\n    for (int i = 0; i < n; ++i)\
-    \ std::cin >> a[i];\n    if (const auto sqrta = sqrt(a, n)) {\n        for (int\
-    \ i = 0; i < n; ++i) std::cout << sqrta->at(i) << ' ';\n    } else {\n       \
-    \ std::cout << \"-1\";\n    }\n    return 0;\n}\n"
+    \ std::cin >> a[i];\n    if (const auto sqrta = fps_sqrt(a, n)) {\n        for\
+    \ (int i = 0; i < n; ++i) std::cout << sqrta->at(i) << ' ';\n    } else {\n  \
+    \      std::cout << \"-1\";\n    }\n    return 0;\n}\n"
   dependsOn:
   - fps_sqrt.hpp
   - fps_basic.hpp
@@ -348,8 +349,8 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-03 19:25:39+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-12-03 20:49:21+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
 layout: document
