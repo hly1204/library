@@ -176,7 +176,7 @@ inline void inv_fft(std::vector<Tp> &a) {
     inv_fft_n(a.begin(), a.size());
 }
 
-// IFFT_n^T: A(x) |-> 1/n FFT_n((x^n A(x)) mod (x^n - 1))
+// IFFT_n^T: A(x) |-> 1/n FFT_n((x^n A(x^(-1))) mod (x^n - 1))
 template <typename Iterator>
 inline void transposed_inv_fft_n(Iterator a, int n) {
     using Tp    = typename std::iterator_traits<Iterator>::value_type;
@@ -190,7 +190,7 @@ inline void transposed_inv_fft(std::vector<Tp> &a) {
     transposed_inv_fft_n(a.begin(), a.size());
 }
 
-// FFT_n^T : FFT_n((x^n A(x)) mod (x^n - 1)) |-> n A(x)
+// FFT_n^T : FFT_n((x^n A(x^(-1))) mod (x^n - 1)) |-> n A(x)
 template <typename Iterator>
 inline void transposed_fft_n(Iterator a, int n) {
     using Tp = typename std::iterator_traits<Iterator>::value_type;
