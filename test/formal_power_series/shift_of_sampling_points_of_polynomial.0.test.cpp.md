@@ -309,22 +309,33 @@ data:
     \    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 10 \"c_recursive.hpp\"\
     \n\n// see:\n// [1]: Alin Bostan, Ryuhei Mori.\n//      A Simple and Fast Algorithm\
     \ for Computing the N-th Term of a Linearly Recurrent Sequence.\n//      https://arxiv.org/abs/2008.08822\n\
-    \ntemplate <typename Tp>\ninline void fft_high(std::vector<Tp> &a) {\n    const\
-    \ int n = a.size();\n    inv_fft_n(a.begin() + n / 2, n / 2);\n    Tp k      \
-    \   = 1;\n    const auto t = FftInfo<Tp>::get().inv_root(n / 2).at(n / 4);\n \
-    \   for (int i = 0; i < n / 2; ++i) a[i + n / 2] *= k, k *= t;\n    fft_n(a.begin()\
-    \ + n / 2, n / 2);\n    for (int i = 0; i < n / 2; ++i) a[i] = (a[i] - a[i + n\
-    \ / 2]).div_by_2();\n    a.resize(n / 2);\n}\n\n// returns DFT([x^[L,L+len/2)]1/Q)\n\
-    // 1/Q in R((x))\n// requires len/2 > deg(Q), len/2 is even\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> bostan_mori_laurent_series(std::vector<Tp> dftQ,\
-    \ long long L) {\n    const int len = dftQ.size() * 2;\n    if (L <= 0) {\n  \
-    \      inv_fft(dftQ);\n        const int ordQ = order(dftQ);\n        assert(ordQ\
+    \ntemplate <typename Tp>\ninline std::vector<Tp> fps_inv_newton(const std::vector<Tp>\
+    \ &a, int n) {\n    assert(!a.empty());\n    if (a <= 0) return {};\n    const\
+    \ int len = fft_len(n);\n    std::vector<Tp> invA(len), shopA(len), shopB(len);\n\
+    \    invA[0] = a[0].inv();\n    for (int i = 2; i <= len; i *= 2) {\n        std::fill(std::copy_n(a.begin(),\
+    \ std::min<int>(a.size(), i), shopA.begin()),\n                  shopA.begin()\
+    \ + i, Tp(0));\n        std::copy_n(invA.begin(), i, shopB.begin());\n       \
+    \ fft_n(shopA.begin(), i);\n        fft_n(shopB.begin(), i);\n        for (int\
+    \ j = 0; j < i; ++j) shopA[j] *= shopB[j];\n        inv_fft_n(shopA.begin(), i);\n\
+    \        std::fill_n(shopA.begin(), i / 2, MInt());\n        fft_n(shopA.begin(),\
+    \ i);\n        for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];\n        inv_fft_n(shopA.begin(),\
+    \ i);\n        for (int j = i / 2; j < i; ++j) invA[j] = -shopA[j];\n    }\n \
+    \   invA.resize(n);\n    return invA;\n}\n\ntemplate <typename Tp>\ninline void\
+    \ fft_high(std::vector<Tp> &a) {\n    const int n = a.size();\n    inv_fft_n(a.begin()\
+    \ + n / 2, n / 2);\n    Tp k         = 1;\n    const auto t = FftInfo<Tp>::get().inv_root(n\
+    \ / 2).at(n / 4);\n    for (int i = 0; i < n / 2; ++i) a[i + n / 2] *= k, k *=\
+    \ t;\n    fft_n(a.begin() + n / 2, n / 2);\n    for (int i = 0; i < n / 2; ++i)\
+    \ a[i] = (a[i] - a[i + n / 2]).div_by_2();\n    a.resize(n / 2);\n}\n\n// returns\
+    \ DFT([x^[L,L+len/2)]1/Q)\n// 1/Q in R((x))\n// requires len/2 > deg(Q), len/2\
+    \ is even\ntemplate <typename Tp>\ninline std::vector<Tp> bostan_mori_laurent_series(std::vector<Tp>\
+    \ dftQ, long long L) {\n    const int len = dftQ.size() * 2;\n    if (L <= 0)\
+    \ {\n        inv_fft(dftQ);\n        const int ordQ = order(dftQ);\n        assert(ordQ\
     \ >= 0);\n        if (L + len / 2 <= -ordQ) return std::vector<Tp>(len / 2);\n\
-    \        auto invQ = fps_inv(std::vector(dftQ.begin() + ordQ, dftQ.end()), L +\
-    \ len / 2 + ordQ);\n        if (-ordQ < (int)L) {\n            // ?x^(-ord(Q))\
-    \ + ... + ?x^L + ... + ?x^(L+len/2-1)\n            invQ.erase(invQ.begin(), invQ.begin()\
-    \ + (L + ordQ));\n        } else {\n            // ?x^L + ... + ?x^(-ord(Q)) +\
-    \ ... + ?x^(L+len/2-1)\n            invQ.insert(invQ.begin(), -ordQ - L, Tp(0));\n\
+    \        auto invQ =\n            fps_inv_newton(std::vector(dftQ.begin() + ordQ,\
+    \ dftQ.end()), L + len / 2 + ordQ);\n        if (-ordQ < (int)L) {\n         \
+    \   // ?x^(-ord(Q)) + ... + ?x^L + ... + ?x^(L+len/2-1)\n            invQ.erase(invQ.begin(),\
+    \ invQ.begin() + (L + ordQ));\n        } else {\n            // ?x^L + ... + ?x^(-ord(Q))\
+    \ + ... + ?x^(L+len/2-1)\n            invQ.insert(invQ.begin(), -ordQ - L, Tp(0));\n\
     \        }\n        fft(invQ);\n        return invQ;\n    }\n\n    fft_doubling(dftQ);\n\
     \    std::vector<Tp> dftV(len / 2);\n    for (int i = 0; i < len; i += 2) dftV[i\
     \ / 2] = dftQ[i] * dftQ[i + 1];\n    const auto dftT =\n        bostan_mori_laurent_series(dftV,\
@@ -340,7 +351,7 @@ data:
     \ dftQ, long long k) {\n    assert(k >= 0);\n    const int len = dftQ.size() *\
     \ 2;\n    if (k < len / 2LL) {\n        inv_fft(dftQ);\n        const int degQ\
     \ = degree(dftQ);\n        assert(degQ >= 0);\n        dftQ.resize(degQ + 1);\n\
-    \        std::reverse(dftQ.begin(), dftQ.end());\n        auto invQ = fps_inv(dftQ,\
+    \        std::reverse(dftQ.begin(), dftQ.end());\n        auto invQ = fps_inv_newton(dftQ,\
     \ len / 2 - degQ + k + 1);\n        std::reverse(invQ.begin(), invQ.end());\n\
     \        invQ.resize(len / 2);\n        fft(invQ);\n        return invQ;\n   \
     \ }\n\n    fft_doubling(dftQ);\n    std::vector<Tp> dftV(len / 2);\n    for (int\
@@ -357,8 +368,8 @@ data:
     \ int degQ = degree(Q);\n    assert(degQ >= 0);\n    if (degQ == 0) return {};\n\
     \    if (k < degQ) {\n        std::vector<Tp> res(degQ);\n        res[k] = 1;\n\
     \        return res;\n    }\n\n    const int len = fft_len(degQ * 2 + 1);\n  \
-    \  if (k < len / 2LL) {\n        auto invQ = fps_inv(std::vector(Q.rend() - (degQ\
-    \ + 1), Q.rend()), k + 1);\n        std::reverse(invQ.begin(), invQ.end());\n\
+    \  if (k < len / 2LL) {\n        auto invQ = fps_inv_newton(std::vector(Q.rend()\
+    \ - (degQ + 1), Q.rend()), k + 1);\n        std::reverse(invQ.begin(), invQ.end());\n\
     \        invQ.resize(degQ);\n        auto res = convolution(invQ, Q);\n      \
     \  res.erase(res.begin(), res.begin() + degQ);\n        res.resize(degQ);\n  \
     \      return res;\n    }\n\n    auto dftQ = std::vector(Q.rend() - (degQ + 1),\
@@ -457,7 +468,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-03 19:25:39+08:00'
+  timestamp: '2024-12-03 20:03:27+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
