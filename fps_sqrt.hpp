@@ -24,6 +24,6 @@ inline std::optional<std::vector<Tp>> sqrt_hint(const std::vector<Tp> &a, int n,
     for (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i] *= iv;
     sqrta = pow(sqrta, Tp(1).div_by_2().val(), n - o / 2);
     for (int i = 0; i < (int)sqrta.size(); ++i) sqrta[i] *= c;
-    sqrta.insert(sqrta.begin(), o / 2, 0);
+    sqrta.insert(sqrta.begin(), o / 2, Tp(0));
     return sqrta;
 }

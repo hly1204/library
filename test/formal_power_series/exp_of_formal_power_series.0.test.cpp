@@ -13,7 +13,7 @@ int main() {
     std::cin >> n;
     std::vector<mint> a(n);
     for (int i = 0; i < n; ++i) std::cin >> a[i];
-    const auto expa = exp(a, n);
+    const auto expa = fps_exp(a, n);
     for (int i = 0; i < n; ++i) std::cout << expa[i] << ' ';
     return 0;
 }

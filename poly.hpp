@@ -99,7 +99,7 @@ public:
     }
     Poly &operator<<=(int D) {
         if (D > 0) {
-            Base::insert(Base::begin(), D, Tp());
+            Base::insert(Base::begin(), D, Tp(0));
         } else if (D < 0) {
             if (-D < (int)Base::size()) {
                 Base::erase(Base::begin(), Base::begin() + (-D));

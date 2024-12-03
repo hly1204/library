@@ -14,7 +14,7 @@ int main() {
     std::cin >> n >> m;
     std::vector<mint> a(n);
     for (int i = 0; i < n; ++i) std::cin >> a[i];
-    const auto powa = pow(a, m, n);
+    const auto powa = fps_pow(a, m, n);
     for (int i = 0; i < n; ++i) std::cout << powa[i] << ' ';
     return 0;
 }

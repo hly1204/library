@@ -63,12 +63,12 @@ public:
         const int degF = degree(F);
         const auto P   = product();
         // find coefficients of x^(-1),...,x^(-N) of F/P in R((x^(-1)))
-        auto res = div(std::vector(F.rend() - (degF + 1), F.rend()),
-                       std::vector(P.rbegin(), P.rend()), degF + 1);
+        auto res = fps_div(std::vector(F.rend() - (degF + 1), F.rend()),
+                           std::vector(P.rbegin(), P.rend()), degF + 1);
         if (degF >= N) res.erase(res.begin(), res.begin() + (degF - N + 1));
         std::reverse(res.begin(), res.end());
         res.resize(N);
-        res.insert(res.begin(), S - N, 0); // res[S-1]=[x^(-1)]F/P, res[S-2]=[x^(-2)]F/P, ...
+        res.insert(res.begin(), S - N, Tp(0)); // res[S-1]=[x^(-1)]F/P, res[S-2]=[x^(-2)]F/P, ...
         fft(res);
         for (int lv = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {
             const auto t = FftInfo<Tp>::get().inv_root(len / 2).at(len / 4);
@@ -131,11 +131,11 @@ public:
         assert(degF < N);
         const auto P = product();
         // find coefficients of x^(-1),...,x^(-N) of F/P in R((x^(-1)))
-        auto res = div(std::vector(F.rend() - (degF + 1), F.rend()),
-                       std::vector(P.rbegin(), P.rend()), degF + 1);
+        auto res = fps_div(std::vector(F.rend() - (degF + 1), F.rend()),
+                           std::vector(P.rbegin(), P.rend()), degF + 1);
         std::reverse(res.begin(), res.end());
         res.resize(N);
-        res.insert(res.begin(), S - N, 0); // res[S-1]=[x^(-1)]F/P, res[S-2]=[x^(-2)]F/P, ...
+        res.insert(res.begin(), S - N, Tp(0)); // res[S-1]=[x^(-1)]F/P, res[S-2]=[x^(-2)]F/P, ...
         for (int lv = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {
             std::vector<Tp> RR(len / 2);
             for (int i = 0; i < (1 << lv); ++i) {

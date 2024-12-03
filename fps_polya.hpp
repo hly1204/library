@@ -25,7 +25,7 @@ inline std::vector<Tp> polya_exp(std::vector<Tp> a, int n) {
     auto &&bin = Binomial<Tp>::get(n);
     for (int i = n - 1; i > 0; --i)
         for (int j = 2; i * j < n; ++j) a[i * j] += a[i] * bin.inv(j);
-    return exp(a, n);
+    return fps_exp(a, n);
 }
 
 // returns PSET(A)=exp(a(x)-a(x^2)/2+a(x^3)/3-...)
@@ -42,5 +42,5 @@ inline std::vector<Tp> polya_exp_m(std::vector<Tp> a, int n) {
             } else {
                 a[i * j] -= a[i] * bin.inv(j);
             }
-    return exp(a, n);
+    return fps_exp(a, n);
 }

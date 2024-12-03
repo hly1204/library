@@ -36,13 +36,13 @@ inline std::vector<Tp> bostan_mori_laurent_series(std::vector<Tp> dftQ, long lon
         const int ordQ = order(dftQ);
         assert(ordQ >= 0);
         if (L + len / 2 <= -ordQ) return std::vector<Tp>(len / 2);
-        auto invQ = inv(std::vector(dftQ.begin() + ordQ, dftQ.end()), L + len / 2 + ordQ);
+        auto invQ = fps_inv(std::vector(dftQ.begin() + ordQ, dftQ.end()), L + len / 2 + ordQ);
         if (-ordQ < (int)L) {
             // ?x^(-ord(Q)) + ... + ?x^L + ... + ?x^(L+len/2-1)
             invQ.erase(invQ.begin(), invQ.begin() + (L + ordQ));
         } else {
             // ?x^L + ... + ?x^(-ord(Q)) + ... + ?x^(L+len/2-1)
-            invQ.insert(invQ.begin(), -ordQ - L, 0);
+            invQ.insert(invQ.begin(), -ordQ - L, Tp(0));
         }
         fft(invQ);
         return invQ;
@@ -85,7 +85,7 @@ inline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp> dftQ,
         assert(degQ >= 0);
         dftQ.resize(degQ + 1);
         std::reverse(dftQ.begin(), dftQ.end());
-        auto invQ = inv(dftQ, len / 2 - degQ + k + 1);
+        auto invQ = fps_inv(dftQ, len / 2 - degQ + k + 1);
         std::reverse(invQ.begin(), invQ.end());
         invQ.resize(len / 2);
         fft(invQ);
@@ -130,7 +130,7 @@ inline std::vector<Tp> xk_mod(long long k, const std::vector<Tp> &Q) {
 
     const int len = fft_len(degQ * 2 + 1);
     if (k < len / 2LL) {
-        auto invQ = inv(std::vector(Q.rend() - (degQ + 1), Q.rend()), k + 1);
+        auto invQ = fps_inv(std::vector(Q.rend() - (degQ + 1), Q.rend()), k + 1);
         std::reverse(invQ.begin(), invQ.end());
         invQ.resize(degQ);
         auto res = convolution(invQ, Q);
@@ -191,7 +191,7 @@ inline std::vector<Tp> slice_coeff_rational(const std::vector<Tp> &P, const std:
     auto [q, r] = euclidean_div(convolution(xk_mod(L, Q0), P0), Q0);
     r.resize(N);
     std::reverse(r.begin(), r.end());
-    return div(r, Q, R - L);
+    return fps_div(r, Q, R - L);
 }
 
 // returns [x^k]P/Q

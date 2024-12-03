@@ -88,8 +88,8 @@ inline std::pair<std::vector<Tp>, std::vector<Tp>> euclidean_div(const std::vect
     if (degQ < 0) return {std::vector<Tp>{Tp(0)}, A};
     if (degQ < 60 || degB < 60) return euclidean_div_naive(A, B);
 
-    auto Q = div(std::vector(A.rend() - (degA + 1), A.rend()),
-                 std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);
+    auto Q = fps_div(std::vector(A.rend() - (degA + 1), A.rend()),
+                     std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);
     std::reverse(Q.begin(), Q.end());
 
     // returns a mod (x^n-1)
@@ -126,8 +126,8 @@ inline std::vector<Tp> euclidean_div_quotient(const std::vector<Tp> &A, const st
     if (degQ < 0) return {Tp(0)};
     if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A, B);
 
-    auto Q = div(std::vector(A.rend() - (degA + 1), A.rend()),
-                 std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);
+    auto Q = fps_div(std::vector(A.rend() - (degA + 1), A.rend()),
+                     std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);
     std::reverse(Q.begin(), Q.end());
     return Q;
 }

@@ -13,7 +13,7 @@ inline int order(const std::vector<Tp> &a) {
 }
 
 template <typename Tp>
-inline std::vector<Tp> inv(const std::vector<Tp> &a, int n) {
+inline std::vector<Tp> fps_inv(const std::vector<Tp> &a, int n) {
     assert(!a.empty());
     if (n <= 0) return {};
     return semi_relaxed_convolution(
@@ -21,7 +21,7 @@ inline std::vector<Tp> inv(const std::vector<Tp> &a, int n) {
 }
 
 template <typename Tp>
-inline std::vector<Tp> div(const std::vector<Tp> &a, const std::vector<Tp> &b, int n) {
+inline std::vector<Tp> fps_div(const std::vector<Tp> &a, const std::vector<Tp> &b, int n) {
     assert(!b.empty());
     if (n <= 0) return {};
     return semi_relaxed_convolution(
@@ -53,12 +53,12 @@ inline std::vector<Tp> integr(const std::vector<Tp> &a, Tp c = {}) {
 }
 
 template <typename Tp>
-inline std::vector<Tp> log(const std::vector<Tp> &a, int n) {
-    return integr(div(deriv(a), a, n - 1));
+inline std::vector<Tp> fps_log(const std::vector<Tp> &a, int n) {
+    return integr(fps_div(deriv(a), a, n - 1));
 }
 
 template <typename Tp>
-inline std::vector<Tp> exp(const std::vector<Tp> &a, int n) {
+inline std::vector<Tp> fps_exp(const std::vector<Tp> &a, int n) {
     if (n <= 0) return {};
     assert(!a.empty() && a[0] == 0);
     return semi_relaxed_convolution(
@@ -70,7 +70,7 @@ inline std::vector<Tp> exp(const std::vector<Tp> &a, int n) {
 }
 
 template <typename Tp>
-inline std::vector<Tp> pow(std::vector<Tp> a, long long e, int n) {
+inline std::vector<Tp> fps_pow(std::vector<Tp> a, long long e, int n) {
     if (n <= 0) return {};
     if (e == 0) {
         std::vector<Tp> res(n);
@@ -87,11 +87,11 @@ inline std::vector<Tp> pow(std::vector<Tp> a, long long e, int n) {
     const Tp me  = e;
 
     for (int i = 0; i < (int)a.size(); ++i) a[i] *= ia0;
-    a = log(a, n - o * e);
+    a = fps_log(a, n - o * e);
     for (int i = 0; i < (int)a.size(); ++i) a[i] *= me;
-    a = exp(a, n - o * e);
+    a = fps_exp(a, n - o * e);
     for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;
 
-    a.insert(a.begin(), o * e, 0);
+    a.insert(a.begin(), o * e, Tp(0));
     return a;
 }

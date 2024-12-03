@@ -165,15 +165,15 @@ inline std::vector<Tp> reversion(std::vector<Tp> f, int n) {
     assert(f[0] == 0);
     assert(f[1] != 0);
     const auto if1 = f[1].inv();
-    if (n == 1) return {Tp()};
+    if (n == 1) return {Tp(0)};
     f.resize(n);
     Tp ff = 1;
     for (int i = 1; i < n; ++i) f[i] *= ff *= if1;
     auto a     = enum_kth_term_of_power(f, {Tp(1)}, n - 1, n);
     auto &&bin = Binomial<Tp>::get(n);
     for (int i = 1; i < n; ++i) a[i] *= (n - 1) * bin.inv(i);
-    auto b = pow(std::vector(a.rbegin(), a.rend() - 1), Tp(1 - n).inv().val(), n - 1);
+    auto b = fps_pow(std::vector(a.rbegin(), a.rend() - 1), Tp(1 - n).inv().val(), n - 1);
     for (int i = 0; i < n - 1; ++i) b[i] *= if1;
-    b.insert(b.begin(), 0);
+    b.insert(b.begin(), Tp(0));
     return b;
 }

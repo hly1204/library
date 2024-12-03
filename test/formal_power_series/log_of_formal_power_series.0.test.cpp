@@ -13,7 +13,7 @@ int main() {
     std::cin >> n;
     std::vector<mint> a(n);
     for (int i = 0; i < n; ++i) std::cin >> a[i];
-    const auto loga = log(a, n);
+    const auto loga = fps_log(a, n);
     for (int i = 0; i < n; ++i) std::cout << loga[i] << ' ';
     return 0;
 }

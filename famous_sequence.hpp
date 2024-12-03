@@ -28,7 +28,7 @@ inline std::vector<Tp> unsigned_stirling_numbers_1st_row(int n) {
     if (n == 0) return {Tp(1)};
     int mask = 1 << 30;
     while ((mask & n) == 0) mask >>= 1;
-    std::vector<Tp> res{Tp(), Tp(1)};
+    std::vector<Tp> res{Tp(0), Tp(1)};
     for (int d = 1; d != n;) {
         res = convolution(res, taylor_shift(res, Tp(d)));
         d <<= 1;
@@ -47,7 +47,7 @@ inline std::vector<Tp> unsigned_stirling_numbers_1st_column(int k, int n) {
     auto &&bin = Binomial<Tp>::get(n);
     std::vector<Tp> I(n);
     for (int i = 1; i < n; ++i) I[i] = bin.inv(i);
-    auto res = pow(I, k, n);
+    auto res = fps_pow(I, k, n);
     Tp v     = 1;
     for (int i = 1; i <= k; ++i) v *= i;
     v = v.inv();
@@ -108,7 +108,7 @@ inline std::vector<Tp> stirling_numbers_2nd_column(int k, int n) {
         d <<= 1;
         if ((mask >>= 1) & k) res = convolution(res, std::vector<Tp>{-Tp(d |= 1), Tp(1)});
     }
-    res = inv(std::vector(res.rbegin(), res.rend()), n - k);
+    res = fps_inv(std::vector(res.rbegin(), res.rend()), n - k);
     res.insert(res.begin(), k, Tp(0));
     return res;
 }
@@ -119,7 +119,7 @@ template <typename Tp>
 inline std::vector<Tp> eulerian_numbers_row(int n) {
     std::vector<Tp> A(n + 1);
     for (int i = 0; i <= n; ++i) A[i] = Tp(i + 1).pow(n);
-    auto AA = convolution(A, pow(std::vector<Tp>{Tp(1), Tp(-1)}, n + 1, n + 1));
+    auto AA = convolution(A, fps_pow(std::vector{Tp(1), Tp(-1)}, n + 1, n + 1));
     AA.resize(n + 1);
     return AA;
 }
@@ -139,8 +139,8 @@ inline std::vector<Tp> eulerian_numbers_column(int k, int m) {
         xe_neg_x[i] = bin.inv_factorial(i - 1);
         if ((i - 1) & 1) xe_neg_x[i] = -xe_neg_x[i];
     }
-    auto AA = convolution(composition(A, xe_neg_x, m), exp(std::vector{Tp(0), Tp(k + 1)}, m));
-    auto BB = convolution(composition(B, xe_neg_x, m), exp(std::vector{Tp(0), Tp(k)}, m));
+    auto AA = convolution(composition(A, xe_neg_x, m), fps_exp(std::vector{Tp(0), Tp(k + 1)}, m));
+    auto BB = convolution(composition(B, xe_neg_x, m), fps_exp(std::vector{Tp(0), Tp(k)}, m));
     for (int i = 0; i < m; ++i) AA[i] = (AA[i] - BB[i]) * bin.factorial(i);
     AA.resize(m);
     return AA;
@@ -151,7 +151,7 @@ inline std::vector<Tp> bell_numbers(int n) {
     auto &&bin = Binomial<Tp>::get(n);
     std::vector<Tp> ex(n);
     for (int i = 1; i < n; ++i) ex[i] = bin.inv_factorial(i);
-    auto res = exp(ex, n);
+    auto res = fps_exp(ex, n);
     for (int i = 0; i < n; ++i) res[i] *= bin.factorial(i);
     return res;
 }

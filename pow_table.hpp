@@ -9,7 +9,7 @@ inline std::vector<Tp> pow_table(int e, int n) {
     std::vector<bool> is_comp(n);
     std::vector<int> p;
     std::vector<Tp> res(n);
-    res[0] = (e == 0 ? Tp(1) : Tp()); // 0^0=1
+    res[0] = (e == 0 ? Tp(1) : Tp(0)); // 0^0=1
     if (n >= 2) res[1] = Tp(1);
     for (int i = 2; i < n; ++i) {
         if (!is_comp[i]) res[i] = Tp(p.emplace_back(i)).pow(e);
