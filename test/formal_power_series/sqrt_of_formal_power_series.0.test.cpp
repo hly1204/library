@@ -13,7 +13,7 @@ int main() {
     std::cin >> n;
     std::vector<mint> a(n);
     for (int i = 0; i < n; ++i) std::cin >> a[i];
-    if (const auto sqrta = sqrt(a, n)) {
+    if (const auto sqrta = fps_sqrt(a, n)) {
         for (int i = 0; i < n; ++i) std::cout << sqrta->at(i) << ' ';
     } else {
         std::cout << "-1";
