@@ -28,7 +28,7 @@ inline std::vector<Tp> fps_inv_newton(const std::vector<Tp> &a, int n) {
         fft_n(shopB.begin(), i);
         for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];
         inv_fft_n(shopA.begin(), i);
-        std::fill_n(shopA.begin(), i / 2, MInt());
+        std::fill_n(shopA.begin(), i / 2, Tp(0));
         fft_n(shopA.begin(), i);
         for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];
         inv_fft_n(shopA.begin(), i);
