@@ -108,7 +108,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
     title: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -156,9 +156,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/set_power_series/subset_convolution.0.test.cpp
     title: test/set_power_series/subset_convolution.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
@@ -242,7 +242,7 @@ data:
   path: modint.hpp
   requiredBy: []
   timestamp: '2024-05-15 00:00:04+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp

@@ -1,28 +1,28 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: c_recursive.hpp
     title: C-recursive Sequence
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: FFT
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft_doubling.hpp
     title: FFT Doubling
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
@@ -306,7 +306,7 @@ data:
     \ < 0) return {Tp(0)};\n    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A,\
     \ B);\n\n    auto Q = fps_div(std::vector(A.rend() - (degA + 1), A.rend()),\n\
     \                     std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n\
-    \    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 10 \"c_recursive.hpp\"\
+    \    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 11 \"c_recursive.hpp\"\
     \n\n// see:\n// [1]: Alin Bostan, Ryuhei Mori.\n//      A Simple and Fast Algorithm\
     \ for Computing the N-th Term of a Linearly Recurrent Sequence.\n//      https://arxiv.org/abs/2008.08822\n\
     \ntemplate <typename Tp>\ninline std::vector<Tp> fps_inv_newton(const std::vector<Tp>\
@@ -338,16 +338,17 @@ data:
     \ + ... + ?x^(L+len/2-1)\n            invQ.insert(invQ.begin(), -ordQ - L, Tp(0));\n\
     \        }\n        fft(invQ);\n        return invQ;\n    }\n\n    fft_doubling(dftQ);\n\
     \    std::vector<Tp> dftV(len / 2);\n    for (int i = 0; i < len; i += 2) dftV[i\
-    \ / 2] = dftQ[i] * dftQ[i + 1];\n    const auto dftT =\n        bostan_mori_laurent_series(dftV,\
-    \ (L - len / 2 + (L & 1)) / 2 /* ceil((L-len/2)/2) */);\n\n    std::vector<Tp>\
-    \ dftU(len);\n    if (L & 1) {\n        auto &&root = FftInfo<Tp>::get().root(len\
-    \ / 2);\n        for (int i = 0; i < len; i += 2) {\n            dftU[i]     =\
-    \ dftT[i / 2] * dftQ[i + 1] * root[i / 2];\n            dftU[i + 1] = dftT[i /\
-    \ 2] * dftQ[i] * -root[i / 2];\n        }\n    } else {\n        for (int i =\
-    \ 0; i < len; i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n\
-    \            dftU[i + 1] = dftT[i / 2] * dftQ[i];\n        }\n    }\n\n    fft_high(dftU);\n\
-    \    return dftU;\n}\n\n// returns DFT([x^[-len/2,0)]x^k/Q)\n// x^k/Q in R((x^(-1)))\n\
-    // requires len/2 > degQ\ntemplate <typename Tp>\ninline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp>\
+    \ / 2] = dftQ[i] * dftQ[i + 1];\n    // recursive call: ceil((L-len/2)/2)\n  \
+    \  const auto dftT = bostan_mori_laurent_series(std::move(dftV), (L - len / 2\
+    \ + (L & 1)) / 2);\n\n    std::vector<Tp> dftU(len);\n    if (L & 1) {\n     \
+    \   auto &&root = FftInfo<Tp>::get().root(len / 2);\n        for (int i = 0; i\
+    \ < len; i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i + 1] * root[i\
+    \ / 2];\n            dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i / 2];\n   \
+    \     }\n    } else {\n        for (int i = 0; i < len; i += 2) {\n          \
+    \  dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n            dftU[i + 1] = dftT[i\
+    \ / 2] * dftQ[i];\n        }\n    }\n\n    fft_high(dftU);\n    return dftU;\n\
+    }\n\n// returns DFT([x^[-len/2,0)]x^k/Q)\n// x^k/Q in R((x^(-1)))\n// requires\
+    \ len/2 > degQ\ntemplate <typename Tp>\ninline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp>\
     \ dftQ, long long k) {\n    assert(k >= 0);\n    const int len = dftQ.size() *\
     \ 2;\n    if (k < len / 2LL) {\n        inv_fft(dftQ);\n        const int degQ\
     \ = degree(dftQ);\n        assert(degQ >= 0);\n        dftQ.resize(degQ + 1);\n\
@@ -356,7 +357,7 @@ data:
     \        invQ.resize(len / 2);\n        fft(invQ);\n        return invQ;\n   \
     \ }\n\n    fft_doubling(dftQ);\n    std::vector<Tp> dftV(len / 2);\n    for (int\
     \ i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];\n    const auto\
-    \ dftT = bostan_mori_reversed_laurent_series(dftV, k / 2);\n\n    std::vector<Tp>\
+    \ dftT = bostan_mori_reversed_laurent_series(std::move(dftV), k / 2);\n\n    std::vector<Tp>\
     \ dftU(len);\n    if (k & 1) {\n        auto &&root = FftInfo<Tp>::get().root(len\
     \ / 2);\n        for (int i = 0; i < len; i += 2) {\n            dftU[i]     =\
     \ dftT[i / 2] * dftQ[i + 1] * root[i / 2];\n            dftU[i + 1] = dftT[i /\
@@ -468,7 +469,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-03 20:33:41+08:00'
+  timestamp: '2024-12-04 20:47:37+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
