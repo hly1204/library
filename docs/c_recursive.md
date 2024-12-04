@@ -100,7 +100,7 @@ Using the [exponentiation by squaring](https://en.wikipedia.org/wiki/Exponentiat
 Fiduccia showed that
 
 $$
-a _ k=\left\langle x^k\bmod{\Gamma(x)},\left\lbrack a _ 0,\dots,a _ {d-1}\right\rbrack\right\rangle
+a _ k=\left\langle x^k\bmod{\Gamma(x)},\begin{bmatrix} a _ 0 & \cdots & a _ {d-1}\end{bmatrix}\right\rangle
 $$
 
 so we could reduce the matrix exponentiation to modular exponentiation in $\mathbb{C}\left\lbrack x\right\rbrack /\left(\Gamma\right)$, which is apparent.
