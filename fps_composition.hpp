@@ -5,6 +5,7 @@
 #include "fps_basic.hpp"
 #include <algorithm>
 #include <cassert>
+#include <utility>
 #include <vector>
 
 // returns f(g) mod x^n
@@ -28,7 +29,7 @@ inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<T
             auto &&bin = Binomial<Tp>::get(d * 2);
             Tp gg      = 1;
             for (int i = 0; i <= d; ++i) invQ[d - i] = bin.binom(d + i - 1, d - 1) * gg, gg *= g0;
-            // invQ[i] = [y^(-2d + i)]Q
+            // invQ[i] = [y^(-2d + i)]Q^(-1)
             // P[0,d-1] * invQ[-2d,-d] => [0,d-1] * [0,d]
             // take [-d,-1] => take [d,2d-1]
             auto PinvQ = convolution(P, invQ);
@@ -51,7 +52,7 @@ inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<T
             for (int j = 0; j < n / 2; ++j) V[i * (n / 2) + j] = V[i * n + j];
         V.resize(d * n);
 
-        const auto T = rec(rec, P, V, d * 2, n / 2);
+        const auto T = rec(rec, P, std::move(V), d * 2, n / 2);
 
         std::vector<Tp> dftT(d * n * 2);
         for (int i = 0; i < d * 2; ++i)
@@ -146,7 +147,7 @@ inline std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const st
     auto &&bin = Binomial<Tp>::get(d + n);
     Tp ff      = 1;
     for (int i = 0; i <= n; ++i) invQ[n - i] = bin.binom(d + i - 1, d - 1) * ff, ff *= f[0];
-    // invQ[i] = [y^(-2d + i)]Q
+    // invQ[i] = [y^(-2d + i)]Q^(-1)
     // P[0,d-1] * invQ[-(d+n),-d] => [0,d-1] * [0,n]
     auto PinvQ = convolution(P, invQ);
     // take [-n,-1] => take [d,d+n-1]
@@ -162,8 +163,7 @@ inline std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const st
 template <typename Tp>
 inline std::vector<Tp> reversion(std::vector<Tp> f, int n) {
     if (n <= 0 || f.size() < 2) return {};
-    assert(f[0] == 0);
-    assert(f[1] != 0);
+    assert(order(f) == 1);
     const auto if1 = f[1].inv();
     if (n == 1) return {Tp(0)};
     f.resize(n);

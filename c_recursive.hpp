@@ -6,6 +6,7 @@
 #include "poly_basic.hpp"
 #include <algorithm>
 #include <cassert>
+#include <utility>
 #include <vector>
 
 // see:
@@ -77,8 +78,8 @@ inline std::vector<Tp> bostan_mori_laurent_series(std::vector<Tp> dftQ, long lon
     fft_doubling(dftQ);
     std::vector<Tp> dftV(len / 2);
     for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];
-    const auto dftT =
-        bostan_mori_laurent_series(dftV, (L - len / 2 + (L & 1)) / 2 /* ceil((L-len/2)/2) */);
+    // recursive call: ceil((L-len/2)/2)
+    const auto dftT = bostan_mori_laurent_series(std::move(dftV), (L - len / 2 + (L & 1)) / 2);
 
     std::vector<Tp> dftU(len);
     if (L & 1) {
@@ -121,7 +122,7 @@ inline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp> dftQ,
     fft_doubling(dftQ);
     std::vector<Tp> dftV(len / 2);
     for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];
-    const auto dftT = bostan_mori_reversed_laurent_series(dftV, k / 2);
+    const auto dftT = bostan_mori_reversed_laurent_series(std::move(dftV), k / 2);
 
     std::vector<Tp> dftU(len);
     if (k & 1) {
