@@ -146,13 +146,13 @@ $$
 1&\textbf{if }n=1\textbf{ then return }A(0)^{-1}\\
 2&\ell \gets 2^{\left\lceil\log _ 2 \left(2n-1\right)\right\rceil} \\
 3&\left\lbrack b _ 0,\dots,b _ {\ell - 1}\right\rbrack \gets \operatorname{\mathsf{FFT}} _ {\ell}\left(A(x)\right) \\
-4&V(x) \gets \operatorname{\mathsf{IFFT}} _ {\ell /2}\left(\left\lbrack b _ 0 b _ 1,b _ 2 b _ 3,\dots,b _ {\ell -2} b _ {\ell - 1}\right\rbrack\right) \bmod{x^{\left\lceil n/2\right\rceil}} \\
+4&V(x) \gets \operatorname{\mathsf{IFFT}} _ {\ell /2}\left(\begin{bmatrix} b _ 0 b _ 1 & b _ 2 b _ 3 & \cdots & b _ {\ell -2} b _ {\ell - 1}\end{bmatrix}\right) \bmod{x^{\left\lceil n/2\right\rceil}} \\
 5&T(x) \gets \operatorname{\mathsf{FPSInv}}\left(V(x) \bmod{x^{\left\lfloor n/2\right\rfloor}},\left\lfloor n/2\right\rfloor\right) \\
 6&\textbf{if }n \bmod{2} = 1 \textbf{ then} \\
 7&\qquad T(x) \gets T(x)-\left(\left\lbrack x^{\left\lfloor n/2\right\rfloor}\right\rbrack V(x)T(x)\right)V(0)^{-1}x^{\left\lfloor n/2\right\rfloor} \\
 8&\textbf{end if} \\
 9&\left\lbrack c _ 0,\dots,c  _{\ell/2 - 1}\right\rbrack \gets \operatorname{\mathsf{FFT}}  _{\ell/2}\left(T(x)\right) \\
-10&U(x) \gets \operatorname{\mathsf{IFFT}} _ {\ell}\left(\left\lbrack b _ 0 c _ 0, b _ 1 c _ 0, \dots, b _ {\ell - 1} c _ {\ell/2 - 1}\right\rbrack\right) \bmod{x^n} \\
+10&U(x) \gets \operatorname{\mathsf{IFFT}} _ {\ell}\left(\begin{bmatrix} b _ 0 c _ 0 & b _ 1 c _ 0 &  \cdots & b _ {\ell - 1} c _ {\ell/2 - 1}\end{bmatrix}\right) \bmod{x^n} \\
 11&\textbf{return }U(x)
 \end{array}
 $$
@@ -208,12 +208,12 @@ $$
 &\textbf{Algorithm }\operatorname{\mathsf{RLSBostanMori}}\text{:} \\
 &\textbf{Input}\text{: }Q(x),k\in\mathbb{N}\text{.} \\
 &\textbf{Output}\text{: }\left\lbrack x^{\left\lbrack -\deg Q,0\right)}\right\rbrack \dfrac{x^k}{Q(x)},\text{where }Q(x)^{-1}\in\mathbb{C}\left(\left( x^{-1}\right)\right)\text{.} \\
-1&\textbf{if }k=0 \textbf{ then return }\left\lbrack \left(\left\lbrack x^{\deg Q}\right\rbrack Q(x)\right)^{-1},0,\dots,0\right\rbrack \\
+1&\textbf{if }k=0 \textbf{ then return }\begin{bmatrix} \left(\left\lbrack x^{\deg Q}\right\rbrack Q(x)\right)^{-1} & 0 & \cdots & 0 \end{bmatrix} \\
 2&V\left(x^2\right)\gets Q(x)Q(-x) \\
-3&\left\lbrack c _ {-\deg Q},\dots,c _ {-1}\right\rbrack \gets \operatorname{\mathsf{RLSBostanMori}}\left(V(x),\left\lfloor k/2\right\rfloor\right) \\
+3&\begin{bmatrix} c _ {-\deg Q} & \cdots & c _ {-1}\end{bmatrix} \gets \operatorname{\mathsf{RLSBostanMori}}\left(V(x),\left\lfloor k/2\right\rfloor\right) \\
 4&T(x)\gets \sum _ {j=0}^{-1+\deg Q}c _ {j-\deg Q}x^j \\
 5&\sum _ {j=0}^{-1+3\deg Q} u _ jx^j\gets T\left(x^2\right)x^{k\bmod{2}}Q(-x) \\
-6&\textbf{return }\left\lbrack u _ {\deg Q},\dots,u _ {-1+2\deg Q}\right\rbrack
+6&\textbf{return }\begin{bmatrix} u _ {\deg Q} & \cdots & u _ {-1+2\deg Q}\end{bmatrix}
 \end{array}
 $$
 

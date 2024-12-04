@@ -47,12 +47,12 @@ Use the step iteratively, we could get $f(x)\bmod{\left(x-d\right)}=f(d)$ for se
 
 $$
 \begin{aligned}
-\operatorname{\mathsf{DFT}} _ n &: A(x)\bmod{\left(x^n-1\right)} \mapsto\left\lbrack A(1),A\left(\zeta _ {n}\right),\dots,A\left(\zeta _ n^{n-1}\right)\right\rbrack \\
-\operatorname{\mathsf{IDFT}} _ n &: \left\lbrack A(1),A\left(\zeta _ {n}\right),\dots,A\left(\zeta _ n^{n-1}\right)\right\rbrack \mapsto A(x)\bmod{\left(x^n-1\right)}
+\operatorname{\mathsf{DFT}} _ n &: A(x)\bmod{\left(x^n-1\right)} \mapsto \begin{bmatrix} A(1) & A\left(\zeta _ {n}\right) & \cdots & A\left(\zeta _ n^{n-1}\right)\end{bmatrix} \\
+\operatorname{\mathsf{IDFT}} _ n &: \begin{bmatrix} A(1) & A\left(\zeta _ {n}\right) & \cdots & A\left(\zeta _ n^{n-1}\right)\end{bmatrix} \mapsto A(x)\bmod{\left(x^n-1\right)}
 \end{aligned}
 $$
 
-We don't need to explain how to compute IDFT which is the inverse function of DFT, just note that $\begin{bmatrix}1&c \\\\ 1&-c \end{bmatrix}^{-1}=\dfrac{1}{2}\begin{bmatrix}1&c^{-1} \\\\ 1&-c^{-1} \end{bmatrix}^{\intercal}$. But there is a little difference between Gauss's classical FFT algorithm and the definition of DFT, we will finally have the result in a [bit-reversed permutation](https://en.wikipedia.org/wiki/Bit-reversal_permutation) of $\left\lbrack A(1),A\left(\zeta _ {n}\right),\dots,A\left(\zeta _ n^{n-1}\right)\right\rbrack$.
+We don't need to explain how to compute IDFT which is the inverse function of DFT, just note that $\begin{bmatrix}1&c \\\\ 1&-c \end{bmatrix}^{-1}=\dfrac{1}{2}\begin{bmatrix}1&c^{-1} \\\\ 1&-c^{-1} \end{bmatrix}^{\intercal}$. But there is a little difference between Gauss's classical FFT algorithm and the definition of DFT, we will finally have the result in a [bit-reversed permutation](https://en.wikipedia.org/wiki/Bit-reversal_permutation) of $\begin{bmatrix} A(1) & A\left(\zeta _ {n}\right) & \cdots & A\left(\zeta _ n^{n-1}\right)\end{bmatrix}$.
 
 By the way, if we don't take the inversion of entries of $\frac{1}{2}\begin{bmatrix}1&c^{-1} \\\\ 1&-c^{-1} \end{bmatrix}^{\intercal}$, we will get the transposed algorithm of IDFT which is
 
@@ -99,7 +99,7 @@ $$
 \begin{array}{ll}
 &\textbf{Algorithm }\operatorname{\mathsf{FFT}}\text{:} \\
 &\textbf{Input}\text{: }A(x)=\sum _ {j=0}^{n-1}a _ jx^j,n\in 2^{\mathbb{N}}\text{.} \\
-&\textbf{Output}\text{: }\left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {n}^{n-1}\right)\right\rbrack\text{.} \\
+&\textbf{Output}\text{: }\begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta _ {n}^{n-1}\right)\end{bmatrix}\text{.} \\
 1&i\gets n \\
 2&\textbf{while }i\geq 2\textbf{ do} \\
 3&\qquad j\gets 0 \\
@@ -111,13 +111,13 @@ $$
 9&\qquad \textbf{end while} \\
 10&\qquad i\gets i/2 \\
 11&\textbf{end while} \\
-12&\textbf{return }\left\lbrack a _ 0,a _ 1,\dots,a _ {n-1}\right\rbrack
+12&\textbf{return }\begin{bmatrix} a _ 0 & a _ 1 & \cdots & a _ {n-1} \end{bmatrix}
 \end{array}
 $$
 
-Note that $\left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {n}^{n-1}\right)\right\rbrack =\left\lbrack A\left(R(0)\right),A\left(-R(0)\right),\dots,A\left(-R(\left\lfloor n/2\right\rfloor)\right)\right\rbrack$, that's why the root array is useful and can be reused even for different $n$.
+Note that $\begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta _ {n}^{n-1}\right)\end{bmatrix} =\begin{bmatrix} A\left(R(0)\right) & A\left(-R(0)\right) & \cdots & A\left(-R(\left\lfloor n/2\right\rfloor)\right)\end{bmatrix}$, that's why the root array is useful and can be reused even for different $n$.
 
-$\left\lbrack A(1),A\left(\zeta _ {n}\right),\dots,A\left(\zeta _ n^{n-1}\right)\right\rbrack$ is bit-reversed permutation of $\left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {n}^{n-1}\right)\right\rbrack$.
+$\begin{bmatrix} A(1) & A\left(\zeta _ {n}\right) & \cdots & A\left(\zeta _ n^{n-1}\right)\end{bmatrix}$ is bit-reversed permutation of $\begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta _ {n}^{n-1}\right)\end{bmatrix}$.
 
 I suggest to use the following C++ code to make the bit-reversed permutation.
 
@@ -139,9 +139,9 @@ void revbin(Iterator a, int n) {
 $$
 \begin{array}{ll}
 &\textbf{Algorithm }\operatorname{\mathsf{IFFT}}\text{:} \\
-&\textbf{Input}\text{: }\left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {n}^{n-1}\right)\right\rbrack ,n\text{ is a power of }2\text{.} \\
+&\textbf{Input}\text{: }\begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta _ {n}^{n-1}\right)\end{bmatrix} ,n\text{ is a power of }2\text{.} \\
 &\textbf{Output}\text{: }A(x)=\sum _ {j=0}^{n-1}a _ jx^j\text{.} \\
-1&\left\lbrack a _ 0,a _ 1,\dots,a _ {n-1}\right\rbrack \gets \left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {n}^{n-1}\right)\right\rbrack \\
+1&\begin{bmatrix} a _ 0 & a _ 1 & \cdots & a _ {n-1}\end{bmatrix} \gets \begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta _ {n}^{n-1}\right)\end{bmatrix} \\
 2&i\gets 2 \\
 3&\textbf{while }i\leq n\textbf{ do} \\
 4&\qquad j\gets 0 \\
@@ -168,18 +168,18 @@ These tricks could be used in various algorithms, and they are very simple. If o
 $$
 \begin{array}{ll}
 &\textbf{Algorithm }\operatorname{\mathsf{FFTEven}}\text{:} \\
-&\textbf{Input}\text{: }\left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {2n}^{2n-1}\right) \right\rbrack,n\text{ is a power of }2,\deg A\lt 2n\text{.} \\
-&\textbf{Output}\text{: }\left\lbrack B(1),B(-1),\dots,B\left(\zeta _ {n}^{n-1}\right)\right\rbrack\text{ where }B(x^2)=\frac{1}{2}\left(A(x)+A(-x)\right)\text{.} \\
-1&\textbf{return }\frac{1}{2}\left\lbrack A(1)+A(-1),A(\mathrm{i})+A(-\mathrm{i}),\dots,A\left(\zeta _ {2n}^{n-1}\right)+A\left(-\zeta _ {2n}^{n-1}\right)\right\rbrack
+&\textbf{Input}\text{: }\begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta _ {2n}^{2n-1}\right) \end{bmatrix},n\text{ is a power of }2,\deg A\lt 2n\text{.} \\
+&\textbf{Output}\text{: }\begin{bmatrix} B(1) & B(-1) & \cdots & B\left(\zeta _ {n}^{n-1}\right)\end{bmatrix}\text{ where }B(x^2)=\frac{1}{2}\left(A(x)+A(-x)\right)\text{.} \\
+1&\textbf{return }\frac{1}{2}\begin{bmatrix} A(1)+A(-1) & A(\mathrm{i})+A(-\mathrm{i}) & \cdots & A\left(\zeta _ {2n}^{n-1}\right)+A\left(-\zeta _ {2n}^{n-1}\right)\end{bmatrix}
 \end{array}
 $$
 
 $$
 \begin{array}{ll}
 &\textbf{Algorithm }\operatorname{\mathsf{FFTOdd}}\text{:} \\
-&\textbf{Input}\text{: }\left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {2n}^{2n-1}\right) \right\rbrack,n\text{ is a power of }2,\deg A\lt 2n\text{.} \\
-&\textbf{Output}\text{: }\left\lbrack B(1),B(-1),\dots,B\left(\zeta _ {n}^{n-1}\right)\right\rbrack\text{ where }B(x^2)=\frac{1}{2x}\left(A(x)-A(-x)\right)\text{.} \\
-1&\textbf{return }\frac{1}{2}\left\lbrack \left(A(1)-A(-1)\right)/1,\left(A(\mathrm{i})-A(-\mathrm{i})\right)/\mathrm{i},\dots,\left(A\left(\zeta _ {2n}^{n-1}\right)-A\left(-\zeta _ {2n}^{n-1}\right)\right)/\zeta _ {2n}^{n-1}\right\rbrack
+&\textbf{Input}\text{: }\begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta _ {2n}^{2n-1}\right) \end{bmatrix},n\text{ is a power of }2,\deg A\lt 2n\text{.} \\
+&\textbf{Output}\text{: }\begin{bmatrix} B(1) & B(-1) & \cdots & B\left(\zeta _ {n}^{n-1}\right)\end{bmatrix}\text{ where }B(x^2)=\frac{1}{2x}\left(A(x)-A(-x)\right)\text{.} \\
+1&\textbf{return }\frac{1}{2}\begin{bmatrix} \left(A(1)-A(-1)\right)/1 & \left(A(\mathrm{i})-A(-\mathrm{i})\right)/\mathrm{i} & \cdots & \left(A\left(\zeta _ {2n}^{n-1}\right)-A\left(-\zeta _ {2n}^{n-1}\right)\right)/\zeta _ {2n}^{n-1}\end{bmatrix}
 \end{array}
 $$
 
@@ -188,22 +188,22 @@ $$
 $$
 \begin{array}{ll}
 &\textbf{Algorithm }\operatorname{\mathsf{FFTLow}}\text{:} \\
-&\textbf{Input}\text{: }\left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {2n}^{2n-1}\right) \right\rbrack,n\text{ is a power of }2,\deg A\lt 2n\text{.} \\
-&\textbf{Output}\text{: }\left\lbrack B(1),B(-1),\dots,B\left(\zeta _ {n}^{n-1}\right)\right\rbrack\text{ where }B(x)=A(x)\bmod{x^n}\text{.} \\
-1&C(\zeta _ {2n}x) \gets \operatorname{\mathsf{IFFT}} _ n\left(\left\lbrack A\left(\zeta _ {2n}\right),A\left(-\zeta _ {2n}\right),\dots,A\left(\zeta _ {2n}^{2n-1}\right)\right\rbrack\right) \\
-2&\left\lbrack C(1),C(-1),\dots,C\left(\zeta _ {n}^{n-1}\right)\right\rbrack \gets \operatorname{\mathsf{FFT}} _ n\left(C(x)\right) \\
-3&\textbf{return }\frac{1}{2}\left\lbrack A(1)+C(1),A(-1)+C(-1),\dots,A\left(\zeta _ {n}^{n-1}\right)+C\left(\zeta _ {n}^{n-1}\right)\right\rbrack
+&\textbf{Input}\text{: }\begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta _ {2n}^{2n-1}\right) \end{bmatrix},n\text{ is a power of }2,\deg A\lt 2n\text{.} \\
+&\textbf{Output}\text{: }\begin{bmatrix} B(1) & B(-1) & \cdots & B\left(\zeta _ {n}^{n-1}\right)\end{bmatrix}\text{ where }B(x)=A(x)\bmod{x^n}\text{.} \\
+1&C(\zeta _ {2n}x) \gets \operatorname{\mathsf{IFFT}} _ n\left(\begin{bmatrix} A\left(\zeta _ {2n}\right) & A\left(-\zeta _ {2n}\right) & \cdots & A\left(\zeta _ {2n}^{2n-1}\right)\end{bmatrix}\right) \\
+2&\begin{bmatrix} C(1) & C(-1) & \cdots & C\left(\zeta _ {n}^{n-1}\right)\end{bmatrix} \gets \operatorname{\mathsf{FFT}} _ n\left(C(x)\right) \\
+3&\textbf{return }\frac{1}{2}\begin{bmatrix} A(1)+C(1) & A(-1)+C(-1) & \cdots & A\left(\zeta _ {n}^{n-1}\right)+C\left(\zeta _ {n}^{n-1}\right)\end{bmatrix}
 \end{array}
 $$
 
 $$
 \begin{array}{ll}
 &\textbf{Algorithm }\operatorname{\mathsf{FFTHigh}}\text{:} \\
-&\textbf{Input}\text{: }\left\lbrack A(1),A(-1),\dots,A\left(\zeta _ {2n}^{2n-1}\right) \right\rbrack,n\text{ is a power of }2,\deg A\lt 2n\text{.} \\
-&\textbf{Output}\text{: }\left\lbrack B(1),B(-1),\dots,B\left(\zeta _ {n}^{n-1}\right)\right\rbrack\text{ where }B(x)=\left(A(x)-\left(A(x)\bmod{x^n}\right)\right)/x^n\text{.} \\
-1&C(\zeta _ {2n}x) \gets \operatorname{\mathsf{IFFT}} _ n\left(\left\lbrack A\left(\zeta _ {2n}\right),A\left(-\zeta _ {2n}\right),\dots,A\left(\zeta _ {2n}^{2n-1}\right)\right\rbrack\right) \\
-2&\left\lbrack C(1),C(-1),\dots,C\left(\zeta _ {n}^{n-1}\right)\right\rbrack \gets \operatorname{\mathsf{FFT}} _ n\left(C(x)\right) \\
-3&\textbf{return }\frac{1}{2}\left\lbrack A(1)-C(1),A(-1)-C(-1),\dots,A\left(\zeta _ {n}^{n-1}\right)-C\left(\zeta _ {n}^{n-1}\right)\right\rbrack
+&\textbf{Input}\text{: }\begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta _ {2n}^{2n-1}\right) \end{bmatrix},n\text{ is a power of }2,\deg A\lt 2n\text{.} \\
+&\textbf{Output}\text{: }\begin{bmatrix} B(1) & B(-1) & \cdots & B\left(\zeta _ {n}^{n-1}\right)\end{bmatrix}\text{ where }B(x)=\left(A(x)-\left(A(x)\bmod{x^n}\right)\right)/x^n\text{.} \\
+1&C(\zeta _ {2n}x) \gets \operatorname{\mathsf{IFFT}} _ n\left(\begin{bmatrix} A\left(\zeta _ {2n}\right) & A\left(-\zeta _ {2n}\right) & \cdots & A\left(\zeta _ {2n}^{2n-1}\right)\end{bmatrix}\right) \\
+2&\begin{bmatrix} C(1) & C(-1) & \cdots & C\left(\zeta _ {n}^{n-1}\right)\end{bmatrix} \gets \operatorname{\mathsf{FFT}} _ n\left(C(x)\right) \\
+3&\textbf{return }\frac{1}{2}\begin{bmatrix} A(1)-C(1) & A(-1)-C(-1) & \cdots & A\left(\zeta _ {n}^{n-1}\right)-C\left(\zeta _ {n}^{n-1}\right)\end{bmatrix}
 \end{array}
 $$
 
