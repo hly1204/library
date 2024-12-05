@@ -10,11 +10,11 @@ Given $\operatorname{\mathsf{FFT}} _ n(A(x))$ and $A(x)$, we want to compute $\o
 $$
 \begin{array}{ll}
 &\textbf{Algorithm }\operatorname{\mathsf{FFTDoubling}}\text{:} \\
-&\textbf{Input}\text{: }\left\lbrack A(1),A(-1),\dots,A\left(\zeta_n^{n-1}\right) \right\rbrack,n\text{ is a power of }2,\deg A\lt n\text{.} \\
-&\textbf{Output}\text{: }\left\lbrack A(1),A(-1),\dots,A\left(\zeta_{2n}^{2n-1}\right)\right\rbrack\text{.} \\
-1&A(x)\gets \operatorname{\mathsf{IFFT}}_n\left(\left\lbrack A(1),A(-1),\dots,A\left(\zeta_n^{n-1}\right) \right\rbrack\right) \\
-2&\left\lbrack A\left(\zeta_{2n}\right),A\left(-\zeta_{2n}\right),\dots,A\left(\zeta_{2n}^{2n-1}\right)\right\rbrack \gets \operatorname{\mathsf{FFT}}_n\left(A\left(\zeta_{2n}x\right)\right) \\
-3&\textbf{return } \left\lbrack A(1),A(-1),\dots,A\left(\zeta_{n}^{n-1}\right),A\left(\zeta_{2n}\right),A\left(-\zeta_{2n}\right),\dots,A\left(\zeta_{2n}^{2n-1}\right)\right\rbrack
+&\textbf{Input}\text{: }\begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta_n^{n-1}\right) \end{bmatrix},n\text{ is a power of }2,\deg A\lt n\text{.} \\
+&\textbf{Output}\text{: }\begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta_{2n}^{2n-1}\right)\end{bmatrix}\text{.} \\
+1&A(x)\gets \operatorname{\mathsf{IFFT}}_n\left(\begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta_n^{n-1}\right) \end{bmatrix}\right) \\
+2&\begin{bmatrix} A\left(\zeta_{2n}\right) & A\left(-\zeta_{2n}\right) & \cdots & A\left(\zeta_{2n}^{2n-1}\right)\end{bmatrix} \gets \operatorname{\mathsf{FFT}}_n\left(A\left(\zeta_{2n}x\right)\right) \\
+3&\textbf{return }\begin{bmatrix} A(1) & A(-1) & \cdots & A\left(\zeta_{n}^{n-1}\right) & A\left(\zeta_{2n}\right) & A\left(-\zeta_{2n}\right) & \cdots & A\left(\zeta_{2n}^{2n-1}\right)\end{bmatrix}
 \end{array}
 $$
 
