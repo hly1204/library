@@ -25,8 +25,8 @@ data:
     // FFT is computing F({0,1}^n)\n\ntemplate <typename Iterator>\ninline void sps_fft_n(Iterator\
     \ a, int n) {\n    assert((n & (n - 1)) == 0);\n    for (int i = 2; i <= n; i\
     \ *= 2)\n        for (int j = 0; j < n; j += i)\n            for (int k = j; k\
-    \ < j + i / 2; ++k) {\n                auto u = a[k], v = a[k + i / 2];\n    \
-    \            a[k] = u + v, a[k + i / 2] = u - v;\n            }\n}\n\ntemplate\
+    \ < j + i / 2; ++k) {\n                const auto u = a[k], v = a[k + i / 2];\n\
+    \                a[k] = u + v, a[k + i / 2] = u - v;\n            }\n}\n\ntemplate\
     \ <typename Tp>\ninline void sps_fft(std::vector<Tp> &a) {\n    sps_fft_n(a.begin(),\
     \ a.size());\n}\n\ntemplate <typename Iterator>\ninline void sps_inv_fft_n(Iterator\
     \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
@@ -99,7 +99,7 @@ data:
   isVerificationFile: false
   path: bitwise_conv.hpp
   requiredBy: []
-  timestamp: '2024-10-25 19:24:31+08:00'
+  timestamp: '2024-12-06 19:58:17+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/bitwise_xor_convolution.0.test.cpp

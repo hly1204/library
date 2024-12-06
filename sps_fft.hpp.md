@@ -22,8 +22,8 @@ data:
     // FFT is computing F({0,1}^n)\n\ntemplate <typename Iterator>\ninline void sps_fft_n(Iterator\
     \ a, int n) {\n    assert((n & (n - 1)) == 0);\n    for (int i = 2; i <= n; i\
     \ *= 2)\n        for (int j = 0; j < n; j += i)\n            for (int k = j; k\
-    \ < j + i / 2; ++k) {\n                auto u = a[k], v = a[k + i / 2];\n    \
-    \            a[k] = u + v, a[k + i / 2] = u - v;\n            }\n}\n\ntemplate\
+    \ < j + i / 2; ++k) {\n                const auto u = a[k], v = a[k + i / 2];\n\
+    \                a[k] = u + v, a[k + i / 2] = u - v;\n            }\n}\n\ntemplate\
     \ <typename Tp>\ninline void sps_fft(std::vector<Tp> &a) {\n    sps_fft_n(a.begin(),\
     \ a.size());\n}\n\ntemplate <typename Iterator>\ninline void sps_inv_fft_n(Iterator\
     \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
@@ -36,21 +36,21 @@ data:
     \ F({0,1}^n)\n\ntemplate <typename Iterator>\ninline void sps_fft_n(Iterator a,\
     \ int n) {\n    assert((n & (n - 1)) == 0);\n    for (int i = 2; i <= n; i *=\
     \ 2)\n        for (int j = 0; j < n; j += i)\n            for (int k = j; k <\
-    \ j + i / 2; ++k) {\n                auto u = a[k], v = a[k + i / 2];\n      \
-    \          a[k] = u + v, a[k + i / 2] = u - v;\n            }\n}\n\ntemplate <typename\
-    \ Tp>\ninline void sps_fft(std::vector<Tp> &a) {\n    sps_fft_n(a.begin(), a.size());\n\
-    }\n\ntemplate <typename Iterator>\ninline void sps_inv_fft_n(Iterator a, int n)\
-    \ {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n   \
-    \ sps_fft_n(a, n);\n    const Tp iv = Tp::mod() - (Tp::mod() - 1) / n;\n    for\
-    \ (int i = 0; i < n; ++i) a[i] *= iv;\n}\n\ntemplate <typename Tp>\ninline void\
-    \ sps_inv_fft(std::vector<Tp> &a) {\n    sps_inv_fft_n(a.begin(), a.size());\n\
+    \ j + i / 2; ++k) {\n                const auto u = a[k], v = a[k + i / 2];\n\
+    \                a[k] = u + v, a[k + i / 2] = u - v;\n            }\n}\n\ntemplate\
+    \ <typename Tp>\ninline void sps_fft(std::vector<Tp> &a) {\n    sps_fft_n(a.begin(),\
+    \ a.size());\n}\n\ntemplate <typename Iterator>\ninline void sps_inv_fft_n(Iterator\
+    \ a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
+    \    sps_fft_n(a, n);\n    const Tp iv = Tp::mod() - (Tp::mod() - 1) / n;\n  \
+    \  for (int i = 0; i < n; ++i) a[i] *= iv;\n}\n\ntemplate <typename Tp>\ninline\
+    \ void sps_inv_fft(std::vector<Tp> &a) {\n    sps_inv_fft_n(a.begin(), a.size());\n\
     }\n"
   dependsOn: []
   isVerificationFile: false
   path: sps_fft.hpp
   requiredBy:
   - bitwise_conv.hpp
-  timestamp: '2024-10-19 12:50:04+08:00'
+  timestamp: '2024-12-06 19:58:17+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/bitwise_xor_convolution.0.test.cpp
