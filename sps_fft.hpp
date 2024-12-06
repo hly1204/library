@@ -13,7 +13,7 @@ inline void sps_fft_n(Iterator a, int n) {
     for (int i = 2; i <= n; i *= 2)
         for (int j = 0; j < n; j += i)
             for (int k = j; k < j + i / 2; ++k) {
-                auto u = a[k], v = a[k + i / 2];
+                const auto u = a[k], v = a[k + i / 2];
                 a[k] = u + v, a[k + i / 2] = u - v;
             }
 }
