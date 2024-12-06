@@ -3,7 +3,7 @@ data:
   libraryCategories:
   - name: .
     pages:
-    - icon: ':x:'
+    - icon: ':question:'
       path: basis.hpp
       title: basis.hpp
     - icon: ':heavy_check_mark:'
@@ -18,7 +18,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: bitwise_conv.hpp
       title: bitwise_conv.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: c_recursive.hpp
       title: C-recursive Sequence
     - icon: ':heavy_check_mark:'
@@ -45,7 +45,7 @@ data:
     - icon: ':question:'
       path: fft.hpp
       title: FFT
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: fft_doubling.hpp
       title: FFT Doubling
     - icon: ':question:'
@@ -57,13 +57,13 @@ data:
     - icon: ':heavy_check_mark:'
       path: fps_polya.hpp
       title: fps_polya.hpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: fps_sqrt.hpp
       title: fps_sqrt.hpp
-    - icon: ':x:'
+    - icon: ':question:'
       path: frobenius.hpp
       title: frobenius.hpp
-    - icon: ':x:'
+    - icon: ':question:'
       path: mat_basic.hpp
       title: mat_basic.hpp
     - icon: ':x:'
@@ -99,7 +99,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: pow_table.hpp
       title: pow_table.hpp
-    - icon: ':x:'
+    - icon: ':question:'
       path: random.hpp
       title: random.hpp
     - icon: ':heavy_check_mark:'
@@ -126,7 +126,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: sps_in_poly.hpp
       title: sps_in_poly.hpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: sqrt_mod.hpp
       title: sqrt_mod.hpp
     - icon: ':heavy_check_mark:'
@@ -267,27 +267,27 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
       title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
       title: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
       title: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
       title: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
       title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
       title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
       title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   - name: test/matrix
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/matrix/adjugate_matrix.0.test.cpp
       title: test/matrix/adjugate_matrix.0.test.cpp
     - icon: ':x:'

@@ -2,10 +2,10 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':x:'
+  - icon: ':question:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: c_recursive.hpp
     title: C-recursive Sequence
   - icon: ':heavy_check_mark:'
@@ -26,13 +26,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: fps_polya.hpp
     title: fps_polya.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: frobenius.hpp
     title: frobenius.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: mat_basic.hpp
     title: mat_basic.hpp
   - icon: ':x:'
@@ -126,22 +126,22 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
     title: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/matrix/adjugate_matrix.0.test.cpp
     title: test/matrix/adjugate_matrix.0.test.cpp
   - icon: ':x:'
