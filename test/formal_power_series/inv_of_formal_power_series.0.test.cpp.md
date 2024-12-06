@@ -1,26 +1,26 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: FFT
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/inv_of_formal_power_series
@@ -200,38 +200,50 @@ data:
     \ mp[k + blocksize];\n            }\n        }\n\n        // basecase contribution\n\
     \        for (int j = std::max(i - s, i - (int)A.size() + 1); j < i; ++j) AB[i]\
     \ += A[i - j] * B[j];\n        B[i] = gen(i, AB);\n        if (!A.empty()) AB[i]\
-    \ += A[0] * B[i];\n    }\n\n    return B;\n}\n#line 7 \"fps_basic.hpp\"\n\ntemplate\
+    \ += A[0] * B[i];\n    }\n\n    return B;\n}\n#line 8 \"fps_basic.hpp\"\n\ntemplate\
     \ <typename Tp>\ninline int order(const std::vector<Tp> &a) {\n    for (int i\
     \ = 0; i < (int)a.size(); ++i)\n        if (a[i] != 0) return i;\n    return -1;\n\
     }\n\ntemplate <typename Tp>\ninline std::vector<Tp> fps_inv(const std::vector<Tp>\
-    \ &a, int n) {\n    assert(!a.empty());\n    if (n <= 0) return {};\n    return\
-    \ semi_relaxed_convolution(\n        a, [v = a[0].inv()](int n, auto &&c) { return\
-    \ n == 0 ? v : -c[n] * v; }, n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ fps_div(const std::vector<Tp> &a, const std::vector<Tp> &b, int n) {\n    assert(!b.empty());\n\
-    \    if (n <= 0) return {};\n    return semi_relaxed_convolution(\n        b,\n\
-    \        [&, v = b[0].inv()](int n, auto &&c) {\n            if (n < (int)a.size())\
-    \ return (a[n] - c[n]) * v;\n            return -c[n] * v;\n        },\n     \
-    \   n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> deriv(const std::vector<Tp>\
-    \ &a) {\n    const int n = (int)a.size() - 1;\n    if (n <= 0) return {};\n  \
-    \  std::vector<Tp> res(n);\n    for (int i = 1; i <= n; ++i) res[i - 1] = a[i]\
-    \ * i;\n    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> integr(const\
-    \ std::vector<Tp> &a, Tp c = {}) {\n    const int n = a.size() + 1;\n    auto\
-    \ &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp> res(n);\n    res[0] = c;\n\
-    \    for (int i = 1; i < n; ++i) res[i] = a[i - 1] * bin.inv(i);\n    return res;\n\
-    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> fps_log(const std::vector<Tp>\
-    \ &a, int n) {\n    return integr(fps_div(deriv(a), a, n - 1));\n}\n\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> fps_exp(const std::vector<Tp> &a, int\
-    \ n) {\n    if (n <= 0) return {};\n    assert(!a.empty() && a[0] == 0);\n   \
-    \ return semi_relaxed_convolution(\n        deriv(a),\n        [bin = Binomial<Tp>::get(n)](int\
-    \ n, auto &&c) {\n            return n == 0 ? Tp(1) : c[n - 1] * bin.inv(n);\n\
+    \ &a, int n) {\n    assert(order(a) == 0);\n    if (n <= 0) return {};\n    if\
+    \ (std::min<int>(a.size(), n) < 60)\n        return semi_relaxed_convolution(\n\
+    \            a, [v = a[0].inv()](int n, auto &&c) { return n == 0 ? v : -c[n]\
+    \ * v; }, n);\n    enum { Threshold = 32 };\n    const int len = fft_len(n);\n\
+    \    std::vector<Tp> invA, shopA(len), shopB(len);\n    invA = semi_relaxed_convolution(\n\
+    \        a, [v = a[0].inv()](int n, auto &&c) { return n == 0 ? v : -c[n] * v;\
+    \ }, Threshold);\n    invA.resize(len);\n    for (int i = Threshold * 2; i <=\
+    \ len; i *= 2) {\n        std::fill(std::copy_n(a.begin(), std::min<int>(a.size(),\
+    \ i), shopA.begin()),\n                  shopA.begin() + i, Tp(0));\n        std::copy_n(invA.begin(),\
+    \ i, shopB.begin());\n        fft_n(shopA.begin(), i);\n        fft_n(shopB.begin(),\
+    \ i);\n        for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];\n        inv_fft_n(shopA.begin(),\
+    \ i);\n        std::fill_n(shopA.begin(), i / 2, Tp(0));\n        fft_n(shopA.begin(),\
+    \ i);\n        for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];\n        inv_fft_n(shopA.begin(),\
+    \ i);\n        for (int j = i / 2; j < i; ++j) invA[j] = -shopA[j];\n    }\n \
+    \   invA.resize(n);\n    return invA;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ fps_div(const std::vector<Tp> &a, const std::vector<Tp> &b, int n) {\n    assert(order(b)\
+    \ == 0);\n    if (n <= 0) return {};\n    return semi_relaxed_convolution(\n \
+    \       b,\n        [&, v = b[0].inv()](int n, auto &&c) {\n            if (n\
+    \ < (int)a.size()) return (a[n] - c[n]) * v;\n            return -c[n] * v;\n\
     \        },\n        n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ fps_pow(std::vector<Tp> a, long long e, int n) {\n    if (n <= 0) return {};\n\
-    \    if (e == 0) {\n        std::vector<Tp> res(n);\n        res[0] = 1;\n   \
-    \     return res;\n    }\n\n    const int o = order(a);\n    if (o < 0 || o >\
-    \ n / e || (o == n / e && n % e == 0)) return std::vector<Tp>(n);\n    if (o !=\
-    \ 0) a.erase(a.begin(), a.begin() + o);\n\n    const Tp ia0 = a[0].inv();\n  \
-    \  const Tp a0e = a[0].pow(e);\n    const Tp me  = e;\n\n    for (int i = 0; i\
-    \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = fps_log(a, n - o * e);\n    for\
+    \ deriv(const std::vector<Tp> &a) {\n    const int n = (int)a.size() - 1;\n  \
+    \  if (n <= 0) return {};\n    std::vector<Tp> res(n);\n    for (int i = 1; i\
+    \ <= n; ++i) res[i - 1] = a[i] * i;\n    return res;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> integr(const std::vector<Tp> &a, Tp c = {}) {\n\
+    \    const int n = a.size() + 1;\n    auto &&bin  = Binomial<Tp>::get(n);\n  \
+    \  std::vector<Tp> res(n);\n    res[0] = c;\n    for (int i = 1; i < n; ++i) res[i]\
+    \ = a[i - 1] * bin.inv(i);\n    return res;\n}\n\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> fps_log(const std::vector<Tp> &a, int n) {\n    return integr(fps_div(deriv(a),\
+    \ a, n - 1));\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> fps_exp(const\
+    \ std::vector<Tp> &a, int n) {\n    if (n <= 0) return {};\n    assert(a.empty()\
+    \ || a[0] == 0);\n    return semi_relaxed_convolution(\n        deriv(a),\n  \
+    \      [bin = Binomial<Tp>::get(n)](int n, auto &&c) {\n            return n ==\
+    \ 0 ? Tp(1) : c[n - 1] * bin.inv(n);\n        },\n        n);\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> fps_pow(std::vector<Tp> a, long long e, int n) {\n\
+    \    if (n <= 0) return {};\n    if (e == 0) {\n        std::vector<Tp> res(n);\n\
+    \        res[0] = 1;\n        return res;\n    }\n\n    const int o = order(a);\n\
+    \    if (o < 0 || o > n / e || (o == n / e && n % e == 0)) return std::vector<Tp>(n);\n\
+    \    if (o != 0) a.erase(a.begin(), a.begin() + o);\n\n    const Tp ia0 = a[0].inv();\n\
+    \    const Tp a0e = a[0].pow(e);\n    const Tp me  = e;\n\n    for (int i = 0;\
+    \ i < (int)a.size(); ++i) a[i] *= ia0;\n    a = fps_log(a, n - o * e);\n    for\
     \ (int i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = fps_exp(a, n - o *\
     \ e);\n    for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
     \ o * e, Tp(0));\n    return a;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
@@ -294,8 +306,8 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-03 19:25:39+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-12-06 22:27:00+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
 layout: document

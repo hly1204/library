@@ -1,35 +1,35 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: c_recursive.hpp
     title: C-recursive Sequence
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: FFT
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: fft_doubling.hpp
     title: FFT Doubling
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence
@@ -218,38 +218,50 @@ data:
     \ mp[k + blocksize];\n            }\n        }\n\n        // basecase contribution\n\
     \        for (int j = std::max(i - s, i - (int)A.size() + 1); j < i; ++j) AB[i]\
     \ += A[i - j] * B[j];\n        B[i] = gen(i, AB);\n        if (!A.empty()) AB[i]\
-    \ += A[0] * B[i];\n    }\n\n    return B;\n}\n#line 7 \"fps_basic.hpp\"\n\ntemplate\
+    \ += A[0] * B[i];\n    }\n\n    return B;\n}\n#line 8 \"fps_basic.hpp\"\n\ntemplate\
     \ <typename Tp>\ninline int order(const std::vector<Tp> &a) {\n    for (int i\
     \ = 0; i < (int)a.size(); ++i)\n        if (a[i] != 0) return i;\n    return -1;\n\
     }\n\ntemplate <typename Tp>\ninline std::vector<Tp> fps_inv(const std::vector<Tp>\
-    \ &a, int n) {\n    assert(!a.empty());\n    if (n <= 0) return {};\n    return\
-    \ semi_relaxed_convolution(\n        a, [v = a[0].inv()](int n, auto &&c) { return\
-    \ n == 0 ? v : -c[n] * v; }, n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ fps_div(const std::vector<Tp> &a, const std::vector<Tp> &b, int n) {\n    assert(!b.empty());\n\
-    \    if (n <= 0) return {};\n    return semi_relaxed_convolution(\n        b,\n\
-    \        [&, v = b[0].inv()](int n, auto &&c) {\n            if (n < (int)a.size())\
-    \ return (a[n] - c[n]) * v;\n            return -c[n] * v;\n        },\n     \
-    \   n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> deriv(const std::vector<Tp>\
-    \ &a) {\n    const int n = (int)a.size() - 1;\n    if (n <= 0) return {};\n  \
-    \  std::vector<Tp> res(n);\n    for (int i = 1; i <= n; ++i) res[i - 1] = a[i]\
-    \ * i;\n    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> integr(const\
-    \ std::vector<Tp> &a, Tp c = {}) {\n    const int n = a.size() + 1;\n    auto\
-    \ &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp> res(n);\n    res[0] = c;\n\
-    \    for (int i = 1; i < n; ++i) res[i] = a[i - 1] * bin.inv(i);\n    return res;\n\
-    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> fps_log(const std::vector<Tp>\
-    \ &a, int n) {\n    return integr(fps_div(deriv(a), a, n - 1));\n}\n\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> fps_exp(const std::vector<Tp> &a, int\
-    \ n) {\n    if (n <= 0) return {};\n    assert(!a.empty() && a[0] == 0);\n   \
-    \ return semi_relaxed_convolution(\n        deriv(a),\n        [bin = Binomial<Tp>::get(n)](int\
-    \ n, auto &&c) {\n            return n == 0 ? Tp(1) : c[n - 1] * bin.inv(n);\n\
+    \ &a, int n) {\n    assert(order(a) == 0);\n    if (n <= 0) return {};\n    if\
+    \ (std::min<int>(a.size(), n) < 60)\n        return semi_relaxed_convolution(\n\
+    \            a, [v = a[0].inv()](int n, auto &&c) { return n == 0 ? v : -c[n]\
+    \ * v; }, n);\n    enum { Threshold = 32 };\n    const int len = fft_len(n);\n\
+    \    std::vector<Tp> invA, shopA(len), shopB(len);\n    invA = semi_relaxed_convolution(\n\
+    \        a, [v = a[0].inv()](int n, auto &&c) { return n == 0 ? v : -c[n] * v;\
+    \ }, Threshold);\n    invA.resize(len);\n    for (int i = Threshold * 2; i <=\
+    \ len; i *= 2) {\n        std::fill(std::copy_n(a.begin(), std::min<int>(a.size(),\
+    \ i), shopA.begin()),\n                  shopA.begin() + i, Tp(0));\n        std::copy_n(invA.begin(),\
+    \ i, shopB.begin());\n        fft_n(shopA.begin(), i);\n        fft_n(shopB.begin(),\
+    \ i);\n        for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];\n        inv_fft_n(shopA.begin(),\
+    \ i);\n        std::fill_n(shopA.begin(), i / 2, Tp(0));\n        fft_n(shopA.begin(),\
+    \ i);\n        for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];\n        inv_fft_n(shopA.begin(),\
+    \ i);\n        for (int j = i / 2; j < i; ++j) invA[j] = -shopA[j];\n    }\n \
+    \   invA.resize(n);\n    return invA;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ fps_div(const std::vector<Tp> &a, const std::vector<Tp> &b, int n) {\n    assert(order(b)\
+    \ == 0);\n    if (n <= 0) return {};\n    return semi_relaxed_convolution(\n \
+    \       b,\n        [&, v = b[0].inv()](int n, auto &&c) {\n            if (n\
+    \ < (int)a.size()) return (a[n] - c[n]) * v;\n            return -c[n] * v;\n\
     \        },\n        n);\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ fps_pow(std::vector<Tp> a, long long e, int n) {\n    if (n <= 0) return {};\n\
-    \    if (e == 0) {\n        std::vector<Tp> res(n);\n        res[0] = 1;\n   \
-    \     return res;\n    }\n\n    const int o = order(a);\n    if (o < 0 || o >\
-    \ n / e || (o == n / e && n % e == 0)) return std::vector<Tp>(n);\n    if (o !=\
-    \ 0) a.erase(a.begin(), a.begin() + o);\n\n    const Tp ia0 = a[0].inv();\n  \
-    \  const Tp a0e = a[0].pow(e);\n    const Tp me  = e;\n\n    for (int i = 0; i\
-    \ < (int)a.size(); ++i) a[i] *= ia0;\n    a = fps_log(a, n - o * e);\n    for\
+    \ deriv(const std::vector<Tp> &a) {\n    const int n = (int)a.size() - 1;\n  \
+    \  if (n <= 0) return {};\n    std::vector<Tp> res(n);\n    for (int i = 1; i\
+    \ <= n; ++i) res[i - 1] = a[i] * i;\n    return res;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> integr(const std::vector<Tp> &a, Tp c = {}) {\n\
+    \    const int n = a.size() + 1;\n    auto &&bin  = Binomial<Tp>::get(n);\n  \
+    \  std::vector<Tp> res(n);\n    res[0] = c;\n    for (int i = 1; i < n; ++i) res[i]\
+    \ = a[i - 1] * bin.inv(i);\n    return res;\n}\n\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> fps_log(const std::vector<Tp> &a, int n) {\n    return integr(fps_div(deriv(a),\
+    \ a, n - 1));\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> fps_exp(const\
+    \ std::vector<Tp> &a, int n) {\n    if (n <= 0) return {};\n    assert(a.empty()\
+    \ || a[0] == 0);\n    return semi_relaxed_convolution(\n        deriv(a),\n  \
+    \      [bin = Binomial<Tp>::get(n)](int n, auto &&c) {\n            return n ==\
+    \ 0 ? Tp(1) : c[n - 1] * bin.inv(n);\n        },\n        n);\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> fps_pow(std::vector<Tp> a, long long e, int n) {\n\
+    \    if (n <= 0) return {};\n    if (e == 0) {\n        std::vector<Tp> res(n);\n\
+    \        res[0] = 1;\n        return res;\n    }\n\n    const int o = order(a);\n\
+    \    if (o < 0 || o > n / e || (o == n / e && n % e == 0)) return std::vector<Tp>(n);\n\
+    \    if (o != 0) a.erase(a.begin(), a.begin() + o);\n\n    const Tp ia0 = a[0].inv();\n\
+    \    const Tp a0e = a[0].pow(e);\n    const Tp me  = e;\n\n    for (int i = 0;\
+    \ i < (int)a.size(); ++i) a[i] *= ia0;\n    a = fps_log(a, n - o * e);\n    for\
     \ (int i = 0; i < (int)a.size(); ++i) a[i] *= me;\n    a = fps_exp(a, n - o *\
     \ e);\n    for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;\n\n    a.insert(a.begin(),\
     \ o * e, Tp(0));\n    return a;\n}\n#line 2 \"poly_basic.hpp\"\n\n#line 10 \"\
@@ -309,68 +321,58 @@ data:
     \    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 11 \"c_recursive.hpp\"\
     \n\n// see:\n// [1]: Alin Bostan, Ryuhei Mori.\n//      A Simple and Fast Algorithm\
     \ for Computing the N-th Term of a Linearly Recurrent Sequence.\n//      https://arxiv.org/abs/2008.08822\n\
-    \ntemplate <typename Tp>\ninline std::vector<Tp> fps_inv_newton(const std::vector<Tp>\
-    \ &a, int n) {\n    assert(!a.empty());\n    if (n <= 0) return {};\n    const\
-    \ int len = fft_len(n);\n    std::vector<Tp> invA(len), shopA(len), shopB(len);\n\
-    \    invA[0] = a[0].inv();\n    for (int i = 2; i <= len; i *= 2) {\n        std::fill(std::copy_n(a.begin(),\
-    \ std::min<int>(a.size(), i), shopA.begin()),\n                  shopA.begin()\
-    \ + i, Tp(0));\n        std::copy_n(invA.begin(), i, shopB.begin());\n       \
-    \ fft_n(shopA.begin(), i);\n        fft_n(shopB.begin(), i);\n        for (int\
-    \ j = 0; j < i; ++j) shopA[j] *= shopB[j];\n        inv_fft_n(shopA.begin(), i);\n\
-    \        std::fill_n(shopA.begin(), i / 2, Tp(0));\n        fft_n(shopA.begin(),\
-    \ i);\n        for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];\n        inv_fft_n(shopA.begin(),\
-    \ i);\n        for (int j = i / 2; j < i; ++j) invA[j] = -shopA[j];\n    }\n \
-    \   invA.resize(n);\n    return invA;\n}\n\ntemplate <typename Tp>\ninline void\
-    \ fft_high(std::vector<Tp> &a) {\n    const int n = a.size();\n    inv_fft_n(a.begin()\
-    \ + n / 2, n / 2);\n    Tp k         = 1;\n    const auto t = FftInfo<Tp>::get().inv_root(n\
-    \ / 2).at(n / 4);\n    for (int i = 0; i < n / 2; ++i) a[i + n / 2] *= k, k *=\
-    \ t;\n    fft_n(a.begin() + n / 2, n / 2);\n    for (int i = 0; i < n / 2; ++i)\
-    \ a[i] = (a[i] - a[i + n / 2]).div_by_2();\n    a.resize(n / 2);\n}\n\n// returns\
-    \ DFT([x^[L,L+len/2)]1/Q)\n// 1/Q in R((x))\n// requires len/2 > deg(Q), len/2\
-    \ is even\ntemplate <typename Tp>\ninline std::vector<Tp> bostan_mori_laurent_series(std::vector<Tp>\
-    \ dftQ, long long L) {\n    const int len = dftQ.size() * 2;\n    if (L <= 0)\
-    \ {\n        inv_fft(dftQ);\n        const int ordQ = order(dftQ);\n        assert(ordQ\
+    \ntemplate <typename Tp>\ninline void fft_high(std::vector<Tp> &a) {\n    const\
+    \ int n = a.size();\n    inv_fft_n(a.begin() + n / 2, n / 2);\n    Tp k      \
+    \   = 1;\n    const auto t = FftInfo<Tp>::get().inv_root(n / 2).at(n / 4);\n \
+    \   for (int i = 0; i < n / 2; ++i) a[i + n / 2] *= k, k *= t;\n    fft_n(a.begin()\
+    \ + n / 2, n / 2);\n    for (int i = 0; i < n / 2; ++i) a[i] = (a[i] - a[i + n\
+    \ / 2]).div_by_2();\n    a.resize(n / 2);\n}\n\n// returns DFT([x^[L,L+len/2)]1/Q)\n\
+    // 1/Q in R((x))\n// requires len/2 > deg(Q), len/2 is even\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> bostan_mori_laurent_series(std::vector<Tp> dftQ,\
+    \ long long L) {\n    const int len = dftQ.size() * 2;\n    if (L <= 0) {\n  \
+    \      inv_fft(dftQ);\n        const int ordQ = order(dftQ);\n        assert(ordQ\
     \ >= 0);\n        if (L + len / 2 <= -ordQ) return std::vector<Tp>(len / 2);\n\
-    \        auto invQ =\n            fps_inv_newton(std::vector(dftQ.begin() + ordQ,\
-    \ dftQ.end()), L + len / 2 + ordQ);\n        if (-ordQ < (int)L) {\n         \
-    \   // ?x^(-ord(Q)) + ... + ?x^L + ... + ?x^(L+len/2-1)\n            invQ.erase(invQ.begin(),\
-    \ invQ.begin() + (L + ordQ));\n        } else {\n            // ?x^L + ... + ?x^(-ord(Q))\
-    \ + ... + ?x^(L+len/2-1)\n            invQ.insert(invQ.begin(), -ordQ - L, Tp(0));\n\
+    \        auto invQ = fps_inv(std::vector(dftQ.begin() + ordQ, dftQ.end()), L +\
+    \ len / 2 + ordQ);\n        if (-ordQ < (int)L) {\n            // ?x^(-ord(Q))\
+    \ + ... + ?x^L + ... + ?x^(L+len/2-1)\n            invQ.erase(invQ.begin(), invQ.begin()\
+    \ + (L + ordQ));\n        } else {\n            // ?x^L + ... + ?x^(-ord(Q)) +\
+    \ ... + ?x^(L+len/2-1)\n            invQ.insert(invQ.begin(), -ordQ - L, Tp(0));\n\
     \        }\n        fft(invQ);\n        return invQ;\n    }\n\n    fft_doubling(dftQ);\n\
     \    std::vector<Tp> dftV(len / 2);\n    for (int i = 0; i < len; i += 2) dftV[i\
     \ / 2] = dftQ[i] * dftQ[i + 1];\n    // recursive call: ceil((L-len/2)/2)\n  \
     \  const auto dftT = bostan_mori_laurent_series(std::move(dftV), (L - len / 2\
-    \ + (L & 1)) / 2);\n\n    std::vector<Tp> dftU(len);\n    if (L & 1) {\n     \
-    \   auto &&root = FftInfo<Tp>::get().root(len / 2);\n        for (int i = 0; i\
-    \ < len; i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i + 1] * root[i\
-    \ / 2];\n            dftU[i + 1] = dftT[i / 2] * dftQ[i] * -root[i / 2];\n   \
-    \     }\n    } else {\n        for (int i = 0; i < len; i += 2) {\n          \
-    \  dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n            dftU[i + 1] = dftT[i\
-    \ / 2] * dftQ[i];\n        }\n    }\n\n    fft_high(dftU);\n    return dftU;\n\
-    }\n\n// returns DFT([x^[-len/2,0)]x^k/Q)\n// x^k/Q in R((x^(-1)))\n// requires\
-    \ len/2 > degQ\ntemplate <typename Tp>\ninline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp>\
+    \ + (L & 1)) / 2);\n\n    if (L & 1) {\n        auto &&root = FftInfo<Tp>::get().root(len\
+    \ / 2);\n        for (int i = 0; i < len; i += 2) {\n            const auto u\
+    \ = dftQ[i], v = dftQ[i + 1];\n            dftQ[i]     = dftT[i / 2] * v * root[i\
+    \ / 2];\n            dftQ[i + 1] = dftT[i / 2] * u * -root[i / 2];\n        }\n\
+    \    } else {\n        for (int i = 0; i < len; i += 2) {\n            const auto\
+    \ u = dftQ[i], v = dftQ[i + 1];\n            dftQ[i]     = dftT[i / 2] * v;\n\
+    \            dftQ[i + 1] = dftT[i / 2] * u;\n        }\n    }\n\n    fft_high(dftQ);\n\
+    \    return dftQ;\n}\n\n// returns DFT([x^[-len/2,0)]x^k/Q)\n// x^k/Q in R((x^(-1)))\n\
+    // requires len/2 > degQ\ntemplate <typename Tp>\ninline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp>\
     \ dftQ, long long k) {\n    assert(k >= 0);\n    const int len = dftQ.size() *\
     \ 2;\n    if (k < len / 2LL) {\n        inv_fft(dftQ);\n        const int degQ\
     \ = degree(dftQ);\n        assert(degQ >= 0);\n        dftQ.resize(degQ + 1);\n\
-    \        std::reverse(dftQ.begin(), dftQ.end());\n        auto invQ = fps_inv_newton(dftQ,\
+    \        std::reverse(dftQ.begin(), dftQ.end());\n        auto invQ = fps_inv(dftQ,\
     \ len / 2 - degQ + k + 1);\n        std::reverse(invQ.begin(), invQ.end());\n\
     \        invQ.resize(len / 2);\n        fft(invQ);\n        return invQ;\n   \
     \ }\n\n    fft_doubling(dftQ);\n    std::vector<Tp> dftV(len / 2);\n    for (int\
     \ i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];\n    const auto\
-    \ dftT = bostan_mori_reversed_laurent_series(std::move(dftV), k / 2);\n\n    std::vector<Tp>\
-    \ dftU(len);\n    if (k & 1) {\n        auto &&root = FftInfo<Tp>::get().root(len\
-    \ / 2);\n        for (int i = 0; i < len; i += 2) {\n            dftU[i]     =\
-    \ dftT[i / 2] * dftQ[i + 1] * root[i / 2];\n            dftU[i + 1] = dftT[i /\
-    \ 2] * dftQ[i] * -root[i / 2];\n        }\n    } else {\n        for (int i =\
-    \ 0; i < len; i += 2) {\n            dftU[i]     = dftT[i / 2] * dftQ[i + 1];\n\
-    \            dftU[i + 1] = dftT[i / 2] * dftQ[i];\n        }\n    }\n\n    fft_high(dftU);\n\
-    \    return dftU;\n}\n\n// returns x^k mod Q\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ dftT = bostan_mori_reversed_laurent_series(std::move(dftV), k / 2);\n\n    if\
+    \ (k & 1) {\n        auto &&root = FftInfo<Tp>::get().root(len / 2);\n       \
+    \ for (int i = 0; i < len; i += 2) {\n            const auto u = dftQ[i], v =\
+    \ dftQ[i + 1];\n            dftQ[i]     = dftT[i / 2] * v * root[i / 2];\n   \
+    \         dftQ[i + 1] = dftT[i / 2] * u * -root[i / 2];\n        }\n    } else\
+    \ {\n        for (int i = 0; i < len; i += 2) {\n            const auto u = dftQ[i],\
+    \ v = dftQ[i + 1];\n            dftQ[i]     = dftT[i / 2] * v;\n            dftQ[i\
+    \ + 1] = dftT[i / 2] * u;\n        }\n    }\n\n    fft_high(dftQ);\n    return\
+    \ dftQ;\n}\n\n// returns x^k mod Q\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ xk_mod(long long k, const std::vector<Tp> &Q) {\n    assert(k >= 0);\n    const\
     \ int degQ = degree(Q);\n    assert(degQ >= 0);\n    if (degQ == 0) return {};\n\
     \    if (k < degQ) {\n        std::vector<Tp> res(degQ);\n        res[k] = 1;\n\
     \        return res;\n    }\n\n    const int len = fft_len(degQ * 2 + 1);\n  \
-    \  if (k < len / 2LL) {\n        auto invQ = fps_inv_newton(std::vector(Q.rend()\
-    \ - (degQ + 1), Q.rend()), k + 1);\n        std::reverse(invQ.begin(), invQ.end());\n\
+    \  if (k < len / 2LL) {\n        auto invQ = fps_inv(std::vector(Q.rend() - (degQ\
+    \ + 1), Q.rend()), k + 1);\n        std::reverse(invQ.begin(), invQ.end());\n\
     \        invQ.resize(degQ);\n        auto res = convolution(invQ, Q);\n      \
     \  res.erase(res.begin(), res.begin() + degQ);\n        res.resize(degQ);\n  \
     \      return res;\n    }\n\n    auto dftQ = std::vector(Q.rend() - (degQ + 1),\
@@ -469,8 +471,8 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-04 20:47:37+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-12-06 22:27:00+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
 layout: document
