@@ -5,13 +5,13 @@ data:
   - icon: ':x:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: c_recursive.hpp
     title: C-recursive Sequence
   - icon: ':heavy_check_mark:'
     path: conv_mod.hpp
     title: conv_mod.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: czt.hpp
   - icon: ':heavy_check_mark:'
@@ -20,7 +20,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: famous_sequence.hpp
     title: famous_sequence.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: fft_doubling.hpp
     title: FFT Doubling
   - icon: ':question:'
@@ -44,10 +44,10 @@ data:
   - icon: ':x:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: middle_product.hpp
     title: middle_product.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: poly.hpp
     title: poly.hpp
   - icon: ':question:'
@@ -65,7 +65,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: shift_sample_points.hpp
     title: shift_sample_points.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: subproduct_tree.hpp
     title: subproduct_tree.hpp
   _extendedVerifiedWith:
@@ -105,46 +105,46 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
     title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/division_of_polynomials.0.test.cpp
     title: test/formal_power_series/division_of_polynomials.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/find_linear_recurrence.0.test.cpp
     title: test/formal_power_series/find_linear_recurrence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_formal_power_series.1.test.cpp
     title: test/formal_power_series/inv_of_formal_power_series.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_polynomials.0.test.cpp
     title: test/formal_power_series/inv_of_polynomials.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
     title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/log_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/log_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - icon: ':x:'
