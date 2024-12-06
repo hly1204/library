@@ -107,7 +107,7 @@ so we could reduce the matrix exponentiation to modular exponentiation in $\math
 
 ### Bostan–Mori's algorithm
 
-Bostan and Mori have introduced a new algorithm to compute $x^k\bmod{Q(x)}$ faster. It is called the LSB-first algorithm in their paper, but I would like to show this in a slightly different way which is still equivalent to the original Bostan–Mori's algorithm.
+Bostan and Mori have introduced a new algorithm to compute $x^k\bmod{Q(x)}$ faster. It is called the MSB-first algorithm in their paper, but I would like to show this in a slightly different way which is still equivalent to the original Bostan–Mori's algorithm.
 
 #### Graeffe iteration
 
