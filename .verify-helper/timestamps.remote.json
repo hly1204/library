@@ -1,6 +1,6 @@
 {
-"test/convolution/bitwise_and_convolution.0.test.cpp": "2024-10-25 19:24:31 +0800",
-"test/convolution/bitwise_xor_convolution.0.test.cpp": "2024-10-25 19:24:31 +0800",
+"test/convolution/bitwise_and_convolution.0.test.cpp": "2024-12-06 19:58:17 +0800",
+"test/convolution/bitwise_xor_convolution.0.test.cpp": "2024-12-06 19:58:17 +0800",
 "test/convolution/convolution_mod.0.test.cpp": "2024-12-03 09:02:32 +0800",
 "test/convolution/convolution_mod.1.test.cpp": "2024-12-03 19:25:39 +0800",
 "test/convolution/convolution_mod_1000000007.0.test.cpp": "2024-12-03 09:02:32 +0800",
