@@ -2,6 +2,7 @@
 
 #include "binomial.hpp"
 #include "semi_relaxed_conv.hpp"
+#include <algorithm>
 #include <cassert>
 #include <vector>
 
@@ -14,15 +15,38 @@ inline int order(const std::vector<Tp> &a) {
 
 template <typename Tp>
 inline std::vector<Tp> fps_inv(const std::vector<Tp> &a, int n) {
-    assert(!a.empty());
+    assert(order(a) == 0);
     if (n <= 0) return {};
-    return semi_relaxed_convolution(
-        a, [v = a[0].inv()](int n, auto &&c) { return n == 0 ? v : -c[n] * v; }, n);
+    if (std::min<int>(a.size(), n) < 60)
+        return semi_relaxed_convolution(
+            a, [v = a[0].inv()](int n, auto &&c) { return n == 0 ? v : -c[n] * v; }, n);
+    enum { Threshold = 32 };
+    const int len = fft_len(n);
+    std::vector<Tp> invA, shopA(len), shopB(len);
+    invA = semi_relaxed_convolution(
+        a, [v = a[0].inv()](int n, auto &&c) { return n == 0 ? v : -c[n] * v; }, Threshold);
+    invA.resize(len);
+    for (int i = Threshold * 2; i <= len; i *= 2) {
+        std::fill(std::copy_n(a.begin(), std::min<int>(a.size(), i), shopA.begin()),
+                  shopA.begin() + i, Tp(0));
+        std::copy_n(invA.begin(), i, shopB.begin());
+        fft_n(shopA.begin(), i);
+        fft_n(shopB.begin(), i);
+        for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];
+        inv_fft_n(shopA.begin(), i);
+        std::fill_n(shopA.begin(), i / 2, Tp(0));
+        fft_n(shopA.begin(), i);
+        for (int j = 0; j < i; ++j) shopA[j] *= shopB[j];
+        inv_fft_n(shopA.begin(), i);
+        for (int j = i / 2; j < i; ++j) invA[j] = -shopA[j];
+    }
+    invA.resize(n);
+    return invA;
 }
 
 template <typename Tp>
 inline std::vector<Tp> fps_div(const std::vector<Tp> &a, const std::vector<Tp> &b, int n) {
-    assert(!b.empty());
+    assert(order(b) == 0);
     if (n <= 0) return {};
     return semi_relaxed_convolution(
         b,
@@ -60,7 +84,7 @@ inline std::vector<Tp> fps_log(const std::vector<Tp> &a, int n) {
 template <typename Tp>
 inline std::vector<Tp> fps_exp(const std::vector<Tp> &a, int n) {
     if (n <= 0) return {};
-    assert(!a.empty() && a[0] == 0);
+    assert(a.empty() || a[0] == 0);
     return semi_relaxed_convolution(
         deriv(a),
         [bin = Binomial<Tp>::get(n)](int n, auto &&c) {
