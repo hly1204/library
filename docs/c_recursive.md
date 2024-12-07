@@ -145,13 +145,13 @@ $$
 &\textbf{Output}\text{: }A(x)^{-1}\bmod{x^n}\text{.} \\
 1&\textbf{if }n=1\textbf{ then return }A(0)^{-1}\\
 2&\ell \gets 2^{\left\lceil\log _ 2 \left(2n-1\right)\right\rceil} \\
-3&\left\lbrack b _ 0,\dots,b _ {\ell - 1}\right\rbrack \gets \operatorname{\mathsf{FFT}} _ {\ell}\left(A(x)\right) \\
+3&\begin{bmatrix} b _ 0 & \cdots & b _ {\ell - 1}\end{bmatrix} \gets \operatorname{\mathsf{FFT}} _ {\ell}\left(A(x)\right) \\
 4&V(x) \gets \operatorname{\mathsf{IFFT}} _ {\ell /2}\left(\begin{bmatrix} b _ 0 b _ 1 & b _ 2 b _ 3 & \cdots & b _ {\ell -2} b _ {\ell - 1}\end{bmatrix}\right) \bmod{x^{\left\lceil n/2\right\rceil}} \\
 5&T(x) \gets \operatorname{\mathsf{FPSInv}}\left(V(x) \bmod{x^{\left\lfloor n/2\right\rfloor}},\left\lfloor n/2\right\rfloor\right) \\
 6&\textbf{if }n \bmod{2} = 1 \textbf{ then} \\
 7&\qquad T(x) \gets T(x)-\left(\left\lbrack x^{\left\lfloor n/2\right\rfloor}\right\rbrack V(x)T(x)\right)V(0)^{-1}x^{\left\lfloor n/2\right\rfloor} \\
 8&\textbf{end if} \\
-9&\left\lbrack c _ 0,\dots,c  _{\ell/2 - 1}\right\rbrack \gets \operatorname{\mathsf{FFT}}  _{\ell/2}\left(T(x)\right) \\
+9&\begin{bmatrix} c _ 0 & \cdots & c  _{\ell/2 - 1}\end{bmatrix} \gets \operatorname{\mathsf{FFT}}  _{\ell/2}\left(T(x)\right) \\
 10&U(x) \gets \operatorname{\mathsf{IFFT}} _ {\ell}\left(\begin{bmatrix} b _ 0 c _ 0 & b _ 1 c _ 0 &  \cdots & b _ {\ell - 1} c _ {\ell/2 - 1}\end{bmatrix}\right) \bmod{x^n} \\
 11&\textbf{return }U(x)
 \end{array}
