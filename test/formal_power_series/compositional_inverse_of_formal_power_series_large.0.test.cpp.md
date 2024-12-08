@@ -12,7 +12,7 @@ data:
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
-    title: fps_composition.hpp
+    title: Formal Power Series Composition
   - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
