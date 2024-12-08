@@ -40,16 +40,17 @@ where $V\left(x^2,y\right)=Q(x,y)Q(-x,y)$. We can solve the problem when $n=1$, 
 $$
 \begin{array}{ll}
 &\textbf{Algorithm }\operatorname{\mathsf{KinoshitaLi}}\left(P(y),Q(x,y),n,m\right)\text{:} \\
-&\textbf{Input}\text{: }P=\sum_{0\leq j< n}p_jy^{-j}\in\mathbb{C}((y)),Q\in\mathbb{C}\left\lbrack x,y\right\rbrack ,n,m\in\mathbb{N}_{>0}\text{.} \\
-&\textbf{Output}\text{: }\left\lbrack y^{\left(-m,0\right\rbrack}\right\rbrack\dfrac{P(y)}{Q(x,y)}\bmod{x^n}\text{.} \\
+&\textbf{Input}\text{: }P\in\mathbb{C}\left\lbrack y\right\rbrack,Q\in\mathbb{C}\left\lbrack x,y\right\rbrack ,n,m\in\mathbb{N}_{>0}\text{.} \\
+&\textbf{Output}\text{: }\left\lbrack y^{\left(-m,0\right\rbrack}\right\rbrack\dfrac{P\left(y^{-1}\right)}{Q(x,y)}\bmod{x^n}\text{.} \\
 &\textbf{Require}\text{: }\left\lbrack x^0y^0\right\rbrack Q=1\text{.} \\
-1&\textbf{if }n=1\textbf{ then return }\begin{bmatrix}\left\lbrack y^{-m+1}\right\rbrack\frac{P(y)}{Q(0,y)} & \cdots & \left\lbrack y^0\right\rbrack\frac{P(y)}{Q(0,y)}\end{bmatrix} \\
+1&\textbf{if }n=1\textbf{ then return }\begin{bmatrix}\left\lbrack y^{-m+1}\right\rbrack\frac{P\left(y^{-1}\right)}{Q(0,y)} & \cdots & \left\lbrack y^0\right\rbrack\frac{P\left(y^{-1}\right)}{Q(0,y)}\end{bmatrix} \\
 2&V(x^2,y)\gets Q(x,y)Q(-x,y)\bmod{x^n} \\
-3&d\gets\deg_y Q\left(-x,y\right)\\
-4&\begin{bmatrix} t_{-(m+d)+1} & \cdots & t_0\end{bmatrix}\gets \operatorname{\mathsf{KinoshitaLi}}\left(P(y),V(x,y),\left\lceil n/2\right\rceil,m+d\right) \\
-5&T(x,y)\gets \sum_{j=-(m+d)+1}^0t_jy^j \\
-6&U(x,y)=\sum_{j=-(m+d)+1}^d u_jy^j\gets T(x^2,y)Q(-x,y)\bmod{x^n} \\
-7&\textbf{return }\begin{bmatrix}u_{-m+1} & \cdots & u_0\end{bmatrix}
+3&d \gets \deg _ y Q\left(-x,y\right) \\
+4&m' \gets \min \left\lbrace m+d, 1 + \deg _ y P\right\rbrace \\
+5&\begin{bmatrix} t _ {- m' + 1} & \cdots & t _ 0\end{bmatrix}\gets \operatorname{\mathsf{KinoshitaLi}}\left(P(y),V(x,y),\left\lceil n/2\right\rceil,m'\right) \\
+6&T(x,y) \gets \sum_{j=- m' + 1}^0 t _ jy^j \\
+7&U(x,y) \gets T(x^2,y)Q(-x,y)\bmod{x^n} \\
+8&\textbf{return }\begin{bmatrix}\left\lbrack y^{-m+1}\right\rbrack U(x,y) & \cdots & \left\lbrack y^0\right\rbrack U(x,y)\end{bmatrix}
 \end{array}
 $$
 
