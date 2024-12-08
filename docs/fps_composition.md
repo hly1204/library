@@ -39,7 +39,7 @@ where $V\left(x^2,y\right)=Q(x,y)Q(-x,y)$. We can solve the problem when $n=1$, 
 
 $$
 \begin{array}{ll}
-&\textbf{Algorithm }\operatorname{\mathsf{KinoshitaLi}}\left(P(y),Q(x,y),n,m\right)\text{:} \\
+&\textbf{Algorithm }\operatorname{\mathsf{KinoshitaLi}}\text{:} \\
 &\textbf{Input}\text{: }P\in\mathbb{C}\left\lbrack y\right\rbrack,Q\in\mathbb{C}\left\lbrack x,y\right\rbrack ,n,m\in\mathbb{N}_{>0}\text{.} \\
 &\textbf{Output}\text{: }\left\lbrack y^{\left(-m,0\right\rbrack}\right\rbrack\dfrac{P\left(y^{-1}\right)}{Q(x,y)}\bmod{x^n}\text{.} \\
 &\textbf{Require}\text{: }\left\lbrack x^0y^0\right\rbrack Q=1\text{.} \\
