@@ -44,7 +44,7 @@ $$
 &\textbf{Output}\text{: }\left\lbrack y^{\left(-m,0\right\rbrack}\right\rbrack\dfrac{P\left(y^{-1}\right)}{Q(x,y)}\bmod{x^n}\text{.} \\
 &\textbf{Require}\text{: }\left\lbrack x^0y^0\right\rbrack Q=1\text{.} \\
 1&\textbf{if }n=1\textbf{ then return }\begin{bmatrix}\left\lbrack y^{-m+1}\right\rbrack\frac{P\left(y^{-1}\right)}{Q(0,y)} & \cdots & \left\lbrack y^0\right\rbrack\frac{P\left(y^{-1}\right)}{Q(0,y)}\end{bmatrix} \\
-2&V(x^2,y)\gets Q(x,y)Q(-x,y)\bmod{x^n} \\
+2&V(x^2,y)\gets Q(x,y)Q(-x,y)\bmod{x^n}\bmod{y^{1 + \deg _ y P}} \\
 3&d \gets \deg _ y Q\left(-x,y\right) \\
 4&m' \gets \min \left\lbrace m+d, 1 + \deg _ y P\right\rbrace \\
 5&\begin{bmatrix} t _ {- m' + 1} & \cdots & t _ 0\end{bmatrix}\gets \operatorname{\mathsf{KinoshitaLi}}\left(P(y),V(x,y),\left\lceil n/2\right\rceil,m'\right) \\
