@@ -35,7 +35,7 @@ $$
 \end{aligned}
 $$
 
-where $V\left(x^2,y\right)=Q(x,y)Q(-x,y)$. We can solve the problem when $n=1$, since now we only need to compute $\frac{P(y)}{Q(x,y)}\bmod{x}=\frac{P(y)}{Q(0,y)}\in\mathbb{C}\left(\left( y\right)\right)$. Actually we do not need to compute $\frac{1}{Q(0,y)}$, since it's just $\left(1-g(0)y\right)^{-k}\in\mathbb{C}\left\lbrack\left\lbrack y\right\rbrack\right\rbrack$ for a certain $k\in\mathbb{N}$, the coefficients of which are known as the binomial coefficients multiplied by some powers of $g(0)$. (noshi91 told me on twitter, I did't noticed that.)
+where $V\left(x^2,y\right)=Q(x,y)Q(-x,y)$. We can solve the problem when $n=1$, since now we only need to compute $\frac{P(y)}{Q(x,y)}\bmod{x}=\frac{P(y)}{Q(0,y)}\in\mathbb{C}\left(\left( y\right)\right)$. Actually we do not need to compute $\frac{1}{Q(0,y)}$, since it's just $\left(1-g(0)y\right)^{-k}\in\mathbb{C}\left\lbrack\left\lbrack y\right\rbrack\right\rbrack$ for a certain $k\in\mathbb{N}$, the coefficients of which are known as the binomial coefficients multiplied by some powers of $g(0)$. (noshi91 told me on twitter, I did't notice that.)
 
 $$
 \begin{array}{ll}
