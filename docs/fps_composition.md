@@ -17,10 +17,13 @@ $$
 f(g)=\sum _ {j \geq 0}f _ j g(x)^j
 $$
 
-Consider the bivariate formal Laurent series in $x,y$ over $\mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack\left(\left(y\right)\right)$
+Consider the bivariate formal Laurent series in $x,y$
 
 $$
-f(g)=\left\lbrack y^0\right\rbrack\frac{f\left(y^{-1}\right)}{1 - y\cdot g(x)} = \sum _ {j\geq 0}\left(\left(\cdots + f _ j y^{-j} + \cdots \right)y^j\cdot g(x)^j\right)
+\begin{aligned}
+f(g) &= \left\lbrack y^0\right\rbrack\frac{f\left(y^{-1}\right)}{1 - y\cdot g(x)} \in \mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack\left(\left(y\right)\right) \\
+&= \sum _ {j\geq 0}\left(\left(\cdots + f _ j y^{-j} + \cdots \right)y^j\cdot g(x)^j\right)
+\end{aligned}
 $$
 
 since we only need to compute $f(g)\bmod{x^n}$, it's okay to treat $g(x)$ as a polynomial. Unlike Kinoshita and Li's paper, I don't want to manipulate in formal power series ring by multiplying $\frac{f\left(y^{-1}\right)}{1 - y\cdot g(x)}$ by $y^{n-1}$. If we did so, we may care about the parity of $n-1$.
