@@ -27,7 +27,7 @@ $$
 F(x) = \sum _ {j \geq 0} f(j) x^j
 $$
 
-Let's introduce the difference operator $\Delta : f(x) \mapsto f(x+1) - f(x)$, notice that $\deg \left(\Delta f(x)\right) \lt n-1$, so $\Delta^n f(x)=0$. Now we have
+Let's introduce the difference operator $\Delta : f(x) \mapsto f(x+1) - f(x)$, note that $\deg \left(\Delta f(x)\right) \lt n-1$, so $\Delta^n f(x)=0$. Now we have
 
 $$
 \begin{aligned}
