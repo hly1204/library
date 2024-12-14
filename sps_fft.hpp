@@ -5,7 +5,7 @@
 #include <vector>
 
 // set power series = R[x_1,...,x_n]/(x_1^2,...,x_n^2)
-// FFT is computing F({0,1}^n)
+// FFT is computing F({1,-1}^n)
 
 template <typename Iterator>
 inline void sps_fft_n(Iterator a, int n) {
