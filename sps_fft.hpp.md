@@ -19,7 +19,7 @@ data:
     links: []
   bundledCode: "#line 2 \"sps_fft.hpp\"\n\n#include <cassert>\n#include <iterator>\n\
     #include <vector>\n\n// set power series = R[x_1,...,x_n]/(x_1^2,...,x_n^2)\n\
-    // FFT is computing F({0,1}^n)\n\ntemplate <typename Iterator>\ninline void sps_fft_n(Iterator\
+    // FFT is computing F({1,-1}^n)\n\ntemplate <typename Iterator>\ninline void sps_fft_n(Iterator\
     \ a, int n) {\n    assert((n & (n - 1)) == 0);\n    for (int i = 2; i <= n; i\
     \ *= 2)\n        for (int j = 0; j < n; j += i)\n            for (int k = j; k\
     \ < j + i / 2; ++k) {\n                const auto u = a[k], v = a[k + i / 2];\n\
@@ -33,10 +33,10 @@ data:
     }\n"
   code: "#pragma once\n\n#include <cassert>\n#include <iterator>\n#include <vector>\n\
     \n// set power series = R[x_1,...,x_n]/(x_1^2,...,x_n^2)\n// FFT is computing\
-    \ F({0,1}^n)\n\ntemplate <typename Iterator>\ninline void sps_fft_n(Iterator a,\
-    \ int n) {\n    assert((n & (n - 1)) == 0);\n    for (int i = 2; i <= n; i *=\
-    \ 2)\n        for (int j = 0; j < n; j += i)\n            for (int k = j; k <\
-    \ j + i / 2; ++k) {\n                const auto u = a[k], v = a[k + i / 2];\n\
+    \ F({1,-1}^n)\n\ntemplate <typename Iterator>\ninline void sps_fft_n(Iterator\
+    \ a, int n) {\n    assert((n & (n - 1)) == 0);\n    for (int i = 2; i <= n; i\
+    \ *= 2)\n        for (int j = 0; j < n; j += i)\n            for (int k = j; k\
+    \ < j + i / 2; ++k) {\n                const auto u = a[k], v = a[k + i / 2];\n\
     \                a[k] = u + v, a[k + i / 2] = u - v;\n            }\n}\n\ntemplate\
     \ <typename Tp>\ninline void sps_fft(std::vector<Tp> &a) {\n    sps_fft_n(a.begin(),\
     \ a.size());\n}\n\ntemplate <typename Iterator>\ninline void sps_inv_fft_n(Iterator\
@@ -50,7 +50,7 @@ data:
   path: sps_fft.hpp
   requiredBy:
   - bitwise_conv.hpp
-  timestamp: '2024-12-06 19:58:17+08:00'
+  timestamp: '2024-12-14 22:16:44+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/bitwise_xor_convolution.0.test.cpp
