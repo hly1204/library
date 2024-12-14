@@ -46,7 +46,7 @@ data:
     title: poly_basic.hpp
   - icon: ':warning:'
     path: poly_interpolation.hpp
-    title: poly_interpolation.hpp
+    title: Polynomial Interpolation (Lagrange Interpolation)
   - icon: ':warning:'
     path: poly_interpolation_with_error.hpp
     title: poly_interpolation_with_error.hpp
