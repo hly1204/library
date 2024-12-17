@@ -1,14 +1,14 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: rmq.hpp
     title: rmq.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/staticrmq
@@ -35,8 +35,8 @@ data:
     \      UInt stack_num = 0;\n        for (int i = 0, sta[W], top = 0; i < N; ++i)\
     \ {\n            while (top > 0 && Cmp(A[i], A[sta[top - 1]])) stack_num ^= 1U\
     \ << sta[--top];\n            D[i] = (stack_num |= 1U << (sta[top++] = i));\n\
-    \        }\n        return A[__builtin_ctzg(stack_num)];\n    }\n\n    // [L,\
-    \ R) in same block\n    Tp block(int L, int R) const { return T[L + __builtin_ctzg(StackNum[R\
+    \        }\n        return A[__builtin_ctzll(stack_num)];\n    }\n\n    // [L,\
+    \ R) in same block\n    Tp block(int L, int R) const { return T[L + __builtin_ctzll(StackNum[R\
     \ - 1] >> (L % W))]; }\n\n    static constexpr int W = sizeof(UInt) * 8;\n\n \
     \   std::vector<Tp> T;\n    Comp Cmp;\n    SparseTableInner ST;\n    std::vector<UInt>\
     \ StackNum;\n\npublic:\n    explicit RMQ(const std::vector<Tp> &V, Comp comp =\
@@ -67,8 +67,8 @@ data:
   isVerificationFile: true
   path: test/data_structure/staticrmq.1.test.cpp
   requiredBy: []
-  timestamp: '2024-12-17 19:22:53+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-12-17 19:37:06+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/staticrmq.1.test.cpp
 layout: document
