@@ -43,11 +43,11 @@ class RMQ {
             while (top > 0 && Cmp(A[i], A[sta[top - 1]])) stack_num ^= 1U << sta[--top];
             D[i] = (stack_num |= 1U << (sta[top++] = i));
         }
-        return A[__builtin_ctzg(stack_num)];
+        return A[__builtin_ctzll(stack_num)];
     }
 
     // [L, R) in same block
-    Tp block(int L, int R) const { return T[L + __builtin_ctzg(StackNum[R - 1] >> (L % W))]; }
+    Tp block(int L, int R) const { return T[L + __builtin_ctzll(StackNum[R - 1] >> (L % W))]; }
 
     static constexpr int W = sizeof(UInt) * 8;
 
