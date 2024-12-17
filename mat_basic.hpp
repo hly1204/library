@@ -99,7 +99,6 @@ inline Tp det(Matrix<Tp> A) {
     assert(is_square_matrix(A));
     const int n = height(A);
     Tp det      = 1;
-    bool neg    = false;
     for (int i = 0; i < n; ++i) {
         int pivot = i;
         for (; pivot < n; ++pivot)
@@ -107,7 +106,7 @@ inline Tp det(Matrix<Tp> A) {
         if (pivot == n) return 0;
         if (pivot != i) {
             A[pivot].swap(A[i]);
-            neg = !neg;
+            det = -det;
         }
         det *= A[i][i];
         const auto iv = A[i][i].inv();
@@ -117,7 +116,7 @@ inline Tp det(Matrix<Tp> A) {
             for (int k = i; k < n; ++k) A[j][k] -= p * A[i][k];
         }
     }
-    return neg ? -det : det;
+    return det;
 }
 
 template <typename Tp>
@@ -144,6 +143,7 @@ inline Matrix<Tp> to_upper_hessenberg(Matrix<Tp> A) {
     return A;
 }
 
+// returns det(xI - A)
 template <typename Tp>
 inline std::vector<Tp> charpoly(const Matrix<Tp> &A) {
     const auto H = to_upper_hessenberg(A);
