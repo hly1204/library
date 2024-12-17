@@ -3,13 +3,13 @@ data:
   libraryCategories:
   - name: .
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: basis.hpp
       title: basis.hpp
     - icon: ':heavy_check_mark:'
       path: batch_inv.hpp
       title: batch_inv.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: binomial.hpp
       title: binomial.hpp
     - icon: ':heavy_check_mark:'
@@ -42,13 +42,13 @@ data:
     - icon: ':heavy_check_mark:'
       path: famous_sequence.hpp
       title: famous_sequence.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: fft.hpp
       title: FFT
     - icon: ':heavy_check_mark:'
       path: fft_doubling.hpp
       title: FFT Doubling
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: fps_basic.hpp
       title: fps_basic.hpp
     - icon: ':heavy_check_mark:'
@@ -60,13 +60,13 @@ data:
     - icon: ':heavy_check_mark:'
       path: fps_sqrt.hpp
       title: fps_sqrt.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: frobenius.hpp
       title: frobenius.hpp
     - icon: ':warning:'
       path: karatsuba.hpp
       title: karatsuba.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: mat_basic.hpp
       title: mat_basic.hpp
     - icon: ':heavy_check_mark:'
@@ -75,7 +75,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -84,10 +84,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: monoid.hpp
       title: monoid.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: poly.hpp
       title: poly.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: poly_basic.hpp
       title: poly_basic.hpp
     - icon: ':warning:'
@@ -102,16 +102,16 @@ data:
     - icon: ':heavy_check_mark:'
       path: pow_table.hpp
       title: pow_table.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: random.hpp
       title: random.hpp
     - icon: ':heavy_check_mark:'
       path: rmq.hpp
       title: rmq.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: rng.hpp
       title: rng.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: semi_relaxed_conv.hpp
       title: semi_relaxed_conv.hpp
     - icon: ':heavy_check_mark:'
@@ -299,22 +299,22 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/matrix/characteristic_polynomial.1.test.cpp
       title: test/matrix/characteristic_polynomial.1.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/inverse_matrix.0.test.cpp
       title: test/matrix/inverse_matrix.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/matrix/inverse_matrix_mod_2.0.test.cpp
       title: test/matrix/inverse_matrix_mod_2.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/matrix_det.0.test.cpp
       title: test/matrix/matrix_det.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/matrix/matrix_det_mod_2.0.test.cpp
       title: test/matrix/matrix_det_mod_2.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/matrix_product.0.test.cpp
       title: test/matrix/matrix_product.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/pow_of_matrix.0.test.cpp
       title: test/matrix/pow_of_matrix.0.test.cpp
     - icon: ':heavy_check_mark:'
