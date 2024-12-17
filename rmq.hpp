@@ -5,9 +5,8 @@
 #include <functional>
 #include <vector>
 
-template <typename Tp, typename Comp = std::less<>>
+template <typename Tp, typename Comp = std::less<>, typename UInt = unsigned>
 class RMQ {
-public:
     class SparseTableInner {
         const RMQ &Rmq;
         int N;
@@ -37,42 +36,44 @@ public:
         }
     };
 
-    std::vector<Tp> T;
-    Comp Cmp;
-    SparseTableInner ST;
-    std::vector<unsigned> StackNum;
-
-    explicit RMQ(const std::vector<Tp> &V, Comp comp = Comp())
-        : T(V), Cmp(comp), ST(*this), StackNum(V.size()) {
-        if (V.empty()) return;
-        std::vector<Tp> b;
-        const int B = ((int)V.size() - 1) / 32 + 1;
-        b.reserve(B);
-        for (int i = 0; i < B; ++i)
-            b.emplace_back(build_block(V.begin() + i * 32,
-                                       std::min<int>((i + 1) * 32, V.size()) - i * 32,
-                                       StackNum.begin() + i * 32));
-        ST.build(b);
-    }
-
     Tp build_block(typename std::vector<Tp>::const_iterator A, int N,
-                   typename std::vector<unsigned>::iterator D) {
-        unsigned stack_num = 0;
-        for (int i = 0, sta[32], top = 0; i < N; ++i) {
+                   typename std::vector<UInt>::iterator D) {
+        UInt stack_num = 0;
+        for (int i = 0, sta[W], top = 0; i < N; ++i) {
             while (top > 0 && Cmp(A[i], A[sta[top - 1]])) stack_num ^= 1U << sta[--top];
             D[i] = (stack_num |= 1U << (sta[top++] = i));
         }
-        return A[__builtin_ctz(stack_num)];
+        return A[__builtin_ctzg(stack_num)];
     }
 
     // [L, R) in same block
-    Tp block(int L, int R) const { return T[L + __builtin_ctz(StackNum[R - 1] >> (L % 32))]; }
+    Tp block(int L, int R) const { return T[L + __builtin_ctzg(StackNum[R - 1] >> (L % W))]; }
+
+    static constexpr int W = sizeof(UInt) * 8;
+
+    std::vector<Tp> T;
+    Comp Cmp;
+    SparseTableInner ST;
+    std::vector<UInt> StackNum;
+
+public:
+    explicit RMQ(const std::vector<Tp> &V, Comp comp = Comp())
+        : T(V), Cmp(comp), ST(*this), StackNum(V.size()) {
+        std::vector<Tp> b;
+        const int B = ((int)V.size() + (W - 1)) / W;
+        b.reserve(B);
+        for (int i = 0; i < B; ++i)
+            b.emplace_back(build_block(V.begin() + i * W,
+                                       std::min<int>((i + 1) * W, V.size()) - i * W,
+                                       StackNum.begin() + i * W));
+        ST.build(b);
+    }
 
     Tp query(int L, int R) const {
         assert(L < R);
-        const int BL = L / 32, BR = (R - 1) / 32;
+        const int BL = L / W, BR = (R - 1) / W;
         if (BL == BR) return block(L, R);
-        if (BL + 1 == BR) return std::min(block(L, BR * 32), block(BR * 32, R), Cmp);
-        return std::min({block(L, (BL + 1) * 32), ST.query(BL + 1, BR), block(BR * 32, R)}, Cmp);
+        if (BL + 1 == BR) return std::min(block(L, BR * W), block(BR * W, R), Cmp);
+        return std::min({block(L, (BL + 1) * W), ST.query(BL + 1, BR), block(BR * W, R)}, Cmp);
     }
 };
