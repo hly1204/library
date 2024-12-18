@@ -530,8 +530,8 @@ data:
     \ std::exchange(A[s][i][0], Tp(0));\n        for (int i = 0; i < s; ++i) sub(A[s],\
     \ A[i], A[s][i][1], n);\n        for (int i = s + 1; i < n; ++i) sub(A[s], A[i],\
     \ A[s][i][1], n);\n        if (A[s][s][1] != 0) {\n            m *= A[s][s][1];\n\
-    \            const auto iv = A[s][s][1].inv();\n            for (int j = 0; j\
-    \ < n; ++j) A[s][j][0] *= iv, A[s][j][1] *= iv;\n            for (int i = 0; i\
+    \            const auto iv = A[s][s][1].inv();\n            for (int i = 0; i\
+    \ < n; ++i) A[s][i][0] *= iv, A[s][i][1] *= iv;\n            for (int i = 0; i\
     \ < s; ++i) sub(A[i], A[s], A[i][s][1], n);\n            for (int i = s + 1; i\
     \ < n; ++i) sub(A[i], A[s], A[i][s][1], n);\n        }\n    }\n    if (t > n)\
     \ return {};\n    Matrix<Tp> AA(n, std::vector<Tp>(n));\n    for (int i = 0; i\
@@ -610,7 +610,7 @@ data:
   isVerificationFile: true
   path: test/matrix/characteristic_polynomial.2.test.cpp
   requiredBy: []
-  timestamp: '2024-12-18 22:58:28+08:00'
+  timestamp: '2024-12-18 23:07:09+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/characteristic_polynomial.2.test.cpp
