@@ -46,6 +46,7 @@
 "test/matrix/adjugate_matrix.0.test.cpp": "2024-12-17 21:31:27 +0800",
 "test/matrix/characteristic_polynomial.0.test.cpp": "2024-12-17 21:31:27 +0800",
 "test/matrix/characteristic_polynomial.1.test.cpp": "2024-12-17 21:31:27 +0800",
+"test/matrix/characteristic_polynomial.2.test.cpp": "2024-12-18 22:58:28 +0800",
 "test/matrix/inverse_matrix.0.test.cpp": "2024-12-17 21:31:27 +0800",
 "test/matrix/inverse_matrix_mod_2.0.test.cpp": "2024-07-20 12:58:03 +0800",
 "test/matrix/matrix_det.0.test.cpp": "2024-12-17 21:31:27 +0800",
