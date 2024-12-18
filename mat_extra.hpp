@@ -46,7 +46,7 @@ inline std::vector<Tp> det2(Matrix<std::array<Tp, 2>> A) {
         if (A[s][s][1] != 0) {
             m *= A[s][s][1];
             const auto iv = A[s][s][1].inv();
-            for (int j = 0; j < n; ++j) A[s][j][0] *= iv, A[s][j][1] *= iv;
+            for (int i = 0; i < n; ++i) A[s][i][0] *= iv, A[s][i][1] *= iv;
             for (int i = 0; i < s; ++i) sub(A[i], A[s], A[i][s][1], n);
             for (int i = s + 1; i < n; ++i) sub(A[i], A[s], A[i][s][1], n);
         }
