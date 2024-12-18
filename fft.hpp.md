@@ -45,6 +45,9 @@ data:
     path: mat_basic.hpp
     title: mat_basic.hpp
   - icon: ':heavy_check_mark:'
+    path: mat_extra.hpp
+    title: mat_extra.hpp
+  - icon: ':heavy_check_mark:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
   - icon: ':heavy_check_mark:'
@@ -177,6 +180,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/matrix/characteristic_polynomial.2.test.cpp
+    title: test/matrix/characteristic_polynomial.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix/inverse_matrix.0.test.cpp
     title: test/matrix/inverse_matrix.0.test.cpp
@@ -436,6 +442,7 @@ data:
   - poly.hpp
   - karatsuba.hpp
   - conv_mod.hpp
+  - mat_extra.hpp
   - poly_product.hpp
   - subproduct_tree.hpp
   - semi_relaxed_conv.hpp
@@ -453,6 +460,7 @@ data:
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
+  - test/matrix/characteristic_polynomial.2.test.cpp
   - test/matrix/adjugate_matrix.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
   - test/matrix/characteristic_polynomial.0.test.cpp
