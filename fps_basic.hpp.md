@@ -38,7 +38,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: mat_basic.hpp
     title: mat_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':warning:'
     path: mat_extra.hpp
     title: mat_extra.hpp
   - icon: ':heavy_check_mark:'
@@ -147,9 +147,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/matrix/characteristic_polynomial.2.test.cpp
-    title: test/matrix/characteristic_polynomial.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/matrix/inverse_matrix.0.test.cpp
     title: test/matrix/inverse_matrix.0.test.cpp
@@ -465,7 +462,6 @@ data:
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
-  - test/matrix/characteristic_polynomial.2.test.cpp
   - test/matrix/adjugate_matrix.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
   - test/matrix/characteristic_polynomial.0.test.cpp
