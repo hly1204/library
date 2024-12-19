@@ -533,11 +533,14 @@ data:
     \ j < d; ++j) A[s][i][j] *= iv;\n        for (int i = 0; i < s; ++i) sub(A[i],\
     \ A[s], A[i][s][d - 1], n, d);\n        for (int i = s + 1; i < n; ++i) sub(A[i],\
     \ A[s], A[i][s][d - 1], n, d);\n    }\n    if (t > n * (d - 1)) return {};\n \
-    \   Matrix<Tp> AA(n * (d - 1), std::vector<Tp>(n * (d - 1)));\n    for (int i\
+    \   //     [      I            ]\n    //     [         ...       ]\n    // B =\
+    \ [             ...   ]\n    //     [                  I]\n    //     [C_0 C_1\
+    \ ... C_(d-1)]\n    // det(B) = det(x^(d-1)I - ... - C_0) (Elegia, zx2003, mayaohua2003).\n\
+    \    Matrix<Tp> B(n * (d - 1), std::vector<Tp>(n * (d - 1)));\n    for (int i\
     \ = 0; i < d - 1; ++i)\n        for (int j = 0; j < n; ++j)\n            for (int\
-    \ k = 0; k < n; ++k) AA[(d - 2) * n + j][i * n + k] = -A[j][k][i];\n    for (int\
-    \ i = 0; i < d - 2; ++i)\n        for (int j = 0; j < n; ++j) AA[i * n + j][(i\
-    \ + 1) * n + j] = 1;\n    auto res = charpoly(AA);\n    res.erase(res.begin(),\
+    \ k = 0; k < n; ++k) B[(d - 2) * n + j][i * n + k] = -A[j][k][i];\n    for (int\
+    \ i = 0; i < d - 2; ++i)\n        for (int j = 0; j < n; ++j) B[i * n + j][(i\
+    \ + 1) * n + j] = 1;\n    auto res = charpoly(B);\n    res.erase(res.begin(),\
     \ res.begin() + t);\n    for (int i = 0; i < (int)res.size(); ++i) res[i] *= m;\n\
     \    return res;\n}\n"
   code: "#pragma once\n\n#include \"mat_basic.hpp\"\n#include <algorithm>\n#include\
@@ -571,13 +574,16 @@ data:
     \ i < n; ++i)\n            for (int j = 0; j < d; ++j) A[s][i][j] *= iv;\n   \
     \     for (int i = 0; i < s; ++i) sub(A[i], A[s], A[i][s][d - 1], n, d);\n   \
     \     for (int i = s + 1; i < n; ++i) sub(A[i], A[s], A[i][s][d - 1], n, d);\n\
-    \    }\n    if (t > n * (d - 1)) return {};\n    Matrix<Tp> AA(n * (d - 1), std::vector<Tp>(n\
-    \ * (d - 1)));\n    for (int i = 0; i < d - 1; ++i)\n        for (int j = 0; j\
-    \ < n; ++j)\n            for (int k = 0; k < n; ++k) AA[(d - 2) * n + j][i * n\
-    \ + k] = -A[j][k][i];\n    for (int i = 0; i < d - 2; ++i)\n        for (int j\
-    \ = 0; j < n; ++j) AA[i * n + j][(i + 1) * n + j] = 1;\n    auto res = charpoly(AA);\n\
-    \    res.erase(res.begin(), res.begin() + t);\n    for (int i = 0; i < (int)res.size();\
-    \ ++i) res[i] *= m;\n    return res;\n}\n"
+    \    }\n    if (t > n * (d - 1)) return {};\n    //     [      I            ]\n\
+    \    //     [         ...       ]\n    // B = [             ...   ]\n    //  \
+    \   [                  I]\n    //     [C_0 C_1 ... C_(d-1)]\n    // det(B) = det(x^(d-1)I\
+    \ - ... - C_0) (Elegia, zx2003, mayaohua2003).\n    Matrix<Tp> B(n * (d - 1),\
+    \ std::vector<Tp>(n * (d - 1)));\n    for (int i = 0; i < d - 1; ++i)\n      \
+    \  for (int j = 0; j < n; ++j)\n            for (int k = 0; k < n; ++k) B[(d -\
+    \ 2) * n + j][i * n + k] = -A[j][k][i];\n    for (int i = 0; i < d - 2; ++i)\n\
+    \        for (int j = 0; j < n; ++j) B[i * n + j][(i + 1) * n + j] = 1;\n    auto\
+    \ res = charpoly(B);\n    res.erase(res.begin(), res.begin() + t);\n    for (int\
+    \ i = 0; i < (int)res.size(); ++i) res[i] *= m;\n    return res;\n}\n"
   dependsOn:
   - mat_basic.hpp
   - poly.hpp
@@ -591,7 +597,7 @@ data:
   isVerificationFile: false
   path: mat_extra.hpp
   requiredBy: []
-  timestamp: '2024-12-19 21:25:08+08:00'
+  timestamp: '2024-12-19 21:52:10+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: mat_extra.hpp
