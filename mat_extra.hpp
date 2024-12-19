@@ -92,8 +92,8 @@ inline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A) {
     //     [         ...       ]
     // B = [             ...   ]
     //     [                  I]
-    //     [C_0 C_1 ... C_(d-1)]
-    // det(B) = det(x^(d-1)I - ... - C_0) (Elegia, zx2003, mayaohua2003).
+    //     [C_0 C_1 ... C_(d-2)]
+    // charpoly(B) = det(x^(d-1)I - ... - C_0) (Elegia, zx2003, mayaohua2003).
     Matrix<Tp> B(n * (d - 1), std::vector<Tp>(n * (d - 1)));
     for (int i = 0; i < d - 1; ++i)
         for (int j = 0; j < n; ++j)
