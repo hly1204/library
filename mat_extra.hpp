@@ -5,6 +5,29 @@
 #include <cassert>
 #include <vector>
 
+/*
+test case generator:
+```sage
+import random
+R.<x> = GF(998244353)[]
+N = 5
+d = 4
+if __name__ == '__main__':
+    print(N, d)
+    A = zero_matrix(GF(998244353), N)
+    L = []
+    for _ in range(d):
+        B = random_matrix(GF(998244353), N, algorithm='echelonizable', rank=random.randint(1,N))
+        L.append(B)
+        A = x*A + B
+    L.reverse()
+    for i in range(len(L)):
+        for j in range(N):
+            print(' '.join([str(k) for k in L[i][j].list()]), end='\n')
+    print(det(A).list())
+```
+*/
+
 // returns det(A0 + xA1 + ... + x^(d-1) Ad)
 // test: https://qoj.ac/contest/1536/problem/59
 // see:
