@@ -65,13 +65,19 @@ inline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A) {
         for (int i = s + 1; i < n; ++i) sub(A[i], A[s], A[i][s][d - 1], n, d);
     }
     if (t > n * (d - 1)) return {};
-    Matrix<Tp> AA(n * (d - 1), std::vector<Tp>(n * (d - 1)));
+    //     [      I            ]
+    //     [         ...       ]
+    // B = [             ...   ]
+    //     [                  I]
+    //     [C_0 C_1 ... C_(d-1)]
+    // det(B) = det(x^(d-1)I - ... - C_0) (Elegia, zx2003, mayaohua2003).
+    Matrix<Tp> B(n * (d - 1), std::vector<Tp>(n * (d - 1)));
     for (int i = 0; i < d - 1; ++i)
         for (int j = 0; j < n; ++j)
-            for (int k = 0; k < n; ++k) AA[(d - 2) * n + j][i * n + k] = -A[j][k][i];
+            for (int k = 0; k < n; ++k) B[(d - 2) * n + j][i * n + k] = -A[j][k][i];
     for (int i = 0; i < d - 2; ++i)
-        for (int j = 0; j < n; ++j) AA[i * n + j][(i + 1) * n + j] = 1;
-    auto res = charpoly(AA);
+        for (int j = 0; j < n; ++j) B[i * n + j][(i + 1) * n + j] = 1;
+    auto res = charpoly(B);
     res.erase(res.begin(), res.begin() + t);
     for (int i = 0; i < (int)res.size(); ++i) res[i] *= m;
     return res;
