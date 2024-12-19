@@ -503,8 +503,15 @@ data:
     \ 0; i < n * 2; v = mat_apply(A, v), ++i)\n        for (int j = 0; j < n; ++j)\
     \ proj[i] += u[j] * v[j];\n    const auto [P, Q] = rational_reconstruction(proj);\n\
     \    assert(Q.deg() <= n);\n    return Q.monic();\n}\n#line 7 \"mat_extra.hpp\"\
-    \n\n// returns det(A0 + xA1 + ... + x^(d-1) Ad)\n// test: https://qoj.ac/contest/1536/problem/59\n\
-    // see:\n// [1]: Elegia's comment.\n//      https://codeforces.com/blog/entry/92248?#comment-818786\n\
+    \n\n/*\ntest case generator:\n```sage\nimport random\nR.<x> = GF(998244353)[]\n\
+    N = 5\nd = 4\nif __name__ == '__main__':\n    print(N, d)\n    A = zero_matrix(GF(998244353),\
+    \ N)\n    L = []\n    for _ in range(d):\n        B = random_matrix(GF(998244353),\
+    \ N, algorithm='echelonizable', rank=random.randint(1,N))\n        L.append(B)\n\
+    \        A = x*A + B\n    L.reverse()\n    for i in range(len(L)):\n        for\
+    \ j in range(N):\n            print(' '.join([str(k) for k in L[i][j].list()]),\
+    \ end='\\n')\n    print(det(A).list())\n```\n*/\n\n// returns det(A0 + xA1 + ...\
+    \ + x^(d-1) Ad)\n// test: https://qoj.ac/contest/1536/problem/59\n// see:\n//\
+    \ [1]: Elegia's comment.\n//      https://codeforces.com/blog/entry/92248?#comment-818786\n\
     template <typename Tp>\ninline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A)\
     \ {\n    assert(is_square_matrix(A));\n    auto sub = [](auto &a, const auto &b,\
     \ Tp v, int n, int d) {\n        if (v == 0) return;\n        for (int i = 0;\
@@ -544,46 +551,53 @@ data:
     \ res.begin() + t);\n    for (int i = 0; i < (int)res.size(); ++i) res[i] *= m;\n\
     \    return res;\n}\n"
   code: "#pragma once\n\n#include \"mat_basic.hpp\"\n#include <algorithm>\n#include\
-    \ <cassert>\n#include <vector>\n\n// returns det(A0 + xA1 + ... + x^(d-1) Ad)\n\
-    // test: https://qoj.ac/contest/1536/problem/59\n// see:\n// [1]: Elegia's comment.\n\
-    //      https://codeforces.com/blog/entry/92248?#comment-818786\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A) {\n    assert(is_square_matrix(A));\n\
-    \    auto sub = [](auto &a, const auto &b, Tp v, int n, int d) {\n        if (v\
-    \ == 0) return;\n        for (int i = 0; i < n; ++i)\n            for (int j =\
-    \ 0; j < d; ++j) a[i][j] -= v * b[i][j];\n    };\n    const int n = height(A);\n\
-    \    const int d = (n == 0 ? 0 : (int)A[0][0].size());\n    Tp m        = 1;\n\
-    \    for (int i = 0; i < n; ++i) {\n        int pivot = i;\n        for (; pivot\
-    \ < n; ++pivot)\n            if (A[pivot][i][d - 1] != 0) break;\n        if (pivot\
-    \ == n) continue;\n        if (pivot != i) {\n            A[pivot].swap(A[i]);\n\
-    \            m = -m;\n        }\n        m *= A[i][i][d - 1];\n        const auto\
-    \ iv = A[i][i][d - 1].inv();\n        for (int j = 0; j < n; ++j)\n          \
-    \  for (int k = 0; k < d; ++k) A[i][j][k] *= iv;\n        for (int j = 0; j <\
-    \ i; ++j) sub(A[j], A[i], A[j][i][d - 1], n, d);\n        for (int j = i + 1;\
-    \ j < n; ++j) sub(A[j], A[i], A[j][i][d - 1], n, d);\n    }\n    int t = 0;\n\
-    \    for (; t <= n * (d - 1); ++t) {\n        int s = 0;\n        for (; s < n;\
-    \ ++s)\n            if (std::all_of(A[s].begin(), A[s].end(), [d](const auto &a)\
-    \ { return a[d - 1] == 0; }))\n                break;\n        if (s == n) break;\n\
-    \        for (int i = 0; i < n; ++i)\n            std::rotate(A[s][i].rbegin(),\
-    \ A[s][i].rbegin() + 1, A[s][i].rend());\n        for (int i = 0; i < s; ++i)\
-    \ sub(A[s], A[i], A[s][i][d - 1], n, d);\n        for (int i = s + 1; i < n; ++i)\
-    \ sub(A[s], A[i], A[s][i][d - 1], n, d);\n        int pivot = 0;\n        for\
-    \ (; pivot < n; ++pivot)\n            if (A[s][pivot][d - 1] != 0) break;\n  \
-    \      if (pivot == n) continue;\n        if (pivot != s) {\n            A[pivot].swap(A[s]);\n\
-    \            m = -m;\n            s = pivot;\n        }\n        m *= A[s][s][d\
-    \ - 1];\n        const auto iv = A[s][s][d - 1].inv();\n        for (int i = 0;\
-    \ i < n; ++i)\n            for (int j = 0; j < d; ++j) A[s][i][j] *= iv;\n   \
-    \     for (int i = 0; i < s; ++i) sub(A[i], A[s], A[i][s][d - 1], n, d);\n   \
-    \     for (int i = s + 1; i < n; ++i) sub(A[i], A[s], A[i][s][d - 1], n, d);\n\
-    \    }\n    if (t > n * (d - 1)) return {};\n    //     [      I            ]\n\
-    \    //     [         ...       ]\n    // B = [             ...   ]\n    //  \
-    \   [                  I]\n    //     [C_0 C_1 ... C_(d-1)]\n    // det(B) = det(x^(d-1)I\
-    \ - ... - C_0) (Elegia, zx2003, mayaohua2003).\n    Matrix<Tp> B(n * (d - 1),\
-    \ std::vector<Tp>(n * (d - 1)));\n    for (int i = 0; i < d - 1; ++i)\n      \
-    \  for (int j = 0; j < n; ++j)\n            for (int k = 0; k < n; ++k) B[(d -\
-    \ 2) * n + j][i * n + k] = -A[j][k][i];\n    for (int i = 0; i < d - 2; ++i)\n\
-    \        for (int j = 0; j < n; ++j) B[i * n + j][(i + 1) * n + j] = 1;\n    auto\
-    \ res = charpoly(B);\n    res.erase(res.begin(), res.begin() + t);\n    for (int\
-    \ i = 0; i < (int)res.size(); ++i) res[i] *= m;\n    return res;\n}\n"
+    \ <cassert>\n#include <vector>\n\n/*\ntest case generator:\n```sage\nimport random\n\
+    R.<x> = GF(998244353)[]\nN = 5\nd = 4\nif __name__ == '__main__':\n    print(N,\
+    \ d)\n    A = zero_matrix(GF(998244353), N)\n    L = []\n    for _ in range(d):\n\
+    \        B = random_matrix(GF(998244353), N, algorithm='echelonizable', rank=random.randint(1,N))\n\
+    \        L.append(B)\n        A = x*A + B\n    L.reverse()\n    for i in range(len(L)):\n\
+    \        for j in range(N):\n            print(' '.join([str(k) for k in L[i][j].list()]),\
+    \ end='\\n')\n    print(det(A).list())\n```\n*/\n\n// returns det(A0 + xA1 + ...\
+    \ + x^(d-1) Ad)\n// test: https://qoj.ac/contest/1536/problem/59\n// see:\n//\
+    \ [1]: Elegia's comment.\n//      https://codeforces.com/blog/entry/92248?#comment-818786\n\
+    template <typename Tp>\ninline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A)\
+    \ {\n    assert(is_square_matrix(A));\n    auto sub = [](auto &a, const auto &b,\
+    \ Tp v, int n, int d) {\n        if (v == 0) return;\n        for (int i = 0;\
+    \ i < n; ++i)\n            for (int j = 0; j < d; ++j) a[i][j] -= v * b[i][j];\n\
+    \    };\n    const int n = height(A);\n    const int d = (n == 0 ? 0 : (int)A[0][0].size());\n\
+    \    Tp m        = 1;\n    for (int i = 0; i < n; ++i) {\n        int pivot =\
+    \ i;\n        for (; pivot < n; ++pivot)\n            if (A[pivot][i][d - 1] !=\
+    \ 0) break;\n        if (pivot == n) continue;\n        if (pivot != i) {\n  \
+    \          A[pivot].swap(A[i]);\n            m = -m;\n        }\n        m *=\
+    \ A[i][i][d - 1];\n        const auto iv = A[i][i][d - 1].inv();\n        for\
+    \ (int j = 0; j < n; ++j)\n            for (int k = 0; k < d; ++k) A[i][j][k]\
+    \ *= iv;\n        for (int j = 0; j < i; ++j) sub(A[j], A[i], A[j][i][d - 1],\
+    \ n, d);\n        for (int j = i + 1; j < n; ++j) sub(A[j], A[i], A[j][i][d -\
+    \ 1], n, d);\n    }\n    int t = 0;\n    for (; t <= n * (d - 1); ++t) {\n   \
+    \     int s = 0;\n        for (; s < n; ++s)\n            if (std::all_of(A[s].begin(),\
+    \ A[s].end(), [d](const auto &a) { return a[d - 1] == 0; }))\n               \
+    \ break;\n        if (s == n) break;\n        for (int i = 0; i < n; ++i)\n  \
+    \          std::rotate(A[s][i].rbegin(), A[s][i].rbegin() + 1, A[s][i].rend());\n\
+    \        for (int i = 0; i < s; ++i) sub(A[s], A[i], A[s][i][d - 1], n, d);\n\
+    \        for (int i = s + 1; i < n; ++i) sub(A[s], A[i], A[s][i][d - 1], n, d);\n\
+    \        int pivot = 0;\n        for (; pivot < n; ++pivot)\n            if (A[s][pivot][d\
+    \ - 1] != 0) break;\n        if (pivot == n) continue;\n        if (pivot != s)\
+    \ {\n            A[pivot].swap(A[s]);\n            m = -m;\n            s = pivot;\n\
+    \        }\n        m *= A[s][s][d - 1];\n        const auto iv = A[s][s][d -\
+    \ 1].inv();\n        for (int i = 0; i < n; ++i)\n            for (int j = 0;\
+    \ j < d; ++j) A[s][i][j] *= iv;\n        for (int i = 0; i < s; ++i) sub(A[i],\
+    \ A[s], A[i][s][d - 1], n, d);\n        for (int i = s + 1; i < n; ++i) sub(A[i],\
+    \ A[s], A[i][s][d - 1], n, d);\n    }\n    if (t > n * (d - 1)) return {};\n \
+    \   //     [      I            ]\n    //     [         ...       ]\n    // B =\
+    \ [             ...   ]\n    //     [                  I]\n    //     [C_0 C_1\
+    \ ... C_(d-1)]\n    // det(B) = det(x^(d-1)I - ... - C_0) (Elegia, zx2003, mayaohua2003).\n\
+    \    Matrix<Tp> B(n * (d - 1), std::vector<Tp>(n * (d - 1)));\n    for (int i\
+    \ = 0; i < d - 1; ++i)\n        for (int j = 0; j < n; ++j)\n            for (int\
+    \ k = 0; k < n; ++k) B[(d - 2) * n + j][i * n + k] = -A[j][k][i];\n    for (int\
+    \ i = 0; i < d - 2; ++i)\n        for (int j = 0; j < n; ++j) B[i * n + j][(i\
+    \ + 1) * n + j] = 1;\n    auto res = charpoly(B);\n    res.erase(res.begin(),\
+    \ res.begin() + t);\n    for (int i = 0; i < (int)res.size(); ++i) res[i] *= m;\n\
+    \    return res;\n}\n"
   dependsOn:
   - mat_basic.hpp
   - poly.hpp
@@ -597,7 +611,7 @@ data:
   isVerificationFile: false
   path: mat_extra.hpp
   requiredBy: []
-  timestamp: '2024-12-19 21:52:10+08:00'
+  timestamp: '2024-12-19 22:05:46+08:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: mat_extra.hpp
