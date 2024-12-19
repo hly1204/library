@@ -538,9 +538,42 @@ data:
     \ < n; ++i)\n        for (int j = 0; j < n; ++j) AA[i][j] = -A[i][j][0];\n   \
     \ auto res = charpoly(AA);\n    res.erase(res.begin(), res.begin() + t);\n   \
     \ for (int i = 0; i < (int)res.size(); ++i) res[i] *= m;\n    return res;\n}\n\
-    #line 2 \"modint.hpp\"\n\n#line 5 \"modint.hpp\"\n\ntemplate <unsigned Mod>\n\
-    class ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\"\
-    );\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \n// returns det(A0 + xA1 + ... + x^(d-1) Ad)\n// see:\n// [1]: Elegia's comment.\n\
+    //      https://codeforces.com/blog/entry/92248?#comment-818786\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A) {\n    assert(is_square_matrix(A));\n\
+    \    auto sub = [](auto &a, const auto &b, Tp v, int n, int d) {\n        if (v\
+    \ == 0) return;\n        for (int i = 0; i < n; ++i)\n            for (int j =\
+    \ 0; j < d; ++j) a[i][j] -= v * b[i][j];\n    };\n    const int n = height(A);\n\
+    \    const int d = (n == 0 ? 0 : (int)A[0][0].size());\n    Tp m        = 1;\n\
+    \    for (int i = 0; i < n; ++i) {\n        int pivot = i;\n        for (; pivot\
+    \ < n; ++pivot)\n            if (A[pivot][i][d - 1] != 0) break;\n        if (pivot\
+    \ == n) continue;\n        if (pivot != i) {\n            A[pivot].swap(A[i]);\n\
+    \            m = -m;\n        }\n        m *= A[i][i][d - 1];\n        const auto\
+    \ iv = A[i][i][d - 1].inv();\n        for (int j = 0; j < n; ++j)\n          \
+    \  for (int k = 0; k < d; ++k) A[i][j][k] *= iv;\n        for (int j = 0; j <\
+    \ i; ++j) sub(A[j], A[i], A[j][i][d - 1], n, d);\n        for (int j = i + 1;\
+    \ j < n; ++j) sub(A[j], A[i], A[j][i][d - 1], n, d);\n    }\n    int t = 0;\n\
+    \    for (; t <= n * (d - 1); ++t) {\n        int s = 0;\n        for (; s < n;\
+    \ ++s)\n            if (std::all_of(A[s].begin(), A[s].end(), [d](const auto &a)\
+    \ { return a[d - 1] == 0; }))\n                break;\n        if (s == n) break;\n\
+    \        for (int i = 0; i < n; ++i)\n            std::rotate(A[s][i].rbegin(),\
+    \ A[s][i].rbegin() + 1, A[s][i].rend());\n        for (int i = 0; i < s; ++i)\
+    \ sub(A[s], A[i], A[s][i][d - 1], n, d);\n        for (int i = s + 1; i < n; ++i)\
+    \ sub(A[s], A[i], A[s][i][d - 1], n, d);\n        if (A[s][s][d - 1] != 0) {\n\
+    \            m *= A[s][s][d - 1];\n            const auto iv = A[s][s][d - 1].inv();\n\
+    \            for (int i = 0; i < n; ++i)\n                for (int j = 0; j <\
+    \ d; ++j) A[s][i][j] *= iv;\n            for (int i = 0; i < s; ++i) sub(A[i],\
+    \ A[s], A[i][s][d - 1], n, d);\n            for (int i = s + 1; i < n; ++i) sub(A[i],\
+    \ A[s], A[i][s][d - 1], n, d);\n        }\n    }\n    if (t > n * (d - 1)) return\
+    \ {};\n    Matrix<Tp> AA(n * (d - 1), std::vector<Tp>(n * (d - 1)));\n    for\
+    \ (int i = 0; i < d - 1; ++i)\n        for (int j = 0; j < n; ++j)\n         \
+    \   for (int k = 0; k < n; ++k) AA[(d - 2) * n + j][i * n + k] = -A[j][k][i];\n\
+    \    for (int i = 0; i < d - 2; ++i)\n        for (int j = 0; j < n; ++j) AA[i\
+    \ * n + j][(i + 1) * n + j] = 1;\n    auto res = charpoly(AA);\n    res.erase(res.begin(),\
+    \ res.begin() + t);\n    for (int i = 0; i < (int)res.size(); ++i) res[i] *= m;\n\
+    \    return res;\n}\n#line 2 \"modint.hpp\"\n\n#line 5 \"modint.hpp\"\n\ntemplate\
+    \ <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod`\
+    \ must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
     \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
     \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
     \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
@@ -610,7 +643,7 @@ data:
   isVerificationFile: true
   path: test/matrix/characteristic_polynomial.2.test.cpp
   requiredBy: []
-  timestamp: '2024-12-18 23:07:09+08:00'
+  timestamp: '2024-12-19 20:26:14+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/matrix/characteristic_polynomial.2.test.cpp
