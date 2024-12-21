@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/consecutive_terms_of_linear_recurrent_sequence"
 
-#include "c_recursive.hpp"
+#include "c_finite.hpp"
 #include "fft.hpp"
 #include "modint.hpp"
 #include <iostream>

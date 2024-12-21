@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence"
 
-#include "c_recursive.hpp"
+#include "c_finite.hpp"
 #include "modint.hpp"
 #include <iostream>
 #include <vector>
