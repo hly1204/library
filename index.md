@@ -20,7 +20,7 @@ data:
       title: bitwise_conv.hpp
     - icon: ':heavy_check_mark:'
       path: c_finite.hpp
-      title: c_finite.hpp
+      title: C-Finite Sequence
     - icon: ':heavy_check_mark:'
       path: chinese_remainder.hpp
       title: chinese_remainder.hpp

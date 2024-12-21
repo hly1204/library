@@ -7,7 +7,7 @@ data:
     title: basis.hpp
   - icon: ':heavy_check_mark:'
     path: c_finite.hpp
-    title: c_finite.hpp
+    title: C-Finite Sequence
   - icon: ':heavy_check_mark:'
     path: conv_mod.hpp
     title: conv_mod.hpp

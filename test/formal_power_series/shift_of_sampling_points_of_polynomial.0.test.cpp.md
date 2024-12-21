@@ -6,7 +6,7 @@ data:
     title: binomial.hpp
   - icon: ':heavy_check_mark:'
     path: c_finite.hpp
-    title: c_finite.hpp
+    title: C-Finite Sequence
   - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT
