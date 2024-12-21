@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial"
 
-#include "c_recursive.hpp"
+#include "c_finite.hpp"
 #include "fps_basic.hpp"
 #include "modint.hpp"
 #include <iostream>
@@ -15,7 +15,7 @@ int main() {
     std::cin >> n >> m >> c;
     std::vector<mint> A(n);
     for (int i = 0; i < n; ++i) std::cin >> A[i];
-    const auto Q = fps_pow(std::vector{mint(1), mint(-1)}, n, n + 1);
+    const auto Q = fps_pow(std::vector{mint(1), mint(-1)}, n, n);
     auto P       = convolution(A, Q);
     P.resize(n);
     const auto res = slice_coeff_rational(P, Q, c.val(), c.val() + m);

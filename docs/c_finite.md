@@ -1,17 +1,17 @@
 ---
-title: C-recursive Sequence
-documentation_of: ../c_recursive.hpp
+title: C-Finite Sequence
+documentation_of: ../f_finite.hpp
 ---
 
-## C-recursive Sequence
+## C-Finite Sequence
 
-The sequence $\left(a _ n\right) _ {n\geq 0}$ is said to be C-recursive if it has form
+The sequence $\left(a _ n\right) _ {n\geq 0}$ is said to be C-Finite if it has form
 
 $$
 a _ n=\sum _ {j=1}^d c _ j a _ {n-j}, \qquad (n \geq d)
 $$
 
-here C-recursive means linear with **constant** coefficients. $d$ is said to be the **order** of the recurrent relation. We are given $c _ 1, \dots , c _ d$ and **initial terms** $a _ 0, \dots, a _ {d-1}$ in $\mathbb{C}$, the following algorithm could help us computing $a _ k$ for $k\gg d$.
+here C-Finite means linear with **constant** coefficients. $d$ is said to be the **order** of the recurrent relation. We are given $c _ 1, \dots , c _ d$ and **initial terms** $a _ 0, \dots, a _ {d-1}$ in $\mathbb{C}$, the following algorithm could help us computing $a _ k$ for $k\gg d$.
 
 We define $\Gamma(x):=x^d-\sum _ {j=0}^{d-1}c _ {d-j}x^j$ to be the **characteristic polynomial** of $\left(a _ n\right) _ {n\geq 0}$.
 
