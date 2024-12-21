@@ -1,6 +1,6 @@
 ---
 title: C-Finite Sequence
-documentation_of: ../f_finite.hpp
+documentation_of: ../c_finite.hpp
 ---
 
 ## C-Finite Sequence
