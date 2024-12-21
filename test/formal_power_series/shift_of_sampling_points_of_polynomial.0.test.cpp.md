@@ -1,35 +1,35 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
-    path: c_recursive.hpp
-    title: C-recursive Sequence
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
+    path: c_finite.hpp
+    title: c_finite.hpp
+  - icon: ':question:'
     path: fft.hpp
     title: FFT
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: fft_doubling.hpp
     title: FFT Doubling
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
@@ -37,7 +37,7 @@ data:
     - https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
   bundledCode: "#line 1 \"test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial\"\
-    \n\n#line 2 \"c_recursive.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
+    \n\n#line 2 \"c_finite.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
     #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
     \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
     \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
@@ -318,7 +318,7 @@ data:
     \ < 0) return {Tp(0)};\n    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A,\
     \ B);\n\n    auto Q = fps_div(std::vector(A.rend() - (degA + 1), A.rend()),\n\
     \                     std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n\
-    \    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 11 \"c_recursive.hpp\"\
+    \    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 11 \"c_finite.hpp\"\
     \n\n// see:\n// [1]: Alin Bostan, Ryuhei Mori.\n//      A Simple and Fast Algorithm\
     \ for Computing the N-th Term of a Linearly Recurrent Sequence.\n//      https://arxiv.org/abs/2008.08822\n\
     \ntemplate <typename Tp>\ninline void fft_high(std::vector<Tp> &a) {\n    const\
@@ -445,22 +445,21 @@ data:
     \    using mint = ModInt<998244353>;\n    int n, m;\n    mint c;\n    std::cin\
     \ >> n >> m >> c;\n    std::vector<mint> A(n);\n    for (int i = 0; i < n; ++i)\
     \ std::cin >> A[i];\n    const auto Q = fps_pow(std::vector{mint(1), mint(-1)},\
-    \ n, n + 1);\n    auto P       = convolution(A, Q);\n    P.resize(n);\n    const\
-    \ auto res = slice_coeff_rational(P, Q, c.val(), c.val() + m);\n    for (int i\
-    \ = 0; i < (int)res.size(); ++i) std::cout << res[i] << ' ';\n    return 0;\n\
-    }\n"
+    \ n, n);\n    auto P       = convolution(A, Q);\n    P.resize(n);\n    const auto\
+    \ res = slice_coeff_rational(P, Q, c.val(), c.val() + m);\n    for (int i = 0;\
+    \ i < (int)res.size(); ++i) std::cout << res[i] << ' ';\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial\"\
-    \n\n#include \"c_recursive.hpp\"\n#include \"fps_basic.hpp\"\n#include \"modint.hpp\"\
+    \n\n#include \"c_finite.hpp\"\n#include \"fps_basic.hpp\"\n#include \"modint.hpp\"\
     \n#include <iostream>\n#include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
     \    mint c;\n    std::cin >> n >> m >> c;\n    std::vector<mint> A(n);\n    for\
     \ (int i = 0; i < n; ++i) std::cin >> A[i];\n    const auto Q = fps_pow(std::vector{mint(1),\
-    \ mint(-1)}, n, n + 1);\n    auto P       = convolution(A, Q);\n    P.resize(n);\n\
+    \ mint(-1)}, n, n);\n    auto P       = convolution(A, Q);\n    P.resize(n);\n\
     \    const auto res = slice_coeff_rational(P, Q, c.val(), c.val() + m);\n    for\
     \ (int i = 0; i < (int)res.size(); ++i) std::cout << res[i] << ' ';\n    return\
     \ 0;\n}\n"
   dependsOn:
-  - c_recursive.hpp
+  - c_finite.hpp
   - fft.hpp
   - fft_doubling.hpp
   - fps_basic.hpp
@@ -471,8 +470,8 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-06 22:27:00+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-12-21 23:40:04+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
 layout: document

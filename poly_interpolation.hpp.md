@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: batch_inv.hpp
     title: batch_inv.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
   _extendedRequiredBy: []
@@ -102,7 +102,7 @@ $$
 f(x) = \sum _ {0 \leq i \lt n}\left(k_i \frac{(-1)^{n - 1 - i}}{(n - 1 - i)!} \prod _ {i \lt j \lt n}(x - j)\right).
 $$
 
-### C-recursive sequence
+### C-Finite sequence
 
 The O.g.f. of $\left(f(j)\right) _ {j \geq 0}$ is
 
