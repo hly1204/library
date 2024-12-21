@@ -1,35 +1,35 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: c_finite.hpp
     title: c_finite.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: fft_doubling.hpp
     title: FFT Doubling
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: poly_basic.hpp
     title: poly_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
@@ -445,16 +445,17 @@ data:
     \    using mint = ModInt<998244353>;\n    int n, m;\n    mint c;\n    std::cin\
     \ >> n >> m >> c;\n    std::vector<mint> A(n);\n    for (int i = 0; i < n; ++i)\
     \ std::cin >> A[i];\n    const auto Q = fps_pow(std::vector{mint(1), mint(-1)},\
-    \ n, n);\n    auto P       = convolution(A, Q);\n    P.resize(n);\n    const auto\
-    \ res = slice_coeff_rational(P, Q, c.val(), c.val() + m);\n    for (int i = 0;\
-    \ i < (int)res.size(); ++i) std::cout << res[i] << ' ';\n    return 0;\n}\n"
+    \ n, n + 1);\n    auto P       = convolution(A, Q);\n    P.resize(n);\n    const\
+    \ auto res = slice_coeff_rational(P, Q, c.val(), c.val() + m);\n    for (int i\
+    \ = 0; i < (int)res.size(); ++i) std::cout << res[i] << ' ';\n    return 0;\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial\"\
     \n\n#include \"c_finite.hpp\"\n#include \"fps_basic.hpp\"\n#include \"modint.hpp\"\
     \n#include <iostream>\n#include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
     \    mint c;\n    std::cin >> n >> m >> c;\n    std::vector<mint> A(n);\n    for\
     \ (int i = 0; i < n; ++i) std::cin >> A[i];\n    const auto Q = fps_pow(std::vector{mint(1),\
-    \ mint(-1)}, n, n);\n    auto P       = convolution(A, Q);\n    P.resize(n);\n\
+    \ mint(-1)}, n, n + 1);\n    auto P       = convolution(A, Q);\n    P.resize(n);\n\
     \    const auto res = slice_coeff_rational(P, Q, c.val(), c.val() + m);\n    for\
     \ (int i = 0; i < (int)res.size(); ++i) std::cout << res[i] << ' ';\n    return\
     \ 0;\n}\n"
@@ -470,8 +471,8 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-21 23:40:04+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-12-21 23:48:20+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
 layout: document

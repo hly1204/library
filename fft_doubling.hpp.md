@@ -1,20 +1,26 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT
   _extendedRequiredBy:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: c_finite.hpp
     title: c_finite.hpp
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+    title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+    title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"fft_doubling.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
@@ -152,8 +158,10 @@ data:
   requiredBy:
   - c_finite.hpp
   timestamp: '2024-12-03 09:02:32+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
 documentation_of: fft_doubling.hpp
 layout: document
