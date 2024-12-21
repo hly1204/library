@@ -24,7 +24,7 @@ data:
     title: semi_relaxed_conv.hpp
   - icon: ':heavy_check_mark:'
     path: subproduct_tree.hpp
-    title: subproduct_tree.hpp
+    title: Subproduct Tree
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false

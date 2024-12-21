@@ -137,7 +137,7 @@ data:
       title: sqrt_mod.hpp
     - icon: ':heavy_check_mark:'
       path: subproduct_tree.hpp
-      title: subproduct_tree.hpp
+      title: Subproduct Tree
     - icon: ':heavy_check_mark:'
       path: subset_conv.hpp
       title: subset_conv.hpp

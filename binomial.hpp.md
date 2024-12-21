@@ -58,7 +58,7 @@ data:
     title: shift_sample_points.hpp
   - icon: ':heavy_check_mark:'
     path: subproduct_tree.hpp
-    title: subproduct_tree.hpp
+    title: Subproduct Tree
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/convolution/convolution_mod.1.test.cpp
