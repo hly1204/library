@@ -59,7 +59,53 @@ inline std::vector<std::vector<Tp>> convolution_2d_ks(const std::vector<std::vec
     const int lenB = max_len_x_ks(b);
     if (lenA == 0 || lenB == 0) return std::vector<std::vector<Tp>>(a.size() + b.size() - 1);
     const int N = lenA + lenB - 1;
-    auto res    = convolution(pack_2d_ks(a, N), pack_2d_ks(b, N));
-    res.resize((a.size() + b.size() - 1) * N);
-    return unpack_2d_ks(res, N);
+    auto ab     = convolution(pack_2d_ks(a, N), pack_2d_ks(b, N));
+    ab.resize((a.size() + b.size() - 1) * N);
+    return unpack_2d_ks(ab, N);
+}
+
+// see:
+// [1]: Faster polynomial multiplication via multipoint Kronecker substitution.
+//      https://doi.org/10.1016/j.jsc.2009.05.004
+template <typename Tp>
+inline std::vector<std::vector<Tp>>
+convolution_2d_ks_reciprocal(const std::vector<std::vector<Tp>> &a,
+                             const std::vector<std::vector<Tp>> &b) {
+    if (a.empty() || b.empty()) return {};
+    const int lenA = max_len_x_ks(a);
+    const int lenB = max_len_x_ks(b);
+    if (lenA == 0 || lenB == 0) return std::vector<std::vector<Tp>>(a.size() + b.size() - 1);
+    const int N = std::max(lenA, lenB);
+    auto ab0    = convolution(pack_2d_ks(a, N), pack_2d_ks(b, N));
+
+    // returns x^(N-1) a(x^(-1), x^N)
+    auto make_reciprocal = [](const std::vector<std::vector<Tp>> &a, int N) {
+        std::vector<std::vector<Tp>> b(a.size());
+        for (int i = 0; i < (int)a.size(); ++i) {
+            b[i] = a[i];
+            b[i].resize(N);
+            std::reverse(b[i].begin(), b[i].end());
+        }
+        return b;
+    };
+
+    auto ab1 =
+        convolution(pack_2d_ks(make_reciprocal(a, N), N), pack_2d_ks(make_reciprocal(b, N), N));
+    std::vector<std::vector<Tp>> ab(a.size() + b.size() - 1, std::vector<Tp>(N * 2 - 1));
+    // restore ab[0]
+    for (int i = 0; i < N; ++i) ab[0][i] = ab0[i];
+    // ab1[0] = [x^0](x^(2N - 2) a(x^(-1), x^N) b(x^(-1), x^N))
+    for (int i = 0; i < N; ++i) ab[0][(N - 1) * 2 - i] = ab1[i];
+    // restore ab[1..] by subtracting the overlap coefficients
+    for (int i = 1; i < (int)(a.size() + b.size() - 1); ++i) {
+        // TODO: remove redundant assignment/subtraction
+        for (int j = 0; j < N * 2 - 1; ++j) {
+            ab0[(i - 1) * N + j] -= ab[i - 1][j];
+            ab1[(i - 1) * N + j] -= ab[i - 1][(N - 1) * 2 - j];
+        }
+        for (int j = 0; j < N; ++j) ab[i][j] = ab0[i * N + j];
+        for (int j = 0; j < N; ++j) ab[i][(N - 1) * 2 - j] = ab1[i * N + j];
+    }
+    for (int i = 0; i < (int)(a.size() + b.size() - 1); ++i) ab[i].resize(lenA + lenB - 1);
+    return ab;
 }
