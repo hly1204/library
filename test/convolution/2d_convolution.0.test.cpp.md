@@ -187,49 +187,75 @@ data:
     \ b[i].end());\n        }\n        return b;\n    };\n\n    // ab1 = x^(2N-2)\
     \ a(x^(-1), x^N) b(x^(-1), x^N)\n    auto ab1 =\n        convolution(pack_2d_ks(make_reciprocal(a,\
     \ N), N), pack_2d_ks(make_reciprocal(b, N), N));\n    std::vector<std::vector<Tp>>\
-    \ ab(a.size() + b.size() - 1, std::vector<Tp>(N * 2 - 1));\n    // restore ab[0]\n\
-    \    for (int i = 0; i < N; ++i) ab[0][i] = ab0[i];\n    // ab1[0] = [x^0](x^(2N\
-    \ - 2) a(x^(-1), x^N) b(x^(-1), x^N))\n    for (int i = 0; i < N; ++i) ab[0][(N\
-    \ - 1) * 2 - i] = ab1[i];\n    // restore ab[1..] by subtracting the overlap coefficients\n\
-    \    for (int i = 1; i < (int)(a.size() + b.size() - 1); ++i) {\n        // TODO:\
-    \ remove redundant assignment/subtraction\n        for (int j = 0; j < N * 2 -\
-    \ 1; ++j) {\n            ab0[(i - 1) * N + j] -= ab[i - 1][j];\n            ab1[(i\
-    \ - 1) * N + j] -= ab[i - 1][(N - 1) * 2 - j];\n        }\n        for (int j\
-    \ = 0; j < N; ++j) ab[i][j] = ab0[i * N + j];\n        for (int j = 0; j < N;\
-    \ ++j) ab[i][(N - 1) * 2 - j] = ab1[i * N + j];\n    }\n    for (int i = 0; i\
-    \ < (int)(a.size() + b.size() - 1); ++i) ab[i].resize(lenA + lenB - 1);\n    return\
-    \ ab;\n}\n\n// see:\n// [1]: David Harvey. Faster polynomial multiplication via\
-    \ multipoint Kronecker substitution.\n//      https://doi.org/10.1016/j.jsc.2009.05.004\n\
-    template <typename Tp>\ninline std::vector<std::vector<Tp>>\nconvolution_2d_ks_negated(const\
-    \ std::vector<std::vector<Tp>> &a,\n                          const std::vector<std::vector<Tp>>\
-    \ &b) {\n    if (a.empty() || b.empty()) return {};\n    const int lenA = max_len_x_ks(a);\n\
+    \ ab(a.size() + b.size() - 1, std::vector<Tp>(N * 2 - 1));\n\n    /*\n       \
+    \ example:\n                 let pack: a(x,y) |-> a(x,x^3)\n                 \
+    \     rec: a(x,y) |-> x^2 a(x^(-1),y)\n\n                 a = 1 + 2*x + 4*x^2\
+    \ + (3 + 4*x)*y\n                 b = 2 + 4*x + 5*x^2 + (5 + 8*x)*y\n        \
+    \   pack(a) = 1 + 2*x + 4*x^2 + 3*x^3 + 4*x^4\n           pack(b) = 2 + 4*x +\
+    \ 5*x^2 + 5*x^3 + 8*x^4\n      pack(rec(a)) = 4 + 2*x +   x^2 + (0 + 4*x + 3*x^2)*y\n\
+    \      pack(rec(b)) = 5 + 4*x + 2*x^2 + (0 + 8*x + 5*x^2)*y\n                ab\
+    \ = 2 + 8*x + 21*x^2 + 26*x^3 + 20*x^4 +\n                                   \
+    \    (11     + 38*x   + 67*x^2 +  52*x^3)*y +\n                              \
+    \                                   + (15        + 44*x   + 32*x^2)*y^2\n    pack(a)pack(b)\
+    \ = 2 + 8*x + 21*x^2 + 37*x^3 + 58*x^4 + 67*x^5 +  67*x^6    + 44*x^7 + 32*x^8\n\
+    \    pack(rec(a))pack(rec(b))\n                   = 20 + 26*x + 21*x^2 + 8*x^3\
+    \ + 2*x^4 +\n                                        + ... (overlap)\n    */\n\
+    \n    // restore ab[0]\n    for (int i = 0; i < N; ++i) ab[0][i] = ab0[i];\n \
+    \   // ab1[0] = [x^0](x^(2N - 2) a(x^(-1), x^N) b(x^(-1), x^N))\n    for (int\
+    \ i = 0; i < N; ++i) ab[0][(N - 1) * 2 - i] = ab1[i];\n    // restore ab[1..]\
+    \ by subtracting the overlap coefficients\n    for (int i = 1; i < (int)(a.size()\
+    \ + b.size() - 1); ++i) {\n        // TODO: remove redundant assignment/subtraction\n\
+    \        for (int j = 0; j < N * 2 - 1; ++j) {\n            ab0[(i - 1) * N +\
+    \ j] -= ab[i - 1][j];\n            ab1[(i - 1) * N + j] -= ab[i - 1][(N - 1) *\
+    \ 2 - j];\n        }\n        for (int j = 0; j < N; ++j) ab[i][j] = ab0[i * N\
+    \ + j];\n        for (int j = 0; j < N; ++j) ab[i][(N - 1) * 2 - j] = ab1[i *\
+    \ N + j];\n    }\n    for (int i = 0; i < (int)(a.size() + b.size() - 1); ++i)\
+    \ ab[i].resize(lenA + lenB - 1);\n    return ab;\n}\n\n// see:\n// [1]: David\
+    \ Harvey. Faster polynomial multiplication via multipoint Kronecker substitution.\n\
+    //      https://doi.org/10.1016/j.jsc.2009.05.004\ntemplate <typename Tp>\ninline\
+    \ std::vector<std::vector<Tp>>\nconvolution_2d_ks_negated(const std::vector<std::vector<Tp>>\
+    \ &a,\n                          const std::vector<std::vector<Tp>> &b) {\n  \
+    \  if (a.empty() || b.empty()) return {};\n    const int lenA = max_len_x_ks(a);\n\
     \    const int lenB = max_len_x_ks(b);\n    if (lenA == 0 || lenB == 0) return\
     \ std::vector<std::vector<Tp>>(a.size() + b.size() - 1);\n    const int N = std::max(lenA,\
-    \ lenB);\n    // ab0 = a(x, x^N) b(x, x^N)\n    auto ab0 = convolution(pack_2d_ks(a,\
+    \ lenB);\n    // ab0 = a(x, x^N) b(x, x^N)\n    const auto ab0 = convolution(pack_2d_ks(a,\
     \ N), pack_2d_ks(b, N));\n\n    // returns a(x, -y)\n    auto make_negated = [](const\
     \ std::vector<std::vector<Tp>> &a) {\n        auto b = a;\n        for (int i\
     \ = 1; i < (int)b.size(); i += 2)\n            for (int j = 0; j < (int)b[i].size();\
     \ ++j) b[i][j] = -b[i][j];\n        return b;\n    };\n\n    // ab1 = a(x, -x^N)\
-    \ b(x, -x^N)\n    auto ab1 = convolution(pack_2d_ks(make_negated(a), N), pack_2d_ks(make_negated(b),\
-    \ N));\n\n    std::vector<std::vector<Tp>> ab(a.size() + b.size() - 1, std::vector<Tp>(lenA\
-    \ + lenB - 1));\n    for (int i = 0; i < (int)(a.size() + b.size() - 1); ++i)\
-    \ {\n        if (i & 1) {\n            for (int j = 0; j < lenA + lenB - 1; ++j)\n\
-    \                ab[i][j] = (ab0[i * N + j] - ab1[i * N + j]).div_by_2();\n  \
-    \      } else {\n            for (int j = 0; j < lenA + lenB - 1; ++j)\n     \
-    \           ab[i][j] = (ab0[i * N + j] + ab1[i * N + j]).div_by_2();\n       \
-    \ }\n    }\n    return ab;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n\
-    #include <type_traits>\n\ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod\
-    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n\
-    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
-    \ {\n        using D = std::common_type_t<Int, unsigned>;\n        return (v %=\
-    \ (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n    struct PrivateConstructor\
-    \ {};\n    static inline PrivateConstructor private_constructor{};\n    ModInt(PrivateConstructor,\
-    \ unsigned v) : v_(v) {}\n\n    unsigned v_;\n\npublic:\n    static unsigned mod()\
-    \ { return Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
-    \ v); }\n    ModInt() : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
-    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
-    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
-    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ b(x, -x^N)\n    const auto ab1 = convolution(pack_2d_ks(make_negated(a), N),\
+    \ pack_2d_ks(make_negated(b), N));\n\n    /*\n        example:\n             \
+    \    let pack: a(x,y) |-> a(x,x^3)\n\n                 a = 1 + 2*x + 4*x^2 + (3\
+    \ + 4*x)*y\n                 b = 2 + 4*x + 5*x^2 + (5 + 8*x)*y\n           pack(a)\
+    \ = 1 + 2*x + 4*x^2 + 3*x^3 + 4*x^4\n           pack(b) = 2 + 4*x + 5*x^2 + 5*x^3\
+    \ + 8*x^4\n     pack(a(x,-y)) = 1 + 2*x + 4*x^2 + -(3*x^3 + 4*x^4)\n     pack(b(x,-y))\
+    \ = 2 + 4*x + 5*x^2 + -(5*x^3 + 8*x^4)\n                ab = 2 + 8*x + 21*x^2\
+    \ + 26*x^3 + 20*x^4 +\n                                       (11     + 38*x \
+    \  + 67*x^2 +  52*x^3)*y +\n                                                 \
+    \                + (15        + 44*x   + 32*x^2)*y^2\n    pack(a)pack(b) = 2 +\
+    \ 8*x + 21*x^2 + 37*x^3 + 58*x^4 + 67*x^5 +  67*x^6    + 44*x^7 + 32*x^8\n   \
+    \                                    (26+11)   (20+38) ...\n    pack(a(x,-y))pack(b(x,-y))\n\
+    \                   = 2 + 8*x + 21*x^2 + 15*x^3 + -18*x^4 + ...\n            \
+    \                           (26-11)   (20-38)\n    */\n\n    std::vector<std::vector<Tp>>\
+    \ ab(a.size() + b.size() - 1, std::vector<Tp>(lenA + lenB - 1));\n    for (int\
+    \ i = 0; i < (int)(a.size() + b.size() - 1); ++i) {\n        if (i & 1) {\n  \
+    \          for (int j = 0; j < lenA + lenB - 1; ++j)\n                ab[i][j]\
+    \ = (ab0[i * N + j] - ab1[i * N + j]).div_by_2();\n        } else {\n        \
+    \    for (int j = 0; j < lenA + lenB - 1; ++j)\n                ab[i][j] = (ab0[i\
+    \ * N + j] + ab1[i * N + j]).div_by_2();\n        }\n    }\n    return ab;\n}\n\
+    #line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\ntemplate\
+    \ <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod`\
+    \ must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
+    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
+    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
+    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
+    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
+    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
+    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
+    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
+    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
+    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
     \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
     \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
     \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
@@ -341,7 +367,7 @@ data:
   isVerificationFile: true
   path: test/convolution/2d_convolution.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-22 21:19:26+08:00'
+  timestamp: '2024-12-22 21:43:44+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/convolution/2d_convolution.0.test.cpp
