@@ -69,6 +69,6 @@ TODO: optimization of this algorithm.
 
 3. R. P. Brent and H. T. Kung. 1978. Fast Algorithms for Manipulating Formal Power Series. J. ACM 25, 4 (Oct. 1978), 581–595. url: <https://doi.org/10.1145/322092.322099>
 
-4. Faster polynomial multiplication via multipoint Kronecker substitution. J. Symb. Comput. 44(10): 1502-1510 (2009) url: <https://doi.org/10.1016/j.jsc.2009.05.004>
+4. David Harvey. Faster polynomial multiplication via multipoint Kronecker substitution. J. Symb. Comput. 44(10): 1502-1510 (2009) url: <https://doi.org/10.1016/j.jsc.2009.05.004>
 
 5. Alin Bostan, Bruno Salvy, Éric Schost. Power series composition and change of basis. ISSAC 2008: 269-276 url: <https://arxiv.org/abs/0804.2337>

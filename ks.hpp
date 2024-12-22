@@ -65,7 +65,7 @@ inline std::vector<std::vector<Tp>> convolution_2d_ks(const std::vector<std::vec
 }
 
 // see:
-// [1]: Faster polynomial multiplication via multipoint Kronecker substitution.
+// [1]: David Harvey. Faster polynomial multiplication via multipoint Kronecker substitution.
 //      https://doi.org/10.1016/j.jsc.2009.05.004
 template <typename Tp>
 inline std::vector<std::vector<Tp>>
@@ -76,9 +76,12 @@ convolution_2d_ks_reciprocal(const std::vector<std::vector<Tp>> &a,
     const int lenB = max_len_x_ks(b);
     if (lenA == 0 || lenB == 0) return std::vector<std::vector<Tp>>(a.size() + b.size() - 1);
     const int N = std::max(lenA, lenB);
-    auto ab0    = convolution(pack_2d_ks(a, N), pack_2d_ks(b, N));
+    // original version: compute a(x, x^(-N)) b(x, x^(-N))
+    // modified version (this version): compute x^(2N-2) a(x^(-1), x^N) b(x^(-1), x^N)
+    // ab0 = a(x, x^N) b(x, x^N)
+    auto ab0 = convolution(pack_2d_ks(a, N), pack_2d_ks(b, N));
 
-    // returns x^(N-1) a(x^(-1), x^N)
+    // returns x^(N-1) a(x^(-1), y)
     auto make_reciprocal = [](const std::vector<std::vector<Tp>> &a, int N) {
         std::vector<std::vector<Tp>> b(a.size());
         for (int i = 0; i < (int)a.size(); ++i) {
@@ -89,6 +92,7 @@ convolution_2d_ks_reciprocal(const std::vector<std::vector<Tp>> &a,
         return b;
     };
 
+    // ab1 = x^(2N-2) a(x^(-1), x^N) b(x^(-1), x^N)
     auto ab1 =
         convolution(pack_2d_ks(make_reciprocal(a, N), N), pack_2d_ks(make_reciprocal(b, N), N));
     std::vector<std::vector<Tp>> ab(a.size() + b.size() - 1, std::vector<Tp>(N * 2 - 1));
@@ -107,5 +111,44 @@ convolution_2d_ks_reciprocal(const std::vector<std::vector<Tp>> &a,
         for (int j = 0; j < N; ++j) ab[i][(N - 1) * 2 - j] = ab1[i * N + j];
     }
     for (int i = 0; i < (int)(a.size() + b.size() - 1); ++i) ab[i].resize(lenA + lenB - 1);
+    return ab;
+}
+
+// see:
+// [1]: David Harvey. Faster polynomial multiplication via multipoint Kronecker substitution.
+//      https://doi.org/10.1016/j.jsc.2009.05.004
+template <typename Tp>
+inline std::vector<std::vector<Tp>>
+convolution_2d_ks_negated(const std::vector<std::vector<Tp>> &a,
+                          const std::vector<std::vector<Tp>> &b) {
+    if (a.empty() || b.empty()) return {};
+    const int lenA = max_len_x_ks(a);
+    const int lenB = max_len_x_ks(b);
+    if (lenA == 0 || lenB == 0) return std::vector<std::vector<Tp>>(a.size() + b.size() - 1);
+    const int N = std::max(lenA, lenB);
+    // ab0 = a(x, x^N) b(x, x^N)
+    auto ab0 = convolution(pack_2d_ks(a, N), pack_2d_ks(b, N));
+
+    // returns a(x, -y)
+    auto make_negated = [](const std::vector<std::vector<Tp>> &a) {
+        auto b = a;
+        for (int i = 1; i < (int)b.size(); i += 2)
+            for (int j = 0; j < (int)b[i].size(); ++j) b[i][j] = -b[i][j];
+        return b;
+    };
+
+    // ab1 = a(x, -x^N) b(x, -x^N)
+    auto ab1 = convolution(pack_2d_ks(make_negated(a), N), pack_2d_ks(make_negated(b), N));
+
+    std::vector<std::vector<Tp>> ab(a.size() + b.size() - 1, std::vector<Tp>(lenA + lenB - 1));
+    for (int i = 0; i < (int)(a.size() + b.size() - 1); ++i) {
+        if (i & 1) {
+            for (int j = 0; j < lenA + lenB - 1; ++j)
+                ab[i][j] = (ab0[i * N + j] - ab1[i * N + j]).div_by_2();
+        } else {
+            for (int j = 0; j < lenA + lenB - 1; ++j)
+                ab[i][j] = (ab0[i * N + j] + ab1[i * N + j]).div_by_2();
+        }
+    }
     return ab;
 }
