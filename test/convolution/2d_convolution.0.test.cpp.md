@@ -168,9 +168,34 @@ data:
     \ &b) {\n    if (a.empty() || b.empty()) return {};\n    const int lenA = max_len_x_ks(a);\n\
     \    const int lenB = max_len_x_ks(b);\n    if (lenA == 0 || lenB == 0) return\
     \ std::vector<std::vector<Tp>>(a.size() + b.size() - 1);\n    const int N = lenA\
-    \ + lenB - 1;\n    auto res    = convolution(pack_2d_ks(a, N), pack_2d_ks(b, N));\n\
-    \    res.resize((a.size() + b.size() - 1) * N);\n    return unpack_2d_ks(res,\
-    \ N);\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
+    \ + lenB - 1;\n    auto ab     = convolution(pack_2d_ks(a, N), pack_2d_ks(b, N));\n\
+    \    ab.resize((a.size() + b.size() - 1) * N);\n    return unpack_2d_ks(ab, N);\n\
+    }\n\n// see:\n// [1]: Faster polynomial multiplication via multipoint Kronecker\
+    \ substitution.\n//      https://doi.org/10.1016/j.jsc.2009.05.004\ntemplate <typename\
+    \ Tp>\ninline std::vector<std::vector<Tp>>\nconvolution_2d_ks_reciprocal(const\
+    \ std::vector<std::vector<Tp>> &a,\n                             const std::vector<std::vector<Tp>>\
+    \ &b) {\n    if (a.empty() || b.empty()) return {};\n    const int lenA = max_len_x_ks(a);\n\
+    \    const int lenB = max_len_x_ks(b);\n    if (lenA == 0 || lenB == 0) return\
+    \ std::vector<std::vector<Tp>>(a.size() + b.size() - 1);\n    const int N = std::max(lenA,\
+    \ lenB);\n    auto ab0    = convolution(pack_2d_ks(a, N), pack_2d_ks(b, N));\n\
+    \n    // returns x^(N-1) a(x^(-1), x^N)\n    auto make_reciprocal = [](const std::vector<std::vector<Tp>>\
+    \ &a, int N) {\n        std::vector<std::vector<Tp>> b(a.size());\n        for\
+    \ (int i = 0; i < (int)a.size(); ++i) {\n            b[i] = a[i];\n          \
+    \  b[i].resize(N);\n            std::reverse(b[i].begin(), b[i].end());\n    \
+    \    }\n        return b;\n    };\n\n    auto ab1 =\n        convolution(pack_2d_ks(make_reciprocal(a,\
+    \ N), N), pack_2d_ks(make_reciprocal(b, N), N));\n    std::vector<std::vector<Tp>>\
+    \ ab(a.size() + b.size() - 1, std::vector<Tp>(N * 2 - 1));\n    // restore ab[0]\n\
+    \    for (int i = 0; i < N; ++i) ab[0][i] = ab0[i];\n    // ab1[0] = [x^0](x^(2N\
+    \ - 2) a(x^(-1), x^N) b(x^(-1), x^N))\n    for (int i = 0; i < N; ++i) ab[0][(N\
+    \ - 1) * 2 - i] = ab1[i];\n    // restore ab[1..] by subtracting the overlap coefficients\n\
+    \    for (int i = 1; i < (int)(a.size() + b.size() - 1); ++i) {\n        // TODO:\
+    \ remove redundant assignment/subtraction\n        for (int j = 0; j < N * 2 -\
+    \ 1; ++j) {\n            ab0[(i - 1) * N + j] -= ab[i - 1][j];\n            ab1[(i\
+    \ - 1) * N + j] -= ab[i - 1][(N - 1) * 2 - j];\n        }\n        for (int j\
+    \ = 0; j < N; ++j) ab[i][j] = ab0[i * N + j];\n        for (int j = 0; j < N;\
+    \ ++j) ab[i][(N - 1) * 2 - j] = ab1[i * N + j];\n    }\n    for (int i = 0; i\
+    \ < (int)(a.size() + b.size() - 1); ++i) ab[i].resize(lenA + lenB - 1);\n    return\
+    \ ab;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
     \ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0,\
     \ \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
     \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
@@ -233,28 +258,44 @@ data:
     \ n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar rng(std::random_device{}());\n\
     \    std::uniform_int_distribution<decltype(Tp::mod())> dis(1, Tp::mod() - 1);\n\
     \    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n    return res;\n}\n#line\
-    \ 11 \"test/convolution/2d_convolution.0.test.cpp\"\n\nbool verify() {\n    std::uniform_int_distribution<>\
+    \ 11 \"test/convolution/2d_convolution.0.test.cpp\"\n\nbool verify0() {\n    std::uniform_int_distribution<>\
     \ dis(2, 50);\n    xoshiro256starstar gen(std::random_device{}());\n    using\
     \ mint        = ModInt<998244353>;\n    const int maxLenA = dis(gen);\n    const\
     \ int maxLenB = dis(gen);\n    std::vector<std::vector<mint>> A(maxLenA);\n  \
     \  std::vector<std::vector<mint>> B(maxLenB);\n    for (int i = 0; i < maxLenA;\
     \ ++i) A[i] = random_vector<mint>(dis(gen));\n    for (int i = 0; i < maxLenB;\
     \ ++i) B[i] = random_vector<mint>(dis(gen));\n    return convolution_2d_ks(A,\
+    \ B) == convolution_2d_naive(A, B);\n}\n\nbool verify1() {\n    std::uniform_int_distribution<>\
+    \ dis(2, 50);\n    xoshiro256starstar gen(std::random_device{}());\n    using\
+    \ mint        = ModInt<998244353>;\n    const int maxLenA = dis(gen);\n    const\
+    \ int maxLenB = dis(gen);\n    std::vector<std::vector<mint>> A(maxLenA);\n  \
+    \  std::vector<std::vector<mint>> B(maxLenB);\n    for (int i = 0; i < maxLenA;\
+    \ ++i) A[i] = random_vector<mint>(dis(gen));\n    for (int i = 0; i < maxLenB;\
+    \ ++i) B[i] = random_vector<mint>(dis(gen));\n    return convolution_2d_ks_reciprocal(A,\
     \ B) == convolution_2d_naive(A, B);\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    assert(verify());\n    long long a, b;\n    std::cin\
-    \ >> a >> b;\n    std::cout << a + b;\n    return 0;\n}\n"
+    \    std::cin.tie(nullptr);\n    assert(verify0());\n    assert(verify1());\n\
+    \    long long a, b;\n    std::cin >> a >> b;\n    std::cout << a + b;\n    return\
+    \ 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/aplusb\"\n\n#include \"\
     ks.hpp\"\n#include \"modint.hpp\"\n#include \"random.hpp\"\n#include \"rng.hpp\"\
     \n#include <cassert>\n#include <iostream>\n#include <random>\n#include <vector>\n\
-    \nbool verify() {\n    std::uniform_int_distribution<> dis(2, 50);\n    xoshiro256starstar\
+    \nbool verify0() {\n    std::uniform_int_distribution<> dis(2, 50);\n    xoshiro256starstar\
     \ gen(std::random_device{}());\n    using mint        = ModInt<998244353>;\n \
     \   const int maxLenA = dis(gen);\n    const int maxLenB = dis(gen);\n    std::vector<std::vector<mint>>\
     \ A(maxLenA);\n    std::vector<std::vector<mint>> B(maxLenB);\n    for (int i\
     \ = 0; i < maxLenA; ++i) A[i] = random_vector<mint>(dis(gen));\n    for (int i\
     \ = 0; i < maxLenB; ++i) B[i] = random_vector<mint>(dis(gen));\n    return convolution_2d_ks(A,\
+    \ B) == convolution_2d_naive(A, B);\n}\n\nbool verify1() {\n    std::uniform_int_distribution<>\
+    \ dis(2, 50);\n    xoshiro256starstar gen(std::random_device{}());\n    using\
+    \ mint        = ModInt<998244353>;\n    const int maxLenA = dis(gen);\n    const\
+    \ int maxLenB = dis(gen);\n    std::vector<std::vector<mint>> A(maxLenA);\n  \
+    \  std::vector<std::vector<mint>> B(maxLenB);\n    for (int i = 0; i < maxLenA;\
+    \ ++i) A[i] = random_vector<mint>(dis(gen));\n    for (int i = 0; i < maxLenB;\
+    \ ++i) B[i] = random_vector<mint>(dis(gen));\n    return convolution_2d_ks_reciprocal(A,\
     \ B) == convolution_2d_naive(A, B);\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    assert(verify());\n    long long a, b;\n    std::cin\
-    \ >> a >> b;\n    std::cout << a + b;\n    return 0;\n}\n"
+    \    std::cin.tie(nullptr);\n    assert(verify0());\n    assert(verify1());\n\
+    \    long long a, b;\n    std::cin >> a >> b;\n    std::cout << a + b;\n    return\
+    \ 0;\n}\n"
   dependsOn:
   - ks.hpp
   - fft.hpp
@@ -264,7 +305,7 @@ data:
   isVerificationFile: true
   path: test/convolution/2d_convolution.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-22 15:34:16+08:00'
+  timestamp: '2024-12-22 20:34:53+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/convolution/2d_convolution.0.test.cpp
