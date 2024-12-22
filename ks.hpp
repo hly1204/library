@@ -4,7 +4,7 @@
 #include <cassert>
 #include <vector>
 
-// returns max[0 <= j < a.size()](len(a[i]))
+// returns max[0 <= j < a.size()]{a[j].size()}
 template <typename Tp>
 inline int max_len_x_ks(const std::vector<std::vector<Tp>> &a) {
     int len = -1;
