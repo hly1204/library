@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fft.hpp"
+#include <algorithm>
 #include <cassert>
 #include <vector>
 
