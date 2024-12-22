@@ -42,6 +42,9 @@ data:
     path: karatsuba.hpp
     title: karatsuba.hpp
   - icon: ':heavy_check_mark:'
+    path: ks.hpp
+    title: ks.hpp
+  - icon: ':heavy_check_mark:'
     path: mat_basic.hpp
     title: mat_basic.hpp
   - icon: ':warning:'
@@ -75,6 +78,9 @@ data:
     path: subproduct_tree.hpp
     title: Subproduct Tree
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/convolution/2d_convolution.0.test.cpp
+    title: test/convolution/2d_convolution.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/convolution/convolution_mod.0.test.cpp
     title: test/convolution/convolution_mod.0.test.cpp
@@ -443,6 +449,7 @@ data:
   - poly_product.hpp
   - subproduct_tree.hpp
   - semi_relaxed_conv.hpp
+  - ks.hpp
   - frobenius.hpp
   - famous_sequence.hpp
   - falling_factorial_poly.hpp
@@ -494,6 +501,7 @@ data:
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
   - test/convolution/convolution_mod.0.test.cpp
   - test/convolution/convolution_mod.1.test.cpp
+  - test/convolution/2d_convolution.0.test.cpp
   - test/convolution/convolution_mod_1000000007.0.test.cpp
 documentation_of: fft.hpp
 layout: document

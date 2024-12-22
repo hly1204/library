@@ -67,6 +67,9 @@ data:
       path: karatsuba.hpp
       title: karatsuba.hpp
     - icon: ':heavy_check_mark:'
+      path: ks.hpp
+      title: ks.hpp
+    - icon: ':heavy_check_mark:'
       path: mat_basic.hpp
       title: mat_basic.hpp
     - icon: ':warning:'
@@ -153,6 +156,9 @@ data:
   verificationCategories:
   - name: test/convolution
     pages:
+    - icon: ':heavy_check_mark:'
+      path: test/convolution/2d_convolution.0.test.cpp
+      title: test/convolution/2d_convolution.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/convolution/bitwise_and_convolution.0.test.cpp
       title: test/convolution/bitwise_and_convolution.0.test.cpp

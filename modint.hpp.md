@@ -4,6 +4,9 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/convolution/2d_convolution.0.test.cpp
+    title: test/convolution/2d_convolution.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/convolution/bitwise_and_convolution.0.test.cpp
     title: test/convolution/bitwise_and_convolution.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -289,6 +292,7 @@ data:
   - test/convolution/convolution_mod.0.test.cpp
   - test/convolution/convolution_mod.1.test.cpp
   - test/convolution/bitwise_xor_convolution.0.test.cpp
+  - test/convolution/2d_convolution.0.test.cpp
   - test/convolution/bitwise_and_convolution.0.test.cpp
   - test/set_power_series/inv_of_set_power_series.0.test.cpp
   - test/set_power_series/polynomial_composite_set_power_series.0.test.cpp

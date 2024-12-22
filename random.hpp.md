@@ -22,6 +22,9 @@ data:
     title: mat_sparse.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/convolution/2d_convolution.0.test.cpp
+    title: test/convolution/2d_convolution.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/matrix/adjugate_matrix.0.test.cpp
     title: test/matrix/adjugate_matrix.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -104,6 +107,7 @@ data:
   - test/matrix/matrix_product.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/sparse_matrix_det.0.test.cpp
+  - test/convolution/2d_convolution.0.test.cpp
 documentation_of: random.hpp
 layout: document
 redirect_from:
