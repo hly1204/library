@@ -126,7 +126,7 @@ data:
     \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n    if (std::min(a.size(),\
     \ b.size()) < 60) return convolution_naive(a, b);\n    if (std::addressof(a) ==\
     \ std::addressof(b)) return square_fft(a);\n    return convolution_fft(a, b);\n\
-    }\n#line 6 \"ks.hpp\"\n\n// returns max[0 <= j < a.size()]{a[j].size()}\ntemplate\
+    }\n#line 7 \"ks.hpp\"\n\n// returns max[0 <= j < a.size()]{a[j].size()}\ntemplate\
     \ <typename Tp>\ninline int max_len_x_ks(const std::vector<std::vector<Tp>> &a)\
     \ {\n    int len = -1;\n    for (int i = 0; i < (int)a.size(); ++i) len = std::max<int>(len,\
     \ a[i].size());\n    return len;\n}\n\n// returns a(x, x^N) where a(x,y) in R[x][y]\n\
@@ -230,12 +230,12 @@ data:
     \ = (ab0[i * N + j] - ab1[i * N + j]).div_by_2();\n        } else {\n        \
     \    for (int j = 0; j < lenA + lenB - 1; ++j)\n                ab[i][j] = (ab0[i\
     \ * N + j] + ab1[i * N + j]).div_by_2();\n        }\n    }\n    return ab;\n}\n"
-  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <cassert>\n#include <vector>\n\
-    \n// returns max[0 <= j < a.size()]{a[j].size()}\ntemplate <typename Tp>\ninline\
-    \ int max_len_x_ks(const std::vector<std::vector<Tp>> &a) {\n    int len = -1;\n\
-    \    for (int i = 0; i < (int)a.size(); ++i) len = std::max<int>(len, a[i].size());\n\
-    \    return len;\n}\n\n// returns a(x, x^N) where a(x,y) in R[x][y]\ntemplate\
-    \ <typename Tp>\ninline std::vector<Tp> pack_2d_ks(const std::vector<std::vector<Tp>>\
+  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <algorithm>\n#include <cassert>\n\
+    #include <vector>\n\n// returns max[0 <= j < a.size()]{a[j].size()}\ntemplate\
+    \ <typename Tp>\ninline int max_len_x_ks(const std::vector<std::vector<Tp>> &a)\
+    \ {\n    int len = -1;\n    for (int i = 0; i < (int)a.size(); ++i) len = std::max<int>(len,\
+    \ a[i].size());\n    return len;\n}\n\n// returns a(x, x^N) where a(x,y) in R[x][y]\n\
+    template <typename Tp>\ninline std::vector<Tp> pack_2d_ks(const std::vector<std::vector<Tp>>\
     \ &a, int N) {\n    assert(N > 0);\n    // y |-> x^N\n    std::vector<Tp> b(N\
     \ * a.size());\n    for (int i = 0; i < (int)a.size(); ++i)\n        for (int\
     \ j = 0; j < (int)a[i].size(); ++j) b[i * N + j] += a[i][j]; // if N < a[i].size()\n\
@@ -340,7 +340,7 @@ data:
   isVerificationFile: false
   path: ks.hpp
   requiredBy: []
-  timestamp: '2024-12-22 21:43:44+08:00'
+  timestamp: '2024-12-22 21:54:06+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/2d_convolution.0.test.cpp
