@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: xgcd.hpp
     title: xgcd.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/number_theory/yukicoder187.0.test.cpp
     title: test/number_theory/yukicoder187.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links:
     - https://math314.hateblo.jp/entry/2015/05/07/014908
@@ -56,11 +56,11 @@ data:
     \   = rem.size();\n    // check conflicts and make coprime\n    for (int i = 0;\
     \ i < n; ++i) {\n        for (int j = 0; j < i; ++j) {\n            auto d = std::gcd(mod[i],\
     \ mod[j]);\n            if (d == 1) continue;\n            if (safe_mod(rem[i],\
-    \ d) != safe_mod(rem[j], d)) return {};\n            mod[i] /= d, mod[j] /= d;\n\
-    \            if (const auto k = std::gcd(mod[i], d); k != 1)\n               \
-    \ while (d % k == 0) mod[i] *= k, d /= k;\n            mod[j] *= d;\n        }\n\
-    \    }\n    mod.push_back(x);\n    std::vector<int> pp(n + 1, 1), res(n + 1);\n\
-    \    for (int i = 0; i < n; ++i) {\n        auto u =\n            (LL)(safe_mod(rem[i],\
+    \ d) != safe_mod(rem[j], d)) return std::nullopt;\n            mod[i] /= d, mod[j]\
+    \ /= d;\n            if (const auto k = std::gcd(mod[i], d); k != 1)\n       \
+    \         while (d % k == 0) mod[i] *= k, d /= k;\n            mod[j] *= d;\n\
+    \        }\n    }\n    mod.push_back(x);\n    std::vector<int> pp(n + 1, 1), res(n\
+    \ + 1);\n    for (int i = 0; i < n; ++i) {\n        auto u =\n            (LL)(safe_mod(rem[i],\
     \ mod[i]) - res[i]) * std::get<0>(inv_gcd(pp[i], mod[i])) % mod[i];\n        if\
     \ (u < 0) u += mod[i];\n        for (int j = i + 1; j <= n; ++j) {\n         \
     \   res[j] = (res[j] + u * pp[j]) % mod[j];\n            pp[j]  = (LL)pp[j] *\
@@ -94,11 +94,11 @@ data:
     \   = rem.size();\n    // check conflicts and make coprime\n    for (int i = 0;\
     \ i < n; ++i) {\n        for (int j = 0; j < i; ++j) {\n            auto d = std::gcd(mod[i],\
     \ mod[j]);\n            if (d == 1) continue;\n            if (safe_mod(rem[i],\
-    \ d) != safe_mod(rem[j], d)) return {};\n            mod[i] /= d, mod[j] /= d;\n\
-    \            if (const auto k = std::gcd(mod[i], d); k != 1)\n               \
-    \ while (d % k == 0) mod[i] *= k, d /= k;\n            mod[j] *= d;\n        }\n\
-    \    }\n    mod.push_back(x);\n    std::vector<int> pp(n + 1, 1), res(n + 1);\n\
-    \    for (int i = 0; i < n; ++i) {\n        auto u =\n            (LL)(safe_mod(rem[i],\
+    \ d) != safe_mod(rem[j], d)) return std::nullopt;\n            mod[i] /= d, mod[j]\
+    \ /= d;\n            if (const auto k = std::gcd(mod[i], d); k != 1)\n       \
+    \         while (d % k == 0) mod[i] *= k, d /= k;\n            mod[j] *= d;\n\
+    \        }\n    }\n    mod.push_back(x);\n    std::vector<int> pp(n + 1, 1), res(n\
+    \ + 1);\n    for (int i = 0; i < n; ++i) {\n        auto u =\n            (LL)(safe_mod(rem[i],\
     \ mod[i]) - res[i]) * std::get<0>(inv_gcd(pp[i], mod[i])) % mod[i];\n        if\
     \ (u < 0) u += mod[i];\n        for (int j = i + 1; j <= n; ++j) {\n         \
     \   res[j] = (res[j] + u * pp[j]) % mod[j];\n            pp[j]  = (LL)pp[j] *\
@@ -109,8 +109,8 @@ data:
   isVerificationFile: false
   path: chinese_remainder.hpp
   requiredBy: []
-  timestamp: '2024-12-23 20:28:27+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2024-12-23 21:08:20+08:00'
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - test/number_theory/yukicoder187.0.test.cpp
 documentation_of: chinese_remainder.hpp

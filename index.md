@@ -21,7 +21,7 @@ data:
     - icon: ':x:'
       path: c_finite.hpp
       title: C-Finite Sequence
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: chinese_remainder.hpp
       title: chinese_remainder.hpp
     - icon: ':heavy_check_mark:'
@@ -39,7 +39,7 @@ data:
     - icon: ':x:'
       path: falling_factorial_poly.hpp
       title: falling_factorial_poly.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: famous_sequence.hpp
       title: famous_sequence.hpp
     - icon: ':question:'
@@ -51,10 +51,10 @@ data:
     - icon: ':question:'
       path: fps_basic.hpp
       title: fps_basic.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: fps_composition.hpp
       title: Formal Power Series Composition
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: fps_polya.hpp
       title: fps_polya.hpp
     - icon: ':x:'
@@ -105,7 +105,7 @@ data:
     - icon: ':x:'
       path: poly_product.hpp
       title: poly_product.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: pow_table.hpp
       title: pow_table.hpp
     - icon: ':question:'
@@ -150,7 +150,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: treap_node_base.hpp
       title: treap_node_base.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: xgcd.hpp
       title: xgcd.hpp
   verificationCategories:
@@ -217,24 +217,24 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
       title: test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
       title: test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
       title: test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
       title: test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
       title: test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
   - name: test/formal_power_series
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
       title: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
       title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
     - icon: ':x:'
@@ -334,7 +334,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/number_theory/sqrt_mod.0.test.cpp
       title: test/number_theory/sqrt_mod.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/number_theory/yukicoder187.0.test.cpp
       title: test/number_theory/yukicoder187.0.test.cpp
   - name: test/set_power_series

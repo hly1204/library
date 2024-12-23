@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: chinese_remainder.hpp
     title: chinese_remainder.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: xgcd.hpp
     title: xgcd.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://yukicoder.me/problems/448
@@ -60,11 +60,11 @@ data:
     \    // check conflicts and make coprime\n    for (int i = 0; i < n; ++i) {\n\
     \        for (int j = 0; j < i; ++j) {\n            auto d = std::gcd(mod[i],\
     \ mod[j]);\n            if (d == 1) continue;\n            if (safe_mod(rem[i],\
-    \ d) != safe_mod(rem[j], d)) return {};\n            mod[i] /= d, mod[j] /= d;\n\
-    \            if (const auto k = std::gcd(mod[i], d); k != 1)\n               \
-    \ while (d % k == 0) mod[i] *= k, d /= k;\n            mod[j] *= d;\n        }\n\
-    \    }\n    mod.push_back(x);\n    std::vector<int> pp(n + 1, 1), res(n + 1);\n\
-    \    for (int i = 0; i < n; ++i) {\n        auto u =\n            (LL)(safe_mod(rem[i],\
+    \ d) != safe_mod(rem[j], d)) return std::nullopt;\n            mod[i] /= d, mod[j]\
+    \ /= d;\n            if (const auto k = std::gcd(mod[i], d); k != 1)\n       \
+    \         while (d % k == 0) mod[i] *= k, d /= k;\n            mod[j] *= d;\n\
+    \        }\n    }\n    mod.push_back(x);\n    std::vector<int> pp(n + 1, 1), res(n\
+    \ + 1);\n    for (int i = 0; i < n; ++i) {\n        auto u =\n            (LL)(safe_mod(rem[i],\
     \ mod[i]) - res[i]) * std::get<0>(inv_gcd(pp[i], mod[i])) % mod[i];\n        if\
     \ (u < 0) u += mod[i];\n        for (int j = i + 1; j <= n; ++j) {\n         \
     \   res[j] = (res[j] + u * pp[j]) % mod[j];\n            pp[j]  = (LL)pp[j] *\
@@ -95,8 +95,8 @@ data:
   isVerificationFile: true
   path: test/number_theory/yukicoder187.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-23 20:34:50+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2024-12-23 21:08:20+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/number_theory/yukicoder187.0.test.cpp
 layout: document

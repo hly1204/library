@@ -4,7 +4,7 @@ data:
   - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: xgcd.hpp
     title: xgcd.hpp
   _extendedRequiredBy: []

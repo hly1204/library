@@ -2,19 +2,19 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: chinese_remainder.hpp
     title: chinese_remainder.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/number_theory/sqrt_mod.0.test.cpp
     title: test/number_theory/sqrt_mod.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/number_theory/yukicoder187.0.test.cpp
     title: test/number_theory/yukicoder187.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"xgcd.hpp\"\n\n#include <array>\n#include <type_traits>\n\
@@ -50,7 +50,7 @@ data:
   requiredBy:
   - chinese_remainder.hpp
   timestamp: '2024-12-23 20:28:27+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/number_theory/sqrt_mod.0.test.cpp
   - test/number_theory/yukicoder187.0.test.cpp
