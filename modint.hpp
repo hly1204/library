@@ -21,6 +21,9 @@ class ModInt {
 public:
     static unsigned mod() { return Mod; }
     static ModInt from_raw(unsigned v) { return ModInt(private_constructor, v); }
+    static ModInt zero() { return from_raw(0); }
+    static ModInt one() { return from_raw(1); }
+
     ModInt() : v_() {}
     template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>
     ModInt(Int v) : v_(safe_mod(v)) {}
@@ -39,7 +42,7 @@ public:
     ModInt inv() const {
         int x1 = 1, x3 = 0, a = val(), b = Mod;
         while (b) {
-            int q = a / b, x1_old = x1, a_old = a;
+            const int q = a / b, x1_old = x1, a_old = a;
             x1 = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;
         }
         return from_raw(x1 < 0 ? x1 + (int)Mod : x1);

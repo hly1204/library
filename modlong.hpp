@@ -57,6 +57,9 @@ public:
     static ModLong from_raw(unsigned long long v) {
         return ModLong(private_constructor, redc_mul(v, R2));
     }
+    static ModLong zero() { return ModLong(private_constructor, 0); }
+    static ModLong one() { return from_raw(1); }
+
     ModLong() : v_() {}
     template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>
     ModLong(Int v) : v_(redc_mul(safe_mod(v), R2)) {}
@@ -75,7 +78,7 @@ public:
     ModLong inv() const {
         LL x1 = 1, x3 = 0, a = val(), b = Mod;
         while (b) {
-            LL q = a / b, x1_old = x1, a_old = a;
+            const LL q = a / b, x1_old = x1, a_old = a;
             x1 = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;
         }
         return from_raw(norm(x1));
