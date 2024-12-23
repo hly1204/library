@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: chinese_remainder.hpp
     title: chinese_remainder.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: xgcd.hpp
     title: xgcd.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://yukicoder.me/problems/448
@@ -75,8 +75,8 @@ data:
     \    int n;\n    std::cin >> n;\n    std::vector<int> rem(n), mod(n);\n    for\
     \ (int i = 0; i < n; ++i) std::cin >> rem[i] >> mod[i];\n    if (const auto res\
     \ = chinese_remainder_mod(rem, mod, 1000000007)) {\n        if (std::all_of(rem.begin(),\
-    \ rem.end(), [](int n) { return n == 0; })) {\n            std::cout << std::get<0>(*res)\
-    \ << '\\n';\n        } else {\n            std::cout << std::get<1>(*res) << '\\\
+    \ rem.end(), [](int n) { return n == 0; })) {\n            std::cout << std::get<1>(*res)\
+    \ << '\\n';\n        } else {\n            std::cout << std::get<0>(*res) << '\\\
     n';\n        }\n    } else {\n        std::cout << \"-1\\n\";\n    }\n    return\
     \ 0;\n}\n"
   code: "#define PROBLEM \"https://yukicoder.me/problems/448\"\n\n#include \"chinese_remainder.hpp\"\
@@ -85,8 +85,8 @@ data:
     \    std::cin >> n;\n    std::vector<int> rem(n), mod(n);\n    for (int i = 0;\
     \ i < n; ++i) std::cin >> rem[i] >> mod[i];\n    if (const auto res = chinese_remainder_mod(rem,\
     \ mod, 1000000007)) {\n        if (std::all_of(rem.begin(), rem.end(), [](int\
-    \ n) { return n == 0; })) {\n            std::cout << std::get<0>(*res) << '\\\
-    n';\n        } else {\n            std::cout << std::get<1>(*res) << '\\n';\n\
+    \ n) { return n == 0; })) {\n            std::cout << std::get<1>(*res) << '\\\
+    n';\n        } else {\n            std::cout << std::get<0>(*res) << '\\n';\n\
     \        }\n    } else {\n        std::cout << \"-1\\n\";\n    }\n    return 0;\n\
     }\n"
   dependsOn:
@@ -95,8 +95,8 @@ data:
   isVerificationFile: true
   path: test/number_theory/yukicoder187.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-23 20:31:57+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2024-12-23 20:34:50+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/number_theory/yukicoder187.0.test.cpp
 layout: document
