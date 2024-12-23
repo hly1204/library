@@ -14,9 +14,9 @@ int main() {
     for (int i = 0; i < n; ++i) std::cin >> rem[i] >> mod[i];
     if (const auto res = chinese_remainder_mod(rem, mod, 1000000007)) {
         if (std::all_of(rem.begin(), rem.end(), [](int n) { return n == 0; })) {
-            std::cout << res->mod << '\n';
+            std::cout << std::get<0>(*res) << '\n';
         } else {
-            std::cout << res->rem << '\n';
+            std::cout << std::get<1>(*res) << '\n';
         }
     } else {
         std::cout << "-1\n";
