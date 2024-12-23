@@ -55,7 +55,7 @@ inline std::optional<std::array<int, 2>> chinese_remainder_mod(std::vector<int> 
         for (int j = 0; j < i; ++j) {
             auto d = std::gcd(mod[i], mod[j]);
             if (d == 1) continue;
-            if (safe_mod(rem[i], d) != safe_mod(rem[j], d)) return {};
+            if (safe_mod(rem[i], d) != safe_mod(rem[j], d)) return std::nullopt;
             mod[i] /= d, mod[j] /= d;
             if (const auto k = std::gcd(mod[i], d); k != 1)
                 while (d % k == 0) mod[i] *= k, d /= k;

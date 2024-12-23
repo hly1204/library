@@ -4,8 +4,8 @@
 #include "fft.hpp"
 #include "fps_basic.hpp"
 #include <algorithm>
+#include <array>
 #include <cassert>
-#include <utility>
 #include <vector>
 
 template <typename Tp>
@@ -42,8 +42,8 @@ inline std::vector<Tp> taylor_shift(std::vector<Tp> a, Tp c) {
 // returns (quotient, remainder)
 // O(deg(Q)deg(B))
 template <typename Tp>
-inline std::pair<std::vector<Tp>, std::vector<Tp>> euclidean_div_naive(const std::vector<Tp> &A,
-                                                                       const std::vector<Tp> &B) {
+inline std::array<std::vector<Tp>, 2> euclidean_div_naive(const std::vector<Tp> &A,
+                                                          const std::vector<Tp> &B) {
     const int degA = degree(A);
     const int degB = degree(B);
     assert(degB >= 0);
@@ -78,8 +78,8 @@ inline std::vector<Tp> euclidean_div_quotient_naive(const std::vector<Tp> &A,
 
 // returns (quotient, remainder)
 template <typename Tp>
-inline std::pair<std::vector<Tp>, std::vector<Tp>> euclidean_div(const std::vector<Tp> &A,
-                                                                 const std::vector<Tp> &B) {
+inline std::array<std::vector<Tp>, 2> euclidean_div(const std::vector<Tp> &A,
+                                                    const std::vector<Tp> &B) {
     const int degA = degree(A);
     const int degB = degree(B);
     assert(degB >= 0);
