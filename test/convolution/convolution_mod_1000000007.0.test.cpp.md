@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: conv_mod.hpp
     title: conv_mod.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: FFT
   - icon: ':heavy_check_mark:'
@@ -157,42 +157,43 @@ data:
     \ }\n\n    static constexpr ULL R  = r();\n    static constexpr ULL R2 = r2();\n\
     \npublic:\n    static unsigned long long mod() { return Mod; }\n    static ModLong\
     \ from_raw(unsigned long long v) {\n        return ModLong(private_constructor,\
-    \ redc_mul(v, R2));\n    }\n    ModLong() : v_() {}\n    template <typename Int,\
-    \ typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n    ModLong(Int\
-    \ v) : v_(redc_mul(safe_mod(v), R2)) {}\n    template <typename Int, typename\
-    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModLong(Int v) : v_(redc_mul(v\
-    \ % Mod, R2)) {}\n    unsigned long long val() const { return norm(-mul_high(v_\
-    \ * R, Mod)); }\n\n    ModLong operator-() const { return ModLong(private_constructor,\
-    \ v_ == 0 ? v_ : Mod - v_); }\n    ModLong pow(long long e) const {\n        if\
-    \ (e < 0) return inv().pow(-e);\n        for (ModLong x(*this), res(from_raw(1));;\
-    \ x *= x) {\n            if (e & 1) res *= x;\n            if ((e >>= 1) == 0)\
-    \ return res;\n        }\n    }\n    ModLong inv() const {\n        LL x1 = 1,\
-    \ x3 = 0, a = val(), b = Mod;\n        while (b) {\n            LL q = a / b,\
-    \ x1_old = x1, a_old = a;\n            x1 = x3, x3 = x1_old - x3 * q, a = b, b\
-    \ = a_old - b * q;\n        }\n        return from_raw(norm(x1));\n    }\n   \
-    \ ModLong div_by_2() const {\n        if (v_ & 1) return ModLong(private_constructor,\
-    \ (v_ + Mod) >> 1);\n        return ModLong(private_constructor, v_ >> 1);\n \
-    \   }\n\n    ModLong &operator+=(const ModLong &a) {\n        v_ = norm(v_ + a.v_\
-    \ - Mod);\n        return *this;\n    }\n    ModLong &operator-=(const ModLong\
-    \ &a) {\n        v_ = norm(v_ - a.v_);\n        return *this;\n    }\n    ModLong\
-    \ &operator*=(const ModLong &a) {\n        v_ = redc_mul(v_, a.v_);\n        return\
-    \ *this;\n    }\n    ModLong &operator/=(const ModLong &a) { return *this *= a.inv();\
-    \ }\n\n    friend ModLong operator+(const ModLong &a, const ModLong &b) { return\
-    \ ModLong(a) += b; }\n    friend ModLong operator-(const ModLong &a, const ModLong\
-    \ &b) { return ModLong(a) -= b; }\n    friend ModLong operator*(const ModLong\
-    \ &a, const ModLong &b) { return ModLong(a) *= b; }\n    friend ModLong operator/(const\
-    \ ModLong &a, const ModLong &b) { return ModLong(a) /= b; }\n    friend bool operator==(const\
-    \ ModLong &a, const ModLong &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
-    \ ModLong &a, const ModLong &b) { return a.v_ != b.v_; }\n    friend std::istream\
-    \ &operator>>(std::istream &a, ModLong &b) {\n        LL v;\n        a >> v;\n\
-    \        b.v_ = redc_mul(safe_mod(v), R2);\n        return a;\n    }\n    friend\
-    \ std::ostream &operator<<(std::ostream &a, const ModLong &b) { return a << b.val();\
-    \ }\n};\n#line 6 \"conv_mod.hpp\"\n\ninline std::vector<int> convolution_mod(const\
-    \ std::vector<int> &a, const std::vector<int> &b,\n                          \
-    \              int modular) {\n    using mint0 = ModLong<0x3F9A000000000001>;\n\
-    \    using mint1 = ModLong<0x3FC6000000000001>;\n    const auto res0 =\n     \
-    \   convolution(std::vector<mint0>(a.begin(), a.end()), std::vector<mint0>(b.begin(),\
-    \ b.end()));\n    const auto res1 =\n        convolution(std::vector<mint1>(a.begin(),\
+    \ redc_mul(v, R2));\n    }\n    static ModLong zero() { return ModLong(private_constructor,\
+    \ 0); }\n    static ModLong one() { return from_raw(1); }\n\n    ModLong() : v_()\
+    \ {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
+    \ int> = 0>\n    ModLong(Int v) : v_(redc_mul(safe_mod(v), R2)) {}\n    template\
+    \ <typename Int, typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n\
+    \    ModLong(Int v) : v_(redc_mul(v % Mod, R2)) {}\n    unsigned long long val()\
+    \ const { return norm(-mul_high(v_ * R, Mod)); }\n\n    ModLong operator-() const\
+    \ { return ModLong(private_constructor, v_ == 0 ? v_ : Mod - v_); }\n    ModLong\
+    \ pow(long long e) const {\n        if (e < 0) return inv().pow(-e);\n       \
+    \ for (ModLong x(*this), res(from_raw(1));; x *= x) {\n            if (e & 1)\
+    \ res *= x;\n            if ((e >>= 1) == 0) return res;\n        }\n    }\n \
+    \   ModLong inv() const {\n        LL x1 = 1, x3 = 0, a = val(), b = Mod;\n  \
+    \      while (b) {\n            const LL q = a / b, x1_old = x1, a_old = a;\n\
+    \            x1 = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;\n      \
+    \  }\n        return from_raw(norm(x1));\n    }\n    ModLong div_by_2() const\
+    \ {\n        if (v_ & 1) return ModLong(private_constructor, (v_ + Mod) >> 1);\n\
+    \        return ModLong(private_constructor, v_ >> 1);\n    }\n\n    ModLong &operator+=(const\
+    \ ModLong &a) {\n        v_ = norm(v_ + a.v_ - Mod);\n        return *this;\n\
+    \    }\n    ModLong &operator-=(const ModLong &a) {\n        v_ = norm(v_ - a.v_);\n\
+    \        return *this;\n    }\n    ModLong &operator*=(const ModLong &a) {\n \
+    \       v_ = redc_mul(v_, a.v_);\n        return *this;\n    }\n    ModLong &operator/=(const\
+    \ ModLong &a) { return *this *= a.inv(); }\n\n    friend ModLong operator+(const\
+    \ ModLong &a, const ModLong &b) { return ModLong(a) += b; }\n    friend ModLong\
+    \ operator-(const ModLong &a, const ModLong &b) { return ModLong(a) -= b; }\n\
+    \    friend ModLong operator*(const ModLong &a, const ModLong &b) { return ModLong(a)\
+    \ *= b; }\n    friend ModLong operator/(const ModLong &a, const ModLong &b) {\
+    \ return ModLong(a) /= b; }\n    friend bool operator==(const ModLong &a, const\
+    \ ModLong &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const ModLong\
+    \ &a, const ModLong &b) { return a.v_ != b.v_; }\n    friend std::istream &operator>>(std::istream\
+    \ &a, ModLong &b) {\n        LL v;\n        a >> v;\n        b.v_ = redc_mul(safe_mod(v),\
+    \ R2);\n        return a;\n    }\n    friend std::ostream &operator<<(std::ostream\
+    \ &a, const ModLong &b) { return a << b.val(); }\n};\n#line 6 \"conv_mod.hpp\"\
+    \n\ninline std::vector<int> convolution_mod(const std::vector<int> &a, const std::vector<int>\
+    \ &b,\n                                        int modular) {\n    using mint0\
+    \ = ModLong<0x3F9A000000000001>;\n    using mint1 = ModLong<0x3FC6000000000001>;\n\
+    \    const auto res0 =\n        convolution(std::vector<mint0>(a.begin(), a.end()),\
+    \ std::vector<mint0>(b.begin(), b.end()));\n    const auto res1 =\n        convolution(std::vector<mint1>(a.begin(),\
     \ a.end()), std::vector<mint1>(b.begin(), b.end()));\n    const int n = res0.size();\n\
     \    std::vector<int> res(n);\n    const mint0 im1 = mint0(mint1::mod()).inv();\n\
     \    const int m1    = mint1::mod() % modular;\n    for (int i = 0; i < n; ++i)\
@@ -220,7 +221,7 @@ data:
   isVerificationFile: true
   path: test/convolution/convolution_mod_1000000007.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-03 09:02:32+08:00'
+  timestamp: '2024-12-23 20:42:13+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/convolution/convolution_mod_1000000007.0.test.cpp

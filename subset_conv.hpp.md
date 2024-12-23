@@ -5,10 +5,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: bitwise_conv.hpp
     title: bitwise_conv.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: sps_basic.hpp
     title: sps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: sps_in_poly.hpp
     title: sps_in_poly.hpp
   _extendedVerifiedWith:
@@ -18,24 +18,24 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/convolution/bitwise_xor_convolution.0.test.cpp
     title: test/convolution/bitwise_xor_convolution.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/set_power_series/exp_of_set_power_series.0.test.cpp
     title: test/set_power_series/exp_of_set_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/set_power_series/inv_of_set_power_series.0.test.cpp
     title: test/set_power_series/inv_of_set_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/set_power_series/log_of_set_power_series.0.test.cpp
     title: test/set_power_series/log_of_set_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
     title: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/set_power_series/subset_convolution.0.test.cpp
     title: test/set_power_series/subset_convolution.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links:
     - https://codeforces.com/blog/entry/126418
@@ -112,7 +112,7 @@ data:
   - bitwise_conv.hpp
   - sps_in_poly.hpp
   timestamp: '2024-10-25 19:24:31+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/convolution/bitwise_xor_convolution.0.test.cpp
   - test/convolution/bitwise_and_convolution.0.test.cpp

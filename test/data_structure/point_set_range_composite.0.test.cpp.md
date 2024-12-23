@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   - icon: ':heavy_check_mark:'
@@ -30,30 +30,31 @@ data:
     \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
     \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
     public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
-    \ v) { return ModInt(private_constructor, v); }\n    ModInt() : v_() {}\n    template\
-    \ <typename Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0>\n\
-    \    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int, typename\
-    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int v) : v_(v\
-    \ % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ v) { return ModInt(private_constructor, v); }\n    static ModInt zero() { return\
+    \ from_raw(0); }\n    static ModInt one() { return from_raw(1); }\n\n    ModInt()\
+    \ : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
+    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
+    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
+    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
     \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
     \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
     \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
     \ if ((e >>= 1) == 0) return res;\n        }\n    }\n    ModInt inv() const {\n\
     \        int x1 = 1, x3 = 0, a = val(), b = Mod;\n        while (b) {\n      \
-    \      int q = a / b, x1_old = x1, a_old = a;\n            x1 = x3, x3 = x1_old\
-    \ - x3 * q, a = b, b = a_old - b * q;\n        }\n        return from_raw(x1 <\
-    \ 0 ? x1 + (int)Mod : x1);\n    }\n    template <bool Odd = (Mod & 1)>\n    std::enable_if_t<Odd,\
-    \ ModInt> div_by_2() const {\n        if (v_ & 1) return from_raw((v_ + Mod) >>\
-    \ 1);\n        return from_raw(v_ >> 1);\n    }\n\n    ModInt &operator+=(const\
-    \ ModInt &a) {\n        if ((v_ += a.v_) >= Mod) v_ -= Mod;\n        return *this;\n\
-    \    }\n    ModInt &operator-=(const ModInt &a) {\n        if ((v_ += Mod - a.v_)\
-    \ >= Mod) v_ -= Mod;\n        return *this;\n    }\n    ModInt &operator*=(const\
-    \ ModInt &a) {\n        v_ = (unsigned long long)v_ * a.v_ % Mod;\n        return\
-    \ *this;\n    }\n    ModInt &operator/=(const ModInt &a) { return *this *= a.inv();\
-    \ }\n\n    friend ModInt operator+(const ModInt &a, const ModInt &b) { return\
-    \ ModInt(a) += b; }\n    friend ModInt operator-(const ModInt &a, const ModInt\
-    \ &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const ModInt &a,\
-    \ const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
+    \      const int q = a / b, x1_old = x1, a_old = a;\n            x1 = x3, x3 =\
+    \ x1_old - x3 * q, a = b, b = a_old - b * q;\n        }\n        return from_raw(x1\
+    \ < 0 ? x1 + (int)Mod : x1);\n    }\n    template <bool Odd = (Mod & 1)>\n   \
+    \ std::enable_if_t<Odd, ModInt> div_by_2() const {\n        if (v_ & 1) return\
+    \ from_raw((v_ + Mod) >> 1);\n        return from_raw(v_ >> 1);\n    }\n\n   \
+    \ ModInt &operator+=(const ModInt &a) {\n        if ((v_ += a.v_) >= Mod) v_ -=\
+    \ Mod;\n        return *this;\n    }\n    ModInt &operator-=(const ModInt &a)\
+    \ {\n        if ((v_ += Mod - a.v_) >= Mod) v_ -= Mod;\n        return *this;\n\
+    \    }\n    ModInt &operator*=(const ModInt &a) {\n        v_ = (unsigned long\
+    \ long)v_ * a.v_ % Mod;\n        return *this;\n    }\n    ModInt &operator/=(const\
+    \ ModInt &a) { return *this *= a.inv(); }\n\n    friend ModInt operator+(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) += b; }\n    friend ModInt operator-(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
     \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
     \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
     \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
@@ -177,7 +178,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/point_set_range_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2024-11-20 23:04:26+08:00'
+  timestamp: '2024-12-23 20:42:13+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/point_set_range_composite.0.test.cpp
