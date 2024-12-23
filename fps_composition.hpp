@@ -74,8 +74,7 @@ inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<T
         return U;
     };
 
-    int k = 1;
-    while (k < std::max<int>(n, f.size())) k *= 2;
+    const int k = fft_len(std::max<int>(n, f.size()));
     std::vector<Tp> Q(k);
     for (int i = 0; i < std::min<int>(k, g.size()); ++i) Q[i] = -g[i];
 
