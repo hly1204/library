@@ -4,13 +4,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: bitwise_conv.hpp
     title: bitwise_conv.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
   - icon: ':heavy_check_mark:'
     path: sps_fft.hpp
     title: sps_fft.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: subset_conv.hpp
     title: subset_conv.hpp
   _extendedRequiredBy: []

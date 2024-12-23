@@ -81,7 +81,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: middle_product.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -126,13 +126,13 @@ data:
     - icon: ':heavy_check_mark:'
       path: sparse_table.hpp
       title: sparse_table.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: sps_basic.hpp
       title: sps_basic.hpp
     - icon: ':heavy_check_mark:'
       path: sps_fft.hpp
       title: sps_fft.hpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: sps_in_poly.hpp
       title: sps_in_poly.hpp
     - icon: ':heavy_check_mark:'
@@ -141,7 +141,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: subproduct_tree.hpp
       title: Subproduct Tree
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: subset_conv.hpp
       title: subset_conv.hpp
     - icon: ':heavy_check_mark:'
@@ -345,13 +345,13 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/set_power_series/inv_of_set_power_series.0.test.cpp
       title: test/set_power_series/inv_of_set_power_series.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/set_power_series/log_of_set_power_series.0.test.cpp
       title: test/set_power_series/log_of_set_power_series.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
       title: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/set_power_series/subset_convolution.0.test.cpp
       title: test/set_power_series/subset_convolution.0.test.cpp
 layout: toppage

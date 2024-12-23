@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: sps_in_poly.hpp
     title: sps_in_poly.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: subset_conv.hpp
     title: subset_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/polynomial_composite_set_power_series
@@ -149,7 +149,7 @@ data:
   path: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
   requiredBy: []
   timestamp: '2024-12-23 20:42:13+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
 layout: document

@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: sps_basic.hpp
     title: sps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: subset_conv.hpp
     title: subset_conv.hpp
   _extendedRequiredBy: []

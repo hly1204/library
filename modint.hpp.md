@@ -150,18 +150,18 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/set_power_series/inv_of_set_power_series.0.test.cpp
     title: test/set_power_series/inv_of_set_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/set_power_series/log_of_set_power_series.0.test.cpp
     title: test/set_power_series/log_of_set_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
     title: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/set_power_series/subset_convolution.0.test.cpp
     title: test/set_power_series/subset_convolution.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
@@ -247,7 +247,7 @@ data:
   path: modint.hpp
   requiredBy: []
   timestamp: '2024-12-23 20:42:13+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp

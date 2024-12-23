@@ -13,7 +13,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: fps_composition.hpp
     title: Formal Power Series Composition
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
   - icon: ':heavy_check_mark:'

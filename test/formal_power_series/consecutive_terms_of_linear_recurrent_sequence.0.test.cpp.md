@@ -16,7 +16,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
   - icon: ':heavy_check_mark:'
