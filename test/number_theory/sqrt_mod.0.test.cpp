@@ -6,7 +6,7 @@
 #include <random>
 
 int inv_mod(int a, int mod) {
-    const int res = inv_gcd(a, mod).inv;
+    const int res = std::get<0>(inv_gcd(a, mod));
     return res < 0 ? res + mod : res;
 }
 
