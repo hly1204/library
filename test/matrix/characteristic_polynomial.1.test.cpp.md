@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':x:'
+  - icon: ':question:'
     path: basis.hpp
     title: basis.hpp
   - icon: ':question:'
@@ -13,10 +13,10 @@ data:
   - icon: ':question:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: frobenius.hpp
     title: frobenius.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: mat_basic.hpp
     title: mat_basic.hpp
   - icon: ':question:'

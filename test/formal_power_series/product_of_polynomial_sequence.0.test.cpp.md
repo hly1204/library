@@ -7,14 +7,14 @@ data:
   - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: poly_product.hpp
     title: poly_product.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/product_of_polynomial_sequence
@@ -202,7 +202,7 @@ data:
   path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
   requiredBy: []
   timestamp: '2024-12-23 20:42:13+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
 layout: document

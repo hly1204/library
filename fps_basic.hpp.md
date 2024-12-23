@@ -11,10 +11,10 @@ data:
     path: semi_relaxed_conv.hpp
     title: semi_relaxed_conv.hpp
   _extendedRequiredBy:
-  - icon: ':x:'
+  - icon: ':question:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: c_finite.hpp
     title: C-Finite Sequence
   - icon: ':heavy_check_mark:'
@@ -29,13 +29,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: fps_polya.hpp
     title: fps_polya.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: frobenius.hpp
     title: frobenius.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: mat_basic.hpp
     title: mat_basic.hpp
   - icon: ':warning:'
@@ -132,13 +132,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/matrix/adjugate_matrix.0.test.cpp
     title: test/matrix/adjugate_matrix.0.test.cpp
   - icon: ':x:'
