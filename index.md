@@ -21,7 +21,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: c_finite.hpp
       title: C-Finite Sequence
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: chinese_remainder.hpp
       title: chinese_remainder.hpp
     - icon: ':heavy_check_mark:'
@@ -150,7 +150,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: treap_node_base.hpp
       title: treap_node_base.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: xgcd.hpp
       title: xgcd.hpp
   verificationCategories:
@@ -334,7 +334,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/number_theory/sqrt_mod.0.test.cpp
       title: test/number_theory/sqrt_mod.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/number_theory/yukicoder187.0.test.cpp
       title: test/number_theory/yukicoder187.0.test.cpp
   - name: test/set_power_series
