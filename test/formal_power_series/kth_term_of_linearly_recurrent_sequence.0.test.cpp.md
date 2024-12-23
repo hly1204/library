@@ -4,13 +4,13 @@ data:
   - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: c_finite.hpp
     title: C-Finite Sequence
   - icon: ':question:'
     path: fft.hpp
     title: FFT
-  - icon: ':x:'
+  - icon: ':question:'
     path: fft_doubling.hpp
     title: FFT Doubling
   - icon: ':question:'

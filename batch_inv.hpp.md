@@ -11,14 +11,14 @@ data:
   - icon: ':warning:'
     path: poly_interpolation_with_error.hpp
     title: poly_interpolation_with_error.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: subproduct_tree.hpp
     title: Subproduct Tree
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/convolution/convolution_mod.1.test.cpp
     title: test/convolution/convolution_mod.1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - icon: ':x:'

@@ -281,11 +281,11 @@ data:
     \ dftQ[i];\n        }\n        inv_fft(U);\n\n        // [-2d,d-1] => [0,3d-1]\n\
     \        // take [-d,-1] => take [d,2d-1]\n        for (int i = 0; i < d; ++i)\n\
     \            for (int j = 0; j < n; ++j) U[i * n + j] = U[(i + d) * (n * 2) +\
-    \ j];\n        U.resize(d * n);\n        return U;\n    };\n\n    int k = 1;\n\
-    \    while (k < std::max<int>(n, f.size())) k *= 2;\n    std::vector<Tp> Q(k);\n\
-    \    for (int i = 0; i < std::min<int>(k, g.size()); ++i) Q[i] = -g[i];\n\n  \
-    \  auto res = rec(rec, f, Q, 1, k);\n    res.resize(n);\n    return res;\n}\n\n\
-    // returns [x^k]gf^0, [x^k]gf, ..., [x^k]gf^(n-1)\n// see: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
+    \ j];\n        U.resize(d * n);\n        return U;\n    };\n\n    const int k\
+    \ = fft_len(std::max<int>(n, f.size()));\n    std::vector<Tp> Q(k);\n    for (int\
+    \ i = 0; i < std::min<int>(k, g.size()); ++i) Q[i] = -g[i];\n\n    auto res =\
+    \ rec(rec, f, Q, 1, k);\n    res.resize(n);\n    return res;\n}\n\n// returns\
+    \ [x^k]gf^0, [x^k]gf, ..., [x^k]gf^(n-1)\n// see: https://noshi91.hatenablog.com/entry/2024/03/16/224034\n\
     // noshi91. FPS \u306E\u5408\u6210\u3068\u9006\u95A2\u6570\u3001\u51AA\u4E57\u306E\
     \u4FC2\u6570\u5217\u6319 \u0398(n (log(n))^2)\ntemplate <typename Tp>\ninline\
     \ std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const std::vector<Tp>\
@@ -394,7 +394,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-23 20:42:13+08:00'
+  timestamp: '2024-12-23 21:20:34+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
