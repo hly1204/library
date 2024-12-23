@@ -75,26 +75,27 @@ data:
     \    int n;\n    std::cin >> n;\n    std::vector<int> rem(n), mod(n);\n    for\
     \ (int i = 0; i < n; ++i) std::cin >> rem[i] >> mod[i];\n    if (const auto res\
     \ = chinese_remainder_mod(rem, mod, 1000000007)) {\n        if (std::all_of(rem.begin(),\
-    \ rem.end(), [](int n) { return n == 0; })) {\n            std::cout << res->mod\
-    \ << '\\n';\n        } else {\n            std::cout << res->rem << '\\n';\n \
-    \       }\n    } else {\n        std::cout << \"-1\\n\";\n    }\n    return 0;\n\
-    }\n"
+    \ rem.end(), [](int n) { return n == 0; })) {\n            std::cout << std::get<0>(*res)\
+    \ << '\\n';\n        } else {\n            std::cout << std::get<1>(*res) << '\\\
+    n';\n        }\n    } else {\n        std::cout << \"-1\\n\";\n    }\n    return\
+    \ 0;\n}\n"
   code: "#define PROBLEM \"https://yukicoder.me/problems/448\"\n\n#include \"chinese_remainder.hpp\"\
     \n#include <algorithm>\n#include <iostream>\n#include <vector>\n\nint main() {\n\
     \    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int n;\n\
     \    std::cin >> n;\n    std::vector<int> rem(n), mod(n);\n    for (int i = 0;\
     \ i < n; ++i) std::cin >> rem[i] >> mod[i];\n    if (const auto res = chinese_remainder_mod(rem,\
     \ mod, 1000000007)) {\n        if (std::all_of(rem.begin(), rem.end(), [](int\
-    \ n) { return n == 0; })) {\n            std::cout << res->mod << '\\n';\n   \
-    \     } else {\n            std::cout << res->rem << '\\n';\n        }\n    }\
-    \ else {\n        std::cout << \"-1\\n\";\n    }\n    return 0;\n}\n"
+    \ n) { return n == 0; })) {\n            std::cout << std::get<0>(*res) << '\\\
+    n';\n        } else {\n            std::cout << std::get<1>(*res) << '\\n';\n\
+    \        }\n    } else {\n        std::cout << \"-1\\n\";\n    }\n    return 0;\n\
+    }\n"
   dependsOn:
   - chinese_remainder.hpp
   - xgcd.hpp
   isVerificationFile: true
   path: test/number_theory/yukicoder187.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-23 20:28:27+08:00'
+  timestamp: '2024-12-23 20:31:57+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/number_theory/yukicoder187.0.test.cpp
