@@ -5,7 +5,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: bitwise_conv.hpp
     title: bitwise_conv.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: sps_basic.hpp
     title: sps_basic.hpp
   - icon: ':x:'
@@ -18,10 +18,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/convolution/bitwise_xor_convolution.0.test.cpp
     title: test/convolution/bitwise_xor_convolution.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/set_power_series/exp_of_set_power_series.0.test.cpp
     title: test/set_power_series/exp_of_set_power_series.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/set_power_series/inv_of_set_power_series.0.test.cpp
     title: test/set_power_series/inv_of_set_power_series.0.test.cpp
   - icon: ':x:'

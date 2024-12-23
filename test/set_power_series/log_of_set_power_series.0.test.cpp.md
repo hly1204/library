@@ -4,7 +4,7 @@ data:
   - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: sps_basic.hpp
     title: sps_basic.hpp
   - icon: ':question:'

@@ -4,7 +4,7 @@ data:
   - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':x:'
+  - icon: ':question:'
     path: sps_basic.hpp
     title: sps_basic.hpp
   - icon: ':question:'
@@ -12,9 +12,9 @@ data:
     title: subset_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/exp_of_set_power_series
@@ -176,7 +176,7 @@ data:
   path: test/set_power_series/inv_of_set_power_series.0.test.cpp
   requiredBy: []
   timestamp: '2024-12-23 20:42:13+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/set_power_series/inv_of_set_power_series.0.test.cpp
 layout: document
