@@ -10,7 +10,7 @@ data:
     title: C-Finite Sequence
   - icon: ':heavy_check_mark:'
     path: czt.hpp
-    title: czt.hpp
+    title: Chirp Z Transform
   - icon: ':heavy_check_mark:'
     path: falling_factorial_poly.hpp
     title: falling_factorial_poly.hpp

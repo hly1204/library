@@ -13,7 +13,7 @@ data:
     title: C-Finite Sequence
   - icon: ':heavy_check_mark:'
     path: czt.hpp
-    title: czt.hpp
+    title: Chirp Z Transform
   - icon: ':heavy_check_mark:'
     path: famous_sequence.hpp
     title: famous_sequence.hpp

@@ -7,7 +7,7 @@ data:
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: czt.hpp
-    title: czt.hpp
+    title: Chirp Z Transform
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/convolution/convolution_mod.1.test.cpp

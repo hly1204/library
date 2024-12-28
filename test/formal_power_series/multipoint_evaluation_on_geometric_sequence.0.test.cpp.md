@@ -9,7 +9,7 @@ data:
     title: binomial.hpp
   - icon: ':heavy_check_mark:'
     path: czt.hpp
-    title: czt.hpp
+    title: Chirp Z Transform
   - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT

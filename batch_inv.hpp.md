@@ -4,7 +4,7 @@ data:
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: czt.hpp
-    title: czt.hpp
+    title: Chirp Z Transform
   - icon: ':warning:'
     path: poly_interpolation.hpp
     title: Polynomial Interpolation (Lagrange Interpolation)

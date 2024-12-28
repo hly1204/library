@@ -29,7 +29,7 @@ data:
       title: conv_mod.hpp
     - icon: ':heavy_check_mark:'
       path: czt.hpp
-      title: czt.hpp
+      title: Chirp Z Transform
     - icon: ':heavy_check_mark:'
       path: disjoint_set.hpp
       title: disjoint_set.hpp
