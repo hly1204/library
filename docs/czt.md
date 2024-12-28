@@ -60,7 +60,7 @@ $$
 
 for $x _ i \neq x _ j$ for all $i\neq j$.
 
-> L'Hôpital's Rule：
+> L'Hôpital's Rule:
 > The derivative of $f = \sum _ {i} f _ i x^i$ is $f' = \sum _ {i} i f_i x^{i - 1}$, for $g\in\mathbb{C}\left\lbrack x\right\rbrack$ we have the product rule: $\left(fg\right)' = f'g + fg'$. Let $\alpha\in\mathbb{C}$ and $f(\alpha) = 0$ then $\left(fg\right)'(\alpha) = f'(\alpha)g(\alpha)$, if $f'(\alpha)\neq 0$ then $(fg/f)(\alpha) = g(\alpha) = (fg)'(\alpha)/f'(\alpha)$.
 
 Let $M(x):=\prod _ {i=0}^{n-1}\left(x - x _ i\right)$, we have
