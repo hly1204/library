@@ -26,7 +26,6 @@ inline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {
         for (int i = 1; i <= degF; ++i) res[0] += F[i];
         return res;
     }
-
     std::vector<Tp> H(std::max(degF + 1, n - 1));
     Tp cc = H[0] = 1;
     for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i - 1] * (cc *= c);
@@ -37,12 +36,9 @@ inline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {
     for (int i = 1; i < n; ++i) GG[i] = GG[i - 1] * cc, cc *= ic;
     cc = 1;
     for (int i = -1; i >= -degF; --i) GG[i] = GG[i + 1] * (cc *= ic);
-
     // F[i] <- c^(binom(i+1,2))*F[i]
     for (int i = 0; i <= degF; ++i) F[i] *= H[i];
-
     F = middle_product(G, F);
-
     // F[i] <- c^(binom(i,2))*F[i]
     for (int i = 1; i < n; ++i) F[i] *= H[i - 1];
     return F;
@@ -67,7 +63,7 @@ inline std::vector<Tp> inv_czt(const std::vector<Tp> &F, Tp q, Tp a = 1) {
     const auto Sn   = S[n - 1] * (1 - qq);
     const auto invS = batch_inv(S);
     qq              = 1;
-    // M[i]=qbinom(n,i)*q^(binom(i,2))*(-1)^i
+    // M[n-i]=qbinom(n,i)*q^(binom(i,2))*(-1)^i
     for (int i = 1; i < n; ++i) M[n - i] = Sn * invS[i] * invS[n - i] * (qq *= -Q[i - 1]);
     M[0] = qq * -Q[n - 1]; // in case of q^n=1
     // D[i]=S[i]*S[n-i-1]*q^(binom(i,2)+i(n-i-1))*(-1)^i
