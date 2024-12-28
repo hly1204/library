@@ -339,14 +339,14 @@ data:
     \ {\n        // F(x) <- F(ax)\n        Tp aa = 1;\n        for (int i = 0; i <=\
     \ degF; ++i) F[i] *= aa, aa *= a;\n    }\n    if (c == 0) {\n        std::vector<Tp>\
     \ res(n, F[0]);\n        for (int i = 1; i <= degF; ++i) res[0] += F[i];\n   \
-    \     return res;\n    }\n\n    std::vector<Tp> H(std::max(degF + 1, n - 1));\n\
+    \     return res;\n    }\n    std::vector<Tp> H(std::max(degF + 1, n - 1));\n\
     \    Tp cc = H[0] = 1;\n    for (int i = 1; i < (int)H.size(); ++i) H[i] = H[i\
     \ - 1] * (cc *= c);\n    std::vector<Tp> G(degF + n); // G[i+degF]=c^(-binom(i,2))\n\
     \    auto GG     = G.begin() + degF;\n    const Tp ic = c.inv();\n    cc = GG[0]\
     \ = 1;\n    for (int i = 1; i < n; ++i) GG[i] = GG[i - 1] * cc, cc *= ic;\n  \
     \  cc = 1;\n    for (int i = -1; i >= -degF; --i) GG[i] = GG[i + 1] * (cc *= ic);\n\
-    \n    // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i]\
-    \ *= H[i];\n\n    F = middle_product(G, F);\n\n    // F[i] <- c^(binom(i,2))*F[i]\n\
+    \    // F[i] <- c^(binom(i+1,2))*F[i]\n    for (int i = 0; i <= degF; ++i) F[i]\
+    \ *= H[i];\n    F = middle_product(G, F);\n    // F[i] <- c^(binom(i,2))*F[i]\n\
     \    for (int i = 1; i < n; ++i) F[i] *= H[i - 1];\n    return F;\n}\n\n// returns\
     \ f s.t. f(aq^i)=F[i]\n// aq^i != aq^j for all i != j\n// see: https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric\n\
     // noshi91. \u6A19\u672C\u70B9\u304C\u7B49\u6BD4\u6570\u5217\u3092\u6210\u3059\
@@ -358,9 +358,9 @@ data:
     \ i < n; ++i) Q[i] = qq, qq *= q;\n    // S[i]=prod_(i=1..i)(1-q^i)\n    S[0]\
     \ = 1;\n    for (int i = 1; i < n; ++i) S[i] = S[i - 1] * (1 - Q[i]);\n    const\
     \ auto Sn   = S[n - 1] * (1 - qq);\n    const auto invS = batch_inv(S);\n    qq\
-    \              = 1;\n    // M[i]=qbinom(n,i)*q^(binom(i,2))*(-1)^i\n    for (int\
-    \ i = 1; i < n; ++i) M[n - i] = Sn * invS[i] * invS[n - i] * (qq *= -Q[i - 1]);\n\
-    \    M[0] = qq * -Q[n - 1]; // in case of q^n=1\n    // D[i]=S[i]*S[n-i-1]*q^(binom(i,2)+i(n-i-1))*(-1)^i\n\
+    \              = 1;\n    // M[n-i]=qbinom(n,i)*q^(binom(i,2))*(-1)^i\n    for\
+    \ (int i = 1; i < n; ++i) M[n - i] = Sn * invS[i] * invS[n - i] * (qq *= -Q[i\
+    \ - 1]);\n    M[0] = qq * -Q[n - 1]; // in case of q^n=1\n    // D[i]=S[i]*S[n-i-1]*q^(binom(i,2)+i(n-i-1))*(-1)^i\n\
     \    D[0] = 1;\n    for (int i = 0; i < n - 1; ++i) D[i + 1] = D[i] * -Q[n - i\
     \ - 2];\n    for (int i = 0; i < n; ++i) D[i] *= S[i] * S[n - i - 1];\n    //\
     \ D[i] <- -F[i]/D[i]\n    D = batch_inv(D);\n    for (int i = 0; i < n; ++i) D[i]\
@@ -432,7 +432,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-23 21:08:20+08:00'
+  timestamp: '2024-12-29 01:44:15+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
