@@ -40,7 +40,7 @@ data:
     title: frobenius.hpp
   - icon: ':warning:'
     path: karatsuba.hpp
-    title: karatsuba.hpp
+    title: Karatsuba Multiplication
   - icon: ':heavy_check_mark:'
     path: ks.hpp
     title: ks.hpp
