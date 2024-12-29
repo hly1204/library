@@ -301,7 +301,7 @@ Since $q^n \neq 1$ is not guaranteed, $M(0)$ should be computed separately.
 
 ## References
 
-1. 37zigen. 多項式補間：アルゴリズム url: <https://37zigen.com/lagrange-interpolation/>
+1. 37zigen. 多項式補間：アルゴリズム. url: <https://37zigen.com/lagrange-interpolation/>
 2. noshi91. 標本点が等比数列を成す場合に補間多項式を計算するアルゴリズム. url: <https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric>
 3. Bostan, A. (2010). Fast algorithms for polynomials and matrices. JNCF 2010. Algorithms Project, INRIA. url: <https://specfun.inria.fr/bostan/publications/exposeJNCF.pdf>
 4. Warren P. Johnson. An Introduction to $q$-analysis. American Mathematical Soc., 2020.
