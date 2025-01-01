@@ -247,7 +247,7 @@ $$
 
 and LHS is defined to be $1$ when $n = 0$.
 
-*Proof*: Let RHS equals $r_n(x,a)$, apply $q$-Pascal relation here, we have
+*Proof*. Let RHS equals $r_n(x,a)$, apply $q$-Pascal relation here, we have
 
 $$
 \begin{aligned}
