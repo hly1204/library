@@ -18,7 +18,7 @@ data:
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
     path: middle_product.hpp
-    title: middle_product.hpp
+    title: Middle Product
   - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
