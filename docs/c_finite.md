@@ -254,5 +254,4 @@ $$
 ## References
 
 1. Alin Bostan, Ryuhei Mori. A Simple and Fast Algorithm for Computing the N-th Term of a Linearly Recurrent Sequence. SOSA 2021: 118-132 url: <https://arxiv.org/abs/2008.08822>
-
 2. Arne Storjohann. Algorithms for Matrix Canonical Forms. ETH Zürich. Diss., Technische Wissenschaften ETH Zürich, Nr. 13922, 2001. url: <https://www.research-collection.ethz.ch/handle/20.500.11850/145127>

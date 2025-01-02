@@ -45,3 +45,9 @@ So we only need to compute one division and several multiplications but not seve
 ### Polynomial interpolation
 
 TODO
+
+## References
+
+1. Alin Bostan, Grégoire Lecerf, Éric Schost. Tellegen's principle into practice. ISSAC 2003: 37-44 url: <https://specfun.inria.fr/bostan/publications/BoLeSc03.pdf>
+2. Daniel J. Bernstein. "Scaled remainder trees." url: <https://cr.yp.to/papers.html#scaledmod>
+3. noshi91. 転置原理なしで Monomial 基底から Newton 基底への変換. url: <https://noshi91.hatenablog.com/entry/2023/05/01/022946>
