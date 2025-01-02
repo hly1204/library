@@ -65,4 +65,4 @@ But we are not able to compute $(-n)(-n - 1)\cdots (-n - (k - 1))$ and $k!$ fast
 
 ## Shift via Falling Factorial Polynomial
 
-Might in another documentation.
+Might in another document.
