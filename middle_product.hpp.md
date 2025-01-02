@@ -8,6 +8,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: Chirp Z Transform
+  - icon: ':heavy_check_mark:'
+    path: shift_sample_points.hpp
+    title: Shift Sample Points
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/convolution/convolution_mod.1.test.cpp
@@ -18,6 +21,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+    title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -161,12 +167,14 @@ data:
   isVerificationFile: false
   path: middle_product.hpp
   requiredBy:
+  - shift_sample_points.hpp
   - czt.hpp
   timestamp: '2024-12-03 09:02:32+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
   - test/convolution/convolution_mod.1.test.cpp
 documentation_of: middle_product.hpp
 layout: document

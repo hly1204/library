@@ -2,14 +2,20 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: batch_inv.hpp
+    title: batch_inv.hpp
+  - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
   - icon: ':heavy_check_mark:'
-    path: falling_factorial_poly.hpp
-    title: falling_factorial_poly.hpp
-  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT
+  - icon: ':heavy_check_mark:'
+    path: middle_product.hpp
+    title: middle_product.hpp
+  - icon: ':heavy_check_mark:'
+    path: swag.hpp
+    title: swag.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
@@ -20,9 +26,14 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
-  bundledCode: "#line 2 \"shift_sample_points.hpp\"\n\n#line 2 \"falling_factorial_poly.hpp\"\
-    \n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n#include <vector>\n\ntemplate\
-    \ <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\
+  bundledCode: "#line 2 \"shift_sample_points.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\
+    \n#include <cassert>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ batch_inv(const std::vector<Tp> &a) {\n    if (a.empty()) return {};\n    const\
+    \ int n = a.size();\n    std::vector<Tp> b(n);\n    Tp v = 1;\n    for (int i\
+    \ = 0; i < n; ++i) b[i] = v, v *= a[i];\n    assert(v != 0);\n    v = v.inv();\n\
+    \    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n    return b;\n}\n\
+    #line 2 \"binomial.hpp\"\n\n#include <algorithm>\n#line 5 \"binomial.hpp\"\n\n\
+    template <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\
     \n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\n    void preprocess(int\
     \ n) {\n        if (const int nn = factorial_.size(); nn < n) {\n            int\
     \ k = nn;\n            while (k < n) k *= 2;\n            k = std::min<long long>(k,\
@@ -36,11 +47,11 @@ data:
     \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
     \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
     \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
-    \ invfactorial_[n]; }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include\
-    \ <cassert>\n#include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate\
-    \ <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue() {\n\
-    \        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2)\
-    \ == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
+    \ invfactorial_[n]; }\n};\n#line 2 \"middle_product.hpp\"\n\n#line 2 \"fft.hpp\"\
+    \n\n#line 5 \"fft.hpp\"\n#include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\
+    \n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
+    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
+    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
     \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
     \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
     \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
@@ -147,47 +158,146 @@ data:
     \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n    if (std::min(a.size(),\
     \ b.size()) < 60) return convolution_naive(a, b);\n    if (std::addressof(a) ==\
     \ std::addressof(b)) return square_fft(a);\n    return convolution_fft(a, b);\n\
-    }\n#line 7 \"falling_factorial_poly.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ sample_points_to_ffp(const std::vector<Tp> &F) {\n    const int n = F.size();\n\
-    \    auto &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp> egfF(F), ee(n);\n\
-    \    for (int i = 0; i < n; ++i) {\n        egfF[i] *= bin.inv_factorial(i);\n\
-    \        ee[i] = bin.inv_factorial(i);\n        if (i & 1) ee[i] = -ee[i];\n \
-    \   }\n    auto ffp = convolution(egfF, ee);\n    ffp.resize(n);\n    return ffp;\n\
-    }\n\ntemplate <typename Tp>\ninline std::vector<Tp> ffp_to_sample_points(const\
-    \ std::vector<Tp> &ffp, int n) {\n    auto &&bin = Binomial<Tp>::get(n);\n   \
-    \ std::vector<Tp> ee(n);\n    for (int i = 0; i < n; ++i) ee[i] = bin.inv_factorial(i);\n\
-    \    auto F = convolution(std::vector(ffp.begin(), ffp.begin() + std::min<int>(n,\
-    \ ffp.size())), ee);\n    F.resize(n);\n    for (int i = 0; i < n; ++i) F[i] *=\
-    \ bin.factorial(i);\n    return F;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ shift_ffp(std::vector<Tp> ffp, Tp c) {\n    const int n = ffp.size();\n    auto\
-    \ &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp> C(n);\n    Tp cc = 1;\n\
-    \    for (int i = 0; i < n; ++i) {\n        ffp[i] *= bin.factorial(i);\n    \
-    \    C[i] = cc * bin.inv_factorial(i);\n        cc *= c - i;\n    }\n    std::reverse(ffp.begin(),\
-    \ ffp.end());\n    auto res = convolution(ffp, C);\n    res.resize(n);\n    std::reverse(res.begin(),\
-    \ res.end());\n    for (int i = 0; i < n; ++i) res[i] *= bin.inv_factorial(i);\n\
-    \    return res;\n}\n#line 5 \"shift_sample_points.hpp\"\n\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> shift_sample_points(const std::vector<Tp> &F, Tp\
-    \ c, int m) {\n    return ffp_to_sample_points(shift_ffp(sample_points_to_ffp(F),\
-    \ c), m);\n}\n"
-  code: "#pragma once\n\n#include \"falling_factorial_poly.hpp\"\n#include <vector>\n\
-    \ntemplate <typename Tp>\ninline std::vector<Tp> shift_sample_points(const std::vector<Tp>\
-    \ &F, Tp c, int m) {\n    return ffp_to_sample_points(shift_ffp(sample_points_to_ffp(F),\
-    \ c), m);\n}\n"
+    }\n#line 7 \"middle_product.hpp\"\n\n// see:\n// [1]: Guillaume Hanrot, Michel\
+    \ Quercia, Paul Zimmermann. The Middle Product Algorithm I.\n// [2]: Alin Bostan,\
+    \ Gr\xE9goire Lecerf, \xC9ric Schost. Tellegen's principle into practice.\n\n\
+    // returns (fg)_(n-1),...,(fg)_(m-1)\n// f: f_0 + ... + f_(m-1)x^(m-1)\n// g:\
+    \ g_0 + ... + g_(n-1)x^(n-1)\n// m >= n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ middle_product(std::vector<Tp> f, std::vector<Tp> g) {\n    const int m = f.size();\n\
+    \    const int n = g.size();\n    assert(m >= n);\n    std::reverse(g.begin(),\
+    \ g.end());\n    const int len = fft_len(m);\n    f.resize(len);\n    g.resize(len);\n\
+    \    transposed_inv_fft(f);\n    fft(g);\n    for (int i = 0; i < len; ++i) f[i]\
+    \ *= g[i];\n    transposed_fft(f);\n    f.resize(m - n + 1);\n    return f;\n\
+    }\n#line 2 \"swag.hpp\"\n\n#line 4 \"swag.hpp\"\n#include <cstddef>\n#include\
+    \ <optional>\n#include <stack>\n#include <type_traits>\n#line 9 \"swag.hpp\"\n\
+    \n// see: https://www.hirzels.com/martin/papers/debs17-tutorial.pdf\n// requires:\
+    \ Op(Op(A,B),C) = Op(A,Op(B,C))\ntemplate <typename Tp, typename Op,\n       \
+    \   std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp &>, int>\
+    \ = 0>\nclass SWAG {\npublic:\n    Op F;\n    std::stack<Tp, std::vector<Tp>>\
+    \ Front, Back;\n    std::optional<Tp> Agg;\n\n    explicit SWAG(Op F) : F(F) {}\n\
+    \    bool empty() const { return Front.empty() && Back.empty(); }\n    std::size_t\
+    \ size() const { return Front.size() + Back.size(); }\n    void push_back(const\
+    \ Tp &v) {\n        Back.push(v);\n        Agg.emplace(Agg ? F(*Agg, v) : v);\n\
+    \    }\n    void pop_front() {\n        assert(!empty());\n        if (Front.empty())\
+    \ {\n            Front.push(Back.top());\n            Back.pop();\n          \
+    \  while (!Back.empty()) {\n                Front.push(F(Back.top(), Front.top()));\n\
+    \                Back.pop();\n            }\n            Agg.reset();\n      \
+    \  }\n        Front.pop();\n    }\n\n    // returns F(...F(F(Q[0],Q[1]),Q[2]),...,Q[N-1])\n\
+    \    std::optional<Tp> query() const {\n        if (empty()) return {};\n    \
+    \    if (Front.empty()) return Agg;\n        if (!Agg) return Front.top();\n \
+    \       return F(Front.top(), *Agg);\n    }\n};\n#line 8 \"shift_sample_points.hpp\"\
+    \n#include <functional>\n#line 10 \"shift_sample_points.hpp\"\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> shift_sample_points(const std::vector<Tp> &f, Tp\
+    \ c, int m) {\n    if (f.empty()) return std::vector<Tp>(m);\n    assert(m > 0);\n\
+    \    const int n = f.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp>\
+    \ F(n), G(n + m - 1);\n    for (int i = 0; i < n; ++i) {\n        F[i] = f[i]\
+    \ * bin.inv_factorial(i) * bin.inv_factorial(n - 1 - i);\n        if ((n - 1 -\
+    \ i) & 1) F[i] = -F[i];\n    }\n    for (int i = 0; i < n + m - 1; ++i) {\n  \
+    \      const auto v = c + (i - (n - 1));\n        // We don't care about G[i]\
+    \ when v = 0.\n        // We assigned 1 for G[i] when v = 0 for calling batch_inv().\n\
+    \        G[i] = (v == 0) ? Tp(1) : v;\n    }\n    auto res = middle_product(batch_inv(G),\
+    \ F);\n    SWAG<Tp, std::multiplies<>> prod(std::multiplies<>{});\n    // prod[c-n+1,\
+    \ ..., c]\n    for (int i = -n + 1; i <= 0; ++i) prod.push_back(c + i);\n    //\
+    \ res[i] <- (c+i)!/(c+i-n)! * res[i]\n    for (int i = 0; i < m; ++i) {\n    \
+    \    if (i) prod.pop_front(), prod.push_back(c + i);\n        const auto v = prod.query().value();\n\
+    \        // 0 <= c+i < n iff (c+i)!/(c+i-n)! = 0\n        res[i] = (v == 0) ?\
+    \ f[(c + i).val()] : v * res[i];\n    }\n    return res;\n}\n"
+  code: "#pragma once\n\n#include \"batch_inv.hpp\"\n#include \"binomial.hpp\"\n#include\
+    \ \"middle_product.hpp\"\n#include \"swag.hpp\"\n#include <cassert>\n#include\
+    \ <functional>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ shift_sample_points(const std::vector<Tp> &f, Tp c, int m) {\n    if (f.empty())\
+    \ return std::vector<Tp>(m);\n    assert(m > 0);\n    const int n = f.size();\n\
+    \    auto &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp> F(n), G(n + m -\
+    \ 1);\n    for (int i = 0; i < n; ++i) {\n        F[i] = f[i] * bin.inv_factorial(i)\
+    \ * bin.inv_factorial(n - 1 - i);\n        if ((n - 1 - i) & 1) F[i] = -F[i];\n\
+    \    }\n    for (int i = 0; i < n + m - 1; ++i) {\n        const auto v = c +\
+    \ (i - (n - 1));\n        // We don't care about G[i] when v = 0.\n        //\
+    \ We assigned 1 for G[i] when v = 0 for calling batch_inv().\n        G[i] = (v\
+    \ == 0) ? Tp(1) : v;\n    }\n    auto res = middle_product(batch_inv(G), F);\n\
+    \    SWAG<Tp, std::multiplies<>> prod(std::multiplies<>{});\n    // prod[c-n+1,\
+    \ ..., c]\n    for (int i = -n + 1; i <= 0; ++i) prod.push_back(c + i);\n    //\
+    \ res[i] <- (c+i)!/(c+i-n)! * res[i]\n    for (int i = 0; i < m; ++i) {\n    \
+    \    if (i) prod.pop_front(), prod.push_back(c + i);\n        const auto v = prod.query().value();\n\
+    \        // 0 <= c+i < n iff (c+i)!/(c+i-n)! = 0\n        res[i] = (v == 0) ?\
+    \ f[(c + i).val()] : v * res[i];\n    }\n    return res;\n}\n"
   dependsOn:
-  - falling_factorial_poly.hpp
+  - batch_inv.hpp
   - binomial.hpp
+  - middle_product.hpp
   - fft.hpp
+  - swag.hpp
   isVerificationFile: false
   path: shift_sample_points.hpp
   requiredBy: []
-  timestamp: '2024-12-03 09:02:32+08:00'
+  timestamp: '2025-01-02 18:56:50+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
 documentation_of: shift_sample_points.hpp
 layout: document
-redirect_from:
-- /library/shift_sample_points.hpp
-- /library/shift_sample_points.hpp.html
-title: shift_sample_points.hpp
+title: Shift Sample Points
 ---
+
+## Shift via Lagrange Interpolation
+
+Given sample points $f(0), f(1), \dots ,f(n - 1)$ of polynomial $f \in \mathbb{C}\left\lbrack x\right\rbrack$ with $\deg f \lt n$, we want to compute $f(c), f(c + 1), \dots, f(c + m - 1)$ for $c \in \mathbb{Z}, m \in \mathbb{N}$.
+
+Recall the Lagrange interpolation formula,
+
+$$
+\begin{aligned}
+f(x) &= \sum _ {0 \leq i \lt n}\left(f(i) \prod _ {0 \leq j \lt n \atop j \neq i} \frac{x - j}{i - j}\right) \\
+&= \sum _ {0 \leq i \lt n}\left(f(i)\frac{\prod _ {0 \leq j \lt n \atop j \neq i}\left(x - j\right)}{\prod _ {0 \leq j \lt n \atop j \neq i}\left(i - j\right)}\right) \\
+&= \sum _ {0 \leq i \lt n}\left(f(i)\frac{x!}{(x - n)!(x - i)}\frac{(-1)^{n - 1 - i}}{i!(n - 1 - i)!}\right) \\
+&= \frac{x!}{(x - n)!}\sum _ {0 \leq i \lt n}\left(f(i)\frac{1}{x - i}\frac{(-1)^{n - 1 - i}}{i!(n - 1 - i)!}\right)
+\end{aligned}
+$$
+
+Let
+
+$$
+\begin{aligned}
+F(x) &:= \sum _ {0 \leq i \lt n}\frac{f(i)(-1)^{n - 1 - i}}{i!(n - 1 - i)!}x^i, \\
+G(x) &:= \sum _ {i \geq 0}\frac{1}{c - (n - 1) + i}x^i
+\end{aligned}
+$$
+
+now we have
+
+$$
+\begin{aligned}
+\left\lbrack x^{n - 1 + t}\right\rbrack\left(F(x)G(x)\right) &= \sum _ {i = 0}^{n - 1 + t}\left(\left(\left\lbrack x^i\right\rbrack F(x)\right)\left(\left\lbrack x^{n - 1 + t - i}\right\rbrack G(x)\right)\right) \\
+&= \sum _ {i = 0}^{n - 1}\left(\frac{f(i)(-1)^{n - 1 - i}}{i!(n - 1 - i)!}\frac{1}{c + t - i}\right) \\
+&= \frac{(c + t - n)!}{(c + t)!} f(c + t)
+\end{aligned}
+$$
+
+for $t = 0, 1, \dots, m - 1$. We should handle the case that $c - (n - 1) + i = 0$ for a certain $i$.
+
+## Shift via O.g.f.
+
+Let
+
+$$
+F(x) := \sum _ {i \geq 0}f(i)x^i \in \mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack
+$$
+
+We have $F(x) = \frac{P(x)}{(1 - x)^n}$ where $P(x) \in \mathbb{C}\left\lbrack x\right\rbrack _ {\lt n}$.
+
+And the negative binomial coefficients are
+
+$$
+\begin{aligned}
+\frac{1}{(1 - x)^n} &= (1 - x)^{-n} \\
+&= \sum _ {k \geq 0}\binom{-n}{k}x^k \\
+&= \sum _ {k \geq 0}\frac{(-n)(-n - 1)\cdots (-n - (k - 1))}{k!}x^k \\
+&= \sum _ {k \geq 0}(-1)^k\frac{(n + k - 1)!}{(n - 1)!k!}x^k \\
+&= \sum _ {k \geq 0}(-1)^k\binom{n + k - 1}{k}x^k
+\end{aligned}
+$$
+
+But we are not able to compute $(-n)(-n - 1)\cdots (-n - (k - 1))$ and $k!$ fast if $k$ is large.
+
+## Shift via Falling Factorial Polynomial
+
+Might in another documentation.

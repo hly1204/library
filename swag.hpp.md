@@ -1,11 +1,17 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: shift_sample_points.hpp
+    title: Shift Sample Points
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/data_structure/queue_operate_all_composite.0.test.cpp
     title: test/data_structure/queue_operate_all_composite.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+    title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -50,10 +56,12 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: swag.hpp
-  requiredBy: []
+  requiredBy:
+  - shift_sample_points.hpp
   timestamp: '2024-08-25 15:59:57+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
   - test/data_structure/queue_operate_all_composite.0.test.cpp
 documentation_of: swag.hpp
 layout: document

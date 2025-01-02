@@ -14,7 +14,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: Chirp Z Transform
-  - icon: ':heavy_check_mark:'
+  - icon: ':warning:'
     path: falling_factorial_poly.hpp
     title: falling_factorial_poly.hpp
   - icon: ':heavy_check_mark:'
@@ -73,7 +73,7 @@ data:
     title: semi_relaxed_conv.hpp
   - icon: ':heavy_check_mark:'
     path: shift_sample_points.hpp
-    title: shift_sample_points.hpp
+    title: Shift Sample Points
   - icon: ':heavy_check_mark:'
     path: subproduct_tree.hpp
     title: Subproduct Tree

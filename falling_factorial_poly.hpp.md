@@ -7,17 +7,11 @@ data:
   - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT
-  _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
-    path: shift_sample_points.hpp
-    title: shift_sample_points.hpp
-  _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-    title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+  _extendedRequiredBy: []
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':warning:'
   attributes:
     links: []
   bundledCode: "#line 2 \"falling_factorial_poly.hpp\"\n\n#line 2 \"binomial.hpp\"\
@@ -191,12 +185,10 @@ data:
   - fft.hpp
   isVerificationFile: false
   path: falling_factorial_poly.hpp
-  requiredBy:
-  - shift_sample_points.hpp
+  requiredBy: []
   timestamp: '2024-12-03 09:02:32+08:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+  verificationStatus: LIBRARY_NO_TESTS
+  verifiedWith: []
 documentation_of: falling_factorial_poly.hpp
 layout: document
 redirect_from:

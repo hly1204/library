@@ -12,6 +12,9 @@ data:
     path: poly_interpolation_with_error.hpp
     title: poly_interpolation_with_error.hpp
   - icon: ':heavy_check_mark:'
+    path: shift_sample_points.hpp
+    title: Shift Sample Points
+  - icon: ':heavy_check_mark:'
     path: subproduct_tree.hpp
     title: Subproduct Tree
   _extendedVerifiedWith:
@@ -33,6 +36,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+    title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -54,6 +60,7 @@ data:
   isVerificationFile: false
   path: batch_inv.hpp
   requiredBy:
+  - shift_sample_points.hpp
   - poly_interpolation_with_error.hpp
   - poly_interpolation.hpp
   - subproduct_tree.hpp
@@ -66,6 +73,7 @@ data:
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/multipoint_evaluation.0.test.cpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
   - test/convolution/convolution_mod.1.test.cpp
 documentation_of: batch_inv.hpp
 layout: document

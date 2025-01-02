@@ -36,7 +36,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: disjoint_sparse_table.hpp
       title: disjoint_sparse_table.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':warning:'
       path: falling_factorial_poly.hpp
       title: falling_factorial_poly.hpp
     - icon: ':heavy_check_mark:'
@@ -122,7 +122,7 @@ data:
       title: semi_relaxed_conv.hpp
     - icon: ':heavy_check_mark:'
       path: shift_sample_points.hpp
-      title: shift_sample_points.hpp
+      title: Shift Sample Points
     - icon: ':heavy_check_mark:'
       path: sparse_table.hpp
       title: sparse_table.hpp
