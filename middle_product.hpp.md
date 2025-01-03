@@ -13,9 +13,6 @@ data:
     title: Shift Sample Points
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/convolution/convolution_mod.1.test.cpp
-    title: test/convolution/convolution_mod.1.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -156,9 +153,9 @@ data:
     \ f.resize(m - n + 1);\n    return f;\n}\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n\
     // f: f_0 + ... + f_(m-1)x^(m-1)\n// g: g_0 + ... + g_(n-1)x^(n-1)\n// requires\
     \ m >= n\ntemplate <typename Tp>\ninline std::vector<Tp> middle_product(const\
-    \ std::vector<Tp> &f, const std::vector<Tp> &g) {\n    const int m = f.size();\n\
-    \    const int n = g.size();\n    assert(m >= n);\n    if (m <= 60) return middle_product_naive(f,\
-    \ g);\n    return middle_product_fft(f, g);\n}\n"
+    \ std::vector<Tp> &f, const std::vector<Tp> &g) {\n    assert(f.size() >= g.size());\n\
+    \    if (f.size() < 60) return middle_product_naive(f, g);\n    return middle_product_fft(f,\
+    \ g);\n}\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include <algorithm>\n#include <cassert>\n\
     #include <vector>\n\n// see:\n// [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann.\
     \ The Middle Product Algorithm I.\n// [2]: Alin Bostan, Gr\xE9goire Lecerf, \xC9\
@@ -176,9 +173,8 @@ data:
     }\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n// f: f_0 + ... + f_(m-1)x^(m-1)\n\
     // g: g_0 + ... + g_(n-1)x^(n-1)\n// requires m >= n\ntemplate <typename Tp>\n\
     inline std::vector<Tp> middle_product(const std::vector<Tp> &f, const std::vector<Tp>\
-    \ &g) {\n    const int m = f.size();\n    const int n = g.size();\n    assert(m\
-    \ >= n);\n    if (m <= 60) return middle_product_naive(f, g);\n    return middle_product_fft(f,\
-    \ g);\n}\n"
+    \ &g) {\n    assert(f.size() >= g.size());\n    if (f.size() < 60) return middle_product_naive(f,\
+    \ g);\n    return middle_product_fft(f, g);\n}\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
@@ -186,13 +182,12 @@ data:
   requiredBy:
   - shift_sample_points.hpp
   - czt.hpp
-  timestamp: '2025-01-03 21:29:47+08:00'
+  timestamp: '2025-01-03 21:36:10+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-  - test/convolution/convolution_mod.1.test.cpp
 documentation_of: middle_product.hpp
 layout: document
 title: Middle Product

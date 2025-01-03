@@ -169,9 +169,6 @@ data:
       path: test/convolution/convolution_mod.0.test.cpp
       title: test/convolution/convolution_mod.0.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/convolution/convolution_mod.1.test.cpp
-      title: test/convolution/convolution_mod.1.test.cpp
-    - icon: ':heavy_check_mark:'
       path: test/convolution/convolution_mod_1000000007.0.test.cpp
       title: test/convolution/convolution_mod_1000000007.0.test.cpp
   - name: test/data_structure

@@ -25,9 +25,6 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/convolution/convolution_mod.1.test.cpp
-    title: test/convolution/convolution_mod.1.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -172,20 +169,19 @@ data:
     \ f.resize(m - n + 1);\n    return f;\n}\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n\
     // f: f_0 + ... + f_(m-1)x^(m-1)\n// g: g_0 + ... + g_(n-1)x^(n-1)\n// requires\
     \ m >= n\ntemplate <typename Tp>\ninline std::vector<Tp> middle_product(const\
-    \ std::vector<Tp> &f, const std::vector<Tp> &g) {\n    const int m = f.size();\n\
-    \    const int n = g.size();\n    assert(m >= n);\n    if (m <= 60) return middle_product_naive(f,\
-    \ g);\n    return middle_product_fft(f, g);\n}\n#line 2 \"poly_basic.hpp\"\n\n\
-    #line 2 \"binomial.hpp\"\n\n#line 5 \"binomial.hpp\"\n\ntemplate <typename Tp>\n\
-    class Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial()\
-    \ : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n\
-    \        if (const int nn = factorial_.size(); nn < n) {\n            int k =\
-    \ nn;\n            while (k < n) k *= 2;\n            k = std::min<long long>(k,\
-    \ Tp::mod());\n            factorial_.resize(k);\n            invfactorial_.resize(k);\n\
-    \            for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] *\
-    \ i;\n            invfactorial_.back() = factorial_.back().inv();\n          \
-    \  for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] *\
-    \ (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int n)\
-    \ {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
+    \ std::vector<Tp> &f, const std::vector<Tp> &g) {\n    assert(f.size() >= g.size());\n\
+    \    if (f.size() < 60) return middle_product_naive(f, g);\n    return middle_product_fft(f,\
+    \ g);\n}\n#line 2 \"poly_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#line 5 \"\
+    binomial.hpp\"\n\ntemplate <typename Tp>\nclass Binomial {\n    std::vector<Tp>\
+    \ factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)}\
+    \ {}\n\n    void preprocess(int n) {\n        if (const int nn = factorial_.size();\
+    \ nn < n) {\n            int k = nn;\n            while (k < n) k *= 2;\n    \
+    \        k = std::min<long long>(k, Tp::mod());\n            factorial_.resize(k);\n\
+    \            invfactorial_.resize(k);\n            for (int i = nn; i < k; ++i)\
+    \ factorial_[i] = factorial_[i - 1] * i;\n            invfactorial_.back() = factorial_.back().inv();\n\
+    \            for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i\
+    \ + 1] * (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int\
+    \ n) {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
     \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
     \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
     \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
@@ -427,12 +423,11 @@ data:
   isVerificationFile: false
   path: czt.hpp
   requiredBy: []
-  timestamp: '2025-01-03 21:29:47+08:00'
+  timestamp: '2025-01-03 21:36:10+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - test/convolution/convolution_mod.1.test.cpp
 documentation_of: czt.hpp
 layout: document
 title: Chirp Z Transform

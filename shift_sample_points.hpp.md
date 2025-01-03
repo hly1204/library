@@ -174,14 +174,14 @@ data:
     \ f.resize(m - n + 1);\n    return f;\n}\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n\
     // f: f_0 + ... + f_(m-1)x^(m-1)\n// g: g_0 + ... + g_(n-1)x^(n-1)\n// requires\
     \ m >= n\ntemplate <typename Tp>\ninline std::vector<Tp> middle_product(const\
-    \ std::vector<Tp> &f, const std::vector<Tp> &g) {\n    const int m = f.size();\n\
-    \    const int n = g.size();\n    assert(m >= n);\n    if (m <= 60) return middle_product_naive(f,\
-    \ g);\n    return middle_product_fft(f, g);\n}\n#line 2 \"swag.hpp\"\n\n#line\
-    \ 4 \"swag.hpp\"\n#include <cstddef>\n#include <optional>\n#include <stack>\n\
-    #include <type_traits>\n#line 9 \"swag.hpp\"\n\n// see: https://www.hirzels.com/martin/papers/debs17-tutorial.pdf\n\
-    // requires: Op(Op(A,B),C) = Op(A,Op(B,C))\ntemplate <typename Tp, typename Op,\n\
-    \          std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp\
-    \ &>, int> = 0>\nclass SWAG {\npublic:\n    Op F;\n    std::stack<Tp, std::vector<Tp>>\
+    \ std::vector<Tp> &f, const std::vector<Tp> &g) {\n    assert(f.size() >= g.size());\n\
+    \    if (f.size() < 60) return middle_product_naive(f, g);\n    return middle_product_fft(f,\
+    \ g);\n}\n#line 2 \"swag.hpp\"\n\n#line 4 \"swag.hpp\"\n#include <cstddef>\n#include\
+    \ <optional>\n#include <stack>\n#include <type_traits>\n#line 9 \"swag.hpp\"\n\
+    \n// see: https://www.hirzels.com/martin/papers/debs17-tutorial.pdf\n// requires:\
+    \ Op(Op(A,B),C) = Op(A,Op(B,C))\ntemplate <typename Tp, typename Op,\n       \
+    \   std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp &>, int>\
+    \ = 0>\nclass SWAG {\npublic:\n    Op F;\n    std::stack<Tp, std::vector<Tp>>\
     \ Front, Back;\n    std::optional<Tp> Agg;\n\n    explicit SWAG(Op F) : F(F) {}\n\
     \    bool empty() const { return Front.empty() && Back.empty(); }\n    std::size_t\
     \ size() const { return Front.size() + Back.size(); }\n    void push_back(const\
@@ -237,7 +237,7 @@ data:
   isVerificationFile: false
   path: shift_sample_points.hpp
   requiredBy: []
-  timestamp: '2025-01-03 21:29:47+08:00'
+  timestamp: '2025-01-03 21:36:10+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
