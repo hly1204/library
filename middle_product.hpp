@@ -43,9 +43,7 @@ inline std::vector<Tp> middle_product_fft(std::vector<Tp> f, std::vector<Tp> g) 
 // requires m >= n
 template <typename Tp>
 inline std::vector<Tp> middle_product(const std::vector<Tp> &f, const std::vector<Tp> &g) {
-    const int m = f.size();
-    const int n = g.size();
-    assert(m >= n);
-    if (m <= 60) return middle_product_naive(f, g);
+    assert(f.size() >= g.size());
+    if (f.size() < 60) return middle_product_naive(f, g);
     return middle_product_fft(f, g);
 }
