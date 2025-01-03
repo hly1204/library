@@ -143,25 +143,42 @@ data:
     }\n#line 7 \"middle_product.hpp\"\n\n// see:\n// [1]: Guillaume Hanrot, Michel\
     \ Quercia, Paul Zimmermann. The Middle Product Algorithm I.\n// [2]: Alin Bostan,\
     \ Gr\xE9goire Lecerf, \xC9ric Schost. Tellegen's principle into practice.\n\n\
-    // returns (fg)_(n-1),...,(fg)_(m-1)\n// f: f_0 + ... + f_(m-1)x^(m-1)\n// g:\
-    \ g_0 + ... + g_(n-1)x^(n-1)\n// m >= n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ middle_product(std::vector<Tp> f, std::vector<Tp> g) {\n    const int m = f.size();\n\
-    \    const int n = g.size();\n    assert(m >= n);\n    std::reverse(g.begin(),\
-    \ g.end());\n    const int len = fft_len(m);\n    f.resize(len);\n    g.resize(len);\n\
-    \    transposed_inv_fft(f);\n    fft(g);\n    for (int i = 0; i < len; ++i) f[i]\
-    \ *= g[i];\n    transposed_fft(f);\n    f.resize(m - n + 1);\n    return f;\n\
-    }\n"
+    template <typename Tp>\ninline std::vector<Tp> middle_product_naive(const std::vector<Tp>\
+    \ &f, const std::vector<Tp> &g) {\n    const int m = f.size();\n    const int\
+    \ n = g.size();\n    assert(m >= n);\n    std::vector<Tp> res(m - n + 1);\n  \
+    \  for (int i = n - 1; i < m; ++i)\n        for (int j = i - (n - 1); j <= i;\
+    \ ++j) res[i - (n - 1)] += f[j] * g[i - j];\n    return res;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> middle_product_fft(std::vector<Tp> f, std::vector<Tp>\
+    \ g) {\n    const int m = f.size();\n    const int n = g.size();\n    assert(m\
+    \ >= n);\n    std::reverse(g.begin(), g.end());\n    const int len = fft_len(m);\n\
+    \    f.resize(len);\n    g.resize(len);\n    transposed_inv_fft(f);\n    fft(g);\n\
+    \    for (int i = 0; i < len; ++i) f[i] *= g[i];\n    transposed_fft(f);\n   \
+    \ f.resize(m - n + 1);\n    return f;\n}\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n\
+    // f: f_0 + ... + f_(m-1)x^(m-1)\n// g: g_0 + ... + g_(n-1)x^(n-1)\n// requires\
+    \ m >= n\ntemplate <typename Tp>\ninline std::vector<Tp> middle_product(const\
+    \ std::vector<Tp> &f, const std::vector<Tp> &g) {\n    const int m = f.size();\n\
+    \    const int n = g.size();\n    assert(m >= n);\n    if (m <= 60) return middle_product_naive(f,\
+    \ g);\n    return middle_product_fft(f, g);\n}\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include <algorithm>\n#include <cassert>\n\
     #include <vector>\n\n// see:\n// [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann.\
     \ The Middle Product Algorithm I.\n// [2]: Alin Bostan, Gr\xE9goire Lecerf, \xC9\
-    ric Schost. Tellegen's principle into practice.\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n\
-    // f: f_0 + ... + f_(m-1)x^(m-1)\n// g: g_0 + ... + g_(n-1)x^(n-1)\n// m >= n\n\
-    template <typename Tp>\ninline std::vector<Tp> middle_product(std::vector<Tp>\
-    \ f, std::vector<Tp> g) {\n    const int m = f.size();\n    const int n = g.size();\n\
-    \    assert(m >= n);\n    std::reverse(g.begin(), g.end());\n    const int len\
-    \ = fft_len(m);\n    f.resize(len);\n    g.resize(len);\n    transposed_inv_fft(f);\n\
-    \    fft(g);\n    for (int i = 0; i < len; ++i) f[i] *= g[i];\n    transposed_fft(f);\n\
-    \    f.resize(m - n + 1);\n    return f;\n}\n"
+    ric Schost. Tellegen's principle into practice.\n\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> middle_product_naive(const std::vector<Tp> &f, const std::vector<Tp>\
+    \ &g) {\n    const int m = f.size();\n    const int n = g.size();\n    assert(m\
+    \ >= n);\n    std::vector<Tp> res(m - n + 1);\n    for (int i = n - 1; i < m;\
+    \ ++i)\n        for (int j = i - (n - 1); j <= i; ++j) res[i - (n - 1)] += f[j]\
+    \ * g[i - j];\n    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ middle_product_fft(std::vector<Tp> f, std::vector<Tp> g) {\n    const int m\
+    \ = f.size();\n    const int n = g.size();\n    assert(m >= n);\n    std::reverse(g.begin(),\
+    \ g.end());\n    const int len = fft_len(m);\n    f.resize(len);\n    g.resize(len);\n\
+    \    transposed_inv_fft(f);\n    fft(g);\n    for (int i = 0; i < len; ++i) f[i]\
+    \ *= g[i];\n    transposed_fft(f);\n    f.resize(m - n + 1);\n    return f;\n\
+    }\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n// f: f_0 + ... + f_(m-1)x^(m-1)\n\
+    // g: g_0 + ... + g_(n-1)x^(n-1)\n// requires m >= n\ntemplate <typename Tp>\n\
+    inline std::vector<Tp> middle_product(const std::vector<Tp> &f, const std::vector<Tp>\
+    \ &g) {\n    const int m = f.size();\n    const int n = g.size();\n    assert(m\
+    \ >= n);\n    if (m <= 60) return middle_product_naive(f, g);\n    return middle_product_fft(f,\
+    \ g);\n}\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
@@ -169,7 +186,7 @@ data:
   requiredBy:
   - shift_sample_points.hpp
   - czt.hpp
-  timestamp: '2024-12-03 09:02:32+08:00'
+  timestamp: '2025-01-03 21:29:47+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
