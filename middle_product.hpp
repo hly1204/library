@@ -9,12 +9,19 @@
 // [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann. The Middle Product Algorithm I.
 // [2]: Alin Bostan, Grégoire Lecerf, Éric Schost. Tellegen's principle into practice.
 
-// returns (fg)_(n-1),...,(fg)_(m-1)
-// f: f_0 + ... + f_(m-1)x^(m-1)
-// g: g_0 + ... + g_(n-1)x^(n-1)
-// m >= n
 template <typename Tp>
-inline std::vector<Tp> middle_product(std::vector<Tp> f, std::vector<Tp> g) {
+inline std::vector<Tp> middle_product_naive(const std::vector<Tp> &f, const std::vector<Tp> &g) {
+    const int m = f.size();
+    const int n = g.size();
+    assert(m >= n);
+    std::vector<Tp> res(m - n + 1);
+    for (int i = n - 1; i < m; ++i)
+        for (int j = i - (n - 1); j <= i; ++j) res[i - (n - 1)] += f[j] * g[i - j];
+    return res;
+}
+
+template <typename Tp>
+inline std::vector<Tp> middle_product_fft(std::vector<Tp> f, std::vector<Tp> g) {
     const int m = f.size();
     const int n = g.size();
     assert(m >= n);
@@ -28,4 +35,17 @@ inline std::vector<Tp> middle_product(std::vector<Tp> f, std::vector<Tp> g) {
     transposed_fft(f);
     f.resize(m - n + 1);
     return f;
+}
+
+// returns (fg)_(n-1),...,(fg)_(m-1)
+// f: f_0 + ... + f_(m-1)x^(m-1)
+// g: g_0 + ... + g_(n-1)x^(n-1)
+// requires m >= n
+template <typename Tp>
+inline std::vector<Tp> middle_product(const std::vector<Tp> &f, const std::vector<Tp> &g) {
+    const int m = f.size();
+    const int n = g.size();
+    assert(m >= n);
+    if (m <= 60) return middle_product_naive(f, g);
+    return middle_product_fft(f, g);
 }
