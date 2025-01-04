@@ -250,12 +250,13 @@ data:
     \      const auto v = c + (i - (n - 1));\n        // We don't care about G[i]\
     \ when v = 0.\n        // We assigned 1 for G[i] when v = 0 for calling batch_inv().\n\
     \        G[i] = (v == 0) ? Tp(1) : v;\n    }\n    auto res = middle_product(batch_inv(G),\
-    \ F);\n    SWAG<Tp, std::multiplies<>> prod(std::multiplies<>{});\n    // prod[c-n+1,\
-    \ ..., c]\n    for (int i = -n + 1; i <= 0; ++i) prod.push_back(c + i);\n    //\
-    \ res[i] <- (c+i)!/(c+i-n)! * res[i]\n    for (int i = 0; i < m; ++i) {\n    \
-    \    if (i) prod.pop_front(), prod.push_back(c + i);\n        const auto v = prod.query().value();\n\
-    \        // 0 <= c+i < n iff (c+i)!/(c+i-n)! = 0\n        res[i] = (v == 0) ?\
-    \ f[(c + i).val()] : v * res[i];\n    }\n    return res;\n}\n#line 7 \"test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp\"\
+    \ F);\n    SWAG<Tp, std::multiplies<>> P(std::multiplies<>{});\n    // P = c!/(c-n)!\
+    \ = prod[-n < i <= 0](c + i)\n    for (int i = -n + 1; i <= 0; ++i) P.push_back(c\
+    \ + i);\n    // res[i] <- (c+i)!/(c+i-n)! * res[i]\n    for (int i = 0; i < m;\
+    \ ++i) {\n        if (i) P.pop_front(), P.push_back(c + i);\n        const auto\
+    \ v = P.query().value();\n        // 0 <= c+i < n iff (c+i)!/(c+i-n)! = 0\n  \
+    \      res[i] = (v == 0) ? f[(c + i).val()] : v * res[i];\n    }\n    return res;\n\
+    }\n#line 7 \"test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int n, m;\n    mint c;\n    std::cin\
     \ >> n >> m >> c;\n    std::vector<mint> F(n);\n    for (int i = 0; i < n; ++i)\
@@ -280,7 +281,7 @@ data:
   isVerificationFile: true
   path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
   requiredBy: []
-  timestamp: '2025-01-03 21:36:10+08:00'
+  timestamp: '2025-01-04 21:32:29+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp

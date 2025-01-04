@@ -274,25 +274,26 @@ data:
     \      const auto v = c + (i - (n - 1));\n        // We don't care about G[i]\
     \ when v = 0.\n        // We assigned 1 for G[i] when v = 0 for calling batch_inv().\n\
     \        G[i] = (v == 0) ? Tp(1) : v;\n    }\n    auto res = middle_product(batch_inv(G),\
-    \ F);\n    SWAG<Tp, std::multiplies<>> prod(std::multiplies<>{});\n    // prod[c-n+1,\
-    \ ..., c]\n    for (int i = -n + 1; i <= 0; ++i) prod.push_back(c + i);\n    //\
-    \ res[i] <- (c+i)!/(c+i-n)! * res[i]\n    for (int i = 0; i < m; ++i) {\n    \
-    \    if (i) prod.pop_front(), prod.push_back(c + i);\n        const auto v = prod.query().value();\n\
-    \        // 0 <= c+i < n iff (c+i)!/(c+i-n)! = 0\n        res[i] = (v == 0) ?\
-    \ f[(c + i).val()] : v * res[i];\n    }\n    return res;\n}\n#line 2 \"sqrt_int.hpp\"\
-    \n\n#line 5 \"sqrt_int.hpp\"\n\n// see:\n// [1]: Richard P. Brent and Paul Zimmermann.\
-    \ Modern Computer Arithmetic.\n\n// returns floor(m^(1/2))\ntemplate <typename\
-    \ Int>\ninline std::enable_if_t<std::is_integral_v<Int>, Int> sqrt_int(Int m)\
-    \ {\n    assert(m >= 0);\n    if (m == 0) return 0;\n    for (Int u = m;;) {\n\
-    \        std::add_const_t<Int> s = u;\n        u                       = (s +\
-    \ m / s) / 2;\n        if (u >= s) return s;\n    }\n}\n#line 10 \"test/enumerative_combinatorics/factorial.0.test.cpp\"\
-    \n\ntemplate <typename Tp>\ninline Tp factorial(int N) {\n    if (N >= (int)Tp::mod())\
-    \ return 0;\n    if (N == 0) return 1;\n    const int v = sqrt_int(N);\n    //\
-    \ Let g_d(x) = prod[1 <= i <= d](x + i)\n    // g_1(x) = x + 1, g[i] = g_1(i *\
-    \ v)\n    std::vector<Tp> g{Tp(1), Tp(v + 1)};\n    int mask = 1 << 30;\n    while\
-    \ ((mask & v) == 0) mask >>= 1;\n    for (int d = 1; d != v;) {\n        const\
-    \ auto g0 = shift_sample_points(g, Tp(d + 1), d);\n        const auto g1 = shift_sample_points(g,\
-    \ Tp(d) / v, d << 1 | 1);\n        std::copy(g0.begin(), g0.end(), std::back_inserter(g));\n\
+    \ F);\n    SWAG<Tp, std::multiplies<>> P(std::multiplies<>{});\n    // P = c!/(c-n)!\
+    \ = prod[-n < i <= 0](c + i)\n    for (int i = -n + 1; i <= 0; ++i) P.push_back(c\
+    \ + i);\n    // res[i] <- (c+i)!/(c+i-n)! * res[i]\n    for (int i = 0; i < m;\
+    \ ++i) {\n        if (i) P.pop_front(), P.push_back(c + i);\n        const auto\
+    \ v = P.query().value();\n        // 0 <= c+i < n iff (c+i)!/(c+i-n)! = 0\n  \
+    \      res[i] = (v == 0) ? f[(c + i).val()] : v * res[i];\n    }\n    return res;\n\
+    }\n#line 2 \"sqrt_int.hpp\"\n\n#line 5 \"sqrt_int.hpp\"\n\n// see:\n// [1]: Richard\
+    \ P. Brent and Paul Zimmermann. Modern Computer Arithmetic.\n\n// returns floor(m^(1/2))\n\
+    template <typename Int>\ninline std::enable_if_t<std::is_integral_v<Int>, Int>\
+    \ sqrt_int(Int m) {\n    assert(m >= 0);\n    if (m == 0) return 0;\n    for (Int\
+    \ u = m;;) {\n        std::add_const_t<Int> s = u;\n        u                \
+    \       = (s + m / s) / 2;\n        if (u >= s) return s;\n    }\n}\n#line 10\
+    \ \"test/enumerative_combinatorics/factorial.0.test.cpp\"\n\ntemplate <typename\
+    \ Tp>\ninline Tp factorial(int N) {\n    if (N >= (int)Tp::mod()) return 0;\n\
+    \    if (N == 0) return 1;\n    const int v = sqrt_int(N);\n    // Let g_d(x)\
+    \ = prod[1 <= i <= d](x + i)\n    // g_1(x) = x + 1, g[i] = g_1(i * v)\n    std::vector<Tp>\
+    \ g{Tp(1), Tp(v + 1)};\n    int mask = 1 << 30;\n    while ((mask & v) == 0) mask\
+    \ >>= 1;\n    for (int d = 1; d != v;) {\n        const auto g0 = shift_sample_points(g,\
+    \ Tp(d + 1), d);\n        const auto g1 = shift_sample_points(g, Tp(d) / v, d\
+    \ << 1 | 1);\n        std::copy(g0.begin(), g0.end(), std::back_inserter(g));\n\
     \        d <<= 1;\n        // g_(2d)(x) = g_d(x)g_d(x + d)\n        for (int i\
     \ = 0; i <= d; ++i) g[i] *= g1[i];\n        if ((mask >>= 1) & v) {\n        \
     \    d |= 1;\n            g.push_back(lagrange_interpolation_iota(g, Tp(d)));\n\
@@ -338,7 +339,7 @@ data:
   isVerificationFile: true
   path: test/enumerative_combinatorics/factorial.0.test.cpp
   requiredBy: []
-  timestamp: '2025-01-04 21:09:50+08:00'
+  timestamp: '2025-01-04 21:32:29+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/enumerative_combinatorics/factorial.0.test.cpp

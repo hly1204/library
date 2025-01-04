@@ -207,12 +207,13 @@ data:
     \      const auto v = c + (i - (n - 1));\n        // We don't care about G[i]\
     \ when v = 0.\n        // We assigned 1 for G[i] when v = 0 for calling batch_inv().\n\
     \        G[i] = (v == 0) ? Tp(1) : v;\n    }\n    auto res = middle_product(batch_inv(G),\
-    \ F);\n    SWAG<Tp, std::multiplies<>> prod(std::multiplies<>{});\n    // prod[c-n+1,\
-    \ ..., c]\n    for (int i = -n + 1; i <= 0; ++i) prod.push_back(c + i);\n    //\
-    \ res[i] <- (c+i)!/(c+i-n)! * res[i]\n    for (int i = 0; i < m; ++i) {\n    \
-    \    if (i) prod.pop_front(), prod.push_back(c + i);\n        const auto v = prod.query().value();\n\
-    \        // 0 <= c+i < n iff (c+i)!/(c+i-n)! = 0\n        res[i] = (v == 0) ?\
-    \ f[(c + i).val()] : v * res[i];\n    }\n    return res;\n}\n"
+    \ F);\n    SWAG<Tp, std::multiplies<>> P(std::multiplies<>{});\n    // P = c!/(c-n)!\
+    \ = prod[-n < i <= 0](c + i)\n    for (int i = -n + 1; i <= 0; ++i) P.push_back(c\
+    \ + i);\n    // res[i] <- (c+i)!/(c+i-n)! * res[i]\n    for (int i = 0; i < m;\
+    \ ++i) {\n        if (i) P.pop_front(), P.push_back(c + i);\n        const auto\
+    \ v = P.query().value();\n        // 0 <= c+i < n iff (c+i)!/(c+i-n)! = 0\n  \
+    \      res[i] = (v == 0) ? f[(c + i).val()] : v * res[i];\n    }\n    return res;\n\
+    }\n"
   code: "#pragma once\n\n#include \"batch_inv.hpp\"\n#include \"binomial.hpp\"\n#include\
     \ \"middle_product.hpp\"\n#include \"swag.hpp\"\n#include <cassert>\n#include\
     \ <functional>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
@@ -225,12 +226,13 @@ data:
     \ (i - (n - 1));\n        // We don't care about G[i] when v = 0.\n        //\
     \ We assigned 1 for G[i] when v = 0 for calling batch_inv().\n        G[i] = (v\
     \ == 0) ? Tp(1) : v;\n    }\n    auto res = middle_product(batch_inv(G), F);\n\
-    \    SWAG<Tp, std::multiplies<>> prod(std::multiplies<>{});\n    // prod[c-n+1,\
-    \ ..., c]\n    for (int i = -n + 1; i <= 0; ++i) prod.push_back(c + i);\n    //\
-    \ res[i] <- (c+i)!/(c+i-n)! * res[i]\n    for (int i = 0; i < m; ++i) {\n    \
-    \    if (i) prod.pop_front(), prod.push_back(c + i);\n        const auto v = prod.query().value();\n\
-    \        // 0 <= c+i < n iff (c+i)!/(c+i-n)! = 0\n        res[i] = (v == 0) ?\
-    \ f[(c + i).val()] : v * res[i];\n    }\n    return res;\n}\n"
+    \    SWAG<Tp, std::multiplies<>> P(std::multiplies<>{});\n    // P = c!/(c-n)!\
+    \ = prod[-n < i <= 0](c + i)\n    for (int i = -n + 1; i <= 0; ++i) P.push_back(c\
+    \ + i);\n    // res[i] <- (c+i)!/(c+i-n)! * res[i]\n    for (int i = 0; i < m;\
+    \ ++i) {\n        if (i) P.pop_front(), P.push_back(c + i);\n        const auto\
+    \ v = P.query().value();\n        // 0 <= c+i < n iff (c+i)!/(c+i-n)! = 0\n  \
+    \      res[i] = (v == 0) ? f[(c + i).val()] : v * res[i];\n    }\n    return res;\n\
+    }\n"
   dependsOn:
   - batch_inv.hpp
   - binomial.hpp
@@ -240,7 +242,7 @@ data:
   isVerificationFile: false
   path: shift_sample_points.hpp
   requiredBy: []
-  timestamp: '2025-01-03 21:36:10+08:00'
+  timestamp: '2025-01-04 21:32:29+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
