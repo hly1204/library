@@ -135,6 +135,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: sps_in_poly.hpp
       title: sps_in_poly.hpp
+    - icon: ':warning:'
+      path: sqrt_int.hpp
+      title: sqrt_int.hpp
     - icon: ':heavy_check_mark:'
       path: sqrt_mod.hpp
       title: sqrt_mod.hpp
