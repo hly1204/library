@@ -287,9 +287,9 @@ data:
     \ u = m;;) {\n        std::add_const_t<Int> s = u;\n        u                \
     \       = (s + m / s) / 2;\n        if (u >= s) return s;\n    }\n}\n#line 10\
     \ \"test/enumerative_combinatorics/factorial.0.test.cpp\"\n\ntemplate <typename\
-    \ Tp>\ninline Tp factorial(int N) {\n    if (N >= (int)Tp::mod()) return 0;\n\
-    \    if (N == 0) return 1;\n    const int v = sqrt_int(N);\n    // Let g_d(x)\
-    \ = prod[1 <= i <= d](x + i)\n    // g_1(x) = x + 1, g[i] = g_1(i * v)\n    std::vector<Tp>\
+    \ Tp>\nTp factorial(int N) {\n    if (N >= (int)Tp::mod()) return 0;\n    if (N\
+    \ == 0) return 1;\n    const int v = sqrt_int(N);\n    // Let g_d(x) = prod[1\
+    \ <= i <= d](x + i)\n    // g_1(x) = x + 1, g[i] = g_1(i * v)\n    std::vector<Tp>\
     \ g{Tp(1), Tp(v + 1)};\n    int mask = 1 << 30;\n    while ((mask & v) == 0) mask\
     \ >>= 1;\n    for (int d = 1; d != v;) {\n        const auto g0 = shift_sample_points(g,\
     \ Tp(d + 1), d);\n        const auto g1 = shift_sample_points(g, Tp(d) / v, d\
@@ -308,21 +308,21 @@ data:
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/factorial\"\n\n#include\
     \ \"modint.hpp\"\n#include \"poly_interpolation.hpp\"\n#include \"shift_sample_points.hpp\"\
     \n#include \"sqrt_int.hpp\"\n#include <algorithm>\n#include <iostream>\n#include\
-    \ <iterator>\n\ntemplate <typename Tp>\ninline Tp factorial(int N) {\n    if (N\
-    \ >= (int)Tp::mod()) return 0;\n    if (N == 0) return 1;\n    const int v = sqrt_int(N);\n\
-    \    // Let g_d(x) = prod[1 <= i <= d](x + i)\n    // g_1(x) = x + 1, g[i] = g_1(i\
-    \ * v)\n    std::vector<Tp> g{Tp(1), Tp(v + 1)};\n    int mask = 1 << 30;\n  \
-    \  while ((mask & v) == 0) mask >>= 1;\n    for (int d = 1; d != v;) {\n     \
-    \   const auto g0 = shift_sample_points(g, Tp(d + 1), d);\n        const auto\
-    \ g1 = shift_sample_points(g, Tp(d) / v, d << 1 | 1);\n        std::copy(g0.begin(),\
-    \ g0.end(), std::back_inserter(g));\n        d <<= 1;\n        // g_(2d)(x) =\
-    \ g_d(x)g_d(x + d)\n        for (int i = 0; i <= d; ++i) g[i] *= g1[i];\n    \
-    \    if ((mask >>= 1) & v) {\n            d |= 1;\n            g.push_back(lagrange_interpolation_iota(g,\
-    \ Tp(d)));\n            // g_(d + 1)(x) = (x + d + 1)g_d(x)\n            for (int\
-    \ i = 0; i <= d; ++i) g[i] *= i * v + d;\n        }\n    }\n    Tp res = 1;\n\
-    \    // g[0] = g_v(0), g[1] = g_v(v), ...\n    for (int i = 0; i < v; ++i) res\
-    \ *= g[i];\n    for (int i = v * v + 1; i <= N; ++i) res *= i;\n    return res;\n\
-    }\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \ <iterator>\n\ntemplate <typename Tp>\nTp factorial(int N) {\n    if (N >= (int)Tp::mod())\
+    \ return 0;\n    if (N == 0) return 1;\n    const int v = sqrt_int(N);\n    //\
+    \ Let g_d(x) = prod[1 <= i <= d](x + i)\n    // g_1(x) = x + 1, g[i] = g_1(i *\
+    \ v)\n    std::vector<Tp> g{Tp(1), Tp(v + 1)};\n    int mask = 1 << 30;\n    while\
+    \ ((mask & v) == 0) mask >>= 1;\n    for (int d = 1; d != v;) {\n        const\
+    \ auto g0 = shift_sample_points(g, Tp(d + 1), d);\n        const auto g1 = shift_sample_points(g,\
+    \ Tp(d) / v, d << 1 | 1);\n        std::copy(g0.begin(), g0.end(), std::back_inserter(g));\n\
+    \        d <<= 1;\n        // g_(2d)(x) = g_d(x)g_d(x + d)\n        for (int i\
+    \ = 0; i <= d; ++i) g[i] *= g1[i];\n        if ((mask >>= 1) & v) {\n        \
+    \    d |= 1;\n            g.push_back(lagrange_interpolation_iota(g, Tp(d)));\n\
+    \            // g_(d + 1)(x) = (x + d + 1)g_d(x)\n            for (int i = 0;\
+    \ i <= d; ++i) g[i] *= i * v + d;\n        }\n    }\n    Tp res = 1;\n    // g[0]\
+    \ = g_v(0), g[1] = g_v(v), ...\n    for (int i = 0; i < v; ++i) res *= g[i];\n\
+    \    for (int i = v * v + 1; i <= N; ++i) res *= i;\n    return res;\n}\n\nint\
+    \ main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    int T;\n    std::cin >> T;\n    while\
     \ (T--) {\n        int N;\n        std::cin >> N;\n        std::cout << factorial<mint>(N)\
     \ << '\\n';\n    }\n    return 0;\n}\n"
@@ -339,7 +339,7 @@ data:
   isVerificationFile: true
   path: test/enumerative_combinatorics/factorial.0.test.cpp
   requiredBy: []
-  timestamp: '2025-01-04 21:32:29+08:00'
+  timestamp: '2025-01-04 21:35:09+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/enumerative_combinatorics/factorial.0.test.cpp
