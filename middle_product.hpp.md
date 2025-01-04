@@ -13,6 +13,9 @@ data:
     title: Shift Sample Points
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/enumerative_combinatorics/factorial.0.test.cpp
+    title: test/enumerative_combinatorics/factorial.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -188,6 +191,7 @@ data:
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+  - test/enumerative_combinatorics/factorial.0.test.cpp
 documentation_of: middle_product.hpp
 layout: document
 title: Middle Product

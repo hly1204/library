@@ -2,10 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/enumerative_combinatorics/factorial.0.test.cpp
+    title: test/enumerative_combinatorics/factorial.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"sqrt_int.hpp\"\n\n#include <cassert>\n#include <type_traits>\n\
@@ -25,8 +28,9 @@ data:
   path: sqrt_int.hpp
   requiredBy: []
   timestamp: '2025-01-04 19:35:46+08:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/enumerative_combinatorics/factorial.0.test.cpp
 documentation_of: sqrt_int.hpp
 layout: document
 redirect_from:

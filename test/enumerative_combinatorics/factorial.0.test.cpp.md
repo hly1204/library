@@ -14,32 +14,82 @@ data:
     path: middle_product.hpp
     title: Middle Product
   - icon: ':heavy_check_mark:'
+    path: modint.hpp
+    title: modint.hpp
+  - icon: ':heavy_check_mark:'
+    path: poly_interpolation.hpp
+    title: Polynomial Interpolation (Lagrange Interpolation)
+  - icon: ':heavy_check_mark:'
+    path: shift_sample_points.hpp
+    title: Shift Sample Points
+  - icon: ':heavy_check_mark:'
+    path: sqrt_int.hpp
+    title: sqrt_int.hpp
+  - icon: ':heavy_check_mark:'
     path: swag.hpp
     title: swag.hpp
   _extendedRequiredBy: []
-  _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/enumerative_combinatorics/factorial.0.test.cpp
-    title: test/enumerative_combinatorics/factorial.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-    title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
-  _pathExtension: hpp
+  _pathExtension: cpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    links: []
-  bundledCode: "#line 2 \"shift_sample_points.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\
-    \n#include <cassert>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ batch_inv(const std::vector<Tp> &a) {\n    if (a.empty()) return {};\n    const\
-    \ int n = a.size();\n    std::vector<Tp> b(n);\n    Tp v = 1;\n    for (int i\
-    \ = 0; i < n; ++i) b[i] = v, v *= a[i];\n    assert(v != 0);\n    v = v.inv();\n\
-    \    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n    return b;\n}\n\
-    #line 2 \"binomial.hpp\"\n\n#include <algorithm>\n#line 5 \"binomial.hpp\"\n\n\
-    template <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\
-    \n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\n    void preprocess(int\
-    \ n) {\n        if (const int nn = factorial_.size(); nn < n) {\n            int\
-    \ k = nn;\n            while (k < n) k *= 2;\n            k = std::min<long long>(k,\
+    '*NOT_SPECIAL_COMMENTS*': ''
+    PROBLEM: https://judge.yosupo.jp/problem/factorial
+    links:
+    - https://judge.yosupo.jp/problem/factorial
+  bundledCode: "#line 1 \"test/enumerative_combinatorics/factorial.0.test.cpp\"\n\
+    #define PROBLEM \"https://judge.yosupo.jp/problem/factorial\"\n\n#line 2 \"modint.hpp\"\
+    \n\n#include <iostream>\n#include <type_traits>\n\ntemplate <unsigned Mod>\nclass\
+    \ ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\"\
+    );\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
+    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
+    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
+    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
+    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
+    \ v) { return ModInt(private_constructor, v); }\n    static ModInt zero() { return\
+    \ from_raw(0); }\n    static ModInt one() { return from_raw(1); }\n\n    ModInt()\
+    \ : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
+    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
+    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
+    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
+    \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
+    \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
+    \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
+    \ if ((e >>= 1) == 0) return res;\n        }\n    }\n    ModInt inv() const {\n\
+    \        int x1 = 1, x3 = 0, a = val(), b = Mod;\n        while (b) {\n      \
+    \      const int q = a / b, x1_old = x1, a_old = a;\n            x1 = x3, x3 =\
+    \ x1_old - x3 * q, a = b, b = a_old - b * q;\n        }\n        return from_raw(x1\
+    \ < 0 ? x1 + (int)Mod : x1);\n    }\n    template <bool Odd = (Mod & 1)>\n   \
+    \ std::enable_if_t<Odd, ModInt> div_by_2() const {\n        if (v_ & 1) return\
+    \ from_raw((v_ + Mod) >> 1);\n        return from_raw(v_ >> 1);\n    }\n\n   \
+    \ ModInt &operator+=(const ModInt &a) {\n        if ((v_ += a.v_) >= Mod) v_ -=\
+    \ Mod;\n        return *this;\n    }\n    ModInt &operator-=(const ModInt &a)\
+    \ {\n        if ((v_ += Mod - a.v_) >= Mod) v_ -= Mod;\n        return *this;\n\
+    \    }\n    ModInt &operator*=(const ModInt &a) {\n        v_ = (unsigned long\
+    \ long)v_ * a.v_ % Mod;\n        return *this;\n    }\n    ModInt &operator/=(const\
+    \ ModInt &a) { return *this *= a.inv(); }\n\n    friend ModInt operator+(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) += b; }\n    friend ModInt operator-(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
+    \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
+    \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
+    \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
+    #line 2 \"poly_interpolation.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n#include <cassert>\n\
+    #include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp> batch_inv(const\
+    \ std::vector<Tp> &a) {\n    if (a.empty()) return {};\n    const int n = a.size();\n\
+    \    std::vector<Tp> b(n);\n    Tp v = 1;\n    for (int i = 0; i < n; ++i) b[i]\
+    \ = v, v *= a[i];\n    assert(v != 0);\n    v = v.inv();\n    for (int i = n -\
+    \ 1; i >= 0; --i) b[i] *= v, v *= a[i];\n    return b;\n}\n#line 2 \"binomial.hpp\"\
+    \n\n#include <algorithm>\n#line 5 \"binomial.hpp\"\n\ntemplate <typename Tp>\n\
+    class Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial()\
+    \ : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n\
+    \        if (const int nn = factorial_.size(); nn < n) {\n            int k =\
+    \ nn;\n            while (k < n) k *= 2;\n            k = std::min<long long>(k,\
     \ Tp::mod());\n            factorial_.resize(k);\n            invfactorial_.resize(k);\n\
     \            for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] *\
     \ i;\n            invfactorial_.back() = factorial_.back().inv();\n          \
@@ -50,20 +100,38 @@ data:
     \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
     \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
     \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
-    \ invfactorial_[n]; }\n};\n#line 2 \"middle_product.hpp\"\n\n#line 2 \"fft.hpp\"\
-    \n\n#line 5 \"fft.hpp\"\n#include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\
-    \n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
-    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
-    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
-    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
-    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
-    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
-    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
-    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
-    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
-    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
-    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
-    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+    \ invfactorial_[n]; }\n};\n#line 7 \"poly_interpolation.hpp\"\n\n// returns f\n\
+    // x: x_0,...\n// y: f(x_0),...\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ lagrange_interpolation_naive(const std::vector<Tp> &x,\n                   \
+    \                                 const std::vector<Tp> &y) {\n    assert(x.size()\
+    \ == y.size());\n    const int n = x.size();\n    std::vector<Tp> M(n + 1), xx(n),\
+    \ f(n);\n    M[0] = 1;\n    for (int i = 0; i < n; ++i)\n        for (int j =\
+    \ i; j >= 0; --j) M[j + 1] += M[j], M[j] *= -x[i];\n    for (int i = n - 1; i\
+    \ >= 0; --i)\n        for (int j = 0; j < n; ++j) xx[j] = xx[j] * x[j] + M[i +\
+    \ 1] * (i + 1);\n    xx = batch_inv(xx);\n    for (int i = 0; i < n; ++i) {\n\
+    \        Tp t = y[i] * xx[i], k = M[n];\n        for (int j = n - 1; j >= 0; --j)\
+    \ f[j] += k * t, k = M[j] + k * x[i];\n    }\n    return f;\n}\n\n// returns f(c)\n\
+    // f: polynomial f -> f[0]=f(0),...\ntemplate <typename Tp>\ninline Tp lagrange_interpolation_iota(const\
+    \ std::vector<Tp> &f, Tp c) {\n    if (f.empty()) return 0;\n    const int n =\
+    \ f.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp> k(n);\n\
+    \    k[0] = f[0];\n    Tp v = 1;\n    for (int i = 1; i < n; ++i) k[i] = f[i]\
+    \ * (v *= (c - (i - 1)) * bin.inv(i));\n    Tp res = k[n - 1];\n    v      = 1;\n\
+    \    for (int i = n - 2; i >= 0; --i) res += k[i] * (v *= -(c - (i + 1)) * bin.inv(n\
+    \ - 1 - i));\n    return res;\n}\n#line 2 \"shift_sample_points.hpp\"\n\n#line\
+    \ 2 \"middle_product.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#line 5 \"fft.hpp\"\n#include\
+    \ <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\n\
+    class FftInfo {\n    static Tp least_quadratic_nonresidue() {\n        for (int\
+    \ i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n\
+    \    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n\
+    \    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n\
+    \    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
+    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
+    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
+    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
+    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
+    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
+    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
+    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
     \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
     \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
     \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
@@ -180,11 +248,10 @@ data:
     \ std::vector<Tp> &f, const std::vector<Tp> &g) {\n    assert(f.size() >= g.size());\n\
     \    if (f.size() < 60) return middle_product_naive(f, g);\n    return middle_product_fft(f,\
     \ g);\n}\n#line 2 \"swag.hpp\"\n\n#line 4 \"swag.hpp\"\n#include <cstddef>\n#include\
-    \ <optional>\n#include <stack>\n#include <type_traits>\n#line 9 \"swag.hpp\"\n\
-    \n// see: https://www.hirzels.com/martin/papers/debs17-tutorial.pdf\n// requires:\
-    \ Op(Op(A,B),C) = Op(A,Op(B,C))\ntemplate <typename Tp, typename Op,\n       \
-    \   std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp &>, int>\
-    \ = 0>\nclass SWAG {\npublic:\n    Op F;\n    std::stack<Tp, std::vector<Tp>>\
+    \ <optional>\n#include <stack>\n#line 9 \"swag.hpp\"\n\n// see: https://www.hirzels.com/martin/papers/debs17-tutorial.pdf\n\
+    // requires: Op(Op(A,B),C) = Op(A,Op(B,C))\ntemplate <typename Tp, typename Op,\n\
+    \          std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp\
+    \ &>, int> = 0>\nclass SWAG {\npublic:\n    Op F;\n    std::stack<Tp, std::vector<Tp>>\
     \ Front, Back;\n    std::optional<Tp> Agg;\n\n    explicit SWAG(Op F) : F(F) {}\n\
     \    bool empty() const { return Front.empty() && Back.empty(); }\n    std::size_t\
     \ size() const { return Front.size() + Back.size(); }\n    void push_back(const\
@@ -212,104 +279,72 @@ data:
     \ res[i] <- (c+i)!/(c+i-n)! * res[i]\n    for (int i = 0; i < m; ++i) {\n    \
     \    if (i) prod.pop_front(), prod.push_back(c + i);\n        const auto v = prod.query().value();\n\
     \        // 0 <= c+i < n iff (c+i)!/(c+i-n)! = 0\n        res[i] = (v == 0) ?\
-    \ f[(c + i).val()] : v * res[i];\n    }\n    return res;\n}\n"
-  code: "#pragma once\n\n#include \"batch_inv.hpp\"\n#include \"binomial.hpp\"\n#include\
-    \ \"middle_product.hpp\"\n#include \"swag.hpp\"\n#include <cassert>\n#include\
-    \ <functional>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ shift_sample_points(const std::vector<Tp> &f, Tp c, int m) {\n    if (f.empty())\
-    \ return std::vector<Tp>(m);\n    assert(m > 0);\n    const int n = f.size();\n\
-    \    auto &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp> F(n), G(n + m -\
-    \ 1);\n    for (int i = 0; i < n; ++i) {\n        F[i] = f[i] * bin.inv_factorial(i)\
-    \ * bin.inv_factorial(n - 1 - i);\n        if ((n - 1 - i) & 1) F[i] = -F[i];\n\
-    \    }\n    for (int i = 0; i < n + m - 1; ++i) {\n        const auto v = c +\
-    \ (i - (n - 1));\n        // We don't care about G[i] when v = 0.\n        //\
-    \ We assigned 1 for G[i] when v = 0 for calling batch_inv().\n        G[i] = (v\
-    \ == 0) ? Tp(1) : v;\n    }\n    auto res = middle_product(batch_inv(G), F);\n\
-    \    SWAG<Tp, std::multiplies<>> prod(std::multiplies<>{});\n    // prod[c-n+1,\
-    \ ..., c]\n    for (int i = -n + 1; i <= 0; ++i) prod.push_back(c + i);\n    //\
-    \ res[i] <- (c+i)!/(c+i-n)! * res[i]\n    for (int i = 0; i < m; ++i) {\n    \
-    \    if (i) prod.pop_front(), prod.push_back(c + i);\n        const auto v = prod.query().value();\n\
-    \        // 0 <= c+i < n iff (c+i)!/(c+i-n)! = 0\n        res[i] = (v == 0) ?\
-    \ f[(c + i).val()] : v * res[i];\n    }\n    return res;\n}\n"
+    \ f[(c + i).val()] : v * res[i];\n    }\n    return res;\n}\n#line 2 \"sqrt_int.hpp\"\
+    \n\n#line 5 \"sqrt_int.hpp\"\n\n// see:\n// [1]: Richard P. Brent and Paul Zimmermann.\
+    \ Modern Computer Arithmetic.\n\n// returns floor(m^(1/2))\ntemplate <typename\
+    \ Int>\ninline std::enable_if_t<std::is_integral_v<Int>, Int> sqrt_int(Int m)\
+    \ {\n    assert(m >= 0);\n    if (m == 0) return 0;\n    for (Int u = m;;) {\n\
+    \        std::add_const_t<Int> s = u;\n        u                       = (s +\
+    \ m / s) / 2;\n        if (u >= s) return s;\n    }\n}\n#line 10 \"test/enumerative_combinatorics/factorial.0.test.cpp\"\
+    \n\ntemplate <typename Tp>\ninline Tp factorial(int N) {\n    if (N >= (int)Tp::mod())\
+    \ return 0;\n    if (N == 0) return 1;\n    const int v = sqrt_int(N);\n    //\
+    \ Let g_d(x) = prod[1 <= i <= d](x + i)\n    // g_1(x) = x + 1, g[i] = g_1(i *\
+    \ v)\n    std::vector<Tp> g{Tp(1), Tp(v + 1)};\n    int mask = 1 << 30;\n    while\
+    \ ((mask & v) == 0) mask >>= 1;\n    for (int d = 1; d != v;) {\n        const\
+    \ auto g0 = shift_sample_points(g, Tp(d + 1), d);\n        const auto g1 = shift_sample_points(g,\
+    \ Tp(d) / v, d << 1 | 1);\n        std::copy(g0.begin(), g0.end(), std::back_inserter(g));\n\
+    \        d <<= 1;\n        // g_(2d)(x) = g_d(x)g_d(x + d)\n        for (int i\
+    \ = 0; i <= d; ++i) g[i] *= g1[i];\n        if ((mask >>= 1) & v) {\n        \
+    \    d |= 1;\n            g.push_back(lagrange_interpolation_iota(g, Tp(d)));\n\
+    \            // g_(d + 1)(x) = (x + d + 1)g_d(x)\n            for (int i = 0;\
+    \ i <= d; ++i) g[i] *= i * v + d;\n        }\n    }\n    Tp res = 1;\n    // g[0]\
+    \ = g_v(0), g[1] = g_v(v), ...\n    for (int i = 0; i < v; ++i) res *= g[i];\n\
+    \    for (int i = v * v + 1; i <= N; ++i) res *= i;\n    return res;\n}\n\nint\
+    \ main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int T;\n    std::cin >> T;\n    while\
+    \ (T--) {\n        int N;\n        std::cin >> N;\n        std::cout << factorial<mint>(N)\
+    \ << '\\n';\n    }\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/factorial\"\n\n#include\
+    \ \"modint.hpp\"\n#include \"poly_interpolation.hpp\"\n#include \"shift_sample_points.hpp\"\
+    \n#include \"sqrt_int.hpp\"\n#include <algorithm>\n#include <iostream>\n#include\
+    \ <iterator>\n\ntemplate <typename Tp>\ninline Tp factorial(int N) {\n    if (N\
+    \ >= (int)Tp::mod()) return 0;\n    if (N == 0) return 1;\n    const int v = sqrt_int(N);\n\
+    \    // Let g_d(x) = prod[1 <= i <= d](x + i)\n    // g_1(x) = x + 1, g[i] = g_1(i\
+    \ * v)\n    std::vector<Tp> g{Tp(1), Tp(v + 1)};\n    int mask = 1 << 30;\n  \
+    \  while ((mask & v) == 0) mask >>= 1;\n    for (int d = 1; d != v;) {\n     \
+    \   const auto g0 = shift_sample_points(g, Tp(d + 1), d);\n        const auto\
+    \ g1 = shift_sample_points(g, Tp(d) / v, d << 1 | 1);\n        std::copy(g0.begin(),\
+    \ g0.end(), std::back_inserter(g));\n        d <<= 1;\n        // g_(2d)(x) =\
+    \ g_d(x)g_d(x + d)\n        for (int i = 0; i <= d; ++i) g[i] *= g1[i];\n    \
+    \    if ((mask >>= 1) & v) {\n            d |= 1;\n            g.push_back(lagrange_interpolation_iota(g,\
+    \ Tp(d)));\n            // g_(d + 1)(x) = (x + d + 1)g_d(x)\n            for (int\
+    \ i = 0; i <= d; ++i) g[i] *= i * v + d;\n        }\n    }\n    Tp res = 1;\n\
+    \    // g[0] = g_v(0), g[1] = g_v(v), ...\n    for (int i = 0; i < v; ++i) res\
+    \ *= g[i];\n    for (int i = v * v + 1; i <= N; ++i) res *= i;\n    return res;\n\
+    }\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int T;\n    std::cin >> T;\n    while\
+    \ (T--) {\n        int N;\n        std::cin >> N;\n        std::cout << factorial<mint>(N)\
+    \ << '\\n';\n    }\n    return 0;\n}\n"
   dependsOn:
+  - modint.hpp
+  - poly_interpolation.hpp
   - batch_inv.hpp
   - binomial.hpp
+  - shift_sample_points.hpp
   - middle_product.hpp
   - fft.hpp
   - swag.hpp
-  isVerificationFile: false
-  path: shift_sample_points.hpp
+  - sqrt_int.hpp
+  isVerificationFile: true
+  path: test/enumerative_combinatorics/factorial.0.test.cpp
   requiredBy: []
-  timestamp: '2025-01-03 21:36:10+08:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-  - test/enumerative_combinatorics/factorial.0.test.cpp
-documentation_of: shift_sample_points.hpp
+  timestamp: '2025-01-04 21:09:50+08:00'
+  verificationStatus: TEST_ACCEPTED
+  verifiedWith: []
+documentation_of: test/enumerative_combinatorics/factorial.0.test.cpp
 layout: document
-title: Shift Sample Points
+redirect_from:
+- /verify/test/enumerative_combinatorics/factorial.0.test.cpp
+- /verify/test/enumerative_combinatorics/factorial.0.test.cpp.html
+title: test/enumerative_combinatorics/factorial.0.test.cpp
 ---
-
-## Shift via Lagrange Interpolation
-
-Given sample points $f(0), f(1), \dots ,f(n - 1)$ of polynomial $f \in \mathbb{C}\left\lbrack x\right\rbrack$ with $\deg f \lt n$, we want to compute $f(c), f(c + 1), \dots, f(c + m - 1)$ for $c \in \mathbb{Z}, m \in \mathbb{N}$.
-
-Recall the Lagrange interpolation formula,
-
-$$
-\begin{aligned}
-f(x) &= \sum _ {0 \leq i \lt n}\left(f(i) \prod _ {0 \leq j \lt n \atop j \neq i} \frac{x - j}{i - j}\right) \\
-&= \sum _ {0 \leq i \lt n}\left(f(i)\frac{\prod _ {0 \leq j \lt n \atop j \neq i}\left(x - j\right)}{\prod _ {0 \leq j \lt n \atop j \neq i}\left(i - j\right)}\right) \\
-&= \sum _ {0 \leq i \lt n}\left(f(i)\frac{x!}{(x - n)!(x - i)}\frac{(-1)^{n - 1 - i}}{i!(n - 1 - i)!}\right) \\
-&= \frac{x!}{(x - n)!}\sum _ {0 \leq i \lt n}\left(f(i)\frac{1}{x - i}\frac{(-1)^{n - 1 - i}}{i!(n - 1 - i)!}\right)
-\end{aligned}
-$$
-
-Let
-
-$$
-\begin{aligned}
-F(x) &:= \sum _ {0 \leq i \lt n}\frac{f(i)(-1)^{n - 1 - i}}{i!(n - 1 - i)!}x^i, \\
-G(x) &:= \sum _ {i \geq 0}\frac{1}{c - (n - 1) + i}x^i
-\end{aligned}
-$$
-
-now we have
-
-$$
-\begin{aligned}
-\left\lbrack x^{n - 1 + t}\right\rbrack\left(F(x)G(x)\right) &= \sum _ {i = 0}^{n - 1 + t}\left(\left(\left\lbrack x^i\right\rbrack F(x)\right)\left(\left\lbrack x^{n - 1 + t - i}\right\rbrack G(x)\right)\right) \\
-&= \sum _ {i = 0}^{n - 1}\left(\frac{f(i)(-1)^{n - 1 - i}}{i!(n - 1 - i)!}\frac{1}{c + t - i}\right) \\
-&= \frac{(c + t - n)!}{(c + t)!} f(c + t)
-\end{aligned}
-$$
-
-for $t = 0, 1, \dots, m - 1$. We should handle the case that $c - (n - 1) + i = 0$ for a certain $i$.
-
-## Shift via O.g.f.
-
-Let
-
-$$
-F(x) := \sum _ {i \geq 0}f(i)x^i \in \mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack
-$$
-
-We have $F(x) = \frac{P(x)}{(1 - x)^n}$ where $P(x) \in \mathbb{C}\left\lbrack x\right\rbrack _ {\lt n}$.
-
-And the negative binomial coefficients are
-
-$$
-\begin{aligned}
-\frac{1}{(1 - x)^n} &= (1 - x)^{-n} \\
-&= \sum _ {k \geq 0}\binom{-n}{k}x^k \\
-&= \sum _ {k \geq 0}\frac{(-n)(-n - 1)\cdots (-n - (k - 1))}{k!}x^k \\
-&= \sum _ {k \geq 0}(-1)^k\frac{(n + k - 1)!}{(n - 1)!k!}x^k \\
-&= \sum _ {k \geq 0}(-1)^k\binom{n + k - 1}{k}x^k
-\end{aligned}
-$$
-
-But we are not able to compute $(-n)(-n - 1)\cdots (-n - (k - 1))$ and $k!$ fast if $k$ is large.
-
-## Shift via Falling Factorial Polynomial
-
-Might in another document.

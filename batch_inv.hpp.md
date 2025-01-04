@@ -5,7 +5,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: Chirp Z Transform
-  - icon: ':warning:'
+  - icon: ':heavy_check_mark:'
     path: poly_interpolation.hpp
     title: Polynomial Interpolation (Lagrange Interpolation)
   - icon: ':warning:'
@@ -18,6 +18,9 @@ data:
     path: subproduct_tree.hpp
     title: Subproduct Tree
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/enumerative_combinatorics/factorial.0.test.cpp
+    title: test/enumerative_combinatorics/factorial.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
@@ -71,6 +74,7 @@ data:
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/multipoint_evaluation.0.test.cpp
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+  - test/enumerative_combinatorics/factorial.0.test.cpp
 documentation_of: batch_inv.hpp
 layout: document
 redirect_from:

@@ -8,10 +8,13 @@ data:
     path: binomial.hpp
     title: binomial.hpp
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/enumerative_combinatorics/factorial.0.test.cpp
+    title: test/enumerative_combinatorics/factorial.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"poly_interpolation.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\n\
@@ -79,8 +82,9 @@ data:
   path: poly_interpolation.hpp
   requiredBy: []
   timestamp: '2024-06-16 14:16:14+08:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/enumerative_combinatorics/factorial.0.test.cpp
 documentation_of: poly_interpolation.hpp
 layout: document
 title: Polynomial Interpolation (Lagrange Interpolation)

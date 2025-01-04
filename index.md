@@ -96,7 +96,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: poly_basic.hpp
       title: poly_basic.hpp
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: poly_interpolation.hpp
       title: Polynomial Interpolation (Lagrange Interpolation)
     - icon: ':warning:'
@@ -135,7 +135,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: sps_in_poly.hpp
       title: sps_in_poly.hpp
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: sqrt_int.hpp
       title: sqrt_int.hpp
     - icon: ':heavy_check_mark:'
@@ -211,6 +211,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/enumerative_combinatorics/bell_number.0.test.cpp
       title: test/enumerative_combinatorics/bell_number.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/enumerative_combinatorics/factorial.0.test.cpp
+      title: test/enumerative_combinatorics/factorial.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/enumerative_combinatorics/partition_function.0.test.cpp
       title: test/enumerative_combinatorics/partition_function.0.test.cpp

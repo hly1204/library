@@ -10,6 +10,9 @@ data:
     path: test/data_structure/queue_operate_all_composite.0.test.cpp
     title: test/data_structure/queue_operate_all_composite.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/enumerative_combinatorics/factorial.0.test.cpp
+    title: test/enumerative_combinatorics/factorial.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
   _isVerificationFailed: false
@@ -62,6 +65,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+  - test/enumerative_combinatorics/factorial.0.test.cpp
   - test/data_structure/queue_operate_all_composite.0.test.cpp
 documentation_of: swag.hpp
 layout: document
