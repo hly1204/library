@@ -54,6 +54,8 @@ $$
 (\mathrm{e}^{at} - 1) p(x) = p(x + a) - p(a)
 $$
 
+The classical **difference operator** $\Delta = \mathrm{e}^{t} - 1$.
+
 The **Abel operator** is the delta operator $t\mathrm{e}^{at}$, where
 
 $$
