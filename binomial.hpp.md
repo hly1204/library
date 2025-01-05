@@ -18,6 +18,9 @@ data:
     path: famous_sequence.hpp
     title: famous_sequence.hpp
   - icon: ':heavy_check_mark:'
+    path: fps_as_operator.hpp
+    title: FPS as Linear Operator
+  - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
   - icon: ':heavy_check_mark:'
@@ -133,6 +136,9 @@ data:
     path: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
     title: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/polynomial_taylor_shift.1.test.cpp
+    title: test/formal_power_series/polynomial_taylor_shift.1.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -221,6 +227,7 @@ data:
   - poly_interpolation.hpp
   - subproduct_tree.hpp
   - frobenius.hpp
+  - fps_as_operator.hpp
   - famous_sequence.hpp
   - falling_factorial_poly.hpp
   - fps_basic.hpp
@@ -252,6 +259,7 @@ data:
   - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/inv_of_polynomials.0.test.cpp
   - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/polynomial_taylor_shift.1.test.cpp
   - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
   - test/formal_power_series/log_of_formal_power_series.0.test.cpp
   - test/formal_power_series/multipoint_evaluation.0.test.cpp

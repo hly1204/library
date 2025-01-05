@@ -49,6 +49,9 @@ data:
       path: fft_doubling.hpp
       title: FFT Doubling
     - icon: ':heavy_check_mark:'
+      path: fps_as_operator.hpp
+      title: FPS as Linear Operator
+    - icon: ':heavy_check_mark:'
       path: fps_basic.hpp
       title: fps_basic.hpp
     - icon: ':heavy_check_mark:'
@@ -285,6 +288,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
       title: test/formal_power_series/polynomial_taylor_shift.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/formal_power_series/polynomial_taylor_shift.1.test.cpp
+      title: test/formal_power_series/polynomial_taylor_shift.1.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
       title: test/formal_power_series/pow_of_formal_power_series.0.test.cpp
