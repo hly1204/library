@@ -245,8 +245,8 @@ data:
   timestamp: '2025-01-04 21:32:29+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
   - test/enumerative_combinatorics/factorial.0.test.cpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
 documentation_of: shift_sample_points.hpp
 layout: document
 title: Shift Sample Points
