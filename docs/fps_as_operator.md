@@ -51,7 +51,7 @@ is a **translation operator**.
 The **forward difference operator** is the delta operator $\mathrm{e}^{at} - 1$, where
 
 $$
-(\mathrm{e}^{at} - 1) p(x) = p(x + a) - p(a)
+(\mathrm{e}^{at} - 1) p(x) = p(x + a) - p(x)
 $$
 
 The classical **difference operator** $\Delta = \mathrm{e}^{t} - 1$.
