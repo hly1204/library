@@ -26,7 +26,7 @@ public:
         chi_.resize(len_);
         auto &&pp = prefix_prod_degree_bound_ = degree_bound_;
         for (int i = 1; i < (int)pp.size(); ++i) pp[i] *= pp[i - 1];
-        for (int i = 0; i < len_; ++i) {
+        for (int i = 1; i < len_; ++i) {
             // chi(i) = floor(i/d[0]) + floor(i/(d[0]*d[1])) + ... + floor(i/(d[0]*...))
             for (int j = 0; j < (int)pp.size() - 1; ++j) chi_[i] += i / pp[j];
             chi_[i] %= (int)pp.size();
