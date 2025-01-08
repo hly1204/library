@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: md_conv.hpp
     title: md_conv.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/multivariate_convolution
@@ -143,7 +143,7 @@ data:
     \ degree_bound_) {\n            assert(deg > 1);\n            len_ *= deg;\n \
     \       }\n        chi_.resize(len_);\n        auto &&pp = prefix_prod_degree_bound_\
     \ = degree_bound_;\n        for (int i = 1; i < (int)pp.size(); ++i) pp[i] *=\
-    \ pp[i - 1];\n        for (int i = 0; i < len_; ++i) {\n            // chi(i)\
+    \ pp[i - 1];\n        for (int i = 1; i < len_; ++i) {\n            // chi(i)\
     \ = floor(i/d[0]) + floor(i/(d[0]*d[1])) + ... + floor(i/(d[0]*...))\n       \
     \     for (int j = 0; j < (int)pp.size() - 1; ++j) chi_[i] += i / pp[j];\n   \
     \         chi_[i] %= (int)pp.size();\n        }\n    }\n\n    int dim() const\
@@ -236,8 +236,8 @@ data:
   isVerificationFile: true
   path: test/convolution/multivariate_convolution.0.test.cpp
   requiredBy: []
-  timestamp: '2025-01-08 21:38:33+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2025-01-08 21:41:59+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/convolution/multivariate_convolution.0.test.cpp
 layout: document

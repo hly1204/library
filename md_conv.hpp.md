@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/convolution/multivariate_convolution.0.test.cpp
     title: test/convolution/multivariate_convolution.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://rushcheyo.blog.uoj.ac/blog/6547
@@ -137,7 +137,7 @@ data:
     \ degree_bound_) {\n            assert(deg > 1);\n            len_ *= deg;\n \
     \       }\n        chi_.resize(len_);\n        auto &&pp = prefix_prod_degree_bound_\
     \ = degree_bound_;\n        for (int i = 1; i < (int)pp.size(); ++i) pp[i] *=\
-    \ pp[i - 1];\n        for (int i = 0; i < len_; ++i) {\n            // chi(i)\
+    \ pp[i - 1];\n        for (int i = 1; i < len_; ++i) {\n            // chi(i)\
     \ = floor(i/d[0]) + floor(i/(d[0]*d[1])) + ... + floor(i/(d[0]*...))\n       \
     \     for (int j = 0; j < (int)pp.size() - 1; ++j) chi_[i] += i / pp[j];\n   \
     \         chi_[i] %= (int)pp.size();\n        }\n    }\n\n    int dim() const\
@@ -176,7 +176,7 @@ data:
     \ {\n        for (auto deg : degree_bound_) {\n            assert(deg > 1);\n\
     \            len_ *= deg;\n        }\n        chi_.resize(len_);\n        auto\
     \ &&pp = prefix_prod_degree_bound_ = degree_bound_;\n        for (int i = 1; i\
-    \ < (int)pp.size(); ++i) pp[i] *= pp[i - 1];\n        for (int i = 0; i < len_;\
+    \ < (int)pp.size(); ++i) pp[i] *= pp[i - 1];\n        for (int i = 1; i < len_;\
     \ ++i) {\n            // chi(i) = floor(i/d[0]) + floor(i/(d[0]*d[1])) + ... +\
     \ floor(i/(d[0]*...))\n            for (int j = 0; j < (int)pp.size() - 1; ++j)\
     \ chi_[i] += i / pp[j];\n            chi_[i] %= (int)pp.size();\n        }\n \
@@ -211,8 +211,8 @@ data:
   isVerificationFile: false
   path: md_conv.hpp
   requiredBy: []
-  timestamp: '2025-01-08 21:38:33+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2025-01-08 21:41:59+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/multivariate_convolution.0.test.cpp
 documentation_of: md_conv.hpp

@@ -10,7 +10,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: czt.hpp
     title: Chirp Z Transform
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT
   - icon: ':heavy_check_mark:'
@@ -19,7 +19,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: middle_product.hpp
     title: Middle Product
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
   - icon: ':heavy_check_mark:'
