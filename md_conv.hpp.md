@@ -5,14 +5,18 @@ data:
     path: fft.hpp
     title: FFT
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _extendedVerifiedWith:
+  - icon: ':x:'
+    path: test/convolution/multivariate_convolution.0.test.cpp
+    title: test/convolution/multivariate_convolution.0.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links:
-    - https://cr.yp.to/papers.html#m3
-  bundledCode: "#line 2 \"karatsuba.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
+    - https://rushcheyo.blog.uoj.ac/blog/6547
+    - https://www.luogu.com/article/wje8kchr
+  bundledCode: "#line 2 \"md_conv.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
     #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
     \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
     \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
@@ -123,79 +127,98 @@ data:
     \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n    if (std::min(a.size(),\
     \ b.size()) < 60) return convolution_naive(a, b);\n    if (std::addressof(a) ==\
     \ std::addressof(b)) return square_fft(a);\n    return convolution_fft(a, b);\n\
-    }\n#line 6 \"karatsuba.hpp\"\n\n// see:\n// [1]: Daniel J. Bernstein. Multidigit\
-    \ multiplication for mathematicians.\n//      https://cr.yp.to/papers.html#m3\n\
-    template <typename Tp>\ninline std::vector<Tp> convolution_karatsuba(const std::vector<Tp>\
-    \ &a, const std::vector<Tp> &b) {\n    const int n = a.size();\n    const int\
-    \ m = b.size();\n    if (std::min(n, m) < 60) return convolution_naive(a, b);\n\
-    \    const int half = (std::max(n, m) + 1) / 2;\n    const std::vector a0(a.begin(),\
-    \ a.begin() + std::min(n, half));\n    const std::vector a1(a.begin() + std::min(n,\
-    \ half), a.end());\n    const std::vector b0(b.begin(), b.begin() + std::min(m,\
-    \ half));\n    const std::vector b1(b.begin() + std::min(m, half), b.end());\n\
-    \    // Let y := x^(half)\n    // a = a0 + a1y, b = b0 + b1y\n    // ab = a0b0\
-    \ + (a0b1 + a1b0)y + (a1b1)y^2\n    // ab = a0b0 + ((a0 + a1)(b0 + b1) - a0b0\
-    \ - a1b1)y + (a1b1)y^2\n    // ab mod (y^2 - y) = a0b0 + (a0b1 + a1b0)y + a1b1y\n\
-    \    // R[x] -> R[x][y]/(y^2 - y)\n\n    // eval for y = 0\n    const auto low\
-    \ = convolution_karatsuba(a0, b0);\n\n    auto add = [](std::vector<Tp> a, const\
-    \ std::vector<Tp> &b) {\n        if (a.size() < b.size()) a.resize(b.size());\n\
-    \        for (int i = 0; i < (int)b.size(); ++i) a[i] += b[i];\n        return\
-    \ a;\n    };\n    // eval for y = 1\n    const auto mid = convolution_karatsuba(add(a0,\
-    \ a1), add(b0, b1));\n    // If we want to compute ab mod (y^2 - y), we only need\
-    \ to extract low from mid.\n    // To restore the full product, we need to eval\
-    \ at inf.\n    // eval for y = inf\n    const auto hig = convolution_karatsuba(a1,\
-    \ b1);\n\n    // restore ab\n    std::vector<Tp> ab(n + m - 1);\n    for (int\
-    \ i = 0; i < (int)low.size(); ++i) ab[i] += low[i], ab[i + half] -= low[i];\n\
-    \    for (int i = 0; i < (int)mid.size(); ++i) ab[i + half] += mid[i];\n    for\
-    \ (int i = 0; i < (int)hig.size(); ++i) ab[i + half] -= hig[i], ab[i + half *\
-    \ 2] += hig[i];\n    return ab;\n}\n"
-  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <algorithm>\n#include <vector>\n\
-    \n// see:\n// [1]: Daniel J. Bernstein. Multidigit multiplication for mathematicians.\n\
-    //      https://cr.yp.to/papers.html#m3\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ convolution_karatsuba(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n\
-    \    const int n = a.size();\n    const int m = b.size();\n    if (std::min(n,\
-    \ m) < 60) return convolution_naive(a, b);\n    const int half = (std::max(n,\
-    \ m) + 1) / 2;\n    const std::vector a0(a.begin(), a.begin() + std::min(n, half));\n\
-    \    const std::vector a1(a.begin() + std::min(n, half), a.end());\n    const\
-    \ std::vector b0(b.begin(), b.begin() + std::min(m, half));\n    const std::vector\
-    \ b1(b.begin() + std::min(m, half), b.end());\n    // Let y := x^(half)\n    //\
-    \ a = a0 + a1y, b = b0 + b1y\n    // ab = a0b0 + (a0b1 + a1b0)y + (a1b1)y^2\n\
-    \    // ab = a0b0 + ((a0 + a1)(b0 + b1) - a0b0 - a1b1)y + (a1b1)y^2\n    // ab\
-    \ mod (y^2 - y) = a0b0 + (a0b1 + a1b0)y + a1b1y\n    // R[x] -> R[x][y]/(y^2 -\
-    \ y)\n\n    // eval for y = 0\n    const auto low = convolution_karatsuba(a0,\
-    \ b0);\n\n    auto add = [](std::vector<Tp> a, const std::vector<Tp> &b) {\n \
-    \       if (a.size() < b.size()) a.resize(b.size());\n        for (int i = 0;\
-    \ i < (int)b.size(); ++i) a[i] += b[i];\n        return a;\n    };\n    // eval\
-    \ for y = 1\n    const auto mid = convolution_karatsuba(add(a0, a1), add(b0, b1));\n\
-    \    // If we want to compute ab mod (y^2 - y), we only need to extract low from\
-    \ mid.\n    // To restore the full product, we need to eval at inf.\n    // eval\
-    \ for y = inf\n    const auto hig = convolution_karatsuba(a1, b1);\n\n    // restore\
-    \ ab\n    std::vector<Tp> ab(n + m - 1);\n    for (int i = 0; i < (int)low.size();\
-    \ ++i) ab[i] += low[i], ab[i + half] -= low[i];\n    for (int i = 0; i < (int)mid.size();\
-    \ ++i) ab[i + half] += mid[i];\n    for (int i = 0; i < (int)hig.size(); ++i)\
-    \ ab[i + half] -= hig[i], ab[i + half * 2] += hig[i];\n    return ab;\n}\n"
+    }\n#line 5 \"md_conv.hpp\"\n#include <iostream>\n#line 7 \"md_conv.hpp\"\n\n//\
+    \ see:\n// [1]: Elegia. Hello, multivariate multiplication.\n//      https://www.luogu.com/article/wje8kchr\n\
+    // [2]: rushcheyo. \u96C6\u8BAD\u961F\u4E92\u6D4B 2021 Round #1 \u9898\u89E3.\n\
+    //      https://rushcheyo.blog.uoj.ac/blog/6547\ntemplate <typename Tp>\nclass\
+    \ MDConvInfo {\n    int len_;\n    std::vector<int> degree_bound_;\n    std::vector<int>\
+    \ prefix_prod_degree_bound_;\n    std::vector<int> chi_;\n\npublic:\n    MDConvInfo(const\
+    \ std::vector<int> &d) : len_(1), degree_bound_(d) {\n        for (auto deg :\
+    \ degree_bound_) {\n            assert(deg > 1);\n            len_ *= deg;\n \
+    \       }\n        chi_.resize(len_);\n        auto &&pp = prefix_prod_degree_bound_\
+    \ = degree_bound_;\n        for (int i = 1; i < (int)pp.size(); ++i) pp[i] *=\
+    \ pp[i - 1];\n        for (int i = 0; i < len_; ++i) {\n            // chi(i)\
+    \ = floor(i/d[0]) + floor(i/(d[0]*d[1])) + ... + floor(i/(d[0]*...))\n       \
+    \     for (int j = 0; j < (int)pp.size() - 1; ++j) chi_[i] += i / pp[j];\n   \
+    \         chi_[i] %= (int)pp.size();\n        }\n    }\n\n    int dim() const\
+    \ { return degree_bound_.size(); }\n    const std::vector<int> &degree_bound()\
+    \ const { return degree_bound_; }\n    const std::vector<int> &chi() const { return\
+    \ chi_; }\n\n    std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp>\
+    \ &b) const {\n        assert((int)a.size() == len_);\n        assert((int)b.size()\
+    \ == len_);\n        const int d = dim();\n        if (d == 0) return {a[0] *\
+    \ b[0]};\n        const int len = fft_len(len_ * 2 - 1);\n        std::vector\
+    \ aa(d, std::vector<Tp>(len));\n        std::vector bb(d, std::vector<Tp>(len));\n\
+    \        std::vector aabb(d, std::vector<Tp>(len));\n        for (int i = 0; i\
+    \ < len_; ++i) {\n            aa[chi_[i]][i] = a[i];\n            bb[chi_[i]][i]\
+    \ = b[i];\n        }\n        for (int i = 0; i < d; ++i) {\n            fft(aa[i]);\n\
+    \            fft(bb[i]);\n        }\n        for (int i = 0; i < d; ++i) {\n \
+    \           for (int j = 0; j < d; ++j) {\n                const int k = (i +\
+    \ j) % d;\n                for (int l = 0; l < len; ++l) aabb[k][l] += aa[i][l]\
+    \ * bb[j][l];\n            }\n        }\n        for (int i = 0; i < d; ++i) inv_fft(aabb[i]);\n\
+    \        std::vector<Tp> ab(len_);\n        for (int i = 0; i < len_; ++i) ab[i]\
+    \ = aabb[chi_[i]][i];\n        return ab;\n    }\n\n    std::ostream &pretty_print(std::ostream\
+    \ &os, const std::vector<Tp> &a) const {\n        assert((int)a.size() == len_);\n\
+    \        std::vector<int> pp = degree_bound_;\n        for (int i = 1; i < (int)pp.size();\
+    \ ++i) pp[i] *= pp[i - 1];\n        os << '[';\n        std::vector<int> deg(dim());\n\
+    \        for (int i = 0; i < len_; ++i) {\n            if (i) os << \" + \";\n\
+    \            os << a[i];\n            for (int j = 0; j < (int)deg.size(); ++j)\
+    \ os << \"*x\" << j << \"^(\" << deg[j] << ')';\n            for (int j = 0; j\
+    \ < (int)deg.size(); ++j) {\n                if (++deg[j] < degree_bound_[j])\
+    \ break;\n                deg[j] = 0;\n            }\n        }\n        return\
+    \ os << ']';\n    }\n};\n"
+  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <cassert>\n#include <iostream>\n\
+    #include <vector>\n\n// see:\n// [1]: Elegia. Hello, multivariate multiplication.\n\
+    //      https://www.luogu.com/article/wje8kchr\n// [2]: rushcheyo. \u96C6\u8BAD\
+    \u961F\u4E92\u6D4B 2021 Round #1 \u9898\u89E3.\n//      https://rushcheyo.blog.uoj.ac/blog/6547\n\
+    template <typename Tp>\nclass MDConvInfo {\n    int len_;\n    std::vector<int>\
+    \ degree_bound_;\n    std::vector<int> prefix_prod_degree_bound_;\n    std::vector<int>\
+    \ chi_;\n\npublic:\n    MDConvInfo(const std::vector<int> &d) : len_(1), degree_bound_(d)\
+    \ {\n        for (auto deg : degree_bound_) {\n            assert(deg > 1);\n\
+    \            len_ *= deg;\n        }\n        chi_.resize(len_);\n        auto\
+    \ &&pp = prefix_prod_degree_bound_ = degree_bound_;\n        for (int i = 1; i\
+    \ < (int)pp.size(); ++i) pp[i] *= pp[i - 1];\n        for (int i = 0; i < len_;\
+    \ ++i) {\n            // chi(i) = floor(i/d[0]) + floor(i/(d[0]*d[1])) + ... +\
+    \ floor(i/(d[0]*...))\n            for (int j = 0; j < (int)pp.size() - 1; ++j)\
+    \ chi_[i] += i / pp[j];\n            chi_[i] %= (int)pp.size();\n        }\n \
+    \   }\n\n    int dim() const { return degree_bound_.size(); }\n    const std::vector<int>\
+    \ &degree_bound() const { return degree_bound_; }\n    const std::vector<int>\
+    \ &chi() const { return chi_; }\n\n    std::vector<Tp> convolution(const std::vector<Tp>\
+    \ &a, const std::vector<Tp> &b) const {\n        assert((int)a.size() == len_);\n\
+    \        assert((int)b.size() == len_);\n        const int d = dim();\n      \
+    \  if (d == 0) return {a[0] * b[0]};\n        const int len = fft_len(len_ * 2\
+    \ - 1);\n        std::vector aa(d, std::vector<Tp>(len));\n        std::vector\
+    \ bb(d, std::vector<Tp>(len));\n        std::vector aabb(d, std::vector<Tp>(len));\n\
+    \        for (int i = 0; i < len_; ++i) {\n            aa[chi_[i]][i] = a[i];\n\
+    \            bb[chi_[i]][i] = b[i];\n        }\n        for (int i = 0; i < d;\
+    \ ++i) {\n            fft(aa[i]);\n            fft(bb[i]);\n        }\n      \
+    \  for (int i = 0; i < d; ++i) {\n            for (int j = 0; j < d; ++j) {\n\
+    \                const int k = (i + j) % d;\n                for (int l = 0; l\
+    \ < len; ++l) aabb[k][l] += aa[i][l] * bb[j][l];\n            }\n        }\n \
+    \       for (int i = 0; i < d; ++i) inv_fft(aabb[i]);\n        std::vector<Tp>\
+    \ ab(len_);\n        for (int i = 0; i < len_; ++i) ab[i] = aabb[chi_[i]][i];\n\
+    \        return ab;\n    }\n\n    std::ostream &pretty_print(std::ostream &os,\
+    \ const std::vector<Tp> &a) const {\n        assert((int)a.size() == len_);\n\
+    \        std::vector<int> pp = degree_bound_;\n        for (int i = 1; i < (int)pp.size();\
+    \ ++i) pp[i] *= pp[i - 1];\n        os << '[';\n        std::vector<int> deg(dim());\n\
+    \        for (int i = 0; i < len_; ++i) {\n            if (i) os << \" + \";\n\
+    \            os << a[i];\n            for (int j = 0; j < (int)deg.size(); ++j)\
+    \ os << \"*x\" << j << \"^(\" << deg[j] << ')';\n            for (int j = 0; j\
+    \ < (int)deg.size(); ++j) {\n                if (++deg[j] < degree_bound_[j])\
+    \ break;\n                deg[j] = 0;\n            }\n        }\n        return\
+    \ os << ']';\n    }\n};\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
-  path: karatsuba.hpp
+  path: md_conv.hpp
   requiredBy: []
-  timestamp: '2024-12-12 19:21:16+08:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
-documentation_of: karatsuba.hpp
+  timestamp: '2025-01-08 21:38:33+08:00'
+  verificationStatus: LIBRARY_ALL_WA
+  verifiedWith:
+  - test/convolution/multivariate_convolution.0.test.cpp
+documentation_of: md_conv.hpp
 layout: document
-title: Karatsuba Multiplication
+redirect_from:
+- /library/md_conv.hpp
+- /library/md_conv.hpp.html
+title: md_conv.hpp
 ---
-
-## Karatsuba Multiplication
-
-Karatsuba multiplication algorithm is very easy and well explained in Bernstein's paper.
-
-If we want to compute the product of $A(y) = a_0 + a_1y$ and $B(y) = b_0 + b_1y$, Karatsuba suggests that we could compute $A(y)B(y) \bmod {\left(y^2 - y\right)}$, and use $\left(AB\right)(\infty) = a_1b_1$ to restore the result of $A(y)B(y)$.
-
-For computing $A(y)B(y) \bmod {\left(y^2 - y\right)}$, a FFT-styled algorithm is used. We evaluate for $A(0), A(1), B(0), B(1)$ then we will get $A(y)B(y) \bmod {\left(y^2 - y\right)}$ without division. We could restore $A(y)B(y)$ with $a_1b_1$. An alternative is that we could compute $A(y)B(y) \bmod {\left(y^2 + y\right)}$ by evaluating $A(0), A(-1), B(0), B(-1)$ which works similarly.
-
-I think the most important thing we could learn is that, this could be modified and used in computing bitwise convolution such as "bitwise and/or/xor convolution".
-
-## References
-
-1. Daniel J. Bernstein. "Multidigit multiplication for mathematicians." Accepted to Advances in Applied Mathematics, but withdrawn by author to prevent irreparable mangling by Academic Press. url: <https://cr.yp.to/papers.html#m3>

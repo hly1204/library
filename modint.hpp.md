@@ -15,6 +15,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/convolution/convolution_mod.0.test.cpp
     title: test/convolution/convolution_mod.0.test.cpp
+  - icon: ':x:'
+    path: test/convolution/multivariate_convolution.0.test.cpp
+    title: test/convolution/multivariate_convolution.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
     title: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
@@ -162,9 +165,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/set_power_series/subset_convolution.0.test.cpp
     title: test/set_power_series/subset_convolution.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
@@ -250,12 +253,13 @@ data:
   path: modint.hpp
   requiredBy: []
   timestamp: '2024-12-23 20:42:13+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/convolution/2d_convolution.0.test.cpp
   - test/convolution/bitwise_xor_convolution.0.test.cpp
   - test/convolution/convolution_mod.0.test.cpp
   - test/convolution/bitwise_and_convolution.0.test.cpp
+  - test/convolution/multivariate_convolution.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/bell_number.0.test.cpp

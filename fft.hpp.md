@@ -56,6 +56,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
+  - icon: ':x:'
+    path: md_conv.hpp
+    title: md_conv.hpp
   - icon: ':heavy_check_mark:'
     path: middle_product.hpp
     title: Middle Product
@@ -90,6 +93,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/convolution/convolution_mod_1000000007.0.test.cpp
     title: test/convolution/convolution_mod_1000000007.0.test.cpp
+  - icon: ':x:'
+    path: test/convolution/multivariate_convolution.0.test.cpp
+    title: test/convolution/multivariate_convolution.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/bell_number.0.test.cpp
     title: test/enumerative_combinatorics/bell_number.0.test.cpp
@@ -207,9 +213,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"fft.hpp\"\n\n#include <algorithm>\n#include <cassert>\n\
@@ -450,6 +456,7 @@ data:
   - c_finite.hpp
   - fps_sqrt.hpp
   - czt.hpp
+  - md_conv.hpp
   - subproduct_tree.hpp
   - fps_basic.hpp
   - karatsuba.hpp
@@ -467,11 +474,12 @@ data:
   - fps_polya.hpp
   - mat_basic.hpp
   timestamp: '2024-12-03 09:02:32+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/convolution/2d_convolution.0.test.cpp
   - test/convolution/convolution_mod_1000000007.0.test.cpp
   - test/convolution/convolution_mod.0.test.cpp
+  - test/convolution/multivariate_convolution.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/bell_number.0.test.cpp

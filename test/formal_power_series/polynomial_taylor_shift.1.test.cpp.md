@@ -4,13 +4,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: FFT
   - icon: ':heavy_check_mark:'
     path: fps_as_operator.hpp
     title: FPS as Linear Operator
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
   _extendedRequiredBy: []
