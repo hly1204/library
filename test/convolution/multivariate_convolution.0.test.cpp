@@ -12,13 +12,13 @@ int main() {
     int dim;
     std::cin >> dim;
     std::vector<int> db(dim);
-    int deg = 1; // deg(x0^ax1^bx2^c...) = a+b+c+...
-    for (int i = 0; i < dim; ++i) std::cin >> db[i], deg *= db[i];
-    std::vector<mint> a(deg), b(deg);
-    for (int i = 0; i < deg; ++i) std::cin >> a[i];
-    for (int i = 0; i < deg; ++i) std::cin >> b[i];
+    for (int i = 0; i < dim; ++i) std::cin >> db[i];
     MDConvInfo<mint> conv(db);
+    const int len = conv.len();
+    std::vector<mint> a(len), b(len);
+    for (int i = 0; i < len; ++i) std::cin >> a[i];
+    for (int i = 0; i < len; ++i) std::cin >> b[i];
     const auto ab = conv.convolution(a, b);
-    for (int i = 0; i < deg; ++i) std::cout << ab[i] << ' ';
+    for (int i = 0; i < len; ++i) std::cout << ab[i] << ' ';
     return 0;
 }

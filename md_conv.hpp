@@ -38,6 +38,7 @@ public:
                     chi_[j] -= (int)pp.size();
     }
 
+    int len() const { return len_; }
     int dim() const { return degree_bound_.size(); }
     const std::vector<int> &degree_bound() const { return degree_bound_; }
     const std::vector<int> &chi() const { return chi_; }
