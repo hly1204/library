@@ -158,14 +158,13 @@ data:
     \        std::vector<Tp> ab(len_);\n        for (int i = 0; i < len_; ++i) ab[i]\
     \ = aabb[chi_[i]][i];\n        return ab;\n    }\n\n    std::ostream &pretty_print(std::ostream\
     \ &os, const std::vector<Tp> &a) const {\n        assert((int)a.size() == len_);\n\
-    \        std::vector<int> pp = degree_bound_;\n        for (int i = 1; i < (int)pp.size();\
-    \ ++i) pp[i] *= pp[i - 1];\n        os << '[';\n        std::vector<int> deg(dim());\n\
-    \        for (int i = 0; i < len_; ++i) {\n            if (i) os << \" + \";\n\
-    \            os << a[i];\n            for (int j = 0; j < (int)deg.size(); ++j)\
-    \ os << \"*x\" << j << \"^(\" << deg[j] << ')';\n            for (int j = 0; j\
-    \ < (int)deg.size(); ++j) {\n                if (++deg[j] < degree_bound_[j])\
-    \ break;\n                deg[j] = 0;\n            }\n        }\n        return\
-    \ os << ']';\n    }\n};\n"
+    \        os << '[';\n        std::vector<int> deg(dim());\n        for (int i\
+    \ = 0; i < len_; ++i) {\n            if (i) os << \" + \";\n            os <<\
+    \ a[i];\n            for (int j = 0; j < (int)deg.size(); ++j) os << \"*x\" <<\
+    \ j << \"^(\" << deg[j] << ')';\n            for (int j = 0; j < (int)deg.size();\
+    \ ++j) {\n                if (++deg[j] < degree_bound_[j]) break;\n          \
+    \      deg[j] = 0;\n            }\n        }\n        return os << ']';\n    }\n\
+    };\n"
   code: "#pragma once\n\n#include \"fft.hpp\"\n#include <cassert>\n#include <iostream>\n\
     #include <vector>\n\n// see:\n// [1]: Elegia. Hello, multivariate multiplication.\n\
     //      https://www.luogu.com/article/wje8kchr\n// [2]: rushcheyo. \u96C6\u8BAD\
@@ -198,20 +197,19 @@ data:
     \ ab(len_);\n        for (int i = 0; i < len_; ++i) ab[i] = aabb[chi_[i]][i];\n\
     \        return ab;\n    }\n\n    std::ostream &pretty_print(std::ostream &os,\
     \ const std::vector<Tp> &a) const {\n        assert((int)a.size() == len_);\n\
-    \        std::vector<int> pp = degree_bound_;\n        for (int i = 1; i < (int)pp.size();\
-    \ ++i) pp[i] *= pp[i - 1];\n        os << '[';\n        std::vector<int> deg(dim());\n\
-    \        for (int i = 0; i < len_; ++i) {\n            if (i) os << \" + \";\n\
-    \            os << a[i];\n            for (int j = 0; j < (int)deg.size(); ++j)\
-    \ os << \"*x\" << j << \"^(\" << deg[j] << ')';\n            for (int j = 0; j\
-    \ < (int)deg.size(); ++j) {\n                if (++deg[j] < degree_bound_[j])\
-    \ break;\n                deg[j] = 0;\n            }\n        }\n        return\
-    \ os << ']';\n    }\n};\n"
+    \        os << '[';\n        std::vector<int> deg(dim());\n        for (int i\
+    \ = 0; i < len_; ++i) {\n            if (i) os << \" + \";\n            os <<\
+    \ a[i];\n            for (int j = 0; j < (int)deg.size(); ++j) os << \"*x\" <<\
+    \ j << \"^(\" << deg[j] << ')';\n            for (int j = 0; j < (int)deg.size();\
+    \ ++j) {\n                if (++deg[j] < degree_bound_[j]) break;\n          \
+    \      deg[j] = 0;\n            }\n        }\n        return os << ']';\n    }\n\
+    };\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
   path: md_conv.hpp
   requiredBy: []
-  timestamp: '2025-01-08 21:41:59+08:00'
+  timestamp: '2025-01-09 19:10:15+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/multivariate_convolution.0.test.cpp
