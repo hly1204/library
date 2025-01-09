@@ -6,7 +6,7 @@ data:
     title: FFT
   - icon: ':heavy_check_mark:'
     path: md_conv.hpp
-    title: md_conv.hpp
+    title: Multidimensional Convolution (Truncated)
   - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp

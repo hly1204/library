@@ -215,8 +215,14 @@ data:
   - test/convolution/multivariate_convolution.0.test.cpp
 documentation_of: md_conv.hpp
 layout: document
-redirect_from:
-- /library/md_conv.hpp
-- /library/md_conv.hpp.html
-title: md_conv.hpp
+title: Multidimensional Convolution (Truncated)
 ---
+
+## Multidimensional Convolution (Truncated)
+
+TODO
+
+## References
+
+1. Elegia. Hello, multivariate multiplication. url: <https://www.luogu.com/article/wje8kchr>
+2. Joris van der Hoeven. Notes on the Truncated Fourier Transform. url: <https://www.texmacs.org/joris/tft/tft.pdf>

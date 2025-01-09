@@ -83,7 +83,7 @@ data:
       title: mat_sparse.hpp
     - icon: ':heavy_check_mark:'
       path: md_conv.hpp
-      title: md_conv.hpp
+      title: Multidimensional Convolution (Truncated)
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: Middle Product
