@@ -144,21 +144,21 @@ data:
     \        for (int i = 1; i < (int)pp.size(); ++i)\n            for (int j = pp[i\
     \ - 1]; j < pp[i]; ++j)\n                if ((chi_[j] = chi_[j - pp[i - 1]] +\
     \ diff[i]) >= (int)pp.size())\n                    chi_[j] -= (int)pp.size();\n\
-    \    }\n\n    int dim() const { return degree_bound_.size(); }\n    const std::vector<int>\
-    \ &degree_bound() const { return degree_bound_; }\n    const std::vector<int>\
-    \ &chi() const { return chi_; }\n\n    std::vector<Tp> convolution(const std::vector<Tp>\
-    \ &a, const std::vector<Tp> &b) const {\n        assert((int)a.size() == len_);\n\
-    \        assert((int)b.size() == len_);\n        const int d = dim();\n      \
-    \  if (d == 0) return {a[0] * b[0]};\n        const int len = fft_len(len_ * 2\
-    \ - 1);\n        std::vector aa(d, std::vector<Tp>(len));\n        std::vector\
-    \ bb(d, std::vector<Tp>(len));\n        std::vector aabb(d, std::vector<Tp>(len));\n\
-    \        for (int i = 0; i < len_; ++i) {\n            aa[chi_[i]][i] = a[i];\n\
-    \            bb[chi_[i]][i] = b[i];\n        }\n        for (int i = 0; i < d;\
-    \ ++i) {\n            fft(aa[i]);\n            fft(bb[i]);\n        }\n      \
-    \  for (int i = 0; i < d; ++i) {\n            for (int j = 0; j < d; ++j) {\n\
-    \                const int k = (i + j) % d;\n                for (int l = 0; l\
-    \ < len; ++l) aabb[k][l] += aa[i][l] * bb[j][l];\n            }\n        }\n \
-    \       for (int i = 0; i < d; ++i) inv_fft(aabb[i]);\n        std::vector<Tp>\
+    \    }\n\n    int len() const { return len_; }\n    int dim() const { return degree_bound_.size();\
+    \ }\n    const std::vector<int> &degree_bound() const { return degree_bound_;\
+    \ }\n    const std::vector<int> &chi() const { return chi_; }\n\n    std::vector<Tp>\
+    \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) const {\n  \
+    \      assert((int)a.size() == len_);\n        assert((int)b.size() == len_);\n\
+    \        const int d = dim();\n        if (d == 0) return {a[0] * b[0]};\n   \
+    \     const int len = fft_len(len_ * 2 - 1);\n        std::vector aa(d, std::vector<Tp>(len));\n\
+    \        std::vector bb(d, std::vector<Tp>(len));\n        std::vector aabb(d,\
+    \ std::vector<Tp>(len));\n        for (int i = 0; i < len_; ++i) {\n         \
+    \   aa[chi_[i]][i] = a[i];\n            bb[chi_[i]][i] = b[i];\n        }\n  \
+    \      for (int i = 0; i < d; ++i) {\n            fft(aa[i]);\n            fft(bb[i]);\n\
+    \        }\n        for (int i = 0; i < d; ++i) {\n            for (int j = 0;\
+    \ j < d; ++j) {\n                const int k = (i + j) % d;\n                for\
+    \ (int l = 0; l < len; ++l) aabb[k][l] += aa[i][l] * bb[j][l];\n            }\n\
+    \        }\n        for (int i = 0; i < d; ++i) inv_fft(aabb[i]);\n        std::vector<Tp>\
     \ ab(len_);\n        for (int i = 0; i < len_; ++i) ab[i] = aabb[chi_[i]][i];\n\
     \        return ab;\n    }\n\n    std::ostream &pretty_print(std::ostream &os,\
     \ const std::vector<Tp> &a) const {\n        assert((int)a.size() == len_);\n\
@@ -186,21 +186,21 @@ data:
     \        for (int i = 1; i < (int)pp.size(); ++i)\n            for (int j = pp[i\
     \ - 1]; j < pp[i]; ++j)\n                if ((chi_[j] = chi_[j - pp[i - 1]] +\
     \ diff[i]) >= (int)pp.size())\n                    chi_[j] -= (int)pp.size();\n\
-    \    }\n\n    int dim() const { return degree_bound_.size(); }\n    const std::vector<int>\
-    \ &degree_bound() const { return degree_bound_; }\n    const std::vector<int>\
-    \ &chi() const { return chi_; }\n\n    std::vector<Tp> convolution(const std::vector<Tp>\
-    \ &a, const std::vector<Tp> &b) const {\n        assert((int)a.size() == len_);\n\
-    \        assert((int)b.size() == len_);\n        const int d = dim();\n      \
-    \  if (d == 0) return {a[0] * b[0]};\n        const int len = fft_len(len_ * 2\
-    \ - 1);\n        std::vector aa(d, std::vector<Tp>(len));\n        std::vector\
-    \ bb(d, std::vector<Tp>(len));\n        std::vector aabb(d, std::vector<Tp>(len));\n\
-    \        for (int i = 0; i < len_; ++i) {\n            aa[chi_[i]][i] = a[i];\n\
-    \            bb[chi_[i]][i] = b[i];\n        }\n        for (int i = 0; i < d;\
-    \ ++i) {\n            fft(aa[i]);\n            fft(bb[i]);\n        }\n      \
-    \  for (int i = 0; i < d; ++i) {\n            for (int j = 0; j < d; ++j) {\n\
-    \                const int k = (i + j) % d;\n                for (int l = 0; l\
-    \ < len; ++l) aabb[k][l] += aa[i][l] * bb[j][l];\n            }\n        }\n \
-    \       for (int i = 0; i < d; ++i) inv_fft(aabb[i]);\n        std::vector<Tp>\
+    \    }\n\n    int len() const { return len_; }\n    int dim() const { return degree_bound_.size();\
+    \ }\n    const std::vector<int> &degree_bound() const { return degree_bound_;\
+    \ }\n    const std::vector<int> &chi() const { return chi_; }\n\n    std::vector<Tp>\
+    \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) const {\n  \
+    \      assert((int)a.size() == len_);\n        assert((int)b.size() == len_);\n\
+    \        const int d = dim();\n        if (d == 0) return {a[0] * b[0]};\n   \
+    \     const int len = fft_len(len_ * 2 - 1);\n        std::vector aa(d, std::vector<Tp>(len));\n\
+    \        std::vector bb(d, std::vector<Tp>(len));\n        std::vector aabb(d,\
+    \ std::vector<Tp>(len));\n        for (int i = 0; i < len_; ++i) {\n         \
+    \   aa[chi_[i]][i] = a[i];\n            bb[chi_[i]][i] = b[i];\n        }\n  \
+    \      for (int i = 0; i < d; ++i) {\n            fft(aa[i]);\n            fft(bb[i]);\n\
+    \        }\n        for (int i = 0; i < d; ++i) {\n            for (int j = 0;\
+    \ j < d; ++j) {\n                const int k = (i + j) % d;\n                for\
+    \ (int l = 0; l < len; ++l) aabb[k][l] += aa[i][l] * bb[j][l];\n            }\n\
+    \        }\n        for (int i = 0; i < d; ++i) inv_fft(aabb[i]);\n        std::vector<Tp>\
     \ ab(len_);\n        for (int i = 0; i < len_; ++i) ab[i] = aabb[chi_[i]][i];\n\
     \        return ab;\n    }\n\n    std::ostream &pretty_print(std::ostream &os,\
     \ const std::vector<Tp> &a) const {\n        assert((int)a.size() == len_);\n\
@@ -216,7 +216,7 @@ data:
   isVerificationFile: false
   path: md_conv.hpp
   requiredBy: []
-  timestamp: '2025-01-09 22:02:02+08:00'
+  timestamp: '2025-01-09 22:13:57+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/multivariate_convolution.0.test.cpp
