@@ -68,8 +68,6 @@ public:
 
     std::ostream &pretty_print(std::ostream &os, const std::vector<Tp> &a) const {
         assert((int)a.size() == len_);
-        std::vector<int> pp = degree_bound_;
-        for (int i = 1; i < (int)pp.size(); ++i) pp[i] *= pp[i - 1];
         os << '[';
         std::vector<int> deg(dim());
         for (int i = 0; i < len_; ++i) {
