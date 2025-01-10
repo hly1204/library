@@ -122,7 +122,7 @@ convolution_2d_ks_reciprocal(const std::vector<std::vector<Tp>> &a,
     for (int i = 0; i < N; ++i) ab[0][i] = ab0[i];
     // ab1[0] = [x^0](x^(2N - 2) a(x^(-1), x^N) b(x^(-1), x^N))
     for (int i = 0; i < N; ++i) ab[0][(N - 1) * 2 - i] = ab1[i];
-    // restore ab[1..] by subtracting the overlap coefficients
+    // restore ab[1..] by subtracting the overlaped coefficients
     for (int i = 1; i < (int)(a.size() + b.size() - 1); ++i) {
         // TODO: remove redundant assignment/subtraction
         for (int j = 0; j < N * 2 - 1; ++j) {
@@ -179,7 +179,7 @@ convolution_2d_ks_negated(const std::vector<std::vector<Tp>> &a,
                                        (26+11)   (20+38) ...
     pack(a(x,-y))pack(b(x,-y))
                    = 2 + 8*x + 21*x^2 + 15*x^3 + -18*x^4 + ...
-                                       (26-11)   (20-38)
+                                       (26-11)   (20-38) ...
     */
 
     std::vector<std::vector<Tp>> ab(a.size() + b.size() - 1, std::vector<Tp>(lenA + lenB - 1));
