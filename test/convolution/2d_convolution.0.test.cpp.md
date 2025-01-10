@@ -203,7 +203,7 @@ data:
     \n    // restore ab[0]\n    for (int i = 0; i < N; ++i) ab[0][i] = ab0[i];\n \
     \   // ab1[0] = [x^0](x^(2N - 2) a(x^(-1), x^N) b(x^(-1), x^N))\n    for (int\
     \ i = 0; i < N; ++i) ab[0][(N - 1) * 2 - i] = ab1[i];\n    // restore ab[1..]\
-    \ by subtracting the overlap coefficients\n    for (int i = 1; i < (int)(a.size()\
+    \ by subtracting the overlaped coefficients\n    for (int i = 1; i < (int)(a.size()\
     \ + b.size() - 1); ++i) {\n        // TODO: remove redundant assignment/subtraction\n\
     \        for (int j = 0; j < N * 2 - 1; ++j) {\n            ab0[(i - 1) * N +\
     \ j] -= ab[i - 1][j];\n            ab1[(i - 1) * N + j] -= ab[i - 1][(N - 1) *\
@@ -236,7 +236,7 @@ data:
     \ 8*x + 21*x^2 + 37*x^3 + 58*x^4 + 67*x^5 +  67*x^6    + 44*x^7 + 32*x^8\n   \
     \                                    (26+11)   (20+38) ...\n    pack(a(x,-y))pack(b(x,-y))\n\
     \                   = 2 + 8*x + 21*x^2 + 15*x^3 + -18*x^4 + ...\n            \
-    \                           (26-11)   (20-38)\n    */\n\n    std::vector<std::vector<Tp>>\
+    \                           (26-11)   (20-38) ...\n    */\n\n    std::vector<std::vector<Tp>>\
     \ ab(a.size() + b.size() - 1, std::vector<Tp>(lenA + lenB - 1));\n    for (int\
     \ i = 0; i < (int)(a.size() + b.size() - 1); ++i) {\n        if (i & 1) {\n  \
     \          for (int j = 0; j < lenA + lenB - 1; ++j)\n                ab[i][j]\
@@ -368,7 +368,7 @@ data:
   isVerificationFile: true
   path: test/convolution/2d_convolution.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-23 20:42:13+08:00'
+  timestamp: '2025-01-10 20:40:48+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/convolution/2d_convolution.0.test.cpp
