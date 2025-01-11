@@ -38,6 +38,23 @@ public:
     }
 };
 
+namespace detail {
+
+template <typename Tp>
+inline std::vector<std::vector<Tp>> multidimensional_hadamard(const std::vector<std::vector<Tp>> &a,
+                                                              const std::vector<std::vector<Tp>> &b,
+                                                              int dim, int len) {
+    std::vector c(dim, std::vector<Tp>(len));
+    for (int i = 0; i < dim; ++i)
+        for (int j = 0; j < dim; ++j) {
+            const int k = (i + j) % dim;
+            for (int l = 0; l < len; ++l) c[k][l] += a[i][l] * b[j][l];
+        }
+    return c;
+}
+
+} // namespace detail
+
 template <typename Tp>
 inline std::vector<Tp> multidimensional_convolution(const MDConvInfo &info,
                                                     const std::vector<Tp> &a,
@@ -51,12 +68,7 @@ inline std::vector<Tp> multidimensional_convolution(const MDConvInfo &info,
     const auto chi = info.chi();
     for (int i = 0; i < info.len(); ++i) aa[chi[i]][i] = a[i], bb[chi[i]][i] = b[i];
     for (int i = 0; i < info.dim(); ++i) fft(aa[i]), fft(bb[i]);
-    std::vector cc(info.dim(), std::vector<Tp>(len));
-    for (int i = 0; i < info.dim(); ++i)
-        for (int j = 0; j < info.dim(); ++j) {
-            const int k = (i + j) % info.dim();
-            for (int l = 0; l < len; ++l) cc[k][l] += aa[i][l] * bb[j][l];
-        }
+    auto cc = detail::multidimensional_hadamard(aa, bb, info.dim(), len);
     for (int i = 0; i < info.dim(); ++i) inv_fft(cc[i]);
     std::vector<Tp> c(info.len());
     for (int i = 0; i < info.len(); ++i) c[i] = cc[chi[i]][i];
