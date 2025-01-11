@@ -13,12 +13,12 @@ int main() {
     std::cin >> dim;
     std::vector<int> db(dim);
     for (int i = 0; i < dim; ++i) std::cin >> db[i];
-    MDConvInfo<mint> conv(db);
-    const int len = conv.len();
+    MDConvInfo<mint> info(db);
+    const int len = info.len();
     std::vector<mint> a(len), b(len);
     for (int i = 0; i < len; ++i) std::cin >> a[i];
     for (int i = 0; i < len; ++i) std::cin >> b[i];
-    const auto ab = conv.convolution(a, b);
+    const auto ab = multidimensional_convolution(info, a, b);
     for (int i = 0; i < len; ++i) std::cout << ab[i] << ' ';
     return 0;
 }
