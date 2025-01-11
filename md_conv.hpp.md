@@ -146,7 +146,7 @@ data:
     \ MDConvInfo<Tp> &info,\n                                                    const\
     \ std::vector<Tp> &a,\n                                                    const\
     \ std::vector<Tp> &b) {\n    assert((int)a.size() == info.len());\n    assert((int)b.size()\
-    \ == info.len());\n    if (info.len() == 1) return {a[0] * b[0]};\n    const int\
+    \ == info.len());\n    if (info.dim() == 0) return {a[0] * b[0]};\n    const int\
     \ len = fft_len(info.len() * 2 - 1);\n    std::vector aa(info.dim(), std::vector<Tp>(len));\n\
     \    std::vector bb(info.dim(), std::vector<Tp>(len));\n    const auto chi = info.chi();\n\
     \    for (int i = 0; i < info.len(); ++i) aa[chi[i]][i] = a[i], bb[chi[i]][i]\
@@ -177,7 +177,7 @@ data:
     \ MDConvInfo<Tp> &info,\n                                                    const\
     \ std::vector<Tp> &a,\n                                                    const\
     \ std::vector<Tp> &b) {\n    assert((int)a.size() == info.len());\n    assert((int)b.size()\
-    \ == info.len());\n    if (info.len() == 1) return {a[0] * b[0]};\n    const int\
+    \ == info.len());\n    if (info.dim() == 0) return {a[0] * b[0]};\n    const int\
     \ len = fft_len(info.len() * 2 - 1);\n    std::vector aa(info.dim(), std::vector<Tp>(len));\n\
     \    std::vector bb(info.dim(), std::vector<Tp>(len));\n    const auto chi = info.chi();\n\
     \    for (int i = 0; i < info.len(); ++i) aa[chi[i]][i] = a[i], bb[chi[i]][i]\
@@ -193,7 +193,7 @@ data:
   isVerificationFile: false
   path: md_conv.hpp
   requiredBy: []
-  timestamp: '2025-01-11 20:57:37+08:00'
+  timestamp: '2025-01-11 21:05:29+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/multidimensional_convolution.0.test.cpp
