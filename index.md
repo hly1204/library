@@ -97,6 +97,9 @@ data:
       path: monoid.hpp
       title: monoid.hpp
     - icon: ':heavy_check_mark:'
+      path: mps_basic.hpp
+      title: mps_basic.hpp
+    - icon: ':heavy_check_mark:'
       path: poly.hpp
       title: poly.hpp
     - icon: ':heavy_check_mark:'
@@ -285,6 +288,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
       title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/formal_power_series/multivariate_power_series.0.test.cpp
+      title: test/formal_power_series/multivariate_power_series.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/polynomial_interpolation.0.test.cpp
       title: test/formal_power_series/polynomial_interpolation.0.test.cpp

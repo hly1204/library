@@ -148,6 +148,14 @@ data:
     \ c(len());\n        for (int i = 1; i < (int)pp.size(); ++i)\n            for\
     \ (int j = pp[i - 1]; j < pp[i]; ++j)\n                if ((c[j] = c[j - pp[i\
     \ - 1]] + diff[i]) >= dim()) c[j] -= dim();\n        return c;\n    }\n};\n\n\
+    namespace detail {\n\ntemplate <typename Tp>\ninline std::vector<std::vector<Tp>>\
+    \ multidimensional_hadamard(const std::vector<std::vector<Tp>> &a,\n         \
+    \                                                     const std::vector<std::vector<Tp>>\
+    \ &b,\n                                                              int dim,\
+    \ int len) {\n    std::vector c(dim, std::vector<Tp>(len));\n    for (int i =\
+    \ 0; i < dim; ++i)\n        for (int j = 0; j < dim; ++j) {\n            const\
+    \ int k = (i + j) % dim;\n            for (int l = 0; l < len; ++l) c[k][l] +=\
+    \ a[i][l] * b[j][l];\n        }\n    return c;\n}\n\n} // namespace detail\n\n\
     template <typename Tp>\ninline std::vector<Tp> multidimensional_convolution(const\
     \ MDConvInfo &info,\n                                                    const\
     \ std::vector<Tp> &a,\n                                                    const\
@@ -157,15 +165,12 @@ data:
     \    std::vector bb(info.dim(), std::vector<Tp>(len));\n    const auto chi = info.chi();\n\
     \    for (int i = 0; i < info.len(); ++i) aa[chi[i]][i] = a[i], bb[chi[i]][i]\
     \ = b[i];\n    for (int i = 0; i < info.dim(); ++i) fft(aa[i]), fft(bb[i]);\n\
-    \    std::vector cc(info.dim(), std::vector<Tp>(len));\n    for (int i = 0; i\
-    \ < info.dim(); ++i)\n        for (int j = 0; j < info.dim(); ++j) {\n       \
-    \     const int k = (i + j) % info.dim();\n            for (int l = 0; l < len;\
-    \ ++l) cc[k][l] += aa[i][l] * bb[j][l];\n        }\n    for (int i = 0; i < info.dim();\
-    \ ++i) inv_fft(cc[i]);\n    std::vector<Tp> c(info.len());\n    for (int i = 0;\
-    \ i < info.len(); ++i) c[i] = cc[chi[i]][i];\n    return c;\n}\n#line 2 \"modint.hpp\"\
-    \n\n#include <iostream>\n#include <type_traits>\n\ntemplate <unsigned Mod>\nclass\
-    \ ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than 2^(31)\"\
-    );\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \    auto cc = detail::multidimensional_hadamard(aa, bb, info.dim(), len);\n \
+    \   for (int i = 0; i < info.dim(); ++i) inv_fft(cc[i]);\n    std::vector<Tp>\
+    \ c(info.len());\n    for (int i = 0; i < info.len(); ++i) c[i] = cc[chi[i]][i];\n\
+    \    return c;\n}\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
+    \ntemplate <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0,\
+    \ \"`Mod` must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
     \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
     \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
     \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
@@ -228,7 +233,7 @@ data:
   isVerificationFile: true
   path: test/convolution/multidimensional_convolution.0.test.cpp
   requiredBy: []
-  timestamp: '2025-01-11 21:08:37+08:00'
+  timestamp: '2025-01-12 01:34:13+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/convolution/multidimensional_convolution.0.test.cpp

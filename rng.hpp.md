@@ -49,6 +49,9 @@ data:
     path: test/data_structure/range_reverse_range_sum.0.test.cpp
     title: test/data_structure/range_reverse_range_sum.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/multivariate_power_series.0.test.cpp
+    title: test/formal_power_series/multivariate_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -142,6 +145,7 @@ data:
   - test/data_structure/range_affine_range_sum.0.test.cpp
   - test/data_structure/point_set_range_composite.0.test.cpp
   - test/data_structure/range_reverse_range_sum.0.test.cpp
+  - test/formal_power_series/multivariate_power_series.0.test.cpp
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   - test/matrix/sparse_matrix_det.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp

@@ -45,6 +45,9 @@ data:
     path: mat_sparse.hpp
     title: mat_sparse.hpp
   - icon: ':heavy_check_mark:'
+    path: mps_basic.hpp
+    title: mps_basic.hpp
+  - icon: ':heavy_check_mark:'
     path: poly.hpp
     title: poly.hpp
   - icon: ':heavy_check_mark:'
@@ -126,6 +129,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/multivariate_power_series.0.test.cpp
+    title: test/formal_power_series/multivariate_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation.0.test.cpp
@@ -222,6 +228,7 @@ data:
   - mat_extra.hpp
   - c_finite.hpp
   - fps_sqrt.hpp
+  - mps_basic.hpp
   - czt.hpp
   - subproduct_tree.hpp
   - fps_basic.hpp
@@ -252,6 +259,7 @@ data:
   - test/formal_power_series/polynomial_taylor_shift.1.test.cpp
   - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/formal_power_series/division_of_polynomials.0.test.cpp
+  - test/formal_power_series/multivariate_power_series.0.test.cpp
   - test/formal_power_series/inv_of_polynomials.0.test.cpp
   - test/formal_power_series/inv_of_formal_power_series.0.test.cpp
   - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp

@@ -2,16 +2,16 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: binomial.hpp
+    title: binomial.hpp
+  - icon: ':heavy_check_mark:'
     path: fft.hpp
     title: FFT
-  _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
-    path: mps_basic.hpp
-    title: mps_basic.hpp
+    path: md_conv.hpp
+    title: Multidimensional Convolution (Truncated)
+  _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/convolution/multidimensional_convolution.0.test.cpp
-    title: test/convolution/multidimensional_convolution.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multivariate_power_series.0.test.cpp
     title: test/formal_power_series/multivariate_power_series.0.test.cpp
@@ -21,20 +21,36 @@ data:
   attributes:
     links:
     - https://www.luogu.com/article/wje8kchr
-  bundledCode: "#line 2 \"md_conv.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
-    \ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
-    \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
-    \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
-    \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
-    \ std::vector<Tp> root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n\
-    \        : ordlog2_(__builtin_ctzll(Tp::mod() - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod()\
-    \ - 1) >> ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL <<\
-    \ (ordlog2_ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1),\
-    \ invimag_} {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo\
-    \ info;\n        return info;\n    }\n\n    Tp imag() const { return imag_; }\n\
-    \    Tp inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_;\
-    \ }\n    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
+  bundledCode: "#line 2 \"mps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
+    \ <algorithm>\n#include <vector>\n\ntemplate <typename Tp>\nclass Binomial {\n\
+    \    std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
+    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
+    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
+    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
+    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
+    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
+    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
+    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
+    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
+    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
+    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
+    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
+    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
+    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
+    \ }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include <cassert>\n#include\
+    \ <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate <typename Tp>\n\
+    class FftInfo {\n    static Tp least_quadratic_nonresidue() {\n        for (int\
+    \ i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n\
+    \    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n\
+    \    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n\
+    \    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
+    \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
+    \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
+    \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
+    \ {}\n\npublic:\n    static const FftInfo &get() {\n        static FftInfo info;\n\
+    \        return info;\n    }\n\n    Tp imag() const { return imag_; }\n    Tp\
+    \ inv_imag() const { return invimag_; }\n    Tp zeta() const { return zeta_; }\n\
+    \    Tp inv_zeta() const { return invzeta_; }\n    const std::vector<Tp> &root(int\
     \ n) const {\n        // [0, n)\n        assert((n & (n - 1)) == 0);\n       \
     \ if (const int s = root_.size(); s < n) {\n            root_.resize(n);\n   \
     \         for (int i = __builtin_ctz(s); (1 << i) < n; ++i) {\n              \
@@ -132,45 +148,9 @@ data:
     \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n    if (std::min(a.size(),\
     \ b.size()) < 60) return convolution_naive(a, b);\n    if (std::addressof(a) ==\
     \ std::addressof(b)) return square_fft(a);\n    return convolution_fft(a, b);\n\
-    }\n#line 5 \"md_conv.hpp\"\n#include <functional>\n#include <numeric>\n#line 8\
-    \ \"md_conv.hpp\"\n\nclass MDConvInfo {\n    int len_;\n    std::vector<int> degree_bound_;\n\
-    \npublic:\n    explicit MDConvInfo(const std::vector<int> &d)\n        : len_(std::accumulate(d.begin(),\
-    \ d.end(), 1, std::multiplies<>())), degree_bound_(d) {}\n\n    int len() const\
-    \ { return len_; }\n    int dim() const { return degree_bound_.size(); }\n   \
-    \ std::vector<int> degree_bound() const { return degree_bound_; }\n\n    // see:\n\
-    \    // [1]: Elegia. Hello, multivariate multiplication.\n    //      https://www.luogu.com/article/wje8kchr\n\
-    \    std::vector<int> chi() const {\n        auto pp = degree_bound_;\n      \
-    \  for (int i = 1; i < (int)pp.size(); ++i) pp[i] *= pp[i - 1];\n        std::vector<int>\
-    \ diff(pp.size());\n        // O(max(dim^2, len))\n        for (int i = 1; i <\
-    \ (int)diff.size(); ++i) {\n            for (int j = 0; j < i; ++j) diff[i] +=\
-    \ pp[i - 1] / pp[j];\n            diff[i] %= dim();\n        }\n        std::vector<int>\
-    \ c(len());\n        for (int i = 1; i < (int)pp.size(); ++i)\n            for\
-    \ (int j = pp[i - 1]; j < pp[i]; ++j)\n                if ((c[j] = c[j - pp[i\
-    \ - 1]] + diff[i]) >= dim()) c[j] -= dim();\n        return c;\n    }\n};\n\n\
-    namespace detail {\n\ntemplate <typename Tp>\ninline std::vector<std::vector<Tp>>\
-    \ multidimensional_hadamard(const std::vector<std::vector<Tp>> &a,\n         \
-    \                                                     const std::vector<std::vector<Tp>>\
-    \ &b,\n                                                              int dim,\
-    \ int len) {\n    std::vector c(dim, std::vector<Tp>(len));\n    for (int i =\
-    \ 0; i < dim; ++i)\n        for (int j = 0; j < dim; ++j) {\n            const\
-    \ int k = (i + j) % dim;\n            for (int l = 0; l < len; ++l) c[k][l] +=\
-    \ a[i][l] * b[j][l];\n        }\n    return c;\n}\n\n} // namespace detail\n\n\
-    template <typename Tp>\ninline std::vector<Tp> multidimensional_convolution(const\
-    \ MDConvInfo &info,\n                                                    const\
-    \ std::vector<Tp> &a,\n                                                    const\
-    \ std::vector<Tp> &b) {\n    assert((int)a.size() == info.len());\n    assert((int)b.size()\
-    \ == info.len());\n    if (info.dim() == 0) return {a[0] * b[0]};\n    const int\
-    \ len = fft_len(info.len() * 2 - 1);\n    std::vector aa(info.dim(), std::vector<Tp>(len));\n\
-    \    std::vector bb(info.dim(), std::vector<Tp>(len));\n    const auto chi = info.chi();\n\
-    \    for (int i = 0; i < info.len(); ++i) aa[chi[i]][i] = a[i], bb[chi[i]][i]\
-    \ = b[i];\n    for (int i = 0; i < info.dim(); ++i) fft(aa[i]), fft(bb[i]);\n\
-    \    auto cc = detail::multidimensional_hadamard(aa, bb, info.dim(), len);\n \
-    \   for (int i = 0; i < info.dim(); ++i) inv_fft(cc[i]);\n    std::vector<Tp>\
-    \ c(info.len());\n    for (int i = 0; i < info.len(); ++i) c[i] = cc[chi[i]][i];\n\
-    \    return c;\n}\n"
-  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <cassert>\n#include <functional>\n\
-    #include <numeric>\n#include <vector>\n\nclass MDConvInfo {\n    int len_;\n \
-    \   std::vector<int> degree_bound_;\n\npublic:\n    explicit MDConvInfo(const\
+    }\n#line 2 \"md_conv.hpp\"\n\n#line 5 \"md_conv.hpp\"\n#include <functional>\n\
+    #include <numeric>\n#line 8 \"md_conv.hpp\"\n\nclass MDConvInfo {\n    int len_;\n\
+    \    std::vector<int> degree_bound_;\n\npublic:\n    explicit MDConvInfo(const\
     \ std::vector<int> &d)\n        : len_(std::accumulate(d.begin(), d.end(), 1,\
     \ std::multiplies<>())), degree_bound_(d) {}\n\n    int len() const { return len_;\
     \ }\n    int dim() const { return degree_bound_.size(); }\n    std::vector<int>\
@@ -204,28 +184,122 @@ data:
     \    auto cc = detail::multidimensional_hadamard(aa, bb, info.dim(), len);\n \
     \   for (int i = 0; i < info.dim(); ++i) inv_fft(cc[i]);\n    std::vector<Tp>\
     \ c(info.len());\n    for (int i = 0; i < info.len(); ++i) c[i] = cc[chi[i]][i];\n\
-    \    return c;\n}\n"
+    \    return c;\n}\n#line 9 \"mps_basic.hpp\"\n\ntemplate <typename Tp>\ninline\
+    \ std::vector<Tp> mps_inv(const MDConvInfo &info, const std::vector<Tp> &a) {\n\
+    \    assert((int)a.size() == info.len());\n    assert(a[0] != 0);\n    const auto\
+    \ bound = info.degree_bound();\n    std::vector<Tp> res(info.len());\n    res[0]\
+    \ = a[0].inv();\n    std::vector<int> d(info.dim());\n    for (int i = 0, pp =\
+    \ 1; i < (int)bound.size(); pp *= bound[i++]) {\n        for (d[i] = 1; d[i] <\
+    \ bound[i]; d[i] = std::min(d[i] * 2, bound[i])) {\n            auto nextd   \
+    \  = std::vector(d.begin(), d.begin() + (i + 1));\n            nextd[i]      \
+    \ = std::min(d[i] * 2, bound[i]);\n            const int len  = fft_len(pp * nextd[i]);\n\
+    \            const auto chi = MDConvInfo(nextd).chi();\n            std::vector\
+    \ shopA(i + 1, std::vector<Tp>(len));\n            std::vector shopB(i + 1, std::vector<Tp>(len));\n\
+    \            for (int j = 0; j < pp * nextd[i]; ++j) shopA[chi[j]][j] = a[j];\n\
+    \            for (int j = 0; j < pp * d[i]; ++j) shopB[chi[j]][j] = res[j];\n\
+    \            for (int j = 0; j <= i; ++j) fft(shopA[j]), fft(shopB[j]);\n    \
+    \        shopA = detail::multidimensional_hadamard(shopA, shopB, i + 1, len);\n\
+    \            for (int j = 0; j <= i; ++j) inv_fft(shopA[j]);\n            {\n\
+    \                std::vector<Tp> shopC(pp * (nextd[i] - d[i]));\n            \
+    \    for (int j = pp * d[i]; j < pp * nextd[i]; ++j)\n                    shopC[j\
+    \ - pp * d[i]] = shopA[chi[j]][j];\n                for (int j = 0; j <= i; ++j)\
+    \ std::fill(shopA[j].begin(), shopA[j].end(), Tp(0));\n                for (int\
+    \ j = pp * d[i]; j < pp * nextd[i]; ++j)\n                    shopA[chi[j]][j]\
+    \ = shopC[j - pp * d[i]];\n            }\n            for (int j = 0; j <= i;\
+    \ ++j) fft(shopA[j]);\n            shopA = detail::multidimensional_hadamard(shopA,\
+    \ shopB, i + 1, len);\n            for (int j = 0; j <= i; ++j) inv_fft(shopA[j]);\n\
+    \            for (int j = pp * d[i]; j < pp * nextd[i]; ++j) res[j] = -shopA[chi[j]][j];\n\
+    \        }\n    }\n    return res;\n}\n\n// see:\n// [1]: Elegia. Hello, multivariate\
+    \ multiplication.\n//      https://www.luogu.com/article/wje8kchr\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> mps_deriv(std::vector<Tp> a) {\n    for (int i =\
+    \ 0; i < (int)a.size(); ++i) a[i] *= i;\n    return a;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> mps_integr(std::vector<Tp> a, Tp c = {}) {\n   \
+    \ auto &&bin = Binomial<Tp>::get(a.size());\n    a[0]       = c;\n    for (int\
+    \ i = 1; i < (int)a.size(); ++i) a[i] *= bin.inv(i);\n    return a;\n}\n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> mps_log(const MDConvInfo &info, const\
+    \ std::vector<Tp> &a) {\n    assert((int)a.size() == info.len());\n    assert(a[0]\
+    \ == 1);\n    return mps_integr(multidimensional_convolution(info, mps_deriv(a),\
+    \ mps_inv(info, a)));\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> mps_exp(const\
+    \ MDConvInfo &info, const std::vector<Tp> &a) {\n    assert((int)a.size() == info.len());\n\
+    \    assert(a[0] == 0);\n    const auto bound = info.degree_bound();\n    std::vector<Tp>\
+    \ res(info.len());\n    res[0] = 1;\n    std::vector<int> d(info.dim());\n   \
+    \ for (int i = 0, pp = 1; i < (int)bound.size(); pp *= bound[i++]) {\n       \
+    \ for (d[i] = 1; d[i] < bound[i]; d[i] = std::min(d[i] * 2, bound[i])) {\n   \
+    \         auto nextd = std::vector(d.begin(), d.begin() + (i + 1));\n        \
+    \    nextd[i]   = std::min(d[i] * 2, bound[i]);\n            const MDConvInfo\
+    \ ainfo(nextd);\n            auto shopA = mps_log(ainfo, std::vector(res.begin(),\
+    \ res.begin() + pp * nextd[i]));\n            std::fill_n(shopA.begin(), pp *\
+    \ d[i], Tp(0));\n            for (int j = pp * d[i]; j < pp * nextd[i]; ++j) shopA[j]\
+    \ -= a[j];\n            shopA = multidimensional_convolution(\n              \
+    \  ainfo, std::vector(res.begin(), res.begin() + pp * nextd[i]), shopA);\n   \
+    \         for (int j = pp * d[i]; j < pp * nextd[i]; ++j) res[j] = -shopA[j];\n\
+    \        }\n    }\n    return res;\n}\n"
+  code: "#pragma once\n\n#include \"binomial.hpp\"\n#include \"fft.hpp\"\n#include\
+    \ \"md_conv.hpp\"\n#include <algorithm>\n#include <cassert>\n#include <vector>\n\
+    \ntemplate <typename Tp>\ninline std::vector<Tp> mps_inv(const MDConvInfo &info,\
+    \ const std::vector<Tp> &a) {\n    assert((int)a.size() == info.len());\n    assert(a[0]\
+    \ != 0);\n    const auto bound = info.degree_bound();\n    std::vector<Tp> res(info.len());\n\
+    \    res[0] = a[0].inv();\n    std::vector<int> d(info.dim());\n    for (int i\
+    \ = 0, pp = 1; i < (int)bound.size(); pp *= bound[i++]) {\n        for (d[i] =\
+    \ 1; d[i] < bound[i]; d[i] = std::min(d[i] * 2, bound[i])) {\n            auto\
+    \ nextd     = std::vector(d.begin(), d.begin() + (i + 1));\n            nextd[i]\
+    \       = std::min(d[i] * 2, bound[i]);\n            const int len  = fft_len(pp\
+    \ * nextd[i]);\n            const auto chi = MDConvInfo(nextd).chi();\n      \
+    \      std::vector shopA(i + 1, std::vector<Tp>(len));\n            std::vector\
+    \ shopB(i + 1, std::vector<Tp>(len));\n            for (int j = 0; j < pp * nextd[i];\
+    \ ++j) shopA[chi[j]][j] = a[j];\n            for (int j = 0; j < pp * d[i]; ++j)\
+    \ shopB[chi[j]][j] = res[j];\n            for (int j = 0; j <= i; ++j) fft(shopA[j]),\
+    \ fft(shopB[j]);\n            shopA = detail::multidimensional_hadamard(shopA,\
+    \ shopB, i + 1, len);\n            for (int j = 0; j <= i; ++j) inv_fft(shopA[j]);\n\
+    \            {\n                std::vector<Tp> shopC(pp * (nextd[i] - d[i]));\n\
+    \                for (int j = pp * d[i]; j < pp * nextd[i]; ++j)\n           \
+    \         shopC[j - pp * d[i]] = shopA[chi[j]][j];\n                for (int j\
+    \ = 0; j <= i; ++j) std::fill(shopA[j].begin(), shopA[j].end(), Tp(0));\n    \
+    \            for (int j = pp * d[i]; j < pp * nextd[i]; ++j)\n               \
+    \     shopA[chi[j]][j] = shopC[j - pp * d[i]];\n            }\n            for\
+    \ (int j = 0; j <= i; ++j) fft(shopA[j]);\n            shopA = detail::multidimensional_hadamard(shopA,\
+    \ shopB, i + 1, len);\n            for (int j = 0; j <= i; ++j) inv_fft(shopA[j]);\n\
+    \            for (int j = pp * d[i]; j < pp * nextd[i]; ++j) res[j] = -shopA[chi[j]][j];\n\
+    \        }\n    }\n    return res;\n}\n\n// see:\n// [1]: Elegia. Hello, multivariate\
+    \ multiplication.\n//      https://www.luogu.com/article/wje8kchr\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> mps_deriv(std::vector<Tp> a) {\n    for (int i =\
+    \ 0; i < (int)a.size(); ++i) a[i] *= i;\n    return a;\n}\n\ntemplate <typename\
+    \ Tp>\ninline std::vector<Tp> mps_integr(std::vector<Tp> a, Tp c = {}) {\n   \
+    \ auto &&bin = Binomial<Tp>::get(a.size());\n    a[0]       = c;\n    for (int\
+    \ i = 1; i < (int)a.size(); ++i) a[i] *= bin.inv(i);\n    return a;\n}\n\ntemplate\
+    \ <typename Tp>\ninline std::vector<Tp> mps_log(const MDConvInfo &info, const\
+    \ std::vector<Tp> &a) {\n    assert((int)a.size() == info.len());\n    assert(a[0]\
+    \ == 1);\n    return mps_integr(multidimensional_convolution(info, mps_deriv(a),\
+    \ mps_inv(info, a)));\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> mps_exp(const\
+    \ MDConvInfo &info, const std::vector<Tp> &a) {\n    assert((int)a.size() == info.len());\n\
+    \    assert(a[0] == 0);\n    const auto bound = info.degree_bound();\n    std::vector<Tp>\
+    \ res(info.len());\n    res[0] = 1;\n    std::vector<int> d(info.dim());\n   \
+    \ for (int i = 0, pp = 1; i < (int)bound.size(); pp *= bound[i++]) {\n       \
+    \ for (d[i] = 1; d[i] < bound[i]; d[i] = std::min(d[i] * 2, bound[i])) {\n   \
+    \         auto nextd = std::vector(d.begin(), d.begin() + (i + 1));\n        \
+    \    nextd[i]   = std::min(d[i] * 2, bound[i]);\n            const MDConvInfo\
+    \ ainfo(nextd);\n            auto shopA = mps_log(ainfo, std::vector(res.begin(),\
+    \ res.begin() + pp * nextd[i]));\n            std::fill_n(shopA.begin(), pp *\
+    \ d[i], Tp(0));\n            for (int j = pp * d[i]; j < pp * nextd[i]; ++j) shopA[j]\
+    \ -= a[j];\n            shopA = multidimensional_convolution(\n              \
+    \  ainfo, std::vector(res.begin(), res.begin() + pp * nextd[i]), shopA);\n   \
+    \         for (int j = pp * d[i]; j < pp * nextd[i]; ++j) res[j] = -shopA[j];\n\
+    \        }\n    }\n    return res;\n}\n"
   dependsOn:
+  - binomial.hpp
   - fft.hpp
+  - md_conv.hpp
   isVerificationFile: false
-  path: md_conv.hpp
-  requiredBy:
-  - mps_basic.hpp
+  path: mps_basic.hpp
+  requiredBy: []
   timestamp: '2025-01-12 01:34:13+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/convolution/multidimensional_convolution.0.test.cpp
   - test/formal_power_series/multivariate_power_series.0.test.cpp
-documentation_of: md_conv.hpp
+documentation_of: mps_basic.hpp
 layout: document
-title: Multidimensional Convolution (Truncated)
+redirect_from:
+- /library/mps_basic.hpp
+- /library/mps_basic.hpp.html
+title: mps_basic.hpp
 ---
-
-## Multidimensional Convolution (Truncated)
-
-TODO
-
-## References
-
-1. Elegia. Hello, multivariate multiplication. url: <https://www.luogu.com/article/wje8kchr>
-2. Joris van der Hoeven. Notes on the Truncated Fourier Transform. url: <https://www.texmacs.org/joris/tft/tft.pdf>

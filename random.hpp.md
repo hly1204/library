@@ -25,6 +25,9 @@ data:
     path: test/convolution/2d_convolution.0.test.cpp
     title: test/convolution/2d_convolution.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/multivariate_power_series.0.test.cpp
+    title: test/formal_power_series/multivariate_power_series.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/matrix/adjugate_matrix.0.test.cpp
     title: test/matrix/adjugate_matrix.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -100,6 +103,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/2d_convolution.0.test.cpp
+  - test/formal_power_series/multivariate_power_series.0.test.cpp
   - test/matrix/sparse_matrix_det.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp

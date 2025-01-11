@@ -329,9 +329,11 @@ data:
     \ ++i) A[i] = random_vector<mint>(dis(gen));\n    for (int i = 0; i < maxLenB;\
     \ ++i) B[i] = random_vector<mint>(dis(gen));\n    return convolution_2d_ks_negated(A,\
     \ B) == convolution_2d_naive(A, B);\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    assert(verify0());\n    assert(verify1());\n\
-    \    assert(verify2());\n    long long a, b;\n    std::cin >> a >> b;\n    std::cout\
-    \ << a + b;\n    return 0;\n}\n"
+    \    std::cin.tie(nullptr);\n    {\n        const bool ok = verify0();\n     \
+    \   if (!ok) return 1;\n    }\n    {\n        const bool ok = verify1();\n   \
+    \     if (!ok) return 1;\n    }\n    {\n        const bool ok = verify2();\n \
+    \       if (!ok) return 1;\n    }\n    long long a, b;\n    std::cin >> a >> b;\n\
+    \    std::cout << a + b;\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/aplusb\"\n\n#include \"\
     ks.hpp\"\n#include \"modint.hpp\"\n#include \"random.hpp\"\n#include \"rng.hpp\"\
     \n#include <cassert>\n#include <iostream>\n#include <random>\n#include <vector>\n\
@@ -356,9 +358,11 @@ data:
     \ ++i) A[i] = random_vector<mint>(dis(gen));\n    for (int i = 0; i < maxLenB;\
     \ ++i) B[i] = random_vector<mint>(dis(gen));\n    return convolution_2d_ks_negated(A,\
     \ B) == convolution_2d_naive(A, B);\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    assert(verify0());\n    assert(verify1());\n\
-    \    assert(verify2());\n    long long a, b;\n    std::cin >> a >> b;\n    std::cout\
-    \ << a + b;\n    return 0;\n}\n"
+    \    std::cin.tie(nullptr);\n    {\n        const bool ok = verify0();\n     \
+    \   if (!ok) return 1;\n    }\n    {\n        const bool ok = verify1();\n   \
+    \     if (!ok) return 1;\n    }\n    {\n        const bool ok = verify2();\n \
+    \       if (!ok) return 1;\n    }\n    long long a, b;\n    std::cin >> a >> b;\n\
+    \    std::cout << a + b;\n    return 0;\n}\n"
   dependsOn:
   - ks.hpp
   - fft.hpp
@@ -368,7 +372,7 @@ data:
   isVerificationFile: true
   path: test/convolution/2d_convolution.0.test.cpp
   requiredBy: []
-  timestamp: '2025-01-10 20:40:48+08:00'
+  timestamp: '2025-01-12 01:33:54+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/convolution/2d_convolution.0.test.cpp
