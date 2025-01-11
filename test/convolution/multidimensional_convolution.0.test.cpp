@@ -13,7 +13,7 @@ int main() {
     std::cin >> dim;
     std::vector<int> db(dim);
     for (int i = 0; i < dim; ++i) std::cin >> db[i];
-    MDConvInfo<mint> info(db);
+    MDConvInfo info(db);
     const int len = info.len();
     std::vector<mint> a(len), b(len);
     for (int i = 0; i < len; ++i) std::cin >> a[i];

@@ -6,7 +6,6 @@
 #include <numeric>
 #include <vector>
 
-template <typename Tp>
 class MDConvInfo {
     int len_;
     std::vector<int> degree_bound_;
@@ -40,7 +39,7 @@ public:
 };
 
 template <typename Tp>
-inline std::vector<Tp> multidimensional_convolution(const MDConvInfo<Tp> &info,
+inline std::vector<Tp> multidimensional_convolution(const MDConvInfo &info,
                                                     const std::vector<Tp> &a,
                                                     const std::vector<Tp> &b) {
     assert((int)a.size() == info.len());
