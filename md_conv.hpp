@@ -45,7 +45,7 @@ inline std::vector<Tp> multidimensional_convolution(const MDConvInfo<Tp> &info,
                                                     const std::vector<Tp> &b) {
     assert((int)a.size() == info.len());
     assert((int)b.size() == info.len());
-    if (info.len() == 1) return {a[0] * b[0]};
+    if (info.dim() == 0) return {a[0] * b[0]};
     const int len = fft_len(info.len() * 2 - 1);
     std::vector aa(info.dim(), std::vector<Tp>(len));
     std::vector bb(info.dim(), std::vector<Tp>(len));
