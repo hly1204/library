@@ -181,8 +181,8 @@ data:
       path: test/convolution/convolution_mod_1000000007.0.test.cpp
       title: test/convolution/convolution_mod_1000000007.0.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/convolution/multivariate_convolution.0.test.cpp
-      title: test/convolution/multivariate_convolution.0.test.cpp
+      path: test/convolution/multidimensional_convolution.0.test.cpp
+      title: test/convolution/multidimensional_convolution.0.test.cpp
   - name: test/data_structure
     pages:
     - icon: ':heavy_check_mark:'

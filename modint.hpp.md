@@ -16,8 +16,8 @@ data:
     path: test/convolution/convolution_mod.0.test.cpp
     title: test/convolution/convolution_mod.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/convolution/multivariate_convolution.0.test.cpp
-    title: test/convolution/multivariate_convolution.0.test.cpp
+    path: test/convolution/multidimensional_convolution.0.test.cpp
+    title: test/convolution/multidimensional_convolution.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
     title: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
@@ -255,11 +255,11 @@ data:
   timestamp: '2024-12-23 20:42:13+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/convolution/multidimensional_convolution.0.test.cpp
   - test/convolution/2d_convolution.0.test.cpp
   - test/convolution/bitwise_xor_convolution.0.test.cpp
   - test/convolution/convolution_mod.0.test.cpp
   - test/convolution/bitwise_and_convolution.0.test.cpp
-  - test/convolution/multivariate_convolution.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/bell_number.0.test.cpp

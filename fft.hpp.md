@@ -94,8 +94,8 @@ data:
     path: test/convolution/convolution_mod_1000000007.0.test.cpp
     title: test/convolution/convolution_mod_1000000007.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/convolution/multivariate_convolution.0.test.cpp
-    title: test/convolution/multivariate_convolution.0.test.cpp
+    path: test/convolution/multidimensional_convolution.0.test.cpp
+    title: test/convolution/multidimensional_convolution.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/bell_number.0.test.cpp
     title: test/enumerative_combinatorics/bell_number.0.test.cpp
@@ -476,10 +476,10 @@ data:
   timestamp: '2024-12-03 09:02:32+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/convolution/multidimensional_convolution.0.test.cpp
   - test/convolution/2d_convolution.0.test.cpp
   - test/convolution/convolution_mod_1000000007.0.test.cpp
   - test/convolution/convolution_mod.0.test.cpp
-  - test/convolution/multivariate_convolution.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/bell_number.0.test.cpp

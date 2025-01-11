@@ -7,14 +7,13 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/convolution/multivariate_convolution.0.test.cpp
-    title: test/convolution/multivariate_convolution.0.test.cpp
+    path: test/convolution/multidimensional_convolution.0.test.cpp
+    title: test/convolution/multidimensional_convolution.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
-    - https://rushcheyo.blog.uoj.ac/blog/6547
     - https://www.luogu.com/article/wje8kchr
   bundledCode: "#line 2 \"md_conv.hpp\"\n\n#line 2 \"fft.hpp\"\n\n#include <algorithm>\n\
     #include <cassert>\n#include <iterator>\n#include <memory>\n#include <vector>\n\
@@ -127,99 +126,77 @@ data:
     \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n    if (std::min(a.size(),\
     \ b.size()) < 60) return convolution_naive(a, b);\n    if (std::addressof(a) ==\
     \ std::addressof(b)) return square_fft(a);\n    return convolution_fft(a, b);\n\
-    }\n#line 5 \"md_conv.hpp\"\n#include <iostream>\n#line 7 \"md_conv.hpp\"\n\n//\
-    \ see:\n// [1]: Elegia. Hello, multivariate multiplication.\n//      https://www.luogu.com/article/wje8kchr\n\
-    // [2]: rushcheyo. \u96C6\u8BAD\u961F\u4E92\u6D4B 2021 Round #1 \u9898\u89E3.\n\
-    //      https://rushcheyo.blog.uoj.ac/blog/6547\ntemplate <typename Tp>\nclass\
-    \ MDConvInfo {\n    int len_;\n    std::vector<int> degree_bound_;\n    std::vector<int>\
-    \ prefix_prod_degree_bound_;\n    std::vector<int> chi_;\n\npublic:\n    MDConvInfo(const\
-    \ std::vector<int> &d) : len_(1), degree_bound_(d) {\n        for (auto deg :\
-    \ degree_bound_) {\n            assert(deg > 1);\n            len_ *= deg;\n \
-    \       }\n        chi_.resize(len_);\n        auto &&pp = prefix_prod_degree_bound_\
-    \ = degree_bound_;\n        for (int i = 1; i < (int)pp.size(); ++i) pp[i] *=\
-    \ pp[i - 1];\n        std::vector<int> diff(pp.size());\n        for (int i =\
-    \ 1; i < (int)diff.size(); ++i) {\n            for (int j = 0; j < i; ++j) diff[i]\
-    \ += pp[i - 1] / pp[j];\n            diff[i] %= (int)pp.size();\n        }\n \
-    \       // chi(i) = floor(i/d[0]) + floor(i/(d[0]*d[1])) + ... + floor(i/(d[0]*...))\n\
-    \        for (int i = 1; i < (int)pp.size(); ++i)\n            for (int j = pp[i\
-    \ - 1]; j < pp[i]; ++j)\n                if ((chi_[j] = chi_[j - pp[i - 1]] +\
-    \ diff[i]) >= (int)pp.size())\n                    chi_[j] -= (int)pp.size();\n\
-    \    }\n\n    int len() const { return len_; }\n    int dim() const { return degree_bound_.size();\
-    \ }\n    const std::vector<int> &degree_bound() const { return degree_bound_;\
-    \ }\n    const std::vector<int> &chi() const { return chi_; }\n\n    std::vector<Tp>\
-    \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) const {\n  \
-    \      assert((int)a.size() == len_);\n        assert((int)b.size() == len_);\n\
-    \        const int d = dim();\n        if (d == 0) return {a[0] * b[0]};\n   \
-    \     const int len = fft_len(len_ * 2 - 1);\n        std::vector aa(d, std::vector<Tp>(len));\n\
-    \        std::vector bb(d, std::vector<Tp>(len));\n        std::vector aabb(d,\
-    \ std::vector<Tp>(len));\n        for (int i = 0; i < len_; ++i) {\n         \
-    \   aa[chi_[i]][i] = a[i];\n            bb[chi_[i]][i] = b[i];\n        }\n  \
-    \      for (int i = 0; i < d; ++i) {\n            fft(aa[i]);\n            fft(bb[i]);\n\
-    \        }\n        for (int i = 0; i < d; ++i) {\n            for (int j = 0;\
-    \ j < d; ++j) {\n                const int k = (i + j) % d;\n                for\
-    \ (int l = 0; l < len; ++l) aabb[k][l] += aa[i][l] * bb[j][l];\n            }\n\
-    \        }\n        for (int i = 0; i < d; ++i) inv_fft(aabb[i]);\n        std::vector<Tp>\
-    \ ab(len_);\n        for (int i = 0; i < len_; ++i) ab[i] = aabb[chi_[i]][i];\n\
-    \        return ab;\n    }\n\n    std::ostream &pretty_print(std::ostream &os,\
-    \ const std::vector<Tp> &a) const {\n        assert((int)a.size() == len_);\n\
-    \        os << '[';\n        std::vector<int> deg(dim());\n        for (int i\
-    \ = 0; i < len_; ++i) {\n            if (i) os << \" + \";\n            os <<\
-    \ a[i];\n            for (int j = 0; j < (int)deg.size(); ++j) os << \"*x\" <<\
-    \ j << \"^(\" << deg[j] << ')';\n            for (int j = 0; j < (int)deg.size();\
-    \ ++j) {\n                if (++deg[j] < degree_bound_[j]) break;\n          \
-    \      deg[j] = 0;\n            }\n        }\n        return os << ']';\n    }\n\
-    };\n"
-  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <cassert>\n#include <iostream>\n\
-    #include <vector>\n\n// see:\n// [1]: Elegia. Hello, multivariate multiplication.\n\
-    //      https://www.luogu.com/article/wje8kchr\n// [2]: rushcheyo. \u96C6\u8BAD\
-    \u961F\u4E92\u6D4B 2021 Round #1 \u9898\u89E3.\n//      https://rushcheyo.blog.uoj.ac/blog/6547\n\
-    template <typename Tp>\nclass MDConvInfo {\n    int len_;\n    std::vector<int>\
-    \ degree_bound_;\n    std::vector<int> prefix_prod_degree_bound_;\n    std::vector<int>\
-    \ chi_;\n\npublic:\n    MDConvInfo(const std::vector<int> &d) : len_(1), degree_bound_(d)\
-    \ {\n        for (auto deg : degree_bound_) {\n            assert(deg > 1);\n\
-    \            len_ *= deg;\n        }\n        chi_.resize(len_);\n        auto\
-    \ &&pp = prefix_prod_degree_bound_ = degree_bound_;\n        for (int i = 1; i\
-    \ < (int)pp.size(); ++i) pp[i] *= pp[i - 1];\n        std::vector<int> diff(pp.size());\n\
-    \        for (int i = 1; i < (int)diff.size(); ++i) {\n            for (int j\
-    \ = 0; j < i; ++j) diff[i] += pp[i - 1] / pp[j];\n            diff[i] %= (int)pp.size();\n\
-    \        }\n        // chi(i) = floor(i/d[0]) + floor(i/(d[0]*d[1])) + ... + floor(i/(d[0]*...))\n\
-    \        for (int i = 1; i < (int)pp.size(); ++i)\n            for (int j = pp[i\
-    \ - 1]; j < pp[i]; ++j)\n                if ((chi_[j] = chi_[j - pp[i - 1]] +\
-    \ diff[i]) >= (int)pp.size())\n                    chi_[j] -= (int)pp.size();\n\
-    \    }\n\n    int len() const { return len_; }\n    int dim() const { return degree_bound_.size();\
-    \ }\n    const std::vector<int> &degree_bound() const { return degree_bound_;\
-    \ }\n    const std::vector<int> &chi() const { return chi_; }\n\n    std::vector<Tp>\
-    \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) const {\n  \
-    \      assert((int)a.size() == len_);\n        assert((int)b.size() == len_);\n\
-    \        const int d = dim();\n        if (d == 0) return {a[0] * b[0]};\n   \
-    \     const int len = fft_len(len_ * 2 - 1);\n        std::vector aa(d, std::vector<Tp>(len));\n\
-    \        std::vector bb(d, std::vector<Tp>(len));\n        std::vector aabb(d,\
-    \ std::vector<Tp>(len));\n        for (int i = 0; i < len_; ++i) {\n         \
-    \   aa[chi_[i]][i] = a[i];\n            bb[chi_[i]][i] = b[i];\n        }\n  \
-    \      for (int i = 0; i < d; ++i) {\n            fft(aa[i]);\n            fft(bb[i]);\n\
-    \        }\n        for (int i = 0; i < d; ++i) {\n            for (int j = 0;\
-    \ j < d; ++j) {\n                const int k = (i + j) % d;\n                for\
-    \ (int l = 0; l < len; ++l) aabb[k][l] += aa[i][l] * bb[j][l];\n            }\n\
-    \        }\n        for (int i = 0; i < d; ++i) inv_fft(aabb[i]);\n        std::vector<Tp>\
-    \ ab(len_);\n        for (int i = 0; i < len_; ++i) ab[i] = aabb[chi_[i]][i];\n\
-    \        return ab;\n    }\n\n    std::ostream &pretty_print(std::ostream &os,\
-    \ const std::vector<Tp> &a) const {\n        assert((int)a.size() == len_);\n\
-    \        os << '[';\n        std::vector<int> deg(dim());\n        for (int i\
-    \ = 0; i < len_; ++i) {\n            if (i) os << \" + \";\n            os <<\
-    \ a[i];\n            for (int j = 0; j < (int)deg.size(); ++j) os << \"*x\" <<\
-    \ j << \"^(\" << deg[j] << ')';\n            for (int j = 0; j < (int)deg.size();\
-    \ ++j) {\n                if (++deg[j] < degree_bound_[j]) break;\n          \
-    \      deg[j] = 0;\n            }\n        }\n        return os << ']';\n    }\n\
-    };\n"
+    }\n#line 5 \"md_conv.hpp\"\n#include <functional>\n#include <numeric>\n#line 8\
+    \ \"md_conv.hpp\"\n\ntemplate <typename Tp>\nclass MDConvInfo {\n    int len_;\n\
+    \    std::vector<int> degree_bound_;\n\npublic:\n    explicit MDConvInfo(const\
+    \ std::vector<int> &d)\n        : len_(std::accumulate(d.begin(), d.end(), 1,\
+    \ std::multiplies<>())), degree_bound_(d) {}\n\n    int len() const { return len_;\
+    \ }\n    int dim() const { return degree_bound_.size(); }\n    std::vector<int>\
+    \ degree_bound() const { return degree_bound_; }\n\n    // see:\n    // [1]: Elegia.\
+    \ Hello, multivariate multiplication.\n    //      https://www.luogu.com/article/wje8kchr\n\
+    \    std::vector<int> chi() const {\n        auto pp = degree_bound_;\n      \
+    \  for (int i = 1; i < (int)pp.size(); ++i) pp[i] *= pp[i - 1];\n        std::vector<int>\
+    \ diff(pp.size());\n        // O(max(dim^2, len))\n        for (int i = 1; i <\
+    \ (int)diff.size(); ++i) {\n            for (int j = 0; j < i; ++j) diff[i] +=\
+    \ pp[i - 1] / pp[j];\n            diff[i] %= dim();\n        }\n        std::vector<int>\
+    \ c(len());\n        for (int i = 1; i < (int)pp.size(); ++i)\n            for\
+    \ (int j = pp[i - 1]; j < pp[i]; ++j)\n                if ((c[j] = c[j - pp[i\
+    \ - 1]] + diff[i]) >= dim()) c[j] -= dim();\n        return c;\n    }\n};\n\n\
+    template <typename Tp>\ninline std::vector<Tp> multidimensional_convolution(const\
+    \ MDConvInfo<Tp> &info,\n                                                    const\
+    \ std::vector<Tp> &a,\n                                                    const\
+    \ std::vector<Tp> &b) {\n    assert((int)a.size() == info.len());\n    assert((int)b.size()\
+    \ == info.len());\n    if (info.len() == 1) return {a[0] * b[0]};\n    const int\
+    \ len = fft_len(info.len() * 2 - 1);\n    std::vector aa(info.dim(), std::vector<Tp>(len));\n\
+    \    std::vector bb(info.dim(), std::vector<Tp>(len));\n    const auto chi = info.chi();\n\
+    \    for (int i = 0; i < info.len(); ++i) aa[chi[i]][i] = a[i], bb[chi[i]][i]\
+    \ = b[i];\n    for (int i = 0; i < info.dim(); ++i) fft(aa[i]), fft(bb[i]);\n\
+    \    std::vector cc(info.dim(), std::vector<Tp>(len));\n    for (int i = 0; i\
+    \ < info.dim(); ++i)\n        for (int j = 0; j < info.dim(); ++j) {\n       \
+    \     const int k = (i + j) % info.dim();\n            for (int l = 0; l < len;\
+    \ ++l) cc[k][l] += aa[i][l] * bb[j][l];\n        }\n    for (int i = 0; i < info.dim();\
+    \ ++i) inv_fft(cc[i]);\n    std::vector<Tp> c(info.len());\n    for (int i = 0;\
+    \ i < info.len(); ++i) c[i] = cc[chi[i]][i];\n    return c;\n}\n"
+  code: "#pragma once\n\n#include \"fft.hpp\"\n#include <cassert>\n#include <functional>\n\
+    #include <numeric>\n#include <vector>\n\ntemplate <typename Tp>\nclass MDConvInfo\
+    \ {\n    int len_;\n    std::vector<int> degree_bound_;\n\npublic:\n    explicit\
+    \ MDConvInfo(const std::vector<int> &d)\n        : len_(std::accumulate(d.begin(),\
+    \ d.end(), 1, std::multiplies<>())), degree_bound_(d) {}\n\n    int len() const\
+    \ { return len_; }\n    int dim() const { return degree_bound_.size(); }\n   \
+    \ std::vector<int> degree_bound() const { return degree_bound_; }\n\n    // see:\n\
+    \    // [1]: Elegia. Hello, multivariate multiplication.\n    //      https://www.luogu.com/article/wje8kchr\n\
+    \    std::vector<int> chi() const {\n        auto pp = degree_bound_;\n      \
+    \  for (int i = 1; i < (int)pp.size(); ++i) pp[i] *= pp[i - 1];\n        std::vector<int>\
+    \ diff(pp.size());\n        // O(max(dim^2, len))\n        for (int i = 1; i <\
+    \ (int)diff.size(); ++i) {\n            for (int j = 0; j < i; ++j) diff[i] +=\
+    \ pp[i - 1] / pp[j];\n            diff[i] %= dim();\n        }\n        std::vector<int>\
+    \ c(len());\n        for (int i = 1; i < (int)pp.size(); ++i)\n            for\
+    \ (int j = pp[i - 1]; j < pp[i]; ++j)\n                if ((c[j] = c[j - pp[i\
+    \ - 1]] + diff[i]) >= dim()) c[j] -= dim();\n        return c;\n    }\n};\n\n\
+    template <typename Tp>\ninline std::vector<Tp> multidimensional_convolution(const\
+    \ MDConvInfo<Tp> &info,\n                                                    const\
+    \ std::vector<Tp> &a,\n                                                    const\
+    \ std::vector<Tp> &b) {\n    assert((int)a.size() == info.len());\n    assert((int)b.size()\
+    \ == info.len());\n    if (info.len() == 1) return {a[0] * b[0]};\n    const int\
+    \ len = fft_len(info.len() * 2 - 1);\n    std::vector aa(info.dim(), std::vector<Tp>(len));\n\
+    \    std::vector bb(info.dim(), std::vector<Tp>(len));\n    const auto chi = info.chi();\n\
+    \    for (int i = 0; i < info.len(); ++i) aa[chi[i]][i] = a[i], bb[chi[i]][i]\
+    \ = b[i];\n    for (int i = 0; i < info.dim(); ++i) fft(aa[i]), fft(bb[i]);\n\
+    \    std::vector cc(info.dim(), std::vector<Tp>(len));\n    for (int i = 0; i\
+    \ < info.dim(); ++i)\n        for (int j = 0; j < info.dim(); ++j) {\n       \
+    \     const int k = (i + j) % info.dim();\n            for (int l = 0; l < len;\
+    \ ++l) cc[k][l] += aa[i][l] * bb[j][l];\n        }\n    for (int i = 0; i < info.dim();\
+    \ ++i) inv_fft(cc[i]);\n    std::vector<Tp> c(info.len());\n    for (int i = 0;\
+    \ i < info.len(); ++i) c[i] = cc[chi[i]][i];\n    return c;\n}\n"
   dependsOn:
   - fft.hpp
   isVerificationFile: false
   path: md_conv.hpp
   requiredBy: []
-  timestamp: '2025-01-09 22:13:57+08:00'
+  timestamp: '2025-01-11 20:57:37+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/convolution/multivariate_convolution.0.test.cpp
+  - test/convolution/multidimensional_convolution.0.test.cpp
 documentation_of: md_conv.hpp
 layout: document
 title: Multidimensional Convolution (Truncated)
