@@ -58,9 +58,9 @@
 "test/matrix/sparse_matrix_det.0.test.cpp": "2024-12-23 21:08:20 +0800",
 "test/number_theory/sqrt_mod.0.test.cpp": "2024-12-23 20:28:27 +0800",
 "test/number_theory/yukicoder187.0.test.cpp": "2024-12-23 21:08:20 +0800",
-"test/set_power_series/exp_of_set_power_series.0.test.cpp": "2024-12-23 20:42:13 +0800",
-"test/set_power_series/inv_of_set_power_series.0.test.cpp": "2024-12-23 20:42:13 +0800",
-"test/set_power_series/log_of_set_power_series.0.test.cpp": "2024-12-23 20:42:13 +0800",
+"test/set_power_series/exp_of_set_power_series.0.test.cpp": "2025-01-11 23:04:01 +0800",
+"test/set_power_series/inv_of_set_power_series.0.test.cpp": "2025-01-11 23:04:01 +0800",
+"test/set_power_series/log_of_set_power_series.0.test.cpp": "2025-01-11 23:04:01 +0800",
 "test/set_power_series/polynomial_composite_set_power_series.0.test.cpp": "2024-12-23 20:42:13 +0800",
 "test/set_power_series/subset_convolution.0.test.cpp": "2024-12-23 20:42:13 +0800"
 }
