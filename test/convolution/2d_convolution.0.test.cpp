@@ -51,9 +51,18 @@ bool verify2() {
 int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
-    assert(verify0());
-    assert(verify1());
-    assert(verify2());
+    {
+        const bool ok = verify0();
+        if (!ok) return 1;
+    }
+    {
+        const bool ok = verify1();
+        if (!ok) return 1;
+    }
+    {
+        const bool ok = verify2();
+        if (!ok) return 1;
+    }
     long long a, b;
     std::cin >> a >> b;
     std::cout << a + b;
