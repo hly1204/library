@@ -4,9 +4,11 @@
 #include <cassert>
 #include <vector>
 
+namespace detail {
+
 template <typename Tp>
-void convolution_ranked_inplace(std::vector<std::vector<Tp>> &rankedA,
-                                const std::vector<std::vector<Tp>> &rankedB, int LogN) {
+void sps_hadamard_inplace(std::vector<std::vector<Tp>> &rankedA,
+                          const std::vector<std::vector<Tp>> &rankedB, int LogN) {
     const int N = (1 << LogN);
     for (int i = LogN; i >= 0; --i) {
         for (int j = 0; j < N; ++j) rankedA[i][j] *= rankedB[0][j];
@@ -15,6 +17,8 @@ void convolution_ranked_inplace(std::vector<std::vector<Tp>> &rankedA,
                 rankedA[i][k] += rankedA[i - j][k] * rankedB[j][k];
     }
 }
+
+} // namespace detail
 
 template <typename Tp>
 inline std::vector<Tp> sps_inv(const std::vector<Tp> &A) {
@@ -39,8 +43,8 @@ inline std::vector<Tp> sps_inv(const std::vector<Tp> &A) {
                 rankedInvA[j][k + (1 << i) / 2] += rankedInvA[j][k];
         }
 
-        convolution_ranked_inplace(rankedA, rankedInvA, i);
-        convolution_ranked_inplace(rankedA, rankedInvA, i);
+        detail::sps_hadamard_inplace(rankedA, rankedInvA, i);
+        detail::sps_hadamard_inplace(rankedA, rankedInvA, i);
 
         for (int j = 0; j <= i; ++j) subset_moebius(rankedA[j]);
         for (int j = 0; j < (1 << i); ++j) res[j + (1 << i)] = -rankedA[__builtin_popcount(j)][j];
@@ -73,12 +77,12 @@ inline std::vector<Tp> sps_log(const std::vector<Tp> &A) {
                 rankedInvA[j][k + (1 << i) / 2] += rankedInvA[j][k];
         }
 
-        convolution_ranked_inplace(rankedA, rankedInvA, i);
+        detail::sps_hadamard_inplace(rankedA, rankedInvA, i);
         auto rankedLogA = rankedA;
         for (int j = 0; j <= i; ++j) subset_moebius(rankedLogA[j]);
         for (int j = 0; j < (1 << i); ++j) res[j + (1 << i)] = rankedLogA[__builtin_popcount(j)][j];
         if (i == LogN - 1) break;
-        convolution_ranked_inplace(rankedA, rankedInvA, i);
+        detail::sps_hadamard_inplace(rankedA, rankedInvA, i);
 
         for (int j = 0; j <= i; ++j) subset_moebius(rankedA[j]);
         for (int j = 0; j < (1 << i); ++j) invA[j + (1 << i)] = -rankedA[__builtin_popcount(j)][j];
