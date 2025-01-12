@@ -344,8 +344,13 @@ data:
   - test/formal_power_series/multivariate_power_series.0.test.cpp
 documentation_of: mps_basic.hpp
 layout: document
-redirect_from:
-- /library/mps_basic.hpp
-- /library/mps_basic.hpp.html
-title: mps_basic.hpp
+title: Multivariate Power Series
 ---
+
+## Multivariate Power Series
+
+TODO
+
+## References
+
+1. Elegia. Hello, multivariate multiplication. url: <https://www.luogu.com/article/wje8kchr>

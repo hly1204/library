@@ -15,7 +15,7 @@ data:
     title: modint.hpp
   - icon: ':heavy_check_mark:'
     path: mps_basic.hpp
-    title: mps_basic.hpp
+    title: Multivariate Power Series
   - icon: ':heavy_check_mark:'
     path: random.hpp
     title: random.hpp

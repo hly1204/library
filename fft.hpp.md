@@ -64,7 +64,7 @@ data:
     title: Middle Product
   - icon: ':heavy_check_mark:'
     path: mps_basic.hpp
-    title: mps_basic.hpp
+    title: Multivariate Power Series
   - icon: ':heavy_check_mark:'
     path: poly.hpp
     title: poly.hpp

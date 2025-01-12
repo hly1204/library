@@ -7,7 +7,7 @@ data:
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: mps_basic.hpp
-    title: mps_basic.hpp
+    title: Multivariate Power Series
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/convolution/multidimensional_convolution.0.test.cpp
