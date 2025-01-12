@@ -5,7 +5,34 @@
 #include "md_conv.hpp"
 #include <algorithm>
 #include <cassert>
+#include <sstream>
+#include <string>
 #include <vector>
+
+// Multivariate Power Series [inv, exp, log, pow]
+// Store MPS A(x0, x1, ..., x(d-1)) with A(x, x1^N0, ...) in a 1-dim array
+// using Kronecker substitution
+// TODO: opt
+
+template <typename Tp>
+inline std::string to_string(const MDConvInfo &info, const std::vector<Tp> &a) {
+    assert((int)a.size() == info.len());
+    std::stringstream ss;
+    ss << '[';
+    const auto degree_bound = info.degree_bound();
+    std::vector<int> deg(info.dim());
+    for (int i = 0; i < (int)a.size(); ++i) {
+        if (i) ss << " + ";
+        ss << a[i];
+        for (int j = 0; j < (int)deg.size(); ++j) ss << "*x" << j << "^(" << deg[j] << ')';
+        for (int j = 0; j < (int)deg.size(); ++j) {
+            if (++deg[j] < degree_bound[j]) break;
+            deg[j] = 0;
+        }
+    }
+    ss << ']';
+    return ss.str();
+}
 
 template <typename Tp>
 inline std::vector<Tp> mps_inv(const MDConvInfo &info, const std::vector<Tp> &a) {
@@ -91,4 +118,37 @@ inline std::vector<Tp> mps_exp(const MDConvInfo &info, const std::vector<Tp> &a)
         }
     }
     return res;
+}
+
+template <typename Tp>
+inline std::vector<Tp> mps_pow(const MDConvInfo &info, std::vector<Tp> a, long long e) {
+    assert((int)a.size() == info.len());
+    if (e == 0) {
+        std::vector<Tp> res(info.len());
+        res[0] = 1;
+        return res;
+    }
+
+    if (a[0] != 0) {
+        const Tp ia0 = a[0].inv();
+        const Tp a0e = a[0].pow(e);
+        const Tp me  = e;
+
+        for (int i = 0; i < (int)a.size(); ++i) a[i] *= ia0;
+        a = mps_log(info, a);
+        for (int i = 0; i < (int)a.size(); ++i) a[i] *= me;
+        a = mps_exp(info, a);
+        for (int i = 0; i < (int)a.size(); ++i) a[i] *= a0e;
+
+        return a;
+    }
+
+    assert(e > 0);
+    std::vector<Tp> res(info.len());
+    res[0] = 1;
+    for (;;) {
+        if (e & 1) res = multidimensional_convolution(info, res, a);
+        if ((e >>= 1) == 0) return res;
+        a = multidimensional_convolution(info, a, a);
+    }
 }
