@@ -265,7 +265,7 @@ data:
     \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
     \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
     \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"sqrt_mod.hpp\"\n#include\
-    \ <random>\n#line 6 \"sqrt_mod.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ <random>\n#line 7 \"sqrt_mod.hpp\"\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
     \ sqrt_mod_prime(Tp a) {\n    // Bostan--Mori's algorithm\n    const auto p =\
     \ Tp::mod();\n    if (p == 2 || a == 0) return {a};\n    if (a.pow(p / 2) == -1)\
     \ return {};\n    if ((p & 3) == 3) {\n        const auto b = a.pow((p + 1) /\
@@ -310,7 +310,7 @@ data:
   isVerificationFile: false
   path: fps_sqrt.hpp
   requiredBy: []
-  timestamp: '2024-12-06 22:27:00+08:00'
+  timestamp: '2025-01-14 21:48:18+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
