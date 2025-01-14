@@ -2,6 +2,7 @@
 
 #include "rng.hpp"
 #include <random>
+#include <type_traits>
 #include <vector>
 
 template <typename Tp>
