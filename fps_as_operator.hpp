@@ -8,8 +8,7 @@
 // apply FPS as linear operator
 // F(t): FPS in t where t = d/dx
 // p(x): polynomial in x
-template <typename Tp>
-inline std::vector<Tp> apply_egf(std::vector<Tp> F, std::vector<Tp> p) {
+template<typename Tp> inline std::vector<Tp> apply_egf(std::vector<Tp> F, std::vector<Tp> p) {
     // kinda transposed algorithm of binomial convolution.
     const int n = p.size();
     auto &&bin  = Binomial<Tp>::get(n);
@@ -26,7 +25,7 @@ inline std::vector<Tp> apply_egf(std::vector<Tp> F, std::vector<Tp> p) {
     return res;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> apply_fps(std::vector<Tp> F, const std::vector<Tp> &p) {
     const int n = p.size();
     auto &&bin  = Binomial<Tp>::get(n);

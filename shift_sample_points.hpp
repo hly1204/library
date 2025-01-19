@@ -8,7 +8,7 @@
 #include <functional>
 #include <vector>
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> shift_sample_points(const std::vector<Tp> &f, Tp c, int m) {
     if (f.empty()) return std::vector<Tp>(m);
     assert(m > 0);

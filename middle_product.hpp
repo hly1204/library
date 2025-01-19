@@ -9,7 +9,7 @@
 // [1]: Guillaume Hanrot, Michel Quercia, Paul Zimmermann. The Middle Product Algorithm I.
 // [2]: Alin Bostan, Grégoire Lecerf, Éric Schost. Tellegen's principle into practice.
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> middle_product_naive(const std::vector<Tp> &f, const std::vector<Tp> &g) {
     const int m = f.size();
     const int n = g.size();
@@ -20,7 +20,7 @@ inline std::vector<Tp> middle_product_naive(const std::vector<Tp> &f, const std:
     return res;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> middle_product_fft(std::vector<Tp> f, std::vector<Tp> g) {
     const int m = f.size();
     const int n = g.size();
@@ -41,7 +41,7 @@ inline std::vector<Tp> middle_product_fft(std::vector<Tp> f, std::vector<Tp> g) 
 // f: f_0 + ... + f_(m-1)x^(m-1)
 // g: g_0 + ... + g_(n-1)x^(n-1)
 // requires m >= n
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> middle_product(const std::vector<Tp> &f, const std::vector<Tp> &g) {
     assert(f.size() >= g.size());
     if (f.size() < 60) return middle_product_naive(f, g);

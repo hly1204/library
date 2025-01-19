@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-template <typename Tp>
+template<typename Tp>
 std::vector<Tp> taylor_shift_via_linear_operator(const std::vector<Tp> &a, Tp c) {
     const int n = a.size();
     auto &&bin  = Binomial<Tp>::get(n);

@@ -9,26 +9,18 @@
 
 namespace detail {
 
-template <int N>
-inline unsigned long long from_bit_string(const char *s) {
+template<int N> inline unsigned long long from_bit_string(const char *s) {
     return from_bit_string<N / 2>(s + N / 2) << (N / 2) | from_bit_string<N / 2>(s);
 }
 
-template <>
-inline unsigned long long from_bit_string<1>(const char *s) {
-    return s[0] == '1';
-}
+template<> inline unsigned long long from_bit_string<1>(const char *s) { return s[0] == '1'; }
 
-template <int N>
-inline void to_bit_string(unsigned long long v, char *s) {
+template<int N> inline void to_bit_string(unsigned long long v, char *s) {
     to_bit_string<N / 2>(v, s);
     to_bit_string<N / 2>(v >> (N / 2), s + N / 2);
 }
 
-template <>
-inline void to_bit_string<1>(unsigned long long v, char *s) {
-    s[0] = ((v & 1) + '0');
-}
+template<> inline void to_bit_string<1>(unsigned long long v, char *s) { s[0] = ((v & 1) + '0'); }
 
 } // namespace detail
 

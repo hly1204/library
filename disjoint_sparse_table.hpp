@@ -5,8 +5,7 @@
 #include <cassert>
 #include <vector>
 
-template <typename Tp, typename Op>
-class DisjointSparseTable {
+template<typename Tp, typename Op> class DisjointSparseTable {
 public:
     int S;
     const Monoid<Tp, Op> M;

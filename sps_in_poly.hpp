@@ -10,7 +10,7 @@
 // see:
 // [1]: Elegia. Optimal Algorithm on Polynomial Composite Set Power Series.
 //      https://codeforces.com/blog/entry/92183
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> sps_in_egf(const std::vector<Tp> &F, const std::vector<Tp> &G) {
     const int N = (int)F.size() - 1;
     assert((int)G.size() == (1 << N));
@@ -47,8 +47,7 @@ inline std::vector<Tp> sps_in_egf(const std::vector<Tp> &F, const std::vector<Tp
     return res;
 }
 
-template <typename Tp>
-inline std::vector<Tp> sps_in_poly(std::vector<Tp> F, std::vector<Tp> G) {
+template<typename Tp> inline std::vector<Tp> sps_in_poly(std::vector<Tp> F, std::vector<Tp> G) {
     const int N = G.size();
     int LogN    = 0;
     while ((1 << LogN) != N) ++LogN;

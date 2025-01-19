@@ -7,8 +7,7 @@
 // [1]: Richard P. Brent and Paul Zimmermann. Modern Computer Arithmetic.
 
 // returns floor(m^(1/2))
-template <typename Int>
-inline std::enable_if_t<std::is_integral_v<Int>, Int> sqrt_int(Int m) {
+template<typename Int> inline std::enable_if_t<std::is_integral_v<Int>, Int> sqrt_int(Int m) {
     assert(m >= 0);
     if (m == 0) return 0;
     for (Int u = m;;) {

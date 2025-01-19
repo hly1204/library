@@ -5,8 +5,7 @@
 #include <vector>
 
 // TODO: cache dft
-template <typename Tp>
-inline std::vector<Tp> poly_product(std::vector<std::vector<Tp>> L) {
+template<typename Tp> inline std::vector<Tp> poly_product(std::vector<std::vector<Tp>> L) {
     if (L.empty()) return {Tp(1)};
     while (L.size() > 1) {
         std::vector<std::vector<Tp>> t;

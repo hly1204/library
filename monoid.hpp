@@ -2,8 +2,8 @@
 
 #include <type_traits>
 
-template <typename Tp, typename Op,
-          std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp &>, int> = 0>
+template<typename Tp, typename Op,
+         std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp &>, int> = 0>
 class Monoid {
 public:
     Op F;

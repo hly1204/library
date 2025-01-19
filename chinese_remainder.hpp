@@ -8,7 +8,7 @@
 #include <vector>
 
 // returns [remainder, modular] if is solvable
-template <typename Int>
+template<typename Int>
 inline std::optional<std::array<Int, 2>> chinese_remainder2(Int a0, Int m0, Int a1, Int m1) {
     if (m0 < m1) return chinese_remainder2(a1, m1, a0, m0);
     const auto [x, d]  = inv_gcd(m0, m1);
@@ -22,9 +22,8 @@ inline std::optional<std::array<Int, 2>> chinese_remainder2(Int a0, Int m0, Int 
 }
 
 // returns [remainder, modular] if is solvable
-template <typename Int>
-inline std::optional<std::array<Int, 2>> chinese_remainder(const std::vector<Int> &rem,
-                                                           const std::vector<Int> &mod) {
+template<typename Int> inline std::optional<std::array<Int, 2>>
+chinese_remainder(const std::vector<Int> &rem, const std::vector<Int> &mod) {
     assert(rem.size() == mod.size());
     auto safe_mod = [](Int r, Int m) { return r %= m, (r < 0 ? r + m : r); };
     Int R = 0, M = 1;

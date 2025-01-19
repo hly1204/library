@@ -9,8 +9,7 @@
 // returns F(a),F(ac),F(ac^2),...,F(ac^(n-1))
 // Use        ij = binom(i,2)   + binom(-j,2) - binom(i-j,2)
 // instead of ij = binom(i+j,2) - binom(i,2)  - binom(j,2)
-template <typename Tp>
-inline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {
+template<typename Tp> inline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {
     if (n <= 0) return {};
     const int degF = degree(F);
     shrink(F);
@@ -48,8 +47,7 @@ inline std::vector<Tp> czt(std::vector<Tp> F, Tp c, int n, Tp a = 1) {
 // aq^i != aq^j for all i != j
 // see: https://noshi91.github.io/algorithm-encyclopedia/polynomial-interpolation-geometric
 // noshi91. 標本点が等比数列を成す場合に補間多項式を計算するアルゴリズム.
-template <typename Tp>
-inline std::vector<Tp> inv_czt(const std::vector<Tp> &F, Tp q, Tp a = 1) {
+template<typename Tp> inline std::vector<Tp> inv_czt(const std::vector<Tp> &F, Tp q, Tp a = 1) {
     if (F.empty()) return {};
     if (a == 0) return {F[0]};
     const int n = F.size();

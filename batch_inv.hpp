@@ -3,8 +3,7 @@
 #include <cassert>
 #include <vector>
 
-template <typename Tp>
-inline std::vector<Tp> batch_inv(const std::vector<Tp> &a) {
+template<typename Tp> inline std::vector<Tp> batch_inv(const std::vector<Tp> &a) {
     if (a.empty()) return {};
     const int n = a.size();
     std::vector<Tp> b(n);

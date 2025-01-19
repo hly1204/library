@@ -8,20 +8,15 @@
 #include <cassert>
 #include <vector>
 
-template <typename Tp>
-inline int degree(const std::vector<Tp> &a) {
+template<typename Tp> inline int degree(const std::vector<Tp> &a) {
     int n = (int)a.size() - 1;
     while (n >= 0 && a[n] == 0) --n;
     return n;
 }
 
-template <typename Tp>
-inline void shrink(std::vector<Tp> &a) {
-    a.resize(degree(a) + 1);
-}
+template<typename Tp> inline void shrink(std::vector<Tp> &a) { a.resize(degree(a) + 1); }
 
-template <typename Tp>
-inline std::vector<Tp> taylor_shift(std::vector<Tp> a, Tp c) {
+template<typename Tp> inline std::vector<Tp> taylor_shift(std::vector<Tp> a, Tp c) {
     const int n = a.size();
     auto &&bin  = Binomial<Tp>::get(n);
     for (int i = 0; i < n; ++i) a[i] *= bin.factorial(i);
@@ -41,9 +36,8 @@ inline std::vector<Tp> taylor_shift(std::vector<Tp> a, Tp c) {
 
 // returns (quotient, remainder)
 // O(deg(Q)deg(B))
-template <typename Tp>
-inline std::array<std::vector<Tp>, 2> euclidean_div_naive(const std::vector<Tp> &A,
-                                                          const std::vector<Tp> &B) {
+template<typename Tp> inline std::array<std::vector<Tp>, 2>
+euclidean_div_naive(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     const int degA = degree(A);
     const int degB = degree(B);
     assert(degB >= 0);
@@ -59,9 +53,8 @@ inline std::array<std::vector<Tp>, 2> euclidean_div_naive(const std::vector<Tp> 
 }
 
 // O(min(deg(Q)^2,deg(Q)deg(B)))
-template <typename Tp>
-inline std::vector<Tp> euclidean_div_quotient_naive(const std::vector<Tp> &A,
-                                                    const std::vector<Tp> &B) {
+template<typename Tp> inline std::vector<Tp>
+euclidean_div_quotient_naive(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     const int degA = degree(A);
     const int degB = degree(B);
     assert(degB >= 0);
@@ -77,9 +70,8 @@ inline std::vector<Tp> euclidean_div_quotient_naive(const std::vector<Tp> &A,
 }
 
 // returns (quotient, remainder)
-template <typename Tp>
-inline std::array<std::vector<Tp>, 2> euclidean_div(const std::vector<Tp> &A,
-                                                    const std::vector<Tp> &B) {
+template<typename Tp> inline std::array<std::vector<Tp>, 2>
+euclidean_div(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     const int degA = degree(A);
     const int degB = degree(B);
     assert(degB >= 0);
@@ -116,7 +108,7 @@ inline std::array<std::vector<Tp>, 2> euclidean_div(const std::vector<Tp> &A,
     return {Q, R};
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> euclidean_div_quotient(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     const int degA = degree(A);
     const int degB = degree(B);

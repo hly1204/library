@@ -8,8 +8,7 @@
 #include <iostream>
 #include <iterator>
 
-template <typename Tp>
-Tp factorial(int N) {
+template<typename Tp> Tp factorial(int N) {
     if (N >= (int)Tp::mod()) return 0;
     if (N == 0) return 1;
     const int v = sqrt_int(N);

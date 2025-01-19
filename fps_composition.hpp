@@ -9,9 +9,10 @@
 #include <vector>
 
 // returns f(g) mod x^n
-// see: https://arxiv.org/abs/2404.05177
-// Yasunori Kinoshita, Baitian Li. Power Series Composition in Near-Linear Time.
-template <typename Tp>
+// see:
+// [1]: Yasunori Kinoshita, Baitian Li. Power Series Composition in Near-Linear Time.
+//      https://arxiv.org/abs/2404.05177
+template<typename Tp>
 inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<Tp> &g, int n) {
     if (n <= 0) return {};
     if (g.empty()) {
@@ -20,8 +21,7 @@ inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<T
         return res;
     }
 
-    // [y^(-1)] (f(y) / (-g(x) + y)) mod x^n
-    // R[x]((y^(-1)))
+    // [y^(-1)] (f(y) / (-g(x) + y)) mod x^n in R[x]((y^(-1)))
     auto rec = [g0 = g[0]](auto &&rec, const std::vector<Tp> &P, const std::vector<Tp> &Q, int d,
                            int n) {
         if (n == 1) {
@@ -84,11 +84,11 @@ inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<T
 }
 
 // returns [x^k]gf^0, [x^k]gf, ..., [x^k]gf^(n-1)
-// see: https://noshi91.hatenablog.com/entry/2024/03/16/224034
-// noshi91. FPS の合成と逆関数、冪乗の係数列挙 Θ(n (log(n))^2)
-template <typename Tp>
-inline std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const std::vector<Tp> &g,
-                                              int k, int n) {
+// see:
+// [1]: noshi91. FPS の合成と逆関数、冪乗の係数列挙 Θ(n (log(n))^2)
+//      https://noshi91.hatenablog.com/entry/2024/03/16/224034
+template<typename Tp> inline std::vector<Tp>
+enum_kth_term_of_power(const std::vector<Tp> &f, const std::vector<Tp> &g, int k, int n) {
     if (k < 0 || n <= 0) return {};
     if (f.empty()) {
         std::vector<Tp> res(n);
@@ -96,8 +96,7 @@ inline std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const st
         return res;
     }
 
-    // [x^k] (g(x) / (-f(x) + y))
-    // R[x]((y^(-1)))
+    // [x^k] (g(x) / (-f(x) + y)) in R[x]((y^(-1)))
     std::vector<Tp> P(g), Q(k + 1);
     P.resize(k + 1);
     for (int i = 0; i < std::min<int>(k + 1, f.size()); ++i) Q[i] = -f[i];
@@ -159,8 +158,7 @@ inline std::vector<Tp> enum_kth_term_of_power(const std::vector<Tp> &f, const st
 }
 
 // returns g s.t. f(g) = g(f) = x mod x^n
-template <typename Tp>
-inline std::vector<Tp> reversion(std::vector<Tp> f, int n) {
+template<typename Tp> inline std::vector<Tp> reversion(std::vector<Tp> f, int n) {
     if (n <= 0 || f.size() < 2) return {};
     assert(order(f) == 1);
     const auto if1 = f[1].inv();

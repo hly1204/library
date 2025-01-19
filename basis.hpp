@@ -5,8 +5,7 @@
 #include <optional>
 #include <vector>
 
-template <typename Tp>
-class Basis {
+template<typename Tp> class Basis {
 public:
     const int Dim;
     Matrix<Tp> Vectors; // v_0, v_1, ...

@@ -106,8 +106,7 @@ where $C(x)=\sum _ {i=0}^{n-1}c _ i x^i$. We can use another CZT to compute $C\l
 
 ```c++
 // An alternative implementation of this file.
-template <typename Tp>
-inline std::vector<Tp> inv_czt(const std::vector<Tp> &f, const Tp q) {
+template<typename Tp> inline std::vector<Tp> inv_czt(const std::vector<Tp> &f, const Tp q) {
     if (f.empty()) return {};
     const int n = f.size();
     // prod_(i=0..(n-1))(x-q^i)

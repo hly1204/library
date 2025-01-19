@@ -6,15 +6,14 @@
 #include <vector>
 
 // returns max[0 <= j < a.size()]{a[j].size()}
-template <typename Tp>
-inline int max_len_x_ks(const std::vector<std::vector<Tp>> &a) {
+template<typename Tp> inline int max_len_x_ks(const std::vector<std::vector<Tp>> &a) {
     int len = -1;
     for (int i = 0; i < (int)a.size(); ++i) len = std::max<int>(len, a[i].size());
     return len;
 }
 
 // returns a(x, x^N) where a(x,y) in R[x][y]
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> pack_2d_ks(const std::vector<std::vector<Tp>> &a, int N) {
     assert(N > 0);
     // y |-> x^N
@@ -24,7 +23,7 @@ inline std::vector<Tp> pack_2d_ks(const std::vector<std::vector<Tp>> &a, int N) 
     return b;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<std::vector<Tp>> unpack_2d_ks(const std::vector<Tp> &a, int N) {
     assert(N > 0);
     // x^N |-> y
@@ -34,9 +33,8 @@ inline std::vector<std::vector<Tp>> unpack_2d_ks(const std::vector<Tp> &a, int N
     return b;
 }
 
-template <typename Tp>
-inline std::vector<std::vector<Tp>> convolution_2d_naive(const std::vector<std::vector<Tp>> &a,
-                                                         const std::vector<std::vector<Tp>> &b) {
+template<typename Tp> inline std::vector<std::vector<Tp>>
+convolution_2d_naive(const std::vector<std::vector<Tp>> &a, const std::vector<std::vector<Tp>> &b) {
     if (a.empty() || b.empty()) return {};
     const int lenA = max_len_x_ks(a);
     const int lenB = max_len_x_ks(b);
@@ -52,9 +50,8 @@ inline std::vector<std::vector<Tp>> convolution_2d_naive(const std::vector<std::
 }
 
 // standard Kronecker substitution
-template <typename Tp>
-inline std::vector<std::vector<Tp>> convolution_2d_ks(const std::vector<std::vector<Tp>> &a,
-                                                      const std::vector<std::vector<Tp>> &b) {
+template<typename Tp> inline std::vector<std::vector<Tp>>
+convolution_2d_ks(const std::vector<std::vector<Tp>> &a, const std::vector<std::vector<Tp>> &b) {
     if (a.empty() || b.empty()) return {};
     const int lenA = max_len_x_ks(a);
     const int lenB = max_len_x_ks(b);
@@ -68,8 +65,7 @@ inline std::vector<std::vector<Tp>> convolution_2d_ks(const std::vector<std::vec
 // see:
 // [1]: David Harvey. Faster polynomial multiplication via multipoint Kronecker substitution.
 //      https://doi.org/10.1016/j.jsc.2009.05.004
-template <typename Tp>
-inline std::vector<std::vector<Tp>>
+template<typename Tp> inline std::vector<std::vector<Tp>>
 convolution_2d_ks_reciprocal(const std::vector<std::vector<Tp>> &a,
                              const std::vector<std::vector<Tp>> &b) {
     if (a.empty() || b.empty()) return {};
@@ -139,8 +135,7 @@ convolution_2d_ks_reciprocal(const std::vector<std::vector<Tp>> &a,
 // see:
 // [1]: David Harvey. Faster polynomial multiplication via multipoint Kronecker substitution.
 //      https://doi.org/10.1016/j.jsc.2009.05.004
-template <typename Tp>
-inline std::vector<std::vector<Tp>>
+template<typename Tp> inline std::vector<std::vector<Tp>>
 convolution_2d_ks_negated(const std::vector<std::vector<Tp>> &a,
                           const std::vector<std::vector<Tp>> &b) {
     if (a.empty() || b.empty()) return {};

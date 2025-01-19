@@ -7,8 +7,7 @@
 #include <iostream>
 #include <vector>
 
-template <typename Tp>
-class Poly : public std::vector<Tp> {
+template<typename Tp> class Poly : public std::vector<Tp> {
     using Base = std::vector<Tp>;
 
 public:
@@ -16,6 +15,9 @@ public:
 
     static Poly zero() { return Poly(); }
     static Poly one() { return Poly{Tp::one()}; }
+
+    bool is_zero() const { return deg() < 0; }
+    bool is_one() const { return deg() == 0 && lc() == Tp::one(); }
 
     int deg() const { return degree(*this); }
     int ord() const { return order(*this); }
@@ -137,8 +139,7 @@ public:
 };
 
 // 2x2 matrix for Euclidean algorithm
-template <typename Tp>
-class GCDMatrix : public std::array<std::array<Tp, 2>, 2> {
+template<typename Tp> class GCDMatrix : public std::array<std::array<Tp, 2>, 2> {
 public:
     GCDMatrix(const Tp &x00, const Tp &x01, const Tp &x10, const Tp &x11)
         : std::array<std::array<Tp, 2>, 2>{std::array{x00, x01}, std::array{x10, x11}} {}
@@ -163,8 +164,7 @@ public:
 //                det(M) in {-1, 1}
 // see:
 // [1]: Daniel J. Bernstein. Fast multiplication and its applications.
-template <typename Tp>
-inline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const Poly<Tp> &B, int d) {
+template<typename Tp> inline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const Poly<Tp> &B, int d) {
     using Mat = GCDMatrix<Poly<Tp>>;
     assert(!(A.deg() < 0 && B.deg() < 0));
     if (A.deg() < B.deg()) return hgcd(B, A, d) * Mat({}, {Tp(1)}, {Tp(1)}, {});
@@ -180,14 +180,12 @@ inline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const Poly<Tp> &B, int d) {
     return hgcd(D, R, D.deg() - (A.deg() - d)) * Mat({}, {Tp(1)}, {Tp(1)}, -Q) * M;
 }
 
-template <typename Tp>
-inline std::array<Poly<Tp>, 3> xgcd(const Poly<Tp> &A, const Poly<Tp> &B) {
+template<typename Tp> inline std::array<Poly<Tp>, 3> xgcd(const Poly<Tp> &A, const Poly<Tp> &B) {
     const auto M = hgcd(A, B, std::max(A.deg(), B.deg()));
     return {M[0][0], M[0][1], M[0][0] * A + M[0][1] * B};
 }
 
-template <typename Tp>
-inline std::array<Poly<Tp>, 2> inv_gcd(const Poly<Tp> &A, const Poly<Tp> &B) {
+template<typename Tp> inline std::array<Poly<Tp>, 2> inv_gcd(const Poly<Tp> &A, const Poly<Tp> &B) {
     const auto M = hgcd(A, B, std::max(A.deg(), B.deg()));
     return {M[0][0], M[0][0] * A + M[0][1] * B};
 }
@@ -195,7 +193,7 @@ inline std::array<Poly<Tp>, 2> inv_gcd(const Poly<Tp> &A, const Poly<Tp> &B) {
 // returns P, Q s.t. [x^[-k, 0)] P/Q = [x^[-k, 0)] A/B
 // where P, Q in F[x], deg(Q) is minimized
 // requires deg(A) < deg(B)
-template <typename Tp>
+template<typename Tp>
 inline std::array<Poly<Tp>, 2> rational_approximation(const Poly<Tp> &A, const Poly<Tp> &B, int k) {
     auto M            = hgcd(B, A, k / 2);
     const auto [C, D] = M * std::array{B, A};
@@ -204,7 +202,7 @@ inline std::array<Poly<Tp>, 2> rational_approximation(const Poly<Tp> &A, const P
     return {M.adj()[1][0], M.adj()[0][0]};
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::array<Poly<Tp>, 2> rational_reconstruction(const std::vector<Tp> &A) {
     return rational_approximation(Poly<Tp>(A.rbegin(), A.rend()), Poly<Tp>{Tp(1)} << A.size(),
                                   A.size());
@@ -212,7 +210,7 @@ inline std::array<Poly<Tp>, 2> rational_reconstruction(const std::vector<Tp> &A)
 
 // returns [x^[-k, 0)] A/B
 // requires deg(A) < deg(B)
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> fraction_to_series(const Poly<Tp> &A, const Poly<Tp> &B, int k) {
     return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).slice(0, k);
 }

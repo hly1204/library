@@ -5,9 +5,8 @@
 #include <vector>
 
 // returns F s.t. n=X.size(), deg(F)<n-2t with at most t Y[i] corrupted for F(X[i])=Y[i]
-template <typename Tp>
-inline std::vector<Tp> interpolation_with_error(const std::vector<Tp> &X, const std::vector<Tp> &Y,
-                                                int t) {
+template<typename Tp> inline std::vector<Tp>
+interpolation_with_error(const std::vector<Tp> &X, const std::vector<Tp> &Y, int t) {
     assert(X.size() == Y.size());
     const SubproductTree<Tp> T(X);
     const auto prod   = T.product();

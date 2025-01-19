@@ -6,9 +6,9 @@
 
 namespace detail {
 
-template <typename Tp>
-void sps_hadamard_inplace(std::vector<std::vector<Tp>> &rankedA,
-                          const std::vector<std::vector<Tp>> &rankedB, int LogN) {
+template<typename Tp> void sps_hadamard_inplace(std::vector<std::vector<Tp>> &rankedA,
+                                                const std::vector<std::vector<Tp>> &rankedB,
+                                                int LogN) {
     const int N = (1 << LogN);
     for (int i = LogN; i >= 0; --i) {
         for (int j = 0; j < N; ++j) rankedA[i][j] *= rankedB[0][j];
@@ -20,8 +20,7 @@ void sps_hadamard_inplace(std::vector<std::vector<Tp>> &rankedA,
 
 } // namespace detail
 
-template <typename Tp>
-inline std::vector<Tp> sps_inv(const std::vector<Tp> &A) {
+template<typename Tp> inline std::vector<Tp> sps_inv(const std::vector<Tp> &A) {
     const int N = A.size();
     assert(N > 0);
     assert((N & (N - 1)) == 0);
@@ -52,8 +51,7 @@ inline std::vector<Tp> sps_inv(const std::vector<Tp> &A) {
     return res;
 }
 
-template <typename Tp>
-inline std::vector<Tp> sps_log(const std::vector<Tp> &A) {
+template<typename Tp> inline std::vector<Tp> sps_log(const std::vector<Tp> &A) {
     const int N = A.size();
     assert(N > 0);
     assert((N & (N - 1)) == 0);
@@ -91,8 +89,7 @@ inline std::vector<Tp> sps_log(const std::vector<Tp> &A) {
 }
 
 // returns exp(0 + tx_1 + ...) in R[x_1,...,x_n]/(x_1^2,...,x_n^2)
-template <typename Tp>
-inline std::vector<Tp> sps_exp(const std::vector<Tp> &A) {
+template<typename Tp> inline std::vector<Tp> sps_exp(const std::vector<Tp> &A) {
     const int N = A.size();
     assert(N > 0);
     assert((N & (N - 1)) == 0);

@@ -5,8 +5,7 @@
 #include <functional>
 #include <vector>
 
-template <typename Tp, typename Comp = std::less<>, typename UInt = unsigned>
-class RMQ {
+template<typename Tp, typename Comp = std::less<>, typename UInt = unsigned> class RMQ {
     class SparseTableInner {
         const RMQ &Rmq;
         int N;

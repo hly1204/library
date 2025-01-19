@@ -40,7 +40,7 @@ public:
 
 namespace detail {
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<std::vector<Tp>> multidimensional_hadamard(const std::vector<std::vector<Tp>> &a,
                                                               const std::vector<std::vector<Tp>> &b,
                                                               int dim, int len) {
@@ -55,7 +55,7 @@ inline std::vector<std::vector<Tp>> multidimensional_hadamard(const std::vector<
 
 } // namespace detail
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> multidimensional_convolution(const MDConvInfo &info,
                                                     const std::vector<Tp> &a,
                                                     const std::vector<Tp> &b) {

@@ -6,8 +6,7 @@
 #include <memory>
 #include <vector>
 
-template <typename Tp>
-class FftInfo {
+template<typename Tp> class FftInfo {
     static Tp least_quadratic_nonresidue() {
         for (int i = 2;; ++i)
             if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);
@@ -74,8 +73,7 @@ inline int fft_len(int n) {
 
 namespace detail {
 
-template <typename Iterator>
-inline void
+template<typename Iterator> inline void
 butterfly_n(Iterator a, int n,
             const std::vector<typename std::iterator_traits<Iterator>::value_type> &root) {
     assert(n > 0);
@@ -111,8 +109,7 @@ butterfly_n(Iterator a, int n,
     }
 }
 
-template <typename Iterator>
-inline void
+template<typename Iterator> inline void
 inv_butterfly_n(Iterator a, int n,
                 const std::vector<typename std::iterator_traits<Iterator>::value_type> &root) {
     assert(n > 0);
@@ -151,59 +148,46 @@ inv_butterfly_n(Iterator a, int n,
 } // namespace detail
 
 // FFT_n: A(x) |-> bit-reversed order of [A(1), A(zeta_n), ..., A(zeta_n^(n-1))]
-template <typename Iterator>
-inline void fft_n(Iterator a, int n) {
+template<typename Iterator> inline void fft_n(Iterator a, int n) {
     using Tp = typename std::iterator_traits<Iterator>::value_type;
     detail::butterfly_n(a, n, FftInfo<Tp>::get().root(n / 2));
 }
 
-template <typename Tp>
-inline void fft(std::vector<Tp> &a) {
-    fft_n(a.begin(), a.size());
-}
+template<typename Tp> inline void fft(std::vector<Tp> &a) { fft_n(a.begin(), a.size()); }
 
 // IFFT_n: bit-reversed order of [A(1), A(zeta_n), ..., A(zeta_n^(n-1))] |-> A(x)
-template <typename Iterator>
-inline void inv_fft_n(Iterator a, int n) {
+template<typename Iterator> inline void inv_fft_n(Iterator a, int n) {
     using Tp = typename std::iterator_traits<Iterator>::value_type;
     detail::inv_butterfly_n(a, n, FftInfo<Tp>::get().inv_root(n / 2));
     const Tp iv = Tp::mod() - (Tp::mod() - 1) / n;
     for (int i = 0; i < n; ++i) a[i] *= iv;
 }
 
-template <typename Tp>
-inline void inv_fft(std::vector<Tp> &a) {
-    inv_fft_n(a.begin(), a.size());
-}
+template<typename Tp> inline void inv_fft(std::vector<Tp> &a) { inv_fft_n(a.begin(), a.size()); }
 
 // IFFT_n^T: A(x) |-> 1/n FFT_n((x^n A(x^(-1))) mod (x^n - 1))
-template <typename Iterator>
-inline void transposed_inv_fft_n(Iterator a, int n) {
+template<typename Iterator> inline void transposed_inv_fft_n(Iterator a, int n) {
     using Tp    = typename std::iterator_traits<Iterator>::value_type;
     const Tp iv = Tp::mod() - (Tp::mod() - 1) / n;
     for (int i = 0; i < n; ++i) a[i] *= iv;
     detail::butterfly_n(a, n, FftInfo<Tp>::get().inv_root(n / 2));
 }
 
-template <typename Tp>
-inline void transposed_inv_fft(std::vector<Tp> &a) {
+template<typename Tp> inline void transposed_inv_fft(std::vector<Tp> &a) {
     transposed_inv_fft_n(a.begin(), a.size());
 }
 
 // FFT_n^T : FFT_n((x^n A(x^(-1))) mod (x^n - 1)) |-> n A(x)
-template <typename Iterator>
-inline void transposed_fft_n(Iterator a, int n) {
+template<typename Iterator> inline void transposed_fft_n(Iterator a, int n) {
     using Tp = typename std::iterator_traits<Iterator>::value_type;
     detail::inv_butterfly_n(a, n, FftInfo<Tp>::get().root(n / 2));
 }
 
-template <typename Tp>
-inline void transposed_fft(std::vector<Tp> &a) {
+template<typename Tp> inline void transposed_fft(std::vector<Tp> &a) {
     transposed_fft_n(a.begin(), a.size());
 }
 
-template <typename Tp>
-inline std::vector<Tp> convolution_fft(std::vector<Tp> a, std::vector<Tp> b) {
+template<typename Tp> inline std::vector<Tp> convolution_fft(std::vector<Tp> a, std::vector<Tp> b) {
     if (a.empty() || b.empty()) return {};
     const int n   = a.size();
     const int m   = b.size();
@@ -218,8 +202,7 @@ inline std::vector<Tp> convolution_fft(std::vector<Tp> a, std::vector<Tp> b) {
     return a;
 }
 
-template <typename Tp>
-inline std::vector<Tp> square_fft(std::vector<Tp> a) {
+template<typename Tp> inline std::vector<Tp> square_fft(std::vector<Tp> a) {
     if (a.empty()) return {};
     const int n   = a.size();
     const int len = fft_len(n * 2 - 1);
@@ -231,7 +214,7 @@ inline std::vector<Tp> square_fft(std::vector<Tp> a) {
     return a;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> convolution_naive(const std::vector<Tp> &a, const std::vector<Tp> &b) {
     if (a.empty() || b.empty()) return {};
     const int n = a.size();
@@ -242,7 +225,7 @@ inline std::vector<Tp> convolution_naive(const std::vector<Tp> &a, const std::ve
     return res;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {
     if (std::min(a.size(), b.size()) < 60) return convolution_naive(a, b);
     if (std::addressof(a) == std::addressof(b)) return square_fft(a);

@@ -6,10 +6,9 @@
 #include <tuple>
 #include <vector>
 
-template <typename Tp>
-using SparseMatrix = std::vector<std::tuple<int, int, Tp>>;
+template<typename Tp> using SparseMatrix = std::vector<std::tuple<int, int, Tp>>;
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> mat_apply(const SparseMatrix<Tp> &A, const std::vector<Tp> &b) {
     const int n = b.size();
     std::vector<Tp> Ab(n);
@@ -17,8 +16,7 @@ inline std::vector<Tp> mat_apply(const SparseMatrix<Tp> &A, const std::vector<Tp
     return Ab;
 }
 
-template <typename Tp>
-inline std::vector<Tp> minpoly(const SparseMatrix<Tp> &A, int n) {
+template<typename Tp> inline std::vector<Tp> minpoly(const SparseMatrix<Tp> &A, int n) {
     const auto u = random_vector<Tp>(n);
     auto v       = random_vector<Tp>(n);
     // u^T A^([0..2n)) v
@@ -30,8 +28,7 @@ inline std::vector<Tp> minpoly(const SparseMatrix<Tp> &A, int n) {
     return Q.monic();
 }
 
-template <typename Tp>
-inline Tp det(SparseMatrix<Tp> A, int n) {
+template<typename Tp> inline Tp det(SparseMatrix<Tp> A, int n) {
     const auto D = random_vector_without_zero<Tp>(n);
     Tp detD      = 1;
     for (int i = 0; i < n; ++i) detD *= D[i];

@@ -5,7 +5,7 @@
 #include <optional>
 #include <vector>
 
-template <typename Tp>
+template<typename Tp>
 inline std::optional<std::vector<Tp>> fps_sqrt_hint(const std::vector<Tp> &a, int n, Tp c) {
     const int o = order(a);
     if (o < 0) return std::vector<Tp>(n);
@@ -19,7 +19,7 @@ inline std::optional<std::vector<Tp>> fps_sqrt_hint(const std::vector<Tp> &a, in
     return sqrta;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::optional<std::vector<Tp>> fps_sqrt(const std::vector<Tp> &a, int n) {
     const int o = order(a);
     if (o < 0) return std::vector<Tp>(n);

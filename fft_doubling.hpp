@@ -6,8 +6,7 @@
 #include <iterator>
 #include <vector>
 
-template <typename Iterator>
-inline void fft_doubling_n(Iterator a, int n) {
+template<typename Iterator> inline void fft_doubling_n(Iterator a, int n) {
     using Tp = typename std::iterator_traits<Iterator>::value_type;
     assert((n & (n - 1)) == 0);
     std::copy_n(a, n, a + n);
@@ -18,8 +17,7 @@ inline void fft_doubling_n(Iterator a, int n) {
     fft_n(a + n, n);
 }
 
-template <typename Tp>
-inline void fft_doubling(std::vector<Tp> &a) {
+template<typename Tp> inline void fft_doubling(std::vector<Tp> &a) {
     const int n = a.size();
     a.resize(n * 2);
     fft_doubling_n(a.begin(), n);

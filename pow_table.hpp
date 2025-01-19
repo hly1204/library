@@ -3,8 +3,7 @@
 #include <vector>
 
 // returns 0^e, 1^e, ..., (n-1)^e
-template <typename Tp>
-inline std::vector<Tp> pow_table(int e, int n) {
+template<typename Tp> inline std::vector<Tp> pow_table(int e, int n) {
     if (n <= 0) return {};
     std::vector<bool> is_comp(n);
     std::vector<int> p;

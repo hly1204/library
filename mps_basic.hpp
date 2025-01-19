@@ -14,7 +14,7 @@
 // using Kronecker substitution
 // TODO: opt
 
-template <typename Tp>
+template<typename Tp>
 inline std::string to_string(const MDConvInfo &info, const std::vector<Tp> &a) {
     assert((int)a.size() == info.len());
     std::stringstream ss;
@@ -34,7 +34,7 @@ inline std::string to_string(const MDConvInfo &info, const std::vector<Tp> &a) {
     return ss.str();
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> mps_inv(const MDConvInfo &info, const std::vector<Tp> &a) {
     assert((int)a.size() == info.len());
     assert(a[0] != 0);
@@ -75,28 +75,26 @@ inline std::vector<Tp> mps_inv(const MDConvInfo &info, const std::vector<Tp> &a)
 // see:
 // [1]: Elegia. Hello, multivariate multiplication.
 //      https://www.luogu.com/article/wje8kchr
-template <typename Tp>
-inline std::vector<Tp> mps_deriv(std::vector<Tp> a) {
+template<typename Tp> inline std::vector<Tp> mps_deriv(std::vector<Tp> a) {
     for (int i = 0; i < (int)a.size(); ++i) a[i] *= i;
     return a;
 }
 
-template <typename Tp>
-inline std::vector<Tp> mps_integr(std::vector<Tp> a, Tp c = {}) {
+template<typename Tp> inline std::vector<Tp> mps_integr(std::vector<Tp> a, Tp c = {}) {
     auto &&bin = Binomial<Tp>::get(a.size());
     a[0]       = c;
     for (int i = 1; i < (int)a.size(); ++i) a[i] *= bin.inv(i);
     return a;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> mps_log(const MDConvInfo &info, const std::vector<Tp> &a) {
     assert((int)a.size() == info.len());
     assert(a[0] == 1);
     return mps_integr(multidimensional_convolution(info, mps_deriv(a), mps_inv(info, a)));
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> mps_exp(const MDConvInfo &info, const std::vector<Tp> &a) {
     assert((int)a.size() == info.len());
     assert(a[0] == 0);
@@ -120,7 +118,7 @@ inline std::vector<Tp> mps_exp(const MDConvInfo &info, const std::vector<Tp> &a)
     return res;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> mps_pow(const MDConvInfo &info, std::vector<Tp> a, long long e) {
     assert((int)a.size() == info.len());
     if (e == 0) {

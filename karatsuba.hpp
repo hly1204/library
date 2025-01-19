@@ -7,7 +7,7 @@
 // see:
 // [1]: Daniel J. Bernstein. Multidigit multiplication for mathematicians.
 //      https://cr.yp.to/papers.html#m3
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> convolution_karatsuba(const std::vector<Tp> &a, const std::vector<Tp> &b) {
     const int n = a.size();
     const int m = b.size();

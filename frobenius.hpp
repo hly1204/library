@@ -12,8 +12,7 @@
 
 // Compute the Frobenius form (rational canonical form) of a square matrix,
 // but the result is not always true.
-template <typename Tp>
-class Frobenius {
+template<typename Tp> class Frobenius {
 public:
     // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))
     // where C_(p_j) is the companion matrix of monic polynomial P[j]

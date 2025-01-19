@@ -3,8 +3,7 @@
 #include <algorithm>
 #include <vector>
 
-template <typename Tp>
-class Binomial {
+template<typename Tp> class Binomial {
     std::vector<Tp> factorial_, invfactorial_;
 
     Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}

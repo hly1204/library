@@ -14,8 +14,7 @@
 //      A Simple and Fast Algorithm for Computing the N-th Term of a Linearly Recurrent Sequence.
 //      https://arxiv.org/abs/2008.08822
 
-template <typename Tp>
-inline void fft_high(std::vector<Tp> &a) {
+template<typename Tp> inline void fft_high(std::vector<Tp> &a) {
     const int n = a.size();
     inv_fft_n(a.begin() + n / 2, n / 2);
     Tp k         = 1;
@@ -29,7 +28,7 @@ inline void fft_high(std::vector<Tp> &a) {
 // returns DFT([x^[L,L+len/2)]1/Q)
 // 1/Q in R((x))
 // requires len/2 > deg(Q), len/2 is even
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> bostan_mori_laurent_series(std::vector<Tp> dftQ, long long L) {
     const int len = dftQ.size() * 2;
     if (L <= 0) {
@@ -77,7 +76,7 @@ inline std::vector<Tp> bostan_mori_laurent_series(std::vector<Tp> dftQ, long lon
 // returns DFT([x^[-len/2,0)]x^k/Q)
 // x^k/Q in R((x^(-1)))
 // requires len/2 > degQ
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp> dftQ, long long k) {
     assert(k >= 0);
     const int len = dftQ.size() * 2;
@@ -119,8 +118,7 @@ inline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp> dftQ,
 }
 
 // returns x^k mod Q
-template <typename Tp>
-inline std::vector<Tp> xk_mod(long long k, const std::vector<Tp> &Q) {
+template<typename Tp> inline std::vector<Tp> xk_mod(long long k, const std::vector<Tp> &Q) {
     assert(k >= 0);
     const int degQ = degree(Q);
     assert(degQ >= 0);
@@ -177,9 +175,8 @@ inline std::vector<Tp> xk_mod(long long k, const std::vector<Tp> &Q) {
 // returns [x^[L,R)]P/Q
 // P: polynomial
 // Q: non-zero polynomial, ord(Q)=0
-template <typename Tp>
-inline std::vector<Tp> slice_coeff_rational(const std::vector<Tp> &P, const std::vector<Tp> &Q,
-                                            long long L, long long R) {
+template<typename Tp> inline std::vector<Tp>
+slice_coeff_rational(const std::vector<Tp> &P, const std::vector<Tp> &Q, long long L, long long R) {
     assert(L >= 0);
     assert(order(Q) == 0);
     const int degP = degree(P);
@@ -200,7 +197,7 @@ inline std::vector<Tp> slice_coeff_rational(const std::vector<Tp> &P, const std:
 // returns [x^k]P/Q
 // P: polynomial
 // Q: non-zero polynomial, ord(Q)=0
-template <typename Tp>
+template<typename Tp>
 inline Tp div_at(const std::vector<Tp> &P, const std::vector<Tp> &Q, long long k) {
     return slice_coeff_rational(P, Q, k, k + 1).at(0);
 }

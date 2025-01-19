@@ -6,15 +6,13 @@
 #include <cassert>
 #include <vector>
 
-template <typename Tp>
-inline int order(const std::vector<Tp> &a) {
+template<typename Tp> inline int order(const std::vector<Tp> &a) {
     for (int i = 0; i < (int)a.size(); ++i)
         if (a[i] != 0) return i;
     return -1;
 }
 
-template <typename Tp>
-inline std::vector<Tp> fps_inv(const std::vector<Tp> &a, int n) {
+template<typename Tp> inline std::vector<Tp> fps_inv(const std::vector<Tp> &a, int n) {
     assert(order(a) == 0);
     if (n <= 0) return {};
     if (std::min<int>(a.size(), n) < 60)
@@ -44,7 +42,7 @@ inline std::vector<Tp> fps_inv(const std::vector<Tp> &a, int n) {
     return invA;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> fps_div(const std::vector<Tp> &a, const std::vector<Tp> &b, int n) {
     assert(order(b) == 0);
     if (n <= 0) return {};
@@ -57,8 +55,7 @@ inline std::vector<Tp> fps_div(const std::vector<Tp> &a, const std::vector<Tp> &
         n);
 }
 
-template <typename Tp>
-inline std::vector<Tp> deriv(const std::vector<Tp> &a) {
+template<typename Tp> inline std::vector<Tp> deriv(const std::vector<Tp> &a) {
     const int n = (int)a.size() - 1;
     if (n <= 0) return {};
     std::vector<Tp> res(n);
@@ -66,8 +63,7 @@ inline std::vector<Tp> deriv(const std::vector<Tp> &a) {
     return res;
 }
 
-template <typename Tp>
-inline std::vector<Tp> integr(const std::vector<Tp> &a, Tp c = {}) {
+template<typename Tp> inline std::vector<Tp> integr(const std::vector<Tp> &a, Tp c = {}) {
     const int n = a.size() + 1;
     auto &&bin  = Binomial<Tp>::get(n);
     std::vector<Tp> res(n);
@@ -76,13 +72,11 @@ inline std::vector<Tp> integr(const std::vector<Tp> &a, Tp c = {}) {
     return res;
 }
 
-template <typename Tp>
-inline std::vector<Tp> fps_log(const std::vector<Tp> &a, int n) {
+template<typename Tp> inline std::vector<Tp> fps_log(const std::vector<Tp> &a, int n) {
     return integr(fps_div(deriv(a), a, n - 1));
 }
 
-template <typename Tp>
-inline std::vector<Tp> fps_exp(const std::vector<Tp> &a, int n) {
+template<typename Tp> inline std::vector<Tp> fps_exp(const std::vector<Tp> &a, int n) {
     if (n <= 0) return {};
     assert(a.empty() || a[0] == 0);
     return semi_relaxed_convolution(
@@ -93,8 +87,7 @@ inline std::vector<Tp> fps_exp(const std::vector<Tp> &a, int n) {
         n);
 }
 
-template <typename Tp>
-inline std::vector<Tp> fps_pow(std::vector<Tp> a, long long e, int n) {
+template<typename Tp> inline std::vector<Tp> fps_pow(std::vector<Tp> a, long long e, int n) {
     if (n <= 0) return {};
     if (e == 0) {
         std::vector<Tp> res(n);

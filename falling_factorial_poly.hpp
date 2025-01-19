@@ -5,8 +5,7 @@
 #include <algorithm>
 #include <vector>
 
-template <typename Tp>
-inline std::vector<Tp> sample_points_to_ffp(const std::vector<Tp> &F) {
+template<typename Tp> inline std::vector<Tp> sample_points_to_ffp(const std::vector<Tp> &F) {
     const int n = F.size();
     auto &&bin  = Binomial<Tp>::get(n);
     std::vector<Tp> egfF(F), ee(n);
@@ -20,7 +19,7 @@ inline std::vector<Tp> sample_points_to_ffp(const std::vector<Tp> &F) {
     return ffp;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> ffp_to_sample_points(const std::vector<Tp> &ffp, int n) {
     auto &&bin = Binomial<Tp>::get(n);
     std::vector<Tp> ee(n);
@@ -31,8 +30,7 @@ inline std::vector<Tp> ffp_to_sample_points(const std::vector<Tp> &ffp, int n) {
     return F;
 }
 
-template <typename Tp>
-inline std::vector<Tp> shift_ffp(std::vector<Tp> ffp, Tp c) {
+template<typename Tp> inline std::vector<Tp> shift_ffp(std::vector<Tp> ffp, Tp c) {
     const int n = ffp.size();
     auto &&bin  = Binomial<Tp>::get(n);
     std::vector<Tp> C(n);

@@ -222,8 +222,7 @@ Consider the simple case first: Given $\operatorname{\mathsf{FFT}} _ n\left(A(x)
 #include <utility>
 #include <vector>
 
-template <typename Iterator>
-void revbin(Iterator a, int n) {
+template<typename Iterator> void revbin(Iterator a, int n) {
     assert((n & (n - 1)) == 0);
     if (n == 0) return;
     for (int i = 0, j = 0;;) {
@@ -233,7 +232,7 @@ void revbin(Iterator a, int n) {
     }
 }
 
-template <typename Iterator>
+template<typename Iterator>
 typename std::iterator_traits<Iterator>::value_type extract_coeff_from_fft(Iterator a, int n,
                                                                            int k) {
     using Tp = typename std::iterator_traits<Iterator>::value_type;
@@ -264,8 +263,7 @@ We are given $\operatorname{\mathsf{FFT}} _ n\left(A(x)\right)$, and we want to 
 #include <cassert>
 #include <utility>
 
-template <typename Iterator>
-void revbin(Iterator a, int n) {
+template<typename Iterator> void revbin(Iterator a, int n) {
     assert((n & (n - 1)) == 0);
     if (n == 0) return;
     for (int i = 0, j = 0;;) {
@@ -275,8 +273,7 @@ void revbin(Iterator a, int n) {
     }
 }
 
-template <typename Iterator>
-void transform(Iterator a, int n) {
+template<typename Iterator> void transform(Iterator a, int n) {
     assert((n & (n - 1)) == 0);
     if (n == 0) return;
     revbin(a, n);

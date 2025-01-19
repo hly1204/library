@@ -8,8 +8,7 @@
 #include <cassert>
 #include <vector>
 
-template <typename Tp>
-class SubproductTree {
+template<typename Tp> class SubproductTree {
 public:
     // LV=0   => T[0..S]  = DFT((x-X_0)..(x-X_(N-1))     mod (x^S     - 1))
     //        => T[S..2S] = (x-X_0)..(x-X_(N-1))         mod (x^S     + 1)  (* SPECIAL CASE)

@@ -4,8 +4,7 @@
 #include <cassert>
 #include <vector>
 
-template <typename Tp, typename Op>
-class SparseTable {
+template<typename Tp, typename Op> class SparseTable {
 public:
     const int N;
     const Monoid<Tp, Op> M;

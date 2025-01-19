@@ -8,9 +8,8 @@
 // returns f
 // x: x_0,...
 // y: f(x_0),...
-template <typename Tp>
-inline std::vector<Tp> lagrange_interpolation_naive(const std::vector<Tp> &x,
-                                                    const std::vector<Tp> &y) {
+template<typename Tp> inline std::vector<Tp>
+lagrange_interpolation_naive(const std::vector<Tp> &x, const std::vector<Tp> &y) {
     assert(x.size() == y.size());
     const int n = x.size();
     std::vector<Tp> M(n + 1), xx(n), f(n);
@@ -29,8 +28,7 @@ inline std::vector<Tp> lagrange_interpolation_naive(const std::vector<Tp> &x,
 
 // returns f(c)
 // f: polynomial f -> f[0]=f(0),...
-template <typename Tp>
-inline Tp lagrange_interpolation_iota(const std::vector<Tp> &f, Tp c) {
+template<typename Tp> inline Tp lagrange_interpolation_iota(const std::vector<Tp> &f, Tp c) {
     if (f.empty()) return 0;
     const int n = f.size();
     auto &&bin  = Binomial<Tp>::get(n);

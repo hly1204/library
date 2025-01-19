@@ -6,8 +6,7 @@
 #include <iostream>
 #include <vector>
 
-template <typename Tp>
-std::vector<Tp> inv_graeffe(std::vector<Tp> Q, int n) {
+template<typename Tp> std::vector<Tp> inv_graeffe(std::vector<Tp> Q, int n) {
     assert(!Q.empty());
     assert(Q[0] != 0);
     if (n <= 0) return {};

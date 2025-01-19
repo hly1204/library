@@ -7,26 +7,19 @@
 #include <utility>
 #include <vector>
 
-template <typename Tp>
-using Matrix = std::vector<std::vector<Tp>>;
+template<typename Tp> using Matrix = std::vector<std::vector<Tp>>;
 
-template <typename Tp>
-inline int width(const Matrix<Tp> &A) {
+template<typename Tp> inline int width(const Matrix<Tp> &A) {
     return A.empty() ? 0 : (int)A[0].size();
 }
 
-template <typename Tp>
-inline int height(const Matrix<Tp> &A) {
-    return A.size();
-}
+template<typename Tp> inline int height(const Matrix<Tp> &A) { return A.size(); }
 
-template <typename Tp>
-inline bool is_square_matrix(const Matrix<Tp> &A) {
+template<typename Tp> inline bool is_square_matrix(const Matrix<Tp> &A) {
     return width(A) == height(A);
 }
 
-template <typename Tp>
-inline Matrix<Tp> transpose(const Matrix<Tp> &A) {
+template<typename Tp> inline Matrix<Tp> transpose(const Matrix<Tp> &A) {
     const int w = width(A);
     const int h = height(A);
     Matrix<Tp> TA(w, std::vector<Tp>(h));
@@ -35,7 +28,7 @@ inline Matrix<Tp> transpose(const Matrix<Tp> &A) {
     return TA;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> mat_apply(const Matrix<Tp> &A, const std::vector<Tp> &b) {
     const int w = width(A);
     const int h = height(A);
@@ -46,8 +39,7 @@ inline std::vector<Tp> mat_apply(const Matrix<Tp> &A, const std::vector<Tp> &b) 
     return Ab;
 }
 
-template <typename Tp>
-inline Matrix<Tp> mat_mul(const Matrix<Tp> &A, const Matrix<Tp> &B) {
+template<typename Tp> inline Matrix<Tp> mat_mul(const Matrix<Tp> &A, const Matrix<Tp> &B) {
     const int wA = width(A);
     const int hA = height(A);
     assert(height(B) == wA);
@@ -59,8 +51,7 @@ inline Matrix<Tp> mat_mul(const Matrix<Tp> &A, const Matrix<Tp> &B) {
     return res;
 }
 
-template <typename Tp>
-inline std::optional<Matrix<Tp>> mat_inv(Matrix<Tp> A) {
+template<typename Tp> inline std::optional<Matrix<Tp>> mat_inv(Matrix<Tp> A) {
     assert(is_square_matrix(A));
     const int n = height(A);
     for (int i = 0; i < n; ++i) {
@@ -94,8 +85,7 @@ inline std::optional<Matrix<Tp>> mat_inv(Matrix<Tp> A) {
     return A;
 }
 
-template <typename Tp>
-inline Tp det(Matrix<Tp> A) {
+template<typename Tp> inline Tp det(Matrix<Tp> A) {
     assert(is_square_matrix(A));
     const int n = height(A);
     Tp det      = 1;
@@ -119,8 +109,7 @@ inline Tp det(Matrix<Tp> A) {
     return det;
 }
 
-template <typename Tp>
-inline Matrix<Tp> to_upper_hessenberg(Matrix<Tp> A) {
+template<typename Tp> inline Matrix<Tp> to_upper_hessenberg(Matrix<Tp> A) {
     assert(is_square_matrix(A));
     const int n = height(A);
     for (int i = 0; i < n - 1; ++i) {
@@ -144,8 +133,7 @@ inline Matrix<Tp> to_upper_hessenberg(Matrix<Tp> A) {
 }
 
 // returns det(xI - A)
-template <typename Tp>
-inline std::vector<Tp> charpoly(const Matrix<Tp> &A) {
+template<typename Tp> inline std::vector<Tp> charpoly(const Matrix<Tp> &A) {
     const auto H = to_upper_hessenberg(A);
     const int n  = height(A);
     std::vector<std::vector<Tp>> P(n + 1);
@@ -165,8 +153,7 @@ inline std::vector<Tp> charpoly(const Matrix<Tp> &A) {
     return P[n];
 }
 
-template <typename Tp>
-inline std::vector<Tp> minpoly(const Matrix<Tp> &A) {
+template<typename Tp> inline std::vector<Tp> minpoly(const Matrix<Tp> &A) {
     assert(is_square_matrix(A));
     const int n  = height(A);
     const auto u = random_vector<Tp>(n);

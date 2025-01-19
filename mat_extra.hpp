@@ -33,8 +33,7 @@ if __name__ == '__main__':
 // see:
 // [1]: Elegia's comment.
 //      https://codeforces.com/blog/entry/92248?#comment-818786
-template <typename Tp>
-inline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A) {
+template<typename Tp> inline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A) {
     assert(is_square_matrix(A));
     auto sub = [](auto &a, const auto &b, Tp v, int n, int d) {
         if (v == 0) return;

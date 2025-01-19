@@ -6,7 +6,7 @@
 #include <cassert>
 #include <vector>
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> bitwise_or_convolution(std::vector<Tp> a, std::vector<Tp> b) {
     assert(a.size() == b.size());
     const int n = a.size();
@@ -19,7 +19,7 @@ inline std::vector<Tp> bitwise_or_convolution(std::vector<Tp> a, std::vector<Tp>
     return a;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> bitwise_and_convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {
     auto ab = bitwise_or_convolution(std::vector(a.rbegin(), a.rend()),
                                      std::vector(b.rbegin(), b.rend()));
@@ -27,7 +27,7 @@ inline std::vector<Tp> bitwise_and_convolution(const std::vector<Tp> &a, const s
     return ab;
 }
 
-template <typename Tp>
+template<typename Tp>
 inline std::vector<Tp> bitwise_xor_convolution(std::vector<Tp> a, std::vector<Tp> b) {
     assert(a.size() == b.size());
     const int n = a.size();

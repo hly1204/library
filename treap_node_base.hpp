@@ -5,8 +5,7 @@
 #include <random>
 #include <utility>
 
-template <typename TreapNode>
-class TreapNodeBase {
+template<typename TreapNode> class TreapNodeBase {
     TreapNodeBase *L;
     TreapNodeBase *R;
     int Rank;
@@ -97,8 +96,7 @@ public:
     TreapNode *right() const { return (TreapNode *)R; }
 
     void flip() { base_flip(); }
-    template <typename... Nodes>
-    static TreapNode *join(Nodes... node) {
+    template<typename... Nodes> static TreapNode *join(Nodes... node) {
         struct Helper {
             TreapNodeBase *Val;
             Helper &operator|(TreapNodeBase *A) {
@@ -108,7 +106,7 @@ public:
         } nil{nullptr};
         return (TreapNode *)(nil | ... | node).Val;
     }
-    template <typename... Parts>
+    template<typename... Parts>
     static std::array<TreapNode *, sizeof...(Parts) + 1> split(TreapNode *a, Parts... part) {
         std::array<TreapNode *, sizeof...(Parts) + 1> res;
         res[0]    = a;

@@ -5,7 +5,7 @@
 #include <utility>
 
 // returns [x, y, gcd(a, b)] s.t. ax+by = gcd(a, b)
-template <typename Int>
+template<typename Int>
 inline std::enable_if_t<std::is_signed_v<Int>, std::array<Int, 3>> xgcd(Int a, Int b) {
     Int x11 = 1, x12 = 0, x21 = 0, x22 = 1;
     while (b) {
@@ -18,7 +18,7 @@ inline std::enable_if_t<std::is_signed_v<Int>, std::array<Int, 3>> xgcd(Int a, I
 }
 
 // returns [a^(-1) mod b, gcd(a, b)]
-template <typename Int>
+template<typename Int>
 inline std::enable_if_t<std::is_signed_v<Int>, std::array<Int, 2>> inv_gcd(Int a, Int b) {
     Int x11 = 1, x21 = 0;
     while (b) {

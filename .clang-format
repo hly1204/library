@@ -17,7 +17,7 @@ AccessModifierOffset: -4
 AllowShortIfStatementsOnASingleLine: Always
 AllowShortFunctionsOnASingleLine: All
 AllowShortBlocksOnASingleLine: Always
-AlwaysBreakTemplateDeclarations: Yes
+AlwaysBreakTemplateDeclarations: No
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortLoopsOnASingleLine: true
@@ -33,3 +33,4 @@ FixNamespaceComments: true
 IndentGotoLabels: true
 IndentPPDirectives: BeforeHash
 IndentWrappedFunctionNames: false
+SpaceAfterTemplateKeyword: false
