@@ -11,7 +11,7 @@ data:
   - icon: ':warning:'
     path: poly_interpolation_with_error.hpp
     title: poly_interpolation_with_error.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: shift_sample_points.hpp
     title: Shift Sample Points
   - icon: ':heavy_check_mark:'
@@ -36,22 +36,22 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
     title: test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"batch_inv.hpp\"\n\n#include <cassert>\n#include <vector>\n\
-    \ntemplate <typename Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp>\
+    \ntemplate<typename Tp> inline std::vector<Tp> batch_inv(const std::vector<Tp>\
     \ &a) {\n    if (a.empty()) return {};\n    const int n = a.size();\n    std::vector<Tp>\
     \ b(n);\n    Tp v = 1;\n    for (int i = 0; i < n; ++i) b[i] = v, v *= a[i];\n\
     \    assert(v != 0);\n    v = v.inv();\n    for (int i = n - 1; i >= 0; --i) b[i]\
     \ *= v, v *= a[i];\n    return b;\n}\n"
-  code: "#pragma once\n\n#include <cassert>\n#include <vector>\n\ntemplate <typename\
-    \ Tp>\ninline std::vector<Tp> batch_inv(const std::vector<Tp> &a) {\n    if (a.empty())\
+  code: "#pragma once\n\n#include <cassert>\n#include <vector>\n\ntemplate<typename\
+    \ Tp> inline std::vector<Tp> batch_inv(const std::vector<Tp> &a) {\n    if (a.empty())\
     \ return {};\n    const int n = a.size();\n    std::vector<Tp> b(n);\n    Tp v\
     \ = 1;\n    for (int i = 0; i < n; ++i) b[i] = v, v *= a[i];\n    assert(v !=\
     \ 0);\n    v = v.inv();\n    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *=\
@@ -65,8 +65,8 @@ data:
   - subproduct_tree.hpp
   - poly_interpolation_with_error.hpp
   - poly_interpolation.hpp
-  timestamp: '2024-06-16 14:16:14+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2025-01-19 15:28:01+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/enumerative_combinatorics/factorial.0.test.cpp
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp

@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   _extendedRequiredBy: []
@@ -43,9 +43,9 @@ data:
     \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
     \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
     \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"treap_node_base.hpp\"\
-    \n#include <array>\n#include <random>\n#include <utility>\n\ntemplate <typename\
-    \ TreapNode>\nclass TreapNodeBase {\n    TreapNodeBase *L;\n    TreapNodeBase\
-    \ *R;\n    int Rank;\n    int Size;\n    bool NeedFlip;\n\n    static inline xoshiro256starstar\
+    \n#include <array>\n#include <random>\n#include <utility>\n\ntemplate<typename\
+    \ TreapNode> class TreapNodeBase {\n    TreapNodeBase *L;\n    TreapNodeBase *R;\n\
+    \    int Rank;\n    int Size;\n    bool NeedFlip;\n\n    static inline xoshiro256starstar\
     \ gen{std::random_device{}()};\n    static inline std::uniform_int_distribution<int>\
     \ dis{0, 998244353};\n\n    TreapNode *derived() { return (TreapNode *)this; }\n\
     \n    // CRTP reimplement\n    void do_flip() {}\n    void do_propagate() {}\n\
@@ -79,11 +79,11 @@ data:
     \ {}\n\npublic:\n    int size() const { return Size; }\n    int rank() const {\
     \ return Rank; }\n\n    TreapNode *left() const { return (TreapNode *)L; }\n \
     \   TreapNode *right() const { return (TreapNode *)R; }\n\n    void flip() { base_flip();\
-    \ }\n    template <typename... Nodes>\n    static TreapNode *join(Nodes... node)\
-    \ {\n        struct Helper {\n            TreapNodeBase *Val;\n            Helper\
+    \ }\n    template<typename... Nodes> static TreapNode *join(Nodes... node) {\n\
+    \        struct Helper {\n            TreapNodeBase *Val;\n            Helper\
     \ &operator|(TreapNodeBase *A) {\n                Val = TreapNodeBase::base_join(Val,\
     \ A);\n                return *this;\n            }\n        } nil{nullptr};\n\
-    \        return (TreapNode *)(nil | ... | node).Val;\n    }\n    template <typename...\
+    \        return (TreapNode *)(nil | ... | node).Val;\n    }\n    template<typename...\
     \ Parts>\n    static std::array<TreapNode *, sizeof...(Parts) + 1> split(TreapNode\
     \ *a, Parts... part) {\n        std::array<TreapNode *, sizeof...(Parts) + 1>\
     \ res;\n        res[0]    = a;\n        int index = 0;\n        (\n          \
@@ -95,9 +95,9 @@ data:
     \ (TreapNode *)this;\n        if (k < leftsize) return left()->select(k);\n  \
     \      return right()->select(k - leftsize - 1);\n    }\n};\n"
   code: "#pragma once\n\n#include \"rng.hpp\"\n#include <array>\n#include <random>\n\
-    #include <utility>\n\ntemplate <typename TreapNode>\nclass TreapNodeBase {\n \
-    \   TreapNodeBase *L;\n    TreapNodeBase *R;\n    int Rank;\n    int Size;\n \
-    \   bool NeedFlip;\n\n    static inline xoshiro256starstar gen{std::random_device{}()};\n\
+    #include <utility>\n\ntemplate<typename TreapNode> class TreapNodeBase {\n   \
+    \ TreapNodeBase *L;\n    TreapNodeBase *R;\n    int Rank;\n    int Size;\n   \
+    \ bool NeedFlip;\n\n    static inline xoshiro256starstar gen{std::random_device{}()};\n\
     \    static inline std::uniform_int_distribution<int> dis{0, 998244353};\n\n \
     \   TreapNode *derived() { return (TreapNode *)this; }\n\n    // CRTP reimplement\n\
     \    void do_flip() {}\n    void do_propagate() {}\n    void do_update() {}\n\n\
@@ -130,11 +130,11 @@ data:
     \ {}\n\npublic:\n    int size() const { return Size; }\n    int rank() const {\
     \ return Rank; }\n\n    TreapNode *left() const { return (TreapNode *)L; }\n \
     \   TreapNode *right() const { return (TreapNode *)R; }\n\n    void flip() { base_flip();\
-    \ }\n    template <typename... Nodes>\n    static TreapNode *join(Nodes... node)\
-    \ {\n        struct Helper {\n            TreapNodeBase *Val;\n            Helper\
+    \ }\n    template<typename... Nodes> static TreapNode *join(Nodes... node) {\n\
+    \        struct Helper {\n            TreapNodeBase *Val;\n            Helper\
     \ &operator|(TreapNodeBase *A) {\n                Val = TreapNodeBase::base_join(Val,\
     \ A);\n                return *this;\n            }\n        } nil{nullptr};\n\
-    \        return (TreapNode *)(nil | ... | node).Val;\n    }\n    template <typename...\
+    \        return (TreapNode *)(nil | ... | node).Val;\n    }\n    template<typename...\
     \ Parts>\n    static std::array<TreapNode *, sizeof...(Parts) + 1> split(TreapNode\
     \ *a, Parts... part) {\n        std::array<TreapNode *, sizeof...(Parts) + 1>\
     \ res;\n        res[0]    = a;\n        int index = 0;\n        (\n          \
@@ -150,7 +150,7 @@ data:
   isVerificationFile: false
   path: treap_node_base.hpp
   requiredBy: []
-  timestamp: '2024-11-20 23:04:26+08:00'
+  timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp

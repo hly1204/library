@@ -15,12 +15,12 @@ data:
   attributes:
     links: []
   bundledCode: "#line 2 \"sparse_table.hpp\"\n\n#line 2 \"monoid.hpp\"\n\n#include\
-    \ <type_traits>\n\ntemplate <typename Tp, typename Op,\n          std::enable_if_t<std::is_invocable_r_v<Tp,\
+    \ <type_traits>\n\ntemplate<typename Tp, typename Op,\n         std::enable_if_t<std::is_invocable_r_v<Tp,\
     \ Op, const Tp &, const Tp &>, int> = 0>\nclass Monoid {\npublic:\n    Op F;\n\
     \    Tp Id;\n\n    explicit Monoid(Op F, const Tp &Id = {}) : F(F), Id(Id) {}\n\
     \n    const Tp &id() const { return Id; }\n    Tp operator()(const Tp &L, const\
     \ Tp &R) const { return F(L, R); }\n};\n#line 4 \"sparse_table.hpp\"\n#include\
-    \ <cassert>\n#include <vector>\n\ntemplate <typename Tp, typename Op>\nclass SparseTable\
+    \ <cassert>\n#include <vector>\n\ntemplate<typename Tp, typename Op> class SparseTable\
     \ {\npublic:\n    const int N;\n    const Monoid<Tp, Op> M;\n    std::vector<Tp>\
     \ T;\n\n    SparseTable(const std::vector<Tp> &V, const Monoid<Tp, Op> &M) : N(V.size()),\
     \ M(M) {\n        int LogN = 0;\n        while ((1 << LogN) < N) ++LogN;\n   \
@@ -32,8 +32,8 @@ data:
     \ R) return M.id();\n        const int lv = 31 - __builtin_clz(R - L);\n     \
     \   return M(T[lv * N + L], T[lv * N + R - (1 << lv)]);\n    }\n};\n"
   code: "#pragma once\n\n#include \"monoid.hpp\"\n#include <cassert>\n#include <vector>\n\
-    \ntemplate <typename Tp, typename Op>\nclass SparseTable {\npublic:\n    const\
-    \ int N;\n    const Monoid<Tp, Op> M;\n    std::vector<Tp> T;\n\n    SparseTable(const\
+    \ntemplate<typename Tp, typename Op> class SparseTable {\npublic:\n    const int\
+    \ N;\n    const Monoid<Tp, Op> M;\n    std::vector<Tp> T;\n\n    SparseTable(const\
     \ std::vector<Tp> &V, const Monoid<Tp, Op> &M) : N(V.size()), M(M) {\n       \
     \ int LogN = 0;\n        while ((1 << LogN) < N) ++LogN;\n        T.resize((LogN\
     \ + 1) * N);\n        for (int i = 0; i < N; ++i) T[i] = V[i];\n        for (int\
@@ -48,7 +48,7 @@ data:
   isVerificationFile: false
   path: sparse_table.hpp
   requiredBy: []
-  timestamp: '2024-08-27 23:34:26+08:00'
+  timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/staticrmq.0.test.cpp

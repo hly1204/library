@@ -3,25 +3,25 @@ data:
   libraryCategories:
   - name: .
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: basis.hpp
       title: basis.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: batch_inv.hpp
       title: batch_inv.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: binomial.hpp
       title: binomial.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: bitarray.hpp
       title: bitarray.hpp
     - icon: ':heavy_check_mark:'
       path: bitwise_conv.hpp
       title: bitwise_conv.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: c_finite.hpp
       title: C-Finite Sequence
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: chinese_remainder.hpp
       title: chinese_remainder.hpp
     - icon: ':heavy_check_mark:'
@@ -42,16 +42,16 @@ data:
     - icon: ':heavy_check_mark:'
       path: famous_sequence.hpp
       title: famous_sequence.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: fft.hpp
       title: FFT
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: fft_doubling.hpp
       title: FFT Doubling
     - icon: ':heavy_check_mark:'
       path: fps_as_operator.hpp
       title: FPS as Linear Operator
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: fps_basic.hpp
       title: fps_basic.hpp
     - icon: ':heavy_check_mark:'
@@ -60,10 +60,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: fps_polya.hpp
       title: fps_polya.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: fps_sqrt.hpp
       title: fps_sqrt.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: frobenius.hpp
       title: frobenius.hpp
     - icon: ':warning:'
@@ -72,22 +72,22 @@ data:
     - icon: ':heavy_check_mark:'
       path: ks.hpp
       title: ks.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: mat_basic.hpp
       title: mat_basic.hpp
     - icon: ':warning:'
       path: mat_extra.hpp
       title: mat_extra.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: mat_sparse.hpp
       title: mat_sparse.hpp
     - icon: ':heavy_check_mark:'
       path: md_conv.hpp
       title: Multidimensional Convolution (Truncated)
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: middle_product.hpp
       title: Middle Product
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -99,10 +99,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: mps_basic.hpp
       title: Multivariate Power Series
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: poly.hpp
       title: poly.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: poly_basic.hpp
       title: poly_basic.hpp
     - icon: ':heavy_check_mark:'
@@ -117,52 +117,52 @@ data:
     - icon: ':heavy_check_mark:'
       path: pow_table.hpp
       title: pow_table.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: random.hpp
       title: random.hpp
     - icon: ':heavy_check_mark:'
       path: rmq.hpp
       title: rmq.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: rng.hpp
       title: rng.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: semi_relaxed_conv.hpp
       title: semi_relaxed_conv.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: shift_sample_points.hpp
       title: Shift Sample Points
     - icon: ':heavy_check_mark:'
       path: sparse_table.hpp
       title: sparse_table.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: sps_basic.hpp
       title: sps_basic.hpp
     - icon: ':heavy_check_mark:'
       path: sps_fft.hpp
       title: sps_fft.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: sps_in_poly.hpp
       title: sps_in_poly.hpp
     - icon: ':heavy_check_mark:'
       path: sqrt_int.hpp
       title: sqrt_int.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: sqrt_mod.hpp
       title: sqrt_mod.hpp
     - icon: ':heavy_check_mark:'
       path: subproduct_tree.hpp
       title: Subproduct Tree
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: subset_conv.hpp
       title: subset_conv.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: swag.hpp
       title: swag.hpp
     - icon: ':heavy_check_mark:'
       path: treap_node_base.hpp
       title: treap_node_base.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: xgcd.hpp
       title: xgcd.hpp
   verificationCategories:
@@ -309,70 +309,70 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
       title: test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
       title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
       title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
       title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   - name: test/matrix
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/adjugate_matrix.0.test.cpp
       title: test/matrix/adjugate_matrix.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/characteristic_polynomial.0.test.cpp
       title: test/matrix/characteristic_polynomial.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/characteristic_polynomial.1.test.cpp
       title: test/matrix/characteristic_polynomial.1.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/inverse_matrix.0.test.cpp
       title: test/matrix/inverse_matrix.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/inverse_matrix_mod_2.0.test.cpp
       title: test/matrix/inverse_matrix_mod_2.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/matrix_det.0.test.cpp
       title: test/matrix/matrix_det.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/matrix_det_mod_2.0.test.cpp
       title: test/matrix/matrix_det_mod_2.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/matrix_product.0.test.cpp
       title: test/matrix/matrix_product.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/pow_of_matrix.0.test.cpp
       title: test/matrix/pow_of_matrix.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/matrix/sparse_matrix_det.0.test.cpp
       title: test/matrix/sparse_matrix_det.0.test.cpp
   - name: test/number_theory
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/number_theory/sqrt_mod.0.test.cpp
       title: test/number_theory/sqrt_mod.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/number_theory/yukicoder187.0.test.cpp
       title: test/number_theory/yukicoder187.0.test.cpp
   - name: test/set_power_series
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/set_power_series/exp_of_set_power_series.0.test.cpp
       title: test/set_power_series/exp_of_set_power_series.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/set_power_series/inv_of_set_power_series.0.test.cpp
       title: test/set_power_series/inv_of_set_power_series.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/set_power_series/log_of_set_power_series.0.test.cpp
       title: test/set_power_series/log_of_set_power_series.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
       title: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/set_power_series/subset_convolution.0.test.cpp
       title: test/set_power_series/subset_convolution.0.test.cpp
 layout: toppage

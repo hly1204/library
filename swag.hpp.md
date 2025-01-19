@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: shift_sample_points.hpp
     title: Shift Sample Points
   _extendedVerifiedWith:
@@ -12,20 +12,20 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/factorial.0.test.cpp
     title: test/enumerative_combinatorics/factorial.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links:
     - https://www.hirzels.com/martin/papers/debs17-tutorial.pdf
   bundledCode: "#line 2 \"swag.hpp\"\n\n#include <cassert>\n#include <cstddef>\n#include\
     \ <optional>\n#include <stack>\n#include <type_traits>\n#include <vector>\n\n\
     // see: https://www.hirzels.com/martin/papers/debs17-tutorial.pdf\n// requires:\
-    \ Op(Op(A,B),C) = Op(A,Op(B,C))\ntemplate <typename Tp, typename Op,\n       \
-    \   std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp &>, int>\
+    \ Op(Op(A,B),C) = Op(A,Op(B,C))\ntemplate<typename Tp, typename Op,\n        \
+    \ std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp &>, int>\
     \ = 0>\nclass SWAG {\npublic:\n    Op F;\n    std::stack<Tp, std::vector<Tp>>\
     \ Front, Back;\n    std::optional<Tp> Agg;\n\n    explicit SWAG(Op F) : F(F) {}\n\
     \    bool empty() const { return Front.empty() && Back.empty(); }\n    std::size_t\
@@ -41,8 +41,8 @@ data:
     \       return F(Front.top(), *Agg);\n    }\n};\n"
   code: "#pragma once\n\n#include <cassert>\n#include <cstddef>\n#include <optional>\n\
     #include <stack>\n#include <type_traits>\n#include <vector>\n\n// see: https://www.hirzels.com/martin/papers/debs17-tutorial.pdf\n\
-    // requires: Op(Op(A,B),C) = Op(A,Op(B,C))\ntemplate <typename Tp, typename Op,\n\
-    \          std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp\
+    // requires: Op(Op(A,B),C) = Op(A,Op(B,C))\ntemplate<typename Tp, typename Op,\n\
+    \         std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp\
     \ &>, int> = 0>\nclass SWAG {\npublic:\n    Op F;\n    std::stack<Tp, std::vector<Tp>>\
     \ Front, Back;\n    std::optional<Tp> Agg;\n\n    explicit SWAG(Op F) : F(F) {}\n\
     \    bool empty() const { return Front.empty() && Back.empty(); }\n    std::size_t\
@@ -61,8 +61,8 @@ data:
   path: swag.hpp
   requiredBy:
   - shift_sample_points.hpp
-  timestamp: '2024-08-25 15:59:57+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2025-01-19 15:28:01+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/enumerative_combinatorics/factorial.0.test.cpp
   - test/data_structure/queue_operate_all_composite.0.test.cpp

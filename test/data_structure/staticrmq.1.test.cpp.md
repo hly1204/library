@@ -17,9 +17,9 @@ data:
   bundledCode: "#line 1 \"test/data_structure/staticrmq.1.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.yosupo.jp/problem/staticrmq\"\n\n#line 2 \"rmq.hpp\"\n\n#include\
     \ <algorithm>\n#include <cassert>\n#include <functional>\n#include <vector>\n\n\
-    template <typename Tp, typename Comp = std::less<>, typename UInt = unsigned>\n\
-    class RMQ {\n    class SparseTableInner {\n        const RMQ &Rmq;\n        int\
-    \ N;\n        std::vector<Tp> T;\n\n    public:\n        explicit SparseTableInner(const\
+    template<typename Tp, typename Comp = std::less<>, typename UInt = unsigned> class\
+    \ RMQ {\n    class SparseTableInner {\n        const RMQ &Rmq;\n        int N;\n\
+    \        std::vector<Tp> T;\n\n    public:\n        explicit SparseTableInner(const\
     \ RMQ &R) : Rmq(R), N() {}\n\n        void build(const std::vector<Tp> &V) {\n\
     \            N        = V.size();\n            int LogN = 0;\n            while\
     \ ((1 << LogN) < N) ++LogN;\n            T.resize((LogN + 1) * N);\n         \
@@ -67,7 +67,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/staticrmq.1.test.cpp
   requiredBy: []
-  timestamp: '2024-12-17 19:37:06+08:00'
+  timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/staticrmq.1.test.cpp

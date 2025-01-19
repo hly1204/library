@@ -19,15 +19,15 @@ data:
     - https://judge.yosupo.jp/problem/static_range_sum
   bundledCode: "#line 1 \"test/data_structure/static_range_sum.0.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/static_range_sum\"\n\n#line 2 \"disjoint_sparse_table.hpp\"\
-    \n\n#line 2 \"monoid.hpp\"\n\n#include <type_traits>\n\ntemplate <typename Tp,\
-    \ typename Op,\n          std::enable_if_t<std::is_invocable_r_v<Tp, Op, const\
+    \n\n#line 2 \"monoid.hpp\"\n\n#include <type_traits>\n\ntemplate<typename Tp,\
+    \ typename Op,\n         std::enable_if_t<std::is_invocable_r_v<Tp, Op, const\
     \ Tp &, const Tp &>, int> = 0>\nclass Monoid {\npublic:\n    Op F;\n    Tp Id;\n\
     \n    explicit Monoid(Op F, const Tp &Id = {}) : F(F), Id(Id) {}\n\n    const\
     \ Tp &id() const { return Id; }\n    Tp operator()(const Tp &L, const Tp &R) const\
     \ { return F(L, R); }\n};\n#line 4 \"disjoint_sparse_table.hpp\"\n#include <algorithm>\n\
-    #include <cassert>\n#include <vector>\n\ntemplate <typename Tp, typename Op>\n\
-    class DisjointSparseTable {\npublic:\n    int S;\n    const Monoid<Tp, Op> M;\n\
-    \    std::vector<Tp> T;\n\n    DisjointSparseTable(const std::vector<Tp> &V, const\
+    #include <cassert>\n#include <vector>\n\ntemplate<typename Tp, typename Op> class\
+    \ DisjointSparseTable {\npublic:\n    int S;\n    const Monoid<Tp, Op> M;\n  \
+    \  std::vector<Tp> T;\n\n    DisjointSparseTable(const std::vector<Tp> &V, const\
     \ Monoid<Tp, Op> &M) : M(M) {\n        const int N = V.size();\n        int LogN\
     \    = 0;\n        while ((1 << LogN) < N) ++LogN;\n        S = (1 << LogN);\n\
     \        T.resize(std::max(LogN, 1) * S);\n        for (int i = 0; i < N; ++i)\
@@ -64,7 +64,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/static_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2024-08-27 23:34:26+08:00'
+  timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/static_range_sum.0.test.cpp

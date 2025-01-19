@@ -12,8 +12,8 @@ data:
   attributes:
     links: []
   bundledCode: "#line 2 \"rmq.hpp\"\n\n#include <algorithm>\n#include <cassert>\n\
-    #include <functional>\n#include <vector>\n\ntemplate <typename Tp, typename Comp\
-    \ = std::less<>, typename UInt = unsigned>\nclass RMQ {\n    class SparseTableInner\
+    #include <functional>\n#include <vector>\n\ntemplate<typename Tp, typename Comp\
+    \ = std::less<>, typename UInt = unsigned> class RMQ {\n    class SparseTableInner\
     \ {\n        const RMQ &Rmq;\n        int N;\n        std::vector<Tp> T;\n\n \
     \   public:\n        explicit SparseTableInner(const RMQ &R) : Rmq(R), N() {}\n\
     \n        void build(const std::vector<Tp> &V) {\n            N        = V.size();\n\
@@ -47,8 +47,8 @@ data:
     \ BR * W), block(BR * W, R), Cmp);\n        return std::min({block(L, (BL + 1)\
     \ * W), ST.query(BL + 1, BR), block(BR * W, R)}, Cmp);\n    }\n};\n"
   code: "#pragma once\n\n#include <algorithm>\n#include <cassert>\n#include <functional>\n\
-    #include <vector>\n\ntemplate <typename Tp, typename Comp = std::less<>, typename\
-    \ UInt = unsigned>\nclass RMQ {\n    class SparseTableInner {\n        const RMQ\
+    #include <vector>\n\ntemplate<typename Tp, typename Comp = std::less<>, typename\
+    \ UInt = unsigned> class RMQ {\n    class SparseTableInner {\n        const RMQ\
     \ &Rmq;\n        int N;\n        std::vector<Tp> T;\n\n    public:\n        explicit\
     \ SparseTableInner(const RMQ &R) : Rmq(R), N() {}\n\n        void build(const\
     \ std::vector<Tp> &V) {\n            N        = V.size();\n            int LogN\
@@ -84,7 +84,7 @@ data:
   isVerificationFile: false
   path: rmq.hpp
   requiredBy: []
-  timestamp: '2024-12-17 19:37:06+08:00'
+  timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/staticrmq.1.test.cpp

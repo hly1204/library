@@ -1,23 +1,23 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: basis.hpp
     title: basis.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: frobenius.hpp
     title: frobenius.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: mat_basic.hpp
     title: mat_basic.hpp
   - icon: ':warning:'
     path: mat_extra.hpp
     title: mat_extra.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
   _extendedVerifiedWith:
@@ -27,33 +27,33 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multivariate_power_series.0.test.cpp
     title: test/formal_power_series/multivariate_power_series.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/adjugate_matrix.0.test.cpp
     title: test/matrix/adjugate_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/characteristic_polynomial.0.test.cpp
     title: test/matrix/characteristic_polynomial.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/characteristic_polynomial.1.test.cpp
     title: test/matrix/characteristic_polynomial.1.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/inverse_matrix.0.test.cpp
     title: test/matrix/inverse_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/matrix_det.0.test.cpp
     title: test/matrix/matrix_det.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/matrix_product.0.test.cpp
     title: test/matrix/matrix_product.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/pow_of_matrix.0.test.cpp
     title: test/matrix/pow_of_matrix.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"random.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n\
@@ -73,19 +73,19 @@ data:
     \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
     \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
     \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"random.hpp\"\n#include\
-    \ <random>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ <random>\n#include <vector>\n\ntemplate<typename Tp> inline std::vector<Tp>\
     \ random_vector(int n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar\
     \ rng(std::random_device{}());\n    std::uniform_int_distribution<decltype(Tp::mod())>\
     \ dis(0, Tp::mod() - 1);\n    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n\
-    \    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> random_vector_without_zero(int\
+    \    return res;\n}\n\ntemplate<typename Tp> inline std::vector<Tp> random_vector_without_zero(int\
     \ n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar rng(std::random_device{}());\n\
     \    std::uniform_int_distribution<decltype(Tp::mod())> dis(1, Tp::mod() - 1);\n\
     \    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n    return res;\n}\n"
   code: "#pragma once\n\n#include \"rng.hpp\"\n#include <random>\n#include <vector>\n\
-    \ntemplate <typename Tp>\ninline std::vector<Tp> random_vector(int n) {\n    std::vector<Tp>\
+    \ntemplate<typename Tp> inline std::vector<Tp> random_vector(int n) {\n    std::vector<Tp>\
     \ res(n);\n    xoshiro256starstar rng(std::random_device{}());\n    std::uniform_int_distribution<decltype(Tp::mod())>\
     \ dis(0, Tp::mod() - 1);\n    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n\
-    \    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> random_vector_without_zero(int\
+    \    return res;\n}\n\ntemplate<typename Tp> inline std::vector<Tp> random_vector_without_zero(int\
     \ n) {\n    std::vector<Tp> res(n);\n    xoshiro256starstar rng(std::random_device{}());\n\
     \    std::uniform_int_distribution<decltype(Tp::mod())> dis(1, Tp::mod() - 1);\n\
     \    for (int i = 0; i < n; ++i) res[i] = dis(rng);\n    return res;\n}\n"
@@ -99,8 +99,8 @@ data:
   - frobenius.hpp
   - basis.hpp
   - mat_basic.hpp
-  timestamp: '2024-08-12 22:20:24+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2025-01-19 15:28:01+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/convolution/2d_convolution.0.test.cpp
   - test/formal_power_series/multivariate_power_series.0.test.cpp

@@ -3,26 +3,26 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/inverse_matrix_mod_2.0.test.cpp
     title: test/matrix/inverse_matrix_mod_2.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/matrix/matrix_det_mod_2.0.test.cpp
     title: test/matrix/matrix_det_mod_2.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
   bundledCode: "#line 2 \"bitarray.hpp\"\n\n#include <cassert>\n#include <cstddef>\n\
     #include <string>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
-    \nnamespace detail {\n\ntemplate <int N>\ninline unsigned long long from_bit_string(const\
+    \nnamespace detail {\n\ntemplate<int N> inline unsigned long long from_bit_string(const\
     \ char *s) {\n    return from_bit_string<N / 2>(s + N / 2) << (N / 2) | from_bit_string<N\
-    \ / 2>(s);\n}\n\ntemplate <>\ninline unsigned long long from_bit_string<1>(const\
-    \ char *s) {\n    return s[0] == '1';\n}\n\ntemplate <int N>\ninline void to_bit_string(unsigned\
+    \ / 2>(s);\n}\n\ntemplate<> inline unsigned long long from_bit_string<1>(const\
+    \ char *s) { return s[0] == '1'; }\n\ntemplate<int N> inline void to_bit_string(unsigned\
     \ long long v, char *s) {\n    to_bit_string<N / 2>(v, s);\n    to_bit_string<N\
-    \ / 2>(v >> (N / 2), s + N / 2);\n}\n\ntemplate <>\ninline void to_bit_string<1>(unsigned\
-    \ long long v, char *s) {\n    s[0] = ((v & 1) + '0');\n}\n\n} // namespace detail\n\
+    \ / 2>(v >> (N / 2), s + N / 2);\n}\n\ntemplate<> inline void to_bit_string<1>(unsigned\
+    \ long long v, char *s) { s[0] = ((v & 1) + '0'); }\n\n} // namespace detail\n\
     \n// TODO: operator<< operator>> ...\nclass BitArray {\npublic:\n    using ULL\
     \                          = unsigned long long;\n    static constexpr std::size_t\
     \ WIDTH = sizeof(ULL) * 8;\n    std::vector<ULL> D;\n    std::size_t S;\n\n  \
@@ -94,13 +94,13 @@ data:
     \ BitArray(L) ^= R; }\n};\n"
   code: "#pragma once\n\n#include <cassert>\n#include <cstddef>\n#include <string>\n\
     #include <type_traits>\n#include <utility>\n#include <vector>\n\nnamespace detail\
-    \ {\n\ntemplate <int N>\ninline unsigned long long from_bit_string(const char\
-    \ *s) {\n    return from_bit_string<N / 2>(s + N / 2) << (N / 2) | from_bit_string<N\
-    \ / 2>(s);\n}\n\ntemplate <>\ninline unsigned long long from_bit_string<1>(const\
-    \ char *s) {\n    return s[0] == '1';\n}\n\ntemplate <int N>\ninline void to_bit_string(unsigned\
+    \ {\n\ntemplate<int N> inline unsigned long long from_bit_string(const char *s)\
+    \ {\n    return from_bit_string<N / 2>(s + N / 2) << (N / 2) | from_bit_string<N\
+    \ / 2>(s);\n}\n\ntemplate<> inline unsigned long long from_bit_string<1>(const\
+    \ char *s) { return s[0] == '1'; }\n\ntemplate<int N> inline void to_bit_string(unsigned\
     \ long long v, char *s) {\n    to_bit_string<N / 2>(v, s);\n    to_bit_string<N\
-    \ / 2>(v >> (N / 2), s + N / 2);\n}\n\ntemplate <>\ninline void to_bit_string<1>(unsigned\
-    \ long long v, char *s) {\n    s[0] = ((v & 1) + '0');\n}\n\n} // namespace detail\n\
+    \ / 2>(v >> (N / 2), s + N / 2);\n}\n\ntemplate<> inline void to_bit_string<1>(unsigned\
+    \ long long v, char *s) { s[0] = ((v & 1) + '0'); }\n\n} // namespace detail\n\
     \n// TODO: operator<< operator>> ...\nclass BitArray {\npublic:\n    using ULL\
     \                          = unsigned long long;\n    static constexpr std::size_t\
     \ WIDTH = sizeof(ULL) * 8;\n    std::vector<ULL> D;\n    std::size_t S;\n\n  \
@@ -174,8 +174,8 @@ data:
   isVerificationFile: false
   path: bitarray.hpp
   requiredBy: []
-  timestamp: '2024-07-20 12:58:03+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2025-01-19 15:28:01+08:00'
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - test/matrix/inverse_matrix_mod_2.0.test.cpp
   - test/matrix/matrix_det_mod_2.0.test.cpp

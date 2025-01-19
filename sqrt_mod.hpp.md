@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: fps_sqrt.hpp
     title: fps_sqrt.hpp
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
   bundledCode: "#line 2 \"sqrt_mod.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n\
@@ -34,8 +34,8 @@ data:
     \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
     \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
     \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"sqrt_mod.hpp\"\n#include\
-    \ <random>\n#include <type_traits>\n#include <vector>\n\ntemplate <typename Tp>\n\
-    inline std::vector<Tp> sqrt_mod_prime(Tp a) {\n    // Bostan--Mori's algorithm\n\
+    \ <random>\n#include <type_traits>\n#include <vector>\n\ntemplate<typename Tp>\
+    \ inline std::vector<Tp> sqrt_mod_prime(Tp a) {\n    // Bostan--Mori's algorithm\n\
     \    const auto p = Tp::mod();\n    if (p == 2 || a == 0) return {a};\n    if\
     \ (a.pow(p / 2) == -1) return {};\n    if ((p & 3) == 3) {\n        const auto\
     \ b = a.pow((p + 1) / 4);\n        return {b, -b};\n    }\n    xoshiro256starstar\
@@ -47,7 +47,7 @@ data:
     \ ((e >>= 1) == 0) return {k0, -k0};\n        k2 = k3 + k3 - k2 * k2, k3 *= k3;\n\
     \    }\n}\n"
   code: "#pragma once\n\n#include \"rng.hpp\"\n#include <random>\n#include <type_traits>\n\
-    #include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp> sqrt_mod_prime(Tp\
+    #include <vector>\n\ntemplate<typename Tp> inline std::vector<Tp> sqrt_mod_prime(Tp\
     \ a) {\n    // Bostan--Mori's algorithm\n    const auto p = Tp::mod();\n    if\
     \ (p == 2 || a == 0) return {a};\n    if (a.pow(p / 2) == -1) return {};\n   \
     \ if ((p & 3) == 3) {\n        const auto b = a.pow((p + 1) / 4);\n        return\
@@ -64,8 +64,8 @@ data:
   path: sqrt_mod.hpp
   requiredBy:
   - fps_sqrt.hpp
-  timestamp: '2025-01-14 21:48:18+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2025-01-19 15:28:01+08:00'
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
 documentation_of: sqrt_mod.hpp

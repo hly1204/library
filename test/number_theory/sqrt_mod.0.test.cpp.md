@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: xgcd.hpp
     title: xgcd.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/sqrt_mod
@@ -36,13 +36,13 @@ data:
     \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
     \ }\n    u64 operator()() { return next(); }\n};\n#line 2 \"xgcd.hpp\"\n\n#include\
     \ <array>\n#include <type_traits>\n#include <utility>\n\n// returns [x, y, gcd(a,\
-    \ b)] s.t. ax+by = gcd(a, b)\ntemplate <typename Int>\ninline std::enable_if_t<std::is_signed_v<Int>,\
+    \ b)] s.t. ax+by = gcd(a, b)\ntemplate<typename Int>\ninline std::enable_if_t<std::is_signed_v<Int>,\
     \ std::array<Int, 3>> xgcd(Int a, Int b) {\n    Int x11 = 1, x12 = 0, x21 = 0,\
     \ x22 = 1;\n    while (b) {\n        std::add_const_t<Int> q = a / b;\n      \
     \  x11                     = std::exchange(x21, x11 - x21 * q);\n        x12 \
     \                    = std::exchange(x22, x12 - x22 * q);\n        a         \
     \              = std::exchange(b, a - b * q);\n    }\n    return {x11, x12, a};\n\
-    }\n\n// returns [a^(-1) mod b, gcd(a, b)]\ntemplate <typename Int>\ninline std::enable_if_t<std::is_signed_v<Int>,\
+    }\n\n// returns [a^(-1) mod b, gcd(a, b)]\ntemplate<typename Int>\ninline std::enable_if_t<std::is_signed_v<Int>,\
     \ std::array<Int, 2>> inv_gcd(Int a, Int b) {\n    Int x11 = 1, x21 = 0;\n   \
     \ while (b) {\n        std::add_const_t<Int> q = a / b;\n        x11         \
     \            = std::exchange(x21, x11 - x21 * q);\n        a                 \
@@ -106,8 +106,8 @@ data:
   isVerificationFile: true
   path: test/number_theory/sqrt_mod.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-23 20:28:27+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2025-01-19 15:28:01+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/number_theory/sqrt_mod.0.test.cpp
 layout: document

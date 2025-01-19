@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   - icon: ':heavy_check_mark:'
@@ -22,48 +22,48 @@ data:
     - https://judge.yosupo.jp/problem/range_affine_point_get
   bundledCode: "#line 1 \"test/data_structure/range_affine_point_get.0.test.cpp\"\n\
     #define PROBLEM \"https://judge.yosupo.jp/problem/range_affine_point_get\"\n\n\
-    #line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\ntemplate\
-    \ <unsigned Mod>\nclass ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod`\
-    \ must less than 2^(31)\");\n    template <typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
-    \ unsigned> safe_mod(Int v) {\n        using D = std::common_type_t<Int, unsigned>;\n\
-    \        return (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v;\n    }\n\n   \
-    \ struct PrivateConstructor {};\n    static inline PrivateConstructor private_constructor{};\n\
-    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\n    unsigned v_;\n\n\
-    public:\n    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
+    #line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\n// clang-format\
+    \ off\ntemplate<unsigned Mod> class ModInt {\n    static_assert((Mod >> 31) ==\
+    \ 0, \"`Mod` must less than 2^(31)\");\n    template<typename Int>\n    static\
+    \ std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v) { using\
+    \ D = std::common_type_t<Int, unsigned>; return (v %= (int)Mod) < 0 ? (D)(v +\
+    \ (int)Mod) : (D)v; }\n    struct PrivateConstructor {} static inline private_constructor{};\n\
+    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n    unsigned v_;\n\npublic:\n\
+    \    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
     \ v) { return ModInt(private_constructor, v); }\n    static ModInt zero() { return\
-    \ from_raw(0); }\n    static ModInt one() { return from_raw(1); }\n\n    ModInt()\
-    \ : v_() {}\n    template <typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
-    \ int> = 0>\n    ModInt(Int v) : v_(safe_mod(v)) {}\n    template <typename Int,\
-    \ typename std::enable_if_t<std::is_unsigned_v<Int>, int> = 0>\n    ModInt(Int\
-    \ v) : v_(v % Mod) {}\n    unsigned val() const { return v_; }\n\n    ModInt operator-()\
-    \ const { return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long\
-    \ e) const {\n        if (e < 0) return inv().pow(-e);\n        for (ModInt x(*this),\
-    \ res(from_raw(1));; x *= x) {\n            if (e & 1) res *= x;\n           \
-    \ if ((e >>= 1) == 0) return res;\n        }\n    }\n    ModInt inv() const {\n\
-    \        int x1 = 1, x3 = 0, a = val(), b = Mod;\n        while (b) {\n      \
-    \      const int q = a / b, x1_old = x1, a_old = a;\n            x1 = x3, x3 =\
-    \ x1_old - x3 * q, a = b, b = a_old - b * q;\n        }\n        return from_raw(x1\
-    \ < 0 ? x1 + (int)Mod : x1);\n    }\n    template <bool Odd = (Mod & 1)>\n   \
-    \ std::enable_if_t<Odd, ModInt> div_by_2() const {\n        if (v_ & 1) return\
-    \ from_raw((v_ + Mod) >> 1);\n        return from_raw(v_ >> 1);\n    }\n\n   \
-    \ ModInt &operator+=(const ModInt &a) {\n        if ((v_ += a.v_) >= Mod) v_ -=\
-    \ Mod;\n        return *this;\n    }\n    ModInt &operator-=(const ModInt &a)\
-    \ {\n        if ((v_ += Mod - a.v_) >= Mod) v_ -= Mod;\n        return *this;\n\
-    \    }\n    ModInt &operator*=(const ModInt &a) {\n        v_ = (unsigned long\
-    \ long)v_ * a.v_ % Mod;\n        return *this;\n    }\n    ModInt &operator/=(const\
-    \ ModInt &a) { return *this *= a.inv(); }\n\n    friend ModInt operator+(const\
+    \ from_raw(0); }\n    static ModInt one() { return from_raw(1); }\n    bool is_zero()\
+    \ const { return v_ == 0; }\n    bool is_one() const { return v_ == 1; }\n   \
+    \ ModInt() : v_() {}\n    template<typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
+    \ int> = 0> ModInt(Int v) : v_(safe_mod(v)) {}\n    template<typename Int, typename\
+    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0> ModInt(Int v) : v_(v % Mod)\
+    \ {}\n    unsigned val() const { return v_; }\n    ModInt operator-() const {\
+    \ return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long e) const\
+    \ { if (e < 0) return inv().pow(-e); for (ModInt x(*this), res(from_raw(1));;\
+    \ x *= x) { if (e & 1) res *= x; if ((e >>= 1) == 0) return res; }}\n    ModInt\
+    \ inv() const { int x1 = 1, x3 = 0, a = val(), b = Mod; while (b) { const int\
+    \ q = a / b, x1_old = x1, a_old = a; x1 = x3, x3 = x1_old - x3 * q, a = b, b =\
+    \ a_old - b * q; } return from_raw(x1 < 0 ? x1 + (int)Mod : x1); }\n    template<bool\
+    \ Odd = (Mod & 1)> std::enable_if_t<Odd, ModInt> div_by_2() const { if (v_ & 1)\
+    \ return from_raw((v_ + Mod) >> 1); return from_raw(v_ >> 1); }\n    ModInt &operator+=(const\
+    \ ModInt &a) { if ((v_ += a.v_) >= Mod) v_ -= Mod; return *this; }\n    ModInt\
+    \ &operator-=(const ModInt &a) { if ((v_ += Mod - a.v_) >= Mod) v_ -= Mod; return\
+    \ *this; }\n    ModInt &operator*=(const ModInt &a) { v_ = (unsigned long long)v_\
+    \ * a.v_ % Mod; return *this; }\n    ModInt &operator/=(const ModInt &a) { return\
+    \ *this *= a.inv(); }\n    ModInt &operator++() { return *this += one(); }\n \
+    \   ModInt operator++(int) { ModInt o(*this); *this += one(); return o; }\n  \
+    \  ModInt &operator--() { return *this -= one(); }\n    ModInt operator--(int)\
+    \ { ModInt o(*this); *this -= one(); return o; }\n    friend ModInt operator+(const\
     \ ModInt &a, const ModInt &b) { return ModInt(a) += b; }\n    friend ModInt operator-(const\
     \ ModInt &a, const ModInt &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const\
     \ ModInt &a, const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
     \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
     \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
     \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
-    \ &operator>>(std::istream &a, ModInt &b) {\n        int v;\n        a >> v;\n\
-    \        b.v_ = safe_mod(v);\n        return a;\n    }\n    friend std::ostream\
-    \ &operator<<(std::ostream &a, const ModInt &b) { return a << b.val(); }\n};\n\
-    #line 2 \"treap_node_base.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n\
-    #include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n//\
-    \ original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
+    \ &operator>>(std::istream &a, ModInt &b) { int v; a >> v; b.v_ = safe_mod(v);\
+    \ return a; }\n    friend std::ostream &operator<<(std::ostream &a, const ModInt\
+    \ &b) { return a << b.val(); }\n};\n// clang-format on\n#line 2 \"treap_node_base.hpp\"\
+    \n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n#include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n\
+    // original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
     \n    static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64\
     \ - k)); }\n\n    u64 s_[4];\n\n    u64 next() {\n        const u64 res = rotl(s_[1]\
     \ * 5, 7) * 9;\n        const u64 t   = s_[1] << 17;\n        s_[2] ^= s_[0];\n\
@@ -78,9 +78,9 @@ data:
     \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
     \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
     \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"treap_node_base.hpp\"\
-    \n#include <array>\n#include <random>\n#include <utility>\n\ntemplate <typename\
-    \ TreapNode>\nclass TreapNodeBase {\n    TreapNodeBase *L;\n    TreapNodeBase\
-    \ *R;\n    int Rank;\n    int Size;\n    bool NeedFlip;\n\n    static inline xoshiro256starstar\
+    \n#include <array>\n#include <random>\n#include <utility>\n\ntemplate<typename\
+    \ TreapNode> class TreapNodeBase {\n    TreapNodeBase *L;\n    TreapNodeBase *R;\n\
+    \    int Rank;\n    int Size;\n    bool NeedFlip;\n\n    static inline xoshiro256starstar\
     \ gen{std::random_device{}()};\n    static inline std::uniform_int_distribution<int>\
     \ dis{0, 998244353};\n\n    TreapNode *derived() { return (TreapNode *)this; }\n\
     \n    // CRTP reimplement\n    void do_flip() {}\n    void do_propagate() {}\n\
@@ -114,11 +114,11 @@ data:
     \ {}\n\npublic:\n    int size() const { return Size; }\n    int rank() const {\
     \ return Rank; }\n\n    TreapNode *left() const { return (TreapNode *)L; }\n \
     \   TreapNode *right() const { return (TreapNode *)R; }\n\n    void flip() { base_flip();\
-    \ }\n    template <typename... Nodes>\n    static TreapNode *join(Nodes... node)\
-    \ {\n        struct Helper {\n            TreapNodeBase *Val;\n            Helper\
+    \ }\n    template<typename... Nodes> static TreapNode *join(Nodes... node) {\n\
+    \        struct Helper {\n            TreapNodeBase *Val;\n            Helper\
     \ &operator|(TreapNodeBase *A) {\n                Val = TreapNodeBase::base_join(Val,\
     \ A);\n                return *this;\n            }\n        } nil{nullptr};\n\
-    \        return (TreapNode *)(nil | ... | node).Val;\n    }\n    template <typename...\
+    \        return (TreapNode *)(nil | ... | node).Val;\n    }\n    template<typename...\
     \ Parts>\n    static std::array<TreapNode *, sizeof...(Parts) + 1> split(TreapNode\
     \ *a, Parts... part) {\n        std::array<TreapNode *, sizeof...(Parts) + 1>\
     \ res;\n        res[0]    = a;\n        int index = 0;\n        (\n          \
@@ -172,7 +172,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_affine_point_get.0.test.cpp
   requiredBy: []
-  timestamp: '2024-12-23 20:42:13+08:00'
+  timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_affine_point_get.0.test.cpp

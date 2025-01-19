@@ -1,19 +1,19 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: batch_inv.hpp
     title: batch_inv.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: binomial.hpp
     title: binomial.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: fft.hpp
     title: FFT
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: middle_product.hpp
     title: Middle Product
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: swag.hpp
     title: swag.hpp
   _extendedRequiredBy: []
@@ -21,22 +21,22 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/enumerative_combinatorics/factorial.0.test.cpp
     title: test/enumerative_combinatorics/factorial.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     links: []
   bundledCode: "#line 2 \"shift_sample_points.hpp\"\n\n#line 2 \"batch_inv.hpp\"\n\
-    \n#include <cassert>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \n#include <cassert>\n#include <vector>\n\ntemplate<typename Tp> inline std::vector<Tp>\
     \ batch_inv(const std::vector<Tp> &a) {\n    if (a.empty()) return {};\n    const\
     \ int n = a.size();\n    std::vector<Tp> b(n);\n    Tp v = 1;\n    for (int i\
     \ = 0; i < n; ++i) b[i] = v, v *= a[i];\n    assert(v != 0);\n    v = v.inv();\n\
     \    for (int i = n - 1; i >= 0; --i) b[i] *= v, v *= a[i];\n    return b;\n}\n\
     #line 2 \"binomial.hpp\"\n\n#include <algorithm>\n#line 5 \"binomial.hpp\"\n\n\
-    template <typename Tp>\nclass Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\
+    template<typename Tp> class Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\
     \n    Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\n    void preprocess(int\
     \ n) {\n        if (const int nn = factorial_.size(); nn < n) {\n            int\
     \ k = nn;\n            while (k < n) k *= 2;\n            k = std::min<long long>(k,\
@@ -52,7 +52,7 @@ data:
     \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
     \ invfactorial_[n]; }\n};\n#line 2 \"middle_product.hpp\"\n\n#line 2 \"fft.hpp\"\
     \n\n#line 5 \"fft.hpp\"\n#include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\
-    \n\ntemplate <typename Tp>\nclass FftInfo {\n    static Tp least_quadratic_nonresidue()\
+    \n\ntemplate<typename Tp> class FftInfo {\n    static Tp least_quadratic_nonresidue()\
     \ {\n        for (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1)\
     \ / 2) == -1) return Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n\
     \    const Tp invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable\
@@ -78,8 +78,8 @@ data:
     \ (int k = j + 1; k < j * 2; ++k) invroot_[k] = invroot_[k - j] * invroot_[j];\n\
     \            }\n        }\n        return invroot_;\n    }\n};\n\ninline int fft_len(int\
     \ n) {\n    --n;\n    n |= n >> 1, n |= n >> 2, n |= n >> 4, n |= n >> 8;\n  \
-    \  return (n | n >> 16) + 1;\n}\n\nnamespace detail {\n\ntemplate <typename Iterator>\n\
-    inline void\nbutterfly_n(Iterator a, int n,\n            const std::vector<typename\
+    \  return (n | n >> 16) + 1;\n}\n\nnamespace detail {\n\ntemplate<typename Iterator>\
+    \ inline void\nbutterfly_n(Iterator a, int n,\n            const std::vector<typename\
     \ std::iterator_traits<Iterator>::value_type> &root) {\n    assert(n > 0);\n \
     \   assert((n & (n - 1)) == 0);\n    const int bn = __builtin_ctz(n);\n    if\
     \ (bn & 1) {\n        for (int i = 0; i < n / 2; ++i) {\n            const auto\
@@ -99,7 +99,7 @@ data:
     \ a2;\n                const auto a13p = a1 + a3, a13m = (a1 - a3) * root[1];\n\
     \                a[k + i4 * 0] = a02p + a13p, a[k + i4 * 1] = a02p - a13p;\n \
     \               a[k + i4 * 2] = a02m + a13m, a[k + i4 * 3] = a02m - a13m;\n  \
-    \          }\n        }\n    }\n}\n\ntemplate <typename Iterator>\ninline void\n\
+    \          }\n        }\n    }\n}\n\ntemplate<typename Iterator> inline void\n\
     inv_butterfly_n(Iterator a, int n,\n                const std::vector<typename\
     \ std::iterator_traits<Iterator>::value_type> &root) {\n    assert(n > 0);\n \
     \   assert((n & (n - 1)) == 0);\n    const int bn = __builtin_ctz(n);\n    for\
@@ -121,54 +121,53 @@ data:
     \    }\n    if (bn & 1) {\n        for (int i = 0; i < n / 2; ++i) {\n       \
     \     const auto a0 = a[i], a1 = a[i + n / 2];\n            a[i] = a0 + a1, a[i\
     \ + n / 2] = a0 - a1;\n        }\n    }\n}\n\n} // namespace detail\n\n// FFT_n:\
-    \ A(x) |-> bit-reversed order of [A(1), A(zeta_n), ..., A(zeta_n^(n-1))]\ntemplate\
-    \ <typename Iterator>\ninline void fft_n(Iterator a, int n) {\n    using Tp =\
-    \ typename std::iterator_traits<Iterator>::value_type;\n    detail::butterfly_n(a,\
-    \ n, FftInfo<Tp>::get().root(n / 2));\n}\n\ntemplate <typename Tp>\ninline void\
-    \ fft(std::vector<Tp> &a) {\n    fft_n(a.begin(), a.size());\n}\n\n// IFFT_n:\
-    \ bit-reversed order of [A(1), A(zeta_n), ..., A(zeta_n^(n-1))] |-> A(x)\ntemplate\
-    \ <typename Iterator>\ninline void inv_fft_n(Iterator a, int n) {\n    using Tp\
-    \ = typename std::iterator_traits<Iterator>::value_type;\n    detail::inv_butterfly_n(a,\
+    \ A(x) |-> bit-reversed order of [A(1), A(zeta_n), ..., A(zeta_n^(n-1))]\ntemplate<typename\
+    \ Iterator> inline void fft_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
+    \    detail::butterfly_n(a, n, FftInfo<Tp>::get().root(n / 2));\n}\n\ntemplate<typename\
+    \ Tp> inline void fft(std::vector<Tp> &a) { fft_n(a.begin(), a.size()); }\n\n\
+    // IFFT_n: bit-reversed order of [A(1), A(zeta_n), ..., A(zeta_n^(n-1))] |-> A(x)\n\
+    template<typename Iterator> inline void inv_fft_n(Iterator a, int n) {\n    using\
+    \ Tp = typename std::iterator_traits<Iterator>::value_type;\n    detail::inv_butterfly_n(a,\
     \ n, FftInfo<Tp>::get().inv_root(n / 2));\n    const Tp iv = Tp::mod() - (Tp::mod()\
-    \ - 1) / n;\n    for (int i = 0; i < n; ++i) a[i] *= iv;\n}\n\ntemplate <typename\
-    \ Tp>\ninline void inv_fft(std::vector<Tp> &a) {\n    inv_fft_n(a.begin(), a.size());\n\
-    }\n\n// IFFT_n^T: A(x) |-> 1/n FFT_n((x^n A(x^(-1))) mod (x^n - 1))\ntemplate\
-    \ <typename Iterator>\ninline void transposed_inv_fft_n(Iterator a, int n) {\n\
-    \    using Tp    = typename std::iterator_traits<Iterator>::value_type;\n    const\
-    \ Tp iv = Tp::mod() - (Tp::mod() - 1) / n;\n    for (int i = 0; i < n; ++i) a[i]\
-    \ *= iv;\n    detail::butterfly_n(a, n, FftInfo<Tp>::get().inv_root(n / 2));\n\
-    }\n\ntemplate <typename Tp>\ninline void transposed_inv_fft(std::vector<Tp> &a)\
-    \ {\n    transposed_inv_fft_n(a.begin(), a.size());\n}\n\n// FFT_n^T : FFT_n((x^n\
-    \ A(x^(-1))) mod (x^n - 1)) |-> n A(x)\ntemplate <typename Iterator>\ninline void\
-    \ transposed_fft_n(Iterator a, int n) {\n    using Tp = typename std::iterator_traits<Iterator>::value_type;\n\
-    \    detail::inv_butterfly_n(a, n, FftInfo<Tp>::get().root(n / 2));\n}\n\ntemplate\
-    \ <typename Tp>\ninline void transposed_fft(std::vector<Tp> &a) {\n    transposed_fft_n(a.begin(),\
-    \ a.size());\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp> convolution_fft(std::vector<Tp>\
+    \ - 1) / n;\n    for (int i = 0; i < n; ++i) a[i] *= iv;\n}\n\ntemplate<typename\
+    \ Tp> inline void inv_fft(std::vector<Tp> &a) { inv_fft_n(a.begin(), a.size());\
+    \ }\n\n// IFFT_n^T: A(x) |-> 1/n FFT_n((x^n A(x^(-1))) mod (x^n - 1))\ntemplate<typename\
+    \ Iterator> inline void transposed_inv_fft_n(Iterator a, int n) {\n    using Tp\
+    \    = typename std::iterator_traits<Iterator>::value_type;\n    const Tp iv =\
+    \ Tp::mod() - (Tp::mod() - 1) / n;\n    for (int i = 0; i < n; ++i) a[i] *= iv;\n\
+    \    detail::butterfly_n(a, n, FftInfo<Tp>::get().inv_root(n / 2));\n}\n\ntemplate<typename\
+    \ Tp> inline void transposed_inv_fft(std::vector<Tp> &a) {\n    transposed_inv_fft_n(a.begin(),\
+    \ a.size());\n}\n\n// FFT_n^T : FFT_n((x^n A(x^(-1))) mod (x^n - 1)) |-> n A(x)\n\
+    template<typename Iterator> inline void transposed_fft_n(Iterator a, int n) {\n\
+    \    using Tp = typename std::iterator_traits<Iterator>::value_type;\n    detail::inv_butterfly_n(a,\
+    \ n, FftInfo<Tp>::get().root(n / 2));\n}\n\ntemplate<typename Tp> inline void\
+    \ transposed_fft(std::vector<Tp> &a) {\n    transposed_fft_n(a.begin(), a.size());\n\
+    }\n\ntemplate<typename Tp> inline std::vector<Tp> convolution_fft(std::vector<Tp>\
     \ a, std::vector<Tp> b) {\n    if (a.empty() || b.empty()) return {};\n    const\
     \ int n   = a.size();\n    const int m   = b.size();\n    const int len = fft_len(n\
     \ + m - 1);\n    a.resize(len);\n    b.resize(len);\n    fft(a);\n    fft(b);\n\
     \    for (int i = 0; i < len; ++i) a[i] *= b[i];\n    inv_fft(a);\n    a.resize(n\
-    \ + m - 1);\n    return a;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ + m - 1);\n    return a;\n}\n\ntemplate<typename Tp> inline std::vector<Tp>\
     \ square_fft(std::vector<Tp> a) {\n    if (a.empty()) return {};\n    const int\
     \ n   = a.size();\n    const int len = fft_len(n * 2 - 1);\n    a.resize(len);\n\
     \    fft(a);\n    for (int i = 0; i < len; ++i) a[i] *= a[i];\n    inv_fft(a);\n\
-    \    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate <typename Tp>\ninline\
-    \ std::vector<Tp> convolution_naive(const std::vector<Tp> &a, const std::vector<Tp>\
-    \ &b) {\n    if (a.empty() || b.empty()) return {};\n    const int n = a.size();\n\
-    \    const int m = b.size();\n    std::vector<Tp> res(n + m - 1);\n    for (int\
-    \ i = 0; i < n; ++i)\n        for (int j = 0; j < m; ++j) res[i + j] += a[i] *\
-    \ b[j];\n    return res;\n}\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
-    \ convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n    if (std::min(a.size(),\
+    \    a.resize(n * 2 - 1);\n    return a;\n}\n\ntemplate<typename Tp>\ninline std::vector<Tp>\
+    \ convolution_naive(const std::vector<Tp> &a, const std::vector<Tp> &b) {\n  \
+    \  if (a.empty() || b.empty()) return {};\n    const int n = a.size();\n    const\
+    \ int m = b.size();\n    std::vector<Tp> res(n + m - 1);\n    for (int i = 0;\
+    \ i < n; ++i)\n        for (int j = 0; j < m; ++j) res[i + j] += a[i] * b[j];\n\
+    \    return res;\n}\n\ntemplate<typename Tp>\ninline std::vector<Tp> convolution(const\
+    \ std::vector<Tp> &a, const std::vector<Tp> &b) {\n    if (std::min(a.size(),\
     \ b.size()) < 60) return convolution_naive(a, b);\n    if (std::addressof(a) ==\
     \ std::addressof(b)) return square_fft(a);\n    return convolution_fft(a, b);\n\
     }\n#line 7 \"middle_product.hpp\"\n\n// see:\n// [1]: Guillaume Hanrot, Michel\
     \ Quercia, Paul Zimmermann. The Middle Product Algorithm I.\n// [2]: Alin Bostan,\
     \ Gr\xE9goire Lecerf, \xC9ric Schost. Tellegen's principle into practice.\n\n\
-    template <typename Tp>\ninline std::vector<Tp> middle_product_naive(const std::vector<Tp>\
+    template<typename Tp>\ninline std::vector<Tp> middle_product_naive(const std::vector<Tp>\
     \ &f, const std::vector<Tp> &g) {\n    const int m = f.size();\n    const int\
     \ n = g.size();\n    assert(m >= n);\n    std::vector<Tp> res(m - n + 1);\n  \
     \  for (int i = n - 1; i < m; ++i)\n        for (int j = i - (n - 1); j <= i;\
-    \ ++j) res[i - (n - 1)] += f[j] * g[i - j];\n    return res;\n}\n\ntemplate <typename\
+    \ ++j) res[i - (n - 1)] += f[j] * g[i - j];\n    return res;\n}\n\ntemplate<typename\
     \ Tp>\ninline std::vector<Tp> middle_product_fft(std::vector<Tp> f, std::vector<Tp>\
     \ g) {\n    const int m = f.size();\n    const int n = g.size();\n    assert(m\
     \ >= n);\n    std::reverse(g.begin(), g.end());\n    const int len = fft_len(m);\n\
@@ -176,14 +175,14 @@ data:
     \    for (int i = 0; i < len; ++i) f[i] *= g[i];\n    transposed_fft(f);\n   \
     \ f.resize(m - n + 1);\n    return f;\n}\n\n// returns (fg)_(n-1),...,(fg)_(m-1)\n\
     // f: f_0 + ... + f_(m-1)x^(m-1)\n// g: g_0 + ... + g_(n-1)x^(n-1)\n// requires\
-    \ m >= n\ntemplate <typename Tp>\ninline std::vector<Tp> middle_product(const\
-    \ std::vector<Tp> &f, const std::vector<Tp> &g) {\n    assert(f.size() >= g.size());\n\
-    \    if (f.size() < 60) return middle_product_naive(f, g);\n    return middle_product_fft(f,\
-    \ g);\n}\n#line 2 \"swag.hpp\"\n\n#line 4 \"swag.hpp\"\n#include <cstddef>\n#include\
+    \ m >= n\ntemplate<typename Tp>\ninline std::vector<Tp> middle_product(const std::vector<Tp>\
+    \ &f, const std::vector<Tp> &g) {\n    assert(f.size() >= g.size());\n    if (f.size()\
+    \ < 60) return middle_product_naive(f, g);\n    return middle_product_fft(f, g);\n\
+    }\n#line 2 \"swag.hpp\"\n\n#line 4 \"swag.hpp\"\n#include <cstddef>\n#include\
     \ <optional>\n#include <stack>\n#include <type_traits>\n#line 9 \"swag.hpp\"\n\
     \n// see: https://www.hirzels.com/martin/papers/debs17-tutorial.pdf\n// requires:\
-    \ Op(Op(A,B),C) = Op(A,Op(B,C))\ntemplate <typename Tp, typename Op,\n       \
-    \   std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp &>, int>\
+    \ Op(Op(A,B),C) = Op(A,Op(B,C))\ntemplate<typename Tp, typename Op,\n        \
+    \ std::enable_if_t<std::is_invocable_r_v<Tp, Op, const Tp &, const Tp &>, int>\
     \ = 0>\nclass SWAG {\npublic:\n    Op F;\n    std::stack<Tp, std::vector<Tp>>\
     \ Front, Back;\n    std::optional<Tp> Agg;\n\n    explicit SWAG(Op F) : F(F) {}\n\
     \    bool empty() const { return Front.empty() && Back.empty(); }\n    std::size_t\
@@ -197,7 +196,7 @@ data:
     \    std::optional<Tp> query() const {\n        if (empty()) return {};\n    \
     \    if (Front.empty()) return Agg;\n        if (!Agg) return Front.top();\n \
     \       return F(Front.top(), *Agg);\n    }\n};\n#line 8 \"shift_sample_points.hpp\"\
-    \n#include <functional>\n#line 10 \"shift_sample_points.hpp\"\n\ntemplate <typename\
+    \n#include <functional>\n#line 10 \"shift_sample_points.hpp\"\n\ntemplate<typename\
     \ Tp>\ninline std::vector<Tp> shift_sample_points(const std::vector<Tp> &f, Tp\
     \ c, int m) {\n    if (f.empty()) return std::vector<Tp>(m);\n    assert(m > 0);\n\
     \    const int n = f.size();\n    auto &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp>\
@@ -216,7 +215,7 @@ data:
     }\n"
   code: "#pragma once\n\n#include \"batch_inv.hpp\"\n#include \"binomial.hpp\"\n#include\
     \ \"middle_product.hpp\"\n#include \"swag.hpp\"\n#include <cassert>\n#include\
-    \ <functional>\n#include <vector>\n\ntemplate <typename Tp>\ninline std::vector<Tp>\
+    \ <functional>\n#include <vector>\n\ntemplate<typename Tp>\ninline std::vector<Tp>\
     \ shift_sample_points(const std::vector<Tp> &f, Tp c, int m) {\n    if (f.empty())\
     \ return std::vector<Tp>(m);\n    assert(m > 0);\n    const int n = f.size();\n\
     \    auto &&bin  = Binomial<Tp>::get(n);\n    std::vector<Tp> F(n), G(n + m -\
@@ -242,8 +241,8 @@ data:
   isVerificationFile: false
   path: shift_sample_points.hpp
   requiredBy: []
-  timestamp: '2025-01-04 21:32:29+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2025-01-19 15:28:01+08:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/enumerative_combinatorics/factorial.0.test.cpp
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
