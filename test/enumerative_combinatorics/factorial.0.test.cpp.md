@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: batch_inv.hpp
     title: batch_inv.hpp
   - icon: ':question:'
@@ -10,7 +10,7 @@ data:
   - icon: ':question:'
     path: fft.hpp
     title: FFT
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: middle_product.hpp
     title: Middle Product
   - icon: ':question:'
@@ -19,13 +19,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: poly_interpolation.hpp
     title: Polynomial Interpolation (Lagrange Interpolation)
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: shift_sample_points.hpp
     title: Shift Sample Points
   - icon: ':heavy_check_mark:'
     path: sqrt_int.hpp
     title: sqrt_int.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: swag.hpp
     title: swag.hpp
   _extendedRequiredBy: []
