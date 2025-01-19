@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: subset_conv.hpp
     title: subset_conv.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
     title: test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links:
     - https://codeforces.com/blog/entry/92183
@@ -120,7 +120,7 @@ data:
   path: sps_in_poly.hpp
   requiredBy: []
   timestamp: '2025-01-19 15:28:01+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
 documentation_of: sps_in_poly.hpp
