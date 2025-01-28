@@ -687,8 +687,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp
-  - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/adjugate_matrix.0.test.cpp
+  - test/matrix/characteristic_polynomial.1.test.cpp
 documentation_of: frobenius.hpp
 layout: document
 redirect_from:

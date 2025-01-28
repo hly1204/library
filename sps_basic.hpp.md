@@ -186,8 +186,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/set_power_series/inv_of_set_power_series.0.test.cpp
-  - test/set_power_series/exp_of_set_power_series.0.test.cpp
   - test/set_power_series/log_of_set_power_series.0.test.cpp
+  - test/set_power_series/exp_of_set_power_series.0.test.cpp
 documentation_of: sps_basic.hpp
 layout: document
 redirect_from:
