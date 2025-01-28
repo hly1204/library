@@ -124,8 +124,7 @@ I suggest to use the following C++ code to make the bit-reversed permutation.
 ```c++
 #include <cassert>
 #include <utility>
-template <typename Iterator>
-void revbin(Iterator a, int n) {
+template<typename Iterator> void revbin(Iterator a, int n) {
     assert((n & (n - 1)) == 0);
     if (n == 0) return;
     for (int i = 0, j = 0;;) {
