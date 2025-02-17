@@ -39,8 +39,8 @@ template<typename Tp, typename Comp = std::less<>, typename UInt = unsigned> cla
                    typename std::vector<UInt>::iterator D) {
         UInt stack_num = 0;
         for (int i = 0, sta[W], top = 0; i < N; ++i) {
-            while (top > 0 && Cmp(A[i], A[sta[top - 1]])) stack_num ^= 1U << sta[--top];
-            D[i] = (stack_num |= 1U << (sta[top++] = i));
+            while (top > 0 && Cmp(A[i], A[sta[top - 1]])) stack_num ^= (UInt)1 << sta[--top];
+            D[i] = (stack_num |= (UInt)1 << (sta[top++] = i));
         }
         return A[__builtin_ctzll(stack_num)];
     }
