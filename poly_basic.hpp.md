@@ -463,46 +463,46 @@ data:
   isVerificationFile: false
   path: poly_basic.hpp
   requiredBy:
-  - mat_extra.hpp
-  - c_finite.hpp
-  - poly.hpp
-  - basis.hpp
-  - frobenius.hpp
+  - famous_sequence.hpp
   - subproduct_tree.hpp
+  - mat_extra.hpp
   - czt.hpp
   - poly_interpolation_with_error.hpp
-  - famous_sequence.hpp
-  - mat_basic.hpp
+  - poly.hpp
   - mat_sparse.hpp
+  - c_finite.hpp
+  - mat_basic.hpp
+  - frobenius.hpp
+  - basis.hpp
   timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/matrix/matrix_product.0.test.cpp
+  - test/matrix/sparse_matrix_det.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
-  - test/matrix/matrix_det.0.test.cpp
+  - test/matrix/adjugate_matrix.0.test.cpp
+  - test/matrix/matrix_product.0.test.cpp
   - test/matrix/characteristic_polynomial.0.test.cpp
   - test/matrix/inverse_matrix.0.test.cpp
-  - test/matrix/adjugate_matrix.0.test.cpp
+  - test/matrix/matrix_det.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp
-  - test/matrix/sparse_matrix_det.0.test.cpp
-  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
+  - test/enumerative_combinatorics/partition_function.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
+  - test/enumerative_combinatorics/bell_number.0.test.cpp
+  - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
   - test/formal_power_series/multipoint_evaluation.0.test.cpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+  - test/formal_power_series/find_linear_recurrence.0.test.cpp
+  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - test/formal_power_series/inv_of_polynomials.0.test.cpp
-  - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/polynomial_interpolation.0.test.cpp
-  - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
-  - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
   - test/formal_power_series/division_of_polynomials.0.test.cpp
-  - test/formal_power_series/find_linear_recurrence.0.test.cpp
-  - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
-  - test/enumerative_combinatorics/bell_number.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
-  - test/enumerative_combinatorics/partition_function.0.test.cpp
+  - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
 documentation_of: poly_basic.hpp
 layout: document
 redirect_from:

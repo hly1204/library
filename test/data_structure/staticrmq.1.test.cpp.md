@@ -33,8 +33,8 @@ data:
     \ Rmq.Cmp);\n        }\n    };\n\n    Tp build_block(typename std::vector<Tp>::const_iterator\
     \ A, int N,\n                   typename std::vector<UInt>::iterator D) {\n  \
     \      UInt stack_num = 0;\n        for (int i = 0, sta[W], top = 0; i < N; ++i)\
-    \ {\n            while (top > 0 && Cmp(A[i], A[sta[top - 1]])) stack_num ^= 1U\
-    \ << sta[--top];\n            D[i] = (stack_num |= 1U << (sta[top++] = i));\n\
+    \ {\n            while (top > 0 && Cmp(A[i], A[sta[top - 1]])) stack_num ^= (UInt)1\
+    \ << sta[--top];\n            D[i] = (stack_num |= (UInt)1 << (sta[top++] = i));\n\
     \        }\n        return A[__builtin_ctzll(stack_num)];\n    }\n\n    // [L,\
     \ R) in same block\n    Tp block(int L, int R) const { return T[L + __builtin_ctzll(StackNum[R\
     \ - 1] >> (L % W))]; }\n\n    static constexpr int W = sizeof(UInt) * 8;\n\n \
@@ -67,7 +67,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/staticrmq.1.test.cpp
   requiredBy: []
-  timestamp: '2025-01-19 15:28:01+08:00'
+  timestamp: '2025-02-17 19:47:37+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/staticrmq.1.test.cpp

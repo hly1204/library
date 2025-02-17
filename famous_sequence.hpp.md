@@ -572,11 +572,11 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
-  - test/enumerative_combinatorics/bell_number.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
+  - test/enumerative_combinatorics/bell_number.0.test.cpp
 documentation_of: famous_sequence.hpp
 layout: document
 redirect_from:
