@@ -339,6 +339,9 @@ data:
       path: test/matrix/matrix_det.0.test.cpp
       title: test/matrix/matrix_det.0.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/matrix/matrix_det_arbitrary_mod.0.test.cpp
+      title: test/matrix/matrix_det_arbitrary_mod.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/matrix/matrix_det_mod_2.0.test.cpp
       title: test/matrix/matrix_det_mod_2.0.test.cpp
     - icon: ':heavy_check_mark:'

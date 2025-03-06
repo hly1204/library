@@ -36,8 +36,8 @@ data:
   isVerificationFile: false
   path: monoid.hpp
   requiredBy:
-  - disjoint_sparse_table.hpp
   - sparse_table.hpp
+  - disjoint_sparse_table.hpp
   timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

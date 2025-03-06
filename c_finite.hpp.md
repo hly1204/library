@@ -497,8 +497,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
   - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
 documentation_of: c_finite.hpp
 layout: document
 title: C-Finite Sequence
