@@ -53,6 +53,7 @@
 "test/matrix/inverse_matrix.0.test.cpp": "2025-01-19 15:28:01 +0800",
 "test/matrix/inverse_matrix_mod_2.0.test.cpp": "2025-01-19 15:28:01 +0800",
 "test/matrix/matrix_det.0.test.cpp": "2025-01-19 15:28:01 +0800",
+"test/matrix/matrix_det_arbitrary_mod.0.test.cpp": "2025-03-06 22:08:12 +0800",
 "test/matrix/matrix_det_mod_2.0.test.cpp": "2025-01-19 15:28:01 +0800",
 "test/matrix/matrix_product.0.test.cpp": "2025-01-19 15:28:01 +0800",
 "test/matrix/pow_of_matrix.0.test.cpp": "2025-01-19 15:28:01 +0800",
