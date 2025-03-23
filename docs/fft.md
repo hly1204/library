@@ -156,7 +156,7 @@ $$
 \end{array}
 $$
 
-Note that the input is in bit-reversal order, so we are able to avoid explicit bit-reverse step by using the above pseudocode.
+Note that the input is in bit-reversed order, so we are able to avoid explicit bit-reverse step by using the above pseudocode.
 
 ### Basic tricks
 
