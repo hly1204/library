@@ -519,7 +519,6 @@ I have written a simplified version of Kinoshita–Li's algorithm which could be
 ```c++
 #include <algorithm>
 #include <cassert>
-#include <cstdio>
 #include <tuple>
 #include <utility>
 #include <vector>
