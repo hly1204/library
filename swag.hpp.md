@@ -64,8 +64,8 @@ data:
   timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/enumerative_combinatorics/factorial.0.test.cpp
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+  - test/enumerative_combinatorics/factorial.0.test.cpp
   - test/data_structure/queue_operate_all_composite.0.test.cpp
 documentation_of: swag.hpp
 layout: document

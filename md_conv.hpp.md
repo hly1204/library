@@ -213,8 +213,8 @@ data:
   timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/convolution/multidimensional_convolution.0.test.cpp
   - test/formal_power_series/multivariate_power_series.0.test.cpp
+  - test/convolution/multidimensional_convolution.0.test.cpp
 documentation_of: md_conv.hpp
 layout: document
 title: Multidimensional Convolution (Truncated)

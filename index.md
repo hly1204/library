@@ -157,6 +157,9 @@ data:
       path: subset_conv.hpp
       title: subset_conv.hpp
     - icon: ':heavy_check_mark:'
+      path: suffix_array.hpp
+      title: suffix_array.hpp
+    - icon: ':heavy_check_mark:'
       path: swag.hpp
       title: swag.hpp
     - icon: ':heavy_check_mark:'
@@ -378,6 +381,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/set_power_series/subset_convolution.0.test.cpp
       title: test/set_power_series/subset_convolution.0.test.cpp
+  - name: test/string
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/string/suffixarray.0.test.cpp
+      title: test/string/suffixarray.0.test.cpp
 layout: toppage
 ---
 [![License](https://img.shields.io/github/license/hly1204/library)](https://github.com/hly1204/library/blob/master/LICENSE) ![Standard](https://img.shields.io/badge/C%2B%2B-17-green)
