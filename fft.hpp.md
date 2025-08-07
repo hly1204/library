@@ -450,81 +450,81 @@ data:
   isVerificationFile: false
   path: fft.hpp
   requiredBy:
-  - semi_relaxed_conv.hpp
-  - famous_sequence.hpp
-  - fft_doubling.hpp
-  - frobenius.hpp
-  - poly_product.hpp
-  - poly.hpp
-  - basis.hpp
-  - middle_product.hpp
   - mps_basic.hpp
-  - fps_basic.hpp
-  - fps_composition.hpp
-  - md_conv.hpp
   - karatsuba.hpp
-  - poly_basic.hpp
-  - subproduct_tree.hpp
-  - poly_interpolation_with_error.hpp
-  - mat_sparse.hpp
-  - mat_basic.hpp
-  - mat_extra.hpp
-  - czt.hpp
-  - shift_sample_points.hpp
-  - conv_mod.hpp
   - fps_polya.hpp
+  - semi_relaxed_conv.hpp
+  - czt.hpp
+  - mat_sparse.hpp
   - fps_sqrt.hpp
-  - ks.hpp
-  - c_finite.hpp
+  - poly_interpolation_with_error.hpp
+  - subproduct_tree.hpp
+  - poly.hpp
+  - poly_basic.hpp
+  - middle_product.hpp
+  - fps_composition.hpp
+  - poly_product.hpp
   - fps_as_operator.hpp
+  - fps_basic.hpp
+  - basis.hpp
+  - ks.hpp
+  - mat_extra.hpp
+  - md_conv.hpp
+  - c_finite.hpp
+  - shift_sample_points.hpp
+  - frobenius.hpp
+  - fft_doubling.hpp
   - falling_factorial_poly.hpp
+  - famous_sequence.hpp
+  - mat_basic.hpp
+  - conv_mod.hpp
   timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/formal_power_series/inv_of_formal_power_series.1.test.cpp
-  - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-  - test/formal_power_series/inv_of_polynomials.0.test.cpp
-  - test/formal_power_series/division_of_polynomials.0.test.cpp
-  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - test/formal_power_series/find_linear_recurrence.0.test.cpp
-  - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
-  - test/formal_power_series/multivariate_power_series.0.test.cpp
-  - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
+  - test/convolution/2d_convolution.0.test.cpp
+  - test/convolution/convolution_mod_1000000007.0.test.cpp
+  - test/convolution/convolution_mod.0.test.cpp
+  - test/convolution/multidimensional_convolution.0.test.cpp
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+  - test/formal_power_series/division_of_polynomials.0.test.cpp
+  - test/formal_power_series/inv_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/exp_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/find_linear_recurrence.0.test.cpp
+  - test/formal_power_series/log_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/formal_power_series/inv_of_formal_power_series.1.test.cpp
+  - test/formal_power_series/polynomial_interpolation.0.test.cpp
+  - test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
+  - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/multivariate_power_series.0.test.cpp
+  - test/formal_power_series/polynomial_taylor_shift.1.test.cpp
+  - test/formal_power_series/inv_of_polynomials.0.test.cpp
+  - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
+  - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
+  - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
+  - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
   - test/formal_power_series/pow_of_formal_power_series.0.test.cpp
-  - test/formal_power_series/polynomial_interpolation_on_geometric_sequence.0.test.cpp
-  - test/formal_power_series/multipoint_evaluation_on_geometric_sequence.0.test.cpp
-  - test/formal_power_series/exp_of_formal_power_series.0.test.cpp
-  - test/formal_power_series/inv_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
   - test/formal_power_series/multipoint_evaluation.0.test.cpp
-  - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
-  - test/formal_power_series/polynomial_taylor_shift.1.test.cpp
-  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - test/formal_power_series/log_of_formal_power_series.0.test.cpp
-  - test/formal_power_series/polynomial_interpolation.0.test.cpp
-  - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
-  - test/matrix/adjugate_matrix.0.test.cpp
+  - test/matrix/inverse_matrix.0.test.cpp
   - test/matrix/matrix_product.0.test.cpp
+  - test/matrix/characteristic_polynomial.0.test.cpp
+  - test/matrix/adjugate_matrix.0.test.cpp
   - test/matrix/matrix_det.0.test.cpp
-  - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/sparse_matrix_det.0.test.cpp
   - test/matrix/pow_of_matrix.0.test.cpp
-  - test/matrix/characteristic_polynomial.0.test.cpp
-  - test/matrix/inverse_matrix.0.test.cpp
+  - test/matrix/characteristic_polynomial.1.test.cpp
+  - test/enumerative_combinatorics/factorial.0.test.cpp
+  - test/enumerative_combinatorics/partition_function.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
   - test/enumerative_combinatorics/bell_number.0.test.cpp
   - test/enumerative_combinatorics/sharp_p_subset_sum.0.test.cpp
-  - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
-  - test/enumerative_combinatorics/factorial.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
-  - test/convolution/2d_convolution.0.test.cpp
-  - test/convolution/multidimensional_convolution.0.test.cpp
-  - test/convolution/convolution_mod.0.test.cpp
-  - test/convolution/convolution_mod_1000000007.0.test.cpp
 documentation_of: fft.hpp
 layout: document
 title: FFT

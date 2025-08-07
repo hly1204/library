@@ -108,19 +108,19 @@ data:
   isVerificationFile: false
   path: subset_conv.hpp
   requiredBy:
-  - sps_in_poly.hpp
   - sps_basic.hpp
+  - sps_in_poly.hpp
   - bitwise_conv.hpp
   timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/bitwise_and_convolution.0.test.cpp
   - test/convolution/bitwise_xor_convolution.0.test.cpp
-  - test/set_power_series/log_of_set_power_series.0.test.cpp
-  - test/set_power_series/inv_of_set_power_series.0.test.cpp
-  - test/set_power_series/subset_convolution.0.test.cpp
-  - test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
   - test/set_power_series/exp_of_set_power_series.0.test.cpp
+  - test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
+  - test/set_power_series/inv_of_set_power_series.0.test.cpp
+  - test/set_power_series/log_of_set_power_series.0.test.cpp
+  - test/set_power_series/subset_convolution.0.test.cpp
 documentation_of: subset_conv.hpp
 layout: document
 redirect_from:
