@@ -66,6 +66,7 @@ TODO: optimization of this algorithm.
 I have written a simplified version of Kinoshita–Li's algorithm which could be found at [形式幂级数复合丨复合逆 - OI Wiki](https://oi-wiki.org/math/poly/comp-rev/).
 
 ```c++
+// CXXFLAGS=-std=c++17 -Wall -Wextra
 #include <algorithm>
 #include <cassert>
 #include <tuple>
@@ -104,7 +105,7 @@ std::pair<std::vector<uint>, std::vector<uint>> GetFFTRoot(int n) {
     return {root, inv_root};
 }
 
-void Butterfly(int n, uint a[], const uint root[]) {
+void Butterfly(uint a[], int n, const uint root[]) {
     assert((n & (n - 1)) == 0);
     for (int i = n; i >= 2; i /= 2)
         for (int j = 0; j < n; j += i)
@@ -116,7 +117,7 @@ void Butterfly(int n, uint a[], const uint root[]) {
             }
 }
 
-void InvButterfly(int n, uint a[], const uint root[]) {
+void InvButterfly(uint a[], int n, const uint root[]) {
     assert((n & (n - 1)) == 0);
     for (int i = 2; i <= n; i *= 2)
         for (int j = 0; j < n; j += i)
@@ -127,34 +128,39 @@ void InvButterfly(int n, uint a[], const uint root[]) {
             }
 }
 
-void FFT(int n, uint a[], const uint root[]) { Butterfly(n, a, root); }
+int GetFFTSize(int n) {
+    int len = 1;
+    while (len < n) len *= 2;
+    return len;
+}
 
-void InvFFT(int n, uint a[], const uint root[]) {
-    InvButterfly(n, a, root);
+void FFT(uint a[], int n, const uint root[]) { Butterfly(a, n, root); }
+
+void InvFFT(uint a[], int n, const uint root[]) {
+    InvButterfly(a, n, root);
     const uint invn = InvMod(n);
     for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invn % MOD;
 }
 
 std::vector<uint> FPSComp(std::vector<uint> f, std::vector<uint> g, int n) {
-    assert(g.empty() || g[0] == 0);
-    int len = 1;
-    while (len < n) len *= 2;
+    assert(empty(g) || g[0] == 0);
+    const int len = GetFFTSize(n);
     std::vector<uint> root, inv_root;
-    std::tie(root, inv_root) = GetFFTRoot(len * 4);
+    tie(root, inv_root) = GetFFTRoot(len * 4);
     // [y^(-1)] (f(y) / (-g(x) + y)) mod x^n in R[x]((y^(-1)))
-    auto KinoshitaLi = [&](auto &&KinoshitaLi, const std::vector<uint> &P,
-                           const std::vector<uint> &Q, int d, int n) {
-        assert((int)P.size() == d * n);
-        assert((int)Q.size() == d * n);
+    const auto KinoshitaLi = [&](auto &&KinoshitaLi, const std::vector<uint> &P,
+                                 const std::vector<uint> &Q, int d, int n) {
+        assert((int)size(P) == d * n);
+        assert((int)size(Q) == d * n);
         if (n == 1) return P;
         std::vector<uint> dftQ(d * n * 4);
         for (int i = 0; i < d; ++i)
             for (int j = 0; j < n; ++j) dftQ[i * n * 2 + j] = Q[i * n + j];
         dftQ[d * n * 2] = 1;
-        FFT(d * n * 4, dftQ.data(), root.data());
+        FFT(data(dftQ), d * n * 4, data(root));
         std::vector<uint> V(d * n * 2);
         for (int i = 0; i < d * n * 4; i += 2) V[i / 2] = (ull)dftQ[i] * dftQ[i + 1] % MOD;
-        InvFFT(d * n * 2, V.data(), inv_root.data());
+        InvFFT(data(V), d * n * 2, data(inv_root));
         if ((V[0] += MOD - 1) >= MOD) V[0] -= MOD;
         for (int i = 1; i < d * 2; ++i)
             for (int j = 0; j < n / 2; ++j) V[i * (n / 2) + j] = V[i * n + j];
@@ -163,13 +169,13 @@ std::vector<uint> FPSComp(std::vector<uint> f, std::vector<uint> g, int n) {
         std::vector<uint> dftT(d * n * 2);
         for (int i = 0; i < d * 2; ++i)
             for (int j = 0; j < n / 2; ++j) dftT[i * n + j] = T[i * (n / 2) + j];
-        FFT(d * n * 2, dftT.data(), root.data());
+        FFT(data(dftT), d * n * 2, data(root));
         for (int i = 0; i < d * n * 4; i += 2) {
             const uint u = dftQ[i];
             dftQ[i]      = (ull)dftT[i / 2] * dftQ[i + 1] % MOD;
             dftQ[i + 1]  = (ull)dftT[i / 2] * u % MOD;
         }
-        InvFFT(d * n * 4, dftQ.data(), inv_root.data());
+        InvFFT(data(dftQ), d * n * 4, data(inv_root));
         for (int i = 0; i < d; ++i)
             for (int j = 0; j < n; ++j) dftQ[i * n + j] = dftQ[(i + d) * (n * 2) + j];
         dftQ.resize(d * n);
@@ -185,24 +191,23 @@ std::vector<uint> FPSComp(std::vector<uint> f, std::vector<uint> g, int n) {
 
 // Power Projection: [x^(n-1)] (fg^i) for i=0,..,n-1
 std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
-    assert(g.empty() || g[0] == 0);
-    int len = 1;
-    while (len < n) len *= 2;
+    assert(empty(g) || g[0] == 0);
+    const int len = GetFFTSize(n);
     std::vector<uint> root, inv_root;
-    std::tie(root, inv_root) = GetFFTRoot(len * 4);
+    tie(root, inv_root) = GetFFTRoot(len * 4);
     // [x^(n-1)] (f(x) / (-g(x) + y)) in R[x]((y^(-1)))
-    auto KinoshitaLi = [&](auto &&KinoshitaLi, std::vector<uint> P, std::vector<uint> Q, int d,
-                           int n) -> std::vector<uint> {
-        assert((int)P.size() == d * n);
-        assert((int)Q.size() == d * n);
+    const auto KinoshitaLi = [&](auto &&KinoshitaLi, std::vector<uint> P, std::vector<uint> Q,
+                                 int d, int n) -> std::vector<uint> {
+        assert((int)size(P) == d * n);
+        assert((int)size(Q) == d * n);
         if (n == 1) return P;
         std::vector<uint> dftQ(d * n * 4), dftP(d * n * 4);
         for (int i = 0; i < d; ++i)
             for (int j = 0; j < n; ++j)
                 dftP[i * n * 2 + j] = P[i * n + j], dftQ[i * n * 2 + j] = Q[i * n + j];
         dftQ[d * n * 2] = 1;
-        FFT(d * n * 4, dftP.data(), root.data());
-        FFT(d * n * 4, dftQ.data(), root.data());
+        FFT(data(dftP), d * n * 4, data(root));
+        FFT(data(dftQ), d * n * 4, data(root));
         P.resize(d * n * 2);
         Q.resize(d * n * 2);
         for (int i = 0; i < d * n * 4; i += 2) {
@@ -213,8 +218,8 @@ std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
             P[i / 2] /= 2;
             Q[i / 2] = (ull)dftQ[i] * dftQ[i + 1] % MOD;
         }
-        InvFFT(d * n * 2, P.data(), inv_root.data());
-        InvFFT(d * n * 2, Q.data(), inv_root.data());
+        InvFFT(data(P), d * n * 2, data(inv_root));
+        InvFFT(data(Q), d * n * 2, data(inv_root));
         if ((Q[0] += MOD - 1) >= MOD) Q[0] -= MOD;
         for (int i = 1; i < d * 2; ++i)
             for (int j = 0; j < n / 2; ++j)
@@ -223,18 +228,18 @@ std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
         Q.resize(d * n);
         return KinoshitaLi(KinoshitaLi, P, Q, d * 2, n / 2);
     };
-    f.insert(f.begin(), len - n, 0);
+    f.insert(begin(f), len - n, 0);
     f.resize(len);
     g.resize(len);
     for (int i = 0; i < len; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);
     auto res = KinoshitaLi(KinoshitaLi, f, g, 1, len);
-    std::reverse(res.begin(), res.end());
+    reverse(begin(res), end(res));
     res.resize(n);
     return res;
 }
 
 std::vector<uint> FPSPow1(std::vector<uint> g, uint e, int n) {
-    assert(!g.empty() && g[0] == 1);
+    assert(!empty(g) && g[0] == 1);
     if (n == 1) return std::vector<uint>{1u};
     std::vector<uint> inv(n), f(n);
     inv[1] = f[0] = 1;
@@ -245,7 +250,7 @@ std::vector<uint> FPSPow1(std::vector<uint> g, uint e, int n) {
 }
 
 std::vector<uint> FPSRev(std::vector<uint> f, int n) {
-    assert(f.size() >= 2 && f[0] == 0 && f[1] != 0);
+    assert(size(f) >= 2 && f[0] == 0 && f[1] != 0);
     if (n == 1) return std::vector<uint>{0u};
     f.resize(n);
     const uint invf1 = InvMod(f[1]);
@@ -256,10 +261,10 @@ std::vector<uint> FPSRev(std::vector<uint> f, int n) {
     for (int i = 2; i < n; ++i) inv[i] = (ull)(MOD - MOD / i) * inv[MOD % i] % MOD;
     auto proj = PowProj(std::vector<uint>{1u}, f, n);
     for (int i = 1; i < n; ++i) proj[i] = (ull)proj[i] * (n - 1) % MOD * inv[i] % MOD;
-    std::reverse(proj.begin(), proj.end());
+    reverse(begin(proj), end(proj));
     auto res = FPSPow1(proj, InvMod(MOD + 1 - n), n - 1);
     for (int i = 0; i < n - 1; ++i) res[i] = (ull)res[i] * invf1 % MOD;
-    res.insert(res.begin(), 0);
+    res.insert(begin(res), 0);
     return res;
 }
 ```
