@@ -161,7 +161,8 @@ std::vector<uint> FPSComp(std::vector<uint> f, std::vector<uint> g, int n) {
         std::vector<uint> V(d * n * 2);
         for (int i = 0; i < d * n * 4; i += 2) V[i / 2] = (ull)dftQ[i] * dftQ[i + 1] % MOD;
         InvFFT(data(V), d * n * 2, data(inv_root));
-        if ((V[0] += MOD - 1) >= MOD) V[0] -= MOD;
+        assert(V[0] == 1);
+        V[0] = 0;
         for (int i = 1; i < d * 2; ++i)
             for (int j = 0; j < n / 2; ++j) V[i * (n / 2) + j] = V[i * n + j];
         V.resize(d * n);
@@ -204,26 +205,26 @@ std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
         std::vector<uint> dftQ(d * n * 4), dftP(d * n * 4);
         for (int i = 0; i < d; ++i)
             for (int j = 0; j < n; ++j)
-                dftP[i * n * 2 + j] = P[i * n + j], dftQ[i * n * 2 + j] = Q[i * n + j];
+                dftP[(2 * (i + d) + 1) * n + j] = P[i * n + j], dftQ[i * n * 2 + j] = Q[i * n + j];
         dftQ[d * n * 2] = 1;
-        FFT(data(dftP), d * n * 4, data(root));
+        FFT(data(dftP), d * n * 4, data(inv_root));
         FFT(data(dftQ), d * n * 4, data(root));
         P.resize(d * n * 2);
         Q.resize(d * n * 2);
         for (int i = 0; i < d * n * 4; i += 2) {
-            const uint u = (ull)dftP[i] * dftQ[i + 1] % MOD;
-            const uint v = (ull)dftP[i + 1] * dftQ[i] % MOD;
-            P[i / 2]     = (ull)(u + MOD - v) * inv_root[i / 2] % MOD;
+            P[i / 2] = ((ull)dftP[i] * dftQ[i + 1] + (ull)dftP[i + 1] * dftQ[i]) % MOD;
             if (P[i / 2] & 1) P[i / 2] += MOD;
             P[i / 2] /= 2;
             Q[i / 2] = (ull)dftQ[i] * dftQ[i + 1] % MOD;
         }
-        InvFFT(data(P), d * n * 2, data(inv_root));
+        InvFFT(data(P), d * n * 2, data(root));
         InvFFT(data(Q), d * n * 2, data(inv_root));
-        if ((Q[0] += MOD - 1) >= MOD) Q[0] -= MOD;
+        for (int i = 0; i < d * 2; ++i)
+            for (int j = 0; j < n / 2; ++j) P[i * (n / 2) + j] = P[i * n + n / 2 + j];
+        assert(Q[0] == 1);
+        Q[0] = 0;
         for (int i = 1; i < d * 2; ++i)
-            for (int j = 0; j < n / 2; ++j)
-                P[i * (n / 2) + j] = P[i * n + j], Q[i * (n / 2) + j] = Q[i * n + j];
+            for (int j = 0; j < n / 2; ++j) Q[i * (n / 2) + j] = Q[i * n + j];
         P.resize(d * n);
         Q.resize(d * n);
         return KinoshitaLi(KinoshitaLi, P, Q, d * 2, n / 2);
@@ -231,9 +232,9 @@ std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
     f.insert(begin(f), len - n, 0);
     f.resize(len);
     g.resize(len);
+    reverse(begin(f), end(f));
     for (int i = 0; i < len; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);
     auto res = KinoshitaLi(KinoshitaLi, f, g, 1, len);
-    reverse(begin(res), end(res));
     res.resize(n);
     return res;
 }
