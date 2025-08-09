@@ -205,7 +205,7 @@ std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
         std::vector<uint> dftQ(d * n * 4), dftP(d * n * 4);
         for (int i = 0; i < d; ++i)
             for (int j = 0; j < n; ++j)
-                dftP[(2 * (i + d) + 1) * n + j] = P[i * n + j], dftQ[i * n * 2 + j] = Q[i * n + j];
+                dftP[((i + d) * 2 + 1) * n + j] = P[i * n + j], dftQ[i * n * 2 + j] = Q[i * n + j];
         dftQ[d * n * 2] = 1;
         FFT(data(dftP), d * n * 4, data(inv_root));
         FFT(data(dftQ), d * n * 4, data(root));
