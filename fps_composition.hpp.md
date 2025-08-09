@@ -441,14 +441,14 @@ data:
   timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
-  - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-  - test/enumerative_combinatorics/partition_function.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
-  - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_first_kind.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_first_kind_fixed_k.0.test.cpp
+  - test/enumerative_combinatorics/partition_function.0.test.cpp
   - test/enumerative_combinatorics/bell_number.0.test.cpp
   - test/enumerative_combinatorics/stirling_number_of_the_second_kind.0.test.cpp
+  - test/enumerative_combinatorics/stirling_number_of_the_second_kind_fixed_k.0.test.cpp
+  - test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
+  - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
 documentation_of: fps_composition.hpp
 layout: document
 title: Formal Power Series Composition
@@ -656,7 +656,7 @@ std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
         std::vector<uint> dftQ(d * n * 4), dftP(d * n * 4);
         for (int i = 0; i < d; ++i)
             for (int j = 0; j < n; ++j)
-                dftP[(2 * (i + d) + 1) * n + j] = P[i * n + j], dftQ[i * n * 2 + j] = Q[i * n + j];
+                dftP[((i + d) * 2 + 1) * n + j] = P[i * n + j], dftQ[i * n * 2 + j] = Q[i * n + j];
         dftQ[d * n * 2] = 1;
         FFT(data(dftP), d * n * 4, data(inv_root));
         FFT(data(dftQ), d * n * 4, data(root));
