@@ -182,6 +182,7 @@ std::vector<uint> FPSComp(std::vector<uint> f, std::vector<uint> g, int n) {
     g.resize(len * 2);
     for (int i = len - 1; i >= 0; --i) f[i * 2] = f[i], f[i * 2 + 1] = 0;
     for (int i = 0; i < len; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);
+    std::memset(data(g) + len, 0, sizeof(uint) * len);
     KinoshitaLi(KinoshitaLi, f, std::move(g), 1, len);
     f.resize(n);
     return f;
@@ -231,6 +232,7 @@ std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
     f.insert(begin(f), len, 0u);
     g.resize(len * 2);
     for (int i = 0; i < len; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);
+    std::memset(data(g) + len, 0, sizeof(uint) * len);
     KinoshitaLi(f, g, 1, len);
     for (int i = 0; i < len; ++i) f[i] = f[i * 2 + 1];
     f.resize(n);
