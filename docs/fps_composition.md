@@ -69,6 +69,7 @@ I have written a simplified version of Kinoshita–Li's algorithm which could be
 // CXXFLAGS=-std=c++17 -Wall -Wextra
 #include <algorithm>
 #include <cassert>
+#include <cstring>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -148,46 +149,42 @@ std::vector<uint> FPSComp(std::vector<uint> f, std::vector<uint> g, int n) {
     std::vector<uint> root, inv_root;
     tie(root, inv_root) = GetFFTRoot(len * 4);
     // [y^(-1)] (f(y) / (-g(x) + y)) mod x^n in R[x]((y^(-1)))
-    const auto KinoshitaLi = [&](auto &&KinoshitaLi, const std::vector<uint> &P,
-                                 const std::vector<uint> &Q, int d, int n) {
-        assert((int)size(P) == d * n);
-        assert((int)size(Q) == d * n);
-        if (n == 1) return P;
-        std::vector<uint> dftQ(d * n * 4);
-        for (int i = 0; i < d; ++i)
-            for (int j = 0; j < n; ++j) dftQ[i * n * 2 + j] = Q[i * n + j];
-        dftQ[d * n * 2] = 1;
-        FFT(data(dftQ), d * n * 4, data(root));
+    const auto KinoshitaLi = [&](auto &&KinoshitaLi, std::vector<uint> &P, std::vector<uint> Q,
+                                 int d, int n) {
+        assert((int)size(P) == d * n * 2);
+        assert((int)size(Q) == d * n * 2);
+        if (n == 1) return;
+        Q.resize(d * n * 4);
+        Q[d * n * 2] = 1;
+        FFT(data(Q), d * n * 4, data(root));
         std::vector<uint> V(d * n * 2);
-        for (int i = 0; i < d * n * 4; i += 2) V[i / 2] = (ull)dftQ[i] * dftQ[i + 1] % MOD;
+        for (int i = 0; i < d * n * 4; i += 2) V[i / 2] = (ull)Q[i] * Q[i + 1] % MOD;
         InvFFT(data(V), d * n * 2, data(inv_root));
         assert(V[0] == 1);
         V[0] = 0;
-        for (int i = 1; i < d * 2; ++i)
-            for (int j = 0; j < n / 2; ++j) V[i * (n / 2) + j] = V[i * n + j];
-        V.resize(d * n);
-        const auto T = KinoshitaLi(KinoshitaLi, P, V, d * 2, n / 2);
-        std::vector<uint> dftT(d * n * 2);
         for (int i = 0; i < d * 2; ++i)
-            for (int j = 0; j < n / 2; ++j) dftT[i * n + j] = T[i * (n / 2) + j];
-        FFT(data(dftT), d * n * 2, data(root));
+            std::memset(data(V) + i * n + n / 2, 0, sizeof(uint) * (n / 2));
+        KinoshitaLi(KinoshitaLi, P, std::move(V), d * 2, n / 2);
+        FFT(data(P), d * n * 2, data(root));
         for (int i = 0; i < d * n * 4; i += 2) {
-            const uint u = dftQ[i];
-            dftQ[i]      = (ull)dftT[i / 2] * dftQ[i + 1] % MOD;
-            dftQ[i + 1]  = (ull)dftT[i / 2] * u % MOD;
+            const uint u = Q[i];
+            Q[i]         = (ull)P[i / 2] * Q[i + 1] % MOD;
+            Q[i + 1]     = (ull)P[i / 2] * u % MOD;
         }
-        InvFFT(data(dftQ), d * n * 4, data(inv_root));
-        for (int i = 0; i < d; ++i)
-            for (int j = 0; j < n; ++j) dftQ[i * n + j] = dftQ[(i + d) * (n * 2) + j];
-        dftQ.resize(d * n);
-        return dftQ;
+        InvFFT(data(Q), d * n * 4, data(inv_root));
+        for (int i = 0; i < d; ++i) {
+            uint *u = data(P) + i * n * 2;
+            std::memcpy(u, data(Q) + (i + d) * (n * 2), sizeof(uint) * n);
+            std::memset(u + n, 0, sizeof(uint) * n);
+        }
     };
-    f.resize(len);
-    g.resize(len);
+    f.resize(len * 2);
+    g.resize(len * 2);
+    for (int i = len - 1; i >= 0; --i) f[i * 2] = f[i], f[i * 2 + 1] = 0;
     for (int i = 0; i < len; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);
-    auto res = KinoshitaLi(KinoshitaLi, f, g, 1, len);
-    res.resize(n);
-    return res;
+    KinoshitaLi(KinoshitaLi, f, std::move(g), 1, len);
+    f.resize(n);
+    return f;
 }
 
 // Power Projection: [x^(n-1)] (fg^i) for i=0,..,n-1
@@ -197,46 +194,47 @@ std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
     std::vector<uint> root, inv_root;
     tie(root, inv_root) = GetFFTRoot(len * 4);
     // [x^(n-1)] (f(x) / (-g(x) + y)) in R[x]((y^(-1)))
-    const auto KinoshitaLi = [&](auto &&KinoshitaLi, std::vector<uint> P, std::vector<uint> Q,
-                                 int d, int n) -> std::vector<uint> {
-        assert((int)size(P) == d * n);
-        assert((int)size(Q) == d * n);
-        if (n == 1) return P;
-        std::vector<uint> dftQ(d * n * 4), dftP(d * n * 4);
-        for (int i = 0; i < d; ++i)
-            for (int j = 0; j < n; ++j)
-                dftP[((i + d) * 2 + 1) * n + j] = P[i * n + j], dftQ[i * n * 2 + j] = Q[i * n + j];
-        dftQ[d * n * 2] = 1;
-        FFT(data(dftP), d * n * 4, data(inv_root));
-        FFT(data(dftQ), d * n * 4, data(root));
-        P.resize(d * n * 2);
-        Q.resize(d * n * 2);
-        for (int i = 0; i < d * n * 4; i += 2) {
-            P[i / 2] = ((ull)dftP[i] * dftQ[i + 1] + (ull)dftP[i + 1] * dftQ[i]) % MOD;
-            if (P[i / 2] & 1) P[i / 2] += MOD;
-            P[i / 2] /= 2;
-            Q[i / 2] = (ull)dftQ[i] * dftQ[i + 1] % MOD;
+    const auto KinoshitaLi = [&](std::vector<uint> &P, std::vector<uint> &Q, int d, int n) {
+        assert((int)size(P) == d * n * 2);
+        assert((int)size(Q) == d * n * 2);
+        P.insert(begin(P), d * n * 2, 0u);
+        Q.resize(d * n * 4);
+        std::vector<uint> nextP(d * n * 4);
+        for (; n > 1; d *= 2, n /= 2) {
+            Q[d * n * 2] = 1;
+            FFT(data(P), d * n * 4, data(inv_root));
+            FFT(data(Q), d * n * 4, data(root));
+            uint *nP = data(nextP) + d * n * 2;
+            for (int i = 0; i < d * n * 4; i += 2) {
+                if ((nP[i / 2] = ((ull)P[i] * Q[i + 1] + (ull)P[i + 1] * Q[i]) % MOD) & 1)
+                    nP[i / 2] += MOD;
+                nP[i / 2] /= 2;
+                Q[i / 2] = (ull)Q[i] * Q[i + 1] % MOD;
+            }
+            InvFFT(nP, d * n * 2, data(root));
+            InvFFT(data(Q), d * n * 2, data(inv_root));
+            assert(Q[0] == 1);
+            Q[0] = 0;
+            for (int i = 0; i < d * 2; ++i) {
+                std::memset(nP + i * n, 0, sizeof(uint) * (n / 2));
+                std::memset(data(Q) + i * n + n / 2, 0, sizeof(uint) * (n / 2));
+            }
+            P.swap(nextP);
+            std::memset(data(P), 0, sizeof(uint) * (d * n * 2));
+            std::memset(data(Q) + d * n * 2, 0, sizeof(uint) * (d * n * 2));
         }
-        InvFFT(data(P), d * n * 2, data(root));
-        InvFFT(data(Q), d * n * 2, data(inv_root));
-        for (int i = 0; i < d * 2; ++i)
-            for (int j = 0; j < n / 2; ++j) P[i * (n / 2) + j] = P[i * n + n / 2 + j];
-        assert(Q[0] == 1);
-        Q[0] = 0;
-        for (int i = 1; i < d * 2; ++i)
-            for (int j = 0; j < n / 2; ++j) Q[i * (n / 2) + j] = Q[i * n + j];
-        P.resize(d * n);
-        Q.resize(d * n);
-        return KinoshitaLi(KinoshitaLi, P, Q, d * 2, n / 2);
+        P.erase(begin(P), begin(P) + d * n * 2);
     };
     f.insert(begin(f), len - n, 0);
     f.resize(len);
-    g.resize(len);
     reverse(begin(f), end(f));
+    f.insert(begin(f), len, 0u);
+    g.resize(len * 2);
     for (int i = 0; i < len; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);
-    auto res = KinoshitaLi(KinoshitaLi, f, g, 1, len);
-    res.resize(n);
-    return res;
+    KinoshitaLi(f, g, 1, len);
+    for (int i = 0; i < len; ++i) f[i] = f[i * 2 + 1];
+    f.resize(n);
+    return f;
 }
 
 std::vector<uint> FPSPow1(std::vector<uint> g, uint e, int n) {
