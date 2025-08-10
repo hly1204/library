@@ -173,7 +173,7 @@ std::vector<uint> FPSComp(std::vector<uint> f, std::vector<uint> g, int n) {
         }
         InvFFT(data(Q), d * n * 4, data(inv_root));
         for (int i = 0; i < d; ++i) {
-            uint *u = data(P) + i * n * 2;
+            uint *const u = data(P) + i * n * 2;
             std::memcpy(u, data(Q) + (i + d) * (n * 2), sizeof(uint) * n);
             std::memset(u + n, 0, sizeof(uint) * n);
         }
