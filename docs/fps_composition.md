@@ -63,7 +63,7 @@ TODO: optimization of this algorithm.
 
 ### Sample Code
 
-I have written a simplified version of Kinoshita–Li's algorithm which could be found at [形式幂级数复合丨复合逆 - OI Wiki](https://oi-wiki.org/math/poly/comp-rev/).
+I have written a simplified version of Kinoshita–Li's algorithm which could be found at [形式幂级数复合丨复合逆 - OI Wiki](https://oi-wiki.org/math/poly/comp-rev/). If we remove the redundant memory movements/copies, we can obtain the following faster but hard-to-explain code.
 
 ```c++
 // CXXFLAGS=-std=c++17 -Wall -Wextra
