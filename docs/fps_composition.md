@@ -268,6 +268,49 @@ std::vector<uint> FPSRev(std::vector<uint> f, int n) {
     res.insert(begin(res), 0);
     return res;
 }
+
+std::pair<std::vector<uint>, std::vector<uint>> GetFactorial(int n) {
+    if (n == 0) return {};
+    std::vector<uint> factorial(n), inv_factorial(n);
+    factorial[0] = inv_factorial[0] = 1;
+    if (n == 1) return {factorial, inv_factorial};
+    std::vector<uint> inv(n);
+    inv[1] = 1;
+    for (int i = 2; i < n; ++i) inv[i] = (ull)(MOD - MOD / i) * inv[MOD % i] % MOD;
+    for (int i = 1; i < n; ++i)
+        factorial[i]     = (ull)factorial[i - 1] * i % MOD,
+        inv_factorial[i] = (ull)inv_factorial[i - 1] * inv[i] % MOD;
+    return {factorial, inv_factorial};
+}
+
+// f(x) |-> f(x + c)
+std::vector<uint> TaylorShift(std::vector<uint> f, uint c) {
+    if (empty(f) || c == 0) return f;
+    const int n                           = size(f);
+    const auto [factorial, inv_factorial] = GetFactorial(n);
+    for (int i = 0; i < n; ++i) f[i] = (ull)f[i] * factorial[i] % MOD;
+    std::vector<uint> g(n);
+    uint cp = 1;
+    for (int i = 0; i < n; ++i) g[i] = (ull)cp * inv_factorial[i] % MOD, cp = (ull)cp * c % MOD;
+    const int len               = GetFFTSize(n * 2 - 1);
+    const auto [root, inv_root] = GetFFTRoot(len);
+    f.resize(len);
+    g.resize(len);
+    FFT(data(f), len, data(inv_root));
+    FFT(data(g), len, data(root));
+    for (int i = 0; i < len; ++i) f[i] = (ull)f[i] * g[i] % MOD;
+    InvFFT(data(f), len, data(root));
+    f.resize(n);
+    for (int i = 0; i < n; ++i) f[i] = (ull)f[i] * inv_factorial[i] % MOD;
+    return f;
+}
+
+std::vector<uint> PolyComp(const std::vector<uint> &f, const std::vector<uint> &g, int n) {
+    if (empty(g) || g[0] == 0) return FPSComp(f, g, n);
+    auto gg = g;
+    gg[0]   = 0;
+    return FPSComp(TaylorShift(f, g[0]), std::move(gg), n);
+}
 ```
 
 ## References
