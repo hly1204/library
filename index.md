@@ -169,6 +169,11 @@ data:
       path: xgcd.hpp
       title: xgcd.hpp
   verificationCategories:
+  - name: standalone_test/formal_power_series
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: standalone_test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
+      title: standalone_test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
   - name: test/convolution
     pages:
     - icon: ':heavy_check_mark:'
@@ -252,9 +257,6 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
       title: test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/formal_power_series/composition_of_formal_power_series_large.1.test.cpp
-      title: test/formal_power_series/composition_of_formal_power_series_large.1.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
       title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp

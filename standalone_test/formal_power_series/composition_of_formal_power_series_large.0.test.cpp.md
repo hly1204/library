@@ -11,7 +11,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/composition_of_formal_power_series_large
     links:
     - https://judge.yosupo.jp/problem/composition_of_formal_power_series_large
-  bundledCode: "#line 1 \"test/formal_power_series/composition_of_formal_power_series_large.1.test.cpp\"\
+  bundledCode: "#line 1 \"standalone_test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/composition_of_formal_power_series_large\"\
     \n\n#include <cassert>\n#include <cstring>\n#include <iostream>\n#include <tuple>\n\
     #include <utility>\n#include <vector>\n\nusing uint         = unsigned;\nusing\
@@ -158,15 +158,15 @@ data:
     \    for (int i = 0; i < n; ++i) std::cout << fg[i] << ' ';\n    return 0;\n}\n"
   dependsOn: []
   isVerificationFile: true
-  path: test/formal_power_series/composition_of_formal_power_series_large.1.test.cpp
+  path: standalone_test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
   requiredBy: []
-  timestamp: '2025-08-17 18:27:36+08:00'
+  timestamp: '2025-08-17 18:42:55+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/formal_power_series/composition_of_formal_power_series_large.1.test.cpp
+documentation_of: standalone_test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/formal_power_series/composition_of_formal_power_series_large.1.test.cpp
-- /verify/test/formal_power_series/composition_of_formal_power_series_large.1.test.cpp.html
-title: test/formal_power_series/composition_of_formal_power_series_large.1.test.cpp
+- /verify/standalone_test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
+- /verify/standalone_test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp.html
+title: standalone_test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
 ---
