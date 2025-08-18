@@ -39,37 +39,67 @@ std::pair<std::vector<uint>, std::vector<uint>> GetFFTRoot(int n) {
     return {root, inv_root};
 }
 
-void Butterfly(uint a[], int n, const uint root[]) {
-    for (int i = n; i >= 2; i /= 2) {
-        for (int k = 0; k < i / 2; ++k) {
-            const uint u = a[k];
-            if ((a[k] += a[k + i / 2]) >= MOD) a[k] -= MOD;
-            if ((a[k + i / 2] = u + MOD - a[k + i / 2]) >= MOD) a[k + i / 2] -= MOD;
-        }
-        for (int j = i, m = 1; j < n; j += i, ++m)
-            for (int k = j; k < j + i / 2; ++k) {
-                const uint u = a[k];
-                a[k + i / 2] = (ull)a[k + i / 2] * root[m] % MOD;
-                if ((a[k] += a[k + i / 2]) >= MOD) a[k] -= MOD;
-                if ((a[k + i / 2] = u + MOD - a[k + i / 2]) >= MOD) a[k + i / 2] -= MOD;
-            }
+namespace detail {
+template<int N> void ButterflyRecPrime(uint[], const uint[], int);
+template<> void ButterflyRecPrime<1>(uint[], const uint[], int) {}
+template<int N> void ButterflyRecPrime(uint a[], const uint root[], int lv) {
+    for (int i = 0; i < N / 2; ++i) {
+        const uint u = a[i];
+        a[i + N / 2] = (ull)a[i + N / 2] * root[lv] % MOD;
+        if ((a[i] += a[i + N / 2]) >= MOD) a[i] -= MOD;
+        if ((a[i + N / 2] = u + MOD - a[i + N / 2]) >= MOD) a[i + N / 2] -= MOD;
+    }
+    ButterflyRecPrime<N / 2>(a, root, lv * 2);
+    ButterflyRecPrime<N / 2>(a + N / 2, root, lv * 2 + 1);
+}
+template<int N> void ButterflyRec(uint[], const uint[]);
+template<> void ButterflyRec<1>(uint[], const uint[]) {}
+template<int N> void ButterflyRec(uint a[], const uint root[]) {
+    for (int i = 0; i < N / 2; ++i) {
+        const uint u = a[i];
+        if ((a[i] += a[i + N / 2]) >= MOD) a[i] -= MOD;
+        if ((a[i + N / 2] = u + MOD - a[i + N / 2]) >= MOD) a[i + N / 2] -= MOD;
+    }
+    ButterflyRec<N / 2>(a, root);
+    ButterflyRecPrime<N / 2>(a + N / 2, root, 1);
+}
+template<int N> void InvButterflyRecPrime(uint[], const uint[], int);
+template<> void InvButterflyRecPrime<1>(uint[], const uint[], int) {}
+template<int N> void InvButterflyRecPrime(uint a[], const uint root[], int lv) {
+    InvButterflyRecPrime<N / 2>(a, root, lv * 2);
+    InvButterflyRecPrime<N / 2>(a + N / 2, root, lv * 2 + 1);
+    for (int i = 0; i < N / 2; ++i) {
+        const uint u = a[i];
+        if ((a[i] += a[i + N / 2]) >= MOD) a[i] -= MOD;
+        a[i + N / 2] = (ull)(u + MOD - a[i + N / 2]) * root[lv] % MOD;
     }
 }
-
-void InvButterfly(uint a[], int n, const uint root[]) {
-    for (int i = 2; i <= n; i *= 2) {
-        for (int k = 0; k < i / 2; ++k) {
-            const uint u = a[k];
-            if ((a[k] += a[k + i / 2]) >= MOD) a[k] -= MOD;
-            if ((a[k + i / 2] = u + MOD - a[k + i / 2]) >= MOD) a[k + i / 2] -= MOD;
-        }
-        for (int j = i, m = 1; j < n; j += i, ++m)
-            for (int k = j; k < j + i / 2; ++k) {
-                const uint u = a[k];
-                if ((a[k] += a[k + i / 2]) >= MOD) a[k] -= MOD;
-                a[k + i / 2] = (ull)(u + MOD - a[k + i / 2]) * root[m] % MOD;
-            }
+template<int N> void InvButterflyRec(uint[], const uint[]);
+template<> void InvButterflyRec<1>(uint[], const uint[]) {}
+template<int N> void InvButterflyRec(uint a[], const uint root[]) {
+    InvButterflyRec<N / 2>(a, root);
+    InvButterflyRecPrime<N / 2>(a + N / 2, root, 1);
+    for (int i = 0; i < N / 2; ++i) {
+        const uint u = a[i];
+        if ((a[i] += a[i + N / 2]) >= MOD) a[i] -= MOD;
+        if ((a[i + N / 2] = u + MOD - a[i + N / 2]) >= MOD) a[i + N / 2] -= MOD;
     }
+}
+// clang-format off
+template<int... Is>
+void ButterflyHelper(uint a[], int n, const uint root[], std::integer_sequence<int, Is...>)
+{ ([&] { if (n == (1 << Is)) ButterflyRec<(1 << Is)>(a, root); }(), ...); }
+template<int... Is>
+void InvButterflyHelper(uint a[], int n, const uint root[], std::integer_sequence<int, Is...>)
+{ ([&] { if (n == (1 << Is)) InvButterflyRec<(1 << Is)>(a, root); }(), ...); }
+// clang-format on
+} // namespace detail
+
+void Butterfly(uint a[], int n, const uint root[]) {
+    detail::ButterflyHelper(a, n, root, std::make_integer_sequence<int, LOG2_ORD + 1>{});
+}
+void InvButterfly(uint a[], int n, const uint root[]) {
+    detail::InvButterflyHelper(a, n, root, std::make_integer_sequence<int, LOG2_ORD + 1>{});
 }
 
 int GetFFTSize(int n) {
