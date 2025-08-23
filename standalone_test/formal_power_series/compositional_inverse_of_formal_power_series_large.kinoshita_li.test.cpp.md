@@ -147,17 +147,16 @@ data:
     \ f, int n) {\n    assert(size(f) >= 2 && f[0] == 0 && f[1] != 0);\n    if (n\
     \ == 1) return std::vector<uint>{0u};\n    f.resize(n);\n    const uint invF1\
     \ = InvMod(f[1]);\n    uint invF1p      = 1;\n    for (int i = 0; i < n; ++i)\
-    \ f[i] = (ull)f[i] * invF1p % MOD, invF1p = (ull)invF1p * invF1 % MOD;\n    std::vector<uint>\
-    \ inv(n);\n    inv[1] = 1;\n    for (int i = 2; i < n; ++i) inv[i] = (ull)(MOD\
-    \ - MOD / i) * inv[MOD % i] % MOD;\n    auto proj = PowProj(std::vector<uint>{1u},\
-    \ f, n);\n    for (int i = 1; i < n; ++i) proj[i] = (ull)proj[i] * (n - 1) % MOD\
-    \ * inv[i] % MOD;\n    reverse(begin(proj), end(proj));\n    auto res = FPSPow1(proj,\
-    \ InvMod(MOD + 1 - n), n - 1);\n    for (int i = 0; i < n - 1; ++i) res[i] = (ull)res[i]\
-    \ * invF1 % MOD;\n    res.insert(begin(res), 0u);\n    return res;\n}\n\nint main()\
-    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
-    \ n;\n    std::cin >> n;\n    std::vector<uint> f(n);\n    for (int i = 0; i <\
-    \ n; ++i) std::cin >> f[i];\n    const auto revF = FPSRev(f, n);\n    for (int\
-    \ i = 0; i < n; ++i) std::cout << revF[i] << ' ';\n    return 0;\n}\n"
+    \ f[i] = (ull)f[i] * invF1p % MOD, invF1p = (ull)invF1p * invF1 % MOD;\n    auto\
+    \ proj = PowProj(std::vector<uint>{1u}, f, n);\n    for (int i = 1; i < n; ++i)\
+    \ proj[i] = (ull)proj[i] * (n - 1) % MOD * InvMod(i) % MOD;\n    reverse(begin(proj),\
+    \ end(proj));\n    auto res = FPSPow1(proj, InvMod(MOD + 1 - n), n - 1);\n   \
+    \ for (int i = 0; i < n - 1; ++i) res[i] = (ull)res[i] * invF1 % MOD;\n    res.insert(begin(res),\
+    \ 0u);\n    return res;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    int n;\n    std::cin >> n;\n    std::vector<uint>\
+    \ f(n);\n    for (int i = 0; i < n; ++i) std::cin >> f[i];\n    const auto revF\
+    \ = FPSRev(f, n);\n    for (int i = 0; i < n; ++i) std::cout << revF[i] << ' ';\n\
+    \    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large\"\
     \n\n#include <algorithm>\n#include <cassert>\n#include <cstring>\n#include <iostream>\n\
     #include <tuple>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
@@ -291,22 +290,21 @@ data:
     \ f, int n) {\n    assert(size(f) >= 2 && f[0] == 0 && f[1] != 0);\n    if (n\
     \ == 1) return std::vector<uint>{0u};\n    f.resize(n);\n    const uint invF1\
     \ = InvMod(f[1]);\n    uint invF1p      = 1;\n    for (int i = 0; i < n; ++i)\
-    \ f[i] = (ull)f[i] * invF1p % MOD, invF1p = (ull)invF1p * invF1 % MOD;\n    std::vector<uint>\
-    \ inv(n);\n    inv[1] = 1;\n    for (int i = 2; i < n; ++i) inv[i] = (ull)(MOD\
-    \ - MOD / i) * inv[MOD % i] % MOD;\n    auto proj = PowProj(std::vector<uint>{1u},\
-    \ f, n);\n    for (int i = 1; i < n; ++i) proj[i] = (ull)proj[i] * (n - 1) % MOD\
-    \ * inv[i] % MOD;\n    reverse(begin(proj), end(proj));\n    auto res = FPSPow1(proj,\
-    \ InvMod(MOD + 1 - n), n - 1);\n    for (int i = 0; i < n - 1; ++i) res[i] = (ull)res[i]\
-    \ * invF1 % MOD;\n    res.insert(begin(res), 0u);\n    return res;\n}\n\nint main()\
-    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
-    \ n;\n    std::cin >> n;\n    std::vector<uint> f(n);\n    for (int i = 0; i <\
-    \ n; ++i) std::cin >> f[i];\n    const auto revF = FPSRev(f, n);\n    for (int\
-    \ i = 0; i < n; ++i) std::cout << revF[i] << ' ';\n    return 0;\n}\n"
+    \ f[i] = (ull)f[i] * invF1p % MOD, invF1p = (ull)invF1p * invF1 % MOD;\n    auto\
+    \ proj = PowProj(std::vector<uint>{1u}, f, n);\n    for (int i = 1; i < n; ++i)\
+    \ proj[i] = (ull)proj[i] * (n - 1) % MOD * InvMod(i) % MOD;\n    reverse(begin(proj),\
+    \ end(proj));\n    auto res = FPSPow1(proj, InvMod(MOD + 1 - n), n - 1);\n   \
+    \ for (int i = 0; i < n - 1; ++i) res[i] = (ull)res[i] * invF1 % MOD;\n    res.insert(begin(res),\
+    \ 0u);\n    return res;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    int n;\n    std::cin >> n;\n    std::vector<uint>\
+    \ f(n);\n    for (int i = 0; i < n; ++i) std::cin >> f[i];\n    const auto revF\
+    \ = FPSRev(f, n);\n    for (int i = 0; i < n; ++i) std::cout << revF[i] << ' ';\n\
+    \    return 0;\n}\n"
   dependsOn: []
   isVerificationFile: true
   path: standalone_test/formal_power_series/compositional_inverse_of_formal_power_series_large.kinoshita_li.test.cpp
   requiredBy: []
-  timestamp: '2025-08-24 01:45:18+08:00'
+  timestamp: '2025-08-24 01:49:41+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/formal_power_series/compositional_inverse_of_formal_power_series_large.kinoshita_li.test.cpp
