@@ -83,11 +83,11 @@ data:
     \ ab[0] = (ull)a[0] * b[0] % MOD;\n    for (int i = 1; i < n; ++i) {\n       \
     \ if (i % Threshold == 0) {\n            const int lv = __builtin_ctz(i / Threshold);\n\
     \            const int NN = Threshold << (lv + 1);\n            std::vector<uint>\
-    \ cc(NN);\n            copy(begin(b) + i - NN / 2, begin(b) + i, begin(cc));\n\
-    \            FFT(data(cc), NN, data(root));\n            for (int j = 0; j < NN;\
-    \ ++j) cc[j] = (ull)cc[j] * dftA[lv][j] % MOD;\n            InvFFT(data(cc), NN,\
+    \ c(NN);\n            copy(begin(b) + i - NN / 2, begin(b) + i, begin(c));\n \
+    \           FFT(data(c), NN, data(root));\n            for (int j = 0; j < NN;\
+    \ ++j) c[j] = (ull)c[j] * dftA[lv][j] % MOD;\n            InvFFT(data(c), NN,\
     \ data(inv_root));\n            for (int j = 0; j < std::min(NN / 2, n - i); ++j)\n\
-    \                if ((ab[i + j] += cc[j + NN / 2]) >= MOD) ab[i + j] -= MOD;\n\
+    \                if ((ab[i + j] += c[j + NN / 2]) >= MOD) ab[i + j] -= MOD;\n\
     \        }\n        for (int j = std::max(i - i % Threshold, i - (int)size(a)\
     \ + 1); j < i; ++j)\n            ab[i] = (ab[i] + (ull)a[i - j] * b[j]) % MOD;\n\
     \        b[i] = g(i, ab);\n        if (!empty(a)) ab[i] = (ab[i] + (ull)a[0] *\
@@ -173,11 +173,11 @@ data:
     \ ab[0] = (ull)a[0] * b[0] % MOD;\n    for (int i = 1; i < n; ++i) {\n       \
     \ if (i % Threshold == 0) {\n            const int lv = __builtin_ctz(i / Threshold);\n\
     \            const int NN = Threshold << (lv + 1);\n            std::vector<uint>\
-    \ cc(NN);\n            copy(begin(b) + i - NN / 2, begin(b) + i, begin(cc));\n\
-    \            FFT(data(cc), NN, data(root));\n            for (int j = 0; j < NN;\
-    \ ++j) cc[j] = (ull)cc[j] * dftA[lv][j] % MOD;\n            InvFFT(data(cc), NN,\
+    \ c(NN);\n            copy(begin(b) + i - NN / 2, begin(b) + i, begin(c));\n \
+    \           FFT(data(c), NN, data(root));\n            for (int j = 0; j < NN;\
+    \ ++j) c[j] = (ull)c[j] * dftA[lv][j] % MOD;\n            InvFFT(data(c), NN,\
     \ data(inv_root));\n            for (int j = 0; j < std::min(NN / 2, n - i); ++j)\n\
-    \                if ((ab[i + j] += cc[j + NN / 2]) >= MOD) ab[i + j] -= MOD;\n\
+    \                if ((ab[i + j] += c[j + NN / 2]) >= MOD) ab[i + j] -= MOD;\n\
     \        }\n        for (int j = std::max(i - i % Threshold, i - (int)size(a)\
     \ + 1); j < i; ++j)\n            ab[i] = (ab[i] + (ull)a[i - j] * b[j]) % MOD;\n\
     \        b[i] = g(i, ab);\n        if (!empty(a)) ab[i] = (ab[i] + (ull)a[0] *\
@@ -196,7 +196,7 @@ data:
   isVerificationFile: true
   path: standalone_test/formal_power_series/exp_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
   requiredBy: []
-  timestamp: '2025-08-23 10:41:01+08:00'
+  timestamp: '2025-08-23 15:01:10+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/formal_power_series/exp_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
