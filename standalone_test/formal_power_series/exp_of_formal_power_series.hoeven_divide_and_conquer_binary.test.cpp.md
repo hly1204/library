@@ -69,8 +69,8 @@ data:
     \ LOG2_ORD + 1>{});\n}\n\nint GetFFTSize(int n) {\n    int len = 1;\n    while\
     \ (len < n) len *= 2;\n    return len;\n}\n\nvoid FFT(uint a[], int n, const uint\
     \ root[]) { Butterfly(a, n, root); }\n\nvoid InvFFT(uint a[], int n, const uint\
-    \ root[]) {\n    InvButterfly(a, n, root);\n    const uint invn = InvMod(n);\n\
-    \    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invn % MOD;\n}\n\ntemplate<typename\
+    \ root[]) {\n    InvButterfly(a, n, root);\n    const uint invN = InvMod(n);\n\
+    \    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invN % MOD;\n}\n\ntemplate<typename\
     \ Fn>\nstd::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const std::vector<uint>\
     \ &>, std::vector<uint>>\nSemiRelaxedConv(const std::vector<uint> &a, Fn g, int\
     \ n) {\n    assert(n >= 0);\n    if (n == 0) return {};\n    enum { Threshold\
@@ -159,8 +159,8 @@ data:
     \ LOG2_ORD + 1>{});\n}\n\nint GetFFTSize(int n) {\n    int len = 1;\n    while\
     \ (len < n) len *= 2;\n    return len;\n}\n\nvoid FFT(uint a[], int n, const uint\
     \ root[]) { Butterfly(a, n, root); }\n\nvoid InvFFT(uint a[], int n, const uint\
-    \ root[]) {\n    InvButterfly(a, n, root);\n    const uint invn = InvMod(n);\n\
-    \    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invn % MOD;\n}\n\ntemplate<typename\
+    \ root[]) {\n    InvButterfly(a, n, root);\n    const uint invN = InvMod(n);\n\
+    \    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invN % MOD;\n}\n\ntemplate<typename\
     \ Fn>\nstd::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const std::vector<uint>\
     \ &>, std::vector<uint>>\nSemiRelaxedConv(const std::vector<uint> &a, Fn g, int\
     \ n) {\n    assert(n >= 0);\n    if (n == 0) return {};\n    enum { Threshold\
@@ -196,7 +196,7 @@ data:
   isVerificationFile: true
   path: standalone_test/formal_power_series/exp_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
   requiredBy: []
-  timestamp: '2025-08-23 15:01:10+08:00'
+  timestamp: '2025-08-24 00:19:43+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/formal_power_series/exp_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
