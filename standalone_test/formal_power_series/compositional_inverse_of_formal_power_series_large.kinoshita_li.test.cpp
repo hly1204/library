@@ -160,7 +160,7 @@ std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
         }
         P.erase(begin(P), begin(P) + d * n * 2);
     };
-    f.insert(begin(f), N - n, 0);
+    f.insert(begin(f), N - n, 0u);
     f.resize(N);
     reverse(begin(f), end(f));
     f.insert(begin(f), N, 0u);
