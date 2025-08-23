@@ -138,13 +138,13 @@ SemiRelaxedConv(const std::vector<uint> &a, Fn g, int n) {
         if (i % Threshold == 0) {
             const int lv = __builtin_ctz(i / Threshold);
             const int NN = Threshold << (lv + 1);
-            std::vector<uint> cc(NN);
-            copy(begin(b) + i - NN / 2, begin(b) + i, begin(cc));
-            FFT(data(cc), NN, data(root));
-            for (int j = 0; j < NN; ++j) cc[j] = (ull)cc[j] * dftA[lv][j] % MOD;
-            InvFFT(data(cc), NN, data(inv_root));
+            std::vector<uint> c(NN);
+            copy(begin(b) + i - NN / 2, begin(b) + i, begin(c));
+            FFT(data(c), NN, data(root));
+            for (int j = 0; j < NN; ++j) c[j] = (ull)c[j] * dftA[lv][j] % MOD;
+            InvFFT(data(c), NN, data(inv_root));
             for (int j = 0; j < std::min(NN / 2, n - i); ++j)
-                if ((ab[i + j] += cc[j + NN / 2]) >= MOD) ab[i + j] -= MOD;
+                if ((ab[i + j] += c[j + NN / 2]) >= MOD) ab[i + j] -= MOD;
         }
         for (int j = std::max(i - i % Threshold, i - (int)size(a) + 1); j < i; ++j)
             ab[i] = (ab[i] + (ull)a[i - j] * b[j]) % MOD;
