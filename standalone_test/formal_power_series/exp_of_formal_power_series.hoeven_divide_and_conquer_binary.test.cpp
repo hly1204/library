@@ -112,8 +112,8 @@ void FFT(uint a[], int n, const uint root[]) { Butterfly(a, n, root); }
 
 void InvFFT(uint a[], int n, const uint root[]) {
     InvButterfly(a, n, root);
-    const uint invn = InvMod(n);
-    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invn % MOD;
+    const uint invN = InvMod(n);
+    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invN % MOD;
 }
 
 template<typename Fn>
