@@ -172,8 +172,11 @@ data:
   - name: standalone_test/formal_power_series
     pages:
     - icon: ':heavy_check_mark:'
-      path: standalone_test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
-      title: standalone_test/formal_power_series/composition_of_formal_power_series_large.0.test.cpp
+      path: standalone_test/formal_power_series/composition_of_formal_power_series_large.kinoshita_li.test.cpp
+      title: standalone_test/formal_power_series/composition_of_formal_power_series_large.kinoshita_li.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: standalone_test/formal_power_series/exp_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
+      title: standalone_test/formal_power_series/exp_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
   - name: test/convolution
     pages:
     - icon: ':heavy_check_mark:'
