@@ -16,12 +16,12 @@ data:
   bundledCode: "#line 1 \"standalone_test/formal_power_series/compositional_inverse_of_formal_power_series_large.kinoshita_li.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large\"\
     \n\n#include <algorithm>\n#include <cassert>\n#include <cstring>\n#include <iostream>\n\
-    #include <tuple>\n#include <utility>\n#include <vector>\n\nusing uint        \
-    \ = unsigned;\nusing ull          = unsigned long long;\nconstexpr uint MOD =\
-    \ 998244353;\n\nconstexpr uint PowMod(uint a, ull e) {\n    for (uint res = 1;;\
-    \ a = (ull)a * a % MOD) {\n        if (e & 1) res = (ull)res * a % MOD;\n    \
-    \    if ((e /= 2) == 0) return res;\n    }\n}\n\nconstexpr uint InvMod(uint a)\
-    \ { return PowMod(a, MOD - 2); }\n\nconstexpr uint QUAD_NONRESIDUE = 3;\nconstexpr\
+    #include <tuple>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
+    \nusing uint         = unsigned;\nusing ull          = unsigned long long;\nconstexpr\
+    \ uint MOD = 998244353;\n\nconstexpr uint PowMod(uint a, ull e) {\n    for (uint\
+    \ res = 1;; a = (ull)a * a % MOD) {\n        if (e & 1) res = (ull)res * a % MOD;\n\
+    \        if ((e /= 2) == 0) return res;\n    }\n}\n\nconstexpr uint InvMod(uint\
+    \ a) { return PowMod(a, MOD - 2); }\n\nconstexpr uint QUAD_NONRESIDUE = 3;\nconstexpr\
     \ int LOG2_ORD         = __builtin_ctz(MOD - 1);\nconstexpr uint ZETA        \
     \    = PowMod(QUAD_NONRESIDUE, (MOD - 1) >> LOG2_ORD);\nconstexpr uint INV_ZETA\
     \        = InvMod(ZETA);\n\nstd::pair<std::vector<uint>, std::vector<uint>> GetFFTRoot(int\
@@ -160,12 +160,12 @@ data:
     \ i = 0; i < n; ++i) std::cout << revF[i] << ' ';\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large\"\
     \n\n#include <algorithm>\n#include <cassert>\n#include <cstring>\n#include <iostream>\n\
-    #include <tuple>\n#include <utility>\n#include <vector>\n\nusing uint        \
-    \ = unsigned;\nusing ull          = unsigned long long;\nconstexpr uint MOD =\
-    \ 998244353;\n\nconstexpr uint PowMod(uint a, ull e) {\n    for (uint res = 1;;\
-    \ a = (ull)a * a % MOD) {\n        if (e & 1) res = (ull)res * a % MOD;\n    \
-    \    if ((e /= 2) == 0) return res;\n    }\n}\n\nconstexpr uint InvMod(uint a)\
-    \ { return PowMod(a, MOD - 2); }\n\nconstexpr uint QUAD_NONRESIDUE = 3;\nconstexpr\
+    #include <tuple>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
+    \nusing uint         = unsigned;\nusing ull          = unsigned long long;\nconstexpr\
+    \ uint MOD = 998244353;\n\nconstexpr uint PowMod(uint a, ull e) {\n    for (uint\
+    \ res = 1;; a = (ull)a * a % MOD) {\n        if (e & 1) res = (ull)res * a % MOD;\n\
+    \        if ((e /= 2) == 0) return res;\n    }\n}\n\nconstexpr uint InvMod(uint\
+    \ a) { return PowMod(a, MOD - 2); }\n\nconstexpr uint QUAD_NONRESIDUE = 3;\nconstexpr\
     \ int LOG2_ORD         = __builtin_ctz(MOD - 1);\nconstexpr uint ZETA        \
     \    = PowMod(QUAD_NONRESIDUE, (MOD - 1) >> LOG2_ORD);\nconstexpr uint INV_ZETA\
     \        = InvMod(ZETA);\n\nstd::pair<std::vector<uint>, std::vector<uint>> GetFFTRoot(int\
@@ -306,7 +306,7 @@ data:
   isVerificationFile: true
   path: standalone_test/formal_power_series/compositional_inverse_of_formal_power_series_large.kinoshita_li.test.cpp
   requiredBy: []
-  timestamp: '2025-08-24 01:40:23+08:00'
+  timestamp: '2025-08-24 01:45:18+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/formal_power_series/compositional_inverse_of_formal_power_series_large.kinoshita_li.test.cpp
