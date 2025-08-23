@@ -1,9 +1,10 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/exp_of_formal_power_series"
+#define PROBLEM "https://judge.yosupo.jp/problem/compositional_inverse_of_formal_power_series_large"
 
 #include <algorithm>
 #include <cassert>
+#include <cstring>
 #include <iostream>
-#include <type_traits>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -117,6 +118,61 @@ void InvFFT(uint a[], int n, const uint root[]) {
 }
 
 // see:
+// [1]: Yasunori Kinoshita, Baitian Li.
+//      Power Series Composition in Near-Linear Time. FOCS 2024: 2180-2185
+//      https://arxiv.org/abs/2404.05177
+// Power Projection: [x^(n-1)] (fg^i) for i=0,..,n-1
+std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
+    assert(empty(g) || g[0] == 0);
+    const int N = GetFFTSize(n);
+    std::vector<uint> root, inv_root;
+    tie(root, inv_root) = GetFFTRoot(N * 4);
+    // [x^(n-1)] (f(x) / (-g(x) + y)) in R[x]((y^(-1)))
+    const auto KinoshitaLi = [&](std::vector<uint> &P, std::vector<uint> &Q, int d, int n) {
+        assert((int)size(P) == d * n * 2);
+        assert((int)size(Q) == d * n * 2);
+        P.insert(begin(P), d * n * 2, 0u);
+        Q.resize(d * n * 4);
+        std::vector<uint> nextP(d * n * 4);
+        for (; n > 1; d *= 2, n /= 2) {
+            Q[d * n * 2] = 1;
+            FFT(data(P), d * n * 4, data(inv_root));
+            FFT(data(Q), d * n * 4, data(root));
+            uint *const nP = data(nextP) + d * n * 2;
+            for (int i = 0; i < d * n * 4; i += 2) {
+                if ((nP[i / 2] = ((ull)P[i] * Q[i + 1] + (ull)P[i + 1] * Q[i]) % MOD) & 1)
+                    nP[i / 2] += MOD;
+                nP[i / 2] /= 2;
+                Q[i / 2] = (ull)Q[i] * Q[i + 1] % MOD;
+            }
+            InvFFT(nP, d * n * 2, data(root));
+            InvFFT(data(Q), d * n * 2, data(inv_root));
+            assert(Q[0] == 1);
+            Q[0] = 0;
+            for (int i = 0; i < d * 2; ++i) {
+                std::memset(nP + i * n, 0, sizeof(uint) * (n / 2));
+                std::memset(data(Q) + i * n + n / 2, 0, sizeof(uint) * (n / 2));
+            }
+            P.swap(nextP);
+            std::memset(data(P), 0, sizeof(uint) * (d * n * 2));
+            std::memset(data(Q) + d * n * 2, 0, sizeof(uint) * (d * n * 2));
+        }
+        P.erase(begin(P), begin(P) + d * n * 2);
+    };
+    f.insert(begin(f), N - n, 0);
+    f.resize(N);
+    reverse(begin(f), end(f));
+    f.insert(begin(f), N, 0u);
+    g.resize(N * 2);
+    for (int i = 0; i < N; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);
+    std::memset(data(g) + N, 0, sizeof(uint) * N);
+    KinoshitaLi(f, g, 1, N);
+    for (int i = 0; i < N; ++i) f[i] = f[i * 2 + 1];
+    f.resize(n);
+    return f;
+}
+
+// see:
 // [1]: Joris van der Hoeven. Relaxed mltiplication using the middle product. ISSAC 2003: 143-147
 //      https://www.texmacs.org/joris/issac03/issac03.pdf
 template<typename Fn>
@@ -165,6 +221,28 @@ std::vector<uint> Deriv(const std::vector<uint> &a) {
     return res;
 }
 
+std::vector<uint> Integr(const std::vector<uint> &a, uint c = 0) {
+    const int n = size(a) + 1;
+    std::vector<uint> res(n);
+    res[0] = c;
+    for (int i = 1; i < n; ++i) res[i] = (ull)a[i - 1] * InvMod(i) % MOD;
+    return res;
+}
+
+std::vector<uint> FPSDiv(const std::vector<uint> &a, const std::vector<uint> &b, int n) {
+    assert(!empty(b) && b[0] != 0);
+    if (n == 0) return {};
+    const auto g = [&, invB0 = InvMod(b[0])](int n, const std::vector<uint> &c) -> uint {
+        if (n < (int)size(a)) return (ull)(a[n] + MOD - c[n]) * invB0 % MOD;
+        return (ull)(MOD - c[n]) * invB0 % MOD;
+    };
+    return SemiRelaxedConv(b, g, n);
+}
+
+std::vector<uint> FPSLog(const std::vector<uint> &a, int n) {
+    return Integr(FPSDiv(Deriv(a), a, n - 1));
+}
+
 std::vector<uint> FPSExp(const std::vector<uint> &a, int n) {
     const auto g = [](int n, const std::vector<uint> &c) -> uint {
         if (n == 0) return 1;
@@ -173,14 +251,40 @@ std::vector<uint> FPSExp(const std::vector<uint> &a, int n) {
     return SemiRelaxedConv(Deriv(a), g, n);
 }
 
+std::vector<uint> FPSPow1(const std::vector<uint> &a, uint e, int n) {
+    assert(!empty(a) && a[0] == 1);
+    auto logA = FPSLog(a, n);
+    for (int i = 0; i < n; ++i) logA[i] = (ull)logA[i] * e % MOD;
+    return FPSExp(logA, n);
+}
+
+std::vector<uint> FPSRev(std::vector<uint> f, int n) {
+    assert(size(f) >= 2 && f[0] == 0 && f[1] != 0);
+    if (n == 1) return std::vector<uint>{0u};
+    f.resize(n);
+    const uint invF1 = InvMod(f[1]);
+    uint invF1p      = 1;
+    for (int i = 0; i < n; ++i) f[i] = (ull)f[i] * invF1p % MOD, invF1p = (ull)invF1p * invF1 % MOD;
+    std::vector<uint> inv(n);
+    inv[1] = 1;
+    for (int i = 2; i < n; ++i) inv[i] = (ull)(MOD - MOD / i) * inv[MOD % i] % MOD;
+    auto proj = PowProj(std::vector<uint>{1u}, f, n);
+    for (int i = 1; i < n; ++i) proj[i] = (ull)proj[i] * (n - 1) % MOD * inv[i] % MOD;
+    reverse(begin(proj), end(proj));
+    auto res = FPSPow1(proj, InvMod(MOD + 1 - n), n - 1);
+    for (int i = 0; i < n - 1; ++i) res[i] = (ull)res[i] * invF1 % MOD;
+    res.insert(begin(res), 0u);
+    return res;
+}
+
 int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
     int n;
     std::cin >> n;
-    std::vector<uint> a(n);
-    for (int i = 0; i < n; ++i) std::cin >> a[i];
-    const auto expA = FPSExp(a, n);
-    for (int i = 0; i < n; ++i) std::cout << expA[i] << ' ';
+    std::vector<uint> f(n);
+    for (int i = 0; i < n; ++i) std::cin >> f[i];
+    const auto revF = FPSRev(f, n);
+    for (int i = 0; i < n; ++i) std::cout << revF[i] << ' ';
     return 0;
 }

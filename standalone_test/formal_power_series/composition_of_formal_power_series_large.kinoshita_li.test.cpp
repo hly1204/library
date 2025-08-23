@@ -116,6 +116,10 @@ void InvFFT(uint a[], int n, const uint root[]) {
     for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invN % MOD;
 }
 
+// see:
+// [1]: Yasunori Kinoshita, Baitian Li.
+//      Power Series Composition in Near-Linear Time. FOCS 2024: 2180-2185
+//      https://arxiv.org/abs/2404.05177
 std::vector<uint> FPSComp(std::vector<uint> f, std::vector<uint> g, int n) {
     assert(empty(g) || g[0] == 0);
     const int N = GetFFTSize(n);

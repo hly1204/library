@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/exp_of_formal_power_series"
+#define PROBLEM "https://judge.yosupo.jp/problem/log_of_formal_power_series"
 
 #include <algorithm>
 #include <cassert>
@@ -165,12 +165,26 @@ std::vector<uint> Deriv(const std::vector<uint> &a) {
     return res;
 }
 
-std::vector<uint> FPSExp(const std::vector<uint> &a, int n) {
-    const auto g = [](int n, const std::vector<uint> &c) -> uint {
-        if (n == 0) return 1;
-        return (ull)c[n - 1] * InvMod(n) % MOD;
+std::vector<uint> Integr(const std::vector<uint> &a, uint c = 0) {
+    const int n = size(a) + 1;
+    std::vector<uint> res(n);
+    res[0] = c;
+    for (int i = 1; i < n; ++i) res[i] = (ull)a[i - 1] * InvMod(i) % MOD;
+    return res;
+}
+
+std::vector<uint> FPSDiv(const std::vector<uint> &a, const std::vector<uint> &b, int n) {
+    assert(!empty(b) && b[0] != 0);
+    if (n == 0) return {};
+    const auto g = [&, invB0 = InvMod(b[0])](int n, const std::vector<uint> &c) -> uint {
+        if (n < (int)size(a)) return (ull)(a[n] + MOD - c[n]) * invB0 % MOD;
+        return (ull)(MOD - c[n]) * invB0 % MOD;
     };
-    return SemiRelaxedConv(Deriv(a), g, n);
+    return SemiRelaxedConv(b, g, n);
+}
+
+std::vector<uint> FPSLog(const std::vector<uint> &a, int n) {
+    return Integr(FPSDiv(Deriv(a), a, n - 1));
 }
 
 int main() {
@@ -180,7 +194,7 @@ int main() {
     std::cin >> n;
     std::vector<uint> a(n);
     for (int i = 0; i < n; ++i) std::cin >> a[i];
-    const auto expA = FPSExp(a, n);
-    for (int i = 0; i < n; ++i) std::cout << expA[i] << ' ';
+    const auto logA = FPSLog(a, n);
+    for (int i = 0; i < n; ++i) std::cout << logA[i] << ' ';
     return 0;
 }
