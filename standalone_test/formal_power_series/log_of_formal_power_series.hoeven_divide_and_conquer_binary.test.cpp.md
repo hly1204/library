@@ -8,13 +8,13 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/composition_of_formal_power_series_large
+    PROBLEM: https://judge.yosupo.jp/problem/log_of_formal_power_series
     links:
-    - https://arxiv.org/abs/2404.05177
-    - https://judge.yosupo.jp/problem/composition_of_formal_power_series_large
-  bundledCode: "#line 1 \"standalone_test/formal_power_series/composition_of_formal_power_series_large.kinoshita_li.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/composition_of_formal_power_series_large\"\
-    \n\n#include <cassert>\n#include <cstring>\n#include <iostream>\n#include <tuple>\n\
+    - https://judge.yosupo.jp/problem/log_of_formal_power_series
+    - https://www.texmacs.org/joris/issac03/issac03.pdf
+  bundledCode: "#line 1 \"standalone_test/formal_power_series/log_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/log_of_formal_power_series\"\
+    \n\n#include <algorithm>\n#include <cassert>\n#include <iostream>\n#include <type_traits>\n\
     #include <utility>\n#include <vector>\n\nusing uint         = unsigned;\nusing\
     \ ull          = unsigned long long;\nconstexpr uint MOD = 998244353;\n\nconstexpr\
     \ uint PowMod(uint a, ull e) {\n    for (uint res = 1;; a = (ull)a * a % MOD)\
@@ -72,41 +72,47 @@ data:
     \ root[]) { Butterfly(a, n, root); }\n\nvoid InvFFT(uint a[], int n, const uint\
     \ root[]) {\n    InvButterfly(a, n, root);\n    const uint invN = InvMod(n);\n\
     \    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invN % MOD;\n}\n\n// see:\n\
-    // [1]: Yasunori Kinoshita, Baitian Li.\n//      Power Series Composition in Near-Linear\
-    \ Time. FOCS 2024: 2180-2185\n//      https://arxiv.org/abs/2404.05177\nstd::vector<uint>\
-    \ FPSComp(std::vector<uint> f, std::vector<uint> g, int n) {\n    assert(empty(g)\
-    \ || g[0] == 0);\n    const int N = GetFFTSize(n);\n    std::vector<uint> root,\
-    \ inv_root;\n    tie(root, inv_root) = GetFFTRoot(N * 4);\n    // [y^(-1)] (f(y)\
-    \ / (-g(x) + y)) mod x^n in R[x]((y^(-1)))\n    const auto KinoshitaLi = [&root\
-    \ = as_const(root), &inv_root = as_const(inv_root)](\n                       \
-    \          auto &&KinoshitaLi, std::vector<uint> &P, std::vector<uint> Q,\n  \
-    \                               int d, int n) {\n        assert((int)size(P) ==\
-    \ d * n * 2);\n        assert((int)size(Q) == d * n * 2);\n        if (n == 1)\
-    \ return;\n        Q.resize(d * n * 4);\n        Q[d * n * 2] = 1;\n        FFT(data(Q),\
-    \ d * n * 4, data(root));\n        if (n > 2) {\n            std::vector<uint>\
-    \ V(d * n * 2);\n            for (int i = 0; i < d * n * 4; i += 2) V[i / 2] =\
-    \ (ull)Q[i] * Q[i + 1] % MOD;\n            InvFFT(data(V), d * n * 2, data(inv_root));\n\
-    \            assert(V[0] == 1);\n            V[0] = 0;\n            for (int i\
-    \ = 0; i < d * 2; ++i)\n                std::memset(data(V) + i * n + n / 2, 0,\
-    \ sizeof(uint) * (n / 2));\n            KinoshitaLi(KinoshitaLi, P, std::move(V),\
-    \ d * 2, n / 2);\n        }\n        FFT(data(P), d * n * 2, data(root));\n  \
-    \      for (int i = 0; i < d * n * 4; i += 2) {\n            const uint u = Q[i];\n\
-    \            Q[i]         = (ull)P[i / 2] * Q[i + 1] % MOD;\n            Q[i +\
-    \ 1]     = (ull)P[i / 2] * u % MOD;\n        }\n        InvFFT(data(Q), d * n\
-    \ * 4, data(inv_root));\n        for (int i = 0; i < d; ++i) {\n            uint\
-    \ *const u = data(P) + i * n * 2;\n            std::memcpy(u, data(Q) + (i + d)\
-    \ * (n * 2), sizeof(uint) * n);\n            std::memset(u + n, 0, sizeof(uint)\
-    \ * n);\n        }\n    };\n    f.resize(N * 2);\n    g.resize(N * 2);\n    for\
-    \ (int i = N - 1; i >= 0; --i) f[i * 2] = f[i], f[i * 2 + 1] = 0;\n    for (int\
-    \ i = 0; i < N; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);\n    std::memset(data(g)\
-    \ + N, 0, sizeof(uint) * N);\n    KinoshitaLi(KinoshitaLi, f, std::move(g), 1,\
-    \ N);\n    f.resize(n);\n    return f;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    int n;\n    std::cin >> n;\n    std::vector<uint>\
-    \ f(n), g(n);\n    for (int i = 0; i < n; ++i) std::cin >> f[i];\n    for (int\
-    \ i = 0; i < n; ++i) std::cin >> g[i];\n    const auto fg = FPSComp(f, g, n);\n\
-    \    for (int i = 0; i < n; ++i) std::cout << fg[i] << ' ';\n    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/composition_of_formal_power_series_large\"\
-    \n\n#include <cassert>\n#include <cstring>\n#include <iostream>\n#include <tuple>\n\
+    // [1]: Joris van der Hoeven. Relaxed mltiplication using the middle product.\
+    \ ISSAC 2003: 143-147\n//      https://www.texmacs.org/joris/issac03/issac03.pdf\n\
+    template<typename Fn>\nstd::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const\
+    \ std::vector<uint> &>, std::vector<uint>>\nSemiRelaxedConv(const std::vector<uint>\
+    \ &a, Fn g, int n) {\n    assert(n >= 0);\n    if (n == 0) return {};\n    enum\
+    \ { Threshold = 32 };\n    assert((Threshold & (Threshold - 1)) == 0);\n    const\
+    \ int N                 = GetFFTSize(n);\n    const auto [root, inv_root] = GetFFTRoot(N);\n\
+    \    std::vector<std::vector<uint>> dftA;\n    for (int i = Threshold * 2; i <=\
+    \ N; i *= 2) {\n        auto &&aa = dftA.emplace_back(i);\n        copy(begin(a),\
+    \ min(begin(a) + i, end(a)), begin(aa));\n        FFT(data(aa), i, data(root));\n\
+    \    }\n    std::vector<uint> b(n), ab(n);\n    b[0] = g(0, ab);\n    if (!empty(a))\
+    \ ab[0] = (ull)a[0] * b[0] % MOD;\n    for (int i = 1; i < n; ++i) {\n       \
+    \ if (i % Threshold == 0) {\n            const int lv = __builtin_ctz(i / Threshold);\n\
+    \            const int NN = Threshold << (lv + 1);\n            std::vector<uint>\
+    \ c(NN);\n            copy(begin(b) + i - NN / 2, begin(b) + i, begin(c));\n \
+    \           FFT(data(c), NN, data(root));\n            for (int j = 0; j < NN;\
+    \ ++j) c[j] = (ull)c[j] * dftA[lv][j] % MOD;\n            InvFFT(data(c), NN,\
+    \ data(inv_root));\n            for (int j = 0; j < std::min(NN / 2, n - i); ++j)\n\
+    \                if ((ab[i + j] += c[j + NN / 2]) >= MOD) ab[i + j] -= MOD;\n\
+    \        }\n        for (int j = std::max(i - i % Threshold, i - (int)size(a)\
+    \ + 1); j < i; ++j)\n            ab[i] = (ab[i] + (ull)a[i - j] * b[j]) % MOD;\n\
+    \        b[i] = g(i, ab);\n        if (!empty(a)) ab[i] = (ab[i] + (ull)a[0] *\
+    \ b[i]) % MOD;\n    }\n    return b;\n}\n\nstd::vector<uint> Deriv(const std::vector<uint>\
+    \ &a) {\n    const int n = (int)size(a) - 1;\n    if (n <= 0) return {};\n   \
+    \ std::vector<uint> res(n);\n    for (int i = 1; i <= n; ++i) res[i - 1] = (ull)a[i]\
+    \ * i % MOD;\n    return res;\n}\n\nstd::vector<uint> Integr(const std::vector<uint>\
+    \ &a, uint c = 0) {\n    const int n = size(a) + 1;\n    std::vector<uint> res(n);\n\
+    \    res[0] = c;\n    for (int i = 1; i < n; ++i) res[i] = (ull)a[i - 1] * InvMod(i)\
+    \ % MOD;\n    return res;\n}\n\nstd::vector<uint> FPSDiv(const std::vector<uint>\
+    \ &a, const std::vector<uint> &b, int n) {\n    assert(!empty(b) && b[0] != 0);\n\
+    \    if (n == 0) return {};\n    const auto g = [&, invB0 = InvMod(b[0])](int\
+    \ n, const std::vector<uint> &c) -> uint {\n        if (n < (int)size(a)) return\
+    \ (ull)(a[n] + MOD - c[n]) * invB0 % MOD;\n        return (ull)(MOD - c[n]) *\
+    \ invB0 % MOD;\n    };\n    return SemiRelaxedConv(b, g, n);\n}\n\nstd::vector<uint>\
+    \ FPSLog(const std::vector<uint> &a, int n) {\n    return Integr(FPSDiv(Deriv(a),\
+    \ a, n - 1));\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    int n;\n    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i =\
+    \ 0; i < n; ++i) std::cin >> a[i];\n    const auto logA = FPSLog(a, n);\n    for\
+    \ (int i = 0; i < n; ++i) std::cout << logA[i] << ' ';\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/log_of_formal_power_series\"\
+    \n\n#include <algorithm>\n#include <cassert>\n#include <iostream>\n#include <type_traits>\n\
     #include <utility>\n#include <vector>\n\nusing uint         = unsigned;\nusing\
     \ ull          = unsigned long long;\nconstexpr uint MOD = 998244353;\n\nconstexpr\
     \ uint PowMod(uint a, ull e) {\n    for (uint res = 1;; a = (ull)a * a % MOD)\
@@ -164,50 +170,56 @@ data:
     \ root[]) { Butterfly(a, n, root); }\n\nvoid InvFFT(uint a[], int n, const uint\
     \ root[]) {\n    InvButterfly(a, n, root);\n    const uint invN = InvMod(n);\n\
     \    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invN % MOD;\n}\n\n// see:\n\
-    // [1]: Yasunori Kinoshita, Baitian Li.\n//      Power Series Composition in Near-Linear\
-    \ Time. FOCS 2024: 2180-2185\n//      https://arxiv.org/abs/2404.05177\nstd::vector<uint>\
-    \ FPSComp(std::vector<uint> f, std::vector<uint> g, int n) {\n    assert(empty(g)\
-    \ || g[0] == 0);\n    const int N = GetFFTSize(n);\n    std::vector<uint> root,\
-    \ inv_root;\n    tie(root, inv_root) = GetFFTRoot(N * 4);\n    // [y^(-1)] (f(y)\
-    \ / (-g(x) + y)) mod x^n in R[x]((y^(-1)))\n    const auto KinoshitaLi = [&root\
-    \ = as_const(root), &inv_root = as_const(inv_root)](\n                       \
-    \          auto &&KinoshitaLi, std::vector<uint> &P, std::vector<uint> Q,\n  \
-    \                               int d, int n) {\n        assert((int)size(P) ==\
-    \ d * n * 2);\n        assert((int)size(Q) == d * n * 2);\n        if (n == 1)\
-    \ return;\n        Q.resize(d * n * 4);\n        Q[d * n * 2] = 1;\n        FFT(data(Q),\
-    \ d * n * 4, data(root));\n        if (n > 2) {\n            std::vector<uint>\
-    \ V(d * n * 2);\n            for (int i = 0; i < d * n * 4; i += 2) V[i / 2] =\
-    \ (ull)Q[i] * Q[i + 1] % MOD;\n            InvFFT(data(V), d * n * 2, data(inv_root));\n\
-    \            assert(V[0] == 1);\n            V[0] = 0;\n            for (int i\
-    \ = 0; i < d * 2; ++i)\n                std::memset(data(V) + i * n + n / 2, 0,\
-    \ sizeof(uint) * (n / 2));\n            KinoshitaLi(KinoshitaLi, P, std::move(V),\
-    \ d * 2, n / 2);\n        }\n        FFT(data(P), d * n * 2, data(root));\n  \
-    \      for (int i = 0; i < d * n * 4; i += 2) {\n            const uint u = Q[i];\n\
-    \            Q[i]         = (ull)P[i / 2] * Q[i + 1] % MOD;\n            Q[i +\
-    \ 1]     = (ull)P[i / 2] * u % MOD;\n        }\n        InvFFT(data(Q), d * n\
-    \ * 4, data(inv_root));\n        for (int i = 0; i < d; ++i) {\n            uint\
-    \ *const u = data(P) + i * n * 2;\n            std::memcpy(u, data(Q) + (i + d)\
-    \ * (n * 2), sizeof(uint) * n);\n            std::memset(u + n, 0, sizeof(uint)\
-    \ * n);\n        }\n    };\n    f.resize(N * 2);\n    g.resize(N * 2);\n    for\
-    \ (int i = N - 1; i >= 0; --i) f[i * 2] = f[i], f[i * 2 + 1] = 0;\n    for (int\
-    \ i = 0; i < N; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);\n    std::memset(data(g)\
-    \ + N, 0, sizeof(uint) * N);\n    KinoshitaLi(KinoshitaLi, f, std::move(g), 1,\
-    \ N);\n    f.resize(n);\n    return f;\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    int n;\n    std::cin >> n;\n    std::vector<uint>\
-    \ f(n), g(n);\n    for (int i = 0; i < n; ++i) std::cin >> f[i];\n    for (int\
-    \ i = 0; i < n; ++i) std::cin >> g[i];\n    const auto fg = FPSComp(f, g, n);\n\
-    \    for (int i = 0; i < n; ++i) std::cout << fg[i] << ' ';\n    return 0;\n}\n"
+    // [1]: Joris van der Hoeven. Relaxed mltiplication using the middle product.\
+    \ ISSAC 2003: 143-147\n//      https://www.texmacs.org/joris/issac03/issac03.pdf\n\
+    template<typename Fn>\nstd::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const\
+    \ std::vector<uint> &>, std::vector<uint>>\nSemiRelaxedConv(const std::vector<uint>\
+    \ &a, Fn g, int n) {\n    assert(n >= 0);\n    if (n == 0) return {};\n    enum\
+    \ { Threshold = 32 };\n    assert((Threshold & (Threshold - 1)) == 0);\n    const\
+    \ int N                 = GetFFTSize(n);\n    const auto [root, inv_root] = GetFFTRoot(N);\n\
+    \    std::vector<std::vector<uint>> dftA;\n    for (int i = Threshold * 2; i <=\
+    \ N; i *= 2) {\n        auto &&aa = dftA.emplace_back(i);\n        copy(begin(a),\
+    \ min(begin(a) + i, end(a)), begin(aa));\n        FFT(data(aa), i, data(root));\n\
+    \    }\n    std::vector<uint> b(n), ab(n);\n    b[0] = g(0, ab);\n    if (!empty(a))\
+    \ ab[0] = (ull)a[0] * b[0] % MOD;\n    for (int i = 1; i < n; ++i) {\n       \
+    \ if (i % Threshold == 0) {\n            const int lv = __builtin_ctz(i / Threshold);\n\
+    \            const int NN = Threshold << (lv + 1);\n            std::vector<uint>\
+    \ c(NN);\n            copy(begin(b) + i - NN / 2, begin(b) + i, begin(c));\n \
+    \           FFT(data(c), NN, data(root));\n            for (int j = 0; j < NN;\
+    \ ++j) c[j] = (ull)c[j] * dftA[lv][j] % MOD;\n            InvFFT(data(c), NN,\
+    \ data(inv_root));\n            for (int j = 0; j < std::min(NN / 2, n - i); ++j)\n\
+    \                if ((ab[i + j] += c[j + NN / 2]) >= MOD) ab[i + j] -= MOD;\n\
+    \        }\n        for (int j = std::max(i - i % Threshold, i - (int)size(a)\
+    \ + 1); j < i; ++j)\n            ab[i] = (ab[i] + (ull)a[i - j] * b[j]) % MOD;\n\
+    \        b[i] = g(i, ab);\n        if (!empty(a)) ab[i] = (ab[i] + (ull)a[0] *\
+    \ b[i]) % MOD;\n    }\n    return b;\n}\n\nstd::vector<uint> Deriv(const std::vector<uint>\
+    \ &a) {\n    const int n = (int)size(a) - 1;\n    if (n <= 0) return {};\n   \
+    \ std::vector<uint> res(n);\n    for (int i = 1; i <= n; ++i) res[i - 1] = (ull)a[i]\
+    \ * i % MOD;\n    return res;\n}\n\nstd::vector<uint> Integr(const std::vector<uint>\
+    \ &a, uint c = 0) {\n    const int n = size(a) + 1;\n    std::vector<uint> res(n);\n\
+    \    res[0] = c;\n    for (int i = 1; i < n; ++i) res[i] = (ull)a[i - 1] * InvMod(i)\
+    \ % MOD;\n    return res;\n}\n\nstd::vector<uint> FPSDiv(const std::vector<uint>\
+    \ &a, const std::vector<uint> &b, int n) {\n    assert(!empty(b) && b[0] != 0);\n\
+    \    if (n == 0) return {};\n    const auto g = [&, invB0 = InvMod(b[0])](int\
+    \ n, const std::vector<uint> &c) -> uint {\n        if (n < (int)size(a)) return\
+    \ (ull)(a[n] + MOD - c[n]) * invB0 % MOD;\n        return (ull)(MOD - c[n]) *\
+    \ invB0 % MOD;\n    };\n    return SemiRelaxedConv(b, g, n);\n}\n\nstd::vector<uint>\
+    \ FPSLog(const std::vector<uint> &a, int n) {\n    return Integr(FPSDiv(Deriv(a),\
+    \ a, n - 1));\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    int n;\n    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i =\
+    \ 0; i < n; ++i) std::cin >> a[i];\n    const auto logA = FPSLog(a, n);\n    for\
+    \ (int i = 0; i < n; ++i) std::cout << logA[i] << ' ';\n    return 0;\n}\n"
   dependsOn: []
   isVerificationFile: true
-  path: standalone_test/formal_power_series/composition_of_formal_power_series_large.kinoshita_li.test.cpp
+  path: standalone_test/formal_power_series/log_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
   requiredBy: []
   timestamp: '2025-08-24 01:40:23+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: standalone_test/formal_power_series/composition_of_formal_power_series_large.kinoshita_li.test.cpp
+documentation_of: standalone_test/formal_power_series/log_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
 layout: document
 redirect_from:
-- /verify/standalone_test/formal_power_series/composition_of_formal_power_series_large.kinoshita_li.test.cpp
-- /verify/standalone_test/formal_power_series/composition_of_formal_power_series_large.kinoshita_li.test.cpp.html
-title: standalone_test/formal_power_series/composition_of_formal_power_series_large.kinoshita_li.test.cpp
+- /verify/standalone_test/formal_power_series/log_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
+- /verify/standalone_test/formal_power_series/log_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp.html
+title: standalone_test/formal_power_series/log_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
 ---

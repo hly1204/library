@@ -11,6 +11,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/exp_of_formal_power_series
     links:
     - https://judge.yosupo.jp/problem/exp_of_formal_power_series
+    - https://www.texmacs.org/joris/issac03/issac03.pdf
   bundledCode: "#line 1 \"standalone_test/formal_power_series/exp_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/exp_of_formal_power_series\"\
     \n\n#include <algorithm>\n#include <cassert>\n#include <iostream>\n#include <type_traits>\n\
@@ -70,12 +71,14 @@ data:
     \ (len < n) len *= 2;\n    return len;\n}\n\nvoid FFT(uint a[], int n, const uint\
     \ root[]) { Butterfly(a, n, root); }\n\nvoid InvFFT(uint a[], int n, const uint\
     \ root[]) {\n    InvButterfly(a, n, root);\n    const uint invN = InvMod(n);\n\
-    \    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invN % MOD;\n}\n\ntemplate<typename\
-    \ Fn>\nstd::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const std::vector<uint>\
-    \ &>, std::vector<uint>>\nSemiRelaxedConv(const std::vector<uint> &a, Fn g, int\
-    \ n) {\n    assert(n >= 0);\n    if (n == 0) return {};\n    enum { Threshold\
-    \ = 32 };\n    assert((Threshold & (Threshold - 1)) == 0);\n    const int N  \
-    \               = GetFFTSize(n);\n    const auto [root, inv_root] = GetFFTRoot(N);\n\
+    \    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invN % MOD;\n}\n\n// see:\n\
+    // [1]: Joris van der Hoeven. Relaxed mltiplication using the middle product.\
+    \ ISSAC 2003: 143-147\n//      https://www.texmacs.org/joris/issac03/issac03.pdf\n\
+    template<typename Fn>\nstd::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const\
+    \ std::vector<uint> &>, std::vector<uint>>\nSemiRelaxedConv(const std::vector<uint>\
+    \ &a, Fn g, int n) {\n    assert(n >= 0);\n    if (n == 0) return {};\n    enum\
+    \ { Threshold = 32 };\n    assert((Threshold & (Threshold - 1)) == 0);\n    const\
+    \ int N                 = GetFFTSize(n);\n    const auto [root, inv_root] = GetFFTRoot(N);\n\
     \    std::vector<std::vector<uint>> dftA;\n    for (int i = Threshold * 2; i <=\
     \ N; i *= 2) {\n        auto &&aa = dftA.emplace_back(i);\n        copy(begin(a),\
     \ min(begin(a) + i, end(a)), begin(aa));\n        FFT(data(aa), i, data(root));\n\
@@ -160,12 +163,14 @@ data:
     \ (len < n) len *= 2;\n    return len;\n}\n\nvoid FFT(uint a[], int n, const uint\
     \ root[]) { Butterfly(a, n, root); }\n\nvoid InvFFT(uint a[], int n, const uint\
     \ root[]) {\n    InvButterfly(a, n, root);\n    const uint invN = InvMod(n);\n\
-    \    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invN % MOD;\n}\n\ntemplate<typename\
-    \ Fn>\nstd::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const std::vector<uint>\
-    \ &>, std::vector<uint>>\nSemiRelaxedConv(const std::vector<uint> &a, Fn g, int\
-    \ n) {\n    assert(n >= 0);\n    if (n == 0) return {};\n    enum { Threshold\
-    \ = 32 };\n    assert((Threshold & (Threshold - 1)) == 0);\n    const int N  \
-    \               = GetFFTSize(n);\n    const auto [root, inv_root] = GetFFTRoot(N);\n\
+    \    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invN % MOD;\n}\n\n// see:\n\
+    // [1]: Joris van der Hoeven. Relaxed mltiplication using the middle product.\
+    \ ISSAC 2003: 143-147\n//      https://www.texmacs.org/joris/issac03/issac03.pdf\n\
+    template<typename Fn>\nstd::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const\
+    \ std::vector<uint> &>, std::vector<uint>>\nSemiRelaxedConv(const std::vector<uint>\
+    \ &a, Fn g, int n) {\n    assert(n >= 0);\n    if (n == 0) return {};\n    enum\
+    \ { Threshold = 32 };\n    assert((Threshold & (Threshold - 1)) == 0);\n    const\
+    \ int N                 = GetFFTSize(n);\n    const auto [root, inv_root] = GetFFTRoot(N);\n\
     \    std::vector<std::vector<uint>> dftA;\n    for (int i = Threshold * 2; i <=\
     \ N; i *= 2) {\n        auto &&aa = dftA.emplace_back(i);\n        copy(begin(a),\
     \ min(begin(a) + i, end(a)), begin(aa));\n        FFT(data(aa), i, data(root));\n\
@@ -191,12 +196,12 @@ data:
     \    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int n;\n\
     \    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i = 0; i < n; ++i)\
     \ std::cin >> a[i];\n    const auto expA = FPSExp(a, n);\n    for (int i = 0;\
-    \ i < n; ++i) std::cout << expA[i] << ' ';\n    return 0;\n}"
+    \ i < n; ++i) std::cout << expA[i] << ' ';\n    return 0;\n}\n"
   dependsOn: []
   isVerificationFile: true
   path: standalone_test/formal_power_series/exp_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
   requiredBy: []
-  timestamp: '2025-08-24 00:19:43+08:00'
+  timestamp: '2025-08-24 01:40:23+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/formal_power_series/exp_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
