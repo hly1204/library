@@ -97,7 +97,7 @@ data:
     \           }\n            P.swap(nextP);\n            std::memset(data(P), 0,\
     \ sizeof(uint) * (d * n * 2));\n            std::memset(data(Q) + d * n * 2, 0,\
     \ sizeof(uint) * (d * n * 2));\n        }\n        P.erase(begin(P), begin(P)\
-    \ + d * n * 2);\n    };\n    f.insert(begin(f), N - n, 0);\n    f.resize(N);\n\
+    \ + d * n * 2);\n    };\n    f.insert(begin(f), N - n, 0u);\n    f.resize(N);\n\
     \    reverse(begin(f), end(f));\n    f.insert(begin(f), N, 0u);\n    g.resize(N\
     \ * 2);\n    for (int i = 0; i < N; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);\n\
     \    std::memset(data(g) + N, 0, sizeof(uint) * N);\n    KinoshitaLi(f, g, 1,\
@@ -240,7 +240,7 @@ data:
     \           }\n            P.swap(nextP);\n            std::memset(data(P), 0,\
     \ sizeof(uint) * (d * n * 2));\n            std::memset(data(Q) + d * n * 2, 0,\
     \ sizeof(uint) * (d * n * 2));\n        }\n        P.erase(begin(P), begin(P)\
-    \ + d * n * 2);\n    };\n    f.insert(begin(f), N - n, 0);\n    f.resize(N);\n\
+    \ + d * n * 2);\n    };\n    f.insert(begin(f), N - n, 0u);\n    f.resize(N);\n\
     \    reverse(begin(f), end(f));\n    f.insert(begin(f), N, 0u);\n    g.resize(N\
     \ * 2);\n    for (int i = 0; i < N; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);\n\
     \    std::memset(data(g) + N, 0, sizeof(uint) * N);\n    KinoshitaLi(f, g, 1,\
@@ -304,7 +304,7 @@ data:
   isVerificationFile: true
   path: standalone_test/formal_power_series/compositional_inverse_of_formal_power_series_large.kinoshita_li.test.cpp
   requiredBy: []
-  timestamp: '2025-08-24 01:49:41+08:00'
+  timestamp: '2025-08-24 02:31:04+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/formal_power_series/compositional_inverse_of_formal_power_series_large.kinoshita_li.test.cpp
