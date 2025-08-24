@@ -82,7 +82,7 @@ data:
     \    const auto KinoshitaLi = [&](std::vector<uint> &P, std::vector<uint> &Q,\
     \ int d, int n) {\n        assert((int)size(P) == d * n * 2);\n        assert((int)size(Q)\
     \ == d * n * 2);\n        P.insert(begin(P), d * n * 2, 0u);\n        Q.resize(d\
-    \ * n * 4);\n        std::vector<uint> nextP(d * n * 4);\n        for (; n > 1;\
+    \ * n * 4);\n        std::vector<uint> nextP(d * n * 4);\n        for (; n > 2;\
     \ d *= 2, n /= 2) {\n            Q[d * n * 2] = 1;\n            FFT(data(P), d\
     \ * n * 4, data(inv_root));\n            FFT(data(Q), d * n * 4, data(root));\n\
     \            uint *const nP = data(nextP) + d * n * 2;\n            for (int i\
@@ -96,9 +96,16 @@ data:
     \         std::memset(data(Q) + i * n + n / 2, 0, sizeof(uint) * (n / 2));\n \
     \           }\n            P.swap(nextP);\n            std::memset(data(P), 0,\
     \ sizeof(uint) * (d * n * 2));\n            std::memset(data(Q) + d * n * 2, 0,\
-    \ sizeof(uint) * (d * n * 2));\n        }\n        P.erase(begin(P), begin(P)\
-    \ + d * n * 2);\n    };\n    f.insert(begin(f), N - n, 0u);\n    f.resize(N);\n\
-    \    reverse(begin(f), end(f));\n    f.insert(begin(f), N, 0u);\n    g.resize(N\
+    \ sizeof(uint) * (d * n * 2));\n        }\n        if (n > 1) {\n            assert(n\
+    \ == 2);\n            Q[d * n * 2] = 1;\n            FFT(data(P), d * n * 4, data(inv_root));\n\
+    \            FFT(data(Q), d * n * 4, data(root));\n            uint *const nP\
+    \ = data(nextP) + d * n * 2;\n            for (int i = 0; i < d * n * 4; i +=\
+    \ 2) {\n                if ((nP[i / 2] = ((ull)P[i] * Q[i + 1] + (ull)P[i + 1]\
+    \ * Q[i]) % MOD) & 1)\n                    nP[i / 2] += MOD;\n               \
+    \ nP[i / 2] /= 2;\n            }\n            InvFFT(nP, d * n * 2, data(root));\n\
+    \            P.swap(nextP);\n        }\n        P.erase(begin(P), begin(P) + d\
+    \ * n * 2);\n    };\n    f.insert(begin(f), N - n, 0u);\n    f.resize(N);\n  \
+    \  reverse(begin(f), end(f));\n    f.insert(begin(f), N, 0u);\n    g.resize(N\
     \ * 2);\n    for (int i = 0; i < N; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);\n\
     \    std::memset(data(g) + N, 0, sizeof(uint) * N);\n    KinoshitaLi(f, g, 1,\
     \ N);\n    for (int i = 0; i < N; ++i) f[i] = f[i * 2 + 1];\n    f.resize(n);\n\
@@ -225,7 +232,7 @@ data:
     \    const auto KinoshitaLi = [&](std::vector<uint> &P, std::vector<uint> &Q,\
     \ int d, int n) {\n        assert((int)size(P) == d * n * 2);\n        assert((int)size(Q)\
     \ == d * n * 2);\n        P.insert(begin(P), d * n * 2, 0u);\n        Q.resize(d\
-    \ * n * 4);\n        std::vector<uint> nextP(d * n * 4);\n        for (; n > 1;\
+    \ * n * 4);\n        std::vector<uint> nextP(d * n * 4);\n        for (; n > 2;\
     \ d *= 2, n /= 2) {\n            Q[d * n * 2] = 1;\n            FFT(data(P), d\
     \ * n * 4, data(inv_root));\n            FFT(data(Q), d * n * 4, data(root));\n\
     \            uint *const nP = data(nextP) + d * n * 2;\n            for (int i\
@@ -239,9 +246,16 @@ data:
     \         std::memset(data(Q) + i * n + n / 2, 0, sizeof(uint) * (n / 2));\n \
     \           }\n            P.swap(nextP);\n            std::memset(data(P), 0,\
     \ sizeof(uint) * (d * n * 2));\n            std::memset(data(Q) + d * n * 2, 0,\
-    \ sizeof(uint) * (d * n * 2));\n        }\n        P.erase(begin(P), begin(P)\
-    \ + d * n * 2);\n    };\n    f.insert(begin(f), N - n, 0u);\n    f.resize(N);\n\
-    \    reverse(begin(f), end(f));\n    f.insert(begin(f), N, 0u);\n    g.resize(N\
+    \ sizeof(uint) * (d * n * 2));\n        }\n        if (n > 1) {\n            assert(n\
+    \ == 2);\n            Q[d * n * 2] = 1;\n            FFT(data(P), d * n * 4, data(inv_root));\n\
+    \            FFT(data(Q), d * n * 4, data(root));\n            uint *const nP\
+    \ = data(nextP) + d * n * 2;\n            for (int i = 0; i < d * n * 4; i +=\
+    \ 2) {\n                if ((nP[i / 2] = ((ull)P[i] * Q[i + 1] + (ull)P[i + 1]\
+    \ * Q[i]) % MOD) & 1)\n                    nP[i / 2] += MOD;\n               \
+    \ nP[i / 2] /= 2;\n            }\n            InvFFT(nP, d * n * 2, data(root));\n\
+    \            P.swap(nextP);\n        }\n        P.erase(begin(P), begin(P) + d\
+    \ * n * 2);\n    };\n    f.insert(begin(f), N - n, 0u);\n    f.resize(N);\n  \
+    \  reverse(begin(f), end(f));\n    f.insert(begin(f), N, 0u);\n    g.resize(N\
     \ * 2);\n    for (int i = 0; i < N; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);\n\
     \    std::memset(data(g) + N, 0, sizeof(uint) * N);\n    KinoshitaLi(f, g, 1,\
     \ N);\n    for (int i = 0; i < N; ++i) f[i] = f[i * 2 + 1];\n    f.resize(n);\n\
@@ -304,7 +318,7 @@ data:
   isVerificationFile: true
   path: standalone_test/formal_power_series/compositional_inverse_of_formal_power_series_large.kinoshita_li.test.cpp
   requiredBy: []
-  timestamp: '2025-08-24 02:31:04+08:00'
+  timestamp: '2025-08-24 10:20:02+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/formal_power_series/compositional_inverse_of_formal_power_series_large.kinoshita_li.test.cpp
