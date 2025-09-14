@@ -102,13 +102,11 @@ public:
             a->P->R = a;
             a->base_rotate();
         }
-        a->base_update(); // now a is the root
+        a->base_update();
+        // now a is the root of the virtual tree
         return (STTreeNodeT *)lca;
     }
-    void evert() {
-        expose();
-        base_flip();
-    }
+    void evert() { expose(), base_flip(); }
     STTreeNodeT *root() {
         expose();
         STTreeNodeBase *a = this;
@@ -128,10 +126,12 @@ public:
         a->base_splay();
         return (STTreeNodeT *)a;
     }
+    // this op. WILL change the root
     void link(STTreeNodeT *a) {
         evert();
         if (a->root() != derived()) P = a;
     }
+    // this op. will NOT change the root
     void cut() {
         expose();
         STTreeNodeBase *b = L;
@@ -139,6 +139,7 @@ public:
         if (b) b->P = nullptr;
         base_update();
     }
+    // this op. will NOT change the root
     void cut(STTreeNodeT *b) {
         if (parent() == b) {
             cut();
@@ -159,6 +160,6 @@ public:
             a->base_propagate();
         }
         a->base_splay();
-        return a;
+        return (STTreeNodeT *)a;
     }
 };
