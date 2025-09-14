@@ -37,12 +37,12 @@ data:
     \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
     \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"treap_node_base.hpp\"\
     \n#include <array>\n#include <random>\n#include <utility>\n\ntemplate<typename\
-    \ TreapNode> class TreapNodeBase {\n    TreapNodeBase *L;\n    TreapNodeBase *R;\n\
-    \    int Rank;\n    int Size;\n    bool NeedFlip;\n\n    static inline xoshiro256starstar\
+    \ TreapNodeT> class TreapNodeBase {\n    TreapNodeBase *L;\n    TreapNodeBase\
+    \ *R;\n    int Rank;\n    int Size;\n    bool NeedFlip;\n\n    static inline xoshiro256starstar\
     \ gen{std::random_device{}()};\n    static inline std::uniform_int_distribution<int>\
-    \ dis{0, 998244353};\n\n    TreapNode *derived() { return (TreapNode *)this; }\n\
-    \n    // CRTP reimplement\n    void do_flip() {}\n    void do_propagate() {}\n\
-    \    void do_update() {}\n\nprotected:\n    void base_flip() {\n        NeedFlip\
+    \ dis{0, 998244353};\n\n    TreapNodeT *derived() { return (TreapNodeT *)this;\
+    \ }\n\n    // CRTP reimplement\n    void do_flip() {}\n    void do_propagate()\
+    \ {}\n    void do_update() {}\n\nprotected:\n    void base_flip() {\n        NeedFlip\
     \ = !NeedFlip;\n        std::swap(L, R);\n        derived()->do_flip();\n    }\n\
     \    // base_propagate() is called to propagate the update information to child(ren).\n\
     \    // There is no need to update the information combined from child(ren)\n\
@@ -70,23 +70,23 @@ data:
     \        a->L        = c;\n        a->base_update();\n        return {b, a};\n\
     \    }\n\n    TreapNodeBase() : L(), R(), Rank(dis(gen)), Size(1), NeedFlip()\
     \ {}\n\npublic:\n    int size() const { return Size; }\n    int rank() const {\
-    \ return Rank; }\n\n    TreapNode *left() const { return (TreapNode *)L; }\n \
-    \   TreapNode *right() const { return (TreapNode *)R; }\n\n    void flip() { base_flip();\
-    \ }\n    template<typename... Nodes> static TreapNode *join(Nodes... node) {\n\
-    \        struct Helper {\n            TreapNodeBase *Val;\n            Helper\
-    \ &operator|(TreapNodeBase *A) {\n                Val = TreapNodeBase::base_join(Val,\
+    \ return Rank; }\n\n    TreapNodeT *left() const { return (TreapNodeT *)L; }\n\
+    \    TreapNodeT *right() const { return (TreapNodeT *)R; }\n\n    void flip()\
+    \ { base_flip(); }\n    template<typename... Nodes> static TreapNodeT *join(Nodes...\
+    \ node) {\n        struct Helper {\n            TreapNodeBase *Val;\n        \
+    \    Helper &operator|(TreapNodeBase *A) {\n                Val = TreapNodeBase::base_join(Val,\
     \ A);\n                return *this;\n            }\n        } nil{nullptr};\n\
-    \        return (TreapNode *)(nil | ... | node).Val;\n    }\n    template<typename...\
-    \ Parts>\n    static std::array<TreapNode *, sizeof...(Parts) + 1> split(TreapNode\
-    \ *a, Parts... part) {\n        std::array<TreapNode *, sizeof...(Parts) + 1>\
+    \        return (TreapNodeT *)(nil | ... | node).Val;\n    }\n    template<typename...\
+    \ Parts>\n    static std::array<TreapNodeT *, sizeof...(Parts) + 1> split(TreapNodeT\
+    \ *a, Parts... part) {\n        std::array<TreapNodeT *, sizeof...(Parts) + 1>\
     \ res;\n        res[0]    = a;\n        int index = 0;\n        (\n          \
     \  [&](int s) {\n                auto [l, r]  = base_split(res[index], s);\n \
-    \               res[index]   = (TreapNode *)l;\n                res[++index] =\
-    \ (TreapNode *)r;\n            }(part),\n            ...);\n        return res;\n\
-    \    }\n\n    TreapNode *select(int k) {\n        base_propagate();\n        const\
-    \ int leftsize = left() ? left()->size() : 0;\n        if (k == leftsize) return\
-    \ (TreapNode *)this;\n        if (k < leftsize) return left()->select(k);\n  \
-    \      return right()->select(k - leftsize - 1);\n    }\n};\n#line 4 \"test/data_structure/range_reverse_range_sum.0.test.cpp\"\
+    \               res[index]   = (TreapNodeT *)l;\n                res[++index]\
+    \ = (TreapNodeT *)r;\n            }(part),\n            ...);\n        return\
+    \ res;\n    }\n\n    TreapNodeT *select(int k) {\n        base_propagate();\n\
+    \        const int leftsize = left() ? left()->size() : 0;\n        if (k == leftsize)\
+    \ return (TreapNodeT *)this;\n        if (k < leftsize) return left()->select(k);\n\
+    \        return right()->select(k - leftsize - 1);\n    }\n};\n#line 4 \"test/data_structure/range_reverse_range_sum.0.test.cpp\"\
     \n#include <iostream>\n#include <memory>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    struct TreapNode : TreapNodeBase<TreapNode> {\n\
     \        int Val;\n        long long Sum;\n        void do_update() {\n      \
@@ -120,7 +120,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_reverse_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2025-01-19 15:28:01+08:00'
+  timestamp: '2025-09-14 18:03:01+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_reverse_range_sum.0.test.cpp
