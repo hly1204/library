@@ -5,7 +5,7 @@
 #include <random>
 #include <utility>
 
-template<typename TreapNode> class TreapNodeBase {
+template<typename TreapNodeT> class TreapNodeBase {
     TreapNodeBase *L;
     TreapNodeBase *R;
     int Rank;
@@ -15,7 +15,7 @@ template<typename TreapNode> class TreapNodeBase {
     static inline xoshiro256starstar gen{std::random_device{}()};
     static inline std::uniform_int_distribution<int> dis{0, 998244353};
 
-    TreapNode *derived() { return (TreapNode *)this; }
+    TreapNodeT *derived() { return (TreapNodeT *)this; }
 
     // CRTP reimplement
     void do_flip() {}
@@ -92,11 +92,11 @@ public:
     int size() const { return Size; }
     int rank() const { return Rank; }
 
-    TreapNode *left() const { return (TreapNode *)L; }
-    TreapNode *right() const { return (TreapNode *)R; }
+    TreapNodeT *left() const { return (TreapNodeT *)L; }
+    TreapNodeT *right() const { return (TreapNodeT *)R; }
 
     void flip() { base_flip(); }
-    template<typename... Nodes> static TreapNode *join(Nodes... node) {
+    template<typename... Nodes> static TreapNodeT *join(Nodes... node) {
         struct Helper {
             TreapNodeBase *Val;
             Helper &operator|(TreapNodeBase *A) {
@@ -104,27 +104,27 @@ public:
                 return *this;
             }
         } nil{nullptr};
-        return (TreapNode *)(nil | ... | node).Val;
+        return (TreapNodeT *)(nil | ... | node).Val;
     }
     template<typename... Parts>
-    static std::array<TreapNode *, sizeof...(Parts) + 1> split(TreapNode *a, Parts... part) {
-        std::array<TreapNode *, sizeof...(Parts) + 1> res;
+    static std::array<TreapNodeT *, sizeof...(Parts) + 1> split(TreapNodeT *a, Parts... part) {
+        std::array<TreapNodeT *, sizeof...(Parts) + 1> res;
         res[0]    = a;
         int index = 0;
         (
             [&](int s) {
                 auto [l, r]  = base_split(res[index], s);
-                res[index]   = (TreapNode *)l;
-                res[++index] = (TreapNode *)r;
+                res[index]   = (TreapNodeT *)l;
+                res[++index] = (TreapNodeT *)r;
             }(part),
             ...);
         return res;
     }
 
-    TreapNode *select(int k) {
+    TreapNodeT *select(int k) {
         base_propagate();
         const int leftsize = left() ? left()->size() : 0;
-        if (k == leftsize) return (TreapNode *)this;
+        if (k == leftsize) return (TreapNodeT *)this;
         if (k < leftsize) return left()->select(k);
         return right()->select(k - leftsize - 1);
     }
