@@ -117,7 +117,7 @@ void InvFFT(uint a[], int n, const uint root[]) {
 }
 
 // see:
-// [1]: Joris van der Hoeven. Relaxed mltiplication using the middle product. ISSAC 2003: 143-147
+// [1]: Joris van der Hoeven. Relaxed multiplication using the middle product. ISSAC 2003: 143-147
 //      https://www.texmacs.org/joris/issac03/issac03.pdf
 template<typename Fn>
 std::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const std::vector<uint> &>, std::vector<uint>>
