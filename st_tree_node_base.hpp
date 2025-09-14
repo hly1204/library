@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cassert>
 #include <utility>
 
 template<typename STTreeNodeT> class STTreeNodeBase {
@@ -12,10 +11,7 @@ template<typename STTreeNodeT> class STTreeNodeBase {
 
     STTreeNodeT *derived() { return (STTreeNodeT *)this; }
     enum class Child { LEFT, RIGHT };
-    Child which() const {
-        assert(P != nullptr);
-        return P->L == this ? Child::LEFT : Child::RIGHT;
-    }
+    Child which() const { return P->L == this ? Child::LEFT : Child::RIGHT; }
     // has NO parent OR NOT a prefered child
     bool is_root() const { return P == nullptr || (P->L != this && P->R != this); }
     bool is_left_child() const { return which() == Child::LEFT; }
@@ -150,7 +146,7 @@ public:
     STTreeNodeT *select(int k) {
         STTreeNodeBase *a = this;
         a->base_propagate();
-        while ((a->L ? a->L->size() : 0) != 0) {
+        while ((a->L ? a->L->size() : 0) != k) {
             if ((a->L ? a->L->size() : 0) < k) {
                 k -= (a->L ? a->L->size() : 0) + 1;
                 a = a->R;
