@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: st_tree_node_base.hpp
     title: st_tree_node_base.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite
@@ -79,48 +79,48 @@ data:
     \        }\n    }\n    // base_update() is called to update the information combined\
     \ from child(ren).\n    void base_update() {\n        Size = 1;\n        if (L)\
     \ Size += L->Size;\n        if (R) Size += R->Size;\n        derived()->do_update();\n\
-    \    }\n    void base_rotate() {\n        assert(P != nullptr);\n        P->base_propagate();\n\
-    \        base_propagate();\n        if (is_left_child()) {\n            if ((P->L\
-    \ = R)) R->P = P;\n            if (!P->is_root()) {\n                if (P->is_left_child())\
-    \ P->P->L = this;\n                else { P->P->R = this; }\n            }\n \
-    \           R = P, P = P->P, R->P = this;\n            R->base_update();\n   \
-    \     } else {\n            if ((P->R = L)) L->P = P;\n            if (!P->is_root())\
-    \ {\n                if (P->is_left_child()) P->P->L = this;\n               \
-    \ else { P->P->R = this; }\n            }\n            L = P, P = P->P, L->P =\
-    \ this;\n            L->base_update();\n        }\n    }\n    void base_splay()\
-    \ {\n        for (base_propagate(); !is_root(); base_rotate()) {\n           \
-    \ if (!P->is_root()) {\n                P->P->base_propagate();\n            \
-    \    P->which() == which() ? P->base_rotate() : base_rotate();\n            }\n\
-    \        }\n        base_update();\n    }\n\n    STTreeNodeBase() : L(), R(),\
-    \ P(), Size(1), NeedFlip() {}\n\npublic:\n    int size() const { return Size;\
-    \ }\n\n    STTreeNodeT *left() const { return (STTreeNodeT *)L; }\n    STTreeNodeT\
-    \ *right() const { return (STTreeNodeT *)R; }\n\n    void update() { base_update();\
-    \ }\n\n    STTreeNodeT *expose() {\n        STTreeNodeBase *a = this, *lca = a;\n\
-    \        base_splay();\n        a->R = nullptr;\n        while (a->P) {\n    \
-    \        lca = a->P;\n            lca->base_splay();\n            a->P->R = a;\n\
-    \            a->base_rotate();\n        }\n        a->base_update();\n       \
-    \ // now a is the root of the virtual tree\n        return (STTreeNodeT *)lca;\n\
-    \    }\n    void evert() { expose(), base_flip(); }\n    STTreeNodeT *root() {\n\
-    \        expose();\n        STTreeNodeBase *a = this;\n        while (a->L) a\
-    \ = a->L;\n        a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n\
-    \    STTreeNodeT *parent() {\n        expose();\n        if (!L) return nullptr;\n\
-    \        STTreeNodeBase *a = L;\n        a->base_propagate();\n        while (a->R)\
-    \ {\n            a = a->R;\n            a->base_propagate();\n        }\n    \
-    \    a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n    // this op.\
-    \ WILL change the root\n    void link(STTreeNodeT *a) {\n        evert();\n  \
-    \      if (a->root() != derived()) P = a;\n    }\n    // this op. will NOT change\
-    \ the root\n    void cut() {\n        expose();\n        STTreeNodeBase *b = L;\n\
-    \        L                 = nullptr;\n        if (b) b->P = nullptr;\n      \
-    \  base_update();\n    }\n    // this op. will NOT change the root\n    void cut(STTreeNodeT\
-    \ *b) {\n        if (parent() == b) {\n            cut();\n        } else if (b->parent()\
-    \ == derived()) {\n            b->cut();\n        }\n    }\n    STTreeNodeT *select(int\
-    \ k) {\n        STTreeNodeBase *a = this;\n        a->base_propagate();\n    \
-    \    while ((a->L ? a->L->size() : 0) != k) {\n            if ((a->L ? a->L->size()\
-    \ : 0) < k) {\n                k -= (a->L ? a->L->size() : 0) + 1;\n         \
-    \       a = a->R;\n            } else {\n                a = a->L;\n         \
-    \   }\n            a->base_propagate();\n        }\n        a->base_splay();\n\
-    \        return (STTreeNodeT *)a;\n    }\n};\n#line 5 \"test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\
-    \n#include <array>\n#line 7 \"test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\
+    \    }\n    void base_rotate() {\n        P->base_propagate();\n        base_propagate();\n\
+    \        if (is_left_child()) {\n            if ((P->L = R)) R->P = P;\n     \
+    \       if (!P->is_root()) {\n                if (P->is_left_child()) P->P->L\
+    \ = this;\n                else { P->P->R = this; }\n            }\n         \
+    \   R = P, P = P->P, R->P = this;\n            R->base_update();\n        } else\
+    \ {\n            if ((P->R = L)) L->P = P;\n            if (!P->is_root()) {\n\
+    \                if (P->is_left_child()) P->P->L = this;\n                else\
+    \ { P->P->R = this; }\n            }\n            L = P, P = P->P, L->P = this;\n\
+    \            L->base_update();\n        }\n    }\n    void base_splay() {\n  \
+    \      for (base_propagate(); !is_root(); base_rotate()) {\n            if (!P->is_root())\
+    \ {\n                P->P->base_propagate();\n                P->which() == which()\
+    \ ? P->base_rotate() : base_rotate();\n            }\n        }\n        base_update();\n\
+    \    }\n\n    STTreeNodeBase() : L(), R(), P(), Size(1), NeedFlip() {}\n\npublic:\n\
+    \    int size() const { return Size; }\n\n    STTreeNodeT *left() const { return\
+    \ (STTreeNodeT *)L; }\n    STTreeNodeT *right() const { return (STTreeNodeT *)R;\
+    \ }\n\n    void update() { base_update(); }\n\n    STTreeNodeT *expose() {\n \
+    \       STTreeNodeBase *a = this, *lca = a;\n        base_splay();\n        a->R\
+    \ = nullptr;\n        while (a->P) {\n            lca = a->P;\n            lca->base_splay();\n\
+    \            a->P->R = a;\n            a->base_rotate();\n        }\n        a->base_update();\n\
+    \        // now a is the root of the virtual tree\n        return (STTreeNodeT\
+    \ *)lca;\n    }\n    void evert() { expose(), base_flip(); }\n    STTreeNodeT\
+    \ *root() {\n        expose();\n        STTreeNodeBase *a = this;\n        while\
+    \ (a->L) a = a->L;\n        a->base_splay();\n        return (STTreeNodeT *)a;\n\
+    \    }\n    STTreeNodeT *parent() {\n        expose();\n        if (!L) return\
+    \ nullptr;\n        STTreeNodeBase *a = L;\n        a->base_propagate();\n   \
+    \     while (a->R) {\n            a = a->R;\n            a->base_propagate();\n\
+    \        }\n        a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n\
+    \    // this op. WILL change the root\n    void link(STTreeNodeT *a) {\n     \
+    \   evert();\n        if (a->root() != derived()) P = a;\n    }\n    // this op.\
+    \ will NOT change the root\n    void cut() {\n        expose();\n        STTreeNodeBase\
+    \ *b = L;\n        L                 = nullptr;\n        if (b) b->P = nullptr;\n\
+    \        base_update();\n    }\n    // this op. will NOT change the root\n   \
+    \ void cut(STTreeNodeT *b) {\n        if (parent() == b) {\n            cut();\n\
+    \        } else if (b->parent() == derived()) {\n            b->cut();\n     \
+    \   }\n    }\n    STTreeNodeT *select(int k) {\n        STTreeNodeBase *a = this;\n\
+    \        a->base_propagate();\n        while ((a->L ? a->L->size() : 0) != k)\
+    \ {\n            if ((a->L ? a->L->size() : 0) < k) {\n                k -= (a->L\
+    \ ? a->L->size() : 0) + 1;\n                a = a->R;\n            } else {\n\
+    \                a = a->L;\n            }\n            a->base_propagate();\n\
+    \        }\n        a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n\
+    };\n#line 5 \"test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\n\
+    #include <array>\n#line 7 \"test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\
     \n#include <memory>\n#line 9 \"test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint           = ModInt<998244353>;\n    using LinearFunction = std::array<mint,\
@@ -179,8 +179,8 @@ data:
   isVerificationFile: true
   path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-15 01:19:53+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2025-09-15 01:37:19+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
 layout: document
