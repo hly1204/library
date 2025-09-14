@@ -109,7 +109,7 @@ data:
     \ * 2);\n    for (int i = 0; i < N; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);\n\
     \    std::memset(data(g) + N, 0, sizeof(uint) * N);\n    KinoshitaLi(f, g, 1,\
     \ N);\n    for (int i = 0; i < N; ++i) f[i] = f[i * 2 + 1];\n    f.resize(n);\n\
-    \    return f;\n}\n\n// see:\n// [1]: Joris van der Hoeven. Relaxed mltiplication\
+    \    return f;\n}\n\n// see:\n// [1]: Joris van der Hoeven. Relaxed multiplication\
     \ using the middle product. ISSAC 2003: 143-147\n//      https://www.texmacs.org/joris/issac03/issac03.pdf\n\
     template<typename Fn>\nstd::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const\
     \ std::vector<uint> &>, std::vector<uint>>\nSemiRelaxedConv(const std::vector<uint>\
@@ -259,7 +259,7 @@ data:
     \ * 2);\n    for (int i = 0; i < N; ++i) g[i] = (g[i] != 0 ? MOD - g[i] : 0);\n\
     \    std::memset(data(g) + N, 0, sizeof(uint) * N);\n    KinoshitaLi(f, g, 1,\
     \ N);\n    for (int i = 0; i < N; ++i) f[i] = f[i * 2 + 1];\n    f.resize(n);\n\
-    \    return f;\n}\n\n// see:\n// [1]: Joris van der Hoeven. Relaxed mltiplication\
+    \    return f;\n}\n\n// see:\n// [1]: Joris van der Hoeven. Relaxed multiplication\
     \ using the middle product. ISSAC 2003: 143-147\n//      https://www.texmacs.org/joris/issac03/issac03.pdf\n\
     template<typename Fn>\nstd::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const\
     \ std::vector<uint> &>, std::vector<uint>>\nSemiRelaxedConv(const std::vector<uint>\
@@ -318,7 +318,7 @@ data:
   isVerificationFile: true
   path: standalone_test/formal_power_series/compositional_inverse_of_formal_power_series_large.kinoshita_li.test.cpp
   requiredBy: []
-  timestamp: '2025-08-24 10:20:02+08:00'
+  timestamp: '2025-09-14 23:18:06+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/formal_power_series/compositional_inverse_of_formal_power_series_large.kinoshita_li.test.cpp

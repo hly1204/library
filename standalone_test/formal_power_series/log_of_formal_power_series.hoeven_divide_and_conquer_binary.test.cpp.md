@@ -72,7 +72,7 @@ data:
     \ root[]) { Butterfly(a, n, root); }\n\nvoid InvFFT(uint a[], int n, const uint\
     \ root[]) {\n    InvButterfly(a, n, root);\n    const uint invN = InvMod(n);\n\
     \    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invN % MOD;\n}\n\n// see:\n\
-    // [1]: Joris van der Hoeven. Relaxed mltiplication using the middle product.\
+    // [1]: Joris van der Hoeven. Relaxed multiplication using the middle product.\
     \ ISSAC 2003: 143-147\n//      https://www.texmacs.org/joris/issac03/issac03.pdf\n\
     template<typename Fn>\nstd::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const\
     \ std::vector<uint> &>, std::vector<uint>>\nSemiRelaxedConv(const std::vector<uint>\
@@ -170,7 +170,7 @@ data:
     \ root[]) { Butterfly(a, n, root); }\n\nvoid InvFFT(uint a[], int n, const uint\
     \ root[]) {\n    InvButterfly(a, n, root);\n    const uint invN = InvMod(n);\n\
     \    for (int i = 0; i < n; ++i) a[i] = (ull)a[i] * invN % MOD;\n}\n\n// see:\n\
-    // [1]: Joris van der Hoeven. Relaxed mltiplication using the middle product.\
+    // [1]: Joris van der Hoeven. Relaxed multiplication using the middle product.\
     \ ISSAC 2003: 143-147\n//      https://www.texmacs.org/joris/issac03/issac03.pdf\n\
     template<typename Fn>\nstd::enable_if_t<std::is_invocable_r_v<uint, Fn, int, const\
     \ std::vector<uint> &>, std::vector<uint>>\nSemiRelaxedConv(const std::vector<uint>\
@@ -213,7 +213,7 @@ data:
   isVerificationFile: true
   path: standalone_test/formal_power_series/log_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
   requiredBy: []
-  timestamp: '2025-08-24 01:40:23+08:00'
+  timestamp: '2025-09-14 23:18:06+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/formal_power_series/log_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
