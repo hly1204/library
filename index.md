@@ -408,6 +408,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
       title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/tree/lca.0.test.cpp
+      title: test/tree/lca.0.test.cpp
 layout: toppage
 ---
 [![License](https://img.shields.io/github/license/hly1204/library)](https://github.com/hly1204/library/blob/master/LICENSE) ![Standard](https://img.shields.io/badge/C%2B%2B-17-green)

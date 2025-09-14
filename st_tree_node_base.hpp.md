@@ -6,6 +6,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
     title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/tree/lca.0.test.cpp
+    title: test/tree/lca.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -137,6 +140,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
+  - test/tree/lca.0.test.cpp
 documentation_of: st_tree_node_base.hpp
 layout: document
 redirect_from:
