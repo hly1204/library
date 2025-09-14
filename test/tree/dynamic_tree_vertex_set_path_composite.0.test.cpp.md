@@ -17,7 +17,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite
     links:
     - https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite
-  bundledCode: "#line 1 \"test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\
+  bundledCode: "#line 1 \"test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite\"\
     \n\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\n\
     // clang-format off\ntemplate<unsigned Mod> class ModInt {\n    static_assert((Mod\
@@ -118,9 +118,9 @@ data:
     \   k -= (a->L ? a->L->size() : 0) + 1;\n                a = a->R;\n         \
     \   } else {\n                a = a->L;\n            }\n            a->base_propagate();\n\
     \        }\n        a->base_splay();\n        return a;\n    }\n};\n#line 5 \"\
-    test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\n#include\
-    \ <array>\n#line 7 \"test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\
-    \n#include <memory>\n#line 9 \"test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\
+    test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\n#include <array>\n\
+    #line 7 \"test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\n#include\
+    \ <memory>\n#line 9 \"test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint           = ModInt<998244353>;\n    using LinearFunction = std::array<mint,\
     \ 2>;\n    struct STTreeNode : STTreeNodeBase<STTreeNode> {\n        LinearFunction\
@@ -176,15 +176,15 @@ data:
   - modint.hpp
   - st_tree_node_base.hpp
   isVerificationFile: true
-  path: test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
+  path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-14 21:42:09+08:00'
+  timestamp: '2025-09-14 21:46:59+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
+documentation_of: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
-- /verify/test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp.html
-title: test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
+- /verify/test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
+- /verify/test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp.html
+title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
 ---

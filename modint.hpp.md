@@ -22,9 +22,6 @@ data:
     path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
     title: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
-    title: test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/data_structure/point_set_range_composite.0.test.cpp
     title: test/data_structure/point_set_range_composite.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -171,6 +168,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/set_power_series/subset_convolution.0.test.cpp
     title: test/set_power_series/subset_convolution.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
+    title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -270,11 +270,11 @@ data:
   - test/convolution/bitwise_and_convolution.0.test.cpp
   - test/convolution/convolution_mod.0.test.cpp
   - test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
-  - test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
   - test/data_structure/range_affine_range_sum.0.test.cpp
   - test/data_structure/queue_operate_all_composite.0.test.cpp
   - test/data_structure/point_set_range_composite.0.test.cpp
   - test/data_structure/range_affine_point_get.0.test.cpp
+  - test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
   - test/enumerative_combinatorics/bell_number.0.test.cpp
   - test/enumerative_combinatorics/factorial.0.test.cpp
   - test/enumerative_combinatorics/partition_function.0.test.cpp

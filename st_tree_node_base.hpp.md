@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
-    title: test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
+    path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
+    title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -136,7 +136,7 @@ data:
   timestamp: '2025-09-14 21:42:09+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
+  - test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
 documentation_of: st_tree_node_base.hpp
 layout: document
 redirect_from:
