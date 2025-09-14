@@ -20,8 +20,8 @@ data:
     \    STTreeNodeBase *R;\n    STTreeNodeBase *P;\n    int Size;\n    bool NeedFlip;\n\
     \n    STTreeNodeT *derived() { return (STTreeNodeT *)this; }\n    enum class Child\
     \ { LEFT, RIGHT };\n    Child which() const {\n        assert(P != nullptr);\n\
-    \        return P->L == this ? Child::LEFT : Child::RIGHT;\n    }\n    // not\
-    \ root OR not a prefered child\n    bool is_root() const { return P == nullptr\
+    \        return P->L == this ? Child::LEFT : Child::RIGHT;\n    }\n    // has\
+    \ NO parent OR NOT a prefered child\n    bool is_root() const { return P == nullptr\
     \ || (P->L != this && P->R != this); }\n    bool is_left_child() const { return\
     \ which() == Child::LEFT; }\n    bool is_right_child() const { return which()\
     \ == Child::RIGHT; }\n\n    // CRTP reimplement\n    void do_flip() {}\n    void\
@@ -96,7 +96,7 @@ data:
   isVerificationFile: true
   path: test/tree/lca.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-14 21:57:37+08:00'
+  timestamp: '2025-09-14 22:04:07+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/tree/lca.0.test.cpp

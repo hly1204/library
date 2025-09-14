@@ -65,13 +65,13 @@ data:
     \ *P;\n    int Size;\n    bool NeedFlip;\n\n    STTreeNodeT *derived() { return\
     \ (STTreeNodeT *)this; }\n    enum class Child { LEFT, RIGHT };\n    Child which()\
     \ const {\n        assert(P != nullptr);\n        return P->L == this ? Child::LEFT\
-    \ : Child::RIGHT;\n    }\n    // not root OR not a prefered child\n    bool is_root()\
-    \ const { return P == nullptr || (P->L != this && P->R != this); }\n    bool is_left_child()\
-    \ const { return which() == Child::LEFT; }\n    bool is_right_child() const {\
-    \ return which() == Child::RIGHT; }\n\n    // CRTP reimplement\n    void do_flip()\
-    \ {}\n    void do_propagate() {}\n    void do_update() {}\n\nprotected:\n    void\
-    \ base_flip() {\n        NeedFlip = !NeedFlip;\n        std::swap(L, R);\n   \
-    \     derived()->do_flip();\n    }\n    // base_propagate() is called to propagate\
+    \ : Child::RIGHT;\n    }\n    // has NO parent OR NOT a prefered child\n    bool\
+    \ is_root() const { return P == nullptr || (P->L != this && P->R != this); }\n\
+    \    bool is_left_child() const { return which() == Child::LEFT; }\n    bool is_right_child()\
+    \ const { return which() == Child::RIGHT; }\n\n    // CRTP reimplement\n    void\
+    \ do_flip() {}\n    void do_propagate() {}\n    void do_update() {}\n\nprotected:\n\
+    \    void base_flip() {\n        NeedFlip = !NeedFlip;\n        std::swap(L, R);\n\
+    \        derived()->do_flip();\n    }\n    // base_propagate() is called to propagate\
     \ the update information to child(ren).\n    // There is no need to update the\
     \ information combined from child(ren)\n    // which should be done in base_update().\n\
     \    void base_propagate() {\n        derived()->do_propagate();\n        if (NeedFlip)\
@@ -178,7 +178,7 @@ data:
   isVerificationFile: true
   path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-14 21:46:59+08:00'
+  timestamp: '2025-09-14 22:04:07+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp

@@ -20,8 +20,8 @@ data:
     \ NeedFlip;\n\n    STTreeNodeT *derived() { return (STTreeNodeT *)this; }\n  \
     \  enum class Child { LEFT, RIGHT };\n    Child which() const {\n        assert(P\
     \ != nullptr);\n        return P->L == this ? Child::LEFT : Child::RIGHT;\n  \
-    \  }\n    // not root OR not a prefered child\n    bool is_root() const { return\
-    \ P == nullptr || (P->L != this && P->R != this); }\n    bool is_left_child()\
+    \  }\n    // has NO parent OR NOT a prefered child\n    bool is_root() const {\
+    \ return P == nullptr || (P->L != this && P->R != this); }\n    bool is_left_child()\
     \ const { return which() == Child::LEFT; }\n    bool is_right_child() const {\
     \ return which() == Child::RIGHT; }\n\n    // CRTP reimplement\n    void do_flip()\
     \ {}\n    void do_propagate() {}\n    void do_update() {}\n\nprotected:\n    void\
@@ -78,12 +78,12 @@ data:
     \ *R;\n    STTreeNodeBase *P;\n    int Size;\n    bool NeedFlip;\n\n    STTreeNodeT\
     \ *derived() { return (STTreeNodeT *)this; }\n    enum class Child { LEFT, RIGHT\
     \ };\n    Child which() const {\n        assert(P != nullptr);\n        return\
-    \ P->L == this ? Child::LEFT : Child::RIGHT;\n    }\n    // not root OR not a\
-    \ prefered child\n    bool is_root() const { return P == nullptr || (P->L != this\
-    \ && P->R != this); }\n    bool is_left_child() const { return which() == Child::LEFT;\
-    \ }\n    bool is_right_child() const { return which() == Child::RIGHT; }\n\n \
-    \   // CRTP reimplement\n    void do_flip() {}\n    void do_propagate() {}\n \
-    \   void do_update() {}\n\nprotected:\n    void base_flip() {\n        NeedFlip\
+    \ P->L == this ? Child::LEFT : Child::RIGHT;\n    }\n    // has NO parent OR NOT\
+    \ a prefered child\n    bool is_root() const { return P == nullptr || (P->L !=\
+    \ this && P->R != this); }\n    bool is_left_child() const { return which() ==\
+    \ Child::LEFT; }\n    bool is_right_child() const { return which() == Child::RIGHT;\
+    \ }\n\n    // CRTP reimplement\n    void do_flip() {}\n    void do_propagate()\
+    \ {}\n    void do_update() {}\n\nprotected:\n    void base_flip() {\n        NeedFlip\
     \ = !NeedFlip;\n        std::swap(L, R);\n        derived()->do_flip();\n    }\n\
     \    // base_propagate() is called to propagate the update information to child(ren).\n\
     \    // There is no need to update the information combined from child(ren)\n\
@@ -136,7 +136,7 @@ data:
   isVerificationFile: false
   path: st_tree_node_base.hpp
   requiredBy: []
-  timestamp: '2025-09-14 21:42:09+08:00'
+  timestamp: '2025-09-14 22:04:07+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
