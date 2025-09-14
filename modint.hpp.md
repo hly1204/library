@@ -22,6 +22,9 @@ data:
     path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
     title: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
+    title: test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/data_structure/point_set_range_composite.0.test.cpp
     title: test/data_structure/point_set_range_composite.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -267,6 +270,7 @@ data:
   - test/convolution/bitwise_and_convolution.0.test.cpp
   - test/convolution/convolution_mod.0.test.cpp
   - test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
+  - test/data_structure/dynamic_tree_vertex_set_path_composite.0.test.cpp
   - test/data_structure/range_affine_range_sum.0.test.cpp
   - test/data_structure/queue_operate_all_composite.0.test.cpp
   - test/data_structure/point_set_range_composite.0.test.cpp
