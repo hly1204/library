@@ -69,5 +69,7 @@
 "test/set_power_series/log_of_set_power_series.0.test.cpp": "2025-01-19 15:28:01 +0800",
 "test/set_power_series/polynomial_composite_set_power_series.0.test.cpp": "2025-01-19 15:28:01 +0800",
 "test/set_power_series/subset_convolution.0.test.cpp": "2025-01-19 15:28:01 +0800",
-"test/string/suffixarray.0.test.cpp": "2025-05-15 17:15:01 +0800"
+"test/string/suffixarray.0.test.cpp": "2025-05-15 17:15:01 +0800",
+"test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp": "2025-09-15 01:37:19 +0800",
+"test/tree/lca.0.test.cpp": "2025-09-15 01:37:19 +0800"
 }
