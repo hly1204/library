@@ -409,6 +409,9 @@ data:
       path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
       title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/tree/jump_on_tree.0.test.cpp
+      title: test/tree/jump_on_tree.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/tree/lca.0.test.cpp
       title: test/tree/lca.0.test.cpp
 layout: toppage
