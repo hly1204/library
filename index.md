@@ -87,7 +87,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: Middle Product
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -150,7 +150,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: sqrt_mod.hpp
       title: sqrt_mod.hpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: st_tree_node_base.hpp
       title: st_tree_node_base.hpp
     - icon: ':heavy_check_mark:'
@@ -405,10 +405,10 @@ data:
       title: test/string/suffixarray.0.test.cpp
   - name: test/tree
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
       title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/tree/lca.0.test.cpp
       title: test/tree/lca.0.test.cpp
 layout: toppage

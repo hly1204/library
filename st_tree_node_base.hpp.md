@@ -3,24 +3,23 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
     title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/tree/lca.0.test.cpp
     title: test/tree/lca.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
-  bundledCode: "#line 2 \"st_tree_node_base.hpp\"\n\n#include <cassert>\n#include\
-    \ <utility>\n\ntemplate<typename STTreeNodeT> class STTreeNodeBase {\n    STTreeNodeBase\
-    \ *L;\n    STTreeNodeBase *R;\n    STTreeNodeBase *P;\n    int Size;\n    bool\
-    \ NeedFlip;\n\n    STTreeNodeT *derived() { return (STTreeNodeT *)this; }\n  \
-    \  enum class Child { LEFT, RIGHT };\n    Child which() const {\n        assert(P\
-    \ != nullptr);\n        return P->L == this ? Child::LEFT : Child::RIGHT;\n  \
-    \  }\n    // has NO parent OR NOT a prefered child\n    bool is_root() const {\
+  bundledCode: "#line 2 \"st_tree_node_base.hpp\"\n\n#include <utility>\n\ntemplate<typename\
+    \ STTreeNodeT> class STTreeNodeBase {\n    STTreeNodeBase *L;\n    STTreeNodeBase\
+    \ *R;\n    STTreeNodeBase *P;\n    int Size;\n    bool NeedFlip;\n\n    STTreeNodeT\
+    \ *derived() { return (STTreeNodeT *)this; }\n    enum class Child { LEFT, RIGHT\
+    \ };\n    Child which() const { return P->L == this ? Child::LEFT : Child::RIGHT;\
+    \ }\n    // has NO parent OR NOT a prefered child\n    bool is_root() const {\
     \ return P == nullptr || (P->L != this && P->R != this); }\n    bool is_left_child()\
     \ const { return which() == Child::LEFT; }\n    bool is_right_child() const {\
     \ return which() == Child::RIGHT; }\n\n    // CRTP reimplement\n    void do_flip()\
@@ -70,21 +69,20 @@ data:
     \ void cut(STTreeNodeT *b) {\n        if (parent() == b) {\n            cut();\n\
     \        } else if (b->parent() == derived()) {\n            b->cut();\n     \
     \   }\n    }\n    STTreeNodeT *select(int k) {\n        STTreeNodeBase *a = this;\n\
-    \        a->base_propagate();\n        while ((a->L ? a->L->size() : 0) != 0)\
+    \        a->base_propagate();\n        while ((a->L ? a->L->size() : 0) != k)\
     \ {\n            if ((a->L ? a->L->size() : 0) < k) {\n                k -= (a->L\
     \ ? a->L->size() : 0) + 1;\n                a = a->R;\n            } else {\n\
     \                a = a->L;\n            }\n            a->base_propagate();\n\
     \        }\n        a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n\
     };\n"
-  code: "#pragma once\n\n#include <cassert>\n#include <utility>\n\ntemplate<typename\
-    \ STTreeNodeT> class STTreeNodeBase {\n    STTreeNodeBase *L;\n    STTreeNodeBase\
-    \ *R;\n    STTreeNodeBase *P;\n    int Size;\n    bool NeedFlip;\n\n    STTreeNodeT\
-    \ *derived() { return (STTreeNodeT *)this; }\n    enum class Child { LEFT, RIGHT\
-    \ };\n    Child which() const {\n        assert(P != nullptr);\n        return\
-    \ P->L == this ? Child::LEFT : Child::RIGHT;\n    }\n    // has NO parent OR NOT\
-    \ a prefered child\n    bool is_root() const { return P == nullptr || (P->L !=\
-    \ this && P->R != this); }\n    bool is_left_child() const { return which() ==\
-    \ Child::LEFT; }\n    bool is_right_child() const { return which() == Child::RIGHT;\
+  code: "#pragma once\n\n#include <utility>\n\ntemplate<typename STTreeNodeT> class\
+    \ STTreeNodeBase {\n    STTreeNodeBase *L;\n    STTreeNodeBase *R;\n    STTreeNodeBase\
+    \ *P;\n    int Size;\n    bool NeedFlip;\n\n    STTreeNodeT *derived() { return\
+    \ (STTreeNodeT *)this; }\n    enum class Child { LEFT, RIGHT };\n    Child which()\
+    \ const { return P->L == this ? Child::LEFT : Child::RIGHT; }\n    // has NO parent\
+    \ OR NOT a prefered child\n    bool is_root() const { return P == nullptr || (P->L\
+    \ != this && P->R != this); }\n    bool is_left_child() const { return which()\
+    \ == Child::LEFT; }\n    bool is_right_child() const { return which() == Child::RIGHT;\
     \ }\n\n    // CRTP reimplement\n    void do_flip() {}\n    void do_propagate()\
     \ {}\n    void do_update() {}\n\nprotected:\n    void base_flip() {\n        NeedFlip\
     \ = !NeedFlip;\n        std::swap(L, R);\n        derived()->do_flip();\n    }\n\
@@ -132,7 +130,7 @@ data:
     \ *b) {\n        if (parent() == b) {\n            cut();\n        } else if (b->parent()\
     \ == derived()) {\n            b->cut();\n        }\n    }\n    STTreeNodeT *select(int\
     \ k) {\n        STTreeNodeBase *a = this;\n        a->base_propagate();\n    \
-    \    while ((a->L ? a->L->size() : 0) != 0) {\n            if ((a->L ? a->L->size()\
+    \    while ((a->L ? a->L->size() : 0) != k) {\n            if ((a->L ? a->L->size()\
     \ : 0) < k) {\n                k -= (a->L ? a->L->size() : 0) + 1;\n         \
     \       a = a->R;\n            } else {\n                a = a->L;\n         \
     \   }\n            a->base_propagate();\n        }\n        a->base_splay();\n\
@@ -141,8 +139,8 @@ data:
   isVerificationFile: false
   path: st_tree_node_base.hpp
   requiredBy: []
-  timestamp: '2025-09-14 22:08:53+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2025-09-15 01:19:53+08:00'
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
   - test/tree/lca.0.test.cpp
