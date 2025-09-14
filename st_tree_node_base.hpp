@@ -16,7 +16,7 @@ template<typename STTreeNodeT> class STTreeNodeBase {
         assert(P != nullptr);
         return P->L == this ? Child::LEFT : Child::RIGHT;
     }
-    // not root OR not a prefered child
+    // has NO parent OR NOT a prefered child
     bool is_root() const { return P == nullptr || (P->L != this && P->R != this); }
     bool is_left_child() const { return which() == Child::LEFT; }
     bool is_right_child() const { return which() == Child::RIGHT; }
