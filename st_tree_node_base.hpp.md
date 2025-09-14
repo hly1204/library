@@ -53,26 +53,29 @@ data:
     \ }\n\n    void update() { base_update(); }\n\n    STTreeNodeT *expose() {\n \
     \       STTreeNodeBase *a = this, *lca = a;\n        base_splay();\n        a->R\
     \ = nullptr;\n        while (a->P) {\n            lca = a->P;\n            lca->base_splay();\n\
-    \            a->P->R = a;\n            a->base_rotate();\n        }\n        a->base_update();\
-    \ // now a is the root\n        return (STTreeNodeT *)lca;\n    }\n    void evert()\
-    \ {\n        expose();\n        base_flip();\n    }\n    STTreeNodeT *root() {\n\
-    \        expose();\n        STTreeNodeBase *a = this;\n        while (a->L) a\
-    \ = a->L;\n        a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n\
-    \    STTreeNodeT *parent() {\n        expose();\n        if (!L) return nullptr;\n\
-    \        STTreeNodeBase *a = L;\n        a->base_propagate();\n        while (a->R)\
-    \ {\n            a = a->R;\n            a->base_propagate();\n        }\n    \
-    \    a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n    void link(STTreeNodeT\
-    \ *a) {\n        evert();\n        if (a->root() != derived()) P = a;\n    }\n\
-    \    void cut() {\n        expose();\n        STTreeNodeBase *b = L;\n       \
-    \ L                 = nullptr;\n        if (b) b->P = nullptr;\n        base_update();\n\
-    \    }\n    void cut(STTreeNodeT *b) {\n        if (parent() == b) {\n       \
-    \     cut();\n        } else if (b->parent() == derived()) {\n            b->cut();\n\
-    \        }\n    }\n    STTreeNodeT *select(int k) {\n        STTreeNodeBase *a\
-    \ = this;\n        a->base_propagate();\n        while ((a->L ? a->L->size() :\
-    \ 0) != 0) {\n            if ((a->L ? a->L->size() : 0) < k) {\n             \
-    \   k -= (a->L ? a->L->size() : 0) + 1;\n                a = a->R;\n         \
-    \   } else {\n                a = a->L;\n            }\n            a->base_propagate();\n\
-    \        }\n        a->base_splay();\n        return a;\n    }\n};\n"
+    \            a->P->R = a;\n            a->base_rotate();\n        }\n        a->base_update();\n\
+    \        // now a is the root of the virtual tree\n        return (STTreeNodeT\
+    \ *)lca;\n    }\n    void evert() { expose(), base_flip(); }\n    STTreeNodeT\
+    \ *root() {\n        expose();\n        STTreeNodeBase *a = this;\n        while\
+    \ (a->L) a = a->L;\n        a->base_splay();\n        return (STTreeNodeT *)a;\n\
+    \    }\n    STTreeNodeT *parent() {\n        expose();\n        if (!L) return\
+    \ nullptr;\n        STTreeNodeBase *a = L;\n        a->base_propagate();\n   \
+    \     while (a->R) {\n            a = a->R;\n            a->base_propagate();\n\
+    \        }\n        a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n\
+    \    // this op. WILL change the root\n    void link(STTreeNodeT *a) {\n     \
+    \   evert();\n        if (a->root() != derived()) P = a;\n    }\n    // this op.\
+    \ will NOT change the root\n    void cut() {\n        expose();\n        STTreeNodeBase\
+    \ *b = L;\n        L                 = nullptr;\n        if (b) b->P = nullptr;\n\
+    \        base_update();\n    }\n    // this op. will NOT change the root\n   \
+    \ void cut(STTreeNodeT *b) {\n        if (parent() == b) {\n            cut();\n\
+    \        } else if (b->parent() == derived()) {\n            b->cut();\n     \
+    \   }\n    }\n    STTreeNodeT *select(int k) {\n        STTreeNodeBase *a = this;\n\
+    \        a->base_propagate();\n        while ((a->L ? a->L->size() : 0) != 0)\
+    \ {\n            if ((a->L ? a->L->size() : 0) < k) {\n                k -= (a->L\
+    \ ? a->L->size() : 0) + 1;\n                a = a->R;\n            } else {\n\
+    \                a = a->L;\n            }\n            a->base_propagate();\n\
+    \        }\n        a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n\
+    };\n"
   code: "#pragma once\n\n#include <cassert>\n#include <utility>\n\ntemplate<typename\
     \ STTreeNodeT> class STTreeNodeBase {\n    STTreeNodeBase *L;\n    STTreeNodeBase\
     \ *R;\n    STTreeNodeBase *P;\n    int Size;\n    bool NeedFlip;\n\n    STTreeNodeT\
@@ -112,31 +115,33 @@ data:
     \ }\n\n    STTreeNodeT *expose() {\n        STTreeNodeBase *a = this, *lca = a;\n\
     \        base_splay();\n        a->R = nullptr;\n        while (a->P) {\n    \
     \        lca = a->P;\n            lca->base_splay();\n            a->P->R = a;\n\
-    \            a->base_rotate();\n        }\n        a->base_update(); // now a\
-    \ is the root\n        return (STTreeNodeT *)lca;\n    }\n    void evert() {\n\
-    \        expose();\n        base_flip();\n    }\n    STTreeNodeT *root() {\n \
-    \       expose();\n        STTreeNodeBase *a = this;\n        while (a->L) a =\
-    \ a->L;\n        a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n \
-    \   STTreeNodeT *parent() {\n        expose();\n        if (!L) return nullptr;\n\
+    \            a->base_rotate();\n        }\n        a->base_update();\n       \
+    \ // now a is the root of the virtual tree\n        return (STTreeNodeT *)lca;\n\
+    \    }\n    void evert() { expose(), base_flip(); }\n    STTreeNodeT *root() {\n\
+    \        expose();\n        STTreeNodeBase *a = this;\n        while (a->L) a\
+    \ = a->L;\n        a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n\
+    \    STTreeNodeT *parent() {\n        expose();\n        if (!L) return nullptr;\n\
     \        STTreeNodeBase *a = L;\n        a->base_propagate();\n        while (a->R)\
     \ {\n            a = a->R;\n            a->base_propagate();\n        }\n    \
-    \    a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n    void link(STTreeNodeT\
-    \ *a) {\n        evert();\n        if (a->root() != derived()) P = a;\n    }\n\
-    \    void cut() {\n        expose();\n        STTreeNodeBase *b = L;\n       \
-    \ L                 = nullptr;\n        if (b) b->P = nullptr;\n        base_update();\n\
-    \    }\n    void cut(STTreeNodeT *b) {\n        if (parent() == b) {\n       \
-    \     cut();\n        } else if (b->parent() == derived()) {\n            b->cut();\n\
-    \        }\n    }\n    STTreeNodeT *select(int k) {\n        STTreeNodeBase *a\
-    \ = this;\n        a->base_propagate();\n        while ((a->L ? a->L->size() :\
-    \ 0) != 0) {\n            if ((a->L ? a->L->size() : 0) < k) {\n             \
-    \   k -= (a->L ? a->L->size() : 0) + 1;\n                a = a->R;\n         \
-    \   } else {\n                a = a->L;\n            }\n            a->base_propagate();\n\
-    \        }\n        a->base_splay();\n        return a;\n    }\n};\n"
+    \    a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n    // this op.\
+    \ WILL change the root\n    void link(STTreeNodeT *a) {\n        evert();\n  \
+    \      if (a->root() != derived()) P = a;\n    }\n    // this op. will NOT change\
+    \ the root\n    void cut() {\n        expose();\n        STTreeNodeBase *b = L;\n\
+    \        L                 = nullptr;\n        if (b) b->P = nullptr;\n      \
+    \  base_update();\n    }\n    // this op. will NOT change the root\n    void cut(STTreeNodeT\
+    \ *b) {\n        if (parent() == b) {\n            cut();\n        } else if (b->parent()\
+    \ == derived()) {\n            b->cut();\n        }\n    }\n    STTreeNodeT *select(int\
+    \ k) {\n        STTreeNodeBase *a = this;\n        a->base_propagate();\n    \
+    \    while ((a->L ? a->L->size() : 0) != 0) {\n            if ((a->L ? a->L->size()\
+    \ : 0) < k) {\n                k -= (a->L ? a->L->size() : 0) + 1;\n         \
+    \       a = a->R;\n            } else {\n                a = a->L;\n         \
+    \   }\n            a->base_propagate();\n        }\n        a->base_splay();\n\
+    \        return (STTreeNodeT *)a;\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: st_tree_node_base.hpp
   requiredBy: []
-  timestamp: '2025-09-14 22:04:07+08:00'
+  timestamp: '2025-09-14 22:08:53+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
