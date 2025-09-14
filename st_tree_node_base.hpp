@@ -47,7 +47,6 @@ protected:
         derived()->do_update();
     }
     void base_rotate() {
-        assert(P != nullptr);
         P->base_propagate();
         base_propagate();
         if (is_left_child()) {
