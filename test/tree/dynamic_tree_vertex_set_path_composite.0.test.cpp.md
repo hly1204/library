@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: node_pool.hpp
     title: node_pool.hpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: st_tree_node_base.hpp
     title: st_tree_node_base.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite
@@ -66,12 +66,12 @@ data:
     \n\n#include <list>\n#include <memory>\n#include <utility>\n#include <vector>\n\
     \ntemplate<typename NodeT> class FixedSizeNodePool {\n    std::vector<NodeT> pool;\n\
     \npublic:\n    explicit FixedSizeNodePool(int n) : pool(n) {}\n    NodeT *at(int\
-    \ ind) { return pool[ind]; }\n    int id(NodeT *a) const { return a - pool.data();\
-    \ }\n    auto get_func() {\n        return std::make_pair([this](int ind) { return\
-    \ at(ind); },\n                              [this](NodeT *a) { return id(a);\
-    \ });\n    }\n};\n\ntemplate<typename NodeT> class DynamicSizeNodePool {\n   \
-    \ struct Wrapped : public NodeT {\n        using NodeT::NodeT;\n        typename\
-    \ std::list<Wrapped>::iterator i;\n    };\n    std::list<Wrapped> used_list;\n\
+    \ ind) { return pool.data() + ind; }\n    int id(NodeT *a) const { return a -\
+    \ pool.data(); }\n    auto get_func() {\n        return std::make_pair([this](int\
+    \ ind) { return at(ind); },\n                              [this](NodeT *a) {\
+    \ return id(a); });\n    }\n};\n\ntemplate<typename NodeT> class DynamicSizeNodePool\
+    \ {\n    struct Wrapped : public NodeT {\n        using NodeT::NodeT;\n      \
+    \  typename std::list<Wrapped>::iterator i;\n    };\n    std::list<Wrapped> used_list;\n\
     \    std::list<Wrapped> free_list;\n\npublic:\n    template<typename... Args>\
     \ NodeT *make(Args &&...arg) {\n        if (free_list.empty()) {\n           \
     \ auto &&node = used_list.emplace_back(std::forward<Args>(arg)...);\n        \
@@ -203,8 +203,8 @@ data:
   isVerificationFile: true
   path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-15 19:09:29+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2025-09-15 19:13:13+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
 layout: document

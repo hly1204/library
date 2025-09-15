@@ -87,7 +87,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: Middle Product
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -99,7 +99,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: mps_basic.hpp
       title: Multivariate Power Series
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: node_pool.hpp
       title: node_pool.hpp
     - icon: ':heavy_check_mark:'
@@ -153,7 +153,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: sqrt_mod.hpp
       title: sqrt_mod.hpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: st_tree_node_base.hpp
       title: st_tree_node_base.hpp
     - icon: ':heavy_check_mark:'
@@ -408,13 +408,13 @@ data:
       title: test/string/suffixarray.0.test.cpp
   - name: test/tree
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
       title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/tree/jump_on_tree.0.test.cpp
       title: test/tree/jump_on_tree.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/tree/lca.0.test.cpp
       title: test/tree/lca.0.test.cpp
 layout: toppage

@@ -3,27 +3,27 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
     title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/tree/jump_on_tree.0.test.cpp
     title: test/tree/jump_on_tree.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/tree/lca.0.test.cpp
     title: test/tree/lca.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"node_pool.hpp\"\n\n#include <list>\n#include <memory>\n\
     #include <utility>\n#include <vector>\n\ntemplate<typename NodeT> class FixedSizeNodePool\
     \ {\n    std::vector<NodeT> pool;\n\npublic:\n    explicit FixedSizeNodePool(int\
-    \ n) : pool(n) {}\n    NodeT *at(int ind) { return pool[ind]; }\n    int id(NodeT\
-    \ *a) const { return a - pool.data(); }\n    auto get_func() {\n        return\
-    \ std::make_pair([this](int ind) { return at(ind); },\n                      \
-    \        [this](NodeT *a) { return id(a); });\n    }\n};\n\ntemplate<typename\
+    \ n) : pool(n) {}\n    NodeT *at(int ind) { return pool.data() + ind; }\n    int\
+    \ id(NodeT *a) const { return a - pool.data(); }\n    auto get_func() {\n    \
+    \    return std::make_pair([this](int ind) { return at(ind); },\n            \
+    \                  [this](NodeT *a) { return id(a); });\n    }\n};\n\ntemplate<typename\
     \ NodeT> class DynamicSizeNodePool {\n    struct Wrapped : public NodeT {\n  \
     \      using NodeT::NodeT;\n        typename std::list<Wrapped>::iterator i;\n\
     \    };\n    std::list<Wrapped> used_list;\n    std::list<Wrapped> free_list;\n\
@@ -40,8 +40,8 @@ data:
   code: "#pragma once\n\n#include <list>\n#include <memory>\n#include <utility>\n\
     #include <vector>\n\ntemplate<typename NodeT> class FixedSizeNodePool {\n    std::vector<NodeT>\
     \ pool;\n\npublic:\n    explicit FixedSizeNodePool(int n) : pool(n) {}\n    NodeT\
-    \ *at(int ind) { return pool[ind]; }\n    int id(NodeT *a) const { return a -\
-    \ pool.data(); }\n    auto get_func() {\n        return std::make_pair([this](int\
+    \ *at(int ind) { return pool.data() + ind; }\n    int id(NodeT *a) const { return\
+    \ a - pool.data(); }\n    auto get_func() {\n        return std::make_pair([this](int\
     \ ind) { return at(ind); },\n                              [this](NodeT *a) {\
     \ return id(a); });\n    }\n};\n\ntemplate<typename NodeT> class DynamicSizeNodePool\
     \ {\n    struct Wrapped : public NodeT {\n        using NodeT::NodeT;\n      \
@@ -61,8 +61,8 @@ data:
   isVerificationFile: false
   path: node_pool.hpp
   requiredBy: []
-  timestamp: '2025-09-15 19:09:29+08:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2025-09-15 19:13:13+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
   - test/tree/jump_on_tree.0.test.cpp
