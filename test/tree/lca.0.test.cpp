@@ -1,8 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/lca"
 
+#include "node_pool.hpp"
 #include "st_tree_node_base.hpp"
 #include <iostream>
-#include <memory>
 
 int main() {
     std::ios::sync_with_stdio(false);
@@ -10,18 +10,19 @@ int main() {
     int n, m;
     std::cin >> n >> m;
     struct STTreeNode : STTreeNodeBase<STTreeNode> {};
-    auto buf = std::make_unique<STTreeNode[]>(n);
+    FixedSizeNodePool<STTreeNode> pool(n);
+    auto [node, id] = pool.get_func();
     for (int i = 0; i < n - 1; ++i) {
         int p;
         std::cin >> p;
-        buf[p].link(&buf[i + 1]);
+        node(p)->link(node(i + 1));
     }
-    buf[0].evert();
+    node(0)->evert();
     while (m--) {
         int u, v;
         std::cin >> u >> v;
-        buf[u].expose();
-        std::cout << buf[v].expose() - &buf[0] << '\n';
+        node(u)->expose();
+        std::cout << id(node(v)->expose()) << '\n';
     }
     return 0;
 }

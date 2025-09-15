@@ -1,10 +1,10 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite"
 
 #include "modint.hpp"
+#include "node_pool.hpp"
 #include "st_tree_node_base.hpp"
 #include <array>
 #include <iostream>
-#include <memory>
 #include <utility>
 
 int main() {
@@ -32,15 +32,16 @@ int main() {
     };
     int n, m;
     std::cin >> n >> m;
-    auto buf = std::make_unique<STTreeNode[]>(n);
+    FixedSizeNodePool<STTreeNode> pool(n);
+    auto [node, id] = pool.get_func();
     for (int i = 0; i < n; ++i) {
-        std::cin >> buf[i].Val[1] >> buf[i].Val[0];
-        buf[i].update();
+        std::cin >> node(i)->Val[1] >> node(i)->Val[0];
+        node(i)->update();
     }
     for (int i = 0; i < n - 1; ++i) {
         int u, v;
         std::cin >> u >> v;
-        buf[u].link(&buf[v]);
+        node(u)->link(node(v));
     }
     while (m--) {
         int cmd;
@@ -48,21 +49,21 @@ int main() {
         if (cmd == 0) {
             int a, b, c, d;
             std::cin >> a >> b >> c >> d;
-            buf[a].cut(&buf[b]);
-            buf[c].link(&buf[d]);
+            node(a)->cut(node(b));
+            node(c)->link(node(d));
         } else if (cmd == 1) {
             int a;
             std::cin >> a;
-            buf[a].expose();
-            std::cin >> buf[a].Val[1] >> buf[a].Val[0];
-            buf[a].update();
+            node(a)->expose();
+            std::cin >> node(a)->Val[1] >> node(a)->Val[0];
+            node(a)->update();
         } else {
             int a, b;
             mint x;
             std::cin >> a >> b >> x;
-            buf[b].evert();
-            buf[a].expose();
-            std::cout << STTreeNode::composition(buf[a].Sum, {x, 0}).at(0) << '\n';
+            node(b)->evert();
+            node(a)->expose();
+            std::cout << STTreeNode::composition(node(a)->Sum, {x, 0}).at(0) << '\n';
         }
     }
     return 0;

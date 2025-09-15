@@ -1,8 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/jump_on_tree"
 
+#include "node_pool.hpp"
 #include "st_tree_node_base.hpp"
 #include <iostream>
-#include <memory>
 
 int main() {
     std::ios::sync_with_stdio(false);
@@ -10,21 +10,22 @@ int main() {
     int n, q;
     std::cin >> n >> q;
     struct STTreeNode : STTreeNodeBase<STTreeNode> {};
-    auto buf = std::make_unique<STTreeNode[]>(n);
+    FixedSizeNodePool<STTreeNode> pool(n);
+    auto [node, id] = pool.get_func();
     for (int i = 0; i < n - 1; ++i) {
         int a, b;
         std::cin >> a >> b;
-        buf[a].link(&buf[b]);
+        node(a)->link(node(b));
     }
     while (q--) {
         int s, t, i;
         std::cin >> s >> t >> i;
-        buf[t].evert();
-        buf[s].expose();
-        if (buf[s].size() <= i) {
-            std::cout << "-1\n";
+        node(t)->evert();
+        node(s)->expose();
+        if (node(s)->size() > i) {
+            std::cout << id(node(s)->select(node(s)->size() - i - 1)) << '\n';
         } else {
-            std::cout << buf[s].select(buf[s].size() - i - 1) - &buf[0] << '\n';
+            std::cout << "-1\n";
         }
     }
     return 0;
