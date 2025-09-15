@@ -10,7 +10,7 @@ template<typename NodeT> class FixedSizeNodePool {
 
 public:
     explicit FixedSizeNodePool(int n) : pool(n) {}
-    NodeT *at(int ind) { return pool[ind]; }
+    NodeT *at(int ind) { return pool.data() + ind; }
     int id(NodeT *a) const { return a - pool.data(); }
     auto get_func() {
         return std::make_pair([this](int ind) { return at(ind); },
