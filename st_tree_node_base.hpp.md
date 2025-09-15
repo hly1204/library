@@ -4,6 +4,9 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp
+    title: test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
     title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -147,6 +150,7 @@ data:
   - test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
   - test/tree/jump_on_tree.0.test.cpp
   - test/tree/lca.0.test.cpp
+  - test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp
 documentation_of: st_tree_node_base.hpp
 layout: document
 redirect_from:

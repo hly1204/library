@@ -409,6 +409,9 @@ data:
   - name: test/tree
     pages:
     - icon: ':heavy_check_mark:'
+      path: test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp
+      title: test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
       title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
     - icon: ':heavy_check_mark:'
