@@ -1,27 +1,49 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
+    path: node_pool.hpp
+    title: node_pool.hpp
+  - icon: ':x:'
     path: st_tree_node_base.hpp
     title: st_tree_node_base.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/lca
     links:
     - https://judge.yosupo.jp/problem/lca
   bundledCode: "#line 1 \"test/tree/lca.0.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/lca\"\
-    \n\n#line 2 \"st_tree_node_base.hpp\"\n\n#include <utility>\n\ntemplate<typename\
-    \ STTreeNodeT> class STTreeNodeBase {\n    STTreeNodeBase *L;\n    STTreeNodeBase\
-    \ *R;\n    STTreeNodeBase *P;\n    int Size;\n    bool NeedFlip;\n\n    STTreeNodeT\
-    \ *derived() { return (STTreeNodeT *)this; }\n    enum class Child { LEFT, RIGHT\
-    \ };\n    Child which() const { return P->L == this ? Child::LEFT : Child::RIGHT;\
-    \ }\n    // has NO parent OR NOT a prefered child\n    bool is_root() const {\
-    \ return P == nullptr || (P->L != this && P->R != this); }\n    bool is_left_child()\
+    \n\n#line 2 \"node_pool.hpp\"\n\n#include <list>\n#include <memory>\n#include\
+    \ <utility>\n#include <vector>\n\ntemplate<typename NodeT> class FixedSizeNodePool\
+    \ {\n    std::vector<NodeT> pool;\n\npublic:\n    explicit FixedSizeNodePool(int\
+    \ n) : pool(n) {}\n    NodeT *at(int ind) { return pool[ind]; }\n    int id(NodeT\
+    \ *a) const { return a - pool.data(); }\n    auto get_func() {\n        return\
+    \ std::make_pair([this](int ind) { return at(ind); },\n                      \
+    \        [this](NodeT *a) { return id(a); });\n    }\n};\n\ntemplate<typename\
+    \ NodeT> class DynamicSizeNodePool {\n    struct Wrapped : public NodeT {\n  \
+    \      using NodeT::NodeT;\n        typename std::list<Wrapped>::iterator i;\n\
+    \    };\n    std::list<Wrapped> used_list;\n    std::list<Wrapped> free_list;\n\
+    \npublic:\n    template<typename... Args> NodeT *make(Args &&...arg) {\n     \
+    \   if (free_list.empty()) {\n            auto &&node = used_list.emplace_back(std::forward<Args>(arg)...);\n\
+    \            node.i      = std::prev(used_list.end());\n            return std::addressof(node);\n\
+    \        }\n        used_list.splice(used_list.end(), free_list, std::prev(free_list.end()));\n\
+    \        auto &&node = used_list.back();\n        node.~NodeT(); // i remains\
+    \ unchanged\n        new (std::addressof(node)) NodeT(std::forward<Args>(arg)...);\n\
+    \        return std::addressof(node);\n    }\n    // this is lazy, if sth. relies\
+    \ on the order of dtor, do NOT use\n    void retrieve(NodeT *node) {\n       \
+    \ free_list.splice(free_list.end(), used_list, ((Wrapped *)node)->i);\n    }\n\
+    };\n#line 2 \"st_tree_node_base.hpp\"\n\n#line 4 \"st_tree_node_base.hpp\"\n\n\
+    template<typename STTreeNodeT> class STTreeNodeBase {\n    STTreeNodeBase *L;\n\
+    \    STTreeNodeBase *R;\n    STTreeNodeBase *P;\n    int Size;\n    bool NeedFlip;\n\
+    \n    STTreeNodeT *derived() { return (STTreeNodeT *)this; }\n    enum class Child\
+    \ { LEFT, RIGHT };\n    Child which() const { return P->L == this ? Child::LEFT\
+    \ : Child::RIGHT; }\n    // has NO parent OR NOT a prefered child\n    bool is_root()\
+    \ const { return P == nullptr || (P->L != this && P->R != this); }\n    bool is_left_child()\
     \ const { return which() == Child::LEFT; }\n    bool is_right_child() const {\
     \ return which() == Child::RIGHT; }\n\n    // CRTP reimplement\n    void do_flip()\
     \ {}\n    void do_propagate() {}\n    void do_update() {}\n\nprotected:\n    void\
@@ -74,31 +96,33 @@ data:
     \ : 0) < k) {\n                k -= (a->L ? a->L->size() : 0) + 1;\n         \
     \       a = a->R;\n            } else {\n                a = a->L;\n         \
     \   }\n            a->base_propagate();\n        }\n        a->base_splay();\n\
-    \        return (STTreeNodeT *)a;\n    }\n};\n#line 4 \"test/tree/lca.0.test.cpp\"\
-    \n#include <iostream>\n#include <memory>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \        return (STTreeNodeT *)a;\n    }\n};\n#line 5 \"test/tree/lca.0.test.cpp\"\
+    \n#include <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    int n, m;\n    std::cin >> n >> m;\n    struct\
-    \ STTreeNode : STTreeNodeBase<STTreeNode> {};\n    auto buf = std::make_unique<STTreeNode[]>(n);\n\
+    \ STTreeNode : STTreeNodeBase<STTreeNode> {};\n    FixedSizeNodePool<STTreeNode>\
+    \ pool(n);\n    auto [node, id] = pool.get_func();\n    for (int i = 0; i < n\
+    \ - 1; ++i) {\n        int p;\n        std::cin >> p;\n        node(p)->link(node(i\
+    \ + 1));\n    }\n    node(0)->evert();\n    while (m--) {\n        int u, v;\n\
+    \        std::cin >> u >> v;\n        node(u)->expose();\n        std::cout <<\
+    \ id(node(v)->expose()) << '\\n';\n    }\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/lca\"\n\n#include \"node_pool.hpp\"\
+    \n#include \"st_tree_node_base.hpp\"\n#include <iostream>\n\nint main() {\n  \
+    \  std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int n, m;\n\
+    \    std::cin >> n >> m;\n    struct STTreeNode : STTreeNodeBase<STTreeNode> {};\n\
+    \    FixedSizeNodePool<STTreeNode> pool(n);\n    auto [node, id] = pool.get_func();\n\
     \    for (int i = 0; i < n - 1; ++i) {\n        int p;\n        std::cin >> p;\n\
-    \        buf[p].link(&buf[i + 1]);\n    }\n    buf[0].evert();\n    while (m--)\
-    \ {\n        int u, v;\n        std::cin >> u >> v;\n        buf[u].expose();\n\
-    \        std::cout << buf[v].expose() - &buf[0] << '\\n';\n    }\n    return 0;\n\
-    }\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/lca\"\n\n#include \"st_tree_node_base.hpp\"\
-    \n#include <iostream>\n#include <memory>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    int n, m;\n    std::cin >> n >> m;\n    struct\
-    \ STTreeNode : STTreeNodeBase<STTreeNode> {};\n    auto buf = std::make_unique<STTreeNode[]>(n);\n\
-    \    for (int i = 0; i < n - 1; ++i) {\n        int p;\n        std::cin >> p;\n\
-    \        buf[p].link(&buf[i + 1]);\n    }\n    buf[0].evert();\n    while (m--)\
-    \ {\n        int u, v;\n        std::cin >> u >> v;\n        buf[u].expose();\n\
-    \        std::cout << buf[v].expose() - &buf[0] << '\\n';\n    }\n    return 0;\n\
+    \        node(p)->link(node(i + 1));\n    }\n    node(0)->evert();\n    while\
+    \ (m--) {\n        int u, v;\n        std::cin >> u >> v;\n        node(u)->expose();\n\
+    \        std::cout << id(node(v)->expose()) << '\\n';\n    }\n    return 0;\n\
     }\n"
   dependsOn:
+  - node_pool.hpp
   - st_tree_node_base.hpp
   isVerificationFile: true
   path: test/tree/lca.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-15 01:37:19+08:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2025-09-15 19:09:29+08:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/tree/lca.0.test.cpp
 layout: document

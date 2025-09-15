@@ -7,7 +7,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: md_conv.hpp
     title: Multidimensional Convolution (Truncated)
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
   _extendedRequiredBy: []

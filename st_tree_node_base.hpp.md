@@ -3,18 +3,18 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
     title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/tree/jump_on_tree.0.test.cpp
     title: test/tree/jump_on_tree.0.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/tree/lca.0.test.cpp
     title: test/tree/lca.0.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     links: []
   bundledCode: "#line 2 \"st_tree_node_base.hpp\"\n\n#include <utility>\n\ntemplate<typename\
@@ -142,7 +142,7 @@ data:
   path: st_tree_node_base.hpp
   requiredBy: []
   timestamp: '2025-09-15 01:37:19+08:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_ALL_WA
   verifiedWith:
   - test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
   - test/tree/jump_on_tree.0.test.cpp

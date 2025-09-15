@@ -19,7 +19,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: middle_product.hpp
     title: Middle Product
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: modint.hpp
     title: modint.hpp
   - icon: ':heavy_check_mark:'
