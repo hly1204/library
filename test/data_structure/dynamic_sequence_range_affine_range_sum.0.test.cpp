@@ -1,9 +1,9 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum"
 
 #include "modint.hpp"
+#include "node_pool.hpp"
 #include "treap_node_base.hpp"
 #include <iostream>
-#include <memory>
 
 int main() {
     std::ios::sync_with_stdio(false);
@@ -34,11 +34,12 @@ int main() {
     };
     int n, q;
     std::cin >> n >> q;
-    auto buf        = std::make_unique<TreapNode[]>(n + q);
+    DynamicSizeNodePool<TreapNode> pool;
     TreapNode *root = nullptr;
     for (int i = 0; i < n; ++i) {
-        std::cin >> buf[i].Val;
-        root = TreapNode::join(root, &buf[i]);
+        auto node = pool.make();
+        std::cin >> node->Val;
+        root = TreapNode::join(root, node);
     }
     for (int i = 0; i < q; ++i) {
         int cmd;
@@ -46,16 +47,18 @@ int main() {
         switch (cmd) {
         case 0: {
             int pos;
-            std::cin >> pos >> buf[n + i].Val;
+            auto node = pool.make();
+            std::cin >> pos >> node->Val;
             auto [R0, R1] = TreapNode::split(root, pos);
-            root          = TreapNode::join(R0, &buf[n + i], R1);
+            root          = TreapNode::join(R0, node, R1);
             break;
         }
         case 1: {
             int pos;
             std::cin >> pos;
             auto [R0, R1, R2] = TreapNode::split(root, pos, 1);
-            root              = TreapNode::join(R0, R2);
+            pool.retrieve(R1);
+            root = TreapNode::join(R0, R2);
             break;
         }
         case 2: {

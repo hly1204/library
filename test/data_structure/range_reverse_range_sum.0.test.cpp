@@ -1,8 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_reverse_range_sum"
 
+#include "node_pool.hpp"
 #include "treap_node_base.hpp"
 #include <iostream>
-#include <memory>
 
 int main() {
     std::ios::sync_with_stdio(false);
@@ -18,11 +18,12 @@ int main() {
     };
     int n, q;
     std::cin >> n >> q;
-    auto buf        = std::make_unique<TreapNode[]>(n);
+    FixedSizeNodePool<TreapNode> pool(n);
+    auto [node, id] = pool.get_func();
     TreapNode *root = nullptr;
     for (int i = 0; i < n; ++i) {
-        std::cin >> buf[i].Val;
-        root = TreapNode::join(root, &buf[i]);
+        std::cin >> node(i)->Val;
+        root = TreapNode::join(root, node(i));
     }
     while (q--) {
         int t, l, r;

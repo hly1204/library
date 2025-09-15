@@ -1,10 +1,10 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/point_set_range_composite"
 
 #include "modint.hpp"
+#include "node_pool.hpp"
 #include "treap_node_base.hpp"
 #include <array>
 #include <iostream>
-#include <memory>
 
 int main() {
     std::ios::sync_with_stdio(false);
@@ -24,11 +24,12 @@ int main() {
     };
     int n, q;
     std::cin >> n >> q;
-    auto buf        = std::make_unique<TreapNode[]>(n);
+    FixedSizeNodePool<TreapNode> pool(n);
+    auto [node, id] = pool.get_func();
     TreapNode *root = nullptr;
     for (int i = 0; i < n; ++i) {
-        std::cin >> buf[i].Val[1] >> buf[i].Val[0];
-        root = TreapNode::join(root, &buf[i]);
+        std::cin >> node(i)->Val[1] >> node(i)->Val[0];
+        root = TreapNode::join(root, node(i));
     }
     while (q--) {
         int cmd;
