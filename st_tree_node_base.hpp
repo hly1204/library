@@ -98,7 +98,7 @@ public:
             a->base_rotate();
         }
         a->base_update();
-        // now a is the root of the virtual tree
+        // now a is the root of the aux. tree
         return (STTreeNodeT *)lca;
     }
     void evert() { expose(), base_flip(); }
