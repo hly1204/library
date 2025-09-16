@@ -77,7 +77,7 @@ data:
     \        base_splay();\n        a->R = nullptr;\n        while (a->P) {\n    \
     \        lca = a->P;\n            lca->base_splay();\n            a->P->R = a;\n\
     \            a->base_rotate();\n        }\n        a->base_update();\n       \
-    \ // now a is the root of the virtual tree\n        return (STTreeNodeT *)lca;\n\
+    \ // now a is the root of the aux. tree\n        return (STTreeNodeT *)lca;\n\
     \    }\n    void evert() { expose(), base_flip(); }\n    STTreeNodeT *root() {\n\
     \        expose();\n        STTreeNodeBase *a = this;\n        while (a->L) a\
     \ = a->L;\n        a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n\
@@ -141,7 +141,7 @@ data:
   isVerificationFile: true
   path: test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-15 20:50:57+08:00'
+  timestamp: '2025-09-16 08:10:36+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp
