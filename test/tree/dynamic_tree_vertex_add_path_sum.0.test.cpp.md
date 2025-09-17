@@ -41,23 +41,23 @@ data:
     };\n#line 2 \"st_tree_node_base.hpp\"\n\n#line 4 \"st_tree_node_base.hpp\"\n\n\
     template<typename STTreeNodeT> class STTreeNodeBase {\n    STTreeNodeBase *L;\n\
     \    STTreeNodeBase *R;\n    STTreeNodeBase *P;\n    int Size;\n    bool NeedFlip;\n\
-    \n    STTreeNodeT *derived() { return (STTreeNodeT *)this; }\n    enum class Child\
-    \ { LEFT, RIGHT };\n    Child which() const { return P->L == this ? Child::LEFT\
-    \ : Child::RIGHT; }\n    // has NO parent OR NOT a prefered child\n    bool is_root()\
-    \ const { return P == nullptr || (P->L != this && P->R != this); }\n    bool is_left_child()\
-    \ const { return which() == Child::LEFT; }\n    bool is_right_child() const {\
-    \ return which() == Child::RIGHT; }\n\n    // CRTP reimplement\n    void do_flip()\
-    \ {}\n    void do_propagate() {}\n    void do_update() {}\n\nprotected:\n    void\
-    \ base_flip() {\n        NeedFlip = !NeedFlip;\n        std::swap(L, R);\n   \
-    \     derived()->do_flip();\n    }\n    // base_propagate() is called to propagate\
-    \ the update information to child(ren).\n    // There is no need to update the\
-    \ information combined from child(ren)\n    // which should be done in base_update().\n\
-    \    void base_propagate() {\n        derived()->do_propagate();\n        if (NeedFlip)\
-    \ {\n            NeedFlip = false;\n            if (L) L->base_flip();\n     \
-    \       if (R) R->base_flip();\n        }\n    }\n    // base_update() is called\
-    \ to update the information combined from child(ren).\n    void base_update()\
-    \ {\n        Size = 1;\n        if (L) Size += L->Size;\n        if (R) Size +=\
-    \ R->Size;\n        derived()->do_update();\n    }\n    void base_rotate() {\n\
+    \n    enum class Child { LEFT, RIGHT };\n    Child which() const { return P->L\
+    \ == this ? Child::LEFT : Child::RIGHT; }\n    // has NO parent OR NOT a prefered\
+    \ child\n    bool is_root() const { return P == nullptr || (P->L != this && P->R\
+    \ != this); }\n    bool is_left_child() const { return which() == Child::LEFT;\
+    \ }\n    bool is_right_child() const { return which() == Child::RIGHT; }\n\n \
+    \   // CRTP reimplement\n    void do_flip() {}\n    void do_propagate() {}\n \
+    \   void do_update() {}\n\nprotected:\n    void base_flip() {\n        NeedFlip\
+    \ = !NeedFlip;\n        std::swap(L, R);\n        ((STTreeNodeT &)*this).do_flip();\n\
+    \    }\n    // base_propagate() is called to propagate the update information\
+    \ to child(ren).\n    // There is no need to update the information combined from\
+    \ child(ren)\n    // which should be done in base_update().\n    void base_propagate()\
+    \ {\n        ((STTreeNodeT &)*this).do_propagate();\n        if (NeedFlip) {\n\
+    \            NeedFlip = false;\n            if (L) L->base_flip();\n         \
+    \   if (R) R->base_flip();\n        }\n    }\n    // base_update() is called to\
+    \ update the information combined from child(ren).\n    void base_update() {\n\
+    \        Size = 1;\n        if (L) Size += L->Size;\n        if (R) Size += R->Size;\n\
+    \        ((STTreeNodeT &)*this).do_update();\n    }\n    void base_rotate() {\n\
     \        P->base_propagate();\n        base_propagate();\n        if (is_left_child())\
     \ {\n            if ((P->L = R)) R->P = P;\n            if (!P->is_root()) {\n\
     \                if (P->is_left_child()) P->P->L = this;\n                else\
@@ -86,36 +86,40 @@ data:
     \ {\n            a = a->R;\n            a->base_propagate();\n        }\n    \
     \    a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n    // this op.\
     \ WILL change the root\n    void link(STTreeNodeT *a) {\n        evert();\n  \
-    \      if (a->root() != derived()) P = a;\n    }\n    // this op. will NOT change\
-    \ the root\n    void cut() {\n        expose();\n        STTreeNodeBase *b = L;\n\
-    \        L                 = nullptr;\n        if (b) b->P = nullptr;\n      \
-    \  base_update();\n    }\n    // this op. will NOT change the root\n    void cut(STTreeNodeT\
-    \ *b) {\n        if (parent() == b) {\n            cut();\n        } else if (b->parent()\
-    \ == derived()) {\n            b->cut();\n        }\n    }\n    STTreeNodeT *select(int\
-    \ k) {\n        STTreeNodeBase *a = this;\n        a->base_propagate();\n    \
-    \    while ((a->L ? a->L->size() : 0) != k) {\n            if ((a->L ? a->L->size()\
-    \ : 0) < k) {\n                k -= (a->L ? a->L->size() : 0) + 1;\n         \
-    \       a = a->R;\n            } else {\n                a = a->L;\n         \
-    \   }\n            a->base_propagate();\n        }\n        a->base_splay();\n\
-    \        return (STTreeNodeT *)a;\n    }\n};\n#line 5 \"test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp\"\
-    \n#include <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    int n, q;\n    std::cin >> n >> q;\n    struct\
-    \ STTreeNode : STTreeNodeBase<STTreeNode> {\n        long long Val, Sum;\n   \
-    \     void do_update() {\n            Sum = Val;\n            if (left()) Sum\
-    \ += left()->Sum;\n            if (right()) Sum += right()->Sum;\n        }\n\
-    \    };\n    FixedSizeNodePool<STTreeNode> pool(n);\n    auto [node, id] = pool.get_func();\n\
-    \    for (int i = 0; i < n; ++i) {\n        std::cin >> node(i)->Val;\n      \
-    \  node(i)->update();\n    }\n    for (int i = 0; i < n - 1; ++i) {\n        int\
-    \ u, v;\n        std::cin >> u >> v;\n        node(u)->link(node(v));\n    }\n\
-    \    while (q--) {\n        int cmd;\n        std::cin >> cmd;\n        if (cmd\
-    \ == 0) {\n            int u, v, w, x;\n            std::cin >> u >> v >> w >>\
-    \ x;\n            node(u)->cut(node(v));\n            node(w)->link(node(x));\n\
-    \        } else if (cmd == 1) {\n            int p, x;\n            std::cin >>\
-    \ p >> x;\n            node(p)->expose();\n            node(p)->Val += x;\n  \
-    \          node(p)->update();\n        } else {\n            int u, v;\n     \
-    \       std::cin >> u >> v;\n            node(u)->evert();\n            node(v)->expose();\n\
-    \            std::cout << node(v)->Sum << '\\n';\n        }\n    }\n    return\
-    \ 0;\n}\n"
+    \      if (a->root() != (STTreeNodeT *)this) P = a;\n    }\n    // this op. will\
+    \ NOT change the root\n    void cut() {\n        expose();\n        STTreeNodeBase\
+    \ *b = L;\n        L                 = nullptr;\n        if (b) b->P = nullptr;\n\
+    \        base_update();\n    }\n    // this op. will NOT change the root\n   \
+    \ void cut(STTreeNodeT *b) {\n        if (parent() == b) {\n            cut();\n\
+    \        } else if (b->parent() == (STTreeNodeT *)this) {\n            b->cut();\n\
+    \        }\n    }\n    STTreeNodeT *select(int k) {\n        // example: A -->\
+    \ B --> C --> D, where D is the root of the path\n        // We use expose(A)\
+    \ than:\n        // * size(A) = 4\n        // * select(A, 0) returns D\n     \
+    \   // * select(A, 1) returns C\n        // * ...\n        STTreeNodeBase *a =\
+    \ this;\n        a->base_propagate();\n        while ((a->L ? a->L->Size : 0)\
+    \ != k) {\n            if ((a->L ? a->L->Size : 0) < k) {\n                k -=\
+    \ (a->L ? a->L->Size : 0) + 1;\n                a = a->R;\n            } else\
+    \ {\n                a = a->L;\n            }\n            a->base_propagate();\n\
+    \        }\n        a->base_splay();\n        return (STTreeNodeT *)a;\n    }\n\
+    \    STTreeNodeT *jump(int k) { return select(Size - k - 1); }\n};\n#line 5 \"\
+    test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp\"\n#include <iostream>\n\
+    \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    int n, q;\n    std::cin >> n >> q;\n    struct STTreeNode : STTreeNodeBase<STTreeNode>\
+    \ {\n        long long Val, Sum;\n        void do_update() {\n            Sum\
+    \ = Val;\n            if (left()) Sum += left()->Sum;\n            if (right())\
+    \ Sum += right()->Sum;\n        }\n    };\n    FixedSizeNodePool<STTreeNode> pool(n);\n\
+    \    auto [node, id] = pool.get_func();\n    for (int i = 0; i < n; ++i) {\n \
+    \       std::cin >> node(i)->Val;\n        node(i)->update();\n    }\n    for\
+    \ (int i = 0; i < n - 1; ++i) {\n        int u, v;\n        std::cin >> u >> v;\n\
+    \        node(u)->link(node(v));\n    }\n    while (q--) {\n        int cmd;\n\
+    \        std::cin >> cmd;\n        if (cmd == 0) {\n            int u, v, w, x;\n\
+    \            std::cin >> u >> v >> w >> x;\n            node(u)->cut(node(v));\n\
+    \            node(w)->link(node(x));\n        } else if (cmd == 1) {\n       \
+    \     int p, x;\n            std::cin >> p >> x;\n            node(p)->expose();\n\
+    \            node(p)->Val += x;\n            node(p)->update();\n        } else\
+    \ {\n            int u, v;\n            std::cin >> u >> v;\n            node(u)->evert();\n\
+    \            node(v)->expose();\n            std::cout << node(v)->Sum << '\\\
+    n';\n        }\n    }\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum\"\
     \n\n#include \"node_pool.hpp\"\n#include \"st_tree_node_base.hpp\"\n#include <iostream>\n\
     \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
@@ -141,7 +145,7 @@ data:
   isVerificationFile: true
   path: test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-16 08:10:36+08:00'
+  timestamp: '2025-09-17 23:13:28+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp
