@@ -106,35 +106,34 @@ data:
     \ TreapNodeT> class TreapNodeBase {\n    TreapNodeBase *L;\n    TreapNodeBase\
     \ *R;\n    int Rank;\n    int Size;\n    bool NeedFlip;\n\n    static inline xoshiro256starstar\
     \ gen{std::random_device{}()};\n    static inline std::uniform_int_distribution<int>\
-    \ dis{0, 998244353};\n\n    TreapNodeT *derived() { return (TreapNodeT *)this;\
-    \ }\n\n    // CRTP reimplement\n    void do_flip() {}\n    void do_propagate()\
-    \ {}\n    void do_update() {}\n\nprotected:\n    void base_flip() {\n        NeedFlip\
-    \ = !NeedFlip;\n        std::swap(L, R);\n        derived()->do_flip();\n    }\n\
-    \    // base_propagate() is called to propagate the update information to child(ren).\n\
-    \    // There is no need to update the information combined from child(ren)\n\
-    \    // which should be done in base_update().\n    void base_propagate() {\n\
-    \        derived()->do_propagate();\n        if (NeedFlip) {\n            NeedFlip\
-    \ = false;\n            if (L) L->base_flip();\n            if (R) R->base_flip();\n\
-    \        }\n    }\n    // base_update() is called to update the information combined\
-    \ from child(ren).\n    void base_update() {\n        Size = 1;\n        if (L)\
-    \ Size += L->Size;\n        if (R) Size += R->Size;\n        derived()->do_update();\n\
-    \    }\n\n    static TreapNodeBase *base_join(TreapNodeBase *a, TreapNodeBase\
-    \ *b) {\n        if (a == nullptr) {\n            if (b) b->base_propagate(),\
-    \ b->base_update();\n            return b;\n        }\n        if (b == nullptr)\
-    \ {\n            if (a) a->base_propagate(), a->base_update();\n            return\
-    \ a;\n        }\n        a->base_propagate();\n        b->base_propagate();\n\
-    \        if (a->Rank < b->Rank) {\n            b->L = base_join(a, b->L);\n  \
-    \          b->base_update();\n            return b;\n        }\n        a->R =\
-    \ base_join(a->R, b);\n        a->base_update();\n        return a;\n    }\n\n\
-    \    static std::array<TreapNodeBase *, 2> base_split(TreapNodeBase *a, int k)\
-    \ {\n        if (a == nullptr) return {nullptr, nullptr};\n        a->base_propagate();\n\
-    \        if (k == 0) return {nullptr, a};\n        if (k == a->Size) return {a,\
-    \ nullptr};\n        const int leftsize = a->L != nullptr ? a->L->Size : 0;\n\
-    \        if (leftsize < k) {\n            auto [b, c] = base_split(a->R, k - leftsize\
-    \ - 1);\n            a->R        = b;\n            a->base_update();\n       \
-    \     return {a, c};\n        }\n        auto [b, c] = base_split(a->L, k);\n\
-    \        a->L        = c;\n        a->base_update();\n        return {b, a};\n\
-    \    }\n\n    TreapNodeBase() : L(), R(), Rank(dis(gen)), Size(1), NeedFlip()\
+    \ dis{0, 998244353};\n\n    // CRTP reimplement\n    void do_flip() {}\n    void\
+    \ do_propagate() {}\n    void do_update() {}\n\nprotected:\n    void base_flip()\
+    \ {\n        NeedFlip = !NeedFlip;\n        std::swap(L, R);\n        ((TreapNodeT\
+    \ &)*this).do_flip();\n    }\n    // base_propagate() is called to propagate the\
+    \ update information to child(ren).\n    // There is no need to update the information\
+    \ combined from child(ren)\n    // which should be done in base_update().\n  \
+    \  void base_propagate() {\n        ((TreapNodeT &)*this).do_propagate();\n  \
+    \      if (NeedFlip) {\n            NeedFlip = false;\n            if (L) L->base_flip();\n\
+    \            if (R) R->base_flip();\n        }\n    }\n    // base_update() is\
+    \ called to update the information combined from child(ren).\n    void base_update()\
+    \ {\n        Size = 1;\n        if (L) Size += L->Size;\n        if (R) Size +=\
+    \ R->Size;\n        ((TreapNodeT &)*this).do_update();\n    }\n\n    static TreapNodeBase\
+    \ *base_join(TreapNodeBase *a, TreapNodeBase *b) {\n        if (a == nullptr)\
+    \ {\n            if (b) b->base_propagate(), b->base_update();\n            return\
+    \ b;\n        }\n        if (b == nullptr) {\n            if (a) a->base_propagate(),\
+    \ a->base_update();\n            return a;\n        }\n        a->base_propagate();\n\
+    \        b->base_propagate();\n        if (a->Rank < b->Rank) {\n            b->L\
+    \ = base_join(a, b->L);\n            b->base_update();\n            return b;\n\
+    \        }\n        a->R = base_join(a->R, b);\n        a->base_update();\n  \
+    \      return a;\n    }\n\n    static std::array<TreapNodeBase *, 2> base_split(TreapNodeBase\
+    \ *a, int k) {\n        if (a == nullptr) return {nullptr, nullptr};\n       \
+    \ a->base_propagate();\n        if (k == 0) return {nullptr, a};\n        if (k\
+    \ == a->Size) return {a, nullptr};\n        const int leftsize = a->L != nullptr\
+    \ ? a->L->Size : 0;\n        if (leftsize < k) {\n            auto [b, c] = base_split(a->R,\
+    \ k - leftsize - 1);\n            a->R        = b;\n            a->base_update();\n\
+    \            return {a, c};\n        }\n        auto [b, c] = base_split(a->L,\
+    \ k);\n        a->L        = c;\n        a->base_update();\n        return {b,\
+    \ a};\n    }\n\n    TreapNodeBase() : L(), R(), Rank(dis(gen)), Size(1), NeedFlip()\
     \ {}\n\npublic:\n    int size() const { return Size; }\n    int rank() const {\
     \ return Rank; }\n\n    TreapNodeT *left() const { return (TreapNodeT *)L; }\n\
     \    TreapNodeT *right() const { return (TreapNodeT *)R; }\n\n    void flip()\
@@ -230,7 +229,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-15 20:07:03+08:00'
+  timestamp: '2025-09-17 22:42:21+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
