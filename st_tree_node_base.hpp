@@ -9,7 +9,6 @@ template<typename STTreeNodeT> class STTreeNodeBase {
     int Size;
     bool NeedFlip;
 
-    STTreeNodeT *derived() { return (STTreeNodeT *)this; }
     enum class Child { LEFT, RIGHT };
     Child which() const { return P->L == this ? Child::LEFT : Child::RIGHT; }
     // has NO parent OR NOT a prefered child
@@ -26,13 +25,13 @@ protected:
     void base_flip() {
         NeedFlip = !NeedFlip;
         std::swap(L, R);
-        derived()->do_flip();
+        ((STTreeNodeT &)*this).do_flip();
     }
     // base_propagate() is called to propagate the update information to child(ren).
     // There is no need to update the information combined from child(ren)
     // which should be done in base_update().
     void base_propagate() {
-        derived()->do_propagate();
+        ((STTreeNodeT &)*this).do_propagate();
         if (NeedFlip) {
             NeedFlip = false;
             if (L) L->base_flip();
@@ -44,7 +43,7 @@ protected:
         Size = 1;
         if (L) Size += L->Size;
         if (R) Size += R->Size;
-        derived()->do_update();
+        ((STTreeNodeT &)*this).do_update();
     }
     void base_rotate() {
         P->base_propagate();
@@ -124,7 +123,7 @@ public:
     // this op. WILL change the root
     void link(STTreeNodeT *a) {
         evert();
-        if (a->root() != derived()) P = a;
+        if (a->root() != (STTreeNodeT *)this) P = a;
     }
     // this op. will NOT change the root
     void cut() {
@@ -138,16 +137,22 @@ public:
     void cut(STTreeNodeT *b) {
         if (parent() == b) {
             cut();
-        } else if (b->parent() == derived()) {
+        } else if (b->parent() == (STTreeNodeT *)this) {
             b->cut();
         }
     }
     STTreeNodeT *select(int k) {
+        // example: A --> B --> C --> D, where D is the root of the path
+        // We use expose(A) than:
+        // * size(A) = 4
+        // * select(A, 0) returns D
+        // * select(A, 1) returns C
+        // * ...
         STTreeNodeBase *a = this;
         a->base_propagate();
-        while ((a->L ? a->L->size() : 0) != k) {
-            if ((a->L ? a->L->size() : 0) < k) {
-                k -= (a->L ? a->L->size() : 0) + 1;
+        while ((a->L ? a->L->Size : 0) != k) {
+            if ((a->L ? a->L->Size : 0) < k) {
+                k -= (a->L ? a->L->Size : 0) + 1;
                 a = a->R;
             } else {
                 a = a->L;
@@ -157,4 +162,5 @@ public:
         a->base_splay();
         return (STTreeNodeT *)a;
     }
+    STTreeNodeT *jump(int k) { return select(Size - k - 1); }
 };

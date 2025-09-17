@@ -23,7 +23,7 @@ int main() {
         node(t)->evert();
         node(s)->expose();
         if (node(s)->size() > i) {
-            std::cout << id(node(s)->select(node(s)->size() - i - 1)) << '\n';
+            std::cout << id(node(s)->jump(i)) << '\n';
         } else {
             std::cout << "-1\n";
         }
