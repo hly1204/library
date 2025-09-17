@@ -15,8 +15,6 @@ template<typename TreapNodeT> class TreapNodeBase {
     static inline xoshiro256starstar gen{std::random_device{}()};
     static inline std::uniform_int_distribution<int> dis{0, 998244353};
 
-    TreapNodeT *derived() { return (TreapNodeT *)this; }
-
     // CRTP reimplement
     void do_flip() {}
     void do_propagate() {}
@@ -26,13 +24,13 @@ protected:
     void base_flip() {
         NeedFlip = !NeedFlip;
         std::swap(L, R);
-        derived()->do_flip();
+        ((TreapNodeT &)*this).do_flip();
     }
     // base_propagate() is called to propagate the update information to child(ren).
     // There is no need to update the information combined from child(ren)
     // which should be done in base_update().
     void base_propagate() {
-        derived()->do_propagate();
+        ((TreapNodeT &)*this).do_propagate();
         if (NeedFlip) {
             NeedFlip = false;
             if (L) L->base_flip();
@@ -44,7 +42,7 @@ protected:
         Size = 1;
         if (L) Size += L->Size;
         if (R) Size += R->Size;
-        derived()->do_update();
+        ((TreapNodeT &)*this).do_update();
     }
 
     static TreapNodeBase *base_join(TreapNodeBase *a, TreapNodeBase *b) {
