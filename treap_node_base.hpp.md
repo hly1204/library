@@ -96,14 +96,13 @@ data:
     \ {\n    friend class TreapNodeBase<FlipableTreapNodeT>;\n\n    bool NeedFlip;\n\
     \n    FlipableTreapNodeT &underlying() { return (FlipableTreapNodeT &)*this; }\n\
     \    const FlipableTreapNodeT &underlying() const { return (const FlipableTreapNodeT\
-    \ &)*this; }\n\nprotected:\n    // CRTP reimplement\n    void do_flip() {}\n\n\
-    \    void base_flip() {\n        NeedFlip = !NeedFlip;\n        std::swap(this->L,\
-    \ this->R);\n        underlying().do_flip();\n    }\n    void base_propagate()\
-    \ {\n        underlying().do_propagate();\n        if (NeedFlip) {\n         \
-    \   NeedFlip = false;\n            if (this->left()) this->left()->underlying().base_flip();\n\
-    \            if (this->right()) this->right()->underlying().base_flip();\n   \
-    \     }\n    }\n\n    FlipableTreapNodeBase() : NeedFlip() {}\n\npublic:\n   \
-    \ void flip() { base_flip(); }\n};\n"
+    \ &)*this; }\n\n    // CRTP reimplement\n    void do_flip() {}\n\n    void base_flip()\
+    \ {\n        NeedFlip = !NeedFlip;\n        std::swap(this->L, this->R);\n   \
+    \     underlying().do_flip();\n    }\n    void base_propagate() {\n        underlying().do_propagate();\n\
+    \        if (NeedFlip) {\n            NeedFlip = false;\n            if (this->left())\
+    \ this->left()->underlying().base_flip();\n            if (this->right()) this->right()->underlying().base_flip();\n\
+    \        }\n    }\n\nprotected:\n    FlipableTreapNodeBase() : NeedFlip() {}\n\
+    \npublic:\n    void flip() { base_flip(); }\n};\n"
   code: "#pragma once\n\n#include \"rng.hpp\"\n#include <array>\n#include <random>\n\
     #include <utility>\n\ntemplate<typename FlipableTreapNodeT> class FlipableTreapNodeBase;\n\
     \ntemplate<typename TreapNodeT> class TreapNodeBase {\n    friend class FlipableTreapNodeBase<TreapNodeT>;\n\
@@ -157,20 +156,19 @@ data:
     \ {\n    friend class TreapNodeBase<FlipableTreapNodeT>;\n\n    bool NeedFlip;\n\
     \n    FlipableTreapNodeT &underlying() { return (FlipableTreapNodeT &)*this; }\n\
     \    const FlipableTreapNodeT &underlying() const { return (const FlipableTreapNodeT\
-    \ &)*this; }\n\nprotected:\n    // CRTP reimplement\n    void do_flip() {}\n\n\
-    \    void base_flip() {\n        NeedFlip = !NeedFlip;\n        std::swap(this->L,\
-    \ this->R);\n        underlying().do_flip();\n    }\n    void base_propagate()\
-    \ {\n        underlying().do_propagate();\n        if (NeedFlip) {\n         \
-    \   NeedFlip = false;\n            if (this->left()) this->left()->underlying().base_flip();\n\
-    \            if (this->right()) this->right()->underlying().base_flip();\n   \
-    \     }\n    }\n\n    FlipableTreapNodeBase() : NeedFlip() {}\n\npublic:\n   \
-    \ void flip() { base_flip(); }\n};\n"
+    \ &)*this; }\n\n    // CRTP reimplement\n    void do_flip() {}\n\n    void base_flip()\
+    \ {\n        NeedFlip = !NeedFlip;\n        std::swap(this->L, this->R);\n   \
+    \     underlying().do_flip();\n    }\n    void base_propagate() {\n        underlying().do_propagate();\n\
+    \        if (NeedFlip) {\n            NeedFlip = false;\n            if (this->left())\
+    \ this->left()->underlying().base_flip();\n            if (this->right()) this->right()->underlying().base_flip();\n\
+    \        }\n    }\n\nprotected:\n    FlipableTreapNodeBase() : NeedFlip() {}\n\
+    \npublic:\n    void flip() { base_flip(); }\n};\n"
   dependsOn:
   - rng.hpp
   isVerificationFile: false
   path: treap_node_base.hpp
   requiredBy: []
-  timestamp: '2025-09-18 21:00:14+08:00'
+  timestamp: '2025-09-18 21:05:40+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp

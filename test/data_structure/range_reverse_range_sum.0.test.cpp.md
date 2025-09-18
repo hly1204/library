@@ -111,14 +111,13 @@ data:
     \ {\n    friend class TreapNodeBase<FlipableTreapNodeT>;\n\n    bool NeedFlip;\n\
     \n    FlipableTreapNodeT &underlying() { return (FlipableTreapNodeT &)*this; }\n\
     \    const FlipableTreapNodeT &underlying() const { return (const FlipableTreapNodeT\
-    \ &)*this; }\n\nprotected:\n    // CRTP reimplement\n    void do_flip() {}\n\n\
-    \    void base_flip() {\n        NeedFlip = !NeedFlip;\n        std::swap(this->L,\
-    \ this->R);\n        underlying().do_flip();\n    }\n    void base_propagate()\
-    \ {\n        underlying().do_propagate();\n        if (NeedFlip) {\n         \
-    \   NeedFlip = false;\n            if (this->left()) this->left()->underlying().base_flip();\n\
-    \            if (this->right()) this->right()->underlying().base_flip();\n   \
-    \     }\n    }\n\n    FlipableTreapNodeBase() : NeedFlip() {}\n\npublic:\n   \
-    \ void flip() { base_flip(); }\n};\n#line 5 \"test/data_structure/range_reverse_range_sum.0.test.cpp\"\
+    \ &)*this; }\n\n    // CRTP reimplement\n    void do_flip() {}\n\n    void base_flip()\
+    \ {\n        NeedFlip = !NeedFlip;\n        std::swap(this->L, this->R);\n   \
+    \     underlying().do_flip();\n    }\n    void base_propagate() {\n        underlying().do_propagate();\n\
+    \        if (NeedFlip) {\n            NeedFlip = false;\n            if (this->left())\
+    \ this->left()->underlying().base_flip();\n            if (this->right()) this->right()->underlying().base_flip();\n\
+    \        }\n    }\n\nprotected:\n    FlipableTreapNodeBase() : NeedFlip() {}\n\
+    \npublic:\n    void flip() { base_flip(); }\n};\n#line 5 \"test/data_structure/range_reverse_range_sum.0.test.cpp\"\
     \n#include <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    struct TreapNode : FlipableTreapNodeBase<TreapNode>\
     \ {\n        int Val;\n        long long Sum;\n        void do_update() {\n  \
@@ -154,7 +153,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_reverse_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-18 21:00:14+08:00'
+  timestamp: '2025-09-18 21:05:40+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_reverse_range_sum.0.test.cpp

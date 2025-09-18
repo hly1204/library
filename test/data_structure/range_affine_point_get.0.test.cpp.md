@@ -154,14 +154,13 @@ data:
     \ {\n    friend class TreapNodeBase<FlipableTreapNodeT>;\n\n    bool NeedFlip;\n\
     \n    FlipableTreapNodeT &underlying() { return (FlipableTreapNodeT &)*this; }\n\
     \    const FlipableTreapNodeT &underlying() const { return (const FlipableTreapNodeT\
-    \ &)*this; }\n\nprotected:\n    // CRTP reimplement\n    void do_flip() {}\n\n\
-    \    void base_flip() {\n        NeedFlip = !NeedFlip;\n        std::swap(this->L,\
-    \ this->R);\n        underlying().do_flip();\n    }\n    void base_propagate()\
-    \ {\n        underlying().do_propagate();\n        if (NeedFlip) {\n         \
-    \   NeedFlip = false;\n            if (this->left()) this->left()->underlying().base_flip();\n\
-    \            if (this->right()) this->right()->underlying().base_flip();\n   \
-    \     }\n    }\n\n    FlipableTreapNodeBase() : NeedFlip() {}\n\npublic:\n   \
-    \ void flip() { base_flip(); }\n};\n#line 7 \"test/data_structure/range_affine_point_get.0.test.cpp\"\
+    \ &)*this; }\n\n    // CRTP reimplement\n    void do_flip() {}\n\n    void base_flip()\
+    \ {\n        NeedFlip = !NeedFlip;\n        std::swap(this->L, this->R);\n   \
+    \     underlying().do_flip();\n    }\n    void base_propagate() {\n        underlying().do_propagate();\n\
+    \        if (NeedFlip) {\n            NeedFlip = false;\n            if (this->left())\
+    \ this->left()->underlying().base_flip();\n            if (this->right()) this->right()->underlying().base_flip();\n\
+    \        }\n    }\n\nprotected:\n    FlipableTreapNodeBase() : NeedFlip() {}\n\
+    \npublic:\n    void flip() { base_flip(); }\n};\n#line 7 \"test/data_structure/range_affine_point_get.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint = ModInt<998244353>;\n    struct TreapNode : TreapNodeBase<TreapNode>\
     \ {\n        mint Val, Add, Mul = {1};\n        void do_propagate() {\n      \
@@ -208,7 +207,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_affine_point_get.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-18 21:00:14+08:00'
+  timestamp: '2025-09-18 21:05:40+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_affine_point_get.0.test.cpp
