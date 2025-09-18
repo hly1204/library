@@ -115,17 +115,17 @@ data:
     \            return a;\n        }\n        a->propagate();\n        while (a->R)\
     \ {\n            a = a->R;\n            a->propagate();\n        }\n        a->splay();\n\
     \        b->propagate();\n        a->R = b, b->P = a;\n        a->update();\n\
-    \        return a;\n    }\n    std::array<SplayTreeNodeBase *, 2> base_split(int\
-    \ k) {\n        propagate();\n        if (k == 0) return {nullptr, this};\n  \
-    \      if (k == Size) return {this, nullptr};\n        SplayTreeNodeBase *a =\
-    \ select(k);\n        SplayTreeNodeBase *b = a->L;\n        a->L             \
-    \    = nullptr;\n        if (b) {\n            b->propagate();\n            b->P\
-    \ = nullptr;\n        }\n        a->update();\n        return {b, a};\n    }\n\
-    \n    SplayTreeNodeBase() : L(), R(), P(), Size(1) {}\n\npublic:\n    int size()\
-    \ const { return Size; }\n    SplayTreeNodeT *left() const { return (SplayTreeNodeT\
-    \ *)L; }\n    SplayTreeNodeT *right() const { return (SplayTreeNodeT *)R; }\n\
-    \    SplayTreeNodeT *parent() const { return (SplayTreeNodeT *)P; }\n    void\
-    \ update() { base_update(); }\n    void propagate() { underlying().base_propagate();\
+    \        return a;\n    }\n    static std::array<SplayTreeNodeBase *, 2> base_split(SplayTreeNodeBase\
+    \ *a, int k) {\n        if (a == nullptr) return {nullptr, nullptr};\n       \
+    \ a->propagate();\n        if (k == 0) return {nullptr, a};\n        if (k ==\
+    \ a->Size) return {a, nullptr};\n        SplayTreeNodeBase *aa = a->select(k),\
+    \ *b = aa->L;\n        aa->L = nullptr;\n        if (b) {\n            b->propagate();\n\
+    \            b->P = nullptr;\n        }\n        aa->update();\n        return\
+    \ {b, aa};\n    }\n\n    SplayTreeNodeBase() : L(), R(), P(), Size(1) {}\n\npublic:\n\
+    \    int size() const { return Size; }\n    SplayTreeNodeT *left() const { return\
+    \ (SplayTreeNodeT *)L; }\n    SplayTreeNodeT *right() const { return (SplayTreeNodeT\
+    \ *)R; }\n    SplayTreeNodeT *parent() const { return (SplayTreeNodeT *)P; }\n\
+    \    void update() { base_update(); }\n    void propagate() { underlying().base_propagate();\
     \ }\n    void splay(SplayTreeNodeT *guard = nullptr) {\n        for (propagate();\
     \ (SplayTreeNodeT *)P != guard; base_rotate()) {\n            if ((SplayTreeNodeT\
     \ *)P->P != guard) {\n                P->P->propagate();\n                P->which()\
@@ -138,16 +138,16 @@ data:
     \ | ... | node).Val;\n    }\n    template<typename... Parts> static std::array<SplayTreeNodeT\
     \ *, sizeof...(Parts) + 1>\n    split(SplayTreeNodeT *a, Parts... part) {\n  \
     \      std::array<SplayTreeNodeT *, sizeof...(Parts) + 1> res;\n        res[0]\
-    \    = a;\n        int index = 0;\n        (\n            [&](int s) {\n     \
-    \           auto [l, r]  = res[index]->base_split(s);\n                res[index]\
-    \   = (SplayTreeNodeT *)l;\n                res[++index] = (SplayTreeNodeT *)r;\n\
-    \            }(part),\n            ...);\n        return res;\n    }\n    SplayTreeNodeT\
-    \ *select(int k) {\n        SplayTreeNodeBase *a = this;\n        a->propagate();\n\
-    \        while ((a->L ? a->L->Size : 0) != k) {\n            if ((a->L ? a->L->Size\
-    \ : 0) < k) {\n                k -= (a->L ? a->L->Size : 0) + 1;\n           \
-    \     a = a->R;\n            } else {\n                a = a->L;\n           \
-    \ }\n            a->propagate();\n        }\n        a->splay();\n        return\
-    \ (SplayTreeNodeT *)a;\n    }\n};\n\ntemplate<typename FlipableSplayTreeNodeT>\
+    \    = a;\n        int index = 0;\n        // clang-format off\n        ([&](int\
+    \ s) {\n            const auto [l, r]  = base_split(res[index], s);\n        \
+    \    res[index]   = (SplayTreeNodeT *)l;\n            res[++index] = (SplayTreeNodeT\
+    \ *)r; }(part), ...);\n        // clang-format on\n        return res;\n    }\n\
+    \    SplayTreeNodeT *select(int k) {\n        SplayTreeNodeBase *a = this;\n \
+    \       a->propagate();\n        while ((a->L ? a->L->Size : 0) != k) {\n    \
+    \        if ((a->L ? a->L->Size : 0) < k) {\n                k -= (a->L ? a->L->Size\
+    \ : 0) + 1;\n                a = a->R;\n            } else {\n               \
+    \ a = a->L;\n            }\n            a->propagate();\n        }\n        a->splay();\n\
+    \        return (SplayTreeNodeT *)a;\n    }\n};\n\ntemplate<typename FlipableSplayTreeNodeT>\
     \ class FlipableSplayTreeNodeBase\n    : public SplayTreeNodeBase<FlipableSplayTreeNodeT>\
     \ {\n    friend class SplayTreeNodeBase<FlipableSplayTreeNodeT>;\n\n    bool NeedFlip;\n\
     \n    FlipableSplayTreeNodeT &underlying() { return (FlipableSplayTreeNodeT &)*this;\
@@ -209,7 +209,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/point_set_range_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-18 19:32:39+08:00'
+  timestamp: '2025-09-18 20:33:53+08:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/data_structure/point_set_range_composite.0.test.cpp
