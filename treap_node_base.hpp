@@ -130,7 +130,6 @@ template<typename FlipableTreapNodeT> class FlipableTreapNodeBase
     FlipableTreapNodeT &underlying() { return (FlipableTreapNodeT &)*this; }
     const FlipableTreapNodeT &underlying() const { return (const FlipableTreapNodeT &)*this; }
 
-protected:
     // CRTP reimplement
     void do_flip() {}
 
@@ -148,6 +147,7 @@ protected:
         }
     }
 
+protected:
     FlipableTreapNodeBase() : NeedFlip() {}
 
 public:
