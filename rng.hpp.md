@@ -26,10 +26,28 @@ data:
   - icon: ':heavy_check_mark:'
     path: sqrt_mod.hpp
     title: sqrt_mod.hpp
+  - icon: ':heavy_check_mark:'
+    path: treap_node_base.hpp
+    title: treap_node_base.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/convolution/2d_convolution.0.test.cpp
     title: test/convolution/2d_convolution.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
+    title: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/data_structure/point_set_range_composite.0.test.cpp
+    title: test/data_structure/point_set_range_composite.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/data_structure/range_affine_point_get.0.test.cpp
+    title: test/data_structure/range_affine_point_get.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/data_structure/range_affine_range_sum.0.test.cpp
+    title: test/data_structure/range_affine_range_sum.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/data_structure/range_reverse_range_sum.0.test.cpp
+    title: test/data_structure/range_reverse_range_sum.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multivariate_power_series.0.test.cpp
     title: test/formal_power_series/multivariate_power_series.0.test.cpp
@@ -112,6 +130,7 @@ data:
   - mat_sparse.hpp
   - random.hpp
   - mat_basic.hpp
+  - treap_node_base.hpp
   - frobenius.hpp
   - mat_extra.hpp
   - fps_sqrt.hpp
@@ -120,6 +139,11 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/2d_convolution.0.test.cpp
+  - test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
+  - test/data_structure/range_affine_range_sum.0.test.cpp
+  - test/data_structure/point_set_range_composite.0.test.cpp
+  - test/data_structure/range_affine_point_get.0.test.cpp
+  - test/data_structure/range_reverse_range_sum.0.test.cpp
   - test/number_theory/sqrt_mod.0.test.cpp
   - test/formal_power_series/multivariate_power_series.0.test.cpp
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp

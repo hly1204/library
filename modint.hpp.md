@@ -18,19 +18,19 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/convolution/multidimensional_convolution.0.test.cpp
     title: test/convolution/multidimensional_convolution.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
     title: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/data_structure/point_set_range_composite.0.test.cpp
     title: test/data_structure/point_set_range_composite.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/data_structure/queue_operate_all_composite.0.test.cpp
     title: test/data_structure/queue_operate_all_composite.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/data_structure/range_affine_point_get.0.test.cpp
     title: test/data_structure/range_affine_point_get.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/data_structure/range_affine_range_sum.0.test.cpp
     title: test/data_structure/range_affine_range_sum.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -171,9 +171,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
     title: test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\
@@ -262,7 +262,7 @@ data:
   path: modint.hpp
   requiredBy: []
   timestamp: '2025-01-19 15:28:01+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/convolution/2d_convolution.0.test.cpp
   - test/convolution/multidimensional_convolution.0.test.cpp

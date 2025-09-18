@@ -1,20 +1,23 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: node_pool.hpp
     title: node_pool.hpp
-  - icon: ':x:'
-    path: splay_tree_node_base.hpp
-    title: splay_tree_node_base.hpp
+  - icon: ':heavy_check_mark:'
+    path: rng.hpp
+    title: rng.hpp
+  - icon: ':heavy_check_mark:'
+    path: treap_node_base.hpp
+    title: treap_node_base.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/point_set_range_composite
@@ -82,135 +85,125 @@ data:
     \        return std::addressof(node);\n    }\n    // this is lazy, if sth. relies\
     \ on the order of dtor, do NOT use\n    void retrieve(NodeT *node) {\n       \
     \ free_list.splice(free_list.end(), used_list, ((Wrapped *)node)->i);\n    }\n\
-    };\n#line 2 \"splay_tree_node_base.hpp\"\n\n#include <array>\n#line 5 \"splay_tree_node_base.hpp\"\
-    \n\ntemplate<typename FlipableSplayTreeNodeT> class FlipableSplayTreeNodeBase;\n\
-    \ntemplate<typename SplayTreeNodeT> class SplayTreeNodeBase {\n    friend class\
-    \ FlipableSplayTreeNodeBase<SplayTreeNodeT>;\n\n    SplayTreeNodeBase *L;\n  \
-    \  SplayTreeNodeBase *R;\n    SplayTreeNodeBase *P;\n    int Size;\n\n    SplayTreeNodeT\
-    \ &underlying() { return (SplayTreeNodeT &)*this; }\n    const SplayTreeNodeT\
-    \ &underlying() const { return (const SplayTreeNodeT &)*this; }\n\n    enum class\
-    \ Child { LEFT, RIGHT };\n    Child which() const { return P->L == this ? Child::LEFT\
-    \ : Child::RIGHT; }\n    bool is_root() const { return P == nullptr; }\n    bool\
-    \ is_left_child() const { return which() == Child::LEFT; }\n    bool is_right_child()\
-    \ const { return which() == Child::RIGHT; }\n\nprotected:\n    // CRTP reimplement\n\
-    \    void do_propagate() {}\n    void do_update() {}\n\n    // base_propagate()\
-    \ is called to propagate the update information to child(ren).\n    // There is\
-    \ no need to update the information combined from child(ren)\n    // which should\
-    \ be done in base_update().\n    // * CRTP reimplementable\n    void base_propagate()\
-    \ { underlying().do_propagate(); }\n    // base_update() is called to update the\
-    \ information combined from child(ren).\n    void base_update() {\n        Size\
-    \ = 1;\n        if (L) Size += L->Size;\n        if (R) Size += R->Size;\n   \
-    \     underlying().do_update();\n    }\n    void base_rotate() {\n        P->propagate();\n\
-    \        propagate();\n        if (is_left_child()) {\n            if ((P->L =\
-    \ R)) R->P = P;\n            if (!P->is_root()) {\n                if (P->is_left_child())\
-    \ P->P->L = this;\n                else { P->P->R = this; }\n            }\n \
-    \           R = P, P = P->P, R->P = this;\n            R->update();\n        }\
-    \ else {\n            if ((P->R = L)) L->P = P;\n            if (!P->is_root())\
-    \ {\n                if (P->is_left_child()) P->P->L = this;\n               \
-    \ else { P->P->R = this; }\n            }\n            L = P, P = P->P, L->P =\
-    \ this;\n            L->update();\n        }\n    }\n    static SplayTreeNodeBase\
-    \ *base_join(SplayTreeNodeBase *a, SplayTreeNodeBase *b) {\n        if (a == nullptr)\
-    \ {\n            if (b) b->propagate(), b->update();\n            return b;\n\
-    \        }\n        if (b == nullptr) {\n            if (a) a->propagate(), a->update();\n\
-    \            return a;\n        }\n        a->propagate();\n        while (a->R)\
-    \ {\n            a = a->R;\n            a->propagate();\n        }\n        a->splay();\n\
-    \        b->propagate();\n        a->R = b, b->P = a;\n        a->update();\n\
-    \        return a;\n    }\n    static std::array<SplayTreeNodeBase *, 2> base_split(SplayTreeNodeBase\
+    };\n#line 2 \"treap_node_base.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include <cstdint>\n\
+    #include <limits>\n\n// see: https://prng.di.unimi.it/xoshiro256starstar.c\n//\
+    \ original license CC0 1.0\nclass xoshiro256starstar {\n    using u64 = std::uint64_t;\n\
+    \n    static inline u64 rotl(const u64 x, int k) { return (x << k) | (x >> (64\
+    \ - k)); }\n\n    u64 s_[4];\n\n    u64 next() {\n        const u64 res = rotl(s_[1]\
+    \ * 5, 7) * 9;\n        const u64 t   = s_[1] << 17;\n        s_[2] ^= s_[0];\n\
+    \        s_[3] ^= s_[1];\n        s_[1] ^= s_[2];\n        s_[0] ^= s_[3];\n \
+    \       s_[2] ^= t;\n        s_[3] = rotl(s_[3], 45);\n        return res;\n \
+    \   }\n\npublic:\n    // see: https://prng.di.unimi.it/splitmix64.c\n    // original\
+    \ license CC0 1.0\n    explicit xoshiro256starstar(u64 seed) {\n        for (int\
+    \ i = 0; i < 4; ++i) {\n            u64 z = (seed += 0x9e3779b97f4a7c15);\n  \
+    \          z     = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;\n            z     =\
+    \ (z ^ (z >> 27)) * 0x94d049bb133111eb;\n            s_[i] = z ^ (z >> 31);\n\
+    \        }\n    }\n    // see: https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator\n\
+    \    using result_type = u64;\n    static constexpr u64 min() { return std::numeric_limits<u64>::min();\
+    \ }\n    static constexpr u64 max() { return std::numeric_limits<u64>::max();\
+    \ }\n    u64 operator()() { return next(); }\n};\n#line 4 \"treap_node_base.hpp\"\
+    \n#include <array>\n#include <random>\n#line 7 \"treap_node_base.hpp\"\n\ntemplate<typename\
+    \ TreapNodeT> class TreapNodeBase {\n    TreapNodeBase *L;\n    TreapNodeBase\
+    \ *R;\n    int Rank;\n    int Size;\n    bool NeedFlip;\n\n    static inline xoshiro256starstar\
+    \ gen{std::random_device{}()};\n    static inline std::uniform_int_distribution<int>\
+    \ dis{0, 998244353};\n\n    // CRTP reimplement\n    void do_flip() {}\n    void\
+    \ do_propagate() {}\n    void do_update() {}\n\nprotected:\n    void base_flip()\
+    \ {\n        NeedFlip = !NeedFlip;\n        std::swap(L, R);\n        ((TreapNodeT\
+    \ &)*this).do_flip();\n    }\n    // base_propagate() is called to propagate the\
+    \ update information to child(ren).\n    // There is no need to update the information\
+    \ combined from child(ren)\n    // which should be done in base_update().\n  \
+    \  void base_propagate() {\n        ((TreapNodeT &)*this).do_propagate();\n  \
+    \      if (NeedFlip) {\n            NeedFlip = false;\n            if (L) L->base_flip();\n\
+    \            if (R) R->base_flip();\n        }\n    }\n    // base_update() is\
+    \ called to update the information combined from child(ren).\n    void base_update()\
+    \ {\n        Size = 1;\n        if (L) Size += L->Size;\n        if (R) Size +=\
+    \ R->Size;\n        ((TreapNodeT &)*this).do_update();\n    }\n\n    static TreapNodeBase\
+    \ *base_join(TreapNodeBase *a, TreapNodeBase *b) {\n        if (a == nullptr)\
+    \ {\n            if (b) b->base_propagate(), b->base_update();\n            return\
+    \ b;\n        }\n        if (b == nullptr) {\n            if (a) a->base_propagate(),\
+    \ a->base_update();\n            return a;\n        }\n        a->base_propagate();\n\
+    \        b->base_propagate();\n        if (a->Rank < b->Rank) {\n            b->L\
+    \ = base_join(a, b->L);\n            b->base_update();\n            return b;\n\
+    \        }\n        a->R = base_join(a->R, b);\n        a->base_update();\n  \
+    \      return a;\n    }\n\n    static std::array<TreapNodeBase *, 2> base_split(TreapNodeBase\
     \ *a, int k) {\n        if (a == nullptr) return {nullptr, nullptr};\n       \
-    \ a->propagate();\n        if (k == 0) return {nullptr, a};\n        if (k ==\
-    \ a->Size) return {a, nullptr};\n        SplayTreeNodeBase *aa = a->select(k),\
-    \ *b = aa->L;\n        aa->L = nullptr;\n        if (b) {\n            b->propagate();\n\
-    \            b->P = nullptr;\n        }\n        aa->update();\n        return\
-    \ {b, aa};\n    }\n\n    SplayTreeNodeBase() : L(), R(), P(), Size(1) {}\n\npublic:\n\
-    \    int size() const { return Size; }\n    SplayTreeNodeT *left() const { return\
-    \ (SplayTreeNodeT *)L; }\n    SplayTreeNodeT *right() const { return (SplayTreeNodeT\
-    \ *)R; }\n    SplayTreeNodeT *parent() const { return (SplayTreeNodeT *)P; }\n\
-    \    void update() { base_update(); }\n    void propagate() { underlying().base_propagate();\
-    \ }\n    void splay(SplayTreeNodeT *guard = nullptr) {\n        for (propagate();\
-    \ (SplayTreeNodeT *)P != guard; base_rotate()) {\n            if ((SplayTreeNodeT\
-    \ *)P->P != guard) {\n                P->P->propagate();\n                P->which()\
-    \ == which() ? P->base_rotate() : base_rotate();\n            }\n        }\n \
-    \       update();\n    }\n    template<typename... Nodes> static SplayTreeNodeT\
-    \ *join(Nodes... node) {\n        struct Helper {\n            SplayTreeNodeBase\
-    \ *Val;\n            Helper &operator|(SplayTreeNodeBase *A) {\n             \
-    \   Val = SplayTreeNodeBase::base_join(Val, A);\n                return *this;\n\
-    \            }\n        } nil{nullptr};\n        return (SplayTreeNodeT *)(nil\
-    \ | ... | node).Val;\n    }\n    template<typename... Parts> static std::array<SplayTreeNodeT\
-    \ *, sizeof...(Parts) + 1>\n    split(SplayTreeNodeT *a, Parts... part) {\n  \
-    \      std::array<SplayTreeNodeT *, sizeof...(Parts) + 1> res;\n        res[0]\
-    \    = a;\n        int index = 0;\n        // clang-format off\n        ([&](int\
-    \ s) {\n            const auto [l, r]  = base_split(res[index], s);\n        \
-    \    res[index]   = (SplayTreeNodeT *)l;\n            res[++index] = (SplayTreeNodeT\
-    \ *)r; }(part), ...);\n        // clang-format on\n        return res;\n    }\n\
-    \    SplayTreeNodeT *select(int k) {\n        SplayTreeNodeBase *a = this;\n \
-    \       a->propagate();\n        while ((a->L ? a->L->Size : 0) != k) {\n    \
-    \        if ((a->L ? a->L->Size : 0) < k) {\n                k -= (a->L ? a->L->Size\
-    \ : 0) + 1;\n                a = a->R;\n            } else {\n               \
-    \ a = a->L;\n            }\n            a->propagate();\n        }\n        a->splay();\n\
-    \        return (SplayTreeNodeT *)a;\n    }\n};\n\ntemplate<typename FlipableSplayTreeNodeT>\
-    \ class FlipableSplayTreeNodeBase\n    : public SplayTreeNodeBase<FlipableSplayTreeNodeT>\
-    \ {\n    friend class SplayTreeNodeBase<FlipableSplayTreeNodeT>;\n\n    bool NeedFlip;\n\
-    \n    FlipableSplayTreeNodeT &underlying() { return (FlipableSplayTreeNodeT &)*this;\
-    \ }\n    const FlipableSplayTreeNodeT &underlying() const {\n        return (const\
-    \ FlipableSplayTreeNodeT &)*this;\n    }\n\nprotected:\n    // CRTP reimplement\n\
-    \    void do_flip() {}\n\n    void base_flip() {\n        NeedFlip = !NeedFlip;\n\
-    \        std::swap(this->L, this->R);\n        underlying().do_flip();\n    }\n\
-    \    void base_propagate() {\n        underlying().do_propagate();\n        if\
-    \ (NeedFlip) {\n            NeedFlip = false;\n            if (this->left()) this->left()->underlying().base_flip();\n\
-    \            if (this->right()) this->right()->underlying().base_flip();\n   \
-    \     }\n    }\n\n    FlipableSplayTreeNodeBase() : NeedFlip() {}\n\npublic:\n\
-    \    void flip() { base_flip(); }\n};\n#line 8 \"test/data_structure/point_set_range_composite.0.test.cpp\"\
+    \ a->base_propagate();\n        if (k == 0) return {nullptr, a};\n        if (k\
+    \ == a->Size) return {a, nullptr};\n        const int leftsize = a->L != nullptr\
+    \ ? a->L->Size : 0;\n        if (leftsize < k) {\n            auto [b, c] = base_split(a->R,\
+    \ k - leftsize - 1);\n            a->R        = b;\n            a->base_update();\n\
+    \            return {a, c};\n        }\n        auto [b, c] = base_split(a->L,\
+    \ k);\n        a->L        = c;\n        a->base_update();\n        return {b,\
+    \ a};\n    }\n\n    TreapNodeBase() : L(), R(), Rank(dis(gen)), Size(1), NeedFlip()\
+    \ {}\n\npublic:\n    int size() const { return Size; }\n    int rank() const {\
+    \ return Rank; }\n\n    TreapNodeT *left() const { return (TreapNodeT *)L; }\n\
+    \    TreapNodeT *right() const { return (TreapNodeT *)R; }\n\n    void flip()\
+    \ { base_flip(); }\n    template<typename... Nodes> static TreapNodeT *join(Nodes...\
+    \ node) {\n        struct Helper {\n            TreapNodeBase *Val;\n        \
+    \    Helper &operator|(TreapNodeBase *A) {\n                Val = TreapNodeBase::base_join(Val,\
+    \ A);\n                return *this;\n            }\n        } nil{nullptr};\n\
+    \        return (TreapNodeT *)(nil | ... | node).Val;\n    }\n    template<typename...\
+    \ Parts>\n    static std::array<TreapNodeT *, sizeof...(Parts) + 1> split(TreapNodeT\
+    \ *a, Parts... part) {\n        std::array<TreapNodeT *, sizeof...(Parts) + 1>\
+    \ res;\n        res[0]    = a;\n        int index = 0;\n        (\n          \
+    \  [&](int s) {\n                auto [l, r]  = base_split(res[index], s);\n \
+    \               res[index]   = (TreapNodeT *)l;\n                res[++index]\
+    \ = (TreapNodeT *)r;\n            }(part),\n            ...);\n        return\
+    \ res;\n    }\n\n    TreapNodeT *select(int k) {\n        base_propagate();\n\
+    \        const int leftsize = left() ? left()->size() : 0;\n        if (k == leftsize)\
+    \ return (TreapNodeT *)this;\n        if (k < leftsize) return left()->select(k);\n\
+    \        return right()->select(k - leftsize - 1);\n    }\n};\n#line 8 \"test/data_structure/point_set_range_composite.0.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    using mint           = ModInt<998244353>;\n    using LinearFunction = std::array<mint,\
-    \ 2>;\n    struct Node : SplayTreeNodeBase<Node> {\n        LinearFunction Val,\
-    \ Sum;\n        static LinearFunction composition(const LinearFunction &L, const\
-    \ LinearFunction &R) {\n            return LinearFunction{L[0] + L[1] * R[0],\
-    \ L[1] * R[1]};\n        }\n        void do_update() {\n            Sum = Val;\n\
-    \            if (left()) Sum = composition(Sum, left()->Sum);\n            if\
-    \ (right()) Sum = composition(right()->Sum, Sum);\n        }\n    };\n    int\
-    \ n, q;\n    std::cin >> n >> q;\n    FixedSizeNodePool<Node> pool(n);\n    auto\
-    \ [node, id] = pool.get_func();\n    Node *root      = nullptr;\n    for (int\
-    \ i = 0; i < n; ++i) {\n        std::cin >> node(i)->Val[1] >> node(i)->Val[0];\n\
-    \        root = Node::join(root, node(i));\n    }\n    while (q--) {\n       \
-    \ int cmd;\n        std::cin >> cmd;\n        if (cmd == 0) {\n            int\
-    \ p;\n            std::cin >> p;\n            auto [R0, R1, R2] = Node::split(root,\
+    \ 2>;\n    struct TreapNode : TreapNodeBase<TreapNode> {\n        LinearFunction\
+    \ Val, Sum;\n        static LinearFunction composition(const LinearFunction &L,\
+    \ const LinearFunction &R) {\n            return LinearFunction{L[0] + L[1] *\
+    \ R[0], L[1] * R[1]};\n        }\n        void do_update() {\n            Sum\
+    \ = Val;\n            if (left()) Sum = composition(Sum, left()->Sum);\n     \
+    \       if (right()) Sum = composition(right()->Sum, Sum);\n        }\n    };\n\
+    \    int n, q;\n    std::cin >> n >> q;\n    FixedSizeNodePool<TreapNode> pool(n);\n\
+    \    auto [node, id] = pool.get_func();\n    TreapNode *root = nullptr;\n    for\
+    \ (int i = 0; i < n; ++i) {\n        std::cin >> node(i)->Val[1] >> node(i)->Val[0];\n\
+    \        root = TreapNode::join(root, node(i));\n    }\n    while (q--) {\n  \
+    \      int cmd;\n        std::cin >> cmd;\n        if (cmd == 0) {\n         \
+    \   int p;\n            std::cin >> p;\n            auto [R0, R1, R2] = TreapNode::split(root,\
     \ p, 1);\n            std::cin >> R1->Val[1] >> R1->Val[0];\n            root\
-    \ = Node::join(R0, R1, R2);\n        } else {\n            int l, r;\n       \
-    \     mint x;\n            std::cin >> l >> r >> x;\n            auto [R0, R1,\
-    \ R2] = Node::split(root, l, r - l);\n            std::cout << Node::composition(R1->Sum,\
-    \ {x, 0}).at(0) << '\\n';\n            root = Node::join(R0, R1, R2);\n      \
-    \  }\n    }\n    return 0;\n}\n"
+    \ = TreapNode::join(R0, R1, R2);\n        } else {\n            int l, r;\n  \
+    \          mint x;\n            std::cin >> l >> r >> x;\n            auto [R0,\
+    \ R1, R2] = TreapNode::split(root, l, r - l);\n            std::cout << TreapNode::composition(R1->Sum,\
+    \ {x, 0}).at(0) << '\\n';\n            root = TreapNode::join(R0, R1, R2);\n \
+    \       }\n    }\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/point_set_range_composite\"\
-    \n\n#include \"modint.hpp\"\n#include \"node_pool.hpp\"\n#include \"splay_tree_node_base.hpp\"\
+    \n\n#include \"modint.hpp\"\n#include \"node_pool.hpp\"\n#include \"treap_node_base.hpp\"\
     \n#include <array>\n#include <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    using mint           = ModInt<998244353>;\n \
-    \   using LinearFunction = std::array<mint, 2>;\n    struct Node : SplayTreeNodeBase<Node>\
+    \   using LinearFunction = std::array<mint, 2>;\n    struct TreapNode : TreapNodeBase<TreapNode>\
     \ {\n        LinearFunction Val, Sum;\n        static LinearFunction composition(const\
     \ LinearFunction &L, const LinearFunction &R) {\n            return LinearFunction{L[0]\
     \ + L[1] * R[0], L[1] * R[1]};\n        }\n        void do_update() {\n      \
     \      Sum = Val;\n            if (left()) Sum = composition(Sum, left()->Sum);\n\
     \            if (right()) Sum = composition(right()->Sum, Sum);\n        }\n \
-    \   };\n    int n, q;\n    std::cin >> n >> q;\n    FixedSizeNodePool<Node> pool(n);\n\
-    \    auto [node, id] = pool.get_func();\n    Node *root      = nullptr;\n    for\
-    \ (int i = 0; i < n; ++i) {\n        std::cin >> node(i)->Val[1] >> node(i)->Val[0];\n\
-    \        root = Node::join(root, node(i));\n    }\n    while (q--) {\n       \
-    \ int cmd;\n        std::cin >> cmd;\n        if (cmd == 0) {\n            int\
-    \ p;\n            std::cin >> p;\n            auto [R0, R1, R2] = Node::split(root,\
+    \   };\n    int n, q;\n    std::cin >> n >> q;\n    FixedSizeNodePool<TreapNode>\
+    \ pool(n);\n    auto [node, id] = pool.get_func();\n    TreapNode *root = nullptr;\n\
+    \    for (int i = 0; i < n; ++i) {\n        std::cin >> node(i)->Val[1] >> node(i)->Val[0];\n\
+    \        root = TreapNode::join(root, node(i));\n    }\n    while (q--) {\n  \
+    \      int cmd;\n        std::cin >> cmd;\n        if (cmd == 0) {\n         \
+    \   int p;\n            std::cin >> p;\n            auto [R0, R1, R2] = TreapNode::split(root,\
     \ p, 1);\n            std::cin >> R1->Val[1] >> R1->Val[0];\n            root\
-    \ = Node::join(R0, R1, R2);\n        } else {\n            int l, r;\n       \
-    \     mint x;\n            std::cin >> l >> r >> x;\n            auto [R0, R1,\
-    \ R2] = Node::split(root, l, r - l);\n            std::cout << Node::composition(R1->Sum,\
-    \ {x, 0}).at(0) << '\\n';\n            root = Node::join(R0, R1, R2);\n      \
-    \  }\n    }\n    return 0;\n}\n"
+    \ = TreapNode::join(R0, R1, R2);\n        } else {\n            int l, r;\n  \
+    \          mint x;\n            std::cin >> l >> r >> x;\n            auto [R0,\
+    \ R1, R2] = TreapNode::split(root, l, r - l);\n            std::cout << TreapNode::composition(R1->Sum,\
+    \ {x, 0}).at(0) << '\\n';\n            root = TreapNode::join(R0, R1, R2);\n \
+    \       }\n    }\n    return 0;\n}\n"
   dependsOn:
   - modint.hpp
   - node_pool.hpp
-  - splay_tree_node_base.hpp
+  - treap_node_base.hpp
+  - rng.hpp
   isVerificationFile: true
   path: test/data_structure/point_set_range_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-18 20:33:53+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2025-09-17 22:42:21+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/point_set_range_composite.0.test.cpp
 layout: document
