@@ -37,7 +37,6 @@ template<typename TreapNodeT> class TreapNodeBase {
         underlying().do_update();
     }
 
-protected:
     static TreapNodeBase *base_join(TreapNodeBase *a, TreapNodeBase *b) {
         if (a == nullptr) {
             if (b) b->propagate(), b->update();
@@ -77,6 +76,7 @@ protected:
         return {b, a};
     }
 
+protected:
     TreapNodeBase() : L(), R(), Rank(dis(gen)), Size(1) {}
 
 public:
