@@ -5,95 +5,88 @@
 #include <random>
 #include <utility>
 
+template<typename FlipableTreapNodeT> class FlipableTreapNodeBase;
+
 template<typename TreapNodeT> class TreapNodeBase {
+    friend class FlipableTreapNodeBase<TreapNodeT>;
+
     TreapNodeBase *L;
     TreapNodeBase *R;
     int Rank;
     int Size;
-    bool NeedFlip;
+
+    TreapNodeT &underlying() { return (TreapNodeT &)*this; }
+    const TreapNodeT &underlying() const { return (const TreapNodeT &)*this; }
 
     static inline xoshiro256starstar gen{std::random_device{}()};
-    static inline std::uniform_int_distribution<int> dis{0, 998244353};
+    static inline std::uniform_int_distribution<int> dis{0, 998244353 - 1};
 
     // CRTP reimplement
-    void do_flip() {}
     void do_propagate() {}
     void do_update() {}
 
-protected:
-    void base_flip() {
-        NeedFlip = !NeedFlip;
-        std::swap(L, R);
-        ((TreapNodeT &)*this).do_flip();
-    }
     // base_propagate() is called to propagate the update information to child(ren).
     // There is no need to update the information combined from child(ren)
     // which should be done in base_update().
-    void base_propagate() {
-        ((TreapNodeT &)*this).do_propagate();
-        if (NeedFlip) {
-            NeedFlip = false;
-            if (L) L->base_flip();
-            if (R) R->base_flip();
-        }
-    }
+    void base_propagate() { underlying().do_propagate(); }
     // base_update() is called to update the information combined from child(ren).
     void base_update() {
         Size = 1;
         if (L) Size += L->Size;
         if (R) Size += R->Size;
-        ((TreapNodeT &)*this).do_update();
+        underlying().do_update();
     }
 
+protected:
     static TreapNodeBase *base_join(TreapNodeBase *a, TreapNodeBase *b) {
         if (a == nullptr) {
-            if (b) b->base_propagate(), b->base_update();
+            if (b) b->propagate(), b->update();
             return b;
         }
         if (b == nullptr) {
-            if (a) a->base_propagate(), a->base_update();
+            if (a) a->propagate(), a->update();
             return a;
         }
-        a->base_propagate();
-        b->base_propagate();
+        a->propagate();
+        b->propagate();
         if (a->Rank < b->Rank) {
             b->L = base_join(a, b->L);
-            b->base_update();
+            b->update();
             return b;
         }
         a->R = base_join(a->R, b);
-        a->base_update();
+        a->update();
         return a;
     }
 
     static std::array<TreapNodeBase *, 2> base_split(TreapNodeBase *a, int k) {
         if (a == nullptr) return {nullptr, nullptr};
-        a->base_propagate();
+        a->propagate();
         if (k == 0) return {nullptr, a};
         if (k == a->Size) return {a, nullptr};
         const int leftsize = a->L != nullptr ? a->L->Size : 0;
         if (leftsize < k) {
             auto [b, c] = base_split(a->R, k - leftsize - 1);
             a->R        = b;
-            a->base_update();
+            a->update();
             return {a, c};
         }
         auto [b, c] = base_split(a->L, k);
         a->L        = c;
-        a->base_update();
+        a->update();
         return {b, a};
     }
 
-    TreapNodeBase() : L(), R(), Rank(dis(gen)), Size(1), NeedFlip() {}
+    TreapNodeBase() : L(), R(), Rank(dis(gen)), Size(1) {}
 
 public:
     int size() const { return Size; }
     int rank() const { return Rank; }
-
     TreapNodeT *left() const { return (TreapNodeT *)L; }
     TreapNodeT *right() const { return (TreapNodeT *)R; }
+    void update() { base_update(); }
+    void propagate() { underlying().base_propagate(); }
 
-    void flip() { base_flip(); }
     template<typename... Nodes> static TreapNodeT *join(Nodes... node) {
         struct Helper {
             TreapNodeBase *Val;
@@ -120,10 +113,43 @@ public:
     }
 
     TreapNodeT *select(int k) {
-        base_propagate();
+        propagate();
         const int leftsize = left() ? left()->size() : 0;
         if (k == leftsize) return (TreapNodeT *)this;
         if (k < leftsize) return left()->select(k);
         return right()->select(k - leftsize - 1);
     }
+};
+
+template<typename FlipableTreapNodeT> class FlipableTreapNodeBase
+    : public TreapNodeBase<FlipableTreapNodeT> {
+    friend class TreapNodeBase<FlipableTreapNodeT>;
+
+    bool NeedFlip;
+
+    FlipableTreapNodeT &underlying() { return (FlipableTreapNodeT &)*this; }
+    const FlipableTreapNodeT &underlying() const { return (const FlipableTreapNodeT &)*this; }
+
+protected:
+    // CRTP reimplement
+    void do_flip() {}
+
+    void base_flip() {
+        NeedFlip = !NeedFlip;
+        std::swap(this->L, this->R);
+        underlying().do_flip();
+    }
+    void base_propagate() {
+        underlying().do_propagate();
+        if (NeedFlip) {
+            NeedFlip = false;
+            if (this->left()) this->left()->underlying().base_flip();
+            if (this->right()) this->right()->underlying().base_flip();
+        }
+    }
+
+    FlipableTreapNodeBase() : NeedFlip() {}
+
+public:
+    void flip() { base_flip(); }
 };

@@ -9,7 +9,7 @@ int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
     using mint = ModInt<998244353>;
-    struct TreapNode : TreapNodeBase<TreapNode> {
+    struct TreapNode : FlipableTreapNodeBase<TreapNode> {
         mint Val, Sum, Add, Mul = {1};
         void do_propagate() {
             if (left()) {
