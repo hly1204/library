@@ -116,26 +116,26 @@ data:
     \  void base_propagate() { underlying().do_propagate(); }\n    // base_update()\
     \ is called to update the information combined from child(ren).\n    void base_update()\
     \ {\n        Size = 1;\n        if (L) Size += L->Size;\n        if (R) Size +=\
-    \ R->Size;\n        underlying().do_update();\n    }\n\nprotected:\n    static\
-    \ TreapNodeBase *base_join(TreapNodeBase *a, TreapNodeBase *b) {\n        if (a\
-    \ == nullptr) {\n            if (b) b->propagate(), b->update();\n           \
-    \ return b;\n        }\n        if (b == nullptr) {\n            if (a) a->propagate(),\
-    \ a->update();\n            return a;\n        }\n        a->propagate();\n  \
-    \      b->propagate();\n        if (a->Rank < b->Rank) {\n            b->L = base_join(a,\
-    \ b->L);\n            b->update();\n            return b;\n        }\n       \
-    \ a->R = base_join(a->R, b);\n        a->update();\n        return a;\n    }\n\
-    \n    static std::array<TreapNodeBase *, 2> base_split(TreapNodeBase *a, int k)\
-    \ {\n        if (a == nullptr) return {nullptr, nullptr};\n        a->propagate();\n\
-    \        if (k == 0) return {nullptr, a};\n        if (k == a->Size) return {a,\
-    \ nullptr};\n        const int leftsize = a->L != nullptr ? a->L->Size : 0;\n\
-    \        if (leftsize < k) {\n            auto [b, c] = base_split(a->R, k - leftsize\
-    \ - 1);\n            a->R        = b;\n            a->update();\n            return\
-    \ {a, c};\n        }\n        auto [b, c] = base_split(a->L, k);\n        a->L\
-    \        = c;\n        a->update();\n        return {b, a};\n    }\n\n    TreapNodeBase()\
-    \ : L(), R(), Rank(dis(gen)), Size(1) {}\n\npublic:\n    int size() const { return\
-    \ Size; }\n    int rank() const { return Rank; }\n    TreapNodeT *left() const\
-    \ { return (TreapNodeT *)L; }\n    TreapNodeT *right() const { return (TreapNodeT\
-    \ *)R; }\n    void update() { base_update(); }\n    void propagate() { underlying().base_propagate();\
+    \ R->Size;\n        underlying().do_update();\n    }\n\n    static TreapNodeBase\
+    \ *base_join(TreapNodeBase *a, TreapNodeBase *b) {\n        if (a == nullptr)\
+    \ {\n            if (b) b->propagate(), b->update();\n            return b;\n\
+    \        }\n        if (b == nullptr) {\n            if (a) a->propagate(), a->update();\n\
+    \            return a;\n        }\n        a->propagate();\n        b->propagate();\n\
+    \        if (a->Rank < b->Rank) {\n            b->L = base_join(a, b->L);\n  \
+    \          b->update();\n            return b;\n        }\n        a->R = base_join(a->R,\
+    \ b);\n        a->update();\n        return a;\n    }\n\n    static std::array<TreapNodeBase\
+    \ *, 2> base_split(TreapNodeBase *a, int k) {\n        if (a == nullptr) return\
+    \ {nullptr, nullptr};\n        a->propagate();\n        if (k == 0) return {nullptr,\
+    \ a};\n        if (k == a->Size) return {a, nullptr};\n        const int leftsize\
+    \ = a->L != nullptr ? a->L->Size : 0;\n        if (leftsize < k) {\n         \
+    \   auto [b, c] = base_split(a->R, k - leftsize - 1);\n            a->R      \
+    \  = b;\n            a->update();\n            return {a, c};\n        }\n   \
+    \     auto [b, c] = base_split(a->L, k);\n        a->L        = c;\n        a->update();\n\
+    \        return {b, a};\n    }\n\nprotected:\n    TreapNodeBase() : L(), R(),\
+    \ Rank(dis(gen)), Size(1) {}\n\npublic:\n    int size() const { return Size; }\n\
+    \    int rank() const { return Rank; }\n    TreapNodeT *left() const { return\
+    \ (TreapNodeT *)L; }\n    TreapNodeT *right() const { return (TreapNodeT *)R;\
+    \ }\n    void update() { base_update(); }\n    void propagate() { underlying().base_propagate();\
     \ }\n\n    template<typename... Nodes> static TreapNodeT *join(Nodes... node)\
     \ {\n        struct Helper {\n            TreapNodeBase *Val;\n            Helper\
     \ &operator|(TreapNodeBase *A) {\n                Val = TreapNodeBase::base_join(Val,\
@@ -239,7 +239,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-18 21:05:40+08:00'
+  timestamp: '2025-09-18 21:25:16+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
