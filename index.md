@@ -87,7 +87,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: Middle Product
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -99,7 +99,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: mps_basic.hpp
       title: Multivariate Power Series
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: node_pool.hpp
       title: node_pool.hpp
     - icon: ':heavy_check_mark:'
@@ -138,6 +138,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: sparse_table.hpp
       title: sparse_table.hpp
+    - icon: ':x:'
+      path: splay_tree_node_base.hpp
+      title: splay_tree_node_base.hpp
     - icon: ':heavy_check_mark:'
       path: sps_basic.hpp
       title: sps_basic.hpp
@@ -168,9 +171,6 @@ data:
     - icon: ':heavy_check_mark:'
       path: swag.hpp
       title: swag.hpp
-    - icon: ':heavy_check_mark:'
-      path: treap_node_base.hpp
-      title: treap_node_base.hpp
     - icon: ':heavy_check_mark:'
       path: xgcd.hpp
       title: xgcd.hpp
@@ -211,22 +211,22 @@ data:
       title: test/convolution/multidimensional_convolution.0.test.cpp
   - name: test/data_structure
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
       title: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/data_structure/point_set_range_composite.0.test.cpp
       title: test/data_structure/point_set_range_composite.0.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/data_structure/queue_operate_all_composite.0.test.cpp
       title: test/data_structure/queue_operate_all_composite.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/data_structure/range_affine_point_get.0.test.cpp
       title: test/data_structure/range_affine_point_get.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/data_structure/range_affine_range_sum.0.test.cpp
       title: test/data_structure/range_affine_range_sum.0.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/data_structure/range_reverse_range_sum.0.test.cpp
       title: test/data_structure/range_reverse_range_sum.0.test.cpp
     - icon: ':heavy_check_mark:'
