@@ -229,7 +229,7 @@ public:
         return {a, root, d};
     }
     static TreapNodeT *predecessor(TreapNodeT *root, const TreapNodeT *t) {
-        TreapNodeT *res = root;
+        TreapNodeT *res = nullptr;
         while (root) {
             root->propagate();
             if (std::as_const(*root) < *t) {
@@ -241,7 +241,7 @@ public:
         return res;
     }
     static TreapNodeT *successor(TreapNodeT *root, const TreapNodeT *t) {
-        TreapNodeT *res = root;
+        TreapNodeT *res = nullptr;
         while (root) {
             root->propagate();
             if (*t < std::as_const(*root)) {
