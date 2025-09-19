@@ -43,7 +43,7 @@ int main() {
             break;
         }
         case 2: {
-            if (root && root->size() < x) {
+            if (root && root->size() > x) {
                 std::cout << root->select(x)->Val << '\n';
             } else {
                 std::cout << "-1\n";
