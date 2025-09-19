@@ -4,13 +4,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: node_pool.hpp
     title: node_pool.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: treap_node_base.hpp
     title: treap_node_base.hpp
   _extendedRequiredBy: []
@@ -210,7 +210,7 @@ data:
     \        }\n        if (std::as_const(*root) < *t) {\n            auto [a, b,\
     \ c] = split3(root->right(), t);\n            root->R        = a;\n          \
     \  root->update();\n            return {root, b, c};\n        }\n        auto\
-    \ [a, b] = split_less_than(root->left(), t);\n        auto [c, d] = split_greater_than(root->right(),\
+    \ [a, b] = split_less_than(root->left(), t);\n        auto [c, d] = split_less_equal(root->right(),\
     \ t);\n        root->L = b, root->R = c;\n        root->update();\n        return\
     \ {a, root, d};\n    }\n    static TreapNodeT *predecessor(TreapNodeT *root, const\
     \ TreapNodeT *t) {\n        TreapNodeT *res = nullptr;\n        while (root) {\n\
@@ -298,7 +298,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_affine_point_get.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-19 21:58:29+08:00'
+  timestamp: '2025-09-19 22:08:30+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_affine_point_get.0.test.cpp

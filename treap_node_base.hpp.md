@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
   _extendedRequiredBy: []
@@ -9,7 +9,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
     title: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/data_structure/ordered_set.0.test.cpp
     title: test/data_structure/ordered_set.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -24,9 +24,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/data_structure/range_reverse_range_sum.0.test.cpp
     title: test/data_structure/range_reverse_range_sum.0.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"treap_node_base.hpp\"\n\n#line 2 \"rng.hpp\"\n\n#include\
@@ -155,7 +155,7 @@ data:
     \        }\n        if (std::as_const(*root) < *t) {\n            auto [a, b,\
     \ c] = split3(root->right(), t);\n            root->R        = a;\n          \
     \  root->update();\n            return {root, b, c};\n        }\n        auto\
-    \ [a, b] = split_less_than(root->left(), t);\n        auto [c, d] = split_greater_than(root->right(),\
+    \ [a, b] = split_less_than(root->left(), t);\n        auto [c, d] = split_less_equal(root->right(),\
     \ t);\n        root->L = b, root->R = c;\n        root->update();\n        return\
     \ {a, root, d};\n    }\n    static TreapNodeT *predecessor(TreapNodeT *root, const\
     \ TreapNodeT *t) {\n        TreapNodeT *res = nullptr;\n        while (root) {\n\
@@ -306,7 +306,7 @@ data:
     \        }\n        if (std::as_const(*root) < *t) {\n            auto [a, b,\
     \ c] = split3(root->right(), t);\n            root->R        = a;\n          \
     \  root->update();\n            return {root, b, c};\n        }\n        auto\
-    \ [a, b] = split_less_than(root->left(), t);\n        auto [c, d] = split_greater_than(root->right(),\
+    \ [a, b] = split_less_than(root->left(), t);\n        auto [c, d] = split_less_equal(root->right(),\
     \ t);\n        root->L = b, root->R = c;\n        root->update();\n        return\
     \ {a, root, d};\n    }\n    static TreapNodeT *predecessor(TreapNodeT *root, const\
     \ TreapNodeT *t) {\n        TreapNodeT *res = nullptr;\n        while (root) {\n\
@@ -353,8 +353,8 @@ data:
   isVerificationFile: false
   path: treap_node_base.hpp
   requiredBy: []
-  timestamp: '2025-09-19 21:58:29+08:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2025-09-19 22:08:30+08:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   - test/data_structure/range_affine_range_sum.0.test.cpp
