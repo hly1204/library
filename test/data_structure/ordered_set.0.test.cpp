@@ -56,20 +56,20 @@ int main() {
             break;
         }
         case 4: {
-            if (TreapNode *found = TreapNode::find(root, &t)) {
-                std::cout << found->Val << '\n';
-            } else if (TreapNode *pred = TreapNode::predecessor(root, &t)) {
+            if (TreapNode *pred = TreapNode::predecessor(root, &t)) {
                 std::cout << pred->Val << '\n';
+            } else if (TreapNode *found = TreapNode::find(root, &t)) {
+                std::cout << found->Val << '\n';
             } else {
                 std::cout << "-1\n";
             }
             break;
         }
         case 5: {
-            if (TreapNode *found = TreapNode::find(root, &t)) {
-                std::cout << found->Val << '\n';
-            } else if (TreapNode *succ = TreapNode::successor(root, &t)) {
+            if (TreapNode *succ = TreapNode::successor(root, &t)) {
                 std::cout << succ->Val << '\n';
+            } else if (TreapNode *found = TreapNode::find(root, &t)) {
+                std::cout << found->Val << '\n';
             } else {
                 std::cout << "-1\n";
             }
