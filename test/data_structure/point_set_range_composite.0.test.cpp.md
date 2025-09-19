@@ -4,13 +4,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: node_pool.hpp
     title: node_pool.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: treap_node_base.hpp
     title: treap_node_base.hpp
   _extendedRequiredBy: []
