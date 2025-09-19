@@ -140,6 +140,16 @@ public:
             return count_less_than(root->left(), t);
         }
     }
+    static int count_less_equal(TreapNodeT *root, const TreapNodeT *t) {
+        if (root == nullptr) return 0;
+        root->propagate();
+        if (*t < std::as_const(*root)) {
+            return count_less_equal(root->left(), t);
+        } else {
+            return (root->left() ? root->left()->size() : 0) + 1 +
+                   count_less_equal(root->right(), t);
+        }
+    }
     // [<, >=]
     static std::array<TreapNodeT *, 2> split_less_than(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return {nullptr, nullptr};
@@ -166,17 +176,27 @@ public:
             return count_greater_than(root->right(), t);
         }
     }
+    static int count_greater_equal(TreapNodeT *root, const TreapNodeT *t) {
+        if (root == nullptr) return 0;
+        root->propagate();
+        if (std::as_const(*root) < *t) {
+            return count_greater_equal(root->right(), t);
+        } else {
+            return (root->right() ? root->right()->size() : 0) + 1 +
+                   count_greater_equal(root->left(), t);
+        }
+    }
     // [<=, >]
-    static std::array<TreapNodeT *, 2> split_greater_than(TreapNodeT *root, const TreapNodeT *t) {
+    static std::array<TreapNodeT *, 2> split_less_equal(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return {nullptr, nullptr};
         root->propagate();
         if (*t < std::as_const(*root)) {
-            auto [a, b] = split_greater_than(root->left(), t);
+            auto [a, b] = split_less_equal(root->left(), t);
             root->L     = b;
             root->update();
             return {a, root};
         } else {
-            auto [a, b] = split_greater_than(root->right(), t);
+            auto [a, b] = split_less_equal(root->right(), t);
             root->R     = a;
             root->update();
             return {root, b};

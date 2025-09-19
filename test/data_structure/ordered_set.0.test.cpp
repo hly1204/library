@@ -53,8 +53,7 @@ int main() {
             break;
         }
         case 3: {
-            auto [a, b, c] = TreapNode::count3(root, &t);
-            std::cout << a + b << '\n';
+            std::cout << TreapNode::count_less_equal(root, &t) << '\n';
             break;
         }
         case 4: {
