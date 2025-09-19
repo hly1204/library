@@ -19,7 +19,9 @@ int main() {
     for (int i = 0; i < n; ++i) {
         int v;
         std::cin >> v;
-        root = TreapNode::insert(root, pool.make(v));
+        const TreapNode t(v);
+        TreapNode *found = TreapNode::find(root, &t);
+        if (!found) root = TreapNode::insert(root, pool.make(v));
     }
     while (q--) {
         int cmd, x;
@@ -56,20 +58,20 @@ int main() {
             break;
         }
         case 4: {
-            if (TreapNode *pred = TreapNode::predecessor(root, &t)) {
-                std::cout << pred->Val << '\n';
-            } else if (TreapNode *found = TreapNode::find(root, &t)) {
+            if (TreapNode *found = TreapNode::find(root, &t)) {
                 std::cout << found->Val << '\n';
+            } else if (TreapNode *pred = TreapNode::predecessor(root, &t)) {
+                std::cout << pred->Val << '\n';
             } else {
                 std::cout << "-1\n";
             }
             break;
         }
         case 5: {
-            if (TreapNode *succ = TreapNode::successor(root, &t)) {
-                std::cout << succ->Val << '\n';
-            } else if (TreapNode *found = TreapNode::find(root, &t)) {
+            if (TreapNode *found = TreapNode::find(root, &t)) {
                 std::cout << found->Val << '\n';
+            } else if (TreapNode *succ = TreapNode::successor(root, &t)) {
+                std::cout << succ->Val << '\n';
             } else {
                 std::cout << "-1\n";
             }
