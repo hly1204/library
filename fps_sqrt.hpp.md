@@ -10,7 +10,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: fps_basic.hpp
     title: fps_basic.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
   - icon: ':heavy_check_mark:'

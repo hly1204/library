@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: node_pool.hpp
     title: node_pool.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: treap_node_base.hpp
     title: treap_node_base.hpp
   _extendedRequiredBy: []
@@ -115,25 +115,34 @@ data:
     \    root->propagate();\n        if (std::as_const(*root) < *t) {\n          \
     \  return (root->left() ? root->left()->size() : 0) + 1 +\n                  \
     \ count_less_than(root->right(), t);\n        } else {\n            return count_less_than(root->left(),\
-    \ t);\n        }\n    }\n    // [<, >=]\n    static std::array<TreapNodeT *, 2>\
-    \ split_less_than(TreapNodeT *root, const TreapNodeT *t) {\n        if (root ==\
-    \ nullptr) return {nullptr, nullptr};\n        root->propagate();\n        if\
-    \ (std::as_const(*root) < *t) {\n            auto [a, b] = split_less_than(root->right(),\
-    \ t);\n            root->R     = a;\n            root->update();\n           \
-    \ return {root, b};\n        } else {\n            auto [a, b] = split_less_than(root->left(),\
-    \ t);\n            root->L     = b;\n            root->update();\n           \
-    \ return {a, root};\n        }\n    }\n    static int count_greater_than(TreapNodeT\
-    \ *root, const TreapNodeT *t) {\n        if (root == nullptr) return 0;\n    \
-    \    root->propagate();\n        if (*t < std::as_const(*root)) {\n          \
-    \  return (root->right() ? root->right()->size() : 0) + 1 +\n                \
-    \   count_greater_than(root->left(), t);\n        } else {\n            return\
-    \ count_greater_than(root->right(), t);\n        }\n    }\n    // [<=, >]\n  \
-    \  static std::array<TreapNodeT *, 2> split_greater_than(TreapNodeT *root, const\
-    \ TreapNodeT *t) {\n        if (root == nullptr) return {nullptr, nullptr};\n\
-    \        root->propagate();\n        if (*t < std::as_const(*root)) {\n      \
-    \      auto [a, b] = split_greater_than(root->left(), t);\n            root->L\
-    \     = b;\n            root->update();\n            return {a, root};\n     \
-    \   } else {\n            auto [a, b] = split_greater_than(root->right(), t);\n\
+    \ t);\n        }\n    }\n    static int count_less_equal(TreapNodeT *root, const\
+    \ TreapNodeT *t) {\n        if (root == nullptr) return 0;\n        root->propagate();\n\
+    \        if (*t < std::as_const(*root)) {\n            return count_less_equal(root->left(),\
+    \ t);\n        } else {\n            return (root->left() ? root->left()->size()\
+    \ : 0) + 1 +\n                   count_less_equal(root->right(), t);\n       \
+    \ }\n    }\n    // [<, >=]\n    static std::array<TreapNodeT *, 2> split_less_than(TreapNodeT\
+    \ *root, const TreapNodeT *t) {\n        if (root == nullptr) return {nullptr,\
+    \ nullptr};\n        root->propagate();\n        if (std::as_const(*root) < *t)\
+    \ {\n            auto [a, b] = split_less_than(root->right(), t);\n          \
+    \  root->R     = a;\n            root->update();\n            return {root, b};\n\
+    \        } else {\n            auto [a, b] = split_less_than(root->left(), t);\n\
+    \            root->L     = b;\n            root->update();\n            return\
+    \ {a, root};\n        }\n    }\n    static int count_greater_than(TreapNodeT *root,\
+    \ const TreapNodeT *t) {\n        if (root == nullptr) return 0;\n        root->propagate();\n\
+    \        if (*t < std::as_const(*root)) {\n            return (root->right() ?\
+    \ root->right()->size() : 0) + 1 +\n                   count_greater_than(root->left(),\
+    \ t);\n        } else {\n            return count_greater_than(root->right(),\
+    \ t);\n        }\n    }\n    static int count_greater_equal(TreapNodeT *root,\
+    \ const TreapNodeT *t) {\n        if (root == nullptr) return 0;\n        root->propagate();\n\
+    \        if (std::as_const(*root) < *t) {\n            return count_greater_equal(root->right(),\
+    \ t);\n        } else {\n            return (root->right() ? root->right()->size()\
+    \ : 0) + 1 +\n                   count_greater_equal(root->left(), t);\n     \
+    \   }\n    }\n    // [<=, >]\n    static std::array<TreapNodeT *, 2> split_less_equal(TreapNodeT\
+    \ *root, const TreapNodeT *t) {\n        if (root == nullptr) return {nullptr,\
+    \ nullptr};\n        root->propagate();\n        if (*t < std::as_const(*root))\
+    \ {\n            auto [a, b] = split_less_equal(root->left(), t);\n          \
+    \  root->L     = b;\n            root->update();\n            return {a, root};\n\
+    \        } else {\n            auto [a, b] = split_less_equal(root->right(), t);\n\
     \            root->R     = a;\n            root->update();\n            return\
     \ {root, b};\n        }\n    }\n    static int count(TreapNodeT *root, const TreapNodeT\
     \ *t) {\n        if (root == nullptr) return 0;\n        root->propagate();\n\
@@ -235,7 +244,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_reverse_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-19 21:26:19+08:00'
+  timestamp: '2025-09-19 21:58:29+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_reverse_range_sum.0.test.cpp
