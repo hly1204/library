@@ -243,7 +243,7 @@ public:
             return {root, b, c};
         }
         auto [a, b] = split_less_than(root->left(), t);
-        auto [c, d] = split_greater_than(root->right(), t);
+        auto [c, d] = split_less_equal(root->right(), t);
         root->L = b, root->R = c;
         root->update();
         return {a, root, d};
