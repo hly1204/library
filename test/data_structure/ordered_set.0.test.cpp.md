@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: node_pool.hpp
     title: node_pool.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: treap_node_base.hpp
     title: treap_node_base.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/ordered_set
@@ -161,12 +161,12 @@ data:
     \ [a, b] = split_less_than(root->left(), t);\n        auto [c, d] = split_greater_than(root->right(),\
     \ t);\n        root->L = b, root->R = c;\n        root->update();\n        return\
     \ {a, root, d};\n    }\n    static TreapNodeT *predecessor(TreapNodeT *root, const\
-    \ TreapNodeT *t) {\n        TreapNodeT *res = root;\n        while (root) {\n\
+    \ TreapNodeT *t) {\n        TreapNodeT *res = nullptr;\n        while (root) {\n\
     \            root->propagate();\n            if (std::as_const(*root) < *t) {\n\
     \                res = root, root = root->right();\n            } else {\n   \
     \             root = root->left();\n            }\n        }\n        return res;\n\
     \    }\n    static TreapNodeT *successor(TreapNodeT *root, const TreapNodeT *t)\
-    \ {\n        TreapNodeT *res = root;\n        while (root) {\n            root->propagate();\n\
+    \ {\n        TreapNodeT *res = nullptr;\n        while (root) {\n            root->propagate();\n\
     \            if (*t < std::as_const(*root)) {\n                res = root, root\
     \ = root->left();\n            } else {\n                root = root->right();\n\
     \            }\n        }\n        return res;\n    }\n\n    template<typename...\
@@ -206,7 +206,8 @@ data:
     \ bool operator<(const TreapNode &other) const { return Val < other.Val; }\n \
     \   };\n    int n, q;\n    std::cin >> n >> q;\n    DynamicSizeNodePool<TreapNode>\
     \ pool;\n    TreapNode *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n \
-    \       int v;\n        std::cin >> v;\n        root = TreapNode::insert(root,\
+    \       int v;\n        std::cin >> v;\n        const TreapNode t(v);\n      \
+    \  TreapNode *found = TreapNode::find(root, &t);\n        if (!found) root = TreapNode::insert(root,\
     \ pool.make(v));\n    }\n    while (q--) {\n        int cmd, x;\n        std::cin\
     \ >> cmd >> x;\n        const TreapNode t(x);\n        switch (cmd) {\n      \
     \  case 0: {\n            TreapNode *found = TreapNode::find(root, &t);\n    \
@@ -221,16 +222,16 @@ data:
     \        } else {\n                std::cout << \"-1\\n\";\n            }\n  \
     \          break;\n        }\n        case 3: {\n            auto [a, b, c] =\
     \ TreapNode::count3(root, &t);\n            std::cout << a + b << '\\n';\n   \
-    \         break;\n        }\n        case 4: {\n            if (TreapNode *pred\
-    \ = TreapNode::predecessor(root, &t)) {\n                std::cout << pred->Val\
-    \ << '\\n';\n            } else if (TreapNode *found = TreapNode::find(root, &t))\
-    \ {\n                std::cout << found->Val << '\\n';\n            } else {\n\
+    \         break;\n        }\n        case 4: {\n            if (TreapNode *found\
+    \ = TreapNode::find(root, &t)) {\n                std::cout << found->Val << '\\\
+    n';\n            } else if (TreapNode *pred = TreapNode::predecessor(root, &t))\
+    \ {\n                std::cout << pred->Val << '\\n';\n            } else {\n\
     \                std::cout << \"-1\\n\";\n            }\n            break;\n\
-    \        }\n        case 5: {\n            if (TreapNode *succ = TreapNode::successor(root,\
-    \ &t)) {\n                std::cout << succ->Val << '\\n';\n            } else\
-    \ if (TreapNode *found = TreapNode::find(root, &t)) {\n                std::cout\
-    \ << found->Val << '\\n';\n            } else {\n                std::cout <<\
-    \ \"-1\\n\";\n            }\n            break;\n        }\n        default: break;\n\
+    \        }\n        case 5: {\n            if (TreapNode *found = TreapNode::find(root,\
+    \ &t)) {\n                std::cout << found->Val << '\\n';\n            } else\
+    \ if (TreapNode *succ = TreapNode::successor(root, &t)) {\n                std::cout\
+    \ << succ->Val << '\\n';\n            } else {\n                std::cout << \"\
+    -1\\n\";\n            }\n            break;\n        }\n        default: break;\n\
     \        }\n    }\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/ordered_set\"\n\n#include\
     \ \"node_pool.hpp\"\n#include \"treap_node_base.hpp\"\n#include <iostream>\n\n\
@@ -240,31 +241,33 @@ data:
     \ &other) const { return Val < other.Val; }\n    };\n    int n, q;\n    std::cin\
     \ >> n >> q;\n    DynamicSizeNodePool<TreapNode> pool;\n    TreapNode *root =\
     \ nullptr;\n    for (int i = 0; i < n; ++i) {\n        int v;\n        std::cin\
-    \ >> v;\n        root = TreapNode::insert(root, pool.make(v));\n    }\n    while\
-    \ (q--) {\n        int cmd, x;\n        std::cin >> cmd >> x;\n        const TreapNode\
-    \ t(x);\n        switch (cmd) {\n        case 0: {\n            TreapNode *found\
-    \ = TreapNode::find(root, &t);\n            if (!found) root = TreapNode::insert(root,\
-    \ pool.make(t.Val));\n            break;\n        }\n        case 1: {\n     \
-    \       TreapNode *found = TreapNode::find(root, &t);\n            if (found)\
-    \ {\n                auto [a, b, c] = TreapNode::split3(root, &t);\n         \
-    \       TreapNode *d   = b;\n                b              = TreapNode::join(b->left(),\
-    \ b->right());\n                pool.retrieve(d);\n                root = TreapNode::join(a,\
-    \ b, c);\n            }\n            break;\n        }\n        case 2: {\n  \
-    \          if (root && root->size() >= x) {\n                std::cout << root->select(x\
-    \ - 1)->Val << '\\n';\n            } else {\n                std::cout << \"-1\\\
-    n\";\n            }\n            break;\n        }\n        case 3: {\n      \
-    \      auto [a, b, c] = TreapNode::count3(root, &t);\n            std::cout <<\
-    \ a + b << '\\n';\n            break;\n        }\n        case 4: {\n        \
-    \    if (TreapNode *pred = TreapNode::predecessor(root, &t)) {\n             \
-    \   std::cout << pred->Val << '\\n';\n            } else if (TreapNode *found\
+    \ >> v;\n        const TreapNode t(v);\n        TreapNode *found = TreapNode::find(root,\
+    \ &t);\n        if (!found) root = TreapNode::insert(root, pool.make(v));\n  \
+    \  }\n    while (q--) {\n        int cmd, x;\n        std::cin >> cmd >> x;\n\
+    \        const TreapNode t(x);\n        switch (cmd) {\n        case 0: {\n  \
+    \          TreapNode *found = TreapNode::find(root, &t);\n            if (!found)\
+    \ root = TreapNode::insert(root, pool.make(t.Val));\n            break;\n    \
+    \    }\n        case 1: {\n            TreapNode *found = TreapNode::find(root,\
+    \ &t);\n            if (found) {\n                auto [a, b, c] = TreapNode::split3(root,\
+    \ &t);\n                TreapNode *d   = b;\n                b              =\
+    \ TreapNode::join(b->left(), b->right());\n                pool.retrieve(d);\n\
+    \                root = TreapNode::join(a, b, c);\n            }\n           \
+    \ break;\n        }\n        case 2: {\n            if (root && root->size() >=\
+    \ x) {\n                std::cout << root->select(x - 1)->Val << '\\n';\n    \
+    \        } else {\n                std::cout << \"-1\\n\";\n            }\n  \
+    \          break;\n        }\n        case 3: {\n            auto [a, b, c] =\
+    \ TreapNode::count3(root, &t);\n            std::cout << a + b << '\\n';\n   \
+    \         break;\n        }\n        case 4: {\n            if (TreapNode *found\
     \ = TreapNode::find(root, &t)) {\n                std::cout << found->Val << '\\\
-    n';\n            } else {\n                std::cout << \"-1\\n\";\n         \
-    \   }\n            break;\n        }\n        case 5: {\n            if (TreapNode\
-    \ *succ = TreapNode::successor(root, &t)) {\n                std::cout << succ->Val\
-    \ << '\\n';\n            } else if (TreapNode *found = TreapNode::find(root, &t))\
-    \ {\n                std::cout << found->Val << '\\n';\n            } else {\n\
+    n';\n            } else if (TreapNode *pred = TreapNode::predecessor(root, &t))\
+    \ {\n                std::cout << pred->Val << '\\n';\n            } else {\n\
     \                std::cout << \"-1\\n\";\n            }\n            break;\n\
-    \        }\n        default: break;\n        }\n    }\n    return 0;\n}\n"
+    \        }\n        case 5: {\n            if (TreapNode *found = TreapNode::find(root,\
+    \ &t)) {\n                std::cout << found->Val << '\\n';\n            } else\
+    \ if (TreapNode *succ = TreapNode::successor(root, &t)) {\n                std::cout\
+    \ << succ->Val << '\\n';\n            } else {\n                std::cout << \"\
+    -1\\n\";\n            }\n            break;\n        }\n        default: break;\n\
+    \        }\n    }\n    return 0;\n}\n"
   dependsOn:
   - node_pool.hpp
   - treap_node_base.hpp
@@ -272,8 +275,8 @@ data:
   isVerificationFile: true
   path: test/data_structure/ordered_set.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-19 19:54:49+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2025-09-19 21:26:19+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/ordered_set.0.test.cpp
 layout: document

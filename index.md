@@ -99,7 +99,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: mps_basic.hpp
       title: Multivariate Power Series
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: node_pool.hpp
       title: node_pool.hpp
     - icon: ':heavy_check_mark:'
@@ -126,7 +126,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: rmq.hpp
       title: rmq.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: rng.hpp
       title: rng.hpp
     - icon: ':heavy_check_mark:'
@@ -168,7 +168,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: swag.hpp
       title: swag.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: treap_node_base.hpp
       title: treap_node_base.hpp
     - icon: ':heavy_check_mark:'
@@ -214,7 +214,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
       title: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/data_structure/ordered_set.0.test.cpp
       title: test/data_structure/ordered_set.0.test.cpp
     - icon: ':heavy_check_mark:'

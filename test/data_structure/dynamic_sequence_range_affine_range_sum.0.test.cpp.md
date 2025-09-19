@@ -4,13 +4,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: node_pool.hpp
     title: node_pool.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: treap_node_base.hpp
     title: treap_node_base.hpp
   _extendedRequiredBy: []
@@ -205,12 +205,12 @@ data:
     \ [a, b] = split_less_than(root->left(), t);\n        auto [c, d] = split_greater_than(root->right(),\
     \ t);\n        root->L = b, root->R = c;\n        root->update();\n        return\
     \ {a, root, d};\n    }\n    static TreapNodeT *predecessor(TreapNodeT *root, const\
-    \ TreapNodeT *t) {\n        TreapNodeT *res = root;\n        while (root) {\n\
+    \ TreapNodeT *t) {\n        TreapNodeT *res = nullptr;\n        while (root) {\n\
     \            root->propagate();\n            if (std::as_const(*root) < *t) {\n\
     \                res = root, root = root->right();\n            } else {\n   \
     \             root = root->left();\n            }\n        }\n        return res;\n\
     \    }\n    static TreapNodeT *successor(TreapNodeT *root, const TreapNodeT *t)\
-    \ {\n        TreapNodeT *res = root;\n        while (root) {\n            root->propagate();\n\
+    \ {\n        TreapNodeT *res = nullptr;\n        while (root) {\n            root->propagate();\n\
     \            if (*t < std::as_const(*root)) {\n                res = root, root\
     \ = root->left();\n            } else {\n                root = root->right();\n\
     \            }\n        }\n        return res;\n    }\n\n    template<typename...\
@@ -321,7 +321,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-19 19:07:41+08:00'
+  timestamp: '2025-09-19 21:26:19+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp

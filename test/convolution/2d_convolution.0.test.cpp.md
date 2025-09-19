@@ -13,7 +13,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: random.hpp
     title: random.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: rng.hpp
     title: rng.hpp
   _extendedRequiredBy: []
