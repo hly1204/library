@@ -28,7 +28,7 @@ int main() {
         switch (cmd) {
         case 0: {
             TreapNode *found = TreapNode::find(root, &t);
-            if (!found) root = TreapNode::insert(root, pool.make(t));
+            if (!found) root = TreapNode::insert(root, pool.make(t.Val));
             break;
         }
         case 1: {
