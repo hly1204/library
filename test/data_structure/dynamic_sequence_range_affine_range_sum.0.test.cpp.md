@@ -223,16 +223,16 @@ data:
     \            if (*t < std::as_const(*root)) {\n                res = root, root\
     \ = root->left();\n            } else {\n                root = root->right();\n\
     \            }\n        }\n        return res;\n    }\n\n    template<typename...\
-    \ Nodes> static TreapNodeT *join(Nodes... node) {\n        struct Helper {\n \
+    \ Nodes> static TreapNodeT *join(Nodes... root) {\n        struct Helper {\n \
     \           TreapNodeBase *Val;\n            Helper &operator|(TreapNodeBase *A)\
     \ {\n                Val = TreapNodeBase::base_join(Val, A);\n               \
     \ return *this;\n            }\n        } nil{nullptr};\n        return (TreapNodeT\
-    \ *)(nil | ... | node).Val;\n    }\n    template<typename... Parts>\n    static\
-    \ std::array<TreapNodeT *, sizeof...(Parts) + 1> split(TreapNodeT *a, Parts...\
+    \ *)(nil | ... | root).Val;\n    }\n    template<typename... Parts>\n    static\
+    \ std::array<TreapNodeT *, sizeof...(Parts) + 1> split(TreapNodeT *root, Parts...\
     \ part) {\n        std::array<TreapNodeT *, sizeof...(Parts) + 1> res;\n     \
-    \   res[0]    = a;\n        int index = 0;\n        (\n            [&](int s)\
-    \ {\n                auto [l, r]  = base_split(res[index], s);\n             \
-    \   res[index]   = (TreapNodeT *)l;\n                res[++index] = (TreapNodeT\
+    \   res[0]    = root;\n        int index = 0;\n        (\n            [&](int\
+    \ s) {\n                auto [l, r]  = base_split(res[index], s);\n          \
+    \      res[index]   = (TreapNodeT *)l;\n                res[++index] = (TreapNodeT\
     \ *)r;\n            }(part),\n            ...);\n        return res;\n    }\n\n\
     \    static TreapNodeT *find(TreapNodeT *root, const TreapNodeT *t) {\n      \
     \  if (root == nullptr) return nullptr;\n        root->propagate();\n        if\
@@ -330,7 +330,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-19 22:08:30+08:00'
+  timestamp: '2025-09-22 22:55:38+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
