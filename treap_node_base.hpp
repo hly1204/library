@@ -273,7 +273,7 @@ public:
         return res;
     }
 
-    template<typename... Nodes> static TreapNodeT *join(Nodes... node) {
+    template<typename... Nodes> static TreapNodeT *join(Nodes... root) {
         struct Helper {
             TreapNodeBase *Val;
             Helper &operator|(TreapNodeBase *A) {
@@ -281,12 +281,12 @@ public:
                 return *this;
             }
         } nil{nullptr};
-        return (TreapNodeT *)(nil | ... | node).Val;
+        return (TreapNodeT *)(nil | ... | root).Val;
     }
     template<typename... Parts>
-    static std::array<TreapNodeT *, sizeof...(Parts) + 1> split(TreapNodeT *a, Parts... part) {
+    static std::array<TreapNodeT *, sizeof...(Parts) + 1> split(TreapNodeT *root, Parts... part) {
         std::array<TreapNodeT *, sizeof...(Parts) + 1> res;
-        res[0]    = a;
+        res[0]    = root;
         int index = 0;
         (
             [&](int s) {
