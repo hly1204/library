@@ -578,9 +578,9 @@ data:
   timestamp: '2025-01-19 15:28:01+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/matrix/pow_of_matrix.0.test.cpp
   - test/matrix/characteristic_polynomial.1.test.cpp
   - test/matrix/adjugate_matrix.0.test.cpp
-  - test/matrix/pow_of_matrix.0.test.cpp
 documentation_of: basis.hpp
 layout: document
 redirect_from:
