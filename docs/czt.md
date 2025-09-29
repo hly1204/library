@@ -81,7 +81,7 @@ $$
 f(x)=M(x)\cdot\sum _ {i=0}^{n-1}\frac{f\left(q^i\right)/M'\left(q^i\right)}{x-q^i}
 $$
 
-where $M(x)=\prod _ {j=0}^{n-1}\left(x - q^j\right)$. If we set $n-1=2k$ and $H(x):=\prod_{j=0}^{k-1}\left(x - q^j\right)$ then
+where $M(x)=\prod _ {j=0}^{n-1}\left(x - q^j\right)$. If we set $n=2k$ and $H(x):=\prod_{j=0}^{k-1}\left(x - q^j\right)$ then
 
 $$
 M(x)=H(x)\cdot q^{k^2}\cdot H\left(\frac{x}{q^k}\right)
