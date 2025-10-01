@@ -187,6 +187,9 @@ data:
       path: standalone_test/formal_power_series/exp_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
       title: standalone_test/formal_power_series/exp_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
     - icon: ':heavy_check_mark:'
+      path: standalone_test/formal_power_series/find_linear_recurrence.rational_approximation.test.cpp
+      title: standalone_test/formal_power_series/find_linear_recurrence.rational_approximation.test.cpp
+    - icon: ':heavy_check_mark:'
       path: standalone_test/formal_power_series/log_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
       title: standalone_test/formal_power_series/log_of_formal_power_series.hoeven_divide_and_conquer_binary.test.cpp
   - name: test/convolution
