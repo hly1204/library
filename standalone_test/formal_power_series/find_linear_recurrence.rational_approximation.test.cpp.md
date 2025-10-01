@@ -40,8 +40,8 @@ data:
     \    for (int i = 0; i < (int)size(x); ++i)\n        for (int j = 0; j < (int)size(y);\
     \ ++j) xy[i + j] = (xy[i + j] + (ull)x[i] * y[j]) % MOD;\n    for (int i = 0;\
     \ i < (int)size(z); ++i)\n        if ((xy[i] += z[i]) >= MOD) xy[i] -= MOD;\n\
-    \    Shrink(xy);\n    return xy;\n}\n\n// returns P, Q  such that [x^[-k, 0)]\
-    \ P/Q = [x^[-k, 0)] A/B\n// and deg(Q) is minimized\n// requires deg(A) < deg(B)\n\
+    \    Shrink(xy);\n    return xy;\n}\n\n// returns P, Q such that [x^[-k, 0)] P/Q\
+    \ = [x^[-k, 0)] A/B\n// and deg(Q) is minimized\n// requires deg(A) < deg(B)\n\
     std::array<std::vector<uint>, 2> RationalApprox(std::vector<uint> A, std::vector<uint>\
     \ B, int k) {\n    if (Degree(A) < 0 || Degree(A) - Degree(B) < -k)\n        return\
     \ {std::vector<uint>{}, std::vector<uint>{1u}};\n    std::vector<uint> P0 = {1u},\
@@ -85,8 +85,8 @@ data:
     \    for (int i = 0; i < (int)size(x); ++i)\n        for (int j = 0; j < (int)size(y);\
     \ ++j) xy[i + j] = (xy[i + j] + (ull)x[i] * y[j]) % MOD;\n    for (int i = 0;\
     \ i < (int)size(z); ++i)\n        if ((xy[i] += z[i]) >= MOD) xy[i] -= MOD;\n\
-    \    Shrink(xy);\n    return xy;\n}\n\n// returns P, Q  such that [x^[-k, 0)]\
-    \ P/Q = [x^[-k, 0)] A/B\n// and deg(Q) is minimized\n// requires deg(A) < deg(B)\n\
+    \    Shrink(xy);\n    return xy;\n}\n\n// returns P, Q such that [x^[-k, 0)] P/Q\
+    \ = [x^[-k, 0)] A/B\n// and deg(Q) is minimized\n// requires deg(A) < deg(B)\n\
     std::array<std::vector<uint>, 2> RationalApprox(std::vector<uint> A, std::vector<uint>\
     \ B, int k) {\n    if (Degree(A) < 0 || Degree(A) - Degree(B) < -k)\n        return\
     \ {std::vector<uint>{}, std::vector<uint>{1u}};\n    std::vector<uint> P0 = {1u},\
@@ -106,7 +106,7 @@ data:
   isVerificationFile: true
   path: standalone_test/formal_power_series/find_linear_recurrence.rational_approximation.test.cpp
   requiredBy: []
-  timestamp: '2025-10-01 19:15:45+08:00'
+  timestamp: '2025-10-01 19:18:45+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/formal_power_series/find_linear_recurrence.rational_approximation.test.cpp
