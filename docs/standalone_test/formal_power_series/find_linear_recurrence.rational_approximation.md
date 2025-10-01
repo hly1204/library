@@ -1,6 +1,6 @@
 ---
 title: Rational Approximation
-documentation_of: ../standalone_test/formal_power_series/find_linear_recurrence.rational_approximation.test.cpp
+documentation_of: ../../../standalone_test/formal_power_series/find_linear_recurrence.rational_approximation.test.cpp
 ---
 
 Chinese version: <https://hly1204.blog.uoj.ac/blog/9207>.
