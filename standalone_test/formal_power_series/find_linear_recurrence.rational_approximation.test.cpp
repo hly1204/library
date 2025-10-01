@@ -70,7 +70,7 @@ std::vector<uint> MultiplyAdd(const std::vector<uint> &x, const std::vector<uint
     return xy;
 }
 
-// returns P, Q  such that [x^[-k, 0)] P/Q = [x^[-k, 0)] A/B
+// returns P, Q such that [x^[-k, 0)] P/Q = [x^[-k, 0)] A/B
 // and deg(Q) is minimized
 // requires deg(A) < deg(B)
 std::array<std::vector<uint>, 2> RationalApprox(std::vector<uint> A, std::vector<uint> B, int k) {
