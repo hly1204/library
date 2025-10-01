@@ -93,7 +93,7 @@ int main() {
     std::vector<uint> a(n);
     for (int i = 0; i < n; ++i) std::cin >> a[i];
     const auto res = Monic(std::get<1>(RationalApprox(
-        std::vector(a.rbegin(), a.rend()),
+        std::vector(rbegin(a), rend(a)),
         [](int n) {
             std::vector<uint> a(n + 1);
             a[n] = 1;
