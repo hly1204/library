@@ -52,11 +52,11 @@ data:
     \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
     \ n;\n    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i = 0; i <\
     \ n; ++i) std::cin >> a[i];\n    const auto res = Monic(std::get<1>(RationalApprox(\n\
-    \        std::vector(a.rbegin(), a.rend()),\n        [](int n) {\n           \
-    \ std::vector<uint> a(n + 1);\n            a[n] = 1;\n            return a;\n\
-    \        }(n),\n        n)));\n    std::cout << Degree(res) << '\\n';\n    for\
-    \ (int i = Degree(res) - 1; i >= 0; --i) std::cout << (res[i] ? MOD - res[i] :\
-    \ 0u) << ' ';\n    return 0;\n}\n"
+    \        std::vector(rbegin(a), rend(a)),\n        [](int n) {\n            std::vector<uint>\
+    \ a(n + 1);\n            a[n] = 1;\n            return a;\n        }(n),\n   \
+    \     n)));\n    std::cout << Degree(res) << '\\n';\n    for (int i = Degree(res)\
+    \ - 1; i >= 0; --i) std::cout << (res[i] ? MOD - res[i] : 0u) << ' ';\n    return\
+    \ 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/find_linear_recurrence\"\
     \n\n#include <algorithm>\n#include <array>\n#include <cassert>\n#include <iostream>\n\
     #include <tuple>\n#include <vector>\n\nusing uint         = unsigned;\nusing ull\
@@ -97,16 +97,16 @@ data:
     \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
     \ n;\n    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i = 0; i <\
     \ n; ++i) std::cin >> a[i];\n    const auto res = Monic(std::get<1>(RationalApprox(\n\
-    \        std::vector(a.rbegin(), a.rend()),\n        [](int n) {\n           \
-    \ std::vector<uint> a(n + 1);\n            a[n] = 1;\n            return a;\n\
-    \        }(n),\n        n)));\n    std::cout << Degree(res) << '\\n';\n    for\
-    \ (int i = Degree(res) - 1; i >= 0; --i) std::cout << (res[i] ? MOD - res[i] :\
-    \ 0u) << ' ';\n    return 0;\n}\n"
+    \        std::vector(rbegin(a), rend(a)),\n        [](int n) {\n            std::vector<uint>\
+    \ a(n + 1);\n            a[n] = 1;\n            return a;\n        }(n),\n   \
+    \     n)));\n    std::cout << Degree(res) << '\\n';\n    for (int i = Degree(res)\
+    \ - 1; i >= 0; --i) std::cout << (res[i] ? MOD - res[i] : 0u) << ' ';\n    return\
+    \ 0;\n}\n"
   dependsOn: []
   isVerificationFile: true
   path: standalone_test/formal_power_series/find_linear_recurrence.rational_approximation.test.cpp
   requiredBy: []
-  timestamp: '2025-10-01 19:18:45+08:00'
+  timestamp: '2025-10-01 19:29:57+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/formal_power_series/find_linear_recurrence.rational_approximation.test.cpp
