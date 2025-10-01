@@ -1,5 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/find_linear_recurrence"
 
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <iostream>
@@ -60,7 +61,7 @@ std::array<std::vector<uint>, 2> QuoRem(std::vector<uint> A, const std::vector<u
 
 std::vector<uint> MultiplyAdd(const std::vector<uint> &x, const std::vector<uint> &y,
                               const std::vector<uint> &z) {
-    std::vector<uint> xy(size(x) + size(y) - 1);
+    std::vector<uint> xy(std::max(size(x) + size(y) - 1, size(z)));
     for (int i = 0; i < (int)size(x); ++i)
         for (int j = 0; j < (int)size(y); ++j) xy[i + j] = (xy[i + j] + (ull)x[i] * y[j]) % MOD;
     for (int i = 0; i < (int)size(z); ++i)
