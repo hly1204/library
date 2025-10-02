@@ -32,43 +32,42 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/find_linear_recurrence
     links:
     - https://judge.yosupo.jp/problem/find_linear_recurrence
-  bundledCode: "#line 1 \"test/formal_power_series/find_linear_recurrence.0.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/find_linear_recurrence\"\n\
-    \n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\n//\
-    \ clang-format off\ntemplate<unsigned Mod> class ModInt {\n    static_assert((Mod\
-    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template<typename Int>\n\
-    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
-    \ { using D = std::common_type_t<Int, unsigned>; return (v %= (int)Mod) < 0 ?\
-    \ (D)(v + (int)Mod) : (D)v; }\n    struct PrivateConstructor {} static inline\
-    \ private_constructor{};\n    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\
-    \    unsigned v_;\n\npublic:\n    static unsigned mod() { return Mod; }\n    static\
-    \ ModInt from_raw(unsigned v) { return ModInt(private_constructor, v); }\n   \
-    \ static ModInt zero() { return from_raw(0); }\n    static ModInt one() { return\
-    \ from_raw(1); }\n    bool is_zero() const { return v_ == 0; }\n    bool is_one()\
-    \ const { return v_ == 1; }\n    ModInt() : v_() {}\n    template<typename Int,\
-    \ typename std::enable_if_t<std::is_signed_v<Int>, int> = 0> ModInt(Int v) : v_(safe_mod(v))\
-    \ {}\n    template<typename Int, typename std::enable_if_t<std::is_unsigned_v<Int>,\
-    \ int> = 0> ModInt(Int v) : v_(v % Mod) {}\n    unsigned val() const { return\
-    \ v_; }\n    ModInt operator-() const { return from_raw(v_ == 0 ? v_ : Mod - v_);\
-    \ }\n    ModInt pow(long long e) const { if (e < 0) return inv().pow(-e); for\
-    \ (ModInt x(*this), res(from_raw(1));; x *= x) { if (e & 1) res *= x; if ((e >>=\
-    \ 1) == 0) return res; }}\n    ModInt inv() const { int x1 = 1, x3 = 0, a = val(),\
-    \ b = Mod; while (b) { const int q = a / b, x1_old = x1, a_old = a; x1 = x3, x3\
-    \ = x1_old - x3 * q, a = b, b = a_old - b * q; } return from_raw(x1 < 0 ? x1 +\
-    \ (int)Mod : x1); }\n    template<bool Odd = (Mod & 1)> std::enable_if_t<Odd,\
-    \ ModInt> div_by_2() const { if (v_ & 1) return from_raw((v_ + Mod) >> 1); return\
-    \ from_raw(v_ >> 1); }\n    ModInt &operator+=(const ModInt &a) { if ((v_ += a.v_)\
-    \ >= Mod) v_ -= Mod; return *this; }\n    ModInt &operator-=(const ModInt &a)\
-    \ { if ((v_ += Mod - a.v_) >= Mod) v_ -= Mod; return *this; }\n    ModInt &operator*=(const\
-    \ ModInt &a) { v_ = (unsigned long long)v_ * a.v_ % Mod; return *this; }\n   \
-    \ ModInt &operator/=(const ModInt &a) { return *this *= a.inv(); }\n    ModInt\
-    \ &operator++() { return *this += one(); }\n    ModInt operator++(int) { ModInt\
-    \ o(*this); *this += one(); return o; }\n    ModInt &operator--() { return *this\
-    \ -= one(); }\n    ModInt operator--(int) { ModInt o(*this); *this -= one(); return\
-    \ o; }\n    friend ModInt operator+(const ModInt &a, const ModInt &b) { return\
-    \ ModInt(a) += b; }\n    friend ModInt operator-(const ModInt &a, const ModInt\
-    \ &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const ModInt &a,\
-    \ const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
+  bundledCode: "#line 1 \"test/other/find_linear_recurrence.0.test.cpp\"\n#define\
+    \ PROBLEM \"https://judge.yosupo.jp/problem/find_linear_recurrence\"\n\n#line\
+    \ 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\n// clang-format\
+    \ off\ntemplate<unsigned Mod> class ModInt {\n    static_assert((Mod >> 31) ==\
+    \ 0, \"`Mod` must less than 2^(31)\");\n    template<typename Int>\n    static\
+    \ std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v) { using\
+    \ D = std::common_type_t<Int, unsigned>; return (v %= (int)Mod) < 0 ? (D)(v +\
+    \ (int)Mod) : (D)v; }\n    struct PrivateConstructor {} static inline private_constructor{};\n\
+    \    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n    unsigned v_;\n\npublic:\n\
+    \    static unsigned mod() { return Mod; }\n    static ModInt from_raw(unsigned\
+    \ v) { return ModInt(private_constructor, v); }\n    static ModInt zero() { return\
+    \ from_raw(0); }\n    static ModInt one() { return from_raw(1); }\n    bool is_zero()\
+    \ const { return v_ == 0; }\n    bool is_one() const { return v_ == 1; }\n   \
+    \ ModInt() : v_() {}\n    template<typename Int, typename std::enable_if_t<std::is_signed_v<Int>,\
+    \ int> = 0> ModInt(Int v) : v_(safe_mod(v)) {}\n    template<typename Int, typename\
+    \ std::enable_if_t<std::is_unsigned_v<Int>, int> = 0> ModInt(Int v) : v_(v % Mod)\
+    \ {}\n    unsigned val() const { return v_; }\n    ModInt operator-() const {\
+    \ return from_raw(v_ == 0 ? v_ : Mod - v_); }\n    ModInt pow(long long e) const\
+    \ { if (e < 0) return inv().pow(-e); for (ModInt x(*this), res(from_raw(1));;\
+    \ x *= x) { if (e & 1) res *= x; if ((e >>= 1) == 0) return res; }}\n    ModInt\
+    \ inv() const { int x1 = 1, x3 = 0, a = val(), b = Mod; while (b) { const int\
+    \ q = a / b, x1_old = x1, a_old = a; x1 = x3, x3 = x1_old - x3 * q, a = b, b =\
+    \ a_old - b * q; } return from_raw(x1 < 0 ? x1 + (int)Mod : x1); }\n    template<bool\
+    \ Odd = (Mod & 1)> std::enable_if_t<Odd, ModInt> div_by_2() const { if (v_ & 1)\
+    \ return from_raw((v_ + Mod) >> 1); return from_raw(v_ >> 1); }\n    ModInt &operator+=(const\
+    \ ModInt &a) { if ((v_ += a.v_) >= Mod) v_ -= Mod; return *this; }\n    ModInt\
+    \ &operator-=(const ModInt &a) { if ((v_ += Mod - a.v_) >= Mod) v_ -= Mod; return\
+    \ *this; }\n    ModInt &operator*=(const ModInt &a) { v_ = (unsigned long long)v_\
+    \ * a.v_ % Mod; return *this; }\n    ModInt &operator/=(const ModInt &a) { return\
+    \ *this *= a.inv(); }\n    ModInt &operator++() { return *this += one(); }\n \
+    \   ModInt operator++(int) { ModInt o(*this); *this += one(); return o; }\n  \
+    \  ModInt &operator--() { return *this -= one(); }\n    ModInt operator--(int)\
+    \ { ModInt o(*this); *this -= one(); return o; }\n    friend ModInt operator+(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) += b; }\n    friend ModInt operator-(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
     \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
     \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
     \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
@@ -441,9 +440,9 @@ data:
     }\n\n// returns [x^[-k, 0)] A/B\n// requires deg(A) < deg(B)\ntemplate<typename\
     \ Tp>\ninline std::vector<Tp> fraction_to_series(const Poly<Tp> &A, const Poly<Tp>\
     \ &B, int k) {\n    return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).slice(0,\
-    \ k);\n}\n#line 7 \"test/formal_power_series/find_linear_recurrence.0.test.cpp\"\
-    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    using mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
+    \ k);\n}\n#line 7 \"test/other/find_linear_recurrence.0.test.cpp\"\n\nint main()\
+    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
+    \ mint = ModInt<998244353>;\n    int n;\n    std::cin >> n;\n    std::vector<mint>\
     \ A(n);\n    for (int i = 0; i < n; ++i) std::cin >> A[i];\n    const auto [P,\
     \ Q] = rational_reconstruction(A);\n    const auto res    = Q.monic();\n    std::cout\
     \ << res.deg() << '\\n';\n    for (int i = res.deg() - 1; i >= 0; --i) std::cout\
@@ -465,15 +464,15 @@ data:
   - fps_basic.hpp
   - semi_relaxed_conv.hpp
   isVerificationFile: true
-  path: test/formal_power_series/find_linear_recurrence.0.test.cpp
+  path: test/other/find_linear_recurrence.0.test.cpp
   requiredBy: []
-  timestamp: '2025-01-19 15:28:01+08:00'
+  timestamp: '2025-10-02 14:54:46+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/formal_power_series/find_linear_recurrence.0.test.cpp
+documentation_of: test/other/find_linear_recurrence.0.test.cpp
 layout: document
 redirect_from:
-- /verify/test/formal_power_series/find_linear_recurrence.0.test.cpp
-- /verify/test/formal_power_series/find_linear_recurrence.0.test.cpp.html
-title: test/formal_power_series/find_linear_recurrence.0.test.cpp
+- /verify/test/other/find_linear_recurrence.0.test.cpp
+- /verify/test/other/find_linear_recurrence.0.test.cpp.html
+title: test/other/find_linear_recurrence.0.test.cpp
 ---

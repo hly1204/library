@@ -22,14 +22,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-    title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-    title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
     title: test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/other/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+    title: test/other/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/other/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+    title: test/other/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -497,8 +497,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.0.test.cpp
-  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+  - test/other/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/other/kth_term_of_linearly_recurrent_sequence.0.test.cpp
 documentation_of: c_finite.hpp
 layout: document
 title: C-Finite Sequence

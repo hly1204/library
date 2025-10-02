@@ -64,9 +64,6 @@ data:
     path: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
     title: test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-    title: test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
     title: test/formal_power_series/conversion_from_monomial_basis_to_newton_basis.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -76,9 +73,6 @@ data:
     path: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/exp_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/find_linear_recurrence.0.test.cpp
-    title: test/formal_power_series/find_linear_recurrence.0.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/inv_of_formal_power_series.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -87,9 +81,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_polynomials.0.test.cpp
     title: test/formal_power_series/inv_of_polynomials.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
-    title: test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/formal_power_series/log_of_formal_power_series.0.test.cpp
     title: test/formal_power_series/log_of_formal_power_series.0.test.cpp
@@ -153,6 +144,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/other/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+    title: test/other/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/other/find_linear_recurrence.0.test.cpp
+    title: test/other/find_linear_recurrence.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/other/kth_term_of_linearly_recurrent_sequence.0.test.cpp
+    title: test/other/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/set_power_series/exp_of_set_power_series.0.test.cpp
     title: test/set_power_series/exp_of_set_power_series.0.test.cpp
@@ -293,14 +293,11 @@ data:
   - test/formal_power_series/log_of_formal_power_series.0.test.cpp
   - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
-  - test/formal_power_series/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
-  - test/formal_power_series/find_linear_recurrence.0.test.cpp
   - test/formal_power_series/inv_of_formal_power_series.0.test.cpp
   - test/formal_power_series/exp_of_formal_power_series.0.test.cpp
   - test/formal_power_series/shift_of_sampling_points_of_polynomial.1.test.cpp
   - test/formal_power_series/inv_of_formal_power_series.1.test.cpp
   - test/formal_power_series/pow_of_formal_power_series.0.test.cpp
-  - test/formal_power_series/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/convolution/bitwise_xor_convolution.0.test.cpp
   - test/convolution/multidimensional_convolution.0.test.cpp
   - test/convolution/2d_convolution.0.test.cpp
@@ -319,6 +316,9 @@ data:
   - test/set_power_series/inv_of_set_power_series.0.test.cpp
   - test/set_power_series/polynomial_composite_set_power_series.0.test.cpp
   - test/set_power_series/exp_of_set_power_series.0.test.cpp
+  - test/other/consecutive_terms_of_linear_recurrent_sequence.0.test.cpp
+  - test/other/find_linear_recurrence.0.test.cpp
+  - test/other/kth_term_of_linearly_recurrent_sequence.0.test.cpp
   - test/tree/dynamic_tree_vertex_set_path_composite.0.test.cpp
 documentation_of: modint.hpp
 layout: document

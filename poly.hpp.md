@@ -37,9 +37,6 @@ data:
     title: poly_interpolation_with_error.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/find_linear_recurrence.0.test.cpp
-    title: test/formal_power_series/find_linear_recurrence.0.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_polynomials.0.test.cpp
     title: test/formal_power_series/inv_of_polynomials.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -66,6 +63,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/matrix/sparse_matrix_det.0.test.cpp
     title: test/matrix/sparse_matrix_det.0.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/other/find_linear_recurrence.0.test.cpp
+    title: test/other/find_linear_recurrence.0.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -565,7 +565,7 @@ data:
   - test/matrix/matrix_det.0.test.cpp
   - test/matrix/sparse_matrix_det.0.test.cpp
   - test/formal_power_series/inv_of_polynomials.0.test.cpp
-  - test/formal_power_series/find_linear_recurrence.0.test.cpp
+  - test/other/find_linear_recurrence.0.test.cpp
 documentation_of: poly.hpp
 layout: document
 redirect_from:
