@@ -193,7 +193,7 @@ data:
     pages:
     - icon: ':heavy_check_mark:'
       path: standalone_test/other/find_linear_recurrence.rational_approximation.test.cpp
-      title: standalone_test/other/find_linear_recurrence.rational_approximation.test.cpp
+      title: Rational Approximation
   - name: test/convolution
     pages:
     - icon: ':heavy_check_mark:'
