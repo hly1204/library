@@ -318,37 +318,39 @@ data:
     \ B);\n\n    auto Q = fps_div(std::vector(A.rend() - (degA + 1), A.rend()),\n\
     \                     std::vector(B.rend() - (degB + 1), B.rend()), degQ + 1);\n\
     \    std::reverse(Q.begin(), Q.end());\n    return Q;\n}\n#line 7 \"poly.hpp\"\
-    \n#include <iostream>\n#line 9 \"poly.hpp\"\n\ntemplate<typename Tp> class Poly\
+    \n#include <iostream>\n#line 10 \"poly.hpp\"\n\ntemplate<typename Tp> class Poly\
     \ : public std::vector<Tp> {\n    using Base = std::vector<Tp>;\n\npublic:\n \
-    \   using Base::Base;\n\n    static Poly zero() { return Poly(); }\n    static\
-    \ Poly one() { return Poly{Tp::one()}; }\n\n    bool is_zero() const { return\
-    \ deg() < 0; }\n    bool is_one() const { return deg() == 0 && lc() == Tp::one();\
-    \ }\n\n    int deg() const { return degree(*this); }\n    int ord() const { return\
-    \ order(*this); }\n\n    Poly rev() const {\n        const int d = deg();\n  \
-    \      Poly res(d + 1);\n        for (int i = d; i >= 0; --i) res[i] = Base::operator[](d\
-    \ - i);\n        return res;\n    }\n\n    Poly slice(int L, int R) const {\n\
-    \        Poly res(R - L);\n        for (int i = L; i < std::min<int>(R, Base::size());\
-    \ ++i) res[i - L] = Base::operator[](i);\n        return res;\n    }\n\n    Poly\
-    \ trunc(int D) const {\n        Poly res(D);\n        for (int i = 0; i < std::min<int>(D,\
-    \ Base::size()); ++i) res[i] = Base::operator[](i);\n        return res;\n   \
-    \ }\n\n    Poly &shrink() {\n        Base::resize(deg() + 1);\n        return\
-    \ *this;\n    }\n\n    Tp lc() const {\n        const int d = deg();\n       \
-    \ return d == -1 ? Tp() : Base::operator[](d);\n    }\n\n    Poly monic() const\
-    \ {\n        const int d = deg();\n        assert(d >= 0);\n        const auto\
-    \ iv = Base::operator[](d).inv();\n        Poly res(*this);\n        for (int\
-    \ i = 0; i <= d; ++i) res[i] *= iv;\n        return res;\n    }\n\n    Poly taylor_shift(Tp\
-    \ c) const {\n        Base::operator=(taylor_shift(*this, c));\n        return\
-    \ shrink();\n    }\n\n    Poly operator-() const {\n        const int d = deg();\n\
+    \   using Base::Base;\n\n    static Poly from_vector(std::vector<Tp> v) {\n  \
+    \      Poly res;\n        static_cast<std::vector<Tp> &>(res) = std::move(v);\n\
+    \        return res;\n    }\n\n    static Poly zero() { return Poly(); }\n   \
+    \ static Poly one() { return Poly{Tp::one()}; }\n\n    bool is_zero() const {\
+    \ return deg() < 0; }\n    bool is_one() const { return deg() == 0 && lc() ==\
+    \ Tp::one(); }\n\n    int deg() const { return degree(*this); }\n    int ord()\
+    \ const { return order(*this); }\n\n    Poly rev() const {\n        const int\
+    \ d = deg();\n        Poly res(d + 1);\n        for (int i = d; i >= 0; --i) res[i]\
+    \ = Base::operator[](d - i);\n        return res;\n    }\n\n    Poly slice(int\
+    \ L, int R) const {\n        Poly res(R - L);\n        for (int i = L; i < std::min<int>(R,\
+    \ Base::size()); ++i) res[i - L] = Base::operator[](i);\n        return res;\n\
+    \    }\n\n    Poly trunc(int D) const {\n        Poly res(D);\n        for (int\
+    \ i = 0; i < std::min<int>(D, Base::size()); ++i) res[i] = Base::operator[](i);\n\
+    \        return res;\n    }\n\n    Poly &shrink() {\n        Base::resize(deg()\
+    \ + 1);\n        return *this;\n    }\n\n    Tp lc() const {\n        const int\
+    \ d = deg();\n        return d == -1 ? Tp() : Base::operator[](d);\n    }\n\n\
+    \    Poly monic() const {\n        const int d = deg();\n        assert(d >= 0);\n\
+    \        const auto iv = Base::operator[](d).inv();\n        Poly res(*this);\n\
+    \        for (int i = 0; i <= d; ++i) res[i] *= iv;\n        return res;\n   \
+    \ }\n\n    Poly taylor_shift(Tp c) const { return from_vector(::taylor_shift(*this,\
+    \ c)).shrink(); }\n\n    Poly operator-() const {\n        const int d = deg();\n\
     \        Poly res(d + 1);\n        for (int i = 0; i <= d; ++i) res[i] = -Base::operator[](i);\n\
     \        res.shrink();\n        return res;\n    }\n\n    std::array<Poly, 2>\
-    \ divmod(const Poly &R) const {\n        const auto [q, r] = euclidean_div(*this,\
-    \ R);\n        return {Poly(q.begin(), q.end()), Poly(r.begin(), r.end())};\n\
-    \    }\n    Poly &operator+=(const Poly &R) {\n        if (Base::size() < R.size())\
-    \ Base::resize(R.size());\n        for (int i = 0; i < (int)R.size(); ++i) Base::operator[](i)\
-    \ += R[i];\n        return shrink();\n    }\n    Poly &operator-=(const Poly &R)\
-    \ {\n        if (Base::size() < R.size()) Base::resize(R.size());\n        for\
-    \ (int i = 0; i < (int)R.size(); ++i) Base::operator[](i) -= R[i];\n        return\
-    \ shrink();\n    }\n    Poly &operator*=(const Poly &R) {\n        Base::operator=(convolution(*this,\
+    \ divmod(const Poly &R) const {\n        auto [q, r] = euclidean_div(*this, R);\n\
+    \        return {from_vector(std::move(q)), from_vector(std::move(r))};\n    }\n\
+    \    Poly &operator+=(const Poly &R) {\n        if (Base::size() < R.size()) Base::resize(R.size());\n\
+    \        for (int i = 0; i < (int)R.size(); ++i) Base::operator[](i) += R[i];\n\
+    \        return shrink();\n    }\n    Poly &operator-=(const Poly &R) {\n    \
+    \    if (Base::size() < R.size()) Base::resize(R.size());\n        for (int i\
+    \ = 0; i < (int)R.size(); ++i) Base::operator[](i) -= R[i];\n        return shrink();\n\
+    \    }\n    Poly &operator*=(const Poly &R) {\n        Base::operator=(convolution(*this,\
     \ R));\n        return shrink();\n    }\n    Poly &operator/=(const Poly &R) {\n\
     \        Base::operator=(euclidean_div_quotient(*this, R));\n        return shrink();\n\
     \    }\n    Poly &operator%=(const Poly &R) {\n        Base::operator=(std::get<1>(divmod(R)));\n\
@@ -575,7 +577,7 @@ data:
   path: basis.hpp
   requiredBy:
   - frobenius.hpp
-  timestamp: '2025-01-19 15:28:01+08:00'
+  timestamp: '2025-10-04 01:50:50+08:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/matrix/pow_of_matrix.0.test.cpp
