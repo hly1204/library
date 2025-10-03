@@ -5,6 +5,7 @@
 #include <array>
 #include <cassert>
 #include <iostream>
+#include <utility>
 #include <vector>
 
 template<typename Tp> class Poly : public std::vector<Tp> {
@@ -12,6 +13,12 @@ template<typename Tp> class Poly : public std::vector<Tp> {
 
 public:
     using Base::Base;
+
+    static Poly from_vector(std::vector<Tp> v) {
+        Poly res;
+        static_cast<std::vector<Tp> &>(res) = std::move(v);
+        return res;
+    }
 
     static Poly zero() { return Poly(); }
     static Poly one() { return Poly{Tp::one()}; }
@@ -60,10 +67,7 @@ public:
         return res;
     }
 
-    Poly taylor_shift(Tp c) const {
-        Base::operator=(taylor_shift(*this, c));
-        return shrink();
-    }
+    Poly taylor_shift(Tp c) const { return from_vector(::taylor_shift(*this, c)).shrink(); }
 
     Poly operator-() const {
         const int d = deg();
@@ -74,8 +78,8 @@ public:
     }
 
     std::array<Poly, 2> divmod(const Poly &R) const {
-        const auto [q, r] = euclidean_div(*this, R);
-        return {Poly(q.begin(), q.end()), Poly(r.begin(), r.end())};
+        auto [q, r] = euclidean_div(*this, R);
+        return {from_vector(std::move(q)), from_vector(std::move(r))};
     }
     Poly &operator+=(const Poly &R) {
         if (Base::size() < R.size()) Base::resize(R.size());
