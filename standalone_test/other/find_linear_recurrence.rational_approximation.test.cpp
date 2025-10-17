@@ -34,7 +34,7 @@ uint LeadCoeff(const std::vector<uint> &a) {
 }
 
 std::vector<uint> Monic(std::vector<uint> a) {
-    const int ia = InvMod(LeadCoeff(a));
+    const uint ia = InvMod(LeadCoeff(a));
     for (int i = 0; i < (int)size(a); ++i) a[i] = (ull)a[i] * ia % MOD;
     return a;
 }
