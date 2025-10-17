@@ -23,7 +23,7 @@ data:
     \ - 1; i >= 0; --i)\n        if (a[i]) return i;\n    return -1;\n}\n\nvoid Shrink(std::vector<uint>\
     \ &a) { a.resize(Degree(a) + 1); }\n\nuint LeadCoeff(const std::vector<uint> &a)\
     \ {\n    const int degA = Degree(a);\n    return degA >= 0 ? a[degA] : 0u;\n}\n\
-    \nstd::vector<uint> Monic(std::vector<uint> a) {\n    const int ia = InvMod(LeadCoeff(a));\n\
+    \nstd::vector<uint> Monic(std::vector<uint> a) {\n    const uint ia = InvMod(LeadCoeff(a));\n\
     \    for (int i = 0; i < (int)size(a); ++i) a[i] = (ull)a[i] * ia % MOD;\n   \
     \ return a;\n}\n\nstd::array<std::vector<uint>, 2> QuoRem(std::vector<uint> A,\
     \ const std::vector<uint> &B) {\n    const int degA = Degree(A);\n    const int\
@@ -68,7 +68,7 @@ data:
     \ - 1; i >= 0; --i)\n        if (a[i]) return i;\n    return -1;\n}\n\nvoid Shrink(std::vector<uint>\
     \ &a) { a.resize(Degree(a) + 1); }\n\nuint LeadCoeff(const std::vector<uint> &a)\
     \ {\n    const int degA = Degree(a);\n    return degA >= 0 ? a[degA] : 0u;\n}\n\
-    \nstd::vector<uint> Monic(std::vector<uint> a) {\n    const int ia = InvMod(LeadCoeff(a));\n\
+    \nstd::vector<uint> Monic(std::vector<uint> a) {\n    const uint ia = InvMod(LeadCoeff(a));\n\
     \    for (int i = 0; i < (int)size(a); ++i) a[i] = (ull)a[i] * ia % MOD;\n   \
     \ return a;\n}\n\nstd::array<std::vector<uint>, 2> QuoRem(std::vector<uint> A,\
     \ const std::vector<uint> &B) {\n    const int degA = Degree(A);\n    const int\
@@ -106,7 +106,7 @@ data:
   isVerificationFile: true
   path: standalone_test/other/find_linear_recurrence.rational_approximation.test.cpp
   requiredBy: []
-  timestamp: '2025-10-02 14:54:46+08:00'
+  timestamp: '2025-10-17 20:54:31+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/other/find_linear_recurrence.rational_approximation.test.cpp
