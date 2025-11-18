@@ -80,6 +80,14 @@ std::array<std::vector<uint>, 2> RationalApprox(std::vector<uint> A, std::vector
     }
 }
 
+// A[i] = [x^(-(i+1))] P/Q
+std::array<std::vector<uint>, 2> RationalRecons(const std::vector<uint> &A) {
+    const int k = size(A);
+    std::vector<uint> B(k + 1);
+    B[k] = 1;
+    return RationalApprox(std::vector(A.rbegin(), A.rend()), B, k);
+}
+
 int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
@@ -87,14 +95,7 @@ int main() {
     std::cin >> n;
     std::vector<uint> a(n);
     for (int i = 0; i < n; ++i) std::cin >> a[i];
-    const auto res = Monic(std::get<1>(RationalApprox(
-        std::vector(rbegin(a), rend(a)),
-        [](int n) {
-            std::vector<uint> a(n + 1);
-            a[n] = 1;
-            return a;
-        }(n),
-        n)));
+    const auto res = Monic(std::get<1>(RationalRecons(a)));
     std::cout << Degree(res) << '\n';
     for (int i = Degree(res) - 1; i >= 0; --i) std::cout << (res[i] ? MOD - res[i] : 0u) << ' ';
     return 0;
