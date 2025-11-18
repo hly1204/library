@@ -30,28 +30,26 @@ data:
     \ degB = Degree(B);\n    assert(degB >= 0);\n    const int degQ = degA - degB;\n\
     \    if (degQ < 0) return {std::vector<uint>{}, A};\n    std::vector<uint> Q(degQ\
     \ + 1);\n    const uint ib = InvMod(LeadCoeff(B));\n    for (int i = degQ, n =\
-    \ degA; i >= 0; --i) {\n        if ((Q[i] = (ull)A[n--] * ib % MOD) != 0) {\n\
-    \            for (int j = 0; j <= degB; ++j) {\n                A[i + j] = A[i\
-    \ + j] + MOD - ((ull)B[j] * Q[i] % MOD);\n                if (A[i + j] >= MOD)\
-    \ A[i + j] -= MOD;\n            }\n        }\n    }\n    Shrink(A);\n    return\
-    \ {Q, A};\n}\n\nstd::vector<uint> MultiplyAdd(const std::vector<uint> &x, const\
-    \ std::vector<uint> &y,\n                              const std::vector<uint>\
-    \ &z) {\n    std::vector<uint> xy(std::max(size(x) + size(y) - 1, size(z)));\n\
-    \    for (int i = 0; i < (int)size(x); ++i)\n        for (int j = 0; j < (int)size(y);\
-    \ ++j) xy[i + j] = (xy[i + j] + (ull)x[i] * y[j]) % MOD;\n    for (int i = 0;\
-    \ i < (int)size(z); ++i)\n        if ((xy[i] += z[i]) >= MOD) xy[i] -= MOD;\n\
-    \    Shrink(xy);\n    return xy;\n}\n\n// returns P, Q such that [x^[-k, 0)] P/Q\
-    \ = [x^[-k, 0)] A/B\n// and deg(Q) is minimized\n// requires deg(A) < deg(B)\n\
-    std::array<std::vector<uint>, 2> RationalApprox(std::vector<uint> A, std::vector<uint>\
-    \ B, int k) {\n    if (Degree(A) < 0 || Degree(A) - Degree(B) < -k)\n        return\
-    \ {std::vector<uint>{}, std::vector<uint>{1u}};\n    std::vector<uint> P0 = {1u},\
-    \ P1, Q0, Q1 = {1u};\n    for (;;) {\n        const auto [Q, R] = QuoRem(B, A);\n\
-    \        std::tie(P0, P1, Q0, Q1, A, B) =\n            std::make_tuple(P1, MultiplyAdd(Q,\
-    \ P1, P0), Q1, MultiplyAdd(Q, Q1, Q0), R, A);\n        if (Degree(A) < 0 || Degree(A)\
-    \ - Degree(B) < -(k -= Degree(Q) * 2)) return {P1, Q1};\n    }\n}\n\nint main()\
-    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
-    \ n;\n    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i = 0; i <\
-    \ n; ++i) std::cin >> a[i];\n    const auto res = Monic(std::get<1>(RationalApprox(\n\
+    \ degA; i >= 0; --i)\n        if ((Q[i] = (ull)A[n--] * ib % MOD) != 0)\n    \
+    \        for (int j = 0; j <= degB; ++j)\n                if ((A[i + j] = A[i\
+    \ + j] + MOD - ((ull)B[j] * Q[i] % MOD)) >= MOD) A[i + j] -= MOD;\n    Shrink(A);\n\
+    \    return {Q, A};\n}\n\nstd::vector<uint> MultiplyAdd(const std::vector<uint>\
+    \ &x, const std::vector<uint> &y,\n                              std::vector<uint>\
+    \ z) {\n    assert(!(empty(x) && empty(y)));\n    if (size(z) < size(x) + size(y)\
+    \ - 1) z.resize(size(x) + size(y) - 1);\n    for (int i = 0; i < (int)size(x);\
+    \ ++i)\n        for (int j = 0; j < (int)size(y); ++j) z[i + j] = (z[i + j] +\
+    \ (ull)x[i] * y[j]) % MOD;\n    Shrink(z);\n    return z;\n}\n\n// returns P,\
+    \ Q such that [x^[-k, 0)] P/Q = [x^[-k, 0)] A/B\n// and deg(Q) is minimized\n\
+    // requires deg(A) < deg(B)\nstd::array<std::vector<uint>, 2> RationalApprox(std::vector<uint>\
+    \ A, std::vector<uint> B, int k) {\n    if (Degree(A) < 0 || Degree(A) - Degree(B)\
+    \ < -k)\n        return {std::vector<uint>{}, std::vector<uint>{1u}};\n    std::vector<uint>\
+    \ P0 = {1u}, P1, Q0, Q1 = {1u};\n    for (;;) {\n        const auto [Q, R] = QuoRem(B,\
+    \ A);\n        std::tie(P0, P1, Q0, Q1, A, B) =\n            std::make_tuple(P1,\
+    \ MultiplyAdd(Q, P1, P0), Q1, MultiplyAdd(Q, Q1, Q0), R, A);\n        if (Degree(A)\
+    \ < 0 || Degree(A) - Degree(B) < -(k -= Degree(Q) * 2)) return {P1, Q1};\n   \
+    \ }\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    int n;\n    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i =\
+    \ 0; i < n; ++i) std::cin >> a[i];\n    const auto res = Monic(std::get<1>(RationalApprox(\n\
     \        std::vector(rbegin(a), rend(a)),\n        [](int n) {\n            std::vector<uint>\
     \ a(n + 1);\n            a[n] = 1;\n            return a;\n        }(n),\n   \
     \     n)));\n    std::cout << Degree(res) << '\\n';\n    for (int i = Degree(res)\
@@ -75,28 +73,26 @@ data:
     \ degB = Degree(B);\n    assert(degB >= 0);\n    const int degQ = degA - degB;\n\
     \    if (degQ < 0) return {std::vector<uint>{}, A};\n    std::vector<uint> Q(degQ\
     \ + 1);\n    const uint ib = InvMod(LeadCoeff(B));\n    for (int i = degQ, n =\
-    \ degA; i >= 0; --i) {\n        if ((Q[i] = (ull)A[n--] * ib % MOD) != 0) {\n\
-    \            for (int j = 0; j <= degB; ++j) {\n                A[i + j] = A[i\
-    \ + j] + MOD - ((ull)B[j] * Q[i] % MOD);\n                if (A[i + j] >= MOD)\
-    \ A[i + j] -= MOD;\n            }\n        }\n    }\n    Shrink(A);\n    return\
-    \ {Q, A};\n}\n\nstd::vector<uint> MultiplyAdd(const std::vector<uint> &x, const\
-    \ std::vector<uint> &y,\n                              const std::vector<uint>\
-    \ &z) {\n    std::vector<uint> xy(std::max(size(x) + size(y) - 1, size(z)));\n\
-    \    for (int i = 0; i < (int)size(x); ++i)\n        for (int j = 0; j < (int)size(y);\
-    \ ++j) xy[i + j] = (xy[i + j] + (ull)x[i] * y[j]) % MOD;\n    for (int i = 0;\
-    \ i < (int)size(z); ++i)\n        if ((xy[i] += z[i]) >= MOD) xy[i] -= MOD;\n\
-    \    Shrink(xy);\n    return xy;\n}\n\n// returns P, Q such that [x^[-k, 0)] P/Q\
-    \ = [x^[-k, 0)] A/B\n// and deg(Q) is minimized\n// requires deg(A) < deg(B)\n\
-    std::array<std::vector<uint>, 2> RationalApprox(std::vector<uint> A, std::vector<uint>\
-    \ B, int k) {\n    if (Degree(A) < 0 || Degree(A) - Degree(B) < -k)\n        return\
-    \ {std::vector<uint>{}, std::vector<uint>{1u}};\n    std::vector<uint> P0 = {1u},\
-    \ P1, Q0, Q1 = {1u};\n    for (;;) {\n        const auto [Q, R] = QuoRem(B, A);\n\
-    \        std::tie(P0, P1, Q0, Q1, A, B) =\n            std::make_tuple(P1, MultiplyAdd(Q,\
-    \ P1, P0), Q1, MultiplyAdd(Q, Q1, Q0), R, A);\n        if (Degree(A) < 0 || Degree(A)\
-    \ - Degree(B) < -(k -= Degree(Q) * 2)) return {P1, Q1};\n    }\n}\n\nint main()\
-    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
-    \ n;\n    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i = 0; i <\
-    \ n; ++i) std::cin >> a[i];\n    const auto res = Monic(std::get<1>(RationalApprox(\n\
+    \ degA; i >= 0; --i)\n        if ((Q[i] = (ull)A[n--] * ib % MOD) != 0)\n    \
+    \        for (int j = 0; j <= degB; ++j)\n                if ((A[i + j] = A[i\
+    \ + j] + MOD - ((ull)B[j] * Q[i] % MOD)) >= MOD) A[i + j] -= MOD;\n    Shrink(A);\n\
+    \    return {Q, A};\n}\n\nstd::vector<uint> MultiplyAdd(const std::vector<uint>\
+    \ &x, const std::vector<uint> &y,\n                              std::vector<uint>\
+    \ z) {\n    assert(!(empty(x) && empty(y)));\n    if (size(z) < size(x) + size(y)\
+    \ - 1) z.resize(size(x) + size(y) - 1);\n    for (int i = 0; i < (int)size(x);\
+    \ ++i)\n        for (int j = 0; j < (int)size(y); ++j) z[i + j] = (z[i + j] +\
+    \ (ull)x[i] * y[j]) % MOD;\n    Shrink(z);\n    return z;\n}\n\n// returns P,\
+    \ Q such that [x^[-k, 0)] P/Q = [x^[-k, 0)] A/B\n// and deg(Q) is minimized\n\
+    // requires deg(A) < deg(B)\nstd::array<std::vector<uint>, 2> RationalApprox(std::vector<uint>\
+    \ A, std::vector<uint> B, int k) {\n    if (Degree(A) < 0 || Degree(A) - Degree(B)\
+    \ < -k)\n        return {std::vector<uint>{}, std::vector<uint>{1u}};\n    std::vector<uint>\
+    \ P0 = {1u}, P1, Q0, Q1 = {1u};\n    for (;;) {\n        const auto [Q, R] = QuoRem(B,\
+    \ A);\n        std::tie(P0, P1, Q0, Q1, A, B) =\n            std::make_tuple(P1,\
+    \ MultiplyAdd(Q, P1, P0), Q1, MultiplyAdd(Q, Q1, Q0), R, A);\n        if (Degree(A)\
+    \ < 0 || Degree(A) - Degree(B) < -(k -= Degree(Q) * 2)) return {P1, Q1};\n   \
+    \ }\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    int n;\n    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i =\
+    \ 0; i < n; ++i) std::cin >> a[i];\n    const auto res = Monic(std::get<1>(RationalApprox(\n\
     \        std::vector(rbegin(a), rend(a)),\n        [](int n) {\n            std::vector<uint>\
     \ a(n + 1);\n            a[n] = 1;\n            return a;\n        }(n),\n   \
     \     n)));\n    std::cout << Degree(res) << '\\n';\n    for (int i = Degree(res)\
@@ -106,7 +102,7 @@ data:
   isVerificationFile: true
   path: standalone_test/other/find_linear_recurrence.rational_approximation.test.cpp
   requiredBy: []
-  timestamp: '2025-10-17 20:54:31+08:00'
+  timestamp: '2025-11-18 22:42:24+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/other/find_linear_recurrence.rational_approximation.test.cpp
