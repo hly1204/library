@@ -47,27 +47,22 @@ std::array<std::vector<uint>, 2> QuoRem(std::vector<uint> A, const std::vector<u
     if (degQ < 0) return {std::vector<uint>{}, A};
     std::vector<uint> Q(degQ + 1);
     const uint ib = InvMod(LeadCoeff(B));
-    for (int i = degQ, n = degA; i >= 0; --i) {
-        if ((Q[i] = (ull)A[n--] * ib % MOD) != 0) {
-            for (int j = 0; j <= degB; ++j) {
-                A[i + j] = A[i + j] + MOD - ((ull)B[j] * Q[i] % MOD);
-                if (A[i + j] >= MOD) A[i + j] -= MOD;
-            }
-        }
-    }
+    for (int i = degQ, n = degA; i >= 0; --i)
+        if ((Q[i] = (ull)A[n--] * ib % MOD) != 0)
+            for (int j = 0; j <= degB; ++j)
+                if ((A[i + j] = A[i + j] + MOD - ((ull)B[j] * Q[i] % MOD)) >= MOD) A[i + j] -= MOD;
     Shrink(A);
     return {Q, A};
 }
 
 std::vector<uint> MultiplyAdd(const std::vector<uint> &x, const std::vector<uint> &y,
-                              const std::vector<uint> &z) {
-    std::vector<uint> xy(std::max(size(x) + size(y) - 1, size(z)));
+                              std::vector<uint> z) {
+    assert(!(empty(x) && empty(y)));
+    if (size(z) < size(x) + size(y) - 1) z.resize(size(x) + size(y) - 1);
     for (int i = 0; i < (int)size(x); ++i)
-        for (int j = 0; j < (int)size(y); ++j) xy[i + j] = (xy[i + j] + (ull)x[i] * y[j]) % MOD;
-    for (int i = 0; i < (int)size(z); ++i)
-        if ((xy[i] += z[i]) >= MOD) xy[i] -= MOD;
-    Shrink(xy);
-    return xy;
+        for (int j = 0; j < (int)size(y); ++j) z[i + j] = (z[i + j] + (ull)x[i] * y[j]) % MOD;
+    Shrink(z);
+    return z;
 }
 
 // returns P, Q such that [x^[-k, 0)] P/Q = [x^[-k, 0)] A/B
