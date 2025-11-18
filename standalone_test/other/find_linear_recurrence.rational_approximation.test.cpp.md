@@ -47,14 +47,14 @@ data:
     \ A);\n        std::tie(P0, P1, Q0, Q1, A, B) =\n            std::make_tuple(P1,\
     \ MultiplyAdd(Q, P1, P0), Q1, MultiplyAdd(Q, Q1, Q0), R, A);\n        if (Degree(A)\
     \ < 0 || Degree(A) - Degree(B) < -(k -= Degree(Q) * 2)) return {P1, Q1};\n   \
-    \ }\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \ }\n}\n\n// A[i] = [x^(-(i+1))] P/Q\nstd::array<std::vector<uint>, 2> RationalRecons(const\
+    \ std::vector<uint> &A) {\n    const int k = size(A);\n    std::vector<uint> B(k\
+    \ + 1);\n    B[k] = 1;\n    return RationalApprox(std::vector(A.rbegin(), A.rend()),\
+    \ B, k);\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n;\n    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i =\
-    \ 0; i < n; ++i) std::cin >> a[i];\n    const auto res = Monic(std::get<1>(RationalApprox(\n\
-    \        std::vector(rbegin(a), rend(a)),\n        [](int n) {\n            std::vector<uint>\
-    \ a(n + 1);\n            a[n] = 1;\n            return a;\n        }(n),\n   \
-    \     n)));\n    std::cout << Degree(res) << '\\n';\n    for (int i = Degree(res)\
-    \ - 1; i >= 0; --i) std::cout << (res[i] ? MOD - res[i] : 0u) << ' ';\n    return\
-    \ 0;\n}\n"
+    \ 0; i < n; ++i) std::cin >> a[i];\n    const auto res = Monic(std::get<1>(RationalRecons(a)));\n\
+    \    std::cout << Degree(res) << '\\n';\n    for (int i = Degree(res) - 1; i >=\
+    \ 0; --i) std::cout << (res[i] ? MOD - res[i] : 0u) << ' ';\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/find_linear_recurrence\"\
     \n\n#include <algorithm>\n#include <array>\n#include <cassert>\n#include <iostream>\n\
     #include <tuple>\n#include <vector>\n\nusing uint         = unsigned;\nusing ull\
@@ -90,19 +90,19 @@ data:
     \ A);\n        std::tie(P0, P1, Q0, Q1, A, B) =\n            std::make_tuple(P1,\
     \ MultiplyAdd(Q, P1, P0), Q1, MultiplyAdd(Q, Q1, Q0), R, A);\n        if (Degree(A)\
     \ < 0 || Degree(A) - Degree(B) < -(k -= Degree(Q) * 2)) return {P1, Q1};\n   \
-    \ }\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \ }\n}\n\n// A[i] = [x^(-(i+1))] P/Q\nstd::array<std::vector<uint>, 2> RationalRecons(const\
+    \ std::vector<uint> &A) {\n    const int k = size(A);\n    std::vector<uint> B(k\
+    \ + 1);\n    B[k] = 1;\n    return RationalApprox(std::vector(A.rbegin(), A.rend()),\
+    \ B, k);\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n;\n    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i =\
-    \ 0; i < n; ++i) std::cin >> a[i];\n    const auto res = Monic(std::get<1>(RationalApprox(\n\
-    \        std::vector(rbegin(a), rend(a)),\n        [](int n) {\n            std::vector<uint>\
-    \ a(n + 1);\n            a[n] = 1;\n            return a;\n        }(n),\n   \
-    \     n)));\n    std::cout << Degree(res) << '\\n';\n    for (int i = Degree(res)\
-    \ - 1; i >= 0; --i) std::cout << (res[i] ? MOD - res[i] : 0u) << ' ';\n    return\
-    \ 0;\n}\n"
+    \ 0; i < n; ++i) std::cin >> a[i];\n    const auto res = Monic(std::get<1>(RationalRecons(a)));\n\
+    \    std::cout << Degree(res) << '\\n';\n    for (int i = Degree(res) - 1; i >=\
+    \ 0; --i) std::cout << (res[i] ? MOD - res[i] : 0u) << ' ';\n    return 0;\n}\n"
   dependsOn: []
   isVerificationFile: true
   path: standalone_test/other/find_linear_recurrence.rational_approximation.test.cpp
   requiredBy: []
-  timestamp: '2025-11-18 22:42:24+08:00'
+  timestamp: '2025-11-18 23:00:03+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/other/find_linear_recurrence.rational_approximation.test.cpp
