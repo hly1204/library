@@ -49,7 +49,7 @@ data:
     \ < 0 || Degree(A) - Degree(B) < -(k -= Degree(Q) * 2)) return {P1, Q1};\n   \
     \ }\n}\n\n// A[i] = [x^(-(i+1))] P/Q\nstd::array<std::vector<uint>, 2> RationalRecons(const\
     \ std::vector<uint> &A) {\n    const int k = size(A);\n    std::vector<uint> B(k\
-    \ + 1);\n    B[k] = 1;\n    return RationalApprox(std::vector(A.rbegin(), A.rend()),\
+    \ + 1);\n    B[k] = 1;\n    return RationalApprox(std::vector(rbegin(A), rend(A)),\
     \ B, k);\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n;\n    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i =\
     \ 0; i < n; ++i) std::cin >> a[i];\n    const auto res = Monic(std::get<1>(RationalRecons(a)));\n\
@@ -92,7 +92,7 @@ data:
     \ < 0 || Degree(A) - Degree(B) < -(k -= Degree(Q) * 2)) return {P1, Q1};\n   \
     \ }\n}\n\n// A[i] = [x^(-(i+1))] P/Q\nstd::array<std::vector<uint>, 2> RationalRecons(const\
     \ std::vector<uint> &A) {\n    const int k = size(A);\n    std::vector<uint> B(k\
-    \ + 1);\n    B[k] = 1;\n    return RationalApprox(std::vector(A.rbegin(), A.rend()),\
+    \ + 1);\n    B[k] = 1;\n    return RationalApprox(std::vector(rbegin(A), rend(A)),\
     \ B, k);\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n;\n    std::cin >> n;\n    std::vector<uint> a(n);\n    for (int i =\
     \ 0; i < n; ++i) std::cin >> a[i];\n    const auto res = Monic(std::get<1>(RationalRecons(a)));\n\
@@ -102,7 +102,7 @@ data:
   isVerificationFile: true
   path: standalone_test/other/find_linear_recurrence.rational_approximation.test.cpp
   requiredBy: []
-  timestamp: '2025-11-18 23:00:03+08:00'
+  timestamp: '2025-11-23 12:57:49+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: standalone_test/other/find_linear_recurrence.rational_approximation.test.cpp
