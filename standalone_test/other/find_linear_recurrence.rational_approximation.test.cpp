@@ -85,7 +85,7 @@ std::array<std::vector<uint>, 2> RationalRecons(const std::vector<uint> &A) {
     const int k = size(A);
     std::vector<uint> B(k + 1);
     B[k] = 1;
-    return RationalApprox(std::vector(A.rbegin(), A.rend()), B, k);
+    return RationalApprox(std::vector(rbegin(A), rend(A)), B, k);
 }
 
 int main() {
