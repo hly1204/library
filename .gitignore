@@ -1,4 +1,10 @@
+# dot files
 .idea/
 .vscode/
 .cache/
 .venv/
+
+# binary files
+*.obj
+*.exe
+*.o
