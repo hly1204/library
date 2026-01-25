@@ -4,6 +4,9 @@ data:
   - name: .
     pages:
     - icon: ':heavy_check_mark:'
+      path: avl_tree_node_base.hpp
+      title: avl_tree_node_base.hpp
+    - icon: ':heavy_check_mark:'
       path: basis.hpp
       title: basis.hpp
     - icon: ':heavy_check_mark:'
@@ -240,6 +243,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/range_reverse_range_sum.0.test.cpp
       title: test/data_structure/range_reverse_range_sum.0.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/range_reverse_range_sum.1.test.cpp
+      title: test/data_structure/range_reverse_range_sum.1.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/data_structure/static_range_sum.0.test.cpp
       title: test/data_structure/static_range_sum.0.test.cpp

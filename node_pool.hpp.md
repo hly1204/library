@@ -22,6 +22,9 @@ data:
     path: test/data_structure/range_reverse_range_sum.0.test.cpp
     title: test/data_structure/range_reverse_range_sum.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/data_structure/range_reverse_range_sum.1.test.cpp
+    title: test/data_structure/range_reverse_range_sum.1.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp
     title: test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -91,6 +94,7 @@ data:
   - test/data_structure/range_affine_range_sum.0.test.cpp
   - test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   - test/data_structure/ordered_set.0.test.cpp
+  - test/data_structure/range_reverse_range_sum.1.test.cpp
   - test/tree/dynamic_tree_vertex_add_path_sum.0.test.cpp
   - test/tree/lca.0.test.cpp
   - test/tree/jump_on_tree.0.test.cpp
