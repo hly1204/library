@@ -194,7 +194,11 @@ data:
     \   if (std::as_const(*root) < *t) return count(root->right(), t);\n        int\
     \ res = 1;\n        if (root->left()) res += root->left()->size() - count_less_than(root->left(),\
     \ t);\n        if (root->right()) res += root->right()->size() - count_greater_than(root->right(),\
-    \ t);\n        return res;\n    }\n    static std::array<int, 3> count3(TreapNodeT\
+    \ t);\n        return res;\n    }\n    static bool contains(TreapNodeT *root,\
+    \ const TreapNodeT *t) {\n        if (root == nullptr) return false;\n       \
+    \ root->propagate();\n        if (*t < std::as_const(*root)) return contains(root->left(),\
+    \ t);\n        if (std::as_const(*root) < *t) return contains(root->right(), t);\n\
+    \        return true;\n    }\n    static std::array<int, 3> count3(TreapNodeT\
     \ *root, const TreapNodeT *t) {\n        if (root == nullptr) return {0, 0, 0};\n\
     \        root->propagate();\n        if (*t < std::as_const(*root)) {\n      \
     \      auto [a, b, c] = count3(root->left(), t);\n            return {a, b, c\
@@ -329,7 +333,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2026-01-25 16:11:30+08:00'
+  timestamp: '2026-01-25 16:24:19+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
