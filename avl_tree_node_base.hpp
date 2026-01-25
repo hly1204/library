@@ -42,10 +42,7 @@ template<typename AVLTreeNodeT> class AVLTreeNodeBase {
                / \        / \
               c   d      a   c    */
         AVLTreeNodeBase *b = R;
-        b->propagate();
-        R = b->L, b->L = this;
-        update();
-        b->update();
+        b->propagate(), R = b->L, b->L = this, update(), b->update();
         return b;
     }
     AVLTreeNodeBase *base_rotate_right() {
@@ -55,10 +52,7 @@ template<typename AVLTreeNodeT> class AVLTreeNodeBase {
            / \                / \
           c   d              d   b */
         AVLTreeNodeBase *a = L;
-        a->propagate();
-        L = a->R, a->R = this;
-        update();
-        a->update();
+        a->propagate(), L = a->R, a->R = this, update(), a->update();
         return a;
     }
 
@@ -74,50 +68,37 @@ template<typename AVLTreeNodeT> class AVLTreeNodeBase {
         if (is_balanced()) return this;
         auto [y, dy] = taller_child();
         if (dy == Child::LEFT) {
-            if ((y->L ? y->L->Height : 0) - (y->R ? y->R->Height : 0) < 0) {
-                y->propagate();
-                L = y->base_rotate_left();
-                update();
-            }
+            if ((y->L ? y->L->Height : 0) < (y->R ? y->R->Height : 0))
+                y->propagate(), L = y->base_rotate_left(), update();
             return base_rotate_right();
-        } else {
-            if ((y->L ? y->L->Height : 0) - (y->R ? y->R->Height : 0) > 0) {
-                y->propagate();
-                R = y->base_rotate_right();
-                update();
-            }
-            return base_rotate_left();
         }
+        if ((y->L ? y->L->Height : 0) > (y->R ? y->R->Height : 0))
+            y->propagate(), R = y->base_rotate_right(), update();
+        return base_rotate_left();
     }
 
     std::array<AVLTreeNodeBase *, 2> extract_leftmost() {
         propagate();
         if (L == nullptr) {
             AVLTreeNodeBase *b = R;
-            R                  = nullptr;
-            update();
+            R                  = nullptr, update();
             return {b, this};
-        } else {
-            auto [l, e] = L->extract_leftmost();
-            L           = l;
-            update();
-            return {balance(), e};
         }
+        auto [l, e] = L->extract_leftmost();
+        L           = l, update();
+        return {balance(), e};
     }
 
     std::array<AVLTreeNodeBase *, 2> extract_rightmost() {
         propagate();
         if (R == nullptr) {
             AVLTreeNodeBase *b = L;
-            L                  = nullptr;
-            update();
+            L                  = nullptr, update();
             return {b, this};
-        } else {
-            auto [r, e] = R->extract_rightmost();
-            R           = r;
-            update();
-            return {balance(), e};
         }
+        auto [r, e] = R->extract_rightmost();
+        R           = r, update();
+        return {balance(), e};
     }
 
     // join(this, single, small)
@@ -126,14 +107,9 @@ template<typename AVLTreeNodeT> class AVLTreeNodeBase {
         assert(s != nullptr);
         assert(Height >= s->Height);
         propagate();
-        if (Height - s->Height <= 1) {
-            single->L = this, single->R = s, single->update();
-            return single;
-        } else {
-            R = R->base_join_right(single, s);
-            update();
-            return balance();
-        }
+        if (Height - s->Height <= 1)
+            return single->L = this, single->R = s, single->update(), single;
+        return R = R->base_join_right(single, s), update(), balance();
     }
 
     // join(small, single, this)
@@ -142,14 +118,9 @@ template<typename AVLTreeNodeT> class AVLTreeNodeBase {
         assert(s != nullptr);
         assert(Height >= s->Height);
         propagate();
-        if (Height - s->Height <= 1) {
-            single->L = s, single->R = this, single->update();
-            return single;
-        } else {
-            L = L->base_join_left(s, single);
-            update();
-            return balance();
-        }
+        if (Height - s->Height <= 1)
+            return single->L = s, single->R = this, single->update(), single;
+        return L = L->base_join_left(s, single), update(), balance();
     }
 
     // join(this, small)
@@ -159,13 +130,9 @@ template<typename AVLTreeNodeT> class AVLTreeNodeBase {
         propagate();
         if (Height - s->Height <= 1) {
             auto [r, e] = extract_rightmost();
-            e->L = r, e->R = s, e->update();
-            return e;
-        } else {
-            R = R->base_join_right(s);
-            update();
-            return balance();
+            return e->L = r, e->R = s, e->update(), e;
         }
+        return R = R->base_join_right(s), update(), balance();
     }
 
     // join(small, this)
@@ -175,13 +142,9 @@ template<typename AVLTreeNodeT> class AVLTreeNodeBase {
         propagate();
         if (Height - s->Height <= 1) {
             auto [r, e] = extract_leftmost();
-            e->L = s, e->R = r, e->update();
-            return e;
-        } else {
-            L = L->base_join_left(s);
-            update();
-            return balance();
+            return e->L = s, e->R = r, e->update(), e;
         }
+        return L = L->base_join_left(s), update(), balance();
     }
 
     static AVLTreeNodeBase *base_join(AVLTreeNodeBase *a, AVLTreeNodeBase *b) {
@@ -193,13 +156,8 @@ template<typename AVLTreeNodeT> class AVLTreeNodeBase {
             if (a) a->propagate(), a->update();
             return a;
         }
-        if (a->Height >= b->Height) {
-            b->propagate();
-            return a->base_join_right(b);
-        } else {
-            a->propagate();
-            return b->base_join_left(a);
-        }
+        if (a->Height >= b->Height) return b->propagate(), a->base_join_right(b);
+        return a->propagate(), b->base_join_left(a);
     }
 
     static AVLTreeNodeBase *base_join(AVLTreeNodeBase *a, AVLTreeNodeBase *single,
@@ -207,13 +165,8 @@ template<typename AVLTreeNodeT> class AVLTreeNodeBase {
         assert(single != nullptr && single->L == nullptr && single->R == nullptr);
         if (a == nullptr) return base_join(single, b);
         if (b == nullptr) return base_join(a, single);
-        if (a->Height >= b->Height) {
-            b->propagate();
-            return a->base_join_right(single, b);
-        } else {
-            a->propagate();
-            return b->base_join_left(a, single);
-        }
+        if (a->Height >= b->Height) return b->propagate(), a->base_join_right(single, b);
+        return a->propagate(), b->base_join_left(a, single);
     }
 
     static std::array<AVLTreeNodeBase *, 2> base_split(AVLTreeNodeBase *a, int k) {
@@ -225,14 +178,12 @@ template<typename AVLTreeNodeT> class AVLTreeNodeBase {
         if (leftsize < k) {
             auto [b, c]        = base_split(a->R, k - leftsize - 1);
             AVLTreeNodeBase *l = a->L;
-            a->L = a->R = nullptr;
-            a->update();
+            a->L = a->R = nullptr, a->update();
             return {base_join(l, a, b), c};
         } else {
             auto [b, c]        = base_split(a->L, k);
             AVLTreeNodeBase *r = a->R;
-            a->L = a->R = nullptr;
-            a->update();
+            a->L = a->R = nullptr, a->update();
             return {b, base_join(c, a, r)};
         }
     }
