@@ -212,6 +212,13 @@ public:
         if (root->right()) res += root->right()->size() - count_greater_than(root->right(), t);
         return res;
     }
+    static bool contains(TreapNodeT *root, const TreapNodeT *t) {
+        if (root == nullptr) return false;
+        root->propagate();
+        if (*t < std::as_const(*root)) return contains(root->left(), t);
+        if (std::as_const(*root) < *t) return contains(root->right(), t);
+        return true;
+    }
     static std::array<int, 3> count3(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return {0, 0, 0};
         root->propagate();
