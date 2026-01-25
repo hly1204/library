@@ -277,7 +277,7 @@ public:
         struct Helper {
             TreapNodeBase *Val;
             Helper &operator|(TreapNodeBase *A) {
-                Val = TreapNodeBase::base_join(Val, A);
+                Val = base_join(Val, A);
                 return *this;
             }
         } nil{nullptr};
