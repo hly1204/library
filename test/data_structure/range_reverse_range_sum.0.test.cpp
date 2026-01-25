@@ -23,7 +23,8 @@ int main() {
     TreapNode *root = nullptr;
     for (int i = 0; i < n; ++i) {
         std::cin >> node(i)->Val;
-        root = TreapNode::join(root, node(i));
+        node(i)->Sum = node(i)->Val;
+        root         = TreapNode::join(root, node(i));
     }
     while (q--) {
         int t, l, r;
