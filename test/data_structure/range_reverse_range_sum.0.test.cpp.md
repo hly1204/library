@@ -219,12 +219,13 @@ data:
     \   if (right()) Sum += right()->Sum;\n        }\n    };\n    int n, q;\n    std::cin\
     \ >> n >> q;\n    FixedSizeNodePool<TreapNode> pool(n);\n    auto [node, id] =\
     \ pool.get_func();\n    TreapNode *root = nullptr;\n    for (int i = 0; i < n;\
-    \ ++i) {\n        std::cin >> node(i)->Val;\n        root = TreapNode::join(root,\
-    \ node(i));\n    }\n    while (q--) {\n        int t, l, r;\n        std::cin\
-    \ >> t >> l >> r;\n        auto [a, b, c] = TreapNode::split(root, l, r - l);\n\
-    \        if (t == 0) {\n            if (b) b->flip();\n        } else {\n    \
-    \        std::cout << (b ? b->Sum : 0LL) << '\\n';\n        }\n        root =\
-    \ TreapNode::join(a, b, c);\n    }\n    return 0;\n}\n"
+    \ ++i) {\n        std::cin >> node(i)->Val;\n        node(i)->Sum = node(i)->Val;\n\
+    \        root         = TreapNode::join(root, node(i));\n    }\n    while (q--)\
+    \ {\n        int t, l, r;\n        std::cin >> t >> l >> r;\n        auto [a,\
+    \ b, c] = TreapNode::split(root, l, r - l);\n        if (t == 0) {\n         \
+    \   if (b) b->flip();\n        } else {\n            std::cout << (b ? b->Sum\
+    \ : 0LL) << '\\n';\n        }\n        root = TreapNode::join(a, b, c);\n    }\n\
+    \    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/range_reverse_range_sum\"\
     \n\n#include \"node_pool.hpp\"\n#include \"treap_node_base.hpp\"\n#include <iostream>\n\
     \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
@@ -234,12 +235,12 @@ data:
     \ right()->Sum;\n        }\n    };\n    int n, q;\n    std::cin >> n >> q;\n \
     \   FixedSizeNodePool<TreapNode> pool(n);\n    auto [node, id] = pool.get_func();\n\
     \    TreapNode *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n        std::cin\
-    \ >> node(i)->Val;\n        root = TreapNode::join(root, node(i));\n    }\n  \
-    \  while (q--) {\n        int t, l, r;\n        std::cin >> t >> l >> r;\n   \
-    \     auto [a, b, c] = TreapNode::split(root, l, r - l);\n        if (t == 0)\
-    \ {\n            if (b) b->flip();\n        } else {\n            std::cout <<\
-    \ (b ? b->Sum : 0LL) << '\\n';\n        }\n        root = TreapNode::join(a, b,\
-    \ c);\n    }\n    return 0;\n}\n"
+    \ >> node(i)->Val;\n        node(i)->Sum = node(i)->Val;\n        root       \
+    \  = TreapNode::join(root, node(i));\n    }\n    while (q--) {\n        int t,\
+    \ l, r;\n        std::cin >> t >> l >> r;\n        auto [a, b, c] = TreapNode::split(root,\
+    \ l, r - l);\n        if (t == 0) {\n            if (b) b->flip();\n        }\
+    \ else {\n            std::cout << (b ? b->Sum : 0LL) << '\\n';\n        }\n \
+    \       root = TreapNode::join(a, b, c);\n    }\n    return 0;\n}\n"
   dependsOn:
   - node_pool.hpp
   - treap_node_base.hpp
@@ -247,7 +248,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_reverse_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2026-01-25 16:24:19+08:00'
+  timestamp: '2026-01-25 17:55:37+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_reverse_range_sum.0.test.cpp
