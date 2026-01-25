@@ -181,23 +181,22 @@ data:
     \            }\n        }\n        return res;\n    }\n\n    template<typename...\
     \ Nodes> static TreapNodeT *join(Nodes... root) {\n        struct Helper {\n \
     \           TreapNodeBase *Val;\n            Helper &operator|(TreapNodeBase *A)\
-    \ {\n                Val = TreapNodeBase::base_join(Val, A);\n               \
-    \ return *this;\n            }\n        } nil{nullptr};\n        return (TreapNodeT\
-    \ *)(nil | ... | root).Val;\n    }\n    template<typename... Parts>\n    static\
-    \ std::array<TreapNodeT *, sizeof...(Parts) + 1> split(TreapNodeT *root, Parts...\
-    \ part) {\n        std::array<TreapNodeT *, sizeof...(Parts) + 1> res;\n     \
-    \   res[0]    = root;\n        int index = 0;\n        (\n            [&](int\
-    \ s) {\n                auto [l, r]  = base_split(res[index], s);\n          \
-    \      res[index]   = (TreapNodeT *)l;\n                res[++index] = (TreapNodeT\
-    \ *)r;\n            }(part),\n            ...);\n        return res;\n    }\n\n\
-    \    static TreapNodeT *find(TreapNodeT *root, const TreapNodeT *t) {\n      \
-    \  if (root == nullptr) return nullptr;\n        root->propagate();\n        if\
-    \ (std::as_const(*root) < *t) return find(root->right(), t);\n        if (*t <\
-    \ std::as_const(*root)) return find(root->left(), t);\n        return root;\n\
-    \    }\n\n    TreapNodeT *select(int k) {\n        propagate();\n        const\
-    \ int leftsize = left() ? left()->size() : 0;\n        if (k == leftsize) return\
-    \ (TreapNodeT *)this;\n        if (k < leftsize) return left()->select(k);\n \
-    \       return right()->select(k - leftsize - 1);\n    }\n};\n\ntemplate<typename\
+    \ {\n                Val = base_join(Val, A);\n                return *this;\n\
+    \            }\n        } nil{nullptr};\n        return (TreapNodeT *)(nil | ...\
+    \ | root).Val;\n    }\n    template<typename... Parts>\n    static std::array<TreapNodeT\
+    \ *, sizeof...(Parts) + 1> split(TreapNodeT *root, Parts... part) {\n        std::array<TreapNodeT\
+    \ *, sizeof...(Parts) + 1> res;\n        res[0]    = root;\n        int index\
+    \ = 0;\n        (\n            [&](int s) {\n                auto [l, r]  = base_split(res[index],\
+    \ s);\n                res[index]   = (TreapNodeT *)l;\n                res[++index]\
+    \ = (TreapNodeT *)r;\n            }(part),\n            ...);\n        return\
+    \ res;\n    }\n\n    static TreapNodeT *find(TreapNodeT *root, const TreapNodeT\
+    \ *t) {\n        if (root == nullptr) return nullptr;\n        root->propagate();\n\
+    \        if (std::as_const(*root) < *t) return find(root->right(), t);\n     \
+    \   if (*t < std::as_const(*root)) return find(root->left(), t);\n        return\
+    \ root;\n    }\n\n    TreapNodeT *select(int k) {\n        propagate();\n    \
+    \    const int leftsize = left() ? left()->size() : 0;\n        if (k == leftsize)\
+    \ return (TreapNodeT *)this;\n        if (k < leftsize) return left()->select(k);\n\
+    \        return right()->select(k - leftsize - 1);\n    }\n};\n\ntemplate<typename\
     \ FlipableTreapNodeT> class FlipableTreapNodeBase\n    : public TreapNodeBase<FlipableTreapNodeT>\
     \ {\n    friend class TreapNodeBase<FlipableTreapNodeT>;\n\n    bool NeedFlip;\n\
     \n    FlipableTreapNodeT &underlying() { return (FlipableTreapNodeT &)*this; }\n\
@@ -244,7 +243,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_reverse_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2025-09-22 22:55:38+08:00'
+  timestamp: '2026-01-25 16:11:30+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_reverse_range_sum.0.test.cpp
