@@ -119,76 +119,68 @@ data:
     \ *base_join(TreapNodeBase *a, TreapNodeBase *b) {\n        if (a == nullptr)\
     \ {\n            if (b) b->propagate(), b->update();\n            return b;\n\
     \        }\n        if (b == nullptr) {\n            if (a) a->propagate(), a->update();\n\
-    \            return a;\n        }\n        a->propagate();\n        b->propagate();\n\
-    \        // MAX HEAP\n        if (a->rank() < b->rank()) {\n            b->L =\
-    \ base_join(a, b->L);\n            b->update();\n            return b;\n     \
-    \   } else {\n            a->R = base_join(a->R, b);\n            a->update();\n\
-    \            return a;\n        }\n    }\n\n    static std::array<TreapNodeBase\
-    \ *, 2> base_split(TreapNodeBase *a, int k) {\n        if (a == nullptr) return\
-    \ {nullptr, nullptr};\n        a->propagate();\n        if (k == 0) return {nullptr,\
-    \ a};\n        if (k == a->Size) return {a, nullptr};\n        const int leftsize\
-    \ = a->L != nullptr ? a->L->Size : 0;\n        if (leftsize < k) {\n         \
-    \   auto [b, c] = base_split(a->R, k - leftsize - 1);\n            a->R      \
-    \  = b;\n            a->update();\n            return {a, c};\n        } else\
-    \ {\n            auto [b, c] = base_split(a->L, k);\n            a->L        =\
-    \ c;\n            a->update();\n            return {b, a};\n        }\n    }\n\
-    \n    TreapNodeBase *base_rotate_left() {\n        /*    x              b\n  \
-    \           / \\            / \\\n            a   b    =>    x   d\n         \
-    \      / \\        / \\\n              c   d      a   c    */\n        TreapNodeBase\
-    \ *b = R;\n        b->propagate();\n        R = b->L, b->L = this;\n        update();\n\
-    \        b->update();\n        return b;\n    }\n    TreapNodeBase *base_rotate_right()\
-    \ {\n        /*    x              a\n             / \\            / \\\n     \
-    \       a   b    =>    c   x\n           / \\                / \\\n          c\
-    \   d              d   b */\n        TreapNodeBase *a = L;\n        a->propagate();\n\
-    \        L = a->R, a->R = this;\n        update();\n        a->update();\n   \
-    \     return a;\n    }\n\nprotected:\n    TreapNodeBase() : L(), R(), Rank(dis(gen)),\
-    \ Size(1) {}\n\npublic:\n    int size() const { return Size; }\n    int rank()\
-    \ const { return Rank; }\n    TreapNodeT *left() const { return (TreapNodeT *)L;\
-    \ }\n    TreapNodeT *right() const { return (TreapNodeT *)R; }\n    void update()\
-    \ { base_update(); }\n    void propagate() { underlying().base_propagate(); }\n\
-    \    static TreapNodeT *insert(TreapNodeT *root, TreapNodeT *t) {\n        if\
-    \ (root == nullptr) return t;\n        root->propagate();\n        if (std::as_const(*t)\
-    \ < std::as_const(*root)) {\n            root->L = insert(root->left(), t);\n\
-    \            root->update();\n            if (root->rank() < root->left()->rank())\
-    \ return (TreapNodeT *)root->base_rotate_right();\n        } else {\n        \
-    \    root->R = insert(root->right(), t);\n            root->update();\n      \
-    \      if (root->rank() < root->right()->rank()) return (TreapNodeT *)root->base_rotate_left();\n\
+    \            return a;\n        }\n        a->propagate(), b->propagate();\n \
+    \       // MAX HEAP\n        if (a->rank() < b->rank()) return b->L = base_join(a,\
+    \ b->L), b->update(), b;\n        return a->R = base_join(a->R, b), a->update(),\
+    \ a;\n    }\n\n    static std::array<TreapNodeBase *, 2> base_split(TreapNodeBase\
+    \ *a, int k) {\n        if (a == nullptr) return {nullptr, nullptr};\n       \
+    \ a->propagate();\n        if (k == 0) return {nullptr, a};\n        if (k ==\
+    \ a->Size) return {a, nullptr};\n        const int leftsize = a->L != nullptr\
+    \ ? a->L->Size : 0;\n        if (leftsize < k) {\n            auto [b, c] = base_split(a->R,\
+    \ k - leftsize - 1);\n            a->R        = b, a->update();\n            return\
+    \ {a, c};\n        }\n        auto [b, c] = base_split(a->L, k);\n        a->L\
+    \        = c, a->update();\n        return {b, a};\n    }\n\n    TreapNodeBase\
+    \ *base_rotate_left() {\n        /*    x              b\n             / \\   \
+    \         / \\\n            a   b    =>    x   d\n               / \\        /\
+    \ \\\n              c   d      a   c    */\n        TreapNodeBase *b = R;\n  \
+    \      return b->propagate(), R = b->L, b->L = this, update(), b->update(), b;\n\
+    \    }\n    TreapNodeBase *base_rotate_right() {\n        /*    x            \
+    \  a\n             / \\            / \\\n            a   b    =>    c   x\n  \
+    \         / \\                / \\\n          c   d              d   b */\n  \
+    \      TreapNodeBase *a = L;\n        return a->propagate(), L = a->R, a->R =\
+    \ this, update(), a->update(), a;\n    }\n\nprotected:\n    TreapNodeBase() :\
+    \ L(), R(), Rank(dis(gen)), Size(1) {}\n\npublic:\n    int size() const { return\
+    \ Size; }\n    int rank() const { return Rank; }\n    TreapNodeT *left() const\
+    \ { return (TreapNodeT *)L; }\n    TreapNodeT *right() const { return (TreapNodeT\
+    \ *)R; }\n    void update() { base_update(); }\n    void propagate() { underlying().base_propagate();\
+    \ }\n    static TreapNodeT *insert(TreapNodeT *root, TreapNodeT *t) {\n      \
+    \  if (root == nullptr) return t;\n        root->propagate();\n        if (std::as_const(*t)\
+    \ < std::as_const(*root)) {\n            root->L = insert(root->left(), t), root->update();\n\
+    \            if (root->rank() < root->left()->rank()) return (TreapNodeT *)root->base_rotate_right();\n\
+    \        } else {\n            root->R = insert(root->right(), t), root->update();\n\
+    \            if (root->rank() < root->right()->rank()) return (TreapNodeT *)root->base_rotate_left();\n\
     \        }\n        return root;\n    }\n    static int count_less_than(TreapNodeT\
     \ *root, const TreapNodeT *t) {\n        if (root == nullptr) return 0;\n    \
-    \    root->propagate();\n        if (std::as_const(*root) < *t) {\n          \
-    \  return (root->left() ? root->left()->size() : 0) + 1 +\n                  \
-    \ count_less_than(root->right(), t);\n        } else {\n            return count_less_than(root->left(),\
-    \ t);\n        }\n    }\n    static int count_less_equal(TreapNodeT *root, const\
+    \    root->propagate();\n        if (std::as_const(*root) < *t)\n            return\
+    \ (root->left() ? root->left()->size() : 0) + 1 +\n                   count_less_than(root->right(),\
+    \ t);\n        return count_less_than(root->left(), t);\n    }\n    static int\
+    \ count_less_equal(TreapNodeT *root, const TreapNodeT *t) {\n        if (root\
+    \ == nullptr) return 0;\n        root->propagate();\n        if (*t < std::as_const(*root))\
+    \ return count_less_equal(root->left(), t);\n        return (root->left() ? root->left()->size()\
+    \ : 0) + 1 + count_less_equal(root->right(), t);\n    }\n    // [<, >=]\n    static\
+    \ std::array<TreapNodeT *, 2> split_less_than(TreapNodeT *root, const TreapNodeT\
+    \ *t) {\n        if (root == nullptr) return {nullptr, nullptr};\n        root->propagate();\n\
+    \        if (std::as_const(*root) < *t) {\n            auto [a, b] = split_less_than(root->right(),\
+    \ t);\n            root->R     = a, root->update();\n            return {root,\
+    \ b};\n        }\n        auto [a, b] = split_less_than(root->left(), t);\n  \
+    \      root->L     = b, root->update();\n        return {a, root};\n    }\n  \
+    \  static int count_greater_than(TreapNodeT *root, const TreapNodeT *t) {\n  \
+    \      if (root == nullptr) return 0;\n        root->propagate();\n        if\
+    \ (*t < std::as_const(*root))\n            return (root->right() ? root->right()->size()\
+    \ : 0) + 1 +\n                   count_greater_than(root->left(), t);\n      \
+    \  return count_greater_than(root->right(), t);\n    }\n    static int count_greater_equal(TreapNodeT\
+    \ *root, const TreapNodeT *t) {\n        if (root == nullptr) return 0;\n    \
+    \    root->propagate();\n        if (std::as_const(*root) < *t) return count_greater_equal(root->right(),\
+    \ t);\n        return (root->right() ? root->right()->size() : 0) + 1 +\n    \
+    \           count_greater_equal(root->left(), t);\n    }\n    // [<=, >]\n   \
+    \ static std::array<TreapNodeT *, 2> split_less_equal(TreapNodeT *root, const\
+    \ TreapNodeT *t) {\n        if (root == nullptr) return {nullptr, nullptr};\n\
+    \        root->propagate();\n        if (*t < std::as_const(*root)) {\n      \
+    \      auto [a, b] = split_less_equal(root->left(), t);\n            root->L \
+    \    = b, root->update();\n            return {a, root};\n        }\n        auto\
+    \ [a, b] = split_less_equal(root->right(), t);\n        root->R     = a, root->update();\n\
+    \        return {root, b};\n    }\n    static int count(TreapNodeT *root, const\
     \ TreapNodeT *t) {\n        if (root == nullptr) return 0;\n        root->propagate();\n\
-    \        if (*t < std::as_const(*root)) {\n            return count_less_equal(root->left(),\
-    \ t);\n        } else {\n            return (root->left() ? root->left()->size()\
-    \ : 0) + 1 +\n                   count_less_equal(root->right(), t);\n       \
-    \ }\n    }\n    // [<, >=]\n    static std::array<TreapNodeT *, 2> split_less_than(TreapNodeT\
-    \ *root, const TreapNodeT *t) {\n        if (root == nullptr) return {nullptr,\
-    \ nullptr};\n        root->propagate();\n        if (std::as_const(*root) < *t)\
-    \ {\n            auto [a, b] = split_less_than(root->right(), t);\n          \
-    \  root->R     = a;\n            root->update();\n            return {root, b};\n\
-    \        } else {\n            auto [a, b] = split_less_than(root->left(), t);\n\
-    \            root->L     = b;\n            root->update();\n            return\
-    \ {a, root};\n        }\n    }\n    static int count_greater_than(TreapNodeT *root,\
-    \ const TreapNodeT *t) {\n        if (root == nullptr) return 0;\n        root->propagate();\n\
-    \        if (*t < std::as_const(*root)) {\n            return (root->right() ?\
-    \ root->right()->size() : 0) + 1 +\n                   count_greater_than(root->left(),\
-    \ t);\n        } else {\n            return count_greater_than(root->right(),\
-    \ t);\n        }\n    }\n    static int count_greater_equal(TreapNodeT *root,\
-    \ const TreapNodeT *t) {\n        if (root == nullptr) return 0;\n        root->propagate();\n\
-    \        if (std::as_const(*root) < *t) {\n            return count_greater_equal(root->right(),\
-    \ t);\n        } else {\n            return (root->right() ? root->right()->size()\
-    \ : 0) + 1 +\n                   count_greater_equal(root->left(), t);\n     \
-    \   }\n    }\n    // [<=, >]\n    static std::array<TreapNodeT *, 2> split_less_equal(TreapNodeT\
-    \ *root, const TreapNodeT *t) {\n        if (root == nullptr) return {nullptr,\
-    \ nullptr};\n        root->propagate();\n        if (*t < std::as_const(*root))\
-    \ {\n            auto [a, b] = split_less_equal(root->left(), t);\n          \
-    \  root->L     = b;\n            root->update();\n            return {a, root};\n\
-    \        } else {\n            auto [a, b] = split_less_equal(root->right(), t);\n\
-    \            root->R     = a;\n            root->update();\n            return\
-    \ {root, b};\n        }\n    }\n    static int count(TreapNodeT *root, const TreapNodeT\
-    \ *t) {\n        if (root == nullptr) return 0;\n        root->propagate();\n\
     \        if (*t < std::as_const(*root)) return count(root->left(), t);\n     \
     \   if (std::as_const(*root) < *t) return count(root->right(), t);\n        int\
     \ res = 1;\n        if (root->left()) res += root->left()->size() - count_less_than(root->left(),\
@@ -210,31 +202,31 @@ data:
     \ *root, const TreapNodeT *t) {\n        if (root == nullptr) return {nullptr,\
     \ nullptr, nullptr};\n        root->propagate();\n        if (*t < std::as_const(*root))\
     \ {\n            auto [a, b, c] = split3(root->left(), t);\n            root->L\
-    \        = c;\n            root->update();\n            return {a, b, root};\n\
-    \        }\n        if (std::as_const(*root) < *t) {\n            auto [a, b,\
-    \ c] = split3(root->right(), t);\n            root->R        = a;\n          \
-    \  root->update();\n            return {root, b, c};\n        }\n        auto\
-    \ [a, b] = split_less_than(root->left(), t);\n        auto [c, d] = split_less_equal(root->right(),\
-    \ t);\n        root->L = b, root->R = c;\n        root->update();\n        return\
-    \ {a, root, d};\n    }\n    static TreapNodeT *predecessor(TreapNodeT *root, const\
-    \ TreapNodeT *t) {\n        TreapNodeT *res = nullptr;\n        while (root) {\n\
-    \            root->propagate();\n            if (std::as_const(*root) < *t) {\n\
-    \                res = root, root = root->right();\n            } else {\n   \
-    \             root = root->left();\n            }\n        }\n        return res;\n\
-    \    }\n    static TreapNodeT *successor(TreapNodeT *root, const TreapNodeT *t)\
-    \ {\n        TreapNodeT *res = nullptr;\n        while (root) {\n            root->propagate();\n\
-    \            if (*t < std::as_const(*root)) {\n                res = root, root\
-    \ = root->left();\n            } else {\n                root = root->right();\n\
-    \            }\n        }\n        return res;\n    }\n\n    template<typename...\
-    \ Nodes> static TreapNodeT *join(Nodes... root) {\n        struct Helper {\n \
-    \           TreapNodeBase *Val;\n            Helper &operator|(TreapNodeBase *A)\
-    \ {\n                Val = base_join(Val, A);\n                return *this;\n\
-    \            }\n        } nil{nullptr};\n        return (TreapNodeT *)(nil | ...\
-    \ | root).Val;\n    }\n    template<typename... Parts>\n    static std::array<TreapNodeT\
-    \ *, sizeof...(Parts) + 1> split(TreapNodeT *root, Parts... part) {\n        std::array<TreapNodeT\
-    \ *, sizeof...(Parts) + 1> res;\n        res[0]    = root;\n        int index\
-    \ = 0;\n        (\n            [&](int s) {\n                auto [l, r]  = base_split(res[index],\
-    \ s);\n                res[index]   = (TreapNodeT *)l;\n                res[++index]\
+    \        = c, root->update();\n            return {a, b, root};\n        }\n \
+    \       if (std::as_const(*root) < *t) {\n            auto [a, b, c] = split3(root->right(),\
+    \ t);\n            root->R        = a, root->update();\n            return {root,\
+    \ b, c};\n        }\n        auto [a, b] = split_less_than(root->left(), t);\n\
+    \        auto [c, d] = split_less_equal(root->right(), t);\n        root->L =\
+    \ b, root->R = c, root->update();\n        return {a, root, d};\n    }\n    static\
+    \ TreapNodeT *predecessor(TreapNodeT *root, const TreapNodeT *t) {\n        TreapNodeT\
+    \ *res = nullptr;\n        while (root) {\n            root->propagate();\n  \
+    \          if (std::as_const(*root) < *t) {\n                res = root, root\
+    \ = root->right();\n            } else {\n                root = root->left();\n\
+    \            }\n        }\n        return res;\n    }\n    static TreapNodeT *successor(TreapNodeT\
+    \ *root, const TreapNodeT *t) {\n        TreapNodeT *res = nullptr;\n        while\
+    \ (root) {\n            root->propagate();\n            if (*t < std::as_const(*root))\
+    \ {\n                res = root, root = root->left();\n            } else {\n\
+    \                root = root->right();\n            }\n        }\n        return\
+    \ res;\n    }\n\n    template<typename... Nodes> static TreapNodeT *join(Nodes...\
+    \ root) {\n        struct Helper {\n            TreapNodeBase *Val;\n        \
+    \    Helper &operator|(TreapNodeBase *A) {\n                Val = base_join(Val,\
+    \ A);\n                return *this;\n            }\n        } nil{nullptr};\n\
+    \        return (TreapNodeT *)(nil | ... | root).Val;\n    }\n    template<typename...\
+    \ Parts>\n    static std::array<TreapNodeT *, sizeof...(Parts) + 1> split(TreapNodeT\
+    \ *root, Parts... part) {\n        std::array<TreapNodeT *, sizeof...(Parts) +\
+    \ 1> res;\n        res[0]    = root;\n        int index = 0;\n        (\n    \
+    \        [&](int s) {\n                auto [l, r]  = base_split(res[index], s);\n\
+    \                res[index]   = (TreapNodeT *)l;\n                res[++index]\
     \ = (TreapNodeT *)r;\n            }(part),\n            ...);\n        return\
     \ res;\n    }\n\n    static TreapNodeT *find(TreapNodeT *root, const TreapNodeT\
     \ *t) {\n        if (root == nullptr) return nullptr;\n        root->propagate();\n\
@@ -306,7 +298,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2026-01-25 16:24:19+08:00'
+  timestamp: '2026-01-25 23:04:59+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_affine_range_sum.0.test.cpp
