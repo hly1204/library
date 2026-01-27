@@ -14,22 +14,21 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/range_reverse_range_sum
+    PROBLEM: https://judge.yosupo.jp/problem/ordered_set
     links:
-    - https://judge.yosupo.jp/problem/range_reverse_range_sum
-  bundledCode: "#line 1 \"test/data_structure/range_reverse_range_sum.1.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/range_reverse_range_sum\"\n\
-    \n#line 2 \"avl_tree_node_base.hpp\"\n\n#include <algorithm>\n#include <array>\n\
-    #include <cassert>\n#include <utility>\n\ntemplate<typename FlipableAVLTreeNodeT>\
-    \ class FlipableAVLTreeNodeBase;\n\ntemplate<typename AVLTreeNodeT> class AVLTreeNodeBase\
-    \ {\n    friend class FlipableAVLTreeNodeBase<AVLTreeNodeT>;\n\n    AVLTreeNodeBase\
-    \ *L;\n    AVLTreeNodeBase *R;\n    int Height;\n    int Size;\n\n    AVLTreeNodeT\
-    \ &underlying() { return (AVLTreeNodeT &)*this; }\n    const AVLTreeNodeT &underlying()\
-    \ const { return (const AVLTreeNodeT &)*this; }\n\n    // CRTP reimplement\n \
-    \   void do_propagate() {}\n    void do_update() {}\n\n    // base_propagate()\
-    \ is called to propagate the update information to child(ren).\n    // There is\
-    \ no need to update the information combined from child(ren)\n    // which should\
-    \ be done in base_update().\n    void base_propagate() { underlying().do_propagate();\
+    - https://judge.yosupo.jp/problem/ordered_set
+  bundledCode: "#line 1 \"test/data_structure/ordered_set.1.test.cpp\"\n#define PROBLEM\
+    \ \"https://judge.yosupo.jp/problem/ordered_set\"\n\n#line 2 \"avl_tree_node_base.hpp\"\
+    \n\n#include <algorithm>\n#include <array>\n#include <cassert>\n#include <utility>\n\
+    \ntemplate<typename FlipableAVLTreeNodeT> class FlipableAVLTreeNodeBase;\n\ntemplate<typename\
+    \ AVLTreeNodeT> class AVLTreeNodeBase {\n    friend class FlipableAVLTreeNodeBase<AVLTreeNodeT>;\n\
+    \n    AVLTreeNodeBase *L;\n    AVLTreeNodeBase *R;\n    int Height;\n    int Size;\n\
+    \n    AVLTreeNodeT &underlying() { return (AVLTreeNodeT &)*this; }\n    const\
+    \ AVLTreeNodeT &underlying() const { return (const AVLTreeNodeT &)*this; }\n\n\
+    \    // CRTP reimplement\n    void do_propagate() {}\n    void do_update() {}\n\
+    \n    // base_propagate() is called to propagate the update information to child(ren).\n\
+    \    // There is no need to update the information combined from child(ren)\n\
+    \    // which should be done in base_update().\n    void base_propagate() { underlying().do_propagate();\
     \ }\n    // base_update() is called to update the information combined from child(ren).\n\
     \    void base_update() {\n        Size = 1;\n        if (L) Size += L->Size;\n\
     \        if (R) Size += R->Size;\n        Height = std::max(L ? L->Height : 0,\
@@ -241,50 +240,88 @@ data:
     \        return std::addressof(node);\n    }\n    // this is lazy, if sth. relies\
     \ on the order of dtor, do NOT use\n    void retrieve(NodeT *node) {\n       \
     \ free_list.splice(free_list.end(), used_list, ((Wrapped *)node)->i);\n    }\n\
-    };\n#line 5 \"test/data_structure/range_reverse_range_sum.1.test.cpp\"\n#include\
-    \ <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    struct AVLTreeNode : FlipableAVLTreeNodeBase<AVLTreeNode> {\n        int\
-    \ Val;\n        long long Sum;\n        void do_update() {\n            Sum =\
-    \ Val;\n            if (left()) Sum += left()->Sum;\n            if (right())\
-    \ Sum += right()->Sum;\n        }\n    };\n    int n, q;\n    std::cin >> n >>\
-    \ q;\n    FixedSizeNodePool<AVLTreeNode> pool(n);\n    auto [node, id]   = pool.get_func();\n\
-    \    AVLTreeNode *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n       \
-    \ std::cin >> node(i)->Val;\n        node(i)->Sum = node(i)->Val;\n        root\
-    \         = AVLTreeNode::join(root, node(i));\n    }\n    while (q--) {\n    \
-    \    int t, l, r;\n        std::cin >> t >> l >> r;\n        auto [a, b, c] =\
-    \ AVLTreeNode::split(root, l, r - l);\n        if (t == 0) {\n            if (b)\
-    \ b->flip();\n        } else {\n            std::cout << (b ? b->Sum : 0LL) <<\
-    \ '\\n';\n        }\n        root = AVLTreeNode::join(a, b, c);\n    }\n    return\
-    \ 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/range_reverse_range_sum\"\
-    \n\n#include \"avl_tree_node_base.hpp\"\n#include \"node_pool.hpp\"\n#include\
-    \ <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    struct AVLTreeNode : FlipableAVLTreeNodeBase<AVLTreeNode> {\n        int\
-    \ Val;\n        long long Sum;\n        void do_update() {\n            Sum =\
-    \ Val;\n            if (left()) Sum += left()->Sum;\n            if (right())\
-    \ Sum += right()->Sum;\n        }\n    };\n    int n, q;\n    std::cin >> n >>\
-    \ q;\n    FixedSizeNodePool<AVLTreeNode> pool(n);\n    auto [node, id]   = pool.get_func();\n\
-    \    AVLTreeNode *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n       \
-    \ std::cin >> node(i)->Val;\n        node(i)->Sum = node(i)->Val;\n        root\
-    \         = AVLTreeNode::join(root, node(i));\n    }\n    while (q--) {\n    \
-    \    int t, l, r;\n        std::cin >> t >> l >> r;\n        auto [a, b, c] =\
-    \ AVLTreeNode::split(root, l, r - l);\n        if (t == 0) {\n            if (b)\
-    \ b->flip();\n        } else {\n            std::cout << (b ? b->Sum : 0LL) <<\
-    \ '\\n';\n        }\n        root = AVLTreeNode::join(a, b, c);\n    }\n    return\
-    \ 0;\n}\n"
+    };\n#line 5 \"test/data_structure/ordered_set.1.test.cpp\"\n#include <iostream>\n\
+    \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    struct AVLTreeNode : AVLTreeNodeBase<AVLTreeNode> {\n        int Val;\n \
+    \       explicit AVLTreeNode(int Val) : Val(Val) {}\n        bool operator<(const\
+    \ AVLTreeNode &other) const { return Val < other.Val; }\n    };\n    int n, q;\n\
+    \    std::cin >> n >> q;\n    DynamicSizeNodePool<AVLTreeNode> pool;\n    AVLTreeNode\
+    \ *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n        int v;\n      \
+    \  std::cin >> v;\n        const AVLTreeNode t(v);\n        AVLTreeNode *found\
+    \ = AVLTreeNode::find(root, &t);\n        if (!found) root = AVLTreeNode::insert(root,\
+    \ pool.make(v));\n    }\n    while (q--) {\n        int cmd, x;\n        std::cin\
+    \ >> cmd >> x;\n        const AVLTreeNode t(x);\n        switch (cmd) {\n    \
+    \    case 0: {\n            AVLTreeNode *found = AVLTreeNode::find(root, &t);\n\
+    \            if (!found) root = AVLTreeNode::insert(root, pool.make(t.Val));\n\
+    \            break;\n        }\n        case 1: {\n            AVLTreeNode *found\
+    \ = AVLTreeNode::find(root, &t);\n            if (found) {\n                auto\
+    \ [a, b, c] = AVLTreeNode::split3(root, &t);\n                AVLTreeNode *d =\
+    \ b;\n                b              = AVLTreeNode::join(b->left(), b->right());\n\
+    \                pool.retrieve(d);\n                root = AVLTreeNode::join(a,\
+    \ b, c);\n            }\n            break;\n        }\n        case 2: {\n  \
+    \          if (root && root->size() >= x) {\n                std::cout << root->select(x\
+    \ - 1)->Val << '\\n';\n            } else {\n                std::cout << \"-1\\\
+    n\";\n            }\n            break;\n        }\n        case 3: {\n      \
+    \      std::cout << AVLTreeNode::count_less_equal(root, &t) << '\\n';\n      \
+    \      break;\n        }\n        case 4: {\n            if (AVLTreeNode *found\
+    \ = AVLTreeNode::find(root, &t)) {\n                std::cout << found->Val <<\
+    \ '\\n';\n            } else if (AVLTreeNode *pred = AVLTreeNode::predecessor(root,\
+    \ &t)) {\n                std::cout << pred->Val << '\\n';\n            } else\
+    \ {\n                std::cout << \"-1\\n\";\n            }\n            break;\n\
+    \        }\n        case 5: {\n            if (AVLTreeNode *found = AVLTreeNode::find(root,\
+    \ &t)) {\n                std::cout << found->Val << '\\n';\n            } else\
+    \ if (AVLTreeNode *succ = AVLTreeNode::successor(root, &t)) {\n              \
+    \  std::cout << succ->Val << '\\n';\n            } else {\n                std::cout\
+    \ << \"-1\\n\";\n            }\n            break;\n        }\n        default:\
+    \ break;\n        }\n    }\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/ordered_set\"\n\n#include\
+    \ \"avl_tree_node_base.hpp\"\n#include \"node_pool.hpp\"\n#include <iostream>\n\
+    \nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    struct AVLTreeNode : AVLTreeNodeBase<AVLTreeNode> {\n        int Val;\n \
+    \       explicit AVLTreeNode(int Val) : Val(Val) {}\n        bool operator<(const\
+    \ AVLTreeNode &other) const { return Val < other.Val; }\n    };\n    int n, q;\n\
+    \    std::cin >> n >> q;\n    DynamicSizeNodePool<AVLTreeNode> pool;\n    AVLTreeNode\
+    \ *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n        int v;\n      \
+    \  std::cin >> v;\n        const AVLTreeNode t(v);\n        AVLTreeNode *found\
+    \ = AVLTreeNode::find(root, &t);\n        if (!found) root = AVLTreeNode::insert(root,\
+    \ pool.make(v));\n    }\n    while (q--) {\n        int cmd, x;\n        std::cin\
+    \ >> cmd >> x;\n        const AVLTreeNode t(x);\n        switch (cmd) {\n    \
+    \    case 0: {\n            AVLTreeNode *found = AVLTreeNode::find(root, &t);\n\
+    \            if (!found) root = AVLTreeNode::insert(root, pool.make(t.Val));\n\
+    \            break;\n        }\n        case 1: {\n            AVLTreeNode *found\
+    \ = AVLTreeNode::find(root, &t);\n            if (found) {\n                auto\
+    \ [a, b, c] = AVLTreeNode::split3(root, &t);\n                AVLTreeNode *d =\
+    \ b;\n                b              = AVLTreeNode::join(b->left(), b->right());\n\
+    \                pool.retrieve(d);\n                root = AVLTreeNode::join(a,\
+    \ b, c);\n            }\n            break;\n        }\n        case 2: {\n  \
+    \          if (root && root->size() >= x) {\n                std::cout << root->select(x\
+    \ - 1)->Val << '\\n';\n            } else {\n                std::cout << \"-1\\\
+    n\";\n            }\n            break;\n        }\n        case 3: {\n      \
+    \      std::cout << AVLTreeNode::count_less_equal(root, &t) << '\\n';\n      \
+    \      break;\n        }\n        case 4: {\n            if (AVLTreeNode *found\
+    \ = AVLTreeNode::find(root, &t)) {\n                std::cout << found->Val <<\
+    \ '\\n';\n            } else if (AVLTreeNode *pred = AVLTreeNode::predecessor(root,\
+    \ &t)) {\n                std::cout << pred->Val << '\\n';\n            } else\
+    \ {\n                std::cout << \"-1\\n\";\n            }\n            break;\n\
+    \        }\n        case 5: {\n            if (AVLTreeNode *found = AVLTreeNode::find(root,\
+    \ &t)) {\n                std::cout << found->Val << '\\n';\n            } else\
+    \ if (AVLTreeNode *succ = AVLTreeNode::successor(root, &t)) {\n              \
+    \  std::cout << succ->Val << '\\n';\n            } else {\n                std::cout\
+    \ << \"-1\\n\";\n            }\n            break;\n        }\n        default:\
+    \ break;\n        }\n    }\n    return 0;\n}\n"
   dependsOn:
   - avl_tree_node_base.hpp
   - node_pool.hpp
   isVerificationFile: true
-  path: test/data_structure/range_reverse_range_sum.1.test.cpp
+  path: test/data_structure/ordered_set.1.test.cpp
   requiredBy: []
   timestamp: '2026-01-27 23:12:45+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/data_structure/range_reverse_range_sum.1.test.cpp
+documentation_of: test/data_structure/ordered_set.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/data_structure/range_reverse_range_sum.1.test.cpp
-- /verify/test/data_structure/range_reverse_range_sum.1.test.cpp.html
-title: test/data_structure/range_reverse_range_sum.1.test.cpp
+- /verify/test/data_structure/ordered_set.1.test.cpp
+- /verify/test/data_structure/ordered_set.1.test.cpp.html
+title: test/data_structure/ordered_set.1.test.cpp
 ---

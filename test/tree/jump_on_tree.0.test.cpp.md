@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: node_pool.hpp
     title: node_pool.hpp
   - icon: ':heavy_check_mark:'

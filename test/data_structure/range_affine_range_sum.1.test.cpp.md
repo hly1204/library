@@ -5,21 +5,24 @@ data:
     path: avl_tree_node_base.hpp
     title: avl_tree_node_base.hpp
   - icon: ':question:'
+    path: modint.hpp
+    title: modint.hpp
+  - icon: ':question:'
     path: node_pool.hpp
     title: node_pool.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/range_reverse_range_sum
+    PROBLEM: https://judge.yosupo.jp/problem/range_affine_range_sum
     links:
-    - https://judge.yosupo.jp/problem/range_reverse_range_sum
-  bundledCode: "#line 1 \"test/data_structure/range_reverse_range_sum.1.test.cpp\"\
-    \n#define PROBLEM \"https://judge.yosupo.jp/problem/range_reverse_range_sum\"\n\
-    \n#line 2 \"avl_tree_node_base.hpp\"\n\n#include <algorithm>\n#include <array>\n\
+    - https://judge.yosupo.jp/problem/range_affine_range_sum
+  bundledCode: "#line 1 \"test/data_structure/range_affine_range_sum.1.test.cpp\"\n\
+    #define PROBLEM \"https://judge.yosupo.jp/problem/range_affine_range_sum\"\n\n\
+    #line 2 \"avl_tree_node_base.hpp\"\n\n#include <algorithm>\n#include <array>\n\
     #include <cassert>\n#include <utility>\n\ntemplate<typename FlipableAVLTreeNodeT>\
     \ class FlipableAVLTreeNodeBase;\n\ntemplate<typename AVLTreeNodeT> class AVLTreeNodeBase\
     \ {\n    friend class FlipableAVLTreeNodeBase<AVLTreeNodeT>;\n\n    AVLTreeNodeBase\
@@ -221,8 +224,48 @@ data:
     \        if (NeedFlip) {\n            NeedFlip = false;\n            if (this->left())\
     \ this->left()->underlying().base_flip();\n            if (this->right()) this->right()->underlying().base_flip();\n\
     \        }\n    }\n\nprotected:\n    FlipableAVLTreeNodeBase() : NeedFlip() {}\n\
-    \npublic:\n    void flip() { base_flip(); }\n};\n#line 2 \"node_pool.hpp\"\n\n\
-    #include <list>\n#include <memory>\n#line 6 \"node_pool.hpp\"\n#include <vector>\n\
+    \npublic:\n    void flip() { base_flip(); }\n};\n#line 2 \"modint.hpp\"\n\n#include\
+    \ <iostream>\n#include <type_traits>\n\n// clang-format off\ntemplate<unsigned\
+    \ Mod> class ModInt {\n    static_assert((Mod >> 31) == 0, \"`Mod` must less than\
+    \ 2^(31)\");\n    template<typename Int>\n    static std::enable_if_t<std::is_integral_v<Int>,\
+    \ unsigned> safe_mod(Int v) { using D = std::common_type_t<Int, unsigned>; return\
+    \ (v %= (int)Mod) < 0 ? (D)(v + (int)Mod) : (D)v; }\n    struct PrivateConstructor\
+    \ {} static inline private_constructor{};\n    ModInt(PrivateConstructor, unsigned\
+    \ v) : v_(v) {}\n    unsigned v_;\n\npublic:\n    static unsigned mod() { return\
+    \ Mod; }\n    static ModInt from_raw(unsigned v) { return ModInt(private_constructor,\
+    \ v); }\n    static ModInt zero() { return from_raw(0); }\n    static ModInt one()\
+    \ { return from_raw(1); }\n    bool is_zero() const { return v_ == 0; }\n    bool\
+    \ is_one() const { return v_ == 1; }\n    ModInt() : v_() {}\n    template<typename\
+    \ Int, typename std::enable_if_t<std::is_signed_v<Int>, int> = 0> ModInt(Int v)\
+    \ : v_(safe_mod(v)) {}\n    template<typename Int, typename std::enable_if_t<std::is_unsigned_v<Int>,\
+    \ int> = 0> ModInt(Int v) : v_(v % Mod) {}\n    unsigned val() const { return\
+    \ v_; }\n    ModInt operator-() const { return from_raw(v_ == 0 ? v_ : Mod - v_);\
+    \ }\n    ModInt pow(long long e) const { if (e < 0) return inv().pow(-e); for\
+    \ (ModInt x(*this), res(from_raw(1));; x *= x) { if (e & 1) res *= x; if ((e >>=\
+    \ 1) == 0) return res; }}\n    ModInt inv() const { int x1 = 1, x3 = 0, a = val(),\
+    \ b = Mod; while (b) { const int q = a / b, x1_old = x1, a_old = a; x1 = x3, x3\
+    \ = x1_old - x3 * q, a = b, b = a_old - b * q; } return from_raw(x1 < 0 ? x1 +\
+    \ (int)Mod : x1); }\n    template<bool Odd = (Mod & 1)> std::enable_if_t<Odd,\
+    \ ModInt> div_by_2() const { if (v_ & 1) return from_raw((v_ + Mod) >> 1); return\
+    \ from_raw(v_ >> 1); }\n    ModInt &operator+=(const ModInt &a) { if ((v_ += a.v_)\
+    \ >= Mod) v_ -= Mod; return *this; }\n    ModInt &operator-=(const ModInt &a)\
+    \ { if ((v_ += Mod - a.v_) >= Mod) v_ -= Mod; return *this; }\n    ModInt &operator*=(const\
+    \ ModInt &a) { v_ = (unsigned long long)v_ * a.v_ % Mod; return *this; }\n   \
+    \ ModInt &operator/=(const ModInt &a) { return *this *= a.inv(); }\n    ModInt\
+    \ &operator++() { return *this += one(); }\n    ModInt operator++(int) { ModInt\
+    \ o(*this); *this += one(); return o; }\n    ModInt &operator--() { return *this\
+    \ -= one(); }\n    ModInt operator--(int) { ModInt o(*this); *this -= one(); return\
+    \ o; }\n    friend ModInt operator+(const ModInt &a, const ModInt &b) { return\
+    \ ModInt(a) += b; }\n    friend ModInt operator-(const ModInt &a, const ModInt\
+    \ &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const ModInt &a,\
+    \ const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
+    \ &operator>>(std::istream &a, ModInt &b) { int v; a >> v; b.v_ = safe_mod(v);\
+    \ return a; }\n    friend std::ostream &operator<<(std::ostream &a, const ModInt\
+    \ &b) { return a << b.val(); }\n};\n// clang-format on\n#line 2 \"node_pool.hpp\"\
+    \n\n#include <list>\n#include <memory>\n#line 6 \"node_pool.hpp\"\n#include <vector>\n\
     \ntemplate<typename NodeT> class FixedSizeNodePool {\n    std::vector<NodeT> pool;\n\
     \npublic:\n    explicit FixedSizeNodePool(int n) : pool(n) {}\n    NodeT *at(int\
     \ ind) { return pool.data() + ind; }\n    int id(NodeT *a) const { return a -\
@@ -241,50 +284,64 @@ data:
     \        return std::addressof(node);\n    }\n    // this is lazy, if sth. relies\
     \ on the order of dtor, do NOT use\n    void retrieve(NodeT *node) {\n       \
     \ free_list.splice(free_list.end(), used_list, ((Wrapped *)node)->i);\n    }\n\
-    };\n#line 5 \"test/data_structure/range_reverse_range_sum.1.test.cpp\"\n#include\
-    \ <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    struct AVLTreeNode : FlipableAVLTreeNodeBase<AVLTreeNode> {\n        int\
-    \ Val;\n        long long Sum;\n        void do_update() {\n            Sum =\
-    \ Val;\n            if (left()) Sum += left()->Sum;\n            if (right())\
-    \ Sum += right()->Sum;\n        }\n    };\n    int n, q;\n    std::cin >> n >>\
-    \ q;\n    FixedSizeNodePool<AVLTreeNode> pool(n);\n    auto [node, id]   = pool.get_func();\n\
+    };\n#line 7 \"test/data_structure/range_affine_range_sum.1.test.cpp\"\n\nint main()\
+    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    using\
+    \ mint = ModInt<998244353>;\n    struct AVLTreeNode : AVLTreeNodeBase<AVLTreeNode>\
+    \ {\n        mint Val, Sum, Add, Mul = {1};\n        void do_propagate() {\n \
+    \           if (left()) {\n                left()->Add = Mul * left()->Add + Add;\n\
+    \                left()->Mul *= Mul;\n                left()->Sum = Add * left()->size()\
+    \ + Mul * left()->Sum;\n            }\n            if (right()) {\n          \
+    \      right()->Add = Mul * right()->Add + Add;\n                right()->Mul\
+    \ *= Mul;\n                right()->Sum = Add * right()->size() + Mul * right()->Sum;\n\
+    \            }\n            Val = Add + Mul * Val;\n            Add = 0;\n   \
+    \         Mul = 1;\n        }\n        void do_update() {\n            Sum = Val;\n\
+    \            if (left()) Sum += left()->Sum;\n            if (right()) Sum +=\
+    \ right()->Sum;\n        }\n    };\n    int n, q;\n    std::cin >> n >> q;\n \
+    \   FixedSizeNodePool<AVLTreeNode> pool(n);\n    auto [node, id]   = pool.get_func();\n\
     \    AVLTreeNode *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n       \
-    \ std::cin >> node(i)->Val;\n        node(i)->Sum = node(i)->Val;\n        root\
-    \         = AVLTreeNode::join(root, node(i));\n    }\n    while (q--) {\n    \
-    \    int t, l, r;\n        std::cin >> t >> l >> r;\n        auto [a, b, c] =\
-    \ AVLTreeNode::split(root, l, r - l);\n        if (t == 0) {\n            if (b)\
-    \ b->flip();\n        } else {\n            std::cout << (b ? b->Sum : 0LL) <<\
-    \ '\\n';\n        }\n        root = AVLTreeNode::join(a, b, c);\n    }\n    return\
-    \ 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/range_reverse_range_sum\"\
-    \n\n#include \"avl_tree_node_base.hpp\"\n#include \"node_pool.hpp\"\n#include\
-    \ <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    struct AVLTreeNode : FlipableAVLTreeNodeBase<AVLTreeNode> {\n        int\
-    \ Val;\n        long long Sum;\n        void do_update() {\n            Sum =\
-    \ Val;\n            if (left()) Sum += left()->Sum;\n            if (right())\
-    \ Sum += right()->Sum;\n        }\n    };\n    int n, q;\n    std::cin >> n >>\
-    \ q;\n    FixedSizeNodePool<AVLTreeNode> pool(n);\n    auto [node, id]   = pool.get_func();\n\
-    \    AVLTreeNode *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n       \
-    \ std::cin >> node(i)->Val;\n        node(i)->Sum = node(i)->Val;\n        root\
-    \         = AVLTreeNode::join(root, node(i));\n    }\n    while (q--) {\n    \
-    \    int t, l, r;\n        std::cin >> t >> l >> r;\n        auto [a, b, c] =\
-    \ AVLTreeNode::split(root, l, r - l);\n        if (t == 0) {\n            if (b)\
-    \ b->flip();\n        } else {\n            std::cout << (b ? b->Sum : 0LL) <<\
-    \ '\\n';\n        }\n        root = AVLTreeNode::join(a, b, c);\n    }\n    return\
-    \ 0;\n}\n"
+    \ std::cin >> node(i)->Val;\n        node(i)->update();\n        root = AVLTreeNode::join(root,\
+    \ node(i));\n    }\n    while (q--) {\n        int cmd, l, r;\n        std::cin\
+    \ >> cmd >> l >> r;\n        auto [R0, R1, R2] = AVLTreeNode::split(root, l, r\
+    \ - l);\n        if (cmd == 0) {\n            std::cin >> R1->Mul >> R1->Add;\n\
+    \        } else {\n            std::cout << R1->Sum << '\\n';\n        }\n   \
+    \     root = AVLTreeNode::join(R0, R1, R2);\n    }\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/range_affine_range_sum\"\
+    \n\n#include \"avl_tree_node_base.hpp\"\n#include \"modint.hpp\"\n#include \"\
+    node_pool.hpp\"\n#include <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    struct AVLTreeNode\
+    \ : AVLTreeNodeBase<AVLTreeNode> {\n        mint Val, Sum, Add, Mul = {1};\n \
+    \       void do_propagate() {\n            if (left()) {\n                left()->Add\
+    \ = Mul * left()->Add + Add;\n                left()->Mul *= Mul;\n          \
+    \      left()->Sum = Add * left()->size() + Mul * left()->Sum;\n            }\n\
+    \            if (right()) {\n                right()->Add = Mul * right()->Add\
+    \ + Add;\n                right()->Mul *= Mul;\n                right()->Sum =\
+    \ Add * right()->size() + Mul * right()->Sum;\n            }\n            Val\
+    \ = Add + Mul * Val;\n            Add = 0;\n            Mul = 1;\n        }\n\
+    \        void do_update() {\n            Sum = Val;\n            if (left()) Sum\
+    \ += left()->Sum;\n            if (right()) Sum += right()->Sum;\n        }\n\
+    \    };\n    int n, q;\n    std::cin >> n >> q;\n    FixedSizeNodePool<AVLTreeNode>\
+    \ pool(n);\n    auto [node, id]   = pool.get_func();\n    AVLTreeNode *root =\
+    \ nullptr;\n    for (int i = 0; i < n; ++i) {\n        std::cin >> node(i)->Val;\n\
+    \        node(i)->update();\n        root = AVLTreeNode::join(root, node(i));\n\
+    \    }\n    while (q--) {\n        int cmd, l, r;\n        std::cin >> cmd >>\
+    \ l >> r;\n        auto [R0, R1, R2] = AVLTreeNode::split(root, l, r - l);\n \
+    \       if (cmd == 0) {\n            std::cin >> R1->Mul >> R1->Add;\n       \
+    \ } else {\n            std::cout << R1->Sum << '\\n';\n        }\n        root\
+    \ = AVLTreeNode::join(R0, R1, R2);\n    }\n    return 0;\n}\n"
   dependsOn:
   - avl_tree_node_base.hpp
+  - modint.hpp
   - node_pool.hpp
   isVerificationFile: true
-  path: test/data_structure/range_reverse_range_sum.1.test.cpp
+  path: test/data_structure/range_affine_range_sum.1.test.cpp
   requiredBy: []
   timestamp: '2026-01-27 23:12:45+08:00'
-  verificationStatus: TEST_ACCEPTED
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
-documentation_of: test/data_structure/range_reverse_range_sum.1.test.cpp
+documentation_of: test/data_structure/range_affine_range_sum.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/data_structure/range_reverse_range_sum.1.test.cpp
-- /verify/test/data_structure/range_reverse_range_sum.1.test.cpp.html
-title: test/data_structure/range_reverse_range_sum.1.test.cpp
+- /verify/test/data_structure/range_affine_range_sum.1.test.cpp
+- /verify/test/data_structure/range_affine_range_sum.1.test.cpp.html
+title: test/data_structure/range_affine_range_sum.1.test.cpp
 ---
