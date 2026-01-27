@@ -39,6 +39,7 @@ int main() {
     for (int i = 0; i < n; ++i) {
         auto node = pool.make();
         std::cin >> node->Val;
+        node->update();
         root = TreapNode::join(root, node);
     }
     for (int i = 0; i < q; ++i) {
