@@ -198,6 +198,150 @@ public:
     AVLTreeNodeT *right() const { return (AVLTreeNodeT *)R; }
     void update() { base_update(); }
     void propagate() { underlying().base_propagate(); }
+    static AVLTreeNodeT *insert(AVLTreeNodeT *root, AVLTreeNodeT *t) {
+        if (root == nullptr) return t;
+        root->propagate();
+        if (std::as_const(*t) < std::as_const(*root)) root->L = insert(root->left(), t);
+        else { root->R = insert(root->right(), t); }
+        return root->update(), (AVLTreeNodeT *)root->balance();
+    }
+    static int count_less_than(AVLTreeNodeT *root, const AVLTreeNodeT *t) {
+        if (root == nullptr) return 0;
+        root->propagate();
+        if (std::as_const(*root) < *t)
+            return (root->left() ? root->left()->size() : 0) + 1 +
+                   count_less_than(root->right(), t);
+        return count_less_than(root->left(), t);
+    }
+    static int count_less_equal(AVLTreeNodeT *root, const AVLTreeNodeT *t) {
+        if (root == nullptr) return 0;
+        root->propagate();
+        if (*t < std::as_const(*root)) return count_less_equal(root->left(), t);
+        return (root->left() ? root->left()->size() : 0) + 1 + count_less_equal(root->right(), t);
+    }
+    // [<, >=]
+    static std::array<AVLTreeNodeT *, 2> split_less_than(AVLTreeNodeT *root,
+                                                         const AVLTreeNodeT *t) {
+        if (root == nullptr) return {nullptr, nullptr};
+        root->propagate();
+        if (std::as_const(*root) < *t) {
+            auto [a, b] = split_less_than(root->right(), t);
+            auto l      = root->L;
+            root->L = root->R = nullptr, root->update();
+            return {(AVLTreeNodeT *)base_join(l, root, a), b};
+        }
+        auto [a, b] = split_less_than(root->left(), t);
+        auto r      = root->R;
+        root->L = root->R = nullptr, root->update();
+        return {a, (AVLTreeNodeT *)base_join(b, root, r)};
+    }
+    static int count_greater_than(AVLTreeNodeT *root, const AVLTreeNodeT *t) {
+        if (root == nullptr) return 0;
+        root->propagate();
+        if (*t < std::as_const(*root))
+            return (root->right() ? root->right()->size() : 0) + 1 +
+                   count_greater_than(root->left(), t);
+        return count_greater_than(root->right(), t);
+    }
+    static int count_greater_equal(AVLTreeNodeT *root, const AVLTreeNodeT *t) {
+        if (root == nullptr) return 0;
+        root->propagate();
+        if (std::as_const(*root) < *t) return count_greater_equal(root->right(), t);
+        return (root->right() ? root->right()->size() : 0) + 1 +
+               count_greater_equal(root->left(), t);
+    }
+    // [<=, >]
+    static std::array<AVLTreeNodeT *, 2> split_less_equal(AVLTreeNodeT *root,
+                                                          const AVLTreeNodeT *t) {
+        if (root == nullptr) return {nullptr, nullptr};
+        root->propagate();
+        if (*t < std::as_const(*root)) {
+            auto [a, b] = split_less_equal(root->left(), t);
+            auto r      = root->R;
+            root->L = root->R = nullptr, root->update();
+            return {a, (AVLTreeNodeT *)base_join(b, root, r)};
+        }
+        auto [a, b] = split_less_equal(root->right(), t);
+        auto l      = root->L;
+        root->L = root->R = nullptr, root->update();
+        return {(AVLTreeNodeT *)base_join(l, root, a), b};
+    }
+    static int count(AVLTreeNodeT *root, const AVLTreeNodeT *t) {
+        if (root == nullptr) return 0;
+        root->propagate();
+        if (*t < std::as_const(*root)) return count(root->left(), t);
+        if (std::as_const(*root) < *t) return count(root->right(), t);
+        int res = 1;
+        if (root->left()) res += root->left()->size() - count_less_than(root->left(), t);
+        if (root->right()) res += root->right()->size() - count_greater_than(root->right(), t);
+        return res;
+    }
+    static bool contains(AVLTreeNodeT *root, const AVLTreeNodeT *t) {
+        if (root == nullptr) return false;
+        root->propagate();
+        if (*t < std::as_const(*root)) return contains(root->left(), t);
+        if (std::as_const(*root) < *t) return contains(root->right(), t);
+        return true;
+    }
+    static std::array<int, 3> count3(AVLTreeNodeT *root, const AVLTreeNodeT *t) {
+        if (root == nullptr) return {0, 0, 0};
+        root->propagate();
+        if (*t < std::as_const(*root)) {
+            auto [a, b, c] = count3(root->left(), t);
+            return {a, b, c + 1 + (root->right() ? root->right()->size() : 0)};
+        }
+        if (std::as_const(*root) < *t) {
+            auto [a, b, c] = count3(root->right(), t);
+            return {a + 1 + (root->left() ? root->left()->size() : 0), b, c};
+        }
+        const int a = count_less_than(root->left(), t);
+        const int c = count_greater_than(root->right(), t);
+        return {a, root->size() - a - c, c};
+    }
+    static std::array<AVLTreeNodeT *, 3> split3(AVLTreeNodeT *root, const AVLTreeNodeT *t) {
+        if (root == nullptr) return {nullptr, nullptr, nullptr};
+        root->propagate();
+        if (*t < std::as_const(*root)) {
+            auto [a, b, c] = split3(root->left(), t);
+            auto r         = root->R;
+            root->L = root->R = nullptr, root->update();
+            return {a, b, (AVLTreeNodeT *)base_join(c, root, r)};
+        }
+        if (std::as_const(*root) < *t) {
+            auto [a, b, c] = split3(root->right(), t);
+            auto l         = root->L;
+            root->L = root->R = nullptr, root->update();
+            return {(AVLTreeNodeT *)base_join(l, root, a), b, c};
+        }
+        auto [a, b] = split_less_than(root->left(), t);
+        auto [c, d] = split_less_equal(root->right(), t);
+        root->L = root->R = nullptr, root->update();
+        return {a, (AVLTreeNodeT *)base_join(b, root, c), d};
+    }
+    static AVLTreeNodeT *predecessor(AVLTreeNodeT *root, const AVLTreeNodeT *t) {
+        AVLTreeNodeT *res = nullptr;
+        while (root) {
+            root->propagate();
+            if (std::as_const(*root) < *t) {
+                res = root, root = root->right();
+            } else {
+                root = root->left();
+            }
+        }
+        return res;
+    }
+    static AVLTreeNodeT *successor(AVLTreeNodeT *root, const AVLTreeNodeT *t) {
+        AVLTreeNodeT *res = nullptr;
+        while (root) {
+            root->propagate();
+            if (*t < std::as_const(*root)) {
+                res = root, root = root->left();
+            } else {
+                root = root->right();
+            }
+        }
+        return res;
+    }
 
     template<typename... Nodes> static AVLTreeNodeT *join(Nodes... root) {
         struct Helper {
@@ -222,6 +366,22 @@ public:
             }(part),
             ...);
         return res;
+    }
+
+    static AVLTreeNodeT *find(AVLTreeNodeT *root, const AVLTreeNodeT *t) {
+        if (root == nullptr) return nullptr;
+        root->propagate();
+        if (std::as_const(*root) < *t) return find(root->right(), t);
+        if (*t < std::as_const(*root)) return find(root->left(), t);
+        return root;
+    }
+
+    AVLTreeNodeT *select(int k) {
+        propagate();
+        const int leftsize = left() ? left()->size() : 0;
+        if (k == leftsize) return (AVLTreeNodeT *)this;
+        if (k < leftsize) return left()->select(k);
+        return right()->select(k - leftsize - 1);
     }
 };
 
