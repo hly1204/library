@@ -262,25 +262,26 @@ data:
     \ right()->Sum;\n        }\n    };\n    int n, q;\n    std::cin >> n >> q;\n \
     \   DynamicSizeNodePool<TreapNode> pool;\n    TreapNode *root = nullptr;\n   \
     \ for (int i = 0; i < n; ++i) {\n        auto node = pool.make();\n        std::cin\
-    \ >> node->Val;\n        root = TreapNode::join(root, node);\n    }\n    for (int\
-    \ i = 0; i < q; ++i) {\n        int cmd;\n        std::cin >> cmd;\n        switch\
-    \ (cmd) {\n        case 0: {\n            int pos;\n            auto node = pool.make();\n\
-    \            std::cin >> pos >> node->Val;\n            auto [R0, R1] = TreapNode::split(root,\
-    \ pos);\n            root          = TreapNode::join(R0, node, R1);\n        \
-    \    break;\n        }\n        case 1: {\n            int pos;\n            std::cin\
-    \ >> pos;\n            auto [R0, R1, R2] = TreapNode::split(root, pos, 1);\n \
-    \           pool.retrieve(R1);\n            root = TreapNode::join(R0, R2);\n\
-    \            break;\n        }\n        case 2: {\n            int l, r;\n   \
-    \         std::cin >> l >> r;\n            auto [R0, R1, R2] = TreapNode::split(root,\
-    \ l, r - l);\n            R1->flip();\n            root = TreapNode::join(R0,\
-    \ R1, R2);\n            break;\n        }\n        case 3: {\n            int\
+    \ >> node->Val;\n        node->update();\n        root = TreapNode::join(root,\
+    \ node);\n    }\n    for (int i = 0; i < q; ++i) {\n        int cmd;\n       \
+    \ std::cin >> cmd;\n        switch (cmd) {\n        case 0: {\n            int\
+    \ pos;\n            auto node = pool.make();\n            std::cin >> pos >> node->Val;\n\
+    \            auto [R0, R1] = TreapNode::split(root, pos);\n            root  \
+    \        = TreapNode::join(R0, node, R1);\n            break;\n        }\n   \
+    \     case 1: {\n            int pos;\n            std::cin >> pos;\n        \
+    \    auto [R0, R1, R2] = TreapNode::split(root, pos, 1);\n            pool.retrieve(R1);\n\
+    \            root = TreapNode::join(R0, R2);\n            break;\n        }\n\
+    \        case 2: {\n            int l, r;\n            std::cin >> l >> r;\n \
+    \           auto [R0, R1, R2] = TreapNode::split(root, l, r - l);\n          \
+    \  R1->flip();\n            root = TreapNode::join(R0, R1, R2);\n            break;\n\
+    \        }\n        case 3: {\n            int l, r;\n            std::cin >>\
+    \ l >> r;\n            auto [R0, R1, R2] = TreapNode::split(root, l, r - l);\n\
+    \            std::cin >> R1->Mul >> R1->Add;\n            root = TreapNode::join(R0,\
+    \ R1, R2);\n            break;\n        }\n        case 4: {\n            int\
     \ l, r;\n            std::cin >> l >> r;\n            auto [R0, R1, R2] = TreapNode::split(root,\
-    \ l, r - l);\n            std::cin >> R1->Mul >> R1->Add;\n            root =\
-    \ TreapNode::join(R0, R1, R2);\n            break;\n        }\n        case 4:\
-    \ {\n            int l, r;\n            std::cin >> l >> r;\n            auto\
-    \ [R0, R1, R2] = TreapNode::split(root, l, r - l);\n            std::cout << R1->Sum\
-    \ << '\\n';\n            root = TreapNode::join(R0, R1, R2);\n            break;\n\
-    \        }\n        default: break;\n        }\n    }\n    return 0;\n}\n"
+    \ l, r - l);\n            std::cout << R1->Sum << '\\n';\n            root = TreapNode::join(R0,\
+    \ R1, R2);\n            break;\n        }\n        default: break;\n        }\n\
+    \    }\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum\"\
     \n\n#include \"modint.hpp\"\n#include \"node_pool.hpp\"\n#include \"treap_node_base.hpp\"\
     \n#include <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
@@ -297,11 +298,11 @@ data:
     \ += left()->Sum;\n            if (right()) Sum += right()->Sum;\n        }\n\
     \    };\n    int n, q;\n    std::cin >> n >> q;\n    DynamicSizeNodePool<TreapNode>\
     \ pool;\n    TreapNode *root = nullptr;\n    for (int i = 0; i < n; ++i) {\n \
-    \       auto node = pool.make();\n        std::cin >> node->Val;\n        root\
-    \ = TreapNode::join(root, node);\n    }\n    for (int i = 0; i < q; ++i) {\n \
-    \       int cmd;\n        std::cin >> cmd;\n        switch (cmd) {\n        case\
-    \ 0: {\n            int pos;\n            auto node = pool.make();\n         \
-    \   std::cin >> pos >> node->Val;\n            auto [R0, R1] = TreapNode::split(root,\
+    \       auto node = pool.make();\n        std::cin >> node->Val;\n        node->update();\n\
+    \        root = TreapNode::join(root, node);\n    }\n    for (int i = 0; i < q;\
+    \ ++i) {\n        int cmd;\n        std::cin >> cmd;\n        switch (cmd) {\n\
+    \        case 0: {\n            int pos;\n            auto node = pool.make();\n\
+    \            std::cin >> pos >> node->Val;\n            auto [R0, R1] = TreapNode::split(root,\
     \ pos);\n            root          = TreapNode::join(R0, node, R1);\n        \
     \    break;\n        }\n        case 1: {\n            int pos;\n            std::cin\
     \ >> pos;\n            auto [R0, R1, R2] = TreapNode::split(root, pos, 1);\n \
@@ -325,7 +326,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2026-01-25 23:04:59+08:00'
+  timestamp: '2026-01-27 23:08:23+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp

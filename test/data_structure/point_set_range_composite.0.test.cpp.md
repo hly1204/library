@@ -259,15 +259,16 @@ data:
     \    int n, q;\n    std::cin >> n >> q;\n    FixedSizeNodePool<TreapNode> pool(n);\n\
     \    auto [node, id] = pool.get_func();\n    TreapNode *root = nullptr;\n    for\
     \ (int i = 0; i < n; ++i) {\n        std::cin >> node(i)->Val[1] >> node(i)->Val[0];\n\
-    \        root = TreapNode::join(root, node(i));\n    }\n    while (q--) {\n  \
-    \      int cmd;\n        std::cin >> cmd;\n        if (cmd == 0) {\n         \
-    \   int p;\n            std::cin >> p;\n            auto [R0, R1, R2] = TreapNode::split(root,\
-    \ p, 1);\n            std::cin >> R1->Val[1] >> R1->Val[0];\n            root\
-    \ = TreapNode::join(R0, R1, R2);\n        } else {\n            int l, r;\n  \
-    \          mint x;\n            std::cin >> l >> r >> x;\n            auto [R0,\
-    \ R1, R2] = TreapNode::split(root, l, r - l);\n            std::cout << TreapNode::composition(R1->Sum,\
-    \ {x, 0}).at(0) << '\\n';\n            root = TreapNode::join(R0, R1, R2);\n \
-    \       }\n    }\n    return 0;\n}\n"
+    \        node(i)->update();\n        root = TreapNode::join(root, node(i));\n\
+    \    }\n    while (q--) {\n        int cmd;\n        std::cin >> cmd;\n      \
+    \  if (cmd == 0) {\n            int p;\n            std::cin >> p;\n         \
+    \   auto [R0, R1, R2] = TreapNode::split(root, p, 1);\n            std::cin >>\
+    \ R1->Val[1] >> R1->Val[0];\n            root = TreapNode::join(R0, R1, R2);\n\
+    \        } else {\n            int l, r;\n            mint x;\n            std::cin\
+    \ >> l >> r >> x;\n            auto [R0, R1, R2] = TreapNode::split(root, l, r\
+    \ - l);\n            std::cout << TreapNode::composition(R1->Sum, {x, 0}).at(0)\
+    \ << '\\n';\n            root = TreapNode::join(R0, R1, R2);\n        }\n    }\n\
+    \    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/point_set_range_composite\"\
     \n\n#include \"modint.hpp\"\n#include \"node_pool.hpp\"\n#include \"treap_node_base.hpp\"\
     \n#include <array>\n#include <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
@@ -281,15 +282,16 @@ data:
     \   };\n    int n, q;\n    std::cin >> n >> q;\n    FixedSizeNodePool<TreapNode>\
     \ pool(n);\n    auto [node, id] = pool.get_func();\n    TreapNode *root = nullptr;\n\
     \    for (int i = 0; i < n; ++i) {\n        std::cin >> node(i)->Val[1] >> node(i)->Val[0];\n\
-    \        root = TreapNode::join(root, node(i));\n    }\n    while (q--) {\n  \
-    \      int cmd;\n        std::cin >> cmd;\n        if (cmd == 0) {\n         \
-    \   int p;\n            std::cin >> p;\n            auto [R0, R1, R2] = TreapNode::split(root,\
-    \ p, 1);\n            std::cin >> R1->Val[1] >> R1->Val[0];\n            root\
-    \ = TreapNode::join(R0, R1, R2);\n        } else {\n            int l, r;\n  \
-    \          mint x;\n            std::cin >> l >> r >> x;\n            auto [R0,\
-    \ R1, R2] = TreapNode::split(root, l, r - l);\n            std::cout << TreapNode::composition(R1->Sum,\
-    \ {x, 0}).at(0) << '\\n';\n            root = TreapNode::join(R0, R1, R2);\n \
-    \       }\n    }\n    return 0;\n}\n"
+    \        node(i)->update();\n        root = TreapNode::join(root, node(i));\n\
+    \    }\n    while (q--) {\n        int cmd;\n        std::cin >> cmd;\n      \
+    \  if (cmd == 0) {\n            int p;\n            std::cin >> p;\n         \
+    \   auto [R0, R1, R2] = TreapNode::split(root, p, 1);\n            std::cin >>\
+    \ R1->Val[1] >> R1->Val[0];\n            root = TreapNode::join(R0, R1, R2);\n\
+    \        } else {\n            int l, r;\n            mint x;\n            std::cin\
+    \ >> l >> r >> x;\n            auto [R0, R1, R2] = TreapNode::split(root, l, r\
+    \ - l);\n            std::cout << TreapNode::composition(R1->Sum, {x, 0}).at(0)\
+    \ << '\\n';\n            root = TreapNode::join(R0, R1, R2);\n        }\n    }\n\
+    \    return 0;\n}\n"
   dependsOn:
   - modint.hpp
   - node_pool.hpp
@@ -298,7 +300,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/point_set_range_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2026-01-25 23:04:59+08:00'
+  timestamp: '2026-01-27 23:08:23+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/point_set_range_composite.0.test.cpp
