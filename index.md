@@ -3,7 +3,7 @@ data:
   libraryCategories:
   - name: .
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: avl_tree_node_base.hpp
       title: avl_tree_node_base.hpp
     - icon: ':heavy_check_mark:'
@@ -90,7 +90,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: middle_product.hpp
       title: Middle Product
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: modint.hpp
       title: modint.hpp
     - icon: ':heavy_check_mark:'
@@ -102,7 +102,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: mps_basic.hpp
       title: Multivariate Power Series
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: node_pool.hpp
       title: node_pool.hpp
     - icon: ':heavy_check_mark:'
@@ -225,7 +225,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
       title: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/data_structure/dynamic_sequence_range_affine_range_sum.1.test.cpp
       title: test/data_structure/dynamic_sequence_range_affine_range_sum.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -237,7 +237,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/point_set_range_composite.0.test.cpp
       title: test/data_structure/point_set_range_composite.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/data_structure/point_set_range_composite.1.test.cpp
       title: test/data_structure/point_set_range_composite.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -252,7 +252,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/range_affine_range_sum.0.test.cpp
       title: test/data_structure/range_affine_range_sum.0.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/data_structure/range_affine_range_sum.1.test.cpp
       title: test/data_structure/range_affine_range_sum.1.test.cpp
     - icon: ':heavy_check_mark:'

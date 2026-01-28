@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: node_pool.hpp
     title: node_pool.hpp
   - icon: ':heavy_check_mark:'
@@ -265,8 +265,9 @@ data:
     \ node(i));\n    }\n    while (q--) {\n        int cmd, l, r;\n        std::cin\
     \ >> cmd >> l >> r;\n        auto [R0, R1, R2] = TreapNode::split(root, l, r -\
     \ l);\n        if (cmd == 0) {\n            std::cin >> R1->Mul >> R1->Add;\n\
-    \        } else {\n            std::cout << R1->Sum << '\\n';\n        }\n   \
-    \     root = TreapNode::join(R0, R1, R2);\n    }\n    return 0;\n}\n"
+    \            R1->propagate();\n            R1->update();\n        } else {\n \
+    \           std::cout << R1->Sum << '\\n';\n        }\n        root = TreapNode::join(R0,\
+    \ R1, R2);\n    }\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/range_affine_range_sum\"\
     \n\n#include \"modint.hpp\"\n#include \"node_pool.hpp\"\n#include \"treap_node_base.hpp\"\
     \n#include <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
@@ -287,9 +288,10 @@ data:
     \  node(i)->update();\n        root = TreapNode::join(root, node(i));\n    }\n\
     \    while (q--) {\n        int cmd, l, r;\n        std::cin >> cmd >> l >> r;\n\
     \        auto [R0, R1, R2] = TreapNode::split(root, l, r - l);\n        if (cmd\
-    \ == 0) {\n            std::cin >> R1->Mul >> R1->Add;\n        } else {\n   \
-    \         std::cout << R1->Sum << '\\n';\n        }\n        root = TreapNode::join(R0,\
-    \ R1, R2);\n    }\n    return 0;\n}\n"
+    \ == 0) {\n            std::cin >> R1->Mul >> R1->Add;\n            R1->propagate();\n\
+    \            R1->update();\n        } else {\n            std::cout << R1->Sum\
+    \ << '\\n';\n        }\n        root = TreapNode::join(R0, R1, R2);\n    }\n \
+    \   return 0;\n}\n"
   dependsOn:
   - modint.hpp
   - node_pool.hpp
@@ -298,7 +300,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2026-01-27 23:08:23+08:00'
+  timestamp: '2026-01-28 18:56:25+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/range_affine_range_sum.0.test.cpp

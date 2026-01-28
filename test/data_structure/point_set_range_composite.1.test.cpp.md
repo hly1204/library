@@ -1,20 +1,20 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: avl_tree_node_base.hpp
     title: avl_tree_node_base.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: node_pool.hpp
     title: node_pool.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/point_set_range_composite
@@ -300,12 +300,12 @@ data:
     \    }\n    while (q--) {\n        int cmd;\n        std::cin >> cmd;\n      \
     \  if (cmd == 0) {\n            int p;\n            std::cin >> p;\n         \
     \   auto [R0, R1, R2] = AVLTreeNode::split(root, p, 1);\n            std::cin\
-    \ >> R1->Val[1] >> R1->Val[0];\n            root = AVLTreeNode::join(R0, R1, R2);\n\
-    \        } else {\n            int l, r;\n            mint x;\n            std::cin\
-    \ >> l >> r >> x;\n            auto [R0, R1, R2] = AVLTreeNode::split(root, l,\
-    \ r - l);\n            std::cout << AVLTreeNode::composition(R1->Sum, {x, 0}).at(0)\
-    \ << '\\n';\n            root = AVLTreeNode::join(R0, R1, R2);\n        }\n  \
-    \  }\n    return 0;\n}\n"
+    \ >> R1->Val[1] >> R1->Val[0];\n            R1->update();\n            root =\
+    \ AVLTreeNode::join(R0, R1, R2);\n        } else {\n            int l, r;\n  \
+    \          mint x;\n            std::cin >> l >> r >> x;\n            auto [R0,\
+    \ R1, R2] = AVLTreeNode::split(root, l, r - l);\n            std::cout << AVLTreeNode::composition(R1->Sum,\
+    \ {x, 0}).at(0) << '\\n';\n            root = AVLTreeNode::join(R0, R1, R2);\n\
+    \        }\n    }\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/point_set_range_composite\"\
     \n\n#include \"avl_tree_node_base.hpp\"\n#include \"modint.hpp\"\n#include \"\
     node_pool.hpp\"\n#include <array>\n#include <iostream>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
@@ -323,12 +323,12 @@ data:
     \ node(i));\n    }\n    while (q--) {\n        int cmd;\n        std::cin >> cmd;\n\
     \        if (cmd == 0) {\n            int p;\n            std::cin >> p;\n   \
     \         auto [R0, R1, R2] = AVLTreeNode::split(root, p, 1);\n            std::cin\
-    \ >> R1->Val[1] >> R1->Val[0];\n            root = AVLTreeNode::join(R0, R1, R2);\n\
-    \        } else {\n            int l, r;\n            mint x;\n            std::cin\
-    \ >> l >> r >> x;\n            auto [R0, R1, R2] = AVLTreeNode::split(root, l,\
-    \ r - l);\n            std::cout << AVLTreeNode::composition(R1->Sum, {x, 0}).at(0)\
-    \ << '\\n';\n            root = AVLTreeNode::join(R0, R1, R2);\n        }\n  \
-    \  }\n    return 0;\n}\n"
+    \ >> R1->Val[1] >> R1->Val[0];\n            R1->update();\n            root =\
+    \ AVLTreeNode::join(R0, R1, R2);\n        } else {\n            int l, r;\n  \
+    \          mint x;\n            std::cin >> l >> r >> x;\n            auto [R0,\
+    \ R1, R2] = AVLTreeNode::split(root, l, r - l);\n            std::cout << AVLTreeNode::composition(R1->Sum,\
+    \ {x, 0}).at(0) << '\\n';\n            root = AVLTreeNode::join(R0, R1, R2);\n\
+    \        }\n    }\n    return 0;\n}\n"
   dependsOn:
   - avl_tree_node_base.hpp
   - modint.hpp
@@ -336,8 +336,8 @@ data:
   isVerificationFile: true
   path: test/data_structure/point_set_range_composite.1.test.cpp
   requiredBy: []
-  timestamp: '2026-01-27 23:12:45+08:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2026-01-28 18:56:25+08:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/point_set_range_composite.1.test.cpp
 layout: document

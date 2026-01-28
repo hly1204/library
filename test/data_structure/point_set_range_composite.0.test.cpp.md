@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: node_pool.hpp
     title: node_pool.hpp
   - icon: ':heavy_check_mark:'
@@ -263,10 +263,10 @@ data:
     \    }\n    while (q--) {\n        int cmd;\n        std::cin >> cmd;\n      \
     \  if (cmd == 0) {\n            int p;\n            std::cin >> p;\n         \
     \   auto [R0, R1, R2] = TreapNode::split(root, p, 1);\n            std::cin >>\
-    \ R1->Val[1] >> R1->Val[0];\n            root = TreapNode::join(R0, R1, R2);\n\
-    \        } else {\n            int l, r;\n            mint x;\n            std::cin\
-    \ >> l >> r >> x;\n            auto [R0, R1, R2] = TreapNode::split(root, l, r\
-    \ - l);\n            std::cout << TreapNode::composition(R1->Sum, {x, 0}).at(0)\
+    \ R1->Val[1] >> R1->Val[0];\n            R1->update();\n            root = TreapNode::join(R0,\
+    \ R1, R2);\n        } else {\n            int l, r;\n            mint x;\n   \
+    \         std::cin >> l >> r >> x;\n            auto [R0, R1, R2] = TreapNode::split(root,\
+    \ l, r - l);\n            std::cout << TreapNode::composition(R1->Sum, {x, 0}).at(0)\
     \ << '\\n';\n            root = TreapNode::join(R0, R1, R2);\n        }\n    }\n\
     \    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/point_set_range_composite\"\
@@ -286,10 +286,10 @@ data:
     \    }\n    while (q--) {\n        int cmd;\n        std::cin >> cmd;\n      \
     \  if (cmd == 0) {\n            int p;\n            std::cin >> p;\n         \
     \   auto [R0, R1, R2] = TreapNode::split(root, p, 1);\n            std::cin >>\
-    \ R1->Val[1] >> R1->Val[0];\n            root = TreapNode::join(R0, R1, R2);\n\
-    \        } else {\n            int l, r;\n            mint x;\n            std::cin\
-    \ >> l >> r >> x;\n            auto [R0, R1, R2] = TreapNode::split(root, l, r\
-    \ - l);\n            std::cout << TreapNode::composition(R1->Sum, {x, 0}).at(0)\
+    \ R1->Val[1] >> R1->Val[0];\n            R1->update();\n            root = TreapNode::join(R0,\
+    \ R1, R2);\n        } else {\n            int l, r;\n            mint x;\n   \
+    \         std::cin >> l >> r >> x;\n            auto [R0, R1, R2] = TreapNode::split(root,\
+    \ l, r - l);\n            std::cout << TreapNode::composition(R1->Sum, {x, 0}).at(0)\
     \ << '\\n';\n            root = TreapNode::join(R0, R1, R2);\n        }\n    }\n\
     \    return 0;\n}\n"
   dependsOn:
@@ -300,7 +300,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/point_set_range_composite.0.test.cpp
   requiredBy: []
-  timestamp: '2026-01-27 23:08:23+08:00'
+  timestamp: '2026-01-28 18:56:25+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/point_set_range_composite.0.test.cpp

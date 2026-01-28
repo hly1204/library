@@ -13,7 +13,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: mat_sparse.hpp
     title: mat_sparse.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
   - icon: ':heavy_check_mark:'

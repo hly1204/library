@@ -13,7 +13,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: middle_product.hpp
     title: Middle Product
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
   - icon: ':heavy_check_mark:'

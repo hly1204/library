@@ -1,10 +1,10 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: node_pool.hpp
     title: node_pool.hpp
   - icon: ':heavy_check_mark:'
@@ -266,19 +266,20 @@ data:
     \ node);\n    }\n    for (int i = 0; i < q; ++i) {\n        int cmd;\n       \
     \ std::cin >> cmd;\n        switch (cmd) {\n        case 0: {\n            int\
     \ pos;\n            auto node = pool.make();\n            std::cin >> pos >> node->Val;\n\
-    \            auto [R0, R1] = TreapNode::split(root, pos);\n            root  \
-    \        = TreapNode::join(R0, node, R1);\n            break;\n        }\n   \
-    \     case 1: {\n            int pos;\n            std::cin >> pos;\n        \
-    \    auto [R0, R1, R2] = TreapNode::split(root, pos, 1);\n            pool.retrieve(R1);\n\
-    \            root = TreapNode::join(R0, R2);\n            break;\n        }\n\
-    \        case 2: {\n            int l, r;\n            std::cin >> l >> r;\n \
-    \           auto [R0, R1, R2] = TreapNode::split(root, l, r - l);\n          \
-    \  R1->flip();\n            root = TreapNode::join(R0, R1, R2);\n            break;\n\
-    \        }\n        case 3: {\n            int l, r;\n            std::cin >>\
-    \ l >> r;\n            auto [R0, R1, R2] = TreapNode::split(root, l, r - l);\n\
-    \            std::cin >> R1->Mul >> R1->Add;\n            root = TreapNode::join(R0,\
-    \ R1, R2);\n            break;\n        }\n        case 4: {\n            int\
+    \            node->update();\n            auto [R0, R1] = TreapNode::split(root,\
+    \ pos);\n            root          = TreapNode::join(R0, node, R1);\n        \
+    \    break;\n        }\n        case 1: {\n            int pos;\n            std::cin\
+    \ >> pos;\n            auto [R0, R1, R2] = TreapNode::split(root, pos, 1);\n \
+    \           pool.retrieve(R1);\n            root = TreapNode::join(R0, R2);\n\
+    \            break;\n        }\n        case 2: {\n            int l, r;\n   \
+    \         std::cin >> l >> r;\n            auto [R0, R1, R2] = TreapNode::split(root,\
+    \ l, r - l);\n            R1->flip();\n            root = TreapNode::join(R0,\
+    \ R1, R2);\n            break;\n        }\n        case 3: {\n            int\
     \ l, r;\n            std::cin >> l >> r;\n            auto [R0, R1, R2] = TreapNode::split(root,\
+    \ l, r - l);\n            std::cin >> R1->Mul >> R1->Add;\n            R1->propagate();\n\
+    \            R1->update();\n            root = TreapNode::join(R0, R1, R2);\n\
+    \            break;\n        }\n        case 4: {\n            int l, r;\n   \
+    \         std::cin >> l >> r;\n            auto [R0, R1, R2] = TreapNode::split(root,\
     \ l, r - l);\n            std::cout << R1->Sum << '\\n';\n            root = TreapNode::join(R0,\
     \ R1, R2);\n            break;\n        }\n        default: break;\n        }\n\
     \    }\n    return 0;\n}\n"
@@ -302,22 +303,24 @@ data:
     \        root = TreapNode::join(root, node);\n    }\n    for (int i = 0; i < q;\
     \ ++i) {\n        int cmd;\n        std::cin >> cmd;\n        switch (cmd) {\n\
     \        case 0: {\n            int pos;\n            auto node = pool.make();\n\
-    \            std::cin >> pos >> node->Val;\n            auto [R0, R1] = TreapNode::split(root,\
-    \ pos);\n            root          = TreapNode::join(R0, node, R1);\n        \
-    \    break;\n        }\n        case 1: {\n            int pos;\n            std::cin\
-    \ >> pos;\n            auto [R0, R1, R2] = TreapNode::split(root, pos, 1);\n \
-    \           pool.retrieve(R1);\n            root = TreapNode::join(R0, R2);\n\
-    \            break;\n        }\n        case 2: {\n            int l, r;\n   \
-    \         std::cin >> l >> r;\n            auto [R0, R1, R2] = TreapNode::split(root,\
-    \ l, r - l);\n            R1->flip();\n            root = TreapNode::join(R0,\
-    \ R1, R2);\n            break;\n        }\n        case 3: {\n            int\
-    \ l, r;\n            std::cin >> l >> r;\n            auto [R0, R1, R2] = TreapNode::split(root,\
-    \ l, r - l);\n            std::cin >> R1->Mul >> R1->Add;\n            root =\
-    \ TreapNode::join(R0, R1, R2);\n            break;\n        }\n        case 4:\
-    \ {\n            int l, r;\n            std::cin >> l >> r;\n            auto\
-    \ [R0, R1, R2] = TreapNode::split(root, l, r - l);\n            std::cout << R1->Sum\
-    \ << '\\n';\n            root = TreapNode::join(R0, R1, R2);\n            break;\n\
-    \        }\n        default: break;\n        }\n    }\n    return 0;\n}\n"
+    \            std::cin >> pos >> node->Val;\n            node->update();\n    \
+    \        auto [R0, R1] = TreapNode::split(root, pos);\n            root      \
+    \    = TreapNode::join(R0, node, R1);\n            break;\n        }\n       \
+    \ case 1: {\n            int pos;\n            std::cin >> pos;\n            auto\
+    \ [R0, R1, R2] = TreapNode::split(root, pos, 1);\n            pool.retrieve(R1);\n\
+    \            root = TreapNode::join(R0, R2);\n            break;\n        }\n\
+    \        case 2: {\n            int l, r;\n            std::cin >> l >> r;\n \
+    \           auto [R0, R1, R2] = TreapNode::split(root, l, r - l);\n          \
+    \  R1->flip();\n            root = TreapNode::join(R0, R1, R2);\n            break;\n\
+    \        }\n        case 3: {\n            int l, r;\n            std::cin >>\
+    \ l >> r;\n            auto [R0, R1, R2] = TreapNode::split(root, l, r - l);\n\
+    \            std::cin >> R1->Mul >> R1->Add;\n            R1->propagate();\n \
+    \           R1->update();\n            root = TreapNode::join(R0, R1, R2);\n \
+    \           break;\n        }\n        case 4: {\n            int l, r;\n    \
+    \        std::cin >> l >> r;\n            auto [R0, R1, R2] = TreapNode::split(root,\
+    \ l, r - l);\n            std::cout << R1->Sum << '\\n';\n            root = TreapNode::join(R0,\
+    \ R1, R2);\n            break;\n        }\n        default: break;\n        }\n\
+    \    }\n    return 0;\n}\n"
   dependsOn:
   - modint.hpp
   - node_pool.hpp
@@ -326,7 +329,7 @@ data:
   isVerificationFile: true
   path: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp
   requiredBy: []
-  timestamp: '2026-01-27 23:08:23+08:00'
+  timestamp: '2026-01-28 18:56:25+08:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/data_structure/dynamic_sequence_range_affine_range_sum.0.test.cpp

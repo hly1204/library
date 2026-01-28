@@ -10,7 +10,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: fps_as_operator.hpp
     title: FPS as Linear Operator
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: modint.hpp
     title: modint.hpp
   _extendedRequiredBy: []
