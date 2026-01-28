@@ -50,6 +50,7 @@ int main() {
             int pos;
             auto node = pool.make();
             std::cin >> pos >> node->Val;
+            node->update();
             auto [R0, R1] = TreapNode::split(root, pos);
             root          = TreapNode::join(R0, node, R1);
             break;
@@ -75,6 +76,8 @@ int main() {
             std::cin >> l >> r;
             auto [R0, R1, R2] = TreapNode::split(root, l, r - l);
             std::cin >> R1->Mul >> R1->Add;
+            R1->propagate();
+            R1->update();
             root = TreapNode::join(R0, R1, R2);
             break;
         }

@@ -48,6 +48,8 @@ int main() {
         auto [R0, R1, R2] = AVLTreeNode::split(root, l, r - l);
         if (cmd == 0) {
             std::cin >> R1->Mul >> R1->Add;
+            R1->propagate();
+            R1->update();
         } else {
             std::cout << R1->Sum << '\n';
         }

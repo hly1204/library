@@ -40,6 +40,7 @@ int main() {
             std::cin >> p;
             auto [R0, R1, R2] = TreapNode::split(root, p, 1);
             std::cin >> R1->Val[1] >> R1->Val[0];
+            R1->update();
             root = TreapNode::join(R0, R1, R2);
         } else {
             int l, r;
