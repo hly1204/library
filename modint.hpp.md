@@ -91,6 +91,9 @@ data:
     path: test/formal_power_series/inv_of_formal_power_series.1.test.cpp
     title: test/formal_power_series/inv_of_formal_power_series.1.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
+    title: test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/inv_of_polynomials.0.test.cpp
     title: test/formal_power_series/inv_of_polynomials.0.test.cpp
   - icon: ':heavy_check_mark:'
@@ -307,6 +310,7 @@ data:
   - test/formal_power_series/product_of_polynomial_sequence.0.test.cpp
   - test/formal_power_series/compositional_inverse_of_formal_power_series_large.0.test.cpp
   - test/formal_power_series/log_of_formal_power_series.0.test.cpp
+  - test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
   - test/formal_power_series/polynomial_taylor_shift.0.test.cpp
   - test/formal_power_series/sqrt_of_formal_power_series.0.test.cpp
   - test/formal_power_series/inv_of_formal_power_series.0.test.cpp

@@ -10,43 +10,87 @@ data:
   - icon: ':heavy_check_mark:'
     path: md_conv.hpp
     title: Multidimensional Convolution (Truncated)
+  - icon: ':heavy_check_mark:'
+    path: modint.hpp
+    title: modint.hpp
+  - icon: ':heavy_check_mark:'
+    path: mps_basic.hpp
+    title: Multivariate Power Series
   _extendedRequiredBy: []
-  _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
-    title: test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/formal_power_series/multivariate_power_series.0.test.cpp
-    title: test/formal_power_series/multivariate_power_series.0.test.cpp
+  _extendedVerifiedWith: []
   _isVerificationFailed: false
-  _pathExtension: hpp
+  _pathExtension: cpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
+    '*NOT_SPECIAL_COMMENTS*': ''
+    PROBLEM: https://judge.yosupo.jp/problem/inv_of_formal_power_series_2d
     links:
-    - https://www.luogu.com/article/wje8kchr
-  bundledCode: "#line 2 \"mps_basic.hpp\"\n\n#line 2 \"binomial.hpp\"\n\n#include\
-    \ <algorithm>\n#include <vector>\n\ntemplate<typename Tp> class Binomial {\n \
-    \   std::vector<Tp> factorial_, invfactorial_;\n\n    Binomial() : factorial_{Tp(1)},\
-    \ invfactorial_{Tp(1)} {}\n\n    void preprocess(int n) {\n        if (const int\
-    \ nn = factorial_.size(); nn < n) {\n            int k = nn;\n            while\
-    \ (k < n) k *= 2;\n            k = std::min<long long>(k, Tp::mod());\n      \
-    \      factorial_.resize(k);\n            invfactorial_.resize(k);\n         \
-    \   for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] * i;\n    \
-    \        invfactorial_.back() = factorial_.back().inv();\n            for (int\
-    \ i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] * (i + 1);\n\
-    \        }\n    }\n\npublic:\n    static const Binomial &get(int n) {\n      \
-    \  static Binomial bin;\n        bin.preprocess(n);\n        return bin;\n   \
-    \ }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp() : factorial_[n]\
-    \ * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int n) const {\
-    \ return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int n) const\
-    \ { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return invfactorial_[n];\
-    \ }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include <cassert>\n#include\
-    \ <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate<typename Tp>\
-    \ class FftInfo {\n    static Tp least_quadratic_nonresidue() {\n        for (int\
-    \ i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return Tp(i);\n\
-    \    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const Tp invzeta_;\n\
-    \    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp> root_;\n\
-    \    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
+    - https://judge.yosupo.jp/problem/inv_of_formal_power_series_2d
+  bundledCode: "#line 1 \"test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series_2d\"\
+    \n\n#line 2 \"modint.hpp\"\n\n#include <iostream>\n#include <type_traits>\n\n\
+    // clang-format off\ntemplate<unsigned Mod> class ModInt {\n    static_assert((Mod\
+    \ >> 31) == 0, \"`Mod` must less than 2^(31)\");\n    template<typename Int>\n\
+    \    static std::enable_if_t<std::is_integral_v<Int>, unsigned> safe_mod(Int v)\
+    \ { using D = std::common_type_t<Int, unsigned>; return (v %= (int)Mod) < 0 ?\
+    \ (D)(v + (int)Mod) : (D)v; }\n    struct PrivateConstructor {} static inline\
+    \ private_constructor{};\n    ModInt(PrivateConstructor, unsigned v) : v_(v) {}\n\
+    \    unsigned v_;\n\npublic:\n    static unsigned mod() { return Mod; }\n    static\
+    \ ModInt from_raw(unsigned v) { return ModInt(private_constructor, v); }\n   \
+    \ static ModInt zero() { return from_raw(0); }\n    static ModInt one() { return\
+    \ from_raw(1); }\n    bool is_zero() const { return v_ == 0; }\n    bool is_one()\
+    \ const { return v_ == 1; }\n    ModInt() : v_() {}\n    template<typename Int,\
+    \ typename std::enable_if_t<std::is_signed_v<Int>, int> = 0> ModInt(Int v) : v_(safe_mod(v))\
+    \ {}\n    template<typename Int, typename std::enable_if_t<std::is_unsigned_v<Int>,\
+    \ int> = 0> ModInt(Int v) : v_(v % Mod) {}\n    unsigned val() const { return\
+    \ v_; }\n    ModInt operator-() const { return from_raw(v_ == 0 ? v_ : Mod - v_);\
+    \ }\n    ModInt pow(long long e) const { if (e < 0) return inv().pow(-e); for\
+    \ (ModInt x(*this), res(from_raw(1));; x *= x) { if (e & 1) res *= x; if ((e >>=\
+    \ 1) == 0) return res; }}\n    ModInt inv() const { int x1 = 1, x3 = 0, a = val(),\
+    \ b = Mod; while (b) { const int q = a / b, x1_old = x1, a_old = a; x1 = x3, x3\
+    \ = x1_old - x3 * q, a = b, b = a_old - b * q; } return from_raw(x1 < 0 ? x1 +\
+    \ (int)Mod : x1); }\n    template<bool Odd = (Mod & 1)> std::enable_if_t<Odd,\
+    \ ModInt> div_by_2() const { if (v_ & 1) return from_raw((v_ + Mod) >> 1); return\
+    \ from_raw(v_ >> 1); }\n    ModInt &operator+=(const ModInt &a) { if ((v_ += a.v_)\
+    \ >= Mod) v_ -= Mod; return *this; }\n    ModInt &operator-=(const ModInt &a)\
+    \ { if ((v_ += Mod - a.v_) >= Mod) v_ -= Mod; return *this; }\n    ModInt &operator*=(const\
+    \ ModInt &a) { v_ = (unsigned long long)v_ * a.v_ % Mod; return *this; }\n   \
+    \ ModInt &operator/=(const ModInt &a) { return *this *= a.inv(); }\n    ModInt\
+    \ &operator++() { return *this += one(); }\n    ModInt operator++(int) { ModInt\
+    \ o(*this); *this += one(); return o; }\n    ModInt &operator--() { return *this\
+    \ -= one(); }\n    ModInt operator--(int) { ModInt o(*this); *this -= one(); return\
+    \ o; }\n    friend ModInt operator+(const ModInt &a, const ModInt &b) { return\
+    \ ModInt(a) += b; }\n    friend ModInt operator-(const ModInt &a, const ModInt\
+    \ &b) { return ModInt(a) -= b; }\n    friend ModInt operator*(const ModInt &a,\
+    \ const ModInt &b) { return ModInt(a) *= b; }\n    friend ModInt operator/(const\
+    \ ModInt &a, const ModInt &b) { return ModInt(a) /= b; }\n    friend bool operator==(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ == b.v_; }\n    friend bool operator!=(const\
+    \ ModInt &a, const ModInt &b) { return a.v_ != b.v_; }\n    friend std::istream\
+    \ &operator>>(std::istream &a, ModInt &b) { int v; a >> v; b.v_ = safe_mod(v);\
+    \ return a; }\n    friend std::ostream &operator<<(std::ostream &a, const ModInt\
+    \ &b) { return a << b.val(); }\n};\n// clang-format on\n#line 2 \"mps_basic.hpp\"\
+    \n\n#line 2 \"binomial.hpp\"\n\n#include <algorithm>\n#include <vector>\n\ntemplate<typename\
+    \ Tp> class Binomial {\n    std::vector<Tp> factorial_, invfactorial_;\n\n   \
+    \ Binomial() : factorial_{Tp(1)}, invfactorial_{Tp(1)} {}\n\n    void preprocess(int\
+    \ n) {\n        if (const int nn = factorial_.size(); nn < n) {\n            int\
+    \ k = nn;\n            while (k < n) k *= 2;\n            k = std::min<long long>(k,\
+    \ Tp::mod());\n            factorial_.resize(k);\n            invfactorial_.resize(k);\n\
+    \            for (int i = nn; i < k; ++i) factorial_[i] = factorial_[i - 1] *\
+    \ i;\n            invfactorial_.back() = factorial_.back().inv();\n          \
+    \  for (int i = k - 2; i >= nn; --i) invfactorial_[i] = invfactorial_[i + 1] *\
+    \ (i + 1);\n        }\n    }\n\npublic:\n    static const Binomial &get(int n)\
+    \ {\n        static Binomial bin;\n        bin.preprocess(n);\n        return\
+    \ bin;\n    }\n\n    Tp binom(int n, int m) const {\n        return n < m ? Tp()\
+    \ : factorial_[n] * invfactorial_[m] * invfactorial_[n - m];\n    }\n    Tp inv(int\
+    \ n) const { return factorial_[n - 1] * invfactorial_[n]; }\n    Tp factorial(int\
+    \ n) const { return factorial_[n]; }\n    Tp inv_factorial(int n) const { return\
+    \ invfactorial_[n]; }\n};\n#line 2 \"fft.hpp\"\n\n#line 4 \"fft.hpp\"\n#include\
+    \ <cassert>\n#include <iterator>\n#include <memory>\n#line 8 \"fft.hpp\"\n\ntemplate<typename\
+    \ Tp> class FftInfo {\n    static Tp least_quadratic_nonresidue() {\n        for\
+    \ (int i = 2;; ++i)\n            if (Tp(i).pow((Tp::mod() - 1) / 2) == -1) return\
+    \ Tp(i);\n    }\n\n    const int ordlog2_;\n    const Tp zeta_;\n    const Tp\
+    \ invzeta_;\n    const Tp imag_;\n    const Tp invimag_;\n\n    mutable std::vector<Tp>\
+    \ root_;\n    mutable std::vector<Tp> invroot_;\n\n    FftInfo()\n        : ordlog2_(__builtin_ctzll(Tp::mod()\
     \ - 1)),\n          zeta_(least_quadratic_nonresidue().pow((Tp::mod() - 1) >>\
     \ ordlog2_)),\n          invzeta_(zeta_.inv()), imag_(zeta_.pow(1LL << (ordlog2_\
     \ - 2))), invimag_(-imag_),\n          root_{Tp(1), imag_}, invroot_{Tp(1), invimag_}\
@@ -258,102 +302,40 @@ data:
     \ > 0);\n    std::vector<Tp> res(info.len());\n    res[0] = 1;\n    for (;;) {\n\
     \        if (e & 1) res = multidimensional_convolution(info, res, a);\n      \
     \  if ((e >>= 1) == 0) return res;\n        a = multidimensional_convolution(info,\
-    \ a, a);\n    }\n}\n"
-  code: "#pragma once\n\n#include \"binomial.hpp\"\n#include \"fft.hpp\"\n#include\
-    \ \"md_conv.hpp\"\n#include <algorithm>\n#include <cassert>\n#include <sstream>\n\
-    #include <string>\n#include <vector>\n\n// Multivariate Power Series [inv, exp,\
-    \ log, pow]\n// Store MPS A(x0, x1, ..., x(d-1)) with A(x, x1^N0, ...) in a 1-dim\
-    \ array\n// using Kronecker substitution\n// TODO: opt\n\ntemplate<typename Tp>\n\
-    inline std::string to_string(const MDConvInfo &info, const std::vector<Tp> &a)\
-    \ {\n    assert((int)a.size() == info.len());\n    std::stringstream ss;\n   \
-    \ ss << '[';\n    const auto degree_bound = info.degree_bound();\n    std::vector<int>\
-    \ deg(info.dim());\n    for (int i = 0; i < (int)a.size(); ++i) {\n        if\
-    \ (i) ss << \" + \";\n        ss << a[i];\n        for (int j = 0; j < (int)deg.size();\
-    \ ++j) ss << \"*x\" << j << \"^(\" << deg[j] << ')';\n        for (int j = 0;\
-    \ j < (int)deg.size(); ++j) {\n            if (++deg[j] < degree_bound[j]) break;\n\
-    \            deg[j] = 0;\n        }\n    }\n    ss << ']';\n    return ss.str();\n\
-    }\n\ntemplate<typename Tp>\ninline std::vector<Tp> mps_inv(const MDConvInfo &info,\
-    \ const std::vector<Tp> &a) {\n    assert((int)a.size() == info.len());\n    assert(a[0]\
-    \ != 0);\n    const auto bound = info.degree_bound();\n    std::vector<Tp> res(info.len());\n\
-    \    res[0] = a[0].inv();\n    std::vector<int> d(info.dim());\n    for (int i\
-    \ = 0, pp = 1; i < (int)bound.size(); pp *= bound[i++]) {\n        for (d[i] =\
-    \ 1; d[i] < bound[i]; d[i] = std::min(d[i] * 2, bound[i])) {\n            auto\
-    \ nextd     = std::vector(d.begin(), d.begin() + (i + 1));\n            nextd[i]\
-    \       = std::min(d[i] * 2, bound[i]);\n            const int len  = fft_len(pp\
-    \ * nextd[i]);\n            const auto chi = MDConvInfo(nextd).chi();\n      \
-    \      std::vector shopA(i + 1, std::vector<Tp>(len));\n            std::vector\
-    \ shopB(i + 1, std::vector<Tp>(len));\n            for (int j = 0; j < pp * nextd[i];\
-    \ ++j) shopA[chi[j]][j] = a[j];\n            for (int j = 0; j < pp * d[i]; ++j)\
-    \ shopB[chi[j]][j] = res[j];\n            for (int j = 0; j <= i; ++j) fft(shopA[j]),\
-    \ fft(shopB[j]);\n            shopA = detail::multidimensional_hadamard(shopA,\
-    \ shopB, i + 1, len);\n            for (int j = 0; j <= i; ++j) inv_fft(shopA[j]);\n\
-    \            {\n                std::vector<Tp> shopC(pp * (nextd[i] - d[i]));\n\
-    \                for (int j = pp * d[i]; j < pp * nextd[i]; ++j)\n           \
-    \         shopC[j - pp * d[i]] = shopA[chi[j]][j];\n                for (int j\
-    \ = 0; j <= i; ++j) std::fill(shopA[j].begin(), shopA[j].end(), Tp(0));\n    \
-    \            for (int j = pp * d[i]; j < pp * nextd[i]; ++j)\n               \
-    \     shopA[chi[j]][j] = shopC[j - pp * d[i]];\n            }\n            for\
-    \ (int j = 0; j <= i; ++j) fft(shopA[j]);\n            shopA = detail::multidimensional_hadamard(shopA,\
-    \ shopB, i + 1, len);\n            for (int j = 0; j <= i; ++j) inv_fft(shopA[j]);\n\
-    \            for (int j = pp * d[i]; j < pp * nextd[i]; ++j) res[j] = -shopA[chi[j]][j];\n\
-    \        }\n    }\n    return res;\n}\n\n// see:\n// [1]: Elegia. Hello, multivariate\
-    \ multiplication.\n//      https://www.luogu.com/article/wje8kchr\ntemplate<typename\
-    \ Tp> inline std::vector<Tp> mps_deriv(std::vector<Tp> a) {\n    for (int i =\
-    \ 0; i < (int)a.size(); ++i) a[i] *= i;\n    return a;\n}\n\ntemplate<typename\
-    \ Tp> inline std::vector<Tp> mps_integr(std::vector<Tp> a, Tp c = {}) {\n    auto\
-    \ &&bin = Binomial<Tp>::get(a.size());\n    a[0]       = c;\n    for (int i =\
-    \ 1; i < (int)a.size(); ++i) a[i] *= bin.inv(i);\n    return a;\n}\n\ntemplate<typename\
-    \ Tp>\ninline std::vector<Tp> mps_log(const MDConvInfo &info, const std::vector<Tp>\
-    \ &a) {\n    assert((int)a.size() == info.len());\n    assert(a[0] == 1);\n  \
-    \  return mps_integr(multidimensional_convolution(info, mps_deriv(a), mps_inv(info,\
-    \ a)));\n}\n\ntemplate<typename Tp>\ninline std::vector<Tp> mps_exp(const MDConvInfo\
-    \ &info, const std::vector<Tp> &a) {\n    assert((int)a.size() == info.len());\n\
-    \    assert(a[0] == 0);\n    const auto bound = info.degree_bound();\n    std::vector<Tp>\
-    \ res(info.len());\n    res[0] = 1;\n    std::vector<int> d(info.dim());\n   \
-    \ for (int i = 0, pp = 1; i < (int)bound.size(); pp *= bound[i++]) {\n       \
-    \ for (d[i] = 1; d[i] < bound[i]; d[i] = std::min(d[i] * 2, bound[i])) {\n   \
-    \         auto nextd = std::vector(d.begin(), d.begin() + (i + 1));\n        \
-    \    nextd[i]   = std::min(d[i] * 2, bound[i]);\n            const MDConvInfo\
-    \ ainfo(nextd);\n            auto shopA = mps_log(ainfo, std::vector(res.begin(),\
-    \ res.begin() + pp * nextd[i]));\n            std::fill_n(shopA.begin(), pp *\
-    \ d[i], Tp(0));\n            for (int j = pp * d[i]; j < pp * nextd[i]; ++j) shopA[j]\
-    \ -= a[j];\n            shopA = multidimensional_convolution(\n              \
-    \  ainfo, std::vector(res.begin(), res.begin() + pp * nextd[i]), shopA);\n   \
-    \         for (int j = pp * d[i]; j < pp * nextd[i]; ++j) res[j] = -shopA[j];\n\
-    \        }\n    }\n    return res;\n}\n\ntemplate<typename Tp>\ninline std::vector<Tp>\
-    \ mps_pow(const MDConvInfo &info, std::vector<Tp> a, long long e) {\n    assert((int)a.size()\
-    \ == info.len());\n    if (e == 0) {\n        std::vector<Tp> res(info.len());\n\
-    \        res[0] = 1;\n        return res;\n    }\n\n    if (a[0] != 0) {\n   \
-    \     const Tp ia0 = a[0].inv();\n        const Tp a0e = a[0].pow(e);\n      \
-    \  const Tp me  = e;\n\n        for (int i = 0; i < (int)a.size(); ++i) a[i] *=\
-    \ ia0;\n        a = mps_log(info, a);\n        for (int i = 0; i < (int)a.size();\
-    \ ++i) a[i] *= me;\n        a = mps_exp(info, a);\n        for (int i = 0; i <\
-    \ (int)a.size(); ++i) a[i] *= a0e;\n\n        return a;\n    }\n\n    assert(e\
-    \ > 0);\n    std::vector<Tp> res(info.len());\n    res[0] = 1;\n    for (;;) {\n\
-    \        if (e & 1) res = multidimensional_convolution(info, res, a);\n      \
-    \  if ((e >>= 1) == 0) return res;\n        a = multidimensional_convolution(info,\
-    \ a, a);\n    }\n}\n"
+    \ a, a);\n    }\n}\n#line 7 \"test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    using mint = ModInt<998244353>;\n    int n, m;\n    std::cin >> n >> m;\n\
+    \    std::vector<mint> a(n * m);\n    for (int i = 0; i < n; ++i)\n        for\
+    \ (int j = 0; j < m; ++j) std::cin >> a[i * m + j];\n    const auto invA = mps_inv(MDConvInfo({m,\
+    \ n}), a);\n    for (int i = 0; i < n; ++i) {\n        for (int j = 0; j < m;\
+    \ ++j) {\n            if (j) std::cout << ' ';\n            std::cout << invA[i\
+    \ * m + j];\n        }\n        std::cout << '\\n';\n    }\n    return 0;\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series_2d\"\
+    \n\n#include \"modint.hpp\"\n#include \"mps_basic.hpp\"\n#include <iostream>\n\
+    #include <vector>\n\nint main() {\n    std::ios::sync_with_stdio(false);\n   \
+    \ std::cin.tie(nullptr);\n    using mint = ModInt<998244353>;\n    int n, m;\n\
+    \    std::cin >> n >> m;\n    std::vector<mint> a(n * m);\n    for (int i = 0;\
+    \ i < n; ++i)\n        for (int j = 0; j < m; ++j) std::cin >> a[i * m + j];\n\
+    \    const auto invA = mps_inv(MDConvInfo({m, n}), a);\n    for (int i = 0; i\
+    \ < n; ++i) {\n        for (int j = 0; j < m; ++j) {\n            if (j) std::cout\
+    \ << ' ';\n            std::cout << invA[i * m + j];\n        }\n        std::cout\
+    \ << '\\n';\n    }\n    return 0;\n}\n"
   dependsOn:
+  - modint.hpp
+  - mps_basic.hpp
   - binomial.hpp
   - fft.hpp
   - md_conv.hpp
-  isVerificationFile: false
-  path: mps_basic.hpp
+  isVerificationFile: true
+  path: test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
   requiredBy: []
-  timestamp: '2025-01-19 15:28:01+08:00'
-  verificationStatus: LIBRARY_ALL_AC
-  verifiedWith:
-  - test/formal_power_series/multivariate_power_series.0.test.cpp
-  - test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
-documentation_of: mps_basic.hpp
+  timestamp: '2026-02-01 16:36:10+08:00'
+  verificationStatus: TEST_ACCEPTED
+  verifiedWith: []
+documentation_of: test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
 layout: document
-title: Multivariate Power Series
+redirect_from:
+- /verify/test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
+- /verify/test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp.html
+title: test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
 ---
-
-## Multivariate Power Series
-
-TODO
-
-## References
-
-1. Elegia. Hello, multivariate multiplication. url: <https://www.luogu.com/article/wje8kchr>

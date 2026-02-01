@@ -13,6 +13,9 @@ data:
     path: test/convolution/multidimensional_convolution.0.test.cpp
     title: test/convolution/multidimensional_convolution.0.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
+    title: test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/formal_power_series/multivariate_power_series.0.test.cpp
     title: test/formal_power_series/multivariate_power_series.0.test.cpp
   _isVerificationFailed: false
@@ -214,6 +217,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/formal_power_series/multivariate_power_series.0.test.cpp
+  - test/formal_power_series/inv_of_formal_power_series_2d.0.test.cpp
   - test/convolution/multidimensional_convolution.0.test.cpp
 documentation_of: md_conv.hpp
 layout: document
