@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/inverse_matrix"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/inverse_matrix
 
 #include "mat_basic.hpp"
 #include "modint.hpp"

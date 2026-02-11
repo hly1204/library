@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum
 
 #include "node_pool.hpp"
 #include "st_tree_node_base.hpp"

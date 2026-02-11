@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/factorial"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/factorial
 
 #include "modint.hpp"
 #include "poly_interpolation.hpp"

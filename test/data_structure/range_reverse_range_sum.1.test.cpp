@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/range_reverse_range_sum"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/range_reverse_range_sum
 
 #include "avl_tree_node_base.hpp"
 #include "node_pool.hpp"

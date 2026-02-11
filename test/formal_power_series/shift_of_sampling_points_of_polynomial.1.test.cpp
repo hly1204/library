@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial
 
 #include "modint.hpp"
 #include "shift_sample_points.hpp"

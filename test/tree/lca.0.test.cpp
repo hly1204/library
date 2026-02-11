@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/lca"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/lca
 
 #include "node_pool.hpp"
 #include "st_tree_node_base.hpp"

@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/point_set_range_composite"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/point_set_range_composite
 
 #include "avl_tree_node_base.hpp"
 #include "modint.hpp"

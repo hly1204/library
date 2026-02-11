@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/polynomial_taylor_shift"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/polynomial_taylor_shift
 
 #include "binomial.hpp"
 #include "fps_as_operator.hpp"

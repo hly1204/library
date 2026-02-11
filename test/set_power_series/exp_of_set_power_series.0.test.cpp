@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/exp_of_set_power_series"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/exp_of_set_power_series
 
 #include "modint.hpp"
 #include "sps_basic.hpp"

@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/inv_of_formal_power_series_2d"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/inv_of_formal_power_series_2d
 
 #include "modint.hpp"
 #include "mps_basic.hpp"

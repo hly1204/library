@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/ordered_set"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/ordered_set
 
 #include "node_pool.hpp"
 #include "treap_node_base.hpp"

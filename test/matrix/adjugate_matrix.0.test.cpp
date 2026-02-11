@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/adjugate_matrix"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/adjugate_matrix
 
 #include "frobenius.hpp"
 #include "mat_basic.hpp"

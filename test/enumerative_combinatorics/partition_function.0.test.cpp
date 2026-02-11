@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/partition_function"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/partition_function
 
 #include "famous_sequence.hpp"
 #include "modint.hpp"

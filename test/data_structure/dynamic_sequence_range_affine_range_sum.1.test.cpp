@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum
 
 #include "avl_tree_node_base.hpp"
 #include "modint.hpp"

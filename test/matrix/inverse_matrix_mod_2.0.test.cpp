@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/inverse_matrix_mod_2"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/inverse_matrix_mod_2
 
 #include "bitarray.hpp"
 #include <iostream>
