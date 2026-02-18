@@ -78,7 +78,7 @@ void InvFFT(uint a[], int n, const uint root[]) {
 
 std::vector<uint> Product(std::vector<uint> a, std::vector<uint> b) {
     if (empty(a) || empty(b)) return {};
-    const int n = a.size(), m = b.size();
+    const int n = size(a), m = size(b);
     const int N                 = GetFFTSize(n + m - 1);
     const auto [root, inv_root] = GetFFTRoot(N);
     a.resize(N), b.resize(N);
