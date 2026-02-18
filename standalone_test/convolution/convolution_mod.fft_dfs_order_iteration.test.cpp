@@ -45,7 +45,7 @@ int GetFFTSize(int n) {
 }
 
 void FFT(uint a[], int n, const uint root[]) {
-    for (int L = __builtin_ctz(n), C = 0;;) {
+    for (int L = __builtin_ctz(n), C = 0; n > 1;) {
         uint *const b = a + (C << L);
         for (int i = 0, N = 1 << (L - 1); i < N; ++i) {
             const uint u = b[i];
@@ -60,7 +60,7 @@ void FFT(uint a[], int n, const uint root[]) {
 }
 
 void InvFFT(uint a[], int n, const uint root[]) {
-    for (int L = 1, C = 0;;) {
+    for (int L = 1, C = 0; n > 1;) {
         uint *const b = a + (C << L);
         for (int i = 0, N = 1 << (L - 1); i < N; ++i) {
             const uint u = b[i];
