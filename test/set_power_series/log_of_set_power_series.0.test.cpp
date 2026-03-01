@@ -1,8 +1,7 @@
-// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/exp_of_set_power_series
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/log_of_set_power_series
 
 #include "modint.hpp"
 #include "sps_basic.hpp"
-#include <cassert>
 #include <iostream>
 #include <vector>
 
@@ -14,8 +13,7 @@ int main() {
     std::cin >> n;
     std::vector<mint> a(1 << n);
     for (int i = 0; i < (1 << n); ++i) std::cin >> a[i];
-    const auto expa = sps_exp(a);
-    assert(sps_log(expa) == a);
-    for (int i = 0; i < (1 << n); ++i) std::cout << expa[i] << ' ';
+    const auto loga = sps_log(a);
+    for (int i = 0; i < (1 << n); ++i) std::cout << loga[i] << ' ';
     return 0;
 }
