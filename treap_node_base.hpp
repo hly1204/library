@@ -5,10 +5,10 @@
 #include <random>
 #include <utility>
 
-template<typename FlipableTreapNodeT> class FlipableTreapNodeBase;
+template<typename FlippableTreapNodeT> class FlippableTreapNodeBase;
 
 template<typename TreapNodeT> class TreapNodeBase {
-    friend class FlipableTreapNodeBase<TreapNodeT>;
+    friend class FlippableTreapNodeBase<TreapNodeT>;
 
     TreapNodeBase *L;
     TreapNodeBase *R;
@@ -281,14 +281,14 @@ public:
     }
 };
 
-template<typename FlipableTreapNodeT> class FlipableTreapNodeBase
-    : public TreapNodeBase<FlipableTreapNodeT> {
-    friend class TreapNodeBase<FlipableTreapNodeT>;
+template<typename FlippableTreapNodeT> class FlippableTreapNodeBase
+    : public TreapNodeBase<FlippableTreapNodeT> {
+    friend class TreapNodeBase<FlippableTreapNodeT>;
 
     bool NeedFlip;
 
-    FlipableTreapNodeT &underlying() { return (FlipableTreapNodeT &)*this; }
-    const FlipableTreapNodeT &underlying() const { return (const FlipableTreapNodeT &)*this; }
+    FlippableTreapNodeT &underlying() { return (FlippableTreapNodeT &)*this; }
+    const FlippableTreapNodeT &underlying() const { return (const FlippableTreapNodeT &)*this; }
 
     // CRTP reimplement
     void do_flip() {}
@@ -308,7 +308,7 @@ template<typename FlipableTreapNodeT> class FlipableTreapNodeBase
     }
 
 protected:
-    FlipableTreapNodeBase() : NeedFlip() {}
+    FlippableTreapNodeBase() : NeedFlip() {}
 
 public:
     void flip() { base_flip(); }

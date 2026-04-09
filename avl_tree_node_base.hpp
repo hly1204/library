@@ -6,10 +6,10 @@
 #include <cmath>
 #include <utility>
 
-template<typename FlipableAVLTreeNodeT> class FlipableAVLTreeNodeBase;
+template<typename FlippableAVLTreeNodeT> class FlippableAVLTreeNodeBase;
 
 template<typename AVLTreeNodeT> class AVLTreeNodeBase {
-    friend class FlipableAVLTreeNodeBase<AVLTreeNodeT>;
+    friend class FlippableAVLTreeNodeBase<AVLTreeNodeT>;
 
     AVLTreeNodeBase *L;
     AVLTreeNodeBase *R;
@@ -386,14 +386,14 @@ public:
     }
 };
 
-template<typename FlipableAVLTreeNodeT> class FlipableAVLTreeNodeBase
-    : public AVLTreeNodeBase<FlipableAVLTreeNodeT> {
-    friend class AVLTreeNodeBase<FlipableAVLTreeNodeT>;
+template<typename FlippableAVLTreeNodeT> class FlippableAVLTreeNodeBase
+    : public AVLTreeNodeBase<FlippableAVLTreeNodeT> {
+    friend class AVLTreeNodeBase<FlippableAVLTreeNodeT>;
 
     bool NeedFlip;
 
-    FlipableAVLTreeNodeT &underlying() { return (FlipableAVLTreeNodeT &)*this; }
-    const FlipableAVLTreeNodeT &underlying() const { return (const FlipableAVLTreeNodeT &)*this; }
+    FlippableAVLTreeNodeT &underlying() { return (FlippableAVLTreeNodeT &)*this; }
+    const FlippableAVLTreeNodeT &underlying() const { return (const FlippableAVLTreeNodeT &)*this; }
 
     // CRTP reimplement
     void do_flip() {}
@@ -413,7 +413,7 @@ template<typename FlipableAVLTreeNodeT> class FlipableAVLTreeNodeBase
     }
 
 protected:
-    FlipableAVLTreeNodeBase() : NeedFlip() {}
+    FlippableAVLTreeNodeBase() : NeedFlip() {}
 
 public:
     void flip() { base_flip(); }

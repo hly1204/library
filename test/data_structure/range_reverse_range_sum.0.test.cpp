@@ -7,7 +7,7 @@
 int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
-    struct TreapNode : FlipableTreapNodeBase<TreapNode> {
+    struct TreapNode : FlippableTreapNodeBase<TreapNode> {
         int Val;
         long long Sum;
         void do_update() {

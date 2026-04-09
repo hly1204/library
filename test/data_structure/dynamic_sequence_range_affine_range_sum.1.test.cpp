@@ -1,4 +1,5 @@
-// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum
+// competitive-verifier: PROBLEM
+// https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum
 
 #include "avl_tree_node_base.hpp"
 #include "modint.hpp"
@@ -9,7 +10,7 @@ int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
     using mint = ModInt<998244353>;
-    struct AVLTreeNode : FlipableAVLTreeNodeBase<AVLTreeNode> {
+    struct AVLTreeNode : FlippableAVLTreeNodeBase<AVLTreeNode> {
         mint Val, Sum, Add, Mul = {1};
         void do_propagate() {
             if (left()) {
