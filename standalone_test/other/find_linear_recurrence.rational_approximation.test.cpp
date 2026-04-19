@@ -1,10 +1,10 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/find_linear_recurrence
 
-#include <algorithm>
 #include <array>
 #include <cassert>
 #include <iostream>
 #include <tuple>
+#include <utility>
 #include <vector>
 
 using uint         = unsigned;
@@ -48,7 +48,7 @@ std::array<std::vector<uint>, 2> QuoRem(std::vector<uint> A, const std::vector<u
     std::vector<uint> Q(degQ + 1);
     const uint ib = InvMod(LeadCoeff(B));
     for (int i = degQ, n = degA; i >= 0; --i)
-        if ((Q[i] = (ull)A[n--] * ib % MOD) != 0)
+        if ((Q[i] = (ull)A[n--] * ib % MOD))
             for (int j = 0; j <= degB; ++j)
                 if ((A[i + j] = A[i + j] + MOD - ((ull)B[j] * Q[i] % MOD)) >= MOD) A[i + j] -= MOD;
     Shrink(A);
@@ -85,7 +85,7 @@ std::array<std::vector<uint>, 2> RationalRecons(const std::vector<uint> &A) {
     const int k = size(A);
     std::vector<uint> B(k + 1);
     B[k] = 1;
-    return RationalApprox(std::vector(rbegin(A), rend(A)), B, k);
+    return RationalApprox(std::vector(rbegin(A), rend(A)), std::move(B), k);
 }
 
 int main() {
