@@ -165,12 +165,69 @@ void CyclicSchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) 
     for (int i = 0; i < delta; ++i)
         for (int j = 0; j < d; ++j)
             a_hat[i * d * 2 + j] = a[i * d + j], b_hat[i * d * 2 + j] = b[i * d + j];
-    FFT(data(a_hat), d * 2, delta), FFT(data(b_hat), d * 2, delta);
+
+    // (R[x] / (x^d + 1)) / (y^delta - 1)
+    //  -> (R[x] / (x^d + 1)) / (y^(delta/2) - 1)
+    //  ×  (R[x] / (x^d + 1)) / (y^(delta/2) - x^d)
+    // ...
+    const auto SpecialFFT = [](uint a[], int d, int delta) {
+        assert(delta <= d);
+        std::vector<int> e(delta);
+        e[0] = 0;
+        for (int j = 1; j < delta; ++j) e[j] = e[j & (j - 1)] + (d >> (__builtin_ctz(j) + 1));
+        for (int i = delta; i >= 2; i /= 2) {
+            const int block = delta / i;
+            for (int j = 0; j < block; ++j) {
+                const int n   = d * (i / 2);
+                uint *const b = a + j * n * 2;
+                for (int k = 0; k < i / 2; ++k) {
+                    uint *const c = b + n + k * d;
+                    std::rotate(c, c + d - e[j], c + d);
+                    for (int l = 0; l < e[j]; ++l)
+                        if (c[l]) c[l] = MOD - c[l];
+                }
+                for (int k = 0; k < n; ++k) {
+                    const uint u = b[k];
+                    if ((b[k] += b[k + n]) >= MOD) b[k] -= MOD;
+                    if ((b[k + n] = u + MOD - b[k + n]) >= MOD) b[k + n] -= MOD;
+                }
+            }
+        }
+    };
+
+    const auto SpecialInvFFT = [](uint a[], int d, int delta) {
+        assert(delta <= d);
+        std::vector<int> e(delta);
+        e[0] = 0;
+        for (int j = 1; j < delta; ++j) e[j] = e[j & (j - 1)] + (d >> (__builtin_ctz(j) + 1));
+        for (int i = 2; i <= delta; i *= 2) {
+            const int block = delta / i;
+            for (int j = 0; j < block; ++j) {
+                const int n   = d * (i / 2);
+                uint *const b = a + j * n * 2;
+                for (int k = 0; k < n; ++k) {
+                    const uint u = b[k];
+                    if ((b[k] += b[k + n]) >= MOD) b[k] -= MOD;
+                    if ((b[k + n] = u + MOD - b[k + n]) >= MOD) b[k + n] -= MOD;
+                }
+                for (int k = 0; k < i / 2; ++k) {
+                    uint *const c = b + n + k * d;
+                    for (int l = 0; l < e[j]; ++l)
+                        if (c[l]) c[l] = MOD - c[l];
+                    std::rotate(c, c + e[j], c + d);
+                }
+            }
+        }
+        const uint inv_delta = InvMod(delta);
+        for (int i = 0; i < d * delta; ++i) a[i] = (ull)a[i] * inv_delta % MOD;
+    };
+
+    SpecialFFT(data(a_hat), d * 2, delta), SpecialFFT(data(b_hat), d * 2, delta);
     // Call the original Schönhage–Strassen's algorithm. (not CyclicSchoenhageStrassen)
     for (int i = 0; i < delta; ++i)
         SchoenhageStrassen(data(a_hat) + i * d * 2, data(b_hat) + i * d * 2,
                            data(ab_hat) + i * d * 2, d * 2);
-    InvFFT(data(ab_hat), d * 2, delta);
+    SpecialInvFFT(data(ab_hat), d * 2, delta);
     for (int i = 0; i < delta; ++i)
         for (int j = 0; j < d * 2; ++j)
             if (i * d + j < n) {
