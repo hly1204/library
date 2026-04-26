@@ -157,7 +157,7 @@ int main() {
     std::vector<uint> a(n), b(m);
     for (int i = 0; i < n; ++i) std::cin >> a[i];
     for (int i = 0; i < m; ++i) std::cin >> b[i];
-    const auto ab = Product(a, b);
+    const auto ab = Product(std::move(a), std::move(b));
     for (int i = 0; i < n + m - 1; ++i) std::cout << ab[i] << ' ';
     return 0;
 }
