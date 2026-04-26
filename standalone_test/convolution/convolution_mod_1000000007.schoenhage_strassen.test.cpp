@@ -26,8 +26,8 @@ int GetFFTSize(int n) {
 }
 
 // (R[x] / (x^d + 1)) / (y^delta - x^d)
-//  -> (R[x] / (x^d + 1)) / (y^(delta/2) - x^(d/2))
-//  ×  (R[x] / (x^d + 1)) / (y^(delta/2) - x^(3*d/2))
+//  -> (R[x] / (x^d + 1)) / (y^(delta/2) - x^(d/2))   // e[0] = 1,
+//  ×  (R[x] / (x^d + 1)) / (y^(delta/2) - x^(3*d/2)) // e[1] = 3,
 // ...
 void FFT(uint a[], int d, int delta) {
     assert(delta <= d);
