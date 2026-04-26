@@ -97,6 +97,8 @@ void InvFFT(uint a[], int d, int delta) {
 //      Palaiseau : Frédéric Chyzak (auto-édit.), sept. 2017. isbn : 979-10-699-0947-2.
 //      https://hal.science/AECF/
 void SchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) {
+    // This function should be called Schönhage's algorithm, since
+    // Schönhage–Strassen's algorithm is not for polynomials (just for integers), right? see [1].
     assert(__builtin_popcount(n) == 1);
     enum { Threshold = 32 };
     if (n <= Threshold) {
