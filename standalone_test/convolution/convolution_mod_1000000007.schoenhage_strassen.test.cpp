@@ -10,14 +10,14 @@ using uint         = unsigned;
 using ull          = unsigned long long;
 constexpr uint MOD = 1000000007;
 
-constexpr uint PowMod(uint a, ull e) {
-    for (uint res = 1;; a = (ull)a * a % MOD) {
-        if (e & 1) res = (ull)res * a % MOD;
-        if ((e /= 2) == 0) return res;
+constexpr uint InvMod(uint a_) {
+    int x1 = 1, x3 = 0, a = a_, b = MOD;
+    while (b) {
+        const int q = a / b, x1_old = x1, a_old = a;
+        x1 = x3, x3 = x1_old - x3 * q, a = b, b = a_old - b * q;
     }
+    return x1 < 0 ? x1 + (int)MOD : x1;
 }
-
-constexpr uint InvMod(uint a) { return PowMod(a, MOD - 2); }
 
 int GetFFTSize(int n) {
     int len = 1;
@@ -55,7 +55,7 @@ void FFT(uint a[], int d, int delta) {
     }
 }
 
-// Constraints: 2^(-1) in R
+// Constraints: 1/2 in R
 void InvFFT(uint a[], int d, int delta) {
     assert(delta <= d);
     for (int i = 2; i <= delta; i *= 2) {
