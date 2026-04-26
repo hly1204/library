@@ -166,7 +166,7 @@ void CyclicSchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) 
         for (int j = 0; j < d; ++j)
             a_hat[i * d * 2 + j] = a[i * d + j], b_hat[i * d * 2 + j] = b[i * d + j];
     FFT(data(a_hat), d * 2, delta), FFT(data(b_hat), d * 2, delta);
-    // Recursively call the original Schönhage–Strassen's algorithm.
+    // Call the original Schönhage–Strassen's algorithm. (not CyclicSchoenhageStrassen)
     for (int i = 0; i < delta; ++i)
         SchoenhageStrassen(data(a_hat) + i * d * 2, data(b_hat) + i * d * 2,
                            data(ab_hat) + i * d * 2, d * 2);
