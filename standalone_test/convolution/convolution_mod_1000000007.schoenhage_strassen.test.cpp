@@ -114,9 +114,9 @@ void SchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) {
     const int d     = 1 << (k / 2); // d     = 2^floor(k / 2)
     const int delta = n / d;        // delta = 2^ceil(k / 2)
     // R[x] / (x^(d * delta) + 1) -> (R[x][y] / (y^delta + 1)) / (y - x^d)
-    // Lifting to R[x][y] / (y^delta + 1)
+    // Lift to R[x][y] / (y^delta + 1)
     // Since polynomials in R[x][y] / (y^delta + 1) have x-degree < d,
-    // We could mapping to (R[x] / (x^(2*d) + 1)) / (y^delta + 1)
+    // We could map to (R[x] / (x^(2*d) + 1)) / (y^delta + 1)
     //   = (R[x] / (x^(2*d) + 1)) / (y^delta - x^(2*d)), delta <= 2*d
     //   = S / (y^delta - x^(2*d)), where S = R[x] / (x^(2*d) + 1),
     // Since delta is a power of 2,
@@ -141,13 +141,52 @@ void SchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) {
             }
 }
 
+// Compute ab mod (x^n - 1)
+// ref: SchoenhageStrassen
+void CyclicSchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) {
+    assert(__builtin_popcount(n) == 1);
+    enum { Threshold = 32 };
+    if (n <= Threshold) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n - i; ++j) ab[i + j] = (ab[i + j] + (ull)a[i] * b[j]) % MOD;
+            for (int j = n - i; j < n; ++j)
+                ab[i + j - n] = (ab[i + j - n] + (ull)a[i] * b[j]) % MOD;
+        }
+        return;
+    }
+    const int k = __builtin_ctz(n);
+    assert(k > 2);
+    const int d     = 1 << (k / 2); // d     = 2^floor(k / 2)
+    const int delta = n / d;        // delta = 2^ceil(k / 2)
+    // R[x] / (x^(d * delta) - 1) -> (R[x][y] / (y^delta - 1)) / (y - x^d)
+    // Lift to R[x][y] / (y^delta - 1)
+    // Map to (R[x] / (x^(2*d) + 1)) / (y^delta - 1)
+    std::vector<uint> a_hat(n * 2), b_hat(n * 2), ab_hat(n * 2);
+    for (int i = 0; i < delta; ++i)
+        for (int j = 0; j < d; ++j)
+            a_hat[i * d * 2 + j] = a[i * d + j], b_hat[i * d * 2 + j] = b[i * d + j];
+    FFT(data(a_hat), d * 2, delta), FFT(data(b_hat), d * 2, delta);
+    // Recursively call the original Schönhage–Strassen's algorithm.
+    for (int i = 0; i < delta; ++i)
+        SchoenhageStrassen(data(a_hat) + i * d * 2, data(b_hat) + i * d * 2,
+                           data(ab_hat) + i * d * 2, d * 2);
+    InvFFT(data(ab_hat), d * 2, delta);
+    for (int i = 0; i < delta; ++i)
+        for (int j = 0; j < d * 2; ++j)
+            if (i * d + j < n) {
+                if ((ab[i * d + j] += ab_hat[i * d * 2 + j]) >= MOD) ab[i * d + j] -= MOD;
+            } else {
+                if ((ab[i * d + j - n] += ab_hat[i * d * 2 + j]) >= MOD) ab[i * d + j - n] -= MOD;
+            }
+}
+
 std::vector<uint> Product(std::vector<uint> a, std::vector<uint> b) {
     if (empty(a) || empty(b)) return {};
     const int n = size(a), m = size(b);
     const int N = GetFFTSize(n + m - 1);
     a.resize(N), b.resize(N);
     std::vector<uint> ab(N);
-    SchoenhageStrassen(data(a), data(b), data(ab), N);
+    CyclicSchoenhageStrassen(data(a), data(b), data(ab), N);
     ab.resize(n + m - 1);
     return ab;
 }
