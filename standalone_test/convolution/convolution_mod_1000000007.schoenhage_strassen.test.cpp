@@ -118,10 +118,10 @@ void SchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) {
     // Since polynomials in R[x][y] / (y^delta + 1) have x-degree < d,
     // We could map to (R[x] / (x^(2*d) + 1)) / (y^delta + 1)
     //   = (R[x] / (x^(2*d) + 1)) / (y^delta - x^(2*d)), delta <= 2*d
-    //   = S / (y^delta - x^(2*d)), where S = R[x] / (x^(2*d) + 1),
+    //   = S[y] / (y^delta - x^(2*d)), where S = R[x] / (x^(2*d) + 1),
     // Since delta is a power of 2,
-    //   = S / (y^(delta/2) - x^d) × S / (y^(delta/2) + x^d)
-    //   = S / (y^(delta/2) - x^d) × S / (y^(delta/2) - x^(3d))
+    //   = S[y] / (y^(delta/2) - x^d) × S[y] / (y^(delta/2) + x^d)
+    //   = S[y] / (y^(delta/2) - x^d) × S[y] / (y^(delta/2) - x^(3d))
     std::vector<uint> a_hat(n * 2), b_hat(n * 2), ab_hat(n * 2);
     for (int i = 0; i < delta; ++i)
         for (int j = 0; j < d; ++j)
