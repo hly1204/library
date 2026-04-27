@@ -25,9 +25,9 @@ int GetFFTSize(int n) {
     return len;
 }
 
-// (R[x] / (x^d + 1)) / (y^delta - x^d)
-//  -> (R[x] / (x^d + 1)) / (y^(delta/2) - x^(d/2))   // e[0] = 1,
-//  ×  (R[x] / (x^d + 1)) / (y^(delta/2) - x^(3*d/2)) // e[1] = 3,
+// (R[x] / (x^d + 1))[y] / (y^delta - x^d)
+//  -> (R[x] / (x^d + 1))[y] / (y^(delta/2) - x^(d/2))   // e[0] = 1,
+//  ×  (R[x] / (x^d + 1))[y] / (y^(delta/2) - x^(3*d/2)) // e[1] = 3,
 // ...
 void FFT(uint a[], int d, int delta) {
     assert(delta <= d);
@@ -96,9 +96,8 @@ void InvFFT(uint a[], int d, int delta) {
 //      Imprimé par CreateSpace. Aussi disponible en version électronique.
 //      Palaiseau : Frédéric Chyzak (auto-édit.), sept. 2017. isbn : 979-10-699-0947-2.
 //      https://hal.science/AECF/
-void SchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) {
-    // This function should be called Schönhage's algorithm, since
-    // Schönhage–Strassen's algorithm is not for polynomials (just for integers), right? see [1].
+void Schoenhage(const uint a[], const uint b[], uint ab[], int n) {
+    // This function should be called Schönhage's algorithm, see [1].
     assert(__builtin_popcount(n) == 1);
     enum { Threshold = 32 };
     if (n <= Threshold) {
@@ -116,8 +115,8 @@ void SchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) {
     // R[x] / (x^(d * delta) + 1) -> (R[x][y] / (y^delta + 1)) / (y - x^d)
     // Lift to R[x][y] / (y^delta + 1)
     // Since polynomials in R[x][y] / (y^delta + 1) have x-degree < d,
-    // We could map to (R[x] / (x^(2*d) + 1)) / (y^delta + 1)
-    //   = (R[x] / (x^(2*d) + 1)) / (y^delta - x^(2*d)), delta <= 2*d
+    // We could map to (R[x] / (x^(2*d) + 1))[y] / (y^delta + 1)
+    //   = (R[x] / (x^(2*d) + 1))[y] / (y^delta - x^(2*d)), delta <= 2*d
     //   = S[y] / (y^delta - x^(2*d)), where S = R[x] / (x^(2*d) + 1),
     // Since delta is a power of 2,
     //   = S[y] / (y^(delta/2) - x^d) × S[y] / (y^(delta/2) + x^d)
@@ -128,8 +127,8 @@ void SchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) {
             a_hat[i * d * 2 + j] = a[i * d + j], b_hat[i * d * 2 + j] = b[i * d + j];
     FFT(data(a_hat), d * 2, delta), FFT(data(b_hat), d * 2, delta);
     for (int i = 0; i < delta; ++i)
-        SchoenhageStrassen(data(a_hat) + i * d * 2, data(b_hat) + i * d * 2,
-                           data(ab_hat) + i * d * 2, d * 2);
+        Schoenhage(data(a_hat) + i * d * 2, data(b_hat) + i * d * 2, data(ab_hat) + i * d * 2,
+                   d * 2);
     InvFFT(data(ab_hat), d * 2, delta);
     for (int i = 0; i < delta; ++i)
         for (int j = 0; j < d * 2; ++j)
@@ -143,7 +142,7 @@ void SchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) {
 
 // Compute ab mod (x^n - 1)
 // ref: SchoenhageStrassen
-void CyclicSchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) {
+void CyclicSchoenhage(const uint a[], const uint b[], uint ab[], int n) {
     assert(__builtin_popcount(n) == 1);
     enum { Threshold = 32 };
     if (n <= Threshold) {
@@ -225,8 +224,8 @@ void CyclicSchoenhageStrassen(const uint a[], const uint b[], uint ab[], int n) 
     SpecialFFT(data(a_hat), d * 2, delta), SpecialFFT(data(b_hat), d * 2, delta);
     // Call the original Schönhage–Strassen's algorithm. (not CyclicSchoenhageStrassen)
     for (int i = 0; i < delta; ++i)
-        SchoenhageStrassen(data(a_hat) + i * d * 2, data(b_hat) + i * d * 2,
-                           data(ab_hat) + i * d * 2, d * 2);
+        Schoenhage(data(a_hat) + i * d * 2, data(b_hat) + i * d * 2, data(ab_hat) + i * d * 2,
+                   d * 2);
     SpecialInvFFT(data(ab_hat), d * 2, delta);
     for (int i = 0; i < delta; ++i)
         for (int j = 0; j < d * 2; ++j)
@@ -243,7 +242,7 @@ std::vector<uint> Product(std::vector<uint> a, std::vector<uint> b) {
     const int N = GetFFTSize(n + m - 1);
     a.resize(N), b.resize(N);
     std::vector<uint> ab(N);
-    CyclicSchoenhageStrassen(data(a), data(b), data(ab), N);
+    CyclicSchoenhage(data(a), data(b), data(ab), N);
     ab.resize(n + m - 1);
     return ab;
 }
