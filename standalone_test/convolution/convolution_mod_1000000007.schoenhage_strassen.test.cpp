@@ -141,7 +141,7 @@ void Schoenhage(const uint a[], const uint b[], uint ab[], int n) {
 }
 
 // Compute ab mod (x^n - 1)
-// ref: SchoenhageStrassen
+// ref: Schoenhage
 void CyclicSchoenhage(const uint a[], const uint b[], uint ab[], int n) {
     assert(__builtin_popcount(n) == 1);
     enum { Threshold = 32 };
@@ -222,7 +222,7 @@ void CyclicSchoenhage(const uint a[], const uint b[], uint ab[], int n) {
     };
 
     SpecialFFT(data(a_hat), d * 2, delta), SpecialFFT(data(b_hat), d * 2, delta);
-    // Call the original Schönhage–Strassen's algorithm. (not CyclicSchoenhageStrassen)
+    // Call the original Schönhage's algorithm (NOT CyclicSchoenhage).
     for (int i = 0; i < delta; ++i)
         Schoenhage(data(a_hat) + i * d * 2, data(b_hat) + i * d * 2, data(ab_hat) + i * d * 2,
                    d * 2);
