@@ -159,15 +159,15 @@ void CyclicSchoenhage(const uint a[], const uint b[], uint ab[], int n) {
     const int delta = n / d;        // delta = 2^ceil(k / 2)
     // R[x] / (x^(d * delta) - 1) -> (R[x][y] / (y^delta - 1)) / (y - x^d)
     // Lift to R[x][y] / (y^delta - 1)
-    // Map to (R[x] / (x^(2*d) + 1)) / (y^delta - 1)
+    // Map to (R[x] / (x^(2*d) + 1))[y] / (y^delta - 1)
     std::vector<uint> a_hat(n * 2), b_hat(n * 2), ab_hat(n * 2);
     for (int i = 0; i < delta; ++i)
         for (int j = 0; j < d; ++j)
             a_hat[i * d * 2 + j] = a[i * d + j], b_hat[i * d * 2 + j] = b[i * d + j];
 
-    // (R[x] / (x^d + 1)) / (y^delta - 1)
-    //  -> (R[x] / (x^d + 1)) / (y^(delta/2) - 1)
-    //  ×  (R[x] / (x^d + 1)) / (y^(delta/2) - x^d)
+    // (R[x] / (x^d + 1))[y] / (y^delta - 1)
+    //  -> (R[x] / (x^d + 1))[y] / (y^(delta/2) - 1)
+    //  ×  (R[x] / (x^d + 1))[y] / (y^(delta/2) - x^d)
     // ...
     const auto SpecialFFT = [](uint a[], int d, int delta) {
         assert(delta <= d);
