@@ -52,11 +52,10 @@ void MultipliedByXToTheN(ull a[], int d, int n) {
 }
 
 // Let S := (R[x] / (x^(2*d) + x^d + 1)),
-// a[] stores S[y] / (y^delta - x^d), b[] stores S[y] / (y^delta - x^(2*d))
-// Compute S[y] / (y^delta - x^(e_multiplier  * 1 * d))
-//   -> S[y] / (y^(delta/3) - x^(e_multiplier * 1 * d/3))
-//   ×  S[y] / (y^(delta/3) - x^(e_multiplier * 4 * d/3))
-//   ×  S[y] / (y^(delta/3) - x^(e_multiplier * 7 * d/3))
+// Compute S[y] / (y^delta - x^(1 * d))
+//   -> S[y] / (y^(delta/3) - x^(1 * d/3))
+//   ×  S[y] / (y^(delta/3) - x^(4 * d/3))
+//   ×  S[y] / (y^(delta/3) - x^(7 * d/3))
 // ...
 void FFT1(ull a[], int d, int delta) {
     assert(delta <= d);
@@ -97,6 +96,7 @@ void FFT1(ull a[], int d, int delta) {
     }
 }
 
+// Compute S[y] / (y^delta - x^(2 * d)) -> ...
 void FFT2(ull a[], int d, int delta) {
     assert(delta <= d);
     for (int i = delta; i >= 3; i /= 3) {
@@ -156,6 +156,7 @@ void FFT(ull a[], int d, int delta) {
             c[1][j + d]   = A[H] + B[L] - B[H];
         }
     }
+    // a[] stores S[y] / (y^delta - x^d), b[] stores S[y] / (y^delta - x^(2*d))
     FFT1(a, d, delta), FFT2(b, d, delta);
 }
 
