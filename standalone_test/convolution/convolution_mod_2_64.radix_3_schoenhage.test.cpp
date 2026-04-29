@@ -52,12 +52,13 @@ void MultipliedByXToTheN(ull a[], int d, int n) {
 }
 
 // Let S := (R[x] / (x^(2*d) + x^d + 1)),
-// Compute S[y] / (y^delta - x^(1 * d))
-//   -> S[y] / (y^(delta/3) - x^(1 * d/3))
-//   ×  S[y] / (y^(delta/3) - x^(4 * d/3))
-//   ×  S[y] / (y^(delta/3) - x^(7 * d/3))
+// Compute S[y] / (y^delta - x^(E_MULTIPLIER * 1 * d))
+//   -> S[y] / (y^(delta/3) - x^(E_MULTIPLIER * 1 * d/3))
+//   ×  S[y] / (y^(delta/3) - x^(E_MULTIPLIER * 4 * d/3))
+//   ×  S[y] / (y^(delta/3) - x^(E_MULTIPLIER * 7 * d/3))
 // ...
-void FFT1(ull a[], int d, int delta) {
+template<int E_MULTIPLIER> void FFT_(ull a[], int d, int delta) {
+    static_assert(E_MULTIPLIER == 1 || E_MULTIPLIER == 2);
     assert(delta <= d);
     for (int i = delta; i >= 3; i /= 3) {
         const int block = delta / i;
@@ -71,65 +72,40 @@ void FFT1(ull a[], int d, int delta) {
             for (int k = 0; k < i / 3; ++k) {
                 ull *const c[] = {b + n * 0 + k * d * 2, b + n * 1 + k * d * 2,
                                   b + n * 2 + k * d * 2};
-                MultipliedByXToTheN(c[1], d, o * 1);
-                MultipliedByXToTheN(c[2], d, o * 2);
+                MultipliedByXToTheN(c[1], d, o * 1 * E_MULTIPLIER);
+                MultipliedByXToTheN(c[2], d, o * 2 * E_MULTIPLIER);
                 for (int l = 0; l < d; ++l) {
                     enum { L = 0, H = 1 };
                     const ull A[] = {c[0][l], c[0][l + d]};
                     const ull B[] = {c[1][l], c[1][l + d]};
                     const ull C[] = {c[2][l], c[2][l + d]};
-                    // [1 0  1  0  1  0] [ A[L] ]
-                    // [0 1  0  1  0  1] [ A[H] ]
-                    // [1 0  0 -1 -1  1] [ B[L] ]
-                    // [0 1  1 -1 -1  0] [ B[H] ]
-                    // [1 0 -1  1  0 -1] [ C[L] ]
-                    // [0 1 -1  0  1 -1] [ C[H] ]
-                    c[0][l]     = A[L] + B[L] + C[L];
-                    c[0][l + d] = A[H] + B[H] + C[H];
-                    c[1][l]     = A[L] - B[H] - C[L] + C[H];
-                    c[1][l + d] = A[H] + B[L] - B[H] - C[L];
-                    c[2][l]     = A[L] - B[L] + B[H] - C[H];
-                    c[2][l + d] = A[H] - B[L] + C[L] - C[H];
-                }
-            }
-        }
-    }
-}
-
-// Compute S[y] / (y^delta - x^(2 * d)) -> ...
-void FFT2(ull a[], int d, int delta) {
-    assert(delta <= d);
-    for (int i = delta; i >= 3; i /= 3) {
-        const int block = delta / i;
-        std::vector<int> e(block);
-        for (int j = e[0] = 1; j < block; ++j)
-            e[j] = e[j - PowOf3(Log3Floor(j))] + block / PowOf3(Log3Floor(j));
-        for (int j = 0; j < block; ++j) {
-            const int o  = e[j] * (d / (block * 3)) % (d * 3);
-            const int n  = d * 2 * (i / 3);
-            ull *const b = a + j * n * 3;
-            for (int k = 0; k < i / 3; ++k) {
-                ull *const c[] = {b + n * 0 + k * d * 2, b + n * 1 + k * d * 2,
-                                  b + n * 2 + k * d * 2};
-                MultipliedByXToTheN(c[1], d, o * 2);
-                MultipliedByXToTheN(c[2], d, o * 4);
-                for (int l = 0; l < d; ++l) {
-                    enum { L = 0, H = 1 };
-                    const ull A[] = {c[0][l], c[0][l + d]};
-                    const ull B[] = {c[1][l], c[1][l + d]};
-                    const ull C[] = {c[2][l], c[2][l + d]};
-                    // [1 0  1  0  1  0] [ A[L] ]
-                    // [0 1  0  1  0  1] [ A[H] ]
-                    // [1 0 -1  1  0 -1] [ B[L] ]
-                    // [0 1 -1  0  1 -1] [ B[H] ]
-                    // [1 0  0 -1 -1  1] [ C[L] ]
-                    // [0 1  1 -1 -1  0] [ C[H] ]
-                    c[0][l]     = A[L] + B[L] + C[L];
-                    c[0][l + d] = A[H] + B[H] + C[H];
-                    c[1][l]     = A[L] - B[L] + B[H] - C[H];
-                    c[1][l + d] = A[H] - B[L] + C[L] - C[H];
-                    c[2][l]     = A[L] - B[H] - C[L] + C[H];
-                    c[2][l + d] = A[H] + B[L] - B[H] - C[L];
+                    if constexpr (E_MULTIPLIER == 1) {
+                        // [1 0  1  0  1  0] [ A[L] ]
+                        // [0 1  0  1  0  1] [ A[H] ]
+                        // [1 0  0 -1 -1  1] [ B[L] ]
+                        // [0 1  1 -1 -1  0] [ B[H] ]
+                        // [1 0 -1  1  0 -1] [ C[L] ]
+                        // [0 1 -1  0  1 -1] [ C[H] ]
+                        c[0][l]     = A[L] + B[L] + C[L];
+                        c[0][l + d] = A[H] + B[H] + C[H];
+                        c[1][l]     = A[L] - B[H] - C[L] + C[H];
+                        c[1][l + d] = A[H] + B[L] - B[H] - C[L];
+                        c[2][l]     = A[L] - B[L] + B[H] - C[H];
+                        c[2][l + d] = A[H] - B[L] + C[L] - C[H];
+                    } else if constexpr (E_MULTIPLIER == 2) {
+                        // [1 0  1  0  1  0] [ A[L] ]
+                        // [0 1  0  1  0  1] [ A[H] ]
+                        // [1 0 -1  1  0 -1] [ B[L] ]
+                        // [0 1 -1  0  1 -1] [ B[H] ]
+                        // [1 0  0 -1 -1  1] [ C[L] ]
+                        // [0 1  1 -1 -1  0] [ C[H] ]
+                        c[0][l]     = A[L] + B[L] + C[L];
+                        c[0][l + d] = A[H] + B[H] + C[H];
+                        c[1][l]     = A[L] - B[L] + B[H] - C[H];
+                        c[1][l + d] = A[H] - B[L] + C[L] - C[H];
+                        c[2][l]     = A[L] - B[H] - C[L] + C[H];
+                        c[2][l + d] = A[H] + B[L] - B[H] - C[L];
+                    }
                 }
             }
         }
@@ -157,10 +133,11 @@ void FFT(ull a[], int d, int delta) {
         }
     }
     // a[] stores S[y] / (y^delta - x^d), b[] stores S[y] / (y^delta - x^(2*d))
-    FFT1(a, d, delta), FFT2(b, d, delta);
+    FFT_<1>(a, d, delta), FFT_<2>(b, d, delta);
 }
 
-void InvFFT1(ull a[], int d, int delta) {
+template<int E_MULTIPLIER> void InvFFT_(ull a[], int d, int delta) {
+    static_assert(E_MULTIPLIER == 1 || E_MULTIPLIER == 2);
     assert(delta <= d);
     for (int i = 3; i <= delta; i *= 3) {
         const int block = delta / i;
@@ -180,51 +157,24 @@ void InvFFT1(ull a[], int d, int delta) {
                     const ull B[] = {c[1][l], c[1][l + d]};
                     const ull C[] = {c[2][l], c[2][l + d]};
                     // Find the inverse matrix in FFT
-                    c[0][l]     = A[L] + B[L] + C[L];
-                    c[0][l + d] = A[H] + B[H] + C[H];
-                    c[1][l]     = A[L] - B[L] + B[H] - C[H];
-                    c[1][l + d] = A[H] - B[L] + C[L] - C[H];
-                    c[2][l]     = A[L] - B[H] - C[L] + C[H];
-                    c[2][l + d] = A[H] + B[L] - B[H] - C[L];
+                    if constexpr (E_MULTIPLIER == 1) {
+                        c[0][l]     = A[L] + B[L] + C[L];
+                        c[0][l + d] = A[H] + B[H] + C[H];
+                        c[1][l]     = A[L] - B[L] + B[H] - C[H];
+                        c[1][l + d] = A[H] - B[L] + C[L] - C[H];
+                        c[2][l]     = A[L] - B[H] - C[L] + C[H];
+                        c[2][l + d] = A[H] + B[L] - B[H] - C[L];
+                    } else if constexpr (E_MULTIPLIER == 2) {
+                        c[0][l]     = A[L] + B[L] + C[L];
+                        c[0][l + d] = A[H] + B[H] + C[H];
+                        c[1][l]     = A[L] - B[H] - C[L] + C[H];
+                        c[1][l + d] = A[H] + B[L] - B[H] - C[L];
+                        c[2][l]     = A[L] - B[L] + B[H] - C[H];
+                        c[2][l + d] = A[H] - B[L] + C[L] - C[H];
+                    }
                 }
-                MultipliedByXToTheN(c[1], d, o * -1);
-                MultipliedByXToTheN(c[2], d, o * -2);
-            }
-        }
-    }
-    const ull inv_delta = InvMod(delta);
-    for (int i = 0; i < d * 2 * delta; ++i) a[i] *= inv_delta;
-}
-
-void InvFFT2(ull a[], int d, int delta) {
-    assert(delta <= d);
-    for (int i = 3; i <= delta; i *= 3) {
-        const int block = delta / i;
-        std::vector<int> e(block);
-        for (int j = e[0] = 1; j < block; ++j)
-            e[j] = e[j - PowOf3(Log3Floor(j))] + block / PowOf3(Log3Floor(j));
-        for (int j = 0; j < block; ++j) {
-            const int o  = e[j] * (d / (block * 3)) % (d * 3);
-            const int n  = d * 2 * (i / 3);
-            ull *const b = a + j * n * 3;
-            for (int k = 0; k < i / 3; ++k) {
-                ull *const c[] = {b + n * 0 + k * d * 2, b + n * 1 + k * d * 2,
-                                  b + n * 2 + k * d * 2};
-                for (int l = 0; l < d; ++l) {
-                    enum { L = 0, H = 1 };
-                    const ull A[] = {c[0][l], c[0][l + d]};
-                    const ull B[] = {c[1][l], c[1][l + d]};
-                    const ull C[] = {c[2][l], c[2][l + d]};
-                    // Find the inverse matrix in FFT
-                    c[0][l]     = A[L] + B[L] + C[L];
-                    c[0][l + d] = A[H] + B[H] + C[H];
-                    c[1][l]     = A[L] - B[H] - C[L] + C[H];
-                    c[1][l + d] = A[H] + B[L] - B[H] - C[L];
-                    c[2][l]     = A[L] - B[L] + B[H] - C[H];
-                    c[2][l + d] = A[H] - B[L] + C[L] - C[H];
-                }
-                MultipliedByXToTheN(c[1], d, o * -2);
-                MultipliedByXToTheN(c[2], d, o * -4);
+                MultipliedByXToTheN(c[1], d, o * -1 * E_MULTIPLIER);
+                MultipliedByXToTheN(c[2], d, o * -2 * E_MULTIPLIER);
             }
         }
     }
@@ -234,7 +184,7 @@ void InvFFT2(ull a[], int d, int delta) {
 
 void InvFFT(ull a[], int d, int delta) {
     ull *const b = a + delta * 2 * d;
-    InvFFT1(a, d, delta), InvFFT2(b, d, delta);
+    InvFFT_<1>(a, d, delta), InvFFT_<2>(b, d, delta);
     const ull inv_3 = InvMod(3);
     for (int i = 0; i < delta; ++i) {
         ull *const c[] = {a + i * d * 2, b + i * d * 2};
