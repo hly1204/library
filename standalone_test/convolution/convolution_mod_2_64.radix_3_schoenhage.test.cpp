@@ -70,15 +70,10 @@ void FFT1(ull a[], int d, int delta) {
             const int n  = d * 2 * (i / 3);
             ull *const b = a + j * n * 3;
             for (int k = 0; k < i / 3; ++k) {
-                MultipliedByXToTheN(b + n * 1 + k * d * 2, d, o * 1);
-                MultipliedByXToTheN(b + n * 2 + k * d * 2, d, o * 2);
-            }
-            for (int k = 0; k < i / 3; ++k) {
-                ull *const c[] = {
-                    b + n * 0 + k * d * 2,
-                    b + n * 1 + k * d * 2,
-                    b + n * 2 + k * d * 2,
-                };
+                ull *const c[] = {b + n * 0 + k * d * 2, b + n * 1 + k * d * 2,
+                                  b + n * 2 + k * d * 2};
+                MultipliedByXToTheN(c[1], d, o * 1);
+                MultipliedByXToTheN(c[2], d, o * 2);
                 for (int l = 0; l < d; ++l) {
                     enum { L = 0, H = 1 };
                     const ull A[] = {c[0][l], c[0][l + d]};
@@ -114,15 +109,10 @@ void FFT2(ull a[], int d, int delta) {
             const int n  = d * 2 * (i / 3);
             ull *const b = a + j * n * 3;
             for (int k = 0; k < i / 3; ++k) {
-                MultipliedByXToTheN(b + n * 1 + k * d * 2, d, o * 2);
-                MultipliedByXToTheN(b + n * 2 + k * d * 2, d, o * 4);
-            }
-            for (int k = 0; k < i / 3; ++k) {
-                ull *const c[] = {
-                    b + n * 0 + k * d * 2,
-                    b + n * 1 + k * d * 2,
-                    b + n * 2 + k * d * 2,
-                };
+                ull *const c[] = {b + n * 0 + k * d * 2, b + n * 1 + k * d * 2,
+                                  b + n * 2 + k * d * 2};
+                MultipliedByXToTheN(c[1], d, o * 2);
+                MultipliedByXToTheN(c[2], d, o * 4);
                 for (int l = 0; l < d; ++l) {
                     enum { L = 0, H = 1 };
                     const ull A[] = {c[0][l], c[0][l + d]};
@@ -181,11 +171,8 @@ void InvFFT1(ull a[], int d, int delta) {
             const int n  = d * 2 * (i / 3);
             ull *const b = a + j * n * 3;
             for (int k = 0; k < i / 3; ++k) {
-                ull *const c[] = {
-                    b + n * 0 + k * d * 2,
-                    b + n * 1 + k * d * 2,
-                    b + n * 2 + k * d * 2,
-                };
+                ull *const c[] = {b + n * 0 + k * d * 2, b + n * 1 + k * d * 2,
+                                  b + n * 2 + k * d * 2};
                 for (int l = 0; l < d; ++l) {
                     enum { L = 0, H = 1 };
                     const ull A[] = {c[0][l], c[0][l + d]};
@@ -199,10 +186,8 @@ void InvFFT1(ull a[], int d, int delta) {
                     c[2][l]     = A[L] - B[H] - C[L] + C[H];
                     c[2][l + d] = A[H] + B[L] - B[H] - C[L];
                 }
-            }
-            for (int k = 0; k < i / 3; ++k) {
-                MultipliedByXToTheN(b + n * 1 + k * d * 2, d, o * -1);
-                MultipliedByXToTheN(b + n * 2 + k * d * 2, d, o * -2);
+                MultipliedByXToTheN(c[1], d, o * -1);
+                MultipliedByXToTheN(c[2], d, o * -2);
             }
         }
     }
@@ -222,11 +207,8 @@ void InvFFT2(ull a[], int d, int delta) {
             const int n  = d * 2 * (i / 3);
             ull *const b = a + j * n * 3;
             for (int k = 0; k < i / 3; ++k) {
-                ull *const c[] = {
-                    b + n * 0 + k * d * 2,
-                    b + n * 1 + k * d * 2,
-                    b + n * 2 + k * d * 2,
-                };
+                ull *const c[] = {b + n * 0 + k * d * 2, b + n * 1 + k * d * 2,
+                                  b + n * 2 + k * d * 2};
                 for (int l = 0; l < d; ++l) {
                     enum { L = 0, H = 1 };
                     const ull A[] = {c[0][l], c[0][l + d]};
@@ -240,10 +222,8 @@ void InvFFT2(ull a[], int d, int delta) {
                     c[2][l]     = A[L] - B[L] + B[H] - C[H];
                     c[2][l + d] = A[H] - B[L] + C[L] - C[H];
                 }
-            }
-            for (int k = 0; k < i / 3; ++k) {
-                MultipliedByXToTheN(b + n * 1 + k * d * 2, d, o * -2);
-                MultipliedByXToTheN(b + n * 2 + k * d * 2, d, o * -4);
+                MultipliedByXToTheN(c[1], d, o * -2);
+                MultipliedByXToTheN(c[2], d, o * -4);
             }
         }
     }
@@ -271,6 +251,11 @@ void InvFFT(ull a[], int d, int delta) {
 }
 
 // Compute ab mod (x^(2*n) + x^n + 1)
+// see:
+// [1]: Daniel J. Bernstein. "Multidigit multiplication for mathematicians."
+//      Accepted to Advances in Applied Mathematics,
+//      but withdrawn by author to prevent irreparable mangling by Academic Press.
+//      https://cr.yp.to/papers.html#m3
 void Schoenhage(const ull a[], const ull b[], ull ab[], int n) {
     assert(IsPowOf3(n));
     enum { Threshold = 3 * 3 * 3 };
