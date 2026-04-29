@@ -243,7 +243,7 @@ void InvFFT(ull a[], int d, int delta) {
             const ull B[] = {c[1][j], c[1][j + d]};
             c[0][j]       = (A[L] + A[H] + B[L] * 2 - B[H]) * inv_3;
             c[0][j + d]   = (-A[L] + A[H] * 2 + B[L] + B[H]) * inv_3;
-            c[1][j]       = (A[L] * 2ull - A[H] - B[L] * 2ull + B[H]) * inv_3;
+            c[1][j]       = (A[L] * 2 - A[H] - B[L] * 2 + B[H]) * inv_3;
             c[1][j + d]   = (A[L] + A[H] - B[L] - B[H]) * inv_3;
         }
         MultipliedByXToTheN(c[1], d, -d);
