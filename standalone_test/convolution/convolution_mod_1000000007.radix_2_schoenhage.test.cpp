@@ -100,6 +100,7 @@ void Schoenhage(const uint a[], const uint b[], uint ab[], int n) {
     // This function should be called Schönhage's algorithm, see [1].
     assert(__builtin_popcount(n) == 1);
     enum { Threshold = 32 };
+    static_assert(Threshold >= 4, "If Threshold < 4, this algorithm will never halt.");
     if (n <= Threshold) {
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n - i; ++j) ab[i + j] = (ab[i + j] + (ull)a[i] * b[j]) % MOD;
@@ -108,10 +109,9 @@ void Schoenhage(const uint a[], const uint b[], uint ab[], int n) {
         }
         return;
     }
-    const int k = __builtin_ctz(n);
-    assert(k > 2);
-    const int d     = 1 << (k / 2); // d     = 2^floor(k / 2)
-    const int delta = n / d;        // delta = 2^ceil(k / 2)
+    const int k     = __builtin_ctz(n);
+    const int d     = 1 << (k / 2);
+    const int delta = n / d;
     // R[x] / (x^(d * delta) + 1) -> (R[x][y] / (y^delta + 1)) / (y - x^d)
     // Lift to R[x][y] / (y^delta + 1)
     // Since polynomials in R[x][y] / (y^delta + 1) have x-degree < d,
@@ -145,6 +145,7 @@ void Schoenhage(const uint a[], const uint b[], uint ab[], int n) {
 void CyclicSchoenhage(const uint a[], const uint b[], uint ab[], int n) {
     assert(__builtin_popcount(n) == 1);
     enum { Threshold = 32 };
+    static_assert(Threshold >= 4, "If Threshold < 4, this algorithm will never halt.");
     if (n <= Threshold) {
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n - i; ++j) ab[i + j] = (ab[i + j] + (ull)a[i] * b[j]) % MOD;
@@ -153,10 +154,9 @@ void CyclicSchoenhage(const uint a[], const uint b[], uint ab[], int n) {
         }
         return;
     }
-    const int k = __builtin_ctz(n);
-    assert(k > 2);
-    const int d     = 1 << (k / 2); // d     = 2^floor(k / 2)
-    const int delta = n / d;        // delta = 2^ceil(k / 2)
+    const int k     = __builtin_ctz(n);
+    const int d     = 1 << (k / 2);
+    const int delta = n / d;
     // R[x] / (x^(d * delta) - 1) -> (R[x][y] / (y^delta - 1)) / (y - x^d)
     // Lift to R[x][y] / (y^delta - 1)
     // Map to (R[x] / (x^(2*d) + 1))[y] / (y^delta - 1)
