@@ -210,6 +210,7 @@ void InvFFT(ull a[], int d, int delta) {
 void Schoenhage(const ull a[], const ull b[], ull ab[], int n) {
     assert(IsPowOf3(n));
     enum { Threshold = 3 * 3 * 3 };
+    static_assert(Threshold >= 3);
     if (n <= Threshold) {
         // (a[L] + a[H]*x^n) * (b[L] + b[H]*x^n)
         //   = (a[L]*b[L]) + (a[L]*b[H] + a[H]*b[L])*x^n + a[H]*b[H]*(-x^n - 1))
@@ -231,8 +232,7 @@ void Schoenhage(const ull a[], const ull b[], ull ab[], int n) {
         }
         return;
     }
-    const int k = Log3Ceil(n);
-    assert(k > 2);
+    const int k     = Log3Ceil(n);
     const int d     = PowOf3((k + 1) / 2);
     const int delta = n / d;
     // R[x] / (x^(2 * d * delta) + x^(d * delta) + 1) ->
