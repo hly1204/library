@@ -195,54 +195,7 @@ $$
 \end{bmatrix}
 $$
 
-which gives us the implementation of IFFT. In my code, I used two different matrix when $E$ is different because I want to store the result in same order but without modify the $e(i)$ stuff. Use the following code snippet to check what we are computing during each step of FFT in my code if one is curious about.
-
-```c++
-// real code omitted
-#include <cassert>
-#include <cstdio>
-#include <vector>
-
-using ull = unsigned long long;
-// clang-format off
-int PowOf3(int e) { for (int x = 3, res = 1;; x *= x) { if (e & 1) res *= x; if ((e /= 2) == 0) return res; } }
-int Log3Ceil(int a) { int e = 0; for (int c = 1; c < a; c *= 3) ++e; return e; }
-int Log3Floor(int a) { const int e = Log3Ceil(a); return a == PowOf3(e) ? e : e - 1; }
-// clang-format on
-
-template<int E_MULTIPLIER> void FFT_(ull a[], int d, int delta) {
-    static_assert(E_MULTIPLIER == 1 || E_MULTIPLIER == 2);
-    assert(delta <= d);
-    for (int i = delta; i >= 3; i /= 3) {
-        const int block = delta / i;
-        std::vector<int> e(block);
-        for (int j = e[0] = 1; j < block; ++j)
-            e[j] = e[j - PowOf3(Log3Floor(j))] + block / PowOf3(Log3Floor(j));
-        for (int j = 0; j < block; ++j) {
-            const int ee[] = {
-                (e[j] + block * 3 * 0) * (d / (block * 3)) * E_MULTIPLIER % (d * 3),
-                (e[j] + block * 3 * 1) * (d / (block * 3)) * E_MULTIPLIER % (d * 3),
-                (e[j] + block * 3 * 2) * (d / (block * 3)) * E_MULTIPLIER % (d * 3),
-            };
-            std::printf("S[y] / (y^%3d - x^%3d) -> "
-                        "  S[y] / (y^%3d - x^%3d) "
-                        "× S[y] / (y^%3d - x^%3d) "
-                        "× S[y] / (y^%3d - x^%3d)\n",
-                        i, e[j] * (d / block) * E_MULTIPLIER % (d * 3), i / 3, ee[0], i / 3, ee[1],
-                        i / 3, ee[2]);
-        }
-    }
-}
-void FFT(ull a[], int d, int delta) { FFT_<1>(a, d, delta), FFT_<2>(a + delta * 2 * d, d, delta); }
-
-int main() {
-    const int d     = 27;
-    const int delta = 27;
-    std::vector<ull> A(delta * 2 * d * 2);
-    FFT(data(A), d, delta);
-    return 0;
-}
-```
+which gives us the implementation of IFFT.
 
 ## References
 

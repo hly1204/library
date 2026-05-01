@@ -51,65 +51,29 @@ void MultipliedByXToTheN(ull a[], int d, int n) {
     if (n) n_leq_d(a, d, n);
 }
 
-// Let S := (R[x] / (x^(2*d) + x^d + 1)),
-// Compute S[y] / (y^delta - x^(E_MULTIPLIER * 1 * d))
-//   -> S[y] / (y^(delta/3) - x^(E_MULTIPLIER * 1 * d/3))
-//   ×  S[y] / (y^(delta/3) - x^(E_MULTIPLIER * 4 * d/3))
-//   ×  S[y] / (y^(delta/3) - x^(E_MULTIPLIER * 7 * d/3))
-// ...
-template<int E_MULTIPLIER> void FFT_(ull a[], int d, int delta) {
-    static_assert(E_MULTIPLIER == 1 || E_MULTIPLIER == 2);
+void FFT3(ull a[], int d, int delta, int E) {
     assert(delta <= d);
-    for (int i = delta; i >= 3; i /= 3) {
-        const int block = delta / i;
-        std::vector<int> e(block);
-        for (int j = e[0] = 1; j < block; ++j)
-            e[j] = e[j - PowOf3(Log3Floor(j))] + block / PowOf3(Log3Floor(j));
-        for (int j = 0; j < block; ++j) {
-            const int o  = e[j] * (d / (block * 3)) % (d * 3);
-            const int n  = d * 2 * (i / 3);
-            ull *const b = a + j * n * 3;
-            for (int k = 0; k < i / 3; ++k) {
-                ull *const c[] = {b + n * 0 + k * d * 2, b + n * 1 + k * d * 2,
-                                  b + n * 2 + k * d * 2};
-                MultipliedByXToTheN(c[1], d, o * 1 * E_MULTIPLIER);
-                MultipliedByXToTheN(c[2], d, o * 2 * E_MULTIPLIER);
-                for (int l = 0; l < d; ++l) {
-                    enum { L = 0, H = 1 };
-                    const ull A[] = {c[0][l], c[0][l + d]};
-                    const ull B[] = {c[1][l], c[1][l + d]};
-                    const ull C[] = {c[2][l], c[2][l + d]};
-                    if constexpr (E_MULTIPLIER == 1) {
-                        // [1 0  1  0  1  0] [ A[L] ]
-                        // [0 1  0  1  0  1] [ A[H] ]
-                        // [1 0  0 -1 -1  1] [ B[L] ]
-                        // [0 1  1 -1 -1  0] [ B[H] ]
-                        // [1 0 -1  1  0 -1] [ C[L] ]
-                        // [0 1 -1  0  1 -1] [ C[H] ]
-                        c[0][l]     = A[L] + B[L] + C[L];
-                        c[0][l + d] = A[H] + B[H] + C[H];
-                        c[1][l]     = A[L] - B[H] - C[L] + C[H];
-                        c[1][l + d] = A[H] + B[L] - B[H] - C[L];
-                        c[2][l]     = A[L] - B[L] + B[H] - C[H];
-                        c[2][l + d] = A[H] - B[L] + C[L] - C[H];
-                    } else if constexpr (E_MULTIPLIER == 2) {
-                        // [1 0  1  0  1  0] [ A[L] ]
-                        // [0 1  0  1  0  1] [ A[H] ]
-                        // [1 0 -1  1  0 -1] [ B[L] ]
-                        // [0 1 -1  0  1 -1] [ B[H] ]
-                        // [1 0  0 -1 -1  1] [ C[L] ]
-                        // [0 1  1 -1 -1  0] [ C[H] ]
-                        c[0][l]     = A[L] + B[L] + C[L];
-                        c[0][l + d] = A[H] + B[H] + C[H];
-                        c[1][l]     = A[L] - B[L] + B[H] - C[H];
-                        c[1][l + d] = A[H] - B[L] + C[L] - C[H];
-                        c[2][l]     = A[L] - B[H] - C[L] + C[H];
-                        c[2][l + d] = A[H] + B[L] - B[H] - C[L];
-                    }
-                }
-            }
+    assert(E % delta == 0);
+    if (delta == 1) return;
+    const int n = d * 2 * (delta / 3);
+    for (int i = 0; i < delta / 3; ++i) {
+        ull *const b[] = {a + i * d * 2, a + i * d * 2 + n, a + i * d * 2 + n * 2};
+        MultipliedByXToTheN(b[1], d, E / 3 * 1);
+        MultipliedByXToTheN(b[2], d, E / 3 * 2);
+        for (int j = 0; j < d; ++j) {
+            enum { L = 0, H = 1 };
+            const ull A[] = {b[0][j + 0], b[0][j + d]};
+            const ull B[] = {b[1][j + 0], b[1][j + d]};
+            const ull C[] = {b[2][j + 0], b[2][j + d]};
+            b[0][j + 0]   = A[L] + B[L] + C[L];
+            b[0][j + d]   = A[H] + B[H] + C[H];
+            b[1][j + 0]   = A[L] - B[H] - C[L] + C[H];
+            b[1][j + d]   = A[H] + B[L] - B[H] - C[L];
+            b[2][j + 0]   = A[L] - B[L] + B[H] - C[H];
+            b[2][j + d]   = A[H] - B[L] + C[L] - C[H];
         }
     }
+    for (int i = 0; i < 3; ++i) FFT3(a + n * i, d, delta / 3, E / 3 + d * i);
 }
 
 // (R[x] / (x^(2*d) + x^(d) + 1))[y] / (y^(2*delta) + y^(delta) + 1)
@@ -132,65 +96,44 @@ void FFT(ull a[], int d, int delta) {
         }
     }
     // a[] stores S[y] / (y^delta - x^d), b[] stores S[y] / (y^delta - x^(2*d))
-    FFT_<1>(a, d, delta), FFT_<2>(b, d, delta);
+    FFT3(a, d, delta, d), FFT3(b, d, delta, d * 2);
 }
 
-template<int E_MULTIPLIER> void InvFFT_(ull a[], int d, int delta) {
-    static_assert(E_MULTIPLIER == 1 || E_MULTIPLIER == 2);
+void InvFFT3(ull a[], int d, int delta, int E) {
     assert(delta <= d);
-    for (int i = 3; i <= delta; i *= 3) {
-        const int block = delta / i;
-        std::vector<int> e(block);
-        for (int j = e[0] = 1; j < block; ++j)
-            e[j] = e[j - PowOf3(Log3Floor(j))] + block / PowOf3(Log3Floor(j));
-        for (int j = 0; j < block; ++j) {
-            const int o  = e[j] * (d / (block * 3)) % (d * 3);
-            const int n  = d * 2 * (i / 3);
-            ull *const b = a + j * n * 3;
-            for (int k = 0; k < i / 3; ++k) {
-                ull *const c[] = {b + n * 0 + k * d * 2, b + n * 1 + k * d * 2,
-                                  b + n * 2 + k * d * 2};
-                for (int l = 0; l < d; ++l) {
-                    enum { L = 0, H = 1 };
-                    const ull A[] = {c[0][l], c[0][l + d]};
-                    const ull B[] = {c[1][l], c[1][l + d]};
-                    const ull C[] = {c[2][l], c[2][l + d]};
-                    // Find the inverse matrix in FFT
-                    if constexpr (E_MULTIPLIER == 1) {
-                        c[0][l]     = A[L] + B[L] + C[L];
-                        c[0][l + d] = A[H] + B[H] + C[H];
-                        c[1][l]     = A[L] - B[L] + B[H] - C[H];
-                        c[1][l + d] = A[H] - B[L] + C[L] - C[H];
-                        c[2][l]     = A[L] - B[H] - C[L] + C[H];
-                        c[2][l + d] = A[H] + B[L] - B[H] - C[L];
-                    } else if constexpr (E_MULTIPLIER == 2) {
-                        c[0][l]     = A[L] + B[L] + C[L];
-                        c[0][l + d] = A[H] + B[H] + C[H];
-                        c[1][l]     = A[L] - B[H] - C[L] + C[H];
-                        c[1][l + d] = A[H] + B[L] - B[H] - C[L];
-                        c[2][l]     = A[L] - B[L] + B[H] - C[H];
-                        c[2][l + d] = A[H] - B[L] + C[L] - C[H];
-                    }
-                }
-                MultipliedByXToTheN(c[1], d, o * -1 * E_MULTIPLIER);
-                MultipliedByXToTheN(c[2], d, o * -2 * E_MULTIPLIER);
-            }
+    assert(E % delta == 0);
+    if (delta == 1) return;
+    const int n = d * 2 * (delta / 3);
+    for (int i = 0; i < 3; ++i) InvFFT3(a + n * i, d, delta / 3, E / 3 + d * i);
+    for (int i = 0; i < delta / 3; ++i) {
+        ull *const b[] = {a + i * d * 2, a + i * d * 2 + n, a + i * d * 2 + n * 2};
+        for (int j = 0; j < d; ++j) {
+            enum { L = 0, H = 1 };
+            const ull A[] = {b[0][j + 0], b[0][j + d]};
+            const ull B[] = {b[1][j + 0], b[1][j + d]};
+            const ull C[] = {b[2][j + 0], b[2][j + d]};
+            b[0][j + 0]   = A[L] + B[L] + C[L];
+            b[0][j + d]   = A[H] + B[H] + C[H];
+            b[1][j + 0]   = A[L] - B[L] + B[H] - C[H];
+            b[1][j + d]   = A[H] - B[L] + C[L] - C[H];
+            b[2][j + 0]   = A[L] - B[H] - C[L] + C[H];
+            b[2][j + d]   = A[H] + B[L] - B[H] - C[L];
         }
+        MultipliedByXToTheN(b[1], d, E / 3 * -1);
+        MultipliedByXToTheN(b[2], d, E / 3 * -2);
     }
-    const ull inv_delta = InvMod(delta);
-    for (int i = 0; i < d * 2 * delta; ++i) a[i] *= inv_delta;
 }
 
 void InvFFT(ull a[], int d, int delta) {
     ull *const b = a + delta * 2 * d;
-    InvFFT_<1>(a, d, delta), InvFFT_<2>(b, d, delta);
-    const ull inv_3 = InvMod(3);
+    InvFFT3(a, d, delta, d), InvFFT3(b, d, delta, d * 2);
+    const ull inv_3_delta = InvMod(delta * 3);
     for (int i = 0; i < delta; ++i) {
         ull *const c[] = {a + i * d * 2, b + i * d * 2};
         for (int j = 0; j < d; ++j) {
             enum { L = 0, H = 1 };
-            const ull A[] = {c[0][j] * inv_3, c[0][j + d] * inv_3};
-            const ull B[] = {c[1][j] * inv_3, c[1][j + d] * inv_3};
+            const ull A[] = {c[0][j] * inv_3_delta, c[0][j + d] * inv_3_delta};
+            const ull B[] = {c[1][j] * inv_3_delta, c[1][j + d] * inv_3_delta};
             c[0][j]       = A[L] + A[H] + B[L] + B[L] - B[H];
             c[0][j + d]   = -A[L] + A[H] + A[H] + B[L] + B[H];
             c[1][j]       = -A[L] + A[H] + A[H] + B[L] - B[H] - B[H];
@@ -216,15 +159,16 @@ void Schoenhage(const ull a[], const ull b[], ull ab[], int n) {
             enum { L = 0, H = 1 };
             const ull A[] = {a[i], a[i + n]};
             for (int j = 0; j < n; ++j) {
-                const ull B[] = {b[j], b[j + n]};
-                ab[i + j] += A[L] * B[L];
-                ab[i + j] -= A[H] * B[H];
-                const ull c = A[L] * B[H] + A[H] * B[L] - A[H] * B[H];
+                const ull B[]  = {b[j], b[j + n]};
+                const ull ALBL = A[L] * B[L];
+                const ull AHBH = A[H] * B[H];
+                const ull c    = (A[L] + A[H]) * (B[L] + B[H]) - ALBL - AHBH;
                 if (i + j < n) {
-                    ab[i + j + n] += c;
+                    ab[i + j] += ALBL - AHBH;
+                    ab[i + j + n] += c - AHBH;
                 } else {
-                    ab[i + j] -= c;
-                    ab[i + j - n] -= c;
+                    ab[i + j] += ALBL - c;
+                    ab[i + j - n] -= c - AHBH;
                 }
             }
         }
