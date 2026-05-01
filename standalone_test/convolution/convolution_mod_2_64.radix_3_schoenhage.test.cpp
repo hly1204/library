@@ -20,8 +20,7 @@ bool IsPowOf3(int a) {
 }
 
 int PowOf3(int e) {
-    int res = 1;
-    for (int x = 3;; x *= x) {
+    for (int x = 3, res = 1;; x *= x) {
         if (e & 1) res *= x;
         if ((e /= 2) == 0) return res;
     }
@@ -58,18 +57,17 @@ void FFT3(ull a[], int d, int delta, int E) {
     const int n = d * 2 * (delta / 3);
     for (int i = 0; i < delta / 3; ++i) {
         ull *const b[] = {a + i * d * 2, a + i * d * 2 + n, a + i * d * 2 + n * 2};
-        MultipliedByXToTheN(b[1], d, E / 3 * 1);
-        MultipliedByXToTheN(b[2], d, E / 3 * 2);
+        for (int j = 1; j <= 2; ++j) MultipliedByXToTheN(b[j], d, E / 3 * j);
         for (int j = 0; j < d; ++j) {
             enum { L = 0, H = 1 };
-            const ull A[] = {b[0][j + 0], b[0][j + d]};
-            const ull B[] = {b[1][j + 0], b[1][j + d]};
-            const ull C[] = {b[2][j + 0], b[2][j + d]};
-            b[0][j + 0]   = A[L] + B[L] + C[L];
+            const ull A[] = {b[0][j], b[0][j + d]};
+            const ull B[] = {b[1][j], b[1][j + d]};
+            const ull C[] = {b[2][j], b[2][j + d]};
+            b[0][j]       = A[L] + B[L] + C[L];
             b[0][j + d]   = A[H] + B[H] + C[H];
-            b[1][j + 0]   = A[L] - B[H] - C[L] + C[H];
+            b[1][j]       = A[L] - B[H] - C[L] + C[H];
             b[1][j + d]   = A[H] + B[L] - B[H] - C[L];
-            b[2][j + 0]   = A[L] - B[L] + B[H] - C[H];
+            b[2][j]       = A[L] - B[L] + B[H] - C[H];
             b[2][j + d]   = A[H] - B[L] + C[L] - C[H];
         }
     }
@@ -109,18 +107,17 @@ void InvFFT3(ull a[], int d, int delta, int E) {
         ull *const b[] = {a + i * d * 2, a + i * d * 2 + n, a + i * d * 2 + n * 2};
         for (int j = 0; j < d; ++j) {
             enum { L = 0, H = 1 };
-            const ull A[] = {b[0][j + 0], b[0][j + d]};
-            const ull B[] = {b[1][j + 0], b[1][j + d]};
-            const ull C[] = {b[2][j + 0], b[2][j + d]};
-            b[0][j + 0]   = A[L] + B[L] + C[L];
+            const ull A[] = {b[0][j], b[0][j + d]};
+            const ull B[] = {b[1][j], b[1][j + d]};
+            const ull C[] = {b[2][j], b[2][j + d]};
+            b[0][j]       = A[L] + B[L] + C[L];
             b[0][j + d]   = A[H] + B[H] + C[H];
-            b[1][j + 0]   = A[L] - B[L] + B[H] - C[H];
+            b[1][j]       = A[L] - B[L] + B[H] - C[H];
             b[1][j + d]   = A[H] - B[L] + C[L] - C[H];
-            b[2][j + 0]   = A[L] - B[H] - C[L] + C[H];
+            b[2][j]       = A[L] - B[H] - C[L] + C[H];
             b[2][j + d]   = A[H] + B[L] - B[H] - C[L];
         }
-        MultipliedByXToTheN(b[1], d, E / 3 * -1);
-        MultipliedByXToTheN(b[2], d, E / 3 * -2);
+        for (int j = 1; j <= 2; ++j) MultipliedByXToTheN(b[j], d, E / 3 * -j);
     }
 }
 
