@@ -112,7 +112,7 @@ where $\omega^2 + \omega + 1 = 0$, and the algorithm is invertible if $1 / (3t^2
 $$
 \begin{array}{ll}
   & \textbf{Algorithm}\operatorname{\mathsf{FFT}}(a, d, \delta, E) \\
-  & \textbf{Input}\text{: } a \in (R\lbrack x\rbrack / (x^{2d} + x^d + 1))\lbrack y\rbrack / (y^{\delta} - x^E), E \in 3\mathbb{N} \\
+  & \textbf{Input}\text{: } a \in (R\lbrack x\rbrack / (x^{2d} + x^d + 1))\lbrack y\rbrack / (y^{\delta} - x^E), \delta \leq d, \delta \mid E \\
   & \textbf{Output}\text{: } \begin{bmatrix}a \bmod{(y - x^{e_E(0)})} & \cdots & a \bmod{(y - x^{e_E(\delta - 1)})}\end{bmatrix} \\
 1 & \textbf{if } \delta = 1 \textbf{ then} \\
 2 & \qquad \textbf{return } \begin{bmatrix}a\end{bmatrix} \\
