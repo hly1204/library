@@ -28,8 +28,8 @@ $$
 8  & (\hat{a_0}, \hat{a_1}) \gets \left(\hat{a} \bmod{(y^{\delta} - x^d)}, \hat{a} \bmod{(y^{\delta} - x^{2d})}\right), (\hat{b_0}, \hat{b_1}) \gets \left(\hat{b} \bmod{(y^{\delta} - x^d)}, \hat{b} \bmod{(y^{\delta} - x^{2d})}\right) \\
 9  & \text{Apply Radix-3 FFT to } \hat{a_0}, \hat{a_1}, \hat{b_0}, \hat{b_1} \\
 10 & \textbf{for } i \gets 0 \textbf{ to } \delta - 1 \textbf{ do} \\
-11 & \qquad \hat{c_0} \bmod{(y - x^{e_1(i)})} \gets \operatorname{\mathsf{Schoenhage}}\left(\hat{a_0} \bmod{(y - x^{e_1(i)})}, \hat{b_0} \bmod{(y - x^{e_1(i)})}, d\right) \\
-12 & \qquad \hat{c_1} \bmod{(y - x^{e_2(i)})} \gets \operatorname{\mathsf{Schoenhage}}\left(\hat{a_1} \bmod{(y - x^{e_2(i)})}, \hat{b_1} \bmod{(y - x^{e_2(i)})}, d\right) \\
+11 & \qquad \hat{c_0} \bmod{(y - x^{e_d(i)})} \gets \operatorname{\mathsf{Schoenhage}}\left(\hat{a_0} \bmod{(y - x^{e_d(i)})}, \hat{b_0} \bmod{(y - x^{e_d(i)})}, d\right) \\
+12 & \qquad \hat{c_1} \bmod{(y - x^{e_{2d}(i)})} \gets \operatorname{\mathsf{Schoenhage}}\left(\hat{a_1} \bmod{(y - x^{e_{2d}(i)})}, \hat{b_1} \bmod{(y - x^{e_{2d}(i)})}, d\right) \\
 13 & \textbf{endfor} \\
 14 & \text{Apply Radix-3 IFFT to restore } \hat{c_0}, \hat{c_1} \\
 15 & \text{Use FFT trick to restore } \hat{a}\hat{b} \text{ from } \hat{c_0}, \hat{c_1} \\
