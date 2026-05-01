@@ -121,15 +121,14 @@ void FFT(ull a[], int d, int delta) {
     ull *const b = a + delta * 2 * d;
     for (int i = 0; i < delta; ++i) {
         ull *const c[] = {a + i * d * 2, b + i * d * 2};
-        MultipliedByXToTheN(c[1], d, d);
         for (int j = 0; j < d; ++j) {
             enum { L = 0, H = 1 };
             const ull A[] = {c[0][j], c[0][j + d]};
             const ull B[] = {c[1][j], c[1][j + d]};
-            c[0][j]       = A[L] + B[L];
-            c[0][j + d]   = A[H] + B[H];
-            c[1][j]       = A[L] - B[H];
-            c[1][j + d]   = A[H] + B[L] - B[H];
+            c[0][j]       = A[L] - B[H];
+            c[0][j + d]   = A[H] + B[L] - B[H];
+            c[1][j]       = A[L] - B[L] + B[H];
+            c[1][j + d]   = A[H] - B[L];
         }
     }
     // a[] stores S[y] / (y^delta - x^d), b[] stores S[y] / (y^delta - x^(2*d))
@@ -190,14 +189,13 @@ void InvFFT(ull a[], int d, int delta) {
         ull *const c[] = {a + i * d * 2, b + i * d * 2};
         for (int j = 0; j < d; ++j) {
             enum { L = 0, H = 1 };
-            const ull A[] = {c[0][j], c[0][j + d]};
-            const ull B[] = {c[1][j], c[1][j + d]};
-            c[0][j]       = (A[L] + A[H] + B[L] * 2 - B[H]) * inv_3;
-            c[0][j + d]   = (-A[L] + A[H] * 2 + B[L] + B[H]) * inv_3;
-            c[1][j]       = (A[L] * 2 - A[H] - B[L] * 2 + B[H]) * inv_3;
-            c[1][j + d]   = (A[L] + A[H] - B[L] - B[H]) * inv_3;
+            const ull A[] = {c[0][j] * inv_3, c[0][j + d] * inv_3};
+            const ull B[] = {c[1][j] * inv_3, c[1][j + d] * inv_3};
+            c[0][j]       = A[L] + A[H] + B[L] + B[L] - B[H];
+            c[0][j + d]   = -A[L] + A[H] + A[H] + B[L] + B[H];
+            c[1][j]       = -A[L] + A[H] + A[H] + B[L] - B[H] - B[H];
+            c[1][j + d]   = -A[L] - A[L] + A[H] + B[L] + B[L] - B[H];
         }
-        MultipliedByXToTheN(c[1], d, -d);
     }
 }
 
