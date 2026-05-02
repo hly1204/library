@@ -9,7 +9,7 @@
 #include <vector>
 #include <wmmintrin.h>
 
-// Requires +, -, *, +=, -= for Tp
+// Requires +, -(both minus and negate), *, +=, -= for Tp
 template<typename Tp> struct Radix3Schoenhage {
     static bool IsPowOf3(int a) {
         int b = 1;
