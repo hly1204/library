@@ -37,7 +37,7 @@ $$
 \end{array}
 $$
 
-We will firstly show the algorithm for **Ln 8** in the pseudocode, thus **Ln 15** is also solved. Note that we could compute $A(x) x^N$ for any integer $N$ in $O(\min{(|N|, d)})$ inplace (Because memory movement is free in arithmetic model! e.g. Transposition of a matrix is free.) where $A \in R\lbrack x\rbrack / (x^{2d} + x^d + 1)$. It is also invertible, since $x^{3d} \equiv 1 \pmod{(x^{2d} + x^d + 1)}$.
+We will firstly show the algorithm for **Ln 8** in the pseudocode, thus **Ln 15** is also solved. Note that we could compute $A(x) x^N$ for any integer $N$ in $O(\min{(\lvert N \rvert, d)})$ inplace (Because memory movement is free in arithmetic model! e.g. Transposition of a matrix is free.) where $A \in R\lbrack x\rbrack / (x^{2d} + x^d + 1)$. It is also invertible, since $x^{3d} \equiv 1 \pmod{(x^{2d} + x^d + 1)}$.
 
 For $D(x) = L + Hx^d \in R\lbrack x\rbrack / (x^{2d} + x^d + 1)$ and $\deg L \lt d, \deg H \lt d$, we have
 
@@ -93,7 +93,7 @@ $$
 \end{bmatrix}
 $$
 
-so **Ln 15** is solved automatically. Now the only reamining problem is the Radix-3 FFT trick.
+so **Ln 15** is solved automatically. Now the only remaining problem is the Radix-3 FFT trick.
 
 ## Radix-3 FFT trick
 
