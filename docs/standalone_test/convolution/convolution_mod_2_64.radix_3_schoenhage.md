@@ -9,6 +9,8 @@ The idea here is learned from Bernstein's paper, the pseudocode here is modified
 
 I want to write this blog because there is almost no resource/code examples for describing the detailed steps for this algorithm. It is easy for mathematicians, but it is not such easy for programmers who want to really implement it.
 
+If you have read the blog [Fast convolution for 64-bit integers](https://codeforces.com/blog/entry/45298) on CodeForces, the idea is not new, see **Eric Dubois, Anastasios N. Venetsanopoulos, A new algorithm for the radix-3 FFT, IEEE Transactions on Acoustics, Speech, and Signal Processing 26 (1978), 222–225.** and combined it with Schönhage's trick.
+
 ## Radix-3 Schönhage's trick
 
 Given polynomials $a, b \in R\lbrack x\rbrack _ {\lt n}$, where $1/3 \in R$, Schönhage's trick will give us an algorithm works in time $O(n \log(n) \log(\log(n)))$ (arithmetic model) to compute $ab \bmod{(x^{2n} + x^n + 1)}$ where $n$ is a power of $3$. I will omit the details here for the proof of the time complexity which could be found in Mateer's paper.
