@@ -9,6 +9,7 @@
 #include <vector>
 #include <wmmintrin.h>
 
+// Requires +, -, *, +=, -= for Tp
 template<typename Tp> struct Radix3Schoenhage {
     static bool IsPowOf3(int a) {
         int b = 1;
@@ -118,6 +119,7 @@ template<typename Tp> struct Radix3Schoenhage {
             }
         }
     }
+    // Compute 3^e * ab and return e
     static int Schoenhage(const Tp a[], const Tp b[], Tp ab[], int n) {
         assert(IsPowOf3(n));
         enum { Threshold = 3 };
