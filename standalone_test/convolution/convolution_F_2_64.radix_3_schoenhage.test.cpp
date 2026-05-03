@@ -119,7 +119,7 @@ template<typename Tp> struct Radix3Schoenhage {
             }
         }
     }
-    // Compute 3^e * ab and return e
+    // Compute 3^e * ab mod (x^(2*n) + x^n + 1) and return e
     static int Schoenhage(const Tp a[], const Tp b[], Tp ab[], int n) {
         assert(IsPowOf3(n));
         enum { Threshold = 3 };
