@@ -119,31 +119,64 @@ template<typename Tp> struct Radix3Schoenhage {
             }
         }
     }
+    // reduce #*, but it may be slower if cost of * is small.
+    static int KaratsubaForNLeq3(const Tp a[], const Tp b[], Tp ab[], int n) {
+        // see:
+        // [1]: André Weimerskirch, Christof Paar:
+        //      Generalizations of the Karatsuba Algorithm for Efficient Implementations.
+        //      IACR Cryptol. ePrint Arch. 2006: 224 (2006)
+        //      https://eprint.iacr.org/2006/224
+
+        // ab mod (x^2 + x + 1), deg(a) < 2, deg(b) < 2
+        const auto KaratsubaForDegree1 = [](const Tp a[], const Tp b[], Tp ab[]) {
+            const Tp D0  = a[0] * b[0];
+            const Tp D1  = a[1] * b[1];
+            const Tp D01 = (a[0] + a[1]) * (b[0] + b[1]);
+            ab[0] += D0 - D1;
+            ab[1] += D01 - D0 - D1 - D1;
+        };
+        // ab mod (x^6 + x^3 + 1), deg(a) < 6, deg(b) < 6
+        const auto KaratsubaForDegree5 = [](const Tp a[], const Tp b[], Tp ab[]) {
+            // ab, deg(a) < 3, deg(b) < 3
+            const auto KaratsubaForDegree2 = [](const Tp a[], const Tp b[], Tp ab[]) {
+                const Tp D0  = a[0] * b[0];
+                const Tp D1  = a[1] * b[1];
+                const Tp D2  = a[2] * b[2];
+                const Tp D01 = (a[0] + a[1]) * (b[0] + b[1]);
+                const Tp D02 = (a[0] + a[2]) * (b[0] + b[2]);
+                const Tp D12 = (a[1] + a[2]) * (b[1] + b[2]);
+                ab[0] += D0;
+                ab[1] += D01 - D1 - D0;
+                ab[2] += D02 - D2 - D0 + D1;
+                ab[3] += D12 - D1 - D2;
+                ab[4] += D2;
+            };
+            const Tp A01[] = {a[0] + a[3], a[1] + a[4], a[2] + a[5]};
+            const Tp B01[] = {b[0] + b[3], b[1] + b[4], b[2] + b[5]};
+            Tp D0[6]; Tp D1[6]; Tp D01[6];
+            KaratsubaForDegree2(a, b, D0);
+            KaratsubaForDegree2(a + 3, b + 3, D1);
+            KaratsubaForDegree2(A01, B01, D01);
+            for (int i = 0; i < 6; ++i) D01[i] -= D0[i] + D1[i];
+            MultipliedByXToTheN(D01, 3, 3);
+            MultipliedByXToTheN(D1, 3, 6);
+            for (int i = 0; i < 6; ++i) ab[i] += D0[i] + D01[i] + D1[i];
+        };
+        if (n == 1) {
+            KaratsubaForDegree1(a, b, ab);
+        } else if (n == 3) {
+            KaratsubaForDegree5(a, b, ab);
+        } else {
+            __builtin_unreachable();
+        }
+        return 0;
+    }
     // Compute 3^e * ab mod (x^(2*n) + x^n + 1) and return e
     static int Schoenhage(const Tp a[], const Tp b[], Tp ab[], int n) {
         assert(IsPowOf3(n));
-        enum { Threshold = 3 };
+        enum { Threshold = 3 }; // set Threshold as small as possible to reduce #*
         static_assert(Threshold >= 3);
-        if (n <= Threshold) {
-            for (int i = 0; i < n; ++i) {
-                enum { L = 0, H = 1 };
-                const Tp A[] = {a[i], a[i + n]};
-                for (int j = 0; j < n; ++j) {
-                    const Tp B[]  = {b[j], b[j + n]};
-                    const Tp ALBL = A[L] * B[L];
-                    const Tp AHBH = A[H] * B[H];
-                    const Tp c    = (A[L] + A[H]) * (B[L] + B[H]) - ALBL - AHBH;
-                    if (i + j < n) {
-                        ab[i + j] += ALBL - AHBH;
-                        ab[i + j + n] += c - AHBH;
-                    } else {
-                        ab[i + j] += ALBL - c;
-                        ab[i + j - n] -= c - AHBH;
-                    }
-                }
-            }
-            return 0;
-        }
+        if (n <= Threshold) return KaratsubaForNLeq3(a, b, ab, n);
         const int k     = Log3Ceil(n);
         const int d     = PowOf3((k + 1) / 2);
         const int delta = n / d;
