@@ -25,61 +25,57 @@ int GetFFTSize(int n) {
     return len;
 }
 
-// (R[x] / (x^d + 1))[y] / (y^delta - x^d)
-//  -> (R[x] / (x^d + 1))[y] / (y^(delta/2) - x^(d/2))   // e[0] = 1,
-//  ×  (R[x] / (x^d + 1))[y] / (y^(delta/2) - x^(3*d/2)) // e[1] = 3,
-// ...
-void FFT(uint a[], int d, int delta) {
+// Compute a * x^n mod (x^d + 1)
+// Note that x^(2*d) = 1 mod (x^d + 1)
+void MultipliedByXToTheN(uint a[], int d, int n) {
+    if ((n %= d * 2) < 0) n += d * 2;
+    const auto n_leq_d = [](uint a[], int d, int n) {
+        assert(n <= d);
+        std::rotate(a, a + d - n, a + d);
+        for (int i = 0; i < n; ++i)
+            if (a[i]) a[i] = MOD - a[i];
+    };
+    for (; n >= d; n -= d) n_leq_d(a, d, d);
+    if (n) n_leq_d(a, d, n);
+}
+
+// Apply radix-2 FFT over (R[x] / (x^d + 1))[y] / (y^delta - x^E)
+void FFT(uint a[], int d, int delta, int E) {
     assert(delta <= d);
-    for (int i = delta; i >= 2; i /= 2) {
-        const int block = delta / i;
-        std::vector<int> e(block);
-        e[0] = 1;
-        for (int j = 1; j < block; ++j) e[j] = e[j & (j - 1)] + (block >> __builtin_ctz(j));
-        for (int j = 0; j < block; ++j) {
-            const int o   = d / (block * 2) * e[j] % d;
-            const int n   = d * (i / 2);
-            uint *const b = a + j * n * 2;
-            for (int k = 0; k < i / 2; ++k) {
-                uint *const c = b + n + k * d;
-                std::rotate(c, c + d - o, c + d);
-                for (int l = 0; l < o; ++l)
-                    if (c[l]) c[l] = MOD - c[l];
-            }
-            for (int k = 0; k < n; ++k) {
-                const uint u = b[k];
-                if ((b[k] += b[k + n]) >= MOD) b[k] -= MOD;
-                if ((b[k + n] = u + MOD - b[k + n]) >= MOD) b[k + n] -= MOD;
-            }
+    assert(E % delta == 0);
+    if (delta == 1) return;
+    const int n = d * (delta / 2);
+    for (int i = 0; i < delta / 2; ++i) {
+        uint *const b[] = {a + i * d, a + i * d + n};
+        MultipliedByXToTheN(b[1], d, E / 2);
+        for (int j = 0; j < d; ++j) {
+            const uint u = b[0][j];
+            if ((b[0][j] += b[1][j]) >= MOD) b[0][j] -= MOD;
+            if ((b[1][j] = u + MOD - b[1][j]) >= MOD) b[1][j] -= MOD;
         }
     }
+    for (int i = 0; i < 2; ++i) FFT(a + n * i, d, delta / 2, E / 2 + d * i);
 }
 
 // Constraints: 1/2 in R
-void InvFFT(uint a[], int d, int delta) {
-    assert(delta <= d);
-    for (int i = 2; i <= delta; i *= 2) {
-        const int block = delta / i;
-        std::vector<int> e(block);
-        e[0] = 1;
-        for (int j = 1; j < block; ++j) e[j] = e[j & (j - 1)] + (block >> __builtin_ctz(j));
-        for (int j = 0; j < block; ++j) {
-            const int o   = d / (block * 2) * e[j] % d;
-            const int n   = d * (i / 2);
-            uint *const b = a + j * n * 2;
-            for (int k = 0; k < n; ++k) {
-                const uint u = b[k];
-                if ((b[k] += b[k + n]) >= MOD) b[k] -= MOD;
-                if ((b[k + n] = u + MOD - b[k + n]) >= MOD) b[k + n] -= MOD;
+void InvFFT(uint a[], int d, int delta, int E) {
+    const auto InvFFT_ = [](auto &&InvFFT_, uint a[], int d, int delta, int E) {
+        assert(delta <= d);
+        assert(E % delta == 0);
+        if (delta == 1) return;
+        const int n = d * (delta / 2);
+        for (int i = 0; i < 2; ++i) InvFFT_(InvFFT_, a + n * i, d, delta / 2, E / 2 + d * i);
+        for (int i = 0; i < delta / 2; ++i) {
+            uint *const b[] = {a + i * d, a + i * d + n};
+            for (int j = 0; j < d; ++j) {
+                const uint u = b[0][j];
+                if ((b[0][j] += b[1][j]) >= MOD) b[0][j] -= MOD;
+                if ((b[1][j] = u + MOD - b[1][j]) >= MOD) b[1][j] -= MOD;
             }
-            for (int k = 0; k < i / 2; ++k) {
-                uint *const c = b + n + k * d;
-                for (int l = 0; l < o; ++l)
-                    if (c[l]) c[l] = MOD - c[l];
-                std::rotate(c, c + o, c + d);
-            }
+            MultipliedByXToTheN(b[1], d, -E / 2);
         }
-    }
+    };
+    InvFFT_(InvFFT_, a, d, delta, E);
     const uint inv_delta = InvMod(delta);
     for (int i = 0; i < d * delta; ++i) a[i] = (ull)a[i] * inv_delta % MOD;
 }
@@ -125,11 +121,11 @@ void Schoenhage(const uint a[], const uint b[], uint ab[], int n) {
     for (int i = 0; i < delta; ++i)
         for (int j = 0; j < d; ++j)
             a_hat[i * d * 2 + j] = a[i * d + j], b_hat[i * d * 2 + j] = b[i * d + j];
-    FFT(data(a_hat), d * 2, delta), FFT(data(b_hat), d * 2, delta);
+    FFT(data(a_hat), d * 2, delta, d * 2), FFT(data(b_hat), d * 2, delta, d * 2);
     for (int i = 0; i < delta; ++i)
         Schoenhage(data(a_hat) + i * d * 2, data(b_hat) + i * d * 2, data(ab_hat) + i * d * 2,
                    d * 2);
-    InvFFT(data(ab_hat), d * 2, delta);
+    InvFFT(data(ab_hat), d * 2, delta, d * 2);
     for (int i = 0; i < delta; ++i)
         for (int j = 0; j < d * 2; ++j)
             if (i * d + j < n) {
@@ -164,69 +160,12 @@ void CyclicSchoenhage(const uint a[], const uint b[], uint ab[], int n) {
     for (int i = 0; i < delta; ++i)
         for (int j = 0; j < d; ++j)
             a_hat[i * d * 2 + j] = a[i * d + j], b_hat[i * d * 2 + j] = b[i * d + j];
-
-    // (R[x] / (x^d + 1))[y] / (y^delta - 1)
-    //  -> (R[x] / (x^d + 1))[y] / (y^(delta/2) - 1)
-    //  ×  (R[x] / (x^d + 1))[y] / (y^(delta/2) - x^d)
-    // ...
-    const auto SpecialFFT = [](uint a[], int d, int delta) {
-        assert(delta <= d);
-        std::vector<int> e(delta);
-        e[0] = 0;
-        for (int j = 1; j < delta; ++j) e[j] = e[j & (j - 1)] + (d >> (__builtin_ctz(j) + 1));
-        for (int i = delta; i >= 2; i /= 2) {
-            const int block = delta / i;
-            for (int j = 0; j < block; ++j) {
-                const int n   = d * (i / 2);
-                uint *const b = a + j * n * 2;
-                for (int k = 0; k < i / 2; ++k) {
-                    uint *const c = b + n + k * d;
-                    std::rotate(c, c + d - e[j], c + d);
-                    for (int l = 0; l < e[j]; ++l)
-                        if (c[l]) c[l] = MOD - c[l];
-                }
-                for (int k = 0; k < n; ++k) {
-                    const uint u = b[k];
-                    if ((b[k] += b[k + n]) >= MOD) b[k] -= MOD;
-                    if ((b[k + n] = u + MOD - b[k + n]) >= MOD) b[k + n] -= MOD;
-                }
-            }
-        }
-    };
-
-    const auto SpecialInvFFT = [](uint a[], int d, int delta) {
-        assert(delta <= d);
-        std::vector<int> e(delta);
-        e[0] = 0;
-        for (int j = 1; j < delta; ++j) e[j] = e[j & (j - 1)] + (d >> (__builtin_ctz(j) + 1));
-        for (int i = 2; i <= delta; i *= 2) {
-            const int block = delta / i;
-            for (int j = 0; j < block; ++j) {
-                const int n   = d * (i / 2);
-                uint *const b = a + j * n * 2;
-                for (int k = 0; k < n; ++k) {
-                    const uint u = b[k];
-                    if ((b[k] += b[k + n]) >= MOD) b[k] -= MOD;
-                    if ((b[k + n] = u + MOD - b[k + n]) >= MOD) b[k + n] -= MOD;
-                }
-                for (int k = 0; k < i / 2; ++k) {
-                    uint *const c = b + n + k * d;
-                    for (int l = 0; l < e[j]; ++l)
-                        if (c[l]) c[l] = MOD - c[l];
-                    std::rotate(c, c + e[j], c + d);
-                }
-            }
-        }
-        const uint inv_delta = InvMod(delta);
-        for (int i = 0; i < d * delta; ++i) a[i] = (ull)a[i] * inv_delta % MOD;
-    };
-
-    SpecialFFT(data(a_hat), d * 2, delta), SpecialFFT(data(b_hat), d * 2, delta);
+    FFT(data(a_hat), d * 2, delta, 0), FFT(data(b_hat), d * 2, delta, 0);
     // Call the original Schönhage's algorithm (NOT CyclicSchoenhage).
     for (int i = 0; i < delta; ++i)
         Schoenhage(data(a_hat) + i * d * 2, data(b_hat) + i * d * 2, data(ab_hat) + i * d * 2,
                    d * 2);
-    SpecialInvFFT(data(ab_hat), d * 2, delta);
+    InvFFT(data(ab_hat), d * 2, delta, 0);
     for (int i = 0; i < delta; ++i)
         for (int j = 0; j < d * 2; ++j)
             if (i * d + j < n) {
