@@ -199,7 +199,7 @@ $$
 
 which gives us the implementation of IFFT.
 
-To reduce $\# \times$, we should use Karatsuba's algorithm when $n$ is so small that cannot be handled by recursion, or sometimes change to Nussbaumer trick as suggested by Bernstein. I learned this from Nachiaさん's code <https://judge.yosupo.jp/submission/351055>.
+To reduce $\sharp \times$, we should use Karatsuba's algorithm when $n$ is so small that cannot be handled by recursion, or sometimes change to Nussbaumer trick as suggested by Bernstein. I learned this from Nachiaさん's code <https://judge.yosupo.jp/submission/351055>.
 
 ## References
 

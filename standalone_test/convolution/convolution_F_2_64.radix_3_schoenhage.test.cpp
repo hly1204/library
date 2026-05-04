@@ -32,6 +32,7 @@ template<typename Tp> struct Radix3Schoenhage {
         return a == PowOf3(e) ? e : e - 1;
     }
     static void MultipliedByXToTheN(Tp a[], int d, int n) {
+        // One could optimize this function to reduce some memory & calculation.
         if ((n %= d * 3) < 0) n += d * 3;
         const auto n_leq_d = [](Tp a[], int d, int n) {
             assert(n <= d);
@@ -153,7 +154,7 @@ template<typename Tp> struct Radix3Schoenhage {
             };
             const Tp A01[] = {a[0] + a[3], a[1] + a[4], a[2] + a[5]};
             const Tp B01[] = {b[0] + b[3], b[1] + b[4], b[2] + b[5]};
-            Tp D0[6]; Tp D1[6]; Tp D01[6];
+            Tp D0[6], D1[6], D01[6];
             KaratsubaForDegree2(a, b, D0);
             KaratsubaForDegree2(a + 3, b + 3, D1);
             KaratsubaForDegree2(A01, B01, D01);
@@ -198,7 +199,7 @@ template<typename Tp> struct Radix3Schoenhage {
                     ab[i * d + j - n * 1] -= ab_hat[i * d * 2 + j];
                     ab[i * d + j - n * 2] -= ab_hat[i * d * 2 + j];
                 } else {
-                    ab[i * d + j - n * 3] += ab_hat[i * d * 2 + j];
+                    __builtin_unreachable();
                 }
         return cnt + delta + 1;
     }
