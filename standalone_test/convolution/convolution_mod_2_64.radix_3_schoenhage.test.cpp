@@ -196,7 +196,7 @@ void Schoenhage(const ull a[], const ull b[], ull ab[], int n) {
                 ab[i * d + j - n * 1] -= ab_hat[i * d * 2 + j];
                 ab[i * d + j - n * 2] -= ab_hat[i * d * 2 + j];
             } else {
-                ab[i * d + j - n * 3] += ab_hat[i * d * 2 + j];
+                __builtin_unreachable();
             }
 }
 
