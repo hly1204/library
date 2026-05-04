@@ -129,7 +129,7 @@ template<typename Tp> struct Radix3Schoenhage {
         //      https://eprint.iacr.org/2006/224
 
         // ab mod (x^2 + x + 1), deg(a) < 2, deg(b) < 2
-        const auto KaratsubaForDegree1 = [](const Tp a[], const Tp b[], Tp ab[]) {
+        const auto karatsuba_for_degree_1 = [](const Tp a[], const Tp b[], Tp ab[]) {
             const Tp D0  = a[0] * b[0];
             const Tp D1  = a[1] * b[1];
             const Tp D01 = (a[0] + a[1]) * (b[0] + b[1]);
@@ -137,9 +137,9 @@ template<typename Tp> struct Radix3Schoenhage {
             ab[1] += D01 - D0 - D1 - D1;
         };
         // ab mod (x^6 + x^3 + 1), deg(a) < 6, deg(b) < 6
-        const auto KaratsubaForDegree5 = [](const Tp a[], const Tp b[], Tp ab[]) {
+        const auto karatsuba_for_degree_5 = [](const Tp a[], const Tp b[], Tp ab[]) {
             // ab, deg(a) < 3, deg(b) < 3
-            const auto KaratsubaForDegree2 = [](const Tp a[], const Tp b[], Tp ab[]) {
+            const auto karatsuba_for_degree_2 = [](const Tp a[], const Tp b[], Tp ab[]) {
                 const Tp D0  = a[0] * b[0];
                 const Tp D1  = a[1] * b[1];
                 const Tp D2  = a[2] * b[2];
@@ -155,18 +155,18 @@ template<typename Tp> struct Radix3Schoenhage {
             const Tp A01[] = {a[0] + a[3], a[1] + a[4], a[2] + a[5]};
             const Tp B01[] = {b[0] + b[3], b[1] + b[4], b[2] + b[5]};
             Tp D0[6], D1[6], D01[6];
-            KaratsubaForDegree2(a, b, D0);
-            KaratsubaForDegree2(a + 3, b + 3, D1);
-            KaratsubaForDegree2(A01, B01, D01);
+            karatsuba_for_degree_2(a, b, D0);
+            karatsuba_for_degree_2(a + 3, b + 3, D1);
+            karatsuba_for_degree_2(A01, B01, D01);
             for (int i = 0; i < 6; ++i) D01[i] -= D0[i] + D1[i];
             MultipliedByXToTheN(D01, 3, 3);
             MultipliedByXToTheN(D1, 3, 6);
             for (int i = 0; i < 6; ++i) ab[i] += D0[i] + D01[i] + D1[i];
         };
         if (n == 1) {
-            KaratsubaForDegree1(a, b, ab);
+            karatsuba_for_degree_1(a, b, ab);
         } else if (n == 3) {
-            KaratsubaForDegree5(a, b, ab);
+            karatsuba_for_degree_5(a, b, ab);
         } else {
             __builtin_unreachable();
         }

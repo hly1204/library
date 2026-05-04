@@ -59,12 +59,12 @@ void FFT(uint a[], int d, int delta, int E) {
 
 // Constraints: 1/2 in R
 void InvFFT(uint a[], int d, int delta, int E) {
-    const auto InvFFT_ = [](auto &&InvFFT_, uint a[], int d, int delta, int E) {
+    const auto inv_fft = [](auto &&inv_fft, uint a[], int d, int delta, int E) {
         assert(delta <= d);
         assert(E % delta == 0);
         if (delta == 1) return;
         const int n = d * (delta / 2);
-        for (int i = 0; i < 2; ++i) InvFFT_(InvFFT_, a + n * i, d, delta / 2, E / 2 + d * i);
+        for (int i = 0; i < 2; ++i) inv_fft(inv_fft, a + n * i, d, delta / 2, E / 2 + d * i);
         for (int i = 0; i < delta / 2; ++i) {
             uint *const b[] = {a + i * d, a + i * d + n};
             for (int j = 0; j < d; ++j) {
@@ -75,7 +75,7 @@ void InvFFT(uint a[], int d, int delta, int E) {
             MultipliedByXToTheN(b[1], d, -E / 2);
         }
     };
-    InvFFT_(InvFFT_, a, d, delta, E);
+    inv_fft(inv_fft, a, d, delta, E);
     const uint inv_delta = InvMod(delta);
     for (int i = 0; i < d * delta; ++i) a[i] = (ull)a[i] * inv_delta % MOD;
 }
