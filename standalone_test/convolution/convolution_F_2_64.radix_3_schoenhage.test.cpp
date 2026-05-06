@@ -32,7 +32,7 @@ template<typename Tp> struct Radix3Schoenhage {
         return a == PowOf3(e) ? e : e - 1;
     }
     static void MultipliedByXToTheN(Tp a[], int d, int n) {
-        // One could optimize this function to reduce some memory & calculation.
+        // One could optimize this function to reduce some memory movement & calculation.
         if ((n %= d * 3) < 0) n += d * 3;
         const auto n_leq_d = [](Tp a[], int d, int n) {
             assert(n <= d);
