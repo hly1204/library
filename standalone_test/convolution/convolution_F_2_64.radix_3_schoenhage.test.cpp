@@ -154,7 +154,7 @@ template<typename Tp> struct Radix3Schoenhage {
             };
             const Tp A01[] = {a[0] + a[3], a[1] + a[4], a[2] + a[5]};
             const Tp B01[] = {b[0] + b[3], b[1] + b[4], b[2] + b[5]};
-            Tp D0[6], D1[6], D01[6];
+            Tp D0[6] = {}, D1[6] = {}, D01[6] = {};
             karatsuba_for_degree_2(a, b, D0);
             karatsuba_for_degree_2(a + 3, b + 3, D1);
             karatsuba_for_degree_2(A01, B01, D01);
@@ -186,7 +186,7 @@ template<typename Tp> struct Radix3Schoenhage {
             for (int j = 0; j < d; ++j)
                 a_hat[i * d * 2 + j] = a[i * d + j], b_hat[i * d * 2 + j] = b[i * d + j];
         FFT(data(a_hat), d, delta), FFT(data(b_hat), d, delta);
-        int cnt;
+        int cnt = 0;
         for (int i = 0; i < delta * 2; ++i)
             cnt = Schoenhage(data(a_hat) + i * d * 2, data(b_hat) + i * d * 2,
                              data(ab_hat) + i * d * 2, d);
@@ -201,7 +201,7 @@ template<typename Tp> struct Radix3Schoenhage {
                 } else {
                     __builtin_unreachable();
                 }
-        return cnt + delta + 1;
+        return cnt + Log3Ceil(delta) + 1;
     }
     static std::pair<std::vector<Tp>, int> Product(std::vector<Tp> a, std::vector<Tp> b) {
         if (empty(a) || empty(b)) return {};
