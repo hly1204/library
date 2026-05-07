@@ -28,8 +28,7 @@ template<typename Tp> inline void fft_high(std::vector<Tp> &a) {
 // returns DFT([x^[-len/2,0)]x^k/Q)
 // x^k/Q in R((x^(-1)))
 // requires len/2 > degQ
-template<typename Tp>
-inline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp> dftQ, long long k) {
+template<typename Tp> inline std::vector<Tp> bostan_mori(std::vector<Tp> dftQ, long long k) {
     assert(k >= 0);
     const int len = dftQ.size() * 2;
     if (k < len / 2LL) {
@@ -48,7 +47,7 @@ inline std::vector<Tp> bostan_mori_reversed_laurent_series(std::vector<Tp> dftQ,
     fft_doubling(dftQ);
     std::vector<Tp> dftV(len / 2);
     for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];
-    const auto dftT = bostan_mori_reversed_laurent_series(std::move(dftV), k / 2);
+    const auto dftT = bostan_mori(std::move(dftV), k / 2);
 
     if (k & 1) {
         auto &&root = FftInfo<Tp>::get().root(len / 2);
@@ -97,7 +96,7 @@ template<typename Tp> inline std::vector<Tp> xk_mod(long long k, const std::vect
     fft(dftQ);
     std::vector<Tp> dftV(len / 2);
     for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];
-    const auto dftT = bostan_mori_reversed_laurent_series(dftV, k / 2);
+    const auto dftT = bostan_mori(dftV, k / 2);
     std::vector<Tp> dftU(len);
     if (k & 1) {
         auto &&root = FftInfo<Tp>::get().root(len / 2);
