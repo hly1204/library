@@ -82,6 +82,10 @@ $$
 \mathrm{e}^{x^2 t} x = x + x^2 + x^3 + \cdots = \frac{x}{1 - x}
 $$
 
+## Other Topics
+
+The problem [X - 関数的平方根](https://atcoder.jp/contests/fps-24/tasks/fps_24_x) could be solved in time $O(N (\log(N))^2\min \{\log(P), \log(N)\})$. The $\log(P)$ part is the repeated squaring ($P = 998244353$ this case), another part is the Brent–Traub method mentioned in [TAOCP](https://en.wikipedia.org/wiki/The_Art_of_Computer_Programming) volume 2 Chapter 4.7. There is also an article written by 飞雨烟雁 who reinvented Brent–Traub method independently. See <https://www.luogu.com/article/y7ydytp2> and <https://www.luogu.com/article/lvzluqzn>.
+
 ## References
 
 1. 李⽩天. 信息学竞赛中的生成函数计算理论框架. 2021 年信息学奥林匹克中国国家集训队论文. url: <https://github.com/OI-wiki/libs/tree/master/%E9%9B%86%E8%AE%AD%E9%98%9F%E5%8E%86%E5%B9%B4%E8%AE%BA%E6%96%87>
