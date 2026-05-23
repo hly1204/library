@@ -69,14 +69,13 @@ std::vector<uint> MultiplyAdd(const std::vector<uint> &x, const std::vector<uint
 // and deg(Q) is minimized
 // requires deg(A) < deg(B)
 std::array<std::vector<uint>, 2> RationalApprox(std::vector<uint> A, std::vector<uint> B, int k) {
-    if (Degree(A) < 0 || Degree(A) - Degree(B) < -k)
-        return {std::vector<uint>{}, std::vector<uint>{1u}};
     std::vector<uint> P0 = {1u}, P1, Q0, Q1 = {1u};
     for (;;) {
+        if (Degree(A) < 0 || Degree(A) - Degree(B) < -k) return {P1, Q1};
         const auto [Q, R] = QuoRem(B, A);
         std::tie(P0, P1, Q0, Q1, A, B) =
             std::make_tuple(P1, MultiplyAdd(Q, P1, P0), Q1, MultiplyAdd(Q, Q1, Q0), R, A);
-        if (Degree(A) < 0 || Degree(A) - Degree(B) < -(k -= Degree(Q) * 2)) return {P1, Q1};
+        k -= Degree(Q) * 2;
     }
 }
 
