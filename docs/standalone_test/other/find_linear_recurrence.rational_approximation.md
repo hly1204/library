@@ -161,4 +161,4 @@ TODO: Give a clean implementation of Berlekamp–Massey algorithm from Euclidean
 [^ref1]: Victor Shoup. A computational introduction to number theory and algebra. Cambridge University Press 2006, ISBN 978-0-521-85154-1, pp. I-XVI, 1-517 url: <https://www.shoup.net/ntb/>
 [^ref2]: Daniel J. Bernstein. "Understanding binary-Goppa decoding." IACR Communications in Cryptology 1 (2024), article 1.14. url: <https://cr.yp.to/papers.html#goppadecoding>
 [^ref3]: Daniel J. Bernstein. "Fast multiplication and its applications." Pages 325–384 in Algorithmic number theory: lattices, number fields, curves and cryptography (edited by Joe Buhler, Peter Stevenhagen), Cambridge University Press, 2008, ISBN 978-0521808545. url: <https://cr.yp.to/papers.html#multapps>
-[^ref4]: K. Thull and C. K. Yap. A Unified Approach to HGCD Algorithms for polynomials and integers. url: <https://cs.nyu.edu/~yap/papers/SYNOP.htm#hgcd> (not availble)
+[^ref4]: K. Thull and C. K. Yap. A Unified Approach to HGCD Algorithms for polynomials and integers. url: <https://cs.nyu.edu/~yap/papers/SYNOP.htm#hgcd> (not availible)
