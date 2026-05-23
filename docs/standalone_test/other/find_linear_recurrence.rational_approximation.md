@@ -124,7 +124,8 @@ C\bmod D
 \end{array}
 $$
 
-where $\langle Q\rangle = \begin{bmatrix} 0 & 1 \\ 1 & -Q \end{bmatrix}$. And I think it will be cleaner if we slightly modify the `RationalApprox` algorithm.
+<!-- Escape in the bmatrix block when typing inline math? -->
+where $\langle Q\rangle = \begin{bmatrix} 0 & 1 \\\\ 1 & -Q \end{bmatrix}$. And I think it will be cleaner if we slightly modify the `RationalApprox` algorithm.
 
 $$
 \begin{array}{ll}
