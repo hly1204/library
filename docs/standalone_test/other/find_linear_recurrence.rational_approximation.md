@@ -155,8 +155,6 @@ And for `hgcd` algorithm, we have $\deg\mathbf{M} \leq \left\lfloor \frac{\deg A
 
 A lot of papers showed they are equivalent. For example, if we want to find the minimal polynomial of the sequence $\left(a _ j\right) _ {j = 0}^{n - 1}$, which is the denominator of $\operatorname{RationalApprox}\left(\sum _ {j = 0}^{n - 1} a _ {n - 1 - j} x^j, x^n, n\right)$.
 
-TODO: Give a clean implementation of Berlekamp–Massey algorithm from Euclidean algorithm.
-
 ## References
 
 [^ref1]: Victor Shoup. A computational introduction to number theory and algebra. Cambridge University Press 2006, ISBN 978-0-521-85154-1, pp. I-XVI, 1-517 url: <https://www.shoup.net/ntb/>
