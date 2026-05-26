@@ -34,9 +34,9 @@ std::vector<uint> RationalRecons(std::vector<uint> A) {
              // `i >= std::max(-k, 0)` => output = Berlekamp–Massey
              // `i >= 0`               => output = hgcd
              i >= std::max(-k, 0); --i) {
-            const ull d = (ull)B[degB--] * a % MOD;
-            for (int j = 0; j <= degA; ++j) B[i + j] = (B[i + j] + A[j] * (MOD - d)) % MOD;
-            for (int j = 0; j < (int)size(Q1); ++j) Q0[i + j] = (Q0[i + j] + Q1[j] * d) % MOD;
+            const uint d = (ull)B[degB--] * a % MOD;
+            for (int j = 0; j <= degA; ++j) B[i + j] = (B[i + j] + (ull)A[j] * (MOD - d)) % MOD;
+            for (int j = 0; j < (int)size(Q1); ++j) Q0[i + j] = (Q0[i + j] + (ull)Q1[j] * d) % MOD;
         }
     }
 }
