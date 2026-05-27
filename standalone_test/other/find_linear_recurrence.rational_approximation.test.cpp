@@ -32,7 +32,7 @@ std::vector<uint> RationalRecons(std::vector<uint> A) {
         const uint a = InvMod(A[degA]);
         for (int i = degB - degA;
              // `i >= std::max(-k, 0)` => output = Berlekamp–Massey
-             // `i >= 0`               => output = hgcd
+             // `i >= 0`               => output = Euclidean
              i >= std::max(-k, 0); --i) {
             const uint d = (ull)B[degB--] * a % MOD;
             for (int j = 0; j <= degA; ++j) B[i + j] = (B[i + j] + (ull)A[j] * (MOD - d)) % MOD;
