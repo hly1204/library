@@ -143,7 +143,7 @@ public:
     }
     STTreeNodeT *select(int k) {
         // example: A --> B --> C --> D, where D is the root of the path
-        // We use expose(A) than:
+        // We use expose(A) then:
         // * size(A) = 4
         // * select(A, 0) returns D
         // * select(A, 1) returns C
