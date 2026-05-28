@@ -32,15 +32,19 @@ int main() {
             node(u)->link(node(n + i));
             node(v)->link(node(n + i));
             std::cout << "-1 ";
-        } else if (node(u)->Max->W > w) {
-            Node *max = node(u)->Max;
-            max->cut(node(max->From));
-            max->cut(node(max->To));
-            node(u)->link(node(n + i));
-            node(v)->link(node(n + i));
-            std::cout << id(max) - n << ' ';
         } else {
-            std::cout << i << ' ';
+            node(u)->evert();
+            node(v)->expose();
+            if (node(v)->Max->W > w) {
+                Node *max = node(v)->Max;
+                max->cut(node(max->From));
+                max->cut(node(max->To));
+                node(u)->link(node(n + i));
+                node(v)->link(node(n + i));
+                std::cout << id(max) - n << ' ';
+            } else {
+                std::cout << i << ' ';
+            }
         }
     }
     return 0;
