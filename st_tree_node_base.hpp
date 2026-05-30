@@ -141,6 +141,7 @@ public:
             b->cut();
         }
     }
+    // call expose() before calling select(k)
     STTreeNodeT *select(int k) {
         // example: A --> B --> C --> D, where D is the root of the path
         // We use expose(A) then:
@@ -162,5 +163,6 @@ public:
         a->base_splay();
         return (STTreeNodeT *)a;
     }
+    // call expose() before calling jump(k)
     STTreeNodeT *jump(int k) { return select(Size - k - 1); }
 };
