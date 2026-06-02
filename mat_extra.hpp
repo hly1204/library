@@ -74,13 +74,18 @@ template<typename Tp> inline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A) {
         for (; pivot < n; ++pivot)
             if (A[s][pivot][d - 1] != 0) break;
         if (pivot == n) continue;
-        if (pivot != s) {
-            A[pivot].swap(A[s]);
-            m = -m;
-            s = pivot;
-        }
+        m *= A[s][pivot][d - 1];
+        auto iv = A[s][pivot][d - 1].inv();
+        for (int i = 0; i < n; ++i)
+            for (int j = 0; j < d; ++j) A[s][i][j] *= iv;
+        for (int i = 0; i < s; ++i) sub(A[i], A[s], A[i][pivot][d - 1], n, d);
+        for (int i = s + 1; i < n; ++i) sub(A[i], A[s], A[i][pivot][d - 1], n, d);
+        if (pivot == s) continue;
+        A[pivot].swap(A[s]);
+        m = -m;
+        if (A[s][s][d - 1] == 0) continue;
         m *= A[s][s][d - 1];
-        const auto iv = A[s][s][d - 1].inv();
+        iv = A[s][s][d - 1].inv();
         for (int i = 0; i < n; ++i)
             for (int j = 0; j < d; ++j) A[s][i][j] *= iv;
         for (int i = 0; i < s; ++i) sub(A[i], A[s], A[i][s][d - 1], n, d);
