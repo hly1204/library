@@ -35,14 +35,18 @@ if __name__ == '__main__':
 //      https://codeforces.com/blog/entry/92248?#comment-818786
 template<typename Tp> inline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A) {
     assert(is_square_matrix(A));
-    auto sub = [](auto &a, const auto &b, Tp v, int n, int d) {
+    const int n = height(A);
+    const int d = (n == 0 ? 0 : (int)A[0][0].size());
+    auto sub    = [n, d](auto &&a, auto &&b, Tp v) {
         if (v == 0) return;
         for (int i = 0; i < n; ++i)
             for (int j = 0; j < d; ++j) a[i][j] -= v * b[i][j];
     };
-    const int n = height(A);
-    const int d = (n == 0 ? 0 : (int)A[0][0].size());
-    Tp m        = 1;
+    auto mul = [n, d](auto &&a, Tp v) {
+        for (int i = 0; i < n; ++i)
+            for (int j = 0; j < d; ++j) a[i][j] *= v;
+    };
+    Tp m = 1;
     for (int i = 0; i < n; ++i) {
         int pivot = i;
         for (; pivot < n; ++pivot)
@@ -53,11 +57,9 @@ template<typename Tp> inline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A) {
             m = -m;
         }
         m *= A[i][i][d - 1];
-        const auto iv = A[i][i][d - 1].inv();
+        mul(A[i], A[i][i][d - 1].inv());
         for (int j = 0; j < n; ++j)
-            for (int k = 0; k < d; ++k) A[i][j][k] *= iv;
-        for (int j = 0; j < i; ++j) sub(A[j], A[i], A[j][i][d - 1], n, d);
-        for (int j = i + 1; j < n; ++j) sub(A[j], A[i], A[j][i][d - 1], n, d);
+            if (j != i) sub(A[j], A[i], A[j][i][d - 1]);
     }
     int t = 0;
     for (; t <= n * (d - 1); ++t) {
@@ -68,28 +70,24 @@ template<typename Tp> inline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A) {
         if (s == n) break;
         for (int i = 0; i < n; ++i)
             std::rotate(A[s][i].rbegin(), A[s][i].rbegin() + 1, A[s][i].rend());
-        for (int i = 0; i < s; ++i) sub(A[s], A[i], A[s][i][d - 1], n, d);
-        for (int i = s + 1; i < n; ++i) sub(A[s], A[i], A[s][i][d - 1], n, d);
+        for (int i = 0; i < n; ++i)
+            if (i != s) sub(A[s], A[i], A[s][i][d - 1]);
         int pivot = 0;
         for (; pivot < n; ++pivot)
             if (A[s][pivot][d - 1] != 0) break;
         if (pivot == n) continue;
         m *= A[s][pivot][d - 1];
-        auto iv = A[s][pivot][d - 1].inv();
+        mul(A[s], A[s][pivot][d - 1].inv());
         for (int i = 0; i < n; ++i)
-            for (int j = 0; j < d; ++j) A[s][i][j] *= iv;
-        for (int i = 0; i < s; ++i) sub(A[i], A[s], A[i][pivot][d - 1], n, d);
-        for (int i = s + 1; i < n; ++i) sub(A[i], A[s], A[i][pivot][d - 1], n, d);
+            if (i != s) sub(A[i], A[s], A[i][pivot][d - 1]);
         if (pivot == s) continue;
         A[pivot].swap(A[s]);
         m = -m;
         if (A[s][s][d - 1] == 0) continue;
         m *= A[s][s][d - 1];
-        iv = A[s][s][d - 1].inv();
+        mul(A[s], A[s][s][d - 1].inv());
         for (int i = 0; i < n; ++i)
-            for (int j = 0; j < d; ++j) A[s][i][j] *= iv;
-        for (int i = 0; i < s; ++i) sub(A[i], A[s], A[i][s][d - 1], n, d);
-        for (int i = s + 1; i < n; ++i) sub(A[i], A[s], A[i][s][d - 1], n, d);
+            if (i != s) sub(A[i], A[s], A[i][s][d - 1]);
     }
     if (t > n * (d - 1)) return {};
     //     [      I            ]
