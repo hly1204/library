@@ -90,12 +90,7 @@ public:
         STTreeNodeBase *a = this, *lca = a;
         base_splay();
         a->R = nullptr;
-        while (a->P) {
-            lca = a->P;
-            lca->base_splay();
-            a->P->R = a;
-            a->base_rotate();
-        }
+        while (a->P) (lca = a->P)->base_splay(), (a->P->R = a)->base_rotate();
         a->base_update();
         // now a is the root of the aux. tree
         return (STTreeNodeT *)lca;
@@ -113,17 +108,14 @@ public:
         if (!L) return nullptr;
         STTreeNodeBase *a = L;
         a->base_propagate();
-        while (a->R) {
-            a = a->R;
-            a->base_propagate();
-        }
+        while (a->R) (a = a->R)->base_propagate();
         a->base_splay();
         return (STTreeNodeT *)a;
     }
     // this op. WILL change the root
-    void link(STTreeNodeT *a) {
+    void link(STTreeNodeT *parent) {
         evert();
-        if (a->root() != (STTreeNodeT *)this) P = a;
+        if (parent->root() != (STTreeNodeT *)this) P = parent;
     }
     // this op. will NOT change the root
     void cut() {
@@ -135,11 +127,8 @@ public:
     }
     // this op. will NOT change the root
     void cut(STTreeNodeT *b) {
-        if (parent() == b) {
-            cut();
-        } else if (b->parent() == (STTreeNodeT *)this) {
-            b->cut();
-        }
+        if (parent() == b) cut();
+        else if (b->parent() == (STTreeNodeT *)this) { b->cut(); }
     }
     // call expose() before calling select(k)
     STTreeNodeT *select(int k) {
@@ -152,12 +141,8 @@ public:
         STTreeNodeBase *a = this;
         a->base_propagate();
         while ((a->L ? a->L->Size : 0) != k) {
-            if ((a->L ? a->L->Size : 0) < k) {
-                k -= (a->L ? a->L->Size : 0) + 1;
-                a = a->R;
-            } else {
-                a = a->L;
-            }
+            if ((a->L ? a->L->Size : 0) < k) k -= (a->L ? a->L->Size : 0) + 1, a = a->R;
+            else { a = a->L; }
             a->base_propagate();
         }
         a->base_splay();
