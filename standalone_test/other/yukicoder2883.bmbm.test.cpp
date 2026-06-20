@@ -70,8 +70,8 @@ uint BostanMori(std::vector<uint> P, std::vector<uint> Q, long long k) {
     return P[0];
 }
 
-uint BMBM(std::vector<uint> A, long long k) {
-    auto [P, Q] = RationalRecons(std::move(A));
+uint BMBM(const std::vector<uint> &A, long long k) {
+    auto [P, Q] = RationalRecons(A);
     return BostanMori(std::move(P), std::move(Q), k);
 }
 
