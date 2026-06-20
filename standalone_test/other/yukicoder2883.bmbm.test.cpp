@@ -81,7 +81,7 @@ int main() {
     long long N;
     int K;
     std::cin >> N >> K;
-    // K = 100, deg(Q) = 102
+    // K = 100, deg(revQ) = 102
     std::vector<uint> F(204);
     F[0] = 1;
     F[1] = 1;

@@ -81,7 +81,7 @@ int main() {
     int K;
     long long L, R;
     std::cin >> K >> L >> R;
-    // K = 100, deg(Q) = 104
+    // K = 100, deg(revQ) = 104
     std::vector<uint> A(208);
     A[0] = 1;
     for (int i = 1; i < (int)size(A); ++i)
