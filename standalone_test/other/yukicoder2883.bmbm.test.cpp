@@ -51,7 +51,7 @@ std::array<std::vector<uint>, 2> RationalRecons(std::vector<uint> A) {
 // returns [x^k] P/Q
 uint BostanMori(std::vector<uint> P, std::vector<uint> Q, long long k) {
     assert(Q.at(0) == 1);
-    if (empty(P)) return 0;
+    if (k < 0 || empty(P)) return 0;
     for (; k > 0; k /= 2) {
         auto nQ = Q;
         for (int i = 1; i < (int)size(nQ); i += 2) nQ[i] = (nQ[i] != 0 ? MOD - nQ[i] : 0);
