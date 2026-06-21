@@ -88,10 +88,6 @@ int main() {
         A[i] = ((ull)K * A[i - 1] + PowMod(i - 1, K) + PowMod(K, i - 1)) % MOD;
     for (int i = 1; i < (int)size(A); ++i) A[i] = (A[i] + A[i - 1]) % MOD;
     const auto [P, Q] = RationalRecons(std::move(A));
-    if (L == 0) {
-        std::cout << BostanMori(P, Q, R) << '\n';
-    } else {
-        std::cout << (BostanMori(P, Q, R) + MOD - BostanMori(P, Q, L - 1)) % MOD << '\n';
-    }
+    std::cout << (BostanMori(P, Q, R) + MOD - BostanMori(P, Q, L - 1)) % MOD << '\n';
     return 0;
 }
