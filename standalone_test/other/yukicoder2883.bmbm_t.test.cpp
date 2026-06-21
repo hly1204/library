@@ -21,18 +21,14 @@ constexpr uint PowMod(uint a, ull e) {
 constexpr uint InvMod(uint a) { return PowMod(a, MOD - 2); }
 
 // returns */Q in F((x^-1)) such that */Q = A[0]*x^-1 + A[1]*x^-2 + ...
-// with deg(Q) minimized and Q monic.
+// with deg(Q) minimized.
 std::vector<uint> BerlekampMassey(std::vector<uint> A) {
     reverse(begin(A), end(A));
     int k = size(A), degA = k - 1, degB = k;
     std::vector<uint> B(k + 1), Q0, Q1  = {1U};
     for (B[k] = 1;; swap(Q0, Q1), swap(A, B), std::swap(degA, degB)) {
         while (degA >= 0 && A[degA] == 0) --degA;
-        if (degA < 0 || degA - degB < -k) {
-            const uint c = InvMod(Q1.back());
-            for (auto &&e : Q1) e = (ull)e * c % MOD;
-            return Q1;
-        }
+        if (degA < 0 || degA - degB < -k) return Q1;
         Q0.resize(size(Q1) + (degB - degA));
         k -= (degB - degA) * 2;
         const uint a = InvMod(A[degA]);
@@ -65,7 +61,7 @@ std::vector<uint> BostanMoriT(const std::vector<uint> &Q, long long k) {
 }
 
 // returns x^k mod Q
-std::vector<uint> MonomialModMonicPoly(long long k, const std::vector<uint> &Q) {
+std::vector<uint> MonomialModPoly(long long k, const std::vector<uint> &Q) {
     const auto invQ = BostanMoriT(Q, k);
     std::vector<uint> R(size(Q) - 1);
     for (int i = 0; i < (int)size(invQ); ++i)
@@ -77,7 +73,7 @@ std::vector<uint> MonomialModMonicPoly(long long k, const std::vector<uint> &Q) 
 }
 
 uint BMBM(const std::vector<uint> &A, long long k) {
-    const auto c = MonomialModMonicPoly(k, BerlekampMassey(A));
+    const auto c = MonomialModPoly(k, BerlekampMassey(A));
     uint res     = 0;
     for (int i = 0; i < (int)size(c); ++i) res = (res + (ull)c[i] * A[i]) % MOD;
     return res;
