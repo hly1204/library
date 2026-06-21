@@ -47,10 +47,9 @@ std::vector<uint> BerlekampMassey(std::vector<uint> A) {
 // returns [x^[-deg(Q), 0)] x^k/Q, x^k/Q in F((x^-1))
 std::vector<uint> BostanMoriT(const std::vector<uint> &Q, long long k) {
     assert(k >= 0);
-    assert(Q.back() == 1);
     const int degQ = size(Q) - 1;
     std::vector<uint> U(degQ);
-    if (k == 0) return U[0] = 1, U;
+    if (k == 0) return U[0] = InvMod(Q.back()), U;
     std::vector<uint> V(size(Q));
     for (int i = 0; i < (int)size(Q); ++i)
         for (int j = i % 2; j < (int)size(Q); j += 2)
