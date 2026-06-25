@@ -143,7 +143,7 @@ int main() {
     }
     Basis b((int)size(A) / 2);
     std::optional<std::vector<uint>> minpoly;
-    for (int i = 0; i < (int)size(A) / 2; ++i)
+    for (int i = 0; i <= (int)size(A) / 2; ++i)
         if (const auto c = b.insert(std::vector(begin(A) + i, begin(A) + (i + (int)size(A) / 2)))) {
             minpoly.emplace(begin(*c), begin(*c) + i).emplace_back(1);
             break;
