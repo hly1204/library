@@ -44,7 +44,7 @@ struct Basis {
                 a[i] = A, r[i] = RV, vectors.push_back(V);
                 return {};
             }
-            const auto v = RV[i];
+            const uint v = RV[i];
             for (int j = i; j < dim; ++j) RV[j] = (RV[j] + MOD - (ull)v * r[i][j] % MOD) % MOD;
             for (int j = 0; j < dim; ++j) A[j] = (A[j] + MOD - (ull)v * a[i][j] % MOD) % MOD;
         }
