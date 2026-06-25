@@ -1,7 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/2883
 
 #include <algorithm>
-#include <array>
 #include <cassert>
 #include <iostream>
 #include <utility>

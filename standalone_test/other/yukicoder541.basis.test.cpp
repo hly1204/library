@@ -7,6 +7,7 @@
 
 using uint         = unsigned;
 using ull          = unsigned long long;
+using Matrix       = std::vector<std::vector<uint>>;
 constexpr uint MOD = 1'000'000'007;
 
 constexpr uint PowMod(uint a, ull e) {
@@ -17,8 +18,6 @@ constexpr uint PowMod(uint a, ull e) {
 }
 
 constexpr uint InvMod(uint a) { return PowMod(a, MOD - 2); }
-
-using Matrix = std::vector<std::vector<uint>>;
 
 struct Basis {
     const int dim;
