@@ -213,7 +213,7 @@ euclidean_div_naive(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     assert(degB >= 0);
     if (degQ < 0) return {std::vector<Tp>{Tp()}, A};
     std::vector<Tp> Q(degQ + 1), R = A;
-    const auto inv = B[degB].inv();
+    const Tp inv = B[degB].inv();
     for (int i = degQ, n = degA; i >= 0; --i)
         if (!is_zero(Q[i] = R[n--] * inv))
             for (int j = 0; j <= degB; ++j) R[i + j] -= Q[i] * B[j];
@@ -226,7 +226,7 @@ euclidean_div_quotient_naive(const std::vector<Tp> &A, const std::vector<Tp> &B)
     const int degA = degree(A), degB = degree(B), degQ = degA - degB;
     assert(degB >= 0);
     if (degQ < 0) return {Tp()};
-    const auto inv = B[degB].inv();
+    const Tp inv = B[degB].inv();
     std::vector<Tp> Q(degQ + 1);
     for (int i = 0; i <= degQ; ++i) {
         for (int j = 1; j <= std::min(i, degB); ++j) Q[degQ - i] += B[degB - j] * Q[degQ - i + j];
@@ -252,9 +252,9 @@ euclidean_div(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     };
     int N = 1;
     while (N < degB) N *= 2;
-    const auto cyclicA = make_cyclic(A, N);
-    auto cyclicB       = make_cyclic(B, N);
-    auto cyclicQ       = make_cyclic(Q, N);
+    const std::vector cyclicA = make_cyclic(A, N);
+    const std::vector cyclicB = make_cyclic(B, N);
+    std::vector cyclicQ       = make_cyclic(Q, N);
     mul_inplace(data(cyclicQ), data(cyclicB), N);
     std::vector<Tp> R(degB);
     for (int i = 0; i < degB; ++i) R[i] = cyclicA[i] - cyclicQ[i];
