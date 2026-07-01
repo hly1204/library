@@ -15,6 +15,6 @@ int main() {
     for (int i = 0; i < n; ++i) std::cin >> a[i];
     for (int i = 0; i < m; ++i) std::cin >> b[i];
     const std::vector<mint> ab = product(a, b);
-    for (int i = 0; i < n + m - 1; ++i) std::cout << ab[i];
+    for (int i = 0; i < n + m - 1; ++i) std::cout << ab[i] << ' ';
     return 0;
 }
