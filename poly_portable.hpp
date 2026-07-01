@@ -191,6 +191,7 @@ inline std::vector<Tp> fps_div(const std::vector<Tp> &A, const std::vector<Tp> &
     invB.resize(N), A_hat.resize(N);
     mul_inplace(data(A_hat), data(invB), N);
     copy(begin(A_hat), begin(A_hat) + N / 2, begin(AdivB));
+    fill(begin(A_hat) + N / 2, begin(A_hat) + N, Tp());
     mul_inplace(data(A_hat), data(trunc(B, N)), N);
     fill(begin(A_hat), begin(A_hat) + N / 2, Tp());
     for (int i = N / 2; i < N; ++i) A_hat[i] -= A[i];
