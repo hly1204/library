@@ -112,7 +112,7 @@ template<typename Tp> inline void mul_inplace(Tp a[], const Tp b[], int n) {
 
 namespace detail {
 template<typename Tp>
-inline std::vector<Tp> product_naive(const std::vector<Tp> &a, const std::vector<Tp> &b) {
+inline std::vector<Tp> convolution_naive(const std::vector<Tp> &a, const std::vector<Tp> &b) {
     if (empty(a) || empty(b)) return {};
     const int m = size(a), n = size(b);
     std::vector<Tp> ab(m + n - 1);
@@ -121,7 +121,7 @@ inline std::vector<Tp> product_naive(const std::vector<Tp> &a, const std::vector
     return ab;
 }
 
-template<typename Tp> inline std::vector<Tp> product_fft(std::vector<Tp> a, std::vector<Tp> b) {
+template<typename Tp> inline std::vector<Tp> convolution_fft(std::vector<Tp> a, std::vector<Tp> b) {
     if (empty(a) || empty(b)) return {};
     const int m = size(a), n = size(b);
     int len = 1;
@@ -132,6 +132,11 @@ template<typename Tp> inline std::vector<Tp> product_fft(std::vector<Tp> a, std:
     return a;
 }
 } // namespace detail
+
+template<typename Tp> inline auto is_zero(const Tp &v) noexcept(noexcept(v.is_zero()))
+    -> decltype(v.is_zero()) {
+    return v.is_zero();
+}
 
 template<typename Tp> inline std::vector<Tp> trunc(const std::vector<Tp> &a, int R) {
     std::vector<Tp> b(R);
@@ -146,13 +151,19 @@ template<typename Tp> inline std::vector<Tp> slice(const std::vector<Tp> &a, int
 }
 
 template<typename Tp>
-inline std::vector<Tp> product(const std::vector<Tp> &a, const std::vector<Tp> &b) {
-    if (std::min(size(a), size(b)) < 60) return detail::product_naive(a, b);
-    return detail::product_fft(a, b);
+inline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<Tp> &b) {
+    if (std::min(size(a), size(b)) < 60) return detail::convolution_naive(a, b);
+    return detail::convolution_fft(a, b);
+}
+
+template<typename Tp> inline int order(const std::vector<Tp> &a) {
+    for (int i = 0; i < (int)size(a); ++i)
+        if (!is_zero(a[i])) return i;
+    return -1;
 }
 
 template<typename Tp> inline std::vector<Tp> fps_inv(const std::vector<Tp> &A, int n) {
-    assert(!empty(A) && !A[0].is_zero());
+    assert(order(A) == 0);
     int N = 1;
     while (N < n) N *= 2;
     std::vector<Tp> invA = {A[0].inv()};
@@ -168,4 +179,96 @@ template<typename Tp> inline std::vector<Tp> fps_inv(const std::vector<Tp> &A, i
     }
     invA.resize(n);
     return invA;
+}
+
+template<typename Tp>
+inline std::vector<Tp> fps_div(const std::vector<Tp> &A, const std::vector<Tp> &B, int n) {
+    if (n == 0) return {};
+    if (n == 1) return {A[0] / B[0]};
+    int N = 1;
+    while (N < n) N *= 2;
+    std::vector<Tp> AdivB(N), invB = fps_inv(B, N / 2), A_hat = trunc(A, N / 2);
+    invB.resize(N), A_hat.resize(N);
+    mul_inplace(data(A_hat), data(invB), N);
+    copy(begin(A_hat), begin(A_hat) + N / 2, begin(AdivB));
+    mul_inplace(data(A_hat), data(trunc(B, N)), N);
+    fill(begin(A_hat), begin(A_hat) + N / 2, Tp());
+    mul_inplace(data(A_hat), data(invB), N);
+    for (int i = N / 2; i < N; ++i) AdivB[i] = -A_hat[i];
+    AdivB.resize(n);
+    return AdivB;
+}
+
+template<typename Tp> inline int degree(const std::vector<Tp> &a) {
+    int n = (int)size(a) - 1;
+    while (n >= 0 && is_zero(a[n])) --n;
+    return n;
+}
+
+template<typename Tp> inline void shrink(std::vector<Tp> &a) { a.resize(degree(a) + 1); }
+
+template<typename Tp> inline std::array<std::vector<Tp>, 2>
+euclidean_div_naive(const std::vector<Tp> &A, const std::vector<Tp> &B) {
+    const int degA = degree(A), degB = degree(B), degQ = degA - degB;
+    assert(degB >= 0);
+    if (degQ < 0) return {std::vector<Tp>{Tp()}, A};
+    std::vector<Tp> Q(degQ + 1), R = A;
+    const auto inv = B[degB].inv();
+    for (int i = degQ, n = degA; i >= 0; --i)
+        if (!is_zero(Q[i] = R[n--] * inv))
+            for (int j = 0; j <= degB; ++j) R[i + j] -= Q[i] * B[j];
+    R.resize(degB);
+    return {Q, R};
+}
+
+template<typename Tp> inline std::vector<Tp>
+euclidean_div_quotient_naive(const std::vector<Tp> &A, const std::vector<Tp> &B) {
+    const int degA = degree(A), degB = degree(B), degQ = degA - degB;
+    assert(degB >= 0);
+    if (degQ < 0) return {Tp()};
+    const auto inv = B[degB].inv();
+    std::vector<Tp> Q(degQ + 1);
+    for (int i = 0; i <= degQ; ++i) {
+        for (int j = 1; j <= std::min(i, degB); ++j) Q[degQ - i] += B[degB - j] * Q[degQ - i + j];
+        Q[degQ - i] = (A[degA - i] - Q[degQ - i]) * inv;
+    }
+    return Q;
+}
+
+template<typename Tp> inline std::array<std::vector<Tp>, 2>
+euclidean_div(const std::vector<Tp> &A, const std::vector<Tp> &B) {
+    const int degA = degree(A), degB = degree(B), degQ = degA - degB;
+    assert(degB >= 0);
+    if (degQ < 0) return {std::vector<Tp>{Tp()}, A};
+    if (degQ < 60 || degB < 60) return euclidean_div_naive(A, B);
+    std::vector Q = fps_div(std::vector(rend(A) - (degA + 1), rend(A)),
+                            std::vector(rend(B) - (degB + 1), rend(B)), degQ + 1);
+    reverse(begin(Q), end(Q));
+    const auto make_cyclic = [](const std::vector<Tp> &a, int n) {
+        assert((n & (n - 1)) == 0);
+        std::vector<Tp> b(n);
+        for (int i = 0; i < (int)size(a); ++i) b[i & (n - 1)] += a[i];
+        return b;
+    };
+    int N = 1;
+    while (N < degB) N *= 2;
+    const auto cyclicA = make_cyclic(A, N);
+    auto cyclicB       = make_cyclic(B, N);
+    auto cyclicQ       = make_cyclic(Q, N);
+    mul_inplace(data(cyclicQ), data(cyclicB), N);
+    std::vector<Tp> R(degB);
+    for (int i = 0; i < degB; ++i) R[i] = cyclicA[i] - cyclicQ[i];
+    return {Q, R};
+}
+
+template<typename Tp>
+inline std::vector<Tp> euclidean_div_quotient(const std::vector<Tp> &A, const std::vector<Tp> &B) {
+    const int degA = degree(A), degB = degree(B), degQ = degA - degB;
+    assert(degB >= 0);
+    if (degQ < 0) return {Tp()};
+    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A, B);
+    std::vector Q = fps_div(std::vector(rend(A) - (degA + 1), rend(A)),
+                            std::vector(rend(B) - (degB + 1), rend(B)), degQ + 1);
+    reverse(begin(Q), end(Q));
+    return Q;
 }
