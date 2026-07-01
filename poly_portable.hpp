@@ -246,6 +246,7 @@ template<typename Tp> inline int degree(const std::vector<Tp> &a) {
 
 template<typename Tp> inline void shrink(std::vector<Tp> &a) { a.resize(degree(a) + 1); }
 
+namespace detail {
 template<typename Tp> inline std::array<std::vector<Tp>, 2>
 euclidean_div_naive(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     const int degA = degree(A), degB = degree(B), degQ = degA - degB;
@@ -273,13 +274,14 @@ euclidean_div_quotient_naive(const std::vector<Tp> &A, const std::vector<Tp> &B)
     }
     return Q;
 }
+} // namespace detail
 
 template<typename Tp> inline std::array<std::vector<Tp>, 2>
 euclidean_div(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     const int degA = degree(A), degB = degree(B), degQ = degA - degB;
     assert(degB >= 0);
     if (degQ < 0) return {std::vector<Tp>{Tp()}, A};
-    if (degQ < 60 || degB < 60) return euclidean_div_naive(A, B);
+    if (degQ < 60 || degB < 60) return detail::euclidean_div_naive(A, B);
     std::vector Q = fps_div(std::vector(rend(A) - (degA + 1), rend(A)),
                             std::vector(rend(B) - (degB + 1), rend(B)), degQ + 1);
     reverse(begin(Q), end(Q));
@@ -305,7 +307,7 @@ inline std::vector<Tp> euclidean_div_quotient(const std::vector<Tp> &A, const st
     const int degA = degree(A), degB = degree(B), degQ = degA - degB;
     assert(degB >= 0);
     if (degQ < 0) return {Tp()};
-    if (std::min(degQ, degB) < 60) return euclidean_div_quotient_naive(A, B);
+    if (std::min(degQ, degB) < 60) return detail::euclidean_div_quotient_naive(A, B);
     std::vector Q = fps_div(std::vector(rend(A) - (degA + 1), rend(A)),
                             std::vector(rend(B) - (degB + 1), rend(B)), degQ + 1);
     reverse(begin(Q), end(Q));
