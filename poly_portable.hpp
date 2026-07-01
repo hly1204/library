@@ -98,15 +98,52 @@ template<typename Tp, int n> inline void mul_inplace(Tp a[], const Tp b[]) {
             if (i * d + j < n) a[i * d + j] += a_hat[i * d * 2 + j];
             else { a[i * d + j - n] -= a_hat[i * d * 2 + j]; }
 }
+
+// Compute ab mod (x^n - 1)
+template<typename Tp, int n> inline void mul_inplace_cyclic(Tp a[], const Tp b[]) {
+    static_assert(__builtin_popcount(n) == 1);
+    enum { Threshold = 32 };
+    static_assert(Threshold >= 4, "If Threshold < 4, this algorithm will never halt.");
+    if constexpr (n <= Threshold) {
+        std::array<Tp, n> ab;
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n - i; ++j) ab[i + j] += a[i] * b[j];
+            for (int j = n - i; j < n; ++j) ab[i + j - n] += a[i] * b[j];
+        }
+        std::copy(begin(ab), end(ab), a);
+        return;
+    }
+    constexpr int k = __builtin_ctz(n), d = 1 << (k / 2), delta = n / d;
+    std::vector<Tp> a_hat(n * 2), b_hat(n * 2);
+    for (int i = 0; i < delta; ++i)
+        for (int j = 0; j < d; ++j)
+            a_hat[i * d * 2 + j] = a[i * d + j], b_hat[i * d * 2 + j] = b[i * d + j];
+    fft<Tp, d * 2, delta>(data(a_hat), 0), fft<Tp, d * 2, delta>(data(b_hat), 0);
+    for (int i = 0; i < delta; ++i)
+        mul_inplace<Tp, d * 2>(data(a_hat) + i * d * 2, data(b_hat) + i * d * 2);
+    inv_fft<Tp, d * 2, delta>(data(a_hat), 0);
+    std::fill(a, a + n, Tp());
+    for (int i = 0; i < delta; ++i)
+        for (int j = 0; j < d * 2; ++j)
+            if (i * d + j < n) a[i * d + j] += a_hat[i * d * 2 + j];
+            else { a[i * d + j - n] += a_hat[i * d * 2 + j]; }
+}
+
 // clang-format off
 template<typename Tp, int... Is>
 inline void mul_inplace_helper(Tp a[], const Tp b[], int n, std::integer_sequence<int, Is...>)
 { ([&] { if (n == (1 << Is)) mul_inplace<Tp, (1 << Is)>(a, b); }(), ...); }
+template<typename Tp, int... Is>
+inline void mul_inplace_cyclic_helper(Tp a[], const Tp b[], int n, std::integer_sequence<int, Is...>)
+{ ([&] { if (n == (1 << Is)) mul_inplace_cyclic<Tp, (1 << Is)>(a, b); }(), ...); }
 // clang-format on
 } // namespace detail
 
 template<typename Tp> inline void mul_inplace(Tp a[], const Tp b[], int n) {
     detail::mul_inplace_helper(a, b, n, std::make_integer_sequence<int, 22>{});
+}
+template<typename Tp> inline void mul_inplace_cyclic(Tp a[], const Tp b[], int n) {
+    detail::mul_inplace_cyclic_helper(a, b, n, std::make_integer_sequence<int, 22>{});
 }
 } // namespace Schoenhage
 
@@ -194,7 +231,7 @@ inline std::vector<Tp> fps_div(const std::vector<Tp> &A, const std::vector<Tp> &
     fill(begin(A_hat) + N / 2, begin(A_hat) + N, Tp());
     mul_inplace(data(A_hat), data(trunc(B, N)), N);
     fill(begin(A_hat), begin(A_hat) + N / 2, Tp());
-    for (int i = N / 2; i < N; ++i) A_hat[i] -= A[i];
+    for (int i = N / 2; i < std::min((int)size(A), N); ++i) A_hat[i] -= A[i];
     mul_inplace(data(A_hat), data(invB), N);
     for (int i = N / 2; i < N; ++i) AdivB[i] = -A_hat[i];
     AdivB.resize(n);
@@ -257,7 +294,7 @@ euclidean_div(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     const std::vector cyclicA = make_cyclic(A, N);
     const std::vector cyclicB = make_cyclic(B, N);
     std::vector cyclicQ       = make_cyclic(Q, N);
-    mul_inplace(data(cyclicQ), data(cyclicB), N);
+    mul_inplace_cyclic(data(cyclicQ), data(cyclicB), N);
     std::vector<Tp> R(degB);
     for (int i = 0; i < degB; ++i) R[i] = cyclicA[i] - cyclicQ[i];
     return {Q, R};
