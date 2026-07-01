@@ -100,7 +100,7 @@ template<typename Tp, int n> inline void mul_inplace(Tp a[], const Tp b[]) {
 }
 
 // Compute ab mod (x^n - 1)
-template<typename Tp, int n> inline void mul_inplace_cyclic(Tp a[], const Tp b[]) {
+template<typename Tp, int n> inline void mul_cyclic_inplace(Tp a[], const Tp b[]) {
     static_assert(__builtin_popcount(n) == 1);
     enum { Threshold = 32 };
     static_assert(Threshold >= 4, "If Threshold < 4, this algorithm will never halt.");
@@ -134,16 +134,16 @@ template<typename Tp, int... Is>
 inline void mul_inplace_helper(Tp a[], const Tp b[], int n, std::integer_sequence<int, Is...>)
 { ([&] { if (n == (1 << Is)) mul_inplace<Tp, (1 << Is)>(a, b); }(), ...); }
 template<typename Tp, int... Is>
-inline void mul_inplace_cyclic_helper(Tp a[], const Tp b[], int n, std::integer_sequence<int, Is...>)
-{ ([&] { if (n == (1 << Is)) mul_inplace_cyclic<Tp, (1 << Is)>(a, b); }(), ...); }
+inline void mul_cyclic_inplace_helper(Tp a[], const Tp b[], int n, std::integer_sequence<int, Is...>)
+{ ([&] { if (n == (1 << Is)) mul_cyclic_inplace<Tp, (1 << Is)>(a, b); }(), ...); }
 // clang-format on
 } // namespace detail
 
 template<typename Tp> inline void mul_inplace(Tp a[], const Tp b[], int n) {
     detail::mul_inplace_helper(a, b, n, std::make_integer_sequence<int, 22>{});
 }
-template<typename Tp> inline void mul_inplace_cyclic(Tp a[], const Tp b[], int n) {
-    detail::mul_inplace_cyclic_helper(a, b, n, std::make_integer_sequence<int, 22>{});
+template<typename Tp> inline void mul_cyclic_inplace(Tp a[], const Tp b[], int n) {
+    detail::mul_cyclic_inplace_helper(a, b, n, std::make_integer_sequence<int, 22>{});
 }
 } // namespace Schoenhage
 
@@ -294,7 +294,7 @@ euclidean_div(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     const std::vector cyclicA = make_cyclic(A, N);
     const std::vector cyclicB = make_cyclic(B, N);
     std::vector cyclicQ       = make_cyclic(Q, N);
-    mul_inplace_cyclic(data(cyclicQ), data(cyclicB), N);
+    mul_cyclic_inplace(data(cyclicQ), data(cyclicB), N);
     std::vector<Tp> R(degB);
     for (int i = 0; i < degB; ++i) R[i] = cyclicA[i] - cyclicQ[i];
     return {Q, R};
