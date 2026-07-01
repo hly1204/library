@@ -23,7 +23,7 @@ template<typename Tp, int d> inline void multiplied_by_x_to_the_n(Tp a[], int n)
 
 template<typename Tp, int d, int delta> inline void butterfly(Tp a[], int e) {
     static_assert(delta <= d);
-    assert(e % delta == 0);
+    if constexpr (delta != 0) assert(e % delta == 0);
     if constexpr (delta == 1) return;
     constexpr int n = d * (delta / 2);
     for (int i = 0; i < delta / 2; ++i) {
@@ -40,7 +40,7 @@ template<typename Tp, int d, int delta> inline void butterfly(Tp a[], int e) {
 
 template<typename Tp, int d, int delta> inline void inv_butterfly(Tp a[], int e) {
     static_assert(delta <= d);
-    assert(e % delta == 0);
+    if constexpr (delta != 0) assert(e % delta == 0);
     if constexpr (delta == 1) return;
     constexpr int n = d * (delta / 2);
     inv_butterfly<Tp, d, delta / 2>(a, e / 2);
