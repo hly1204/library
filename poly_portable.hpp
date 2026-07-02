@@ -313,3 +313,43 @@ inline std::vector<Tp> euclidean_div_quotient(const std::vector<Tp> &A, const st
     reverse(begin(Q), end(Q));
     return Q;
 }
+
+// returns [x^[-deg(Q), 0)] x^k/Q, x^k/Q in F((x^-1))
+template<typename Tp>
+inline std::vector<Tp> transposed_bostan_mori(std::vector<Tp> Q, long long k) {
+    assert(k >= 0);
+    const int degQ = size(Q) - 1;
+    if (k == 0 || k < degQ) {
+        reverse(begin(Q), end(Q));
+        std::vector<Tp> U = fps_inv(Q, k + 1);
+        reverse(begin(U), end(U));
+        U.resize(degQ);
+        return U;
+    }
+    std::vector<Tp> negQ = Q;
+    for (int i = 1; i < (int)size(negQ); i += 2) negQ[i] = -negQ[i];
+    int N = 1;
+    while (N < degQ * 2 + 1) N *= 2;
+    Q.resize(N), negQ.resize(N);
+    mul_inplace(data(Q), data(negQ), N);
+    for (int i = 1; i < N / 2; ++i) Q[i] = Q[i * 2];
+    Q.resize(degQ + 1);
+    std::vector<Tp> T = transposed_bostan_mori(std::move(Q), k / 2);
+    T.resize(N);
+    if (k & 1) {
+        for (int i = N / 2 - 1; i >= 0; --i) T[i * 2 + 1] = T[i], T[i * 2] = Tp();
+    } else {
+        for (int i = N / 2 - 1; i >= 0; --i) T[i * 2 + 1] = Tp(), T[i * 2] = T[i];
+    }
+    mul_inplace(data(T), data(negQ), N);
+    T.erase(begin(T), begin(T) + degQ);
+    T.resize(degQ);
+    return T;
+}
+
+template<typename Tp>
+inline std::vector<Tp> monomial_mod_poly(long long k, const std::vector<Tp> &Q) {
+    std::vector<Tp> R = convolution(transposed_bostan_mori(Q, k), Q);
+    R.erase(begin(R), begin(R) + (size(Q) - 1));
+    return R;
+}
