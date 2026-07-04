@@ -32,11 +32,44 @@ public:
         return Ab;
     }
 
-    Matrix operator+=(const Matrix<Tp> &B) {
+    Matrix operator-() const {
+        Matrix A    = *this;
+        const int w = A.width();
+        const int h = A.height();
+        for (int i = 0; i < h; ++i)
+            for (int j = 0; j < w; ++j) A[i][j] = -A[i][j];
+        return A;
+    }
+
+    Matrix &operator+=(const Matrix<Tp> &B) {
         const int w = width();
         const int h = height();
         assert(w == B.width());
         assert(h == B.height());
+        for (int i = 0; i < h; ++i)
+            for (int j = 0; j < w; ++j) (*this)[i][j] += B[i][j];
+        return *this;
+    }
+
+    Matrix &operator-=(const Matrix<Tp> &B) {
+        const int w = width();
+        const int h = height();
+        assert(w == B.width());
+        assert(h == B.height());
+        for (int i = 0; i < h; ++i)
+            for (int j = 0; j < w; ++j) (*this)[i][j] -= B[i][j];
+        return *this;
+    }
+
+    Matrix operator+(const Matrix<Tp> &B) { return Matrix(*this) += B; }
+    Matrix operator-(const Matrix<Tp> &B) { return Matrix(*this) -= B; }
+
+    Matrix &operator*=(const Tp &b) const {
+        const int w = width();
+        const int h = height();
+        for (int i = 0; i < h; ++i)
+            for (int j = 0; j < w; ++j) (*this)[i][j] *= b;
+        return *this;
     }
 
     Matrix operator*(const Matrix<Tp> &B) const {
@@ -50,6 +83,8 @@ public:
                 for (int j = 0; j < wB; ++j) AB[i][j] += (*this)[i][k] * B[k][j];
         return AB;
     }
+
+    Matrix &operator*=(const Matrix<Tp> &B) const { return *this = (*this) * B; }
 
     Tp det() const {
         assert(is_square());
