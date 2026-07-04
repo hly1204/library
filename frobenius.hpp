@@ -39,7 +39,10 @@ template<typename Tp> class Frobenius {
             assert(k >= 0);
             const int degQ = degree(Q);
             std::vector<Tp> U(degQ);
-            if (k == 0) return U[0] = InvMod(Q.back()), U;
+            if (k == 0) {
+                U[0] = Q.back().inv();
+                return U;
+            }
             std::vector<Tp> V(size(Q));
             for (int i = 0; i < (int)size(Q); ++i)
                 for (int j = i % 2; j < (int)size(Q); j += 2)
