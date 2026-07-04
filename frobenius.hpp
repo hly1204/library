@@ -86,7 +86,7 @@ public:
     explicit Frobenius(const Matrix<Tp> &A) : N(A.height()) {
         assert(A.is_square());
         if (A.empty()) {
-            P.emplace_back(1).emplace_back(1);
+            P.emplace_back().emplace_back(1);
             return;
         }
     retry: // retry is not guaranteed to give the right result
