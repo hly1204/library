@@ -47,13 +47,13 @@ template<typename Tp> class Frobenius {
                 }
                 return U;
             }
-            std::vector<Tp> V(size(Q));
-            for (int i = 0; i < (int)size(Q); ++i)
-                for (int j = i % 2; j < (int)size(Q); j += 2)
+            std::vector<Tp> V(Q.size());
+            for (int i = 0; i < (int)Q.size(); ++i)
+                for (int j = i % 2; j < (int)Q.size(); j += 2)
                     V[(i + j) / 2] += Q[i] * (i % 2 == 0 ? Q[j] : -Q[j]);
             const auto T = bostan_mori(V, k / 2);
-            for (int i = 0; i < (int)size(T); ++i)
-                for (int j = 0; j < (int)size(Q); ++j) {
+            for (int i = 0; i < (int)T.size(); ++i)
+                for (int j = 0; j < (int)Q.size(); ++j) {
                     const int l = i * 2 + (int)(k % 2) + j;
                     if (l >= degQ && l < degQ * 2)
                         U[l - degQ] += T[i] * (j % 2 == 0 ? Q[j] : -Q[j]);
@@ -64,10 +64,10 @@ template<typename Tp> class Frobenius {
         // returns x^k mod Q
         static std::vector<Tp> xk_mod(long long k, const std::vector<Tp> &Q) {
             const auto invQ = bostan_mori(Q, k);
-            std::vector<Tp> R(size(Q) - 1);
-            for (int i = 0; i < (int)size(invQ); ++i)
-                for (int j = 0; j < (int)size(Q); ++j)
-                    if (i + j >= (int)size(invQ)) R[i + j - (int)size(invQ)] += invQ[i] * Q[j];
+            std::vector<Tp> R(Q.size() - 1);
+            for (int i = 0; i < (int)invQ.size(); ++i)
+                for (int j = 0; j < (int)Q.size(); ++j)
+                    if (i + j >= (int)invQ.size()) R[i + j - (int)invQ.size()] += invQ[i] * Q[j];
             return R;
         }
     };
