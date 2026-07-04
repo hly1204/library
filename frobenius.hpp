@@ -56,7 +56,7 @@ template<typename Tp> class Frobenius {
 
         // returns x^k mod Q
         static std::vector<Tp> xk_mod(long long k, const std::vector<Tp> &Q) {
-            const auto invQ = BostanMoriT(Q, k);
+            const auto invQ = bostan_mori(Q, k);
             std::vector<Tp> R(size(Q) - 1);
             for (int i = 0; i < (int)size(invQ); ++i)
                 for (int j = 0; j < (int)size(Q); ++j)
@@ -82,6 +82,10 @@ public:
     //      https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf
     explicit Frobenius(const Matrix<Tp> &A) : N(A.height()) {
         assert(A.is_square());
+        if (A.empty()) {
+            P.emplace_back(1).emplace_back(1);
+            return;
+        }
     retry: // retry is not guaranteed to give the right result
         Basis<Tp> B(N);
         Matrix<Tp> A_B(N, std::vector<Tp>(N)); // linear transform respect to basis B
