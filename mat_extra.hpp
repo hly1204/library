@@ -28,14 +28,14 @@ if __name__ == '__main__':
 ```
 */
 
-// returns det(A0 + xA1 + ... + x^(d-1) Ad)
+// returns det(A0 + xA1 + ... + x^(d-1) Ad-1)
 // test: https://qoj.ac/contest/1536/problem/59
 // see:
 // [1]: Elegia's comment.
 //      https://codeforces.com/blog/entry/92248?#comment-818786
 template<typename Tp> inline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A) {
-    assert(is_square_matrix(A));
-    const int n = height(A);
+    assert(A.is_square());
+    const int n = A.height();
     const int d = (n == 0 ? 0 : (int)A[0][0].size());
     auto sub    = [n, d](auto &&a, auto &&b, Tp v) {
         if (v == 0) return;
@@ -102,7 +102,7 @@ template<typename Tp> inline std::vector<Tp> det_d(Matrix<std::vector<Tp>> A) {
             for (int k = 0; k < n; ++k) B[(d - 2) * n + j][i * n + k] = -A[j][k][i];
     for (int i = 0; i < d - 2; ++i)
         for (int j = 0; j < n; ++j) B[i * n + j][(i + 1) * n + j] = 1;
-    auto res = charpoly(B);
+    auto res = B.charpoly();
     res.erase(res.begin(), res.begin() + t);
     for (int i = 0; i < (int)res.size(); ++i) res[i] *= m;
     return res;

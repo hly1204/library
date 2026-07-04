@@ -16,7 +16,7 @@ int main() {
         for (int j = 0; j < m; ++j) std::cin >> A[i][j];
     for (int i = 0; i < m; ++i)
         for (int j = 0; j < k; ++j) std::cin >> B[i][j];
-    const auto AB = mat_mul(A, B);
+    const auto AB = A * B;
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < k; ++j) std::cout << AB[i][j] << " \n"[j == k - 1];
     return 0;

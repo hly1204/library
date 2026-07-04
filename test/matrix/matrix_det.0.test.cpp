@@ -13,6 +13,6 @@ int main() {
     Matrix<mint> A(n, std::vector<mint>(n));
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j) std::cin >> A[i][j];
-    std::cout << det(A);
+    std::cout << A.det() << '\n';
     return 0;
 }

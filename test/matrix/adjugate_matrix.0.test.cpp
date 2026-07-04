@@ -18,10 +18,12 @@ int main() {
     // P_A(x)=x^n+...+(-1)^n det(A)
     // A adj(A) = adj(A) A = det(A) I
     // A^n+...+(-1)^n det(A) I = O
-    const auto res =
-        mat_mul(F.transition_matrix(),
-                mat_mul(F.eval((F.charpoly() >> 1) * Poly<mint>{mint((n & 1) ? 1 : -1)}),
-                        F.inv_transition_matrix()));
+    auto P = F.charpoly();
+    P.erase(P.begin());
+    if ((n & 1) == 0) {
+        for (auto &&c : P) c = -c;
+    }
+    const auto res = F.transition_matrix() * F.eval(P) * F.inv_transition_matrix();
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j) std::cout << res[i][j] << " \n"[j == n - 1];
     return 0;

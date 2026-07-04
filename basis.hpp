@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mat_basic.hpp"
+#include "random.hpp"
 #include <cassert>
 #include <optional>
 #include <vector>
@@ -42,7 +43,7 @@ public:
     // returns A s.t. A^(-1)MA is the linear transform respect to the basis
     Matrix<Tp> transition_matrix() const {
         assert(size() == dim());
-        return transpose(Vectors);
+        return Vectors.transpose();
     }
 
     // returns A^(-1) s.t. A^(-1)MA is the linear transform respect to the basis
@@ -52,6 +53,24 @@ public:
         for (int i = dim() - 1; i > 0; --i)
             for (int j = i - 1; j >= 0; --j)
                 for (int k = 0; k < dim(); ++k) res[j][k] -= Reduced[j][i] * res[i][k];
-        return transpose(res);
+        return res.transpose();
     }
 };
+
+template<typename Tp> inline std::vector<Tp> Matrix<Tp>::minpoly() const {
+    assert(is_square());
+    const int n = height();
+    for (;;) {
+        Basis<Tp> b(n);
+        int deg = 0;
+        // If failed, we must get a factor of the minimal polynomial.
+        for (auto v = random_vector<Tp>(n);; v = apply(v), ++deg) {
+            if (const auto c = b.insert(v)) {
+                if (deg == 0) break;
+                std::vector<Tp> p(c->begin(), c->begin() + deg);
+                p.emplace_back(1);
+                return p;
+            }
+        }
+    }
+}

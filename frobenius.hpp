@@ -2,35 +2,86 @@
 
 #include "basis.hpp"
 #include "mat_basic.hpp"
-#include "poly.hpp"
 #include "random.hpp"
+#include <algorithm>
+#include <array>
 #include <cassert>
-#include <functional>
-#include <numeric>
-#include <optional>
 #include <vector>
 
 // Compute the Frobenius form (rational canonical form) of a square matrix,
 // but the result is not always true.
 template<typename Tp> class Frobenius {
+    struct Poly {
+        static int degree(const std::vector<Tp> &a) {
+            int n = (int)a.size() - 1;
+            while (n >= 0 && a[n] == 0) --n;
+            return n;
+        }
+
+        static std::array<std::vector<Tp>, 2> divmod(const std::vector<Tp> &A,
+                                                     const std::vector<Tp> &B) {
+            const int degA = degree(A);
+            const int degB = degree(B);
+            assert(degB >= 0);
+            const int degQ = degA - degB;
+            if (degQ < 0) return {std::vector<Tp>{Tp(0)}, A};
+            std::vector<Tp> Q(degQ + 1), R = A;
+            const auto inv = B[degB].inv();
+            for (int i = degQ, n = degA; i >= 0; --i)
+                if ((Q[i] = R[n--] * inv) != 0)
+                    for (int j = 0; j <= degB; ++j) R[i + j] -= Q[i] * B[j];
+            R.resize(degB);
+            return {Q, R};
+        }
+
+        // returns [x^[-deg(Q), 0)] x^k/Q, x^k/Q in F((x^-1))
+        static std::vector<Tp> bostan_mori(const std::vector<Tp> &Q, long long k) {
+            assert(k >= 0);
+            const int degQ = degree(Q);
+            std::vector<Tp> U(degQ);
+            if (k == 0) return U[0] = InvMod(Q.back()), U;
+            std::vector<Tp> V(size(Q));
+            for (int i = 0; i < (int)size(Q); ++i)
+                for (int j = i % 2; j < (int)size(Q); j += 2)
+                    V[(i + j) / 2] += Q[i] * (i % 2 == 0 ? Q[j] : -Q[j]);
+            const auto T = bostan_mori(V, k / 2);
+            for (int i = 0; i < (int)size(T); ++i)
+                for (int j = 0; j < (int)size(Q); ++j) {
+                    const int l = i * 2 + (int)(k % 2) + j;
+                    if (l >= degQ && l < degQ * 2)
+                        U[l - degQ] += T[i] * (j % 2 == 0 ? Q[j] : -Q[j]);
+                }
+            return U;
+        }
+
+        // returns x^k mod Q
+        static std::vector<Tp> xk_mod(long long k, const std::vector<Tp> &Q) {
+            const auto invQ = BostanMoriT(Q, k);
+            std::vector<Tp> R(size(Q) - 1);
+            for (int i = 0; i < (int)size(invQ); ++i)
+                for (int j = 0; j < (int)size(Q); ++j)
+                    if (i + j >= (int)size(invQ)) R[i + j - (int)size(invQ)] += invQ[i] * Q[j];
+            return R;
+        }
+    };
+
 public:
     // F_A = T^(-1)AT = diag(C_(p_0),...,C_(p_(k-1)))
     // where C_(p_j) is the companion matrix of monic polynomial P[j]
     // *        minimal polynomial of A = p_0
     // * characteristic polynomial of A = prod_(j=0)^(k-1) p_j
-    int N;
+    const int N;
     Matrix<Tp> InvT;
-    std::vector<Poly<Tp>> P;
+    std::vector<std::vector<Tp>> P; // invariant factors
     Matrix<Tp> T;
-    mutable std::optional<Poly<Tp>> CharPoly;
 
     // see:
     // [1]: Elegia. A (Somehow) Simple (Randomized) Algorithm for Frobenius Form of a Matrix.
     //      https://codeforces.com/blog/entry/124815
     // [2]: Arne Storjohann. Algorithms for Matrix Canonical Forms.
     //      https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf
-    explicit Frobenius(const Matrix<Tp> &A) : N(height(A)) {
-        assert(is_square_matrix(A));
+    explicit Frobenius(const Matrix<Tp> &A) : N(A.height()) {
+        assert(A.is_square());
     retry: // retry is not guaranteed to give the right result
         Basis<Tp> B(N);
         Matrix<Tp> A_B(N, std::vector<Tp>(N)); // linear transform respect to basis B
@@ -38,15 +89,15 @@ public:
         P.clear();
         while (B.size() < N) {
             int deg = 0;
-            for (auto R = random_vector<Tp>(N);; R = mat_apply(A, R), ++deg)
+            for (auto R = random_vector<Tp>(N);; R = A.apply(R), ++deg)
                 if (const auto c = B.insert(R)) {
                     if (deg == 0) break;
-                    if (!P.empty() && deg > P.back().deg()) goto retry;
+                    if (!P.empty() && deg > Poly::degree(P.back())) goto retry;
                     P.emplace_back(c->begin() + (B.size() - deg), c->begin() + B.size())
                         .emplace_back(1);
-                    const Poly<Tp> b(c->begin(), c->begin() + (B.size() - deg));
-                    const auto [q, r] = b.divmod(P.back());
-                    if (r.deg() >= 0) goto retry;
+                    const auto [q, r] = Poly::divmod(
+                        std::vector(c->begin(), c->begin() + (B.size() - deg)), P.back());
+                    if (Poly::degree(r) >= 0) goto retry;
                     V.emplace_back(q).resize(N), V.back().at(B.size() - deg) = 1;
                     for (int i = B.size() - deg; i < B.size() - 1; ++i) A_B[i + 1][i] = 1;
                     for (int i = 0; i < B.size(); ++i) A_B[i][B.size() - 1] = -c->at(i);
@@ -58,7 +109,7 @@ public:
         auto C = Matrix<Tp>(N, std::vector<Tp>(N));
         for (int i = 0, j = 0; i < (int)V.size(); ++i) {
             C[j++] = V[i];
-            for (int k = P[i].deg(); --k; ++j)
+            for (int k = (int)P[i].size() - 1; --k; ++j)
                 for (int l = 0; l < j; ++l)
                     for (int m = 0; m < j; ++m) C[j][l] += A_B[l][m] * C[j - 1][m];
         }
@@ -74,53 +125,75 @@ public:
 
     Matrix<Tp> frobenius_form() const {
         Matrix<Tp> res(N, std::vector<Tp>(N));
-        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {
-            for (int j = s; j < s + P[i].deg() - 1; ++j) res[j + 1][j] = 1;
-            for (int j = s; j < s + P[i].deg(); ++j) res[j][s + P[i].deg() - 1] = -P[i][j - s];
+        for (int i = 0, s = 0; i < (int)P.size(); ++i) {
+            const int deg = (int)P[i].size() - 1;
+            for (int j = s; j < s + deg - 1; ++j) res[j + 1][j] = 1;
+            for (int j = s; j < s + deg; ++j) res[j][s + deg - 1] = -P[i][j - s];
+            s += deg;
         }
         return res;
+    }
+
+    std::vector<Tp> minpoly() const { return P[0]; }
+    std::vector<Tp> charpoly() const {
+        std::vector<Tp> p = P[0];
+        for (int i = 1; i < (int)P.size(); ++i) {
+            p = [](const std::vector<Tp> &A, const std::vector<Tp> &B) {
+                std::vector<Tp> AB(A.size() + B.size() - 1);
+                for (int i = 0; i < (int)A.size(); ++i)
+                    for (int j = 0; j < (int)B.size(); ++j) AB[i + j] += A[i] * B[j];
+                return AB;
+            }(p, P[i]);
+        }
+        return p;
     }
 
     // returns (F_A)^e
     Matrix<Tp> pow(long long e) const {
         assert(e >= 0);
-        // returns x^e mod p
-        auto pow_mod = [](auto &&pow_mod, long long e, const Poly<Tp> &p) {
-            if (e == 0) return Poly<Tp>{Tp(1)};
-            const auto half = pow_mod(pow_mod, e / 2, p);
-            return ((half * half) << (e & 1)) % p;
-        };
         Matrix<Tp> res(N, std::vector<Tp>(N));
-        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {
-            auto c = pow_mod(pow_mod, e, P[i]);
-            for (int j = 0; j < P[i].deg(); c = (c << 1) % P[i], ++j)
-                for (int k = 0; k <= c.deg(); ++k) res[k + s][s + j] = c[k];
+        for (int i = 0, s = 0; i < (int)P.size(); ++i) {
+            const int deg = (int)P[i].size() - 1;
+            auto c        = Poly::xk_mod(e, P[i]);
+            for (int j = 0; j < deg; ++j) {
+                if (j) {
+                    std::rotate(c.begin(), c.end() - 1, c.end());
+                    const auto c0 = c[0];
+                    c[0]          = 0;
+                    for (int k = 0; k < deg; ++k) c[k] -= c0 * P[i][k];
+                }
+                for (int k = 0; k < deg; ++k) res[s + k][s + j] = c[k];
+            }
+            s += deg;
         }
         return res;
     }
 
-    Poly<Tp> charpoly() const {
-        if (!CharPoly)
-            CharPoly.emplace(
-                std::accumulate(P.begin(), P.end(), Poly<Tp>{Tp(1)}, std::multiplies<>()));
-        return *CharPoly;
-    }
-
-    // returns F(F_A)
-    Matrix<Tp> eval(Poly<Tp> F) const {
-        F %= this->charpoly();
+    // returns f(F_A)
+    Matrix<Tp> eval(std::vector<Tp> f) const {
+        f = std::get<1>(Poly::divmod(f, minpoly()));
         Matrix<Tp> res(N, std::vector<Tp>(N));
-        if (F.deg() < 0) return res;
-        for (int i = 0, s = 0; i < (int)P.size(); s += P[i++].deg()) {
-            std::vector<Poly<Tp>> pow_table(F.deg() + P[i].deg() + 1);
-            pow_table[0] = Poly<Tp>{Tp(1)};
-            for (int j = 1; j <= F.deg() + P[i].deg(); ++j)
-                pow_table[j] = (pow_table[j - 1] << 1) % P[i];
-            std::vector<Poly<Tp>> row(P[i].deg());
-            for (int j = 0; j <= F.deg(); ++j)
-                for (int k = 0; k < P[i].deg(); ++k) row[k] += Poly<Tp>{F[j]} * pow_table[j + k];
-            for (int j = 0; j < P[i].deg(); ++j)
-                for (int k = 0; k <= row[j].deg(); ++k) res[k + s][s + j] = row[j][k];
+        if (Poly::degree(f) < 0) return res;
+        for (int i = 0, s = 0; i < (int)P.size(); ++i) {
+            const int deg = (int)P[i].size() - 1;
+            Matrix<Tp> C(deg, std::vector<Tp>(deg)), S(deg, std::vector<Tp>(deg));
+            for (int j = 0; j < deg; ++j) C[j][j] = 1;
+            for (int j = 0; j < (int)f.size(); ++j) {
+                if (j) {
+                    auto &&last = C[(j + deg - 2) % deg];
+                    auto &&curr = C[(j - 1) % deg];
+                    std::rotate_copy(last.begin(), last.begin() + (deg - 1), last.end(),
+                                     curr.begin());
+                    const auto curr0 = curr[0];
+                    curr[0]          = 0;
+                    for (int k = 0; k < deg; ++k) curr[k] -= curr0 * P[i][k];
+                }
+                for (int k = 0; k < deg; ++k)
+                    for (int l = 0; l < deg; ++l) S[k][l] += f[j] * C[(k + j) % deg][l];
+            }
+            for (int j = 0; j < deg; ++j)
+                for (int k = 0; k < deg; ++k) res[s + k][s + j] = S[j][k];
+            s += deg;
         }
         return res;
     }

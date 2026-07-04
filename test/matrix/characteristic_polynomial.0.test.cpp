@@ -13,7 +13,7 @@ int main() {
     Matrix<mint> A(n, std::vector<mint>(n));
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j) std::cin >> A[i][j];
-    const auto P = charpoly(A);
+    const auto P = A.charpoly();
     for (int i = 0; i <= n; ++i) std::cout << P[i] << ' ';
     return 0;
 }

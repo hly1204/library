@@ -13,7 +13,7 @@ int main() {
     Matrix<mint> A(n, std::vector<mint>(n));
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j) std::cin >> A[i][j];
-    if (const auto invA = mat_inv(A)) {
+    if (const auto invA = A.inv()) {
         for (int i = 0; i < n; ++i)
             for (int j = 0; j < n; ++j) std::cout << invA->at(i).at(j) << " \n"[j == n - 1];
     } else {
