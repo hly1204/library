@@ -37,10 +37,14 @@ template<typename Tp> class Frobenius {
         // returns [x^[-deg(Q), 0)] x^k/Q, x^k/Q in F((x^-1))
         static std::vector<Tp> bostan_mori(const std::vector<Tp> &Q, long long k) {
             assert(k >= 0);
-            const int degQ = degree(Q);
+            const int degQ = Q.size() - 1;
             std::vector<Tp> U(degQ);
-            if (k == 0) {
-                U[0] = Q.back().inv();
+            if (k < degQ || k == 0) {
+                if (degQ > 0) U[k] = Q[degQ].inv();
+                for (int i = (int)k - 1; i >= 0; --i) {
+                    for (int j = (int)k - i; j > 0; --j) U[i] -= Q[degQ - j] * U[i + j];
+                    U[i] *= U[k];
+                }
                 return U;
             }
             std::vector<Tp> V(size(Q));
