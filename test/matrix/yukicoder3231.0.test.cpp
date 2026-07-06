@@ -11,6 +11,7 @@ int main() {
     std::cin.tie(nullptr);
     using mint = ModInt<1000000007>;
     Matrix<mint> A(2, std::vector<mint>(2)), B(2, std::vector<mint>(2));
+    std::cin >> A >> B;
     Frobenius<mint> F_A(A), F_B(B);
     if (F_A.frobenius_form() == F_B.frobenius_form()) {
         std::cout << "Yes\n";

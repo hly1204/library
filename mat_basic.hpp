@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <iostream>
 #include <optional>
 #include <utility>
 #include <vector>
@@ -8,6 +9,14 @@
 template<typename Tp> class Matrix : public std::vector<std::vector<Tp>> {
 public:
     using std::vector<std::vector<Tp>>::vector;
+
+    friend std::istream &operator>>(std::istream &a, Matrix &b) {
+        const int w = b.width();
+        const int h = b.height();
+        for (int i = 0; i < h; ++i)
+            for (int j = 0; j < w; ++j) a >> b[i][j];
+        return a;
+    }
 
     int width() const { return this->empty() ? 0 : (*this)[0].size(); }
     int height() const { return this->size(); }
