@@ -9,7 +9,7 @@
 #include <vector>
 
 // Compute the Frobenius form (rational canonical form) of a square matrix,
-// but the result is not always true.
+// but the result is not always correct.
 template<typename Tp> class Frobenius {
     struct Poly {
         static int degree(const std::vector<Tp> &a) {
@@ -93,7 +93,7 @@ public:
             P.emplace_back().emplace_back(1);
             return;
         }
-    retry: // retry is not guaranteed to give the right result
+    retry: // retry is not guaranteed to give the correct result
         Basis<Tp> B(N);
         Matrix<Tp> A_B(N, std::vector<Tp>(N)); // linear transform respect to basis B
         std::vector<std::vector<Tp>> V;        // vectors for new basis
@@ -162,10 +162,16 @@ public:
     // returns (F_A)^e
     Matrix<Tp> pow(long long e) const {
         assert(e >= 0);
+        return eval(Poly::xk_mod(e, P[0]));
+    }
+
+    // returns f(F_A)
+    Matrix<Tp> eval(std::vector<Tp> f) const {
         Matrix<Tp> res(N, std::vector<Tp>(N));
         for (int i = 0, s = 0; i < (int)P.size(); ++i) {
             const int deg = (int)P[i].size() - 1;
-            auto c        = Poly::xk_mod(e, P[i]);
+            f             = std::get<1>(Poly::divmod(f, P[i]));
+            auto c        = f;
             for (int j = 0; j < deg; ++j) {
                 if (j) {
                     std::rotate(c.begin(), c.end() - 1, c.end());
@@ -175,35 +181,6 @@ public:
                 }
                 for (int k = 0; k < deg; ++k) res[s + k][s + j] = c[k];
             }
-            s += deg;
-        }
-        return res;
-    }
-
-    // returns f(F_A)
-    Matrix<Tp> eval(std::vector<Tp> f) const {
-        f = std::get<1>(Poly::divmod(f, minpoly()));
-        Matrix<Tp> res(N, std::vector<Tp>(N));
-        if (Poly::degree(f) < 0) return res;
-        for (int i = 0, s = 0; i < (int)P.size(); ++i) {
-            const int deg = (int)P[i].size() - 1;
-            Matrix<Tp> C(deg, std::vector<Tp>(deg)), S(deg, std::vector<Tp>(deg));
-            for (int j = 0; j < deg; ++j) C[j][j] = 1;
-            for (int j = 0; j < (int)f.size(); ++j) {
-                if (j) {
-                    auto &&last = C[(j + deg - 2) % deg];
-                    auto &&curr = C[(j - 1) % deg];
-                    std::rotate_copy(last.begin(), last.begin() + (deg - 1), last.end(),
-                                     curr.begin());
-                    const auto curr0 = curr[0];
-                    curr[0]          = 0;
-                    for (int k = 0; k < deg; ++k) curr[k] -= curr0 * P[i][k];
-                }
-                for (int k = 0; k < deg; ++k)
-                    for (int l = 0; l < deg; ++l) S[k][l] += f[j] * C[(k + j) % deg][l];
-            }
-            for (int j = 0; j < deg; ++j)
-                for (int k = 0; k < deg; ++k) res[s + k][s + j] = S[j][k];
             s += deg;
         }
         return res;
