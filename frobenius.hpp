@@ -24,14 +24,18 @@ template<typename Tp> class Frobenius {
             const int degB = degree(B);
             assert(degB >= 0);
             const int degQ = degA - degB;
-            if (degQ < 0) return {std::vector<Tp>{Tp(0)}, A};
+            if (degQ < 0) {
+                auto Aprime = A;
+                Aprime.resize(degB);
+                return {std::vector<Tp>{Tp(0)}, std::move(Aprime)};
+            }
             std::vector<Tp> Q(degQ + 1), R = A;
             const auto inv = B[degB].inv();
             for (int i = degQ, n = degA; i >= 0; --i)
                 if ((Q[i] = R[n--] * inv) != 0)
                     for (int j = 0; j <= degB; ++j) R[i + j] -= Q[i] * B[j];
             R.resize(degB);
-            return {Q, R};
+            return {std::move(Q), std::move(R)};
         }
 
         // returns [x^[-deg(Q), 0)] x^k/Q, x^k/Q in F((x^-1))
