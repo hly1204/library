@@ -177,9 +177,9 @@ template<typename Tp> inline GCDMatrix<Poly<Tp>> hgcd(const Poly<Tp> &A, const P
     if (A.deg() < B.deg()) return hgcd(B, A, d) * Mat({}, {Tp(1)}, {Tp(1)}, {});
     if (A.deg() < d) return hgcd(A, B, A.deg());
     if (B.deg() < A.deg() - d) return Mat({Tp(1)}, {}, {}, {Tp(1)});
-    if (int dd = A.deg() - d * 2; dd > 0) return hgcd(A >> dd, B >> dd, d);
+    if (const int dd = A.deg() - d * 2; dd > 0) return hgcd(A >> dd, B >> dd, d);
     if (d == 0) return Mat({}, {Tp(1)}, {Tp(1)}, -(A / B));
-    const auto M = hgcd(A, B, d / 2);
+    auto M       = hgcd(A, B, d / 2);
     const auto D = M[1][0] * A + M[1][1] * B;
     if (D.deg() < A.deg() - d) return M;
     const auto C      = M[0][0] * A + M[0][1] * B;
