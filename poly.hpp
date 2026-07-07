@@ -219,5 +219,5 @@ inline std::array<Poly<Tp>, 2> rational_reconstruction(const std::vector<Tp> &A)
 // requires deg(A) < deg(B)
 template<typename Tp>
 inline std::vector<Tp> fraction_to_series(const Poly<Tp> &A, const Poly<Tp> &B, int k) {
-    return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).slice(0, k);
+    return (((A << k) / B).rev() << (B.deg() - A.deg() - 1)).trunc(k);
 }
