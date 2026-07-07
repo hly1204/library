@@ -33,7 +33,7 @@ std::array<std::vector<uint>, 2> RationalRecons(std::vector<uint> A) {
             const uint c = InvMod(Q1[0]);
             for (auto &&e : P1) e = (ull)e * c % MOD;
             for (auto &&e : Q1) e = (ull)e * c % MOD;
-            return {P1, Q1};
+            return {std::move(P1), std::move(Q1)};
         }
         P0.resize(size(Q1) + (degB - degA - 1));
         Q0.resize(size(Q1) + (degB - degA));
