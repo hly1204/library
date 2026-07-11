@@ -73,7 +73,7 @@ public:
     Matrix operator+(const Matrix<Tp> &B) { return Matrix(*this) += B; }
     Matrix operator-(const Matrix<Tp> &B) { return Matrix(*this) -= B; }
 
-    Matrix &operator*=(const Tp &b) const {
+    Matrix &operator*=(const Tp &b) {
         const int w = width();
         const int h = height();
         for (int i = 0; i < h; ++i)
@@ -93,7 +93,7 @@ public:
         return AB;
     }
 
-    Matrix &operator*=(const Matrix<Tp> &B) const { return *this = (*this) * B; }
+    Matrix &operator*=(const Matrix<Tp> &B) { return *this = (*this) * B; }
 
     Tp det() const {
         assert(is_square());
