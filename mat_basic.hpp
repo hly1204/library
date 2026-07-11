@@ -203,4 +203,7 @@ public:
     // randomized algorithm based on Elegia's trick
     // defined in basis.hpp
     inline std::vector<Tp> minpoly() const;
+
+    // To find A^k(i, j) for large k, the O.G.F. of A^[0, inf)(i, j) is rational,
+    // so we could apply Berlekamp--Massey's algorithm to e_i^T * A[0, n*2) * e_j.
 };
