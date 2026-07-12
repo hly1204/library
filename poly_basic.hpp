@@ -43,9 +43,9 @@ euclidean_div_naive(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     assert(degB >= 0);
     const int degQ = degA - degB;
     if (degQ < 0) {
-        auto Aprime = A;
-        Aprime.resize(degB);
-        return {std::vector<Tp>{Tp(0)}, std::move(Aprime)};
+        auto R = A;
+        R.resize(degB);
+        return {std::vector<Tp>{Tp(0)}, std::move(R)};
     }
     std::vector<Tp> Q(degQ + 1), R = A;
     const auto inv = B[degB].inv();
@@ -82,9 +82,9 @@ euclidean_div(const std::vector<Tp> &A, const std::vector<Tp> &B) {
     // A = Q*B + R => A/B = Q + R/B in R((x^(-1)))
     const int degQ = degA - degB;
     if (degQ < 0) {
-        auto Aprime = A;
-        Aprime.resize(degB);
-        return {std::vector<Tp>{Tp(0)}, std::move(Aprime)};
+        auto R = A;
+        R.resize(degB);
+        return {std::vector<Tp>{Tp(0)}, std::move(R)};
     }
     if (degQ < 60 || degB < 60) return euclidean_div_naive(A, B);
 

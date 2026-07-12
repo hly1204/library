@@ -25,9 +25,9 @@ template<typename Tp> class Frobenius {
             assert(degB >= 0);
             const int degQ = degA - degB;
             if (degQ < 0) {
-                auto Aprime = A;
-                Aprime.resize(degB);
-                return {std::vector<Tp>{Tp(0)}, std::move(Aprime)};
+                auto R = A;
+                R.resize(degB);
+                return {std::vector<Tp>{Tp(0)}, std::move(R)};
             }
             std::vector<Tp> Q(degQ + 1), R = A;
             const auto inv = B[degB].inv();
