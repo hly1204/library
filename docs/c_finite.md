@@ -8,7 +8,7 @@ documentation_of: ../c_finite.hpp
 The sequence $\left(a _ n\right) _ {n\geq 0}$ is said to be C-Finite if it has form
 
 $$
-a _ n=\sum _ {j=1}^d c _ j a _ {n-j}, \qquad (n \geq d)
+a _ n := \sum _ {j=1}^d c _ j a _ {n-j}, \qquad (n \geq d)
 $$
 
 here C-Finite means linear with **constant** coefficients. $d$ is said to be the **order** of the recurrent relation. We are given $c _ 1, \dots , c _ d$ and **initial terms** $a _ 0, \dots, a _ {d-1}$ in $\mathbb{C}$, the following algorithm could help us computing $a _ k$ for $k\gg d$.
@@ -250,6 +250,39 @@ $$
 &=\left\lbrack x^{\left\lbrack -R+L,0\right)}\right\rbrack \frac{\left(x^L\cdot \tilde{P}(x)\right)\bmod{\tilde{Q}(x)}}{\tilde{Q}(x)}
 \end{aligned}
 $$
+
+### Inhomogeneous recurrence
+
+For a given polynomial $P(x)$, and
+
+$$
+a _ n := \sum _ {j=1}^d c _ j a _ {n-j} + P(n), \qquad (n \geq d)
+$$
+
+is an inhomogeneous recurrence relation, but it can be reduced to C-Finite sequence.
+
+Let $\Delta f(x) := f(x + 1) - f(x)$, so $\Delta^{\deg f + 1} f = 0$. We have
+
+$$
+\left.
+\begin{array}{l}
+a _ {n + 1} &= \sum _ {j=1}^d c _ j a _ {n + 1 - j} &+ P(n + 1) \\
+a _ n       &= \sum _ {j=1}^d c _ j a _ {n - j}     &+ P(n)
+\end{array}
+\right\}\implies
+\begin{aligned}
+a _ {n + 1} &= \sum _ {j=1}^d c _ j a _ {n + 1 - j} + \Delta P(n) + a _ n - \sum _ {j=1}^d c _ j a _ {n - j} \\
+            &= (c_1 + 1) a_n + (c_2 - c_1) a _ {n-1} + (c_3 - c_2) a _ {n-2} + \cdots - c_d a _ {n-d} + \Delta P(n)
+\end{aligned}
+$$
+
+If $\deg P = 0$, the characteristic polynomial of $(a _ n)_{n \geq 0}$ is
+
+$$
+x^{d + 1} - (c_1 + 1) x^d - (c_2 - c_1) x^{d-1} - \cdots + c_d = \Gamma(x) (x - 1)
+$$
+
+so the characteristic polynomial of $(a _ n)_{n \geq 0}$ is $\Gamma(x) (x - 1)^{\deg P + 1}$ for $\deg P \geq 0$.
 
 ## References
 
