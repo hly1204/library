@@ -12,8 +12,7 @@ int main() {
     int n;
     std::cin >> n;
     Matrix<mint> A(n, std::vector<mint>(n));
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < n; ++j) std::cin >> A[i][j];
+    std::cin >> A;
     Frobenius<mint> F(A);
     const auto charp = F.charpoly();
     for (int i = 0; i <= n; ++i) std::cout << charp[i] << ' ';

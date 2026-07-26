@@ -13,11 +13,9 @@ int main() {
     long long k;
     std::cin >> n >> k;
     Matrix<mint> A(n, std::vector<mint>(n));
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < n; ++j) std::cin >> A[i][j];
+    std::cin >> A;
     Frobenius<mint> F(A);
     const auto res = F.transition_matrix() * F.pow(k) * F.inv_transition_matrix();
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < n; ++j) std::cout << res[i][j] << " \n"[j == n - 1];
+    std::cout << res << '\n';
     return 0;
 }

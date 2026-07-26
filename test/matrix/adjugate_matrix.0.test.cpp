@@ -12,8 +12,7 @@ int main() {
     int n;
     std::cin >> n;
     Matrix<mint> A(n, std::vector<mint>(n));
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < n; ++j) std::cin >> A[i][j];
+    std::cin >> A;
     Frobenius<mint> F(A);
     // P_A(x)=x^n+...+(-1)^n det(A)
     // A adj(A) = adj(A) A = det(A) I

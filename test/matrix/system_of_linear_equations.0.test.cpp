@@ -10,11 +10,8 @@ int main() {
     using mint = ModInt<998244353>;
     int n, m;
     std::cin >> n >> m;
-    Matrix<mint> A(n, std::vector<mint>(m));
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j) std::cin >> A[i][j];
-    Matrix<mint> w(1, std::vector<mint>(n));
-    std::cin >> w;
+    Matrix<mint> A(n, std::vector<mint>(m)), w(1, std::vector<mint>(n));
+    std::cin >> A >> w;
     std::vector<int> p;
     auto [B, X] = A.transpose().gauss(&p);
     Matrix<mint> v_hat(1, std::vector<mint>(m));

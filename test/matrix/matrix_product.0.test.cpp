@@ -12,12 +12,7 @@ int main() {
     std::cin >> n >> m >> k;
     Matrix<mint> A(n, std::vector<mint>(m));
     Matrix<mint> B(m, std::vector<mint>(k));
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j) std::cin >> A[i][j];
-    for (int i = 0; i < m; ++i)
-        for (int j = 0; j < k; ++j) std::cin >> B[i][j];
-    const auto AB = A * B;
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < k; ++j) std::cout << AB[i][j] << " \n"[j == k - 1];
+    std::cin >> A >> B;
+    std::cout << A * B << '\n';
     return 0;
 }
