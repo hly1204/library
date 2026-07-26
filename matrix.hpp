@@ -172,7 +172,7 @@ public:
         assert(is_square());
         std::vector<int> p;
         auto [B, X] = gauss(&p);
-        if (p.size() < height()) return {};
+        if ((int)p.size() < height()) return {};
         return X;
     }
 
