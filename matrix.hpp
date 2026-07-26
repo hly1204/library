@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+#include <array>
 #include <cassert>
 #include <iostream>
 #include <optional>
@@ -15,6 +17,19 @@ public:
         const int h = b.height();
         for (int i = 0; i < h; ++i)
             for (int j = 0; j < w; ++j) a >> b[i][j];
+        return a;
+    }
+
+    friend std::ostream &operator<<(std::ostream &a, const Matrix &b) {
+        const int w = b.width();
+        const int h = b.height();
+        for (int i = 0; i < h; ++i) {
+            if (i) a << '\n';
+            for (int j = 0; j < w; ++j) {
+                if (j) a << ' ';
+                a << b[i][j];
+            }
+        }
         return a;
     }
 
@@ -94,6 +109,39 @@ public:
     }
 
     Matrix &operator*=(const Matrix<Tp> &B) { return *this = (*this) * B; }
+
+    // returns (B,X) in reduced row echelon form, where B = X*A
+    std::array<Matrix, 2> gauss(std::vector<int> *pivot_seq = nullptr) const {
+        Matrix B    = *this;
+        const int m = B.height();
+        const int n = B.width();
+        Matrix X(m, std::vector<Tp>(m));
+        for (int i = 0; i < m; ++i) X[i][i] = 1;
+        for (int i = 0; i < std::min(m, n); ++i) {
+            int pivot = i;
+            for (; pivot < n; ++pivot)
+                if (B[pivot][i] != 0) break;
+            if (pivot == n) continue;
+            if (pivot != i) {
+                B[pivot].swap(B[i]);
+                X[pivot].swap(X[i]);
+            }
+            if (pivot_seq) pivot_seq->push_back(i);
+            if (B[i][i] != 1) {
+                const auto iv = B[i][i].inv();
+                for (int j = i; j < n; ++j) B[i][j] *= iv;
+                for (int j = 0; j < m; ++j) X[i][j] *= iv;
+            }
+            for (int j = 0; j < m; ++j)
+                if (j != i) {
+                    const auto p = B[j][i];
+                    if (p == 0) continue;
+                    for (int k = i; k < n; ++k) B[j][k] -= p * B[i][k];
+                    for (int k = 0; k < m; ++k) X[j][k] -= p * X[i][k];
+                }
+        }
+        return {std::move(B), std::move(X)};
+    }
 
     Tp det() const {
         assert(is_square());
