@@ -17,13 +17,14 @@ int main() {
     std::cin >> w;
     std::vector<int> p;
     auto [B, X] = A.transpose().gauss(&p);
-    Matrix<mint> v(1, std::vector<mint>(m));
+    Matrix<mint> v_hat(1, std::vector<mint>(m));
     // solve v*A = w
-    for (int i = 0; i < (int)p.size(); ++i) v[0][i] = w[0][p[i]];
-    if (v * B == w) {
+    for (int i = 0; i < (int)p.size(); ++i) v_hat[0][i] = w[0][p[i]];
+    if (v_hat * B == w) {
         std::cout << m - (int)p.size() << '\n';
-        std::cout << v * X << '\n';
-        for (int i = m - (int)p.size() + 1; i < m; ++i) {
+        // Solution(s): v_hat*X + K, where K is the kernel of row null space of A
+        std::cout << v_hat * X << '\n';
+        for (int i = (int)p.size(); i < m; ++i) {
             for (int j = 0; j < m; ++j) {
                 if (j) std::cout << ' ';
                 std::cout << X[i][j];

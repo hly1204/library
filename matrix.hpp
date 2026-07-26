@@ -119,9 +119,9 @@ public:
         for (int i = 0; i < m; ++i) X[i][i] = 1;
         for (int i = 0; i < std::min(m, n); ++i) {
             int pivot = i;
-            for (; pivot < n; ++pivot)
+            for (; pivot < m; ++pivot)
                 if (B[pivot][i] != 0) break;
-            if (pivot == n) continue;
+            if (pivot == m) continue;
             if (pivot != i) {
                 B[pivot].swap(B[i]);
                 X[pivot].swap(X[i]);
