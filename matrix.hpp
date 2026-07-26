@@ -109,7 +109,7 @@ public:
 
     Matrix &operator*=(const Matrix<Tp> &B) { return *this = (*this) * B; }
 
-    // returns B, B = X*A in reduced row echelon form.
+    // returns B s.t. B = X*A in reduced row echelon form.
     Matrix gauss(std::vector<int> *pivot_seq = nullptr, Matrix *X = nullptr) const {
         Matrix B    = *this;
         const int m = B.height();
@@ -118,29 +118,29 @@ public:
             *X = Matrix(m, std::vector<Tp>(m));
             for (int i = 0; i < m; ++i) (*X)[i][i] = 1;
         }
-        for (int i = 0; i < std::min(m, n); ++i) {
-            int pivot = i;
+        for (int i = 0, r = -1 /* r = rank-1 */; i < n; ++i) {
+            int pivot = r + 1;
             for (; pivot < m; ++pivot)
                 if (B[pivot][i] != 0) break;
             if (pivot == m) continue;
-            if (pivot != i) {
-                B[pivot].swap(B[i]);
-                (*X)[pivot].swap((*X)[i]);
+            if (pivot != ++r) {
+                B[pivot].swap(B[r]);
+                if (X) (*X)[pivot].swap((*X)[r]);
             }
             if (pivot_seq) pivot_seq->push_back(i);
-            if (B[i][i] != 1) {
-                const auto iv = B[i][i].inv();
-                for (int j = i; j < n; ++j) B[i][j] *= iv;
+            if (B[r][i] != 1) {
+                const auto iv = B[r][i].inv();
+                for (int j = i; j < n; ++j) B[r][j] *= iv;
                 if (X)
-                    for (int j = 0; j < m; ++j) (*X)[i][j] *= iv;
+                    for (int j = 0; j < m; ++j) (*X)[r][j] *= iv;
             }
             for (int j = 0; j < m; ++j)
-                if (j != i) {
+                if (j != r) {
                     const auto p = B[j][i];
                     if (p == 0) continue;
-                    for (int k = i; k < n; ++k) B[j][k] -= p * B[i][k];
+                    for (int k = i; k < n; ++k) B[j][k] -= p * B[r][k];
                     if (X)
-                        for (int k = 0; k < m; ++k) (*X)[j][k] -= p * (*X)[i][k];
+                        for (int k = 0; k < m; ++k) (*X)[j][k] -= p * (*X)[r][k];
                 }
         }
         return B;
