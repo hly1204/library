@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/characteristic_polynomial
 
-#include "mat_basic.hpp"
+#include "matrix.hpp"
 #include "modint.hpp"
 #include <iostream>
 

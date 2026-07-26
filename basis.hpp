@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mat_basic.hpp"
+#include "matrix.hpp"
 #include "random.hpp"
 #include <cassert>
 #include <optional>

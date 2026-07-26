@@ -1,7 +1,7 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/3231
 
 #include "frobenius.hpp"
-#include "mat_basic.hpp"
+#include "matrix.hpp"
 #include "modint.hpp"
 #include <iostream>
 #include <vector>
