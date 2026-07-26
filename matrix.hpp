@@ -110,7 +110,7 @@ public:
 
     Matrix &operator*=(const Matrix<Tp> &B) { return *this = (*this) * B; }
 
-    // returns (B,X) in reduced row echelon form, where B = X*A
+    // returns [B, X], B = X*A in reduced row echelon form.
     std::array<Matrix, 2> gauss(std::vector<int> *pivot_seq = nullptr) const {
         Matrix B    = *this;
         const int m = B.height();
