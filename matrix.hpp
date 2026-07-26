@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include <array>
 #include <cassert>
 #include <iostream>
 #include <optional>
@@ -110,13 +109,15 @@ public:
 
     Matrix &operator*=(const Matrix<Tp> &B) { return *this = (*this) * B; }
 
-    // returns [B, X], B = X*A in reduced row echelon form.
-    std::array<Matrix, 2> gauss(std::vector<int> *pivot_seq = nullptr) const {
+    // returns B, B = X*A in reduced row echelon form.
+    Matrix gauss(std::vector<int> *pivot_seq = nullptr, Matrix *X = nullptr) const {
         Matrix B    = *this;
         const int m = B.height();
         const int n = B.width();
-        Matrix X(m, std::vector<Tp>(m));
-        for (int i = 0; i < m; ++i) X[i][i] = 1;
+        if (X) {
+            *X = Matrix(m, std::vector<Tp>(m));
+            for (int i = 0; i < m; ++i) (*X)[i][i] = 1;
+        }
         for (int i = 0; i < std::min(m, n); ++i) {
             int pivot = i;
             for (; pivot < m; ++pivot)
@@ -130,17 +131,19 @@ public:
             if (B[i][i] != 1) {
                 const auto iv = B[i][i].inv();
                 for (int j = i; j < n; ++j) B[i][j] *= iv;
-                for (int j = 0; j < m; ++j) X[i][j] *= iv;
+                if (X)
+                    for (int j = 0; j < m; ++j) (*X)[i][j] *= iv;
             }
             for (int j = 0; j < m; ++j)
                 if (j != i) {
                     const auto p = B[j][i];
                     if (p == 0) continue;
                     for (int k = i; k < n; ++k) B[j][k] -= p * B[i][k];
-                    for (int k = 0; k < m; ++k) X[j][k] -= p * X[i][k];
+                    if (X)
+                        for (int k = 0; k < m; ++k) (*X)[j][k] -= p * (*X)[i][k];
                 }
         }
-        return {std::move(B), std::move(X)};
+        return B;
     }
 
     Tp det() const {
@@ -168,10 +171,17 @@ public:
         return d;
     }
 
+    int rank() const {
+        std::vector<int> p;
+        std::ignore = gauss(&p);
+        return (int)p.size();
+    }
+
     std::optional<Matrix<Tp>> inv() const {
         assert(is_square());
         std::vector<int> p;
-        auto [B, X] = gauss(&p);
+        Matrix X;
+        std::ignore = gauss(&p, &X);
         if ((int)p.size() < height()) return {};
         return X;
     }

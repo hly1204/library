@@ -13,7 +13,8 @@ int main() {
     Matrix<mint> A(n, std::vector<mint>(m)), w(1, std::vector<mint>(n));
     std::cin >> A >> w;
     std::vector<int> p;
-    auto [B, X] = A.transpose().gauss(&p);
+    Matrix<mint> X;
+    auto B = A.transpose().gauss(&p, &X);
     Matrix<mint> v_hat(1, std::vector<mint>(m));
     // solve v*A = w
     for (int i = 0; i < (int)p.size(); ++i) v_hat[0][i] = w[0][p[i]];
