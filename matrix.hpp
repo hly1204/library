@@ -125,7 +125,7 @@ public:
             if (pivot == m) continue;
             if (pivot != i) {
                 B[pivot].swap(B[i]);
-                X[pivot].swap(X[i]);
+                (*X)[pivot].swap((*X)[i]);
             }
             if (pivot_seq) pivot_seq->push_back(i);
             if (B[i][i] != 1) {
