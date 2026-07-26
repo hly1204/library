@@ -8,9 +8,9 @@ int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
     using mint = ModInt<998244353>;
-    int n;
-    std::cin >> n;
-    Matrix<mint> A(n, std::vector<mint>(n));
+    int m, n;
+    std::cin >> m >> n;
+    Matrix<mint> A(m, std::vector<mint>(n));
     std::cin >> A;
     std::cout << A.rank() << '\n';
     return 0;
