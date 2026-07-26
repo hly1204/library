@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/sparse_matrix_det
 
-#include "mat_sparse.hpp"
+#include "sparse_matrix.hpp"
 #include "modint.hpp"
 #include <iostream>
 
