@@ -170,37 +170,10 @@ public:
 
     std::optional<Matrix<Tp>> inv() const {
         assert(is_square());
-        Matrix A    = *this;
-        const int n = A.height();
-        for (int i = 0; i < n; ++i) {
-            A[i].resize(n * 2);
-            A[i][n + i] = 1;
-        }
-        for (int i = 0; i < n; ++i) {
-            int pivot = i;
-            for (; pivot < n; ++pivot)
-                if (A[pivot][i] != 0) break;
-            if (pivot == n) return {};
-            if (pivot != i) A[pivot].swap(A[i]);
-            if (A[i][i] != 1) {
-                const auto iv = A[i][i].inv();
-                for (int j = i; j < n * 2; ++j) A[i][j] *= iv;
-            }
-            for (int j = i + 1; j < n; ++j) {
-                const auto p = A[j][i];
-                if (p == 0) continue;
-                for (int k = i + 1; k < n * 2; ++k) A[j][k] -= p * A[i][k];
-            }
-        }
-        for (int i = n - 1; i > 0; --i) {
-            for (int j = i - 1; j >= 0; --j) {
-                const auto p = A[j][i];
-                if (p == 0) continue;
-                for (int k = n; k < n * 2; ++k) A[j][k] -= p * A[i][k];
-            }
-        }
-        for (int i = 0; i < n; ++i) A[i].erase(A[i].begin(), A[i].begin() + n);
-        return A;
+        std::vector<int> p;
+        auto [B, X] = gauss(&p);
+        if (p.size() < height()) return {};
+        return X;
     }
 
     Matrix to_upper_hessenberg() const {
