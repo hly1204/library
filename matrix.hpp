@@ -253,7 +253,7 @@ public:
         if ((int)p.size() == n - 1) {
             L.erase(L.begin(), L.begin() + (n - 1));
             Matrix R(n, std::vector<Tp>(1)); // basis of right kernel
-            int free = 0; // free column (column without pivot)
+            int free = 0;                    // free column (column without pivot)
             while (free < (int)p.size() /* in case A = [0] */ && p[free] == free) ++free;
             // Read from rref
             for (int i = 0; i < n; ++i) R[i][0] = i != free ? -B[i][free] : Tp(1);
