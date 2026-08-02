@@ -243,7 +243,7 @@ public:
     }
 
     Matrix adj() const {
-        // We could reduce some constant factor by using a special Gaussian elimination procedure.
+        // We could reduce the constant factor by using a special Gaussian elimination procedure.
         assert(is_square());
         const int n = height();
         std::vector<int> p;
