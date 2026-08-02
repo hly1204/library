@@ -261,7 +261,7 @@ std::vector<uint> FPSRev(std::vector<uint> f, int n) {
     auto proj = PowProj(std::vector<uint>{1u}, f, n);
     for (int i = 1; i < n; ++i) proj[i] = (ull)proj[i] * (n - 1) % MOD * inv[i] % MOD;
     reverse(begin(proj), end(proj));
-    auto res = FPSPow1(proj, InvMod(MOD + 1 - n), n - 1);
+    auto res = FPSPow1(proj, MOD - inv[n - 1], n - 1);
     for (int i = 0; i < n - 1; ++i) res[i] = (ull)res[i] * invf1 % MOD;
     res.insert(begin(res), 0);
     return res;
