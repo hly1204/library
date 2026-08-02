@@ -242,6 +242,39 @@ public:
         return P[n];
     }
 
+    Matrix adj() const {
+        // We could reduce some constant factor by using a special Gaussian elimination procedure.
+        assert(is_square());
+        const int n = height();
+        std::vector<int> p;
+        Matrix L; // last row = basis of left kernel
+        std::ignore = gauss(&p, &L);
+        // A adj(A) = adj(A) A = det(A) I
+        if ((int)p.size() == n) return L * det();
+        if ((int)p.size() == n - 1) {
+            L.erase(L.begin(), L.begin() + (n - 1));
+            Matrix R; // (last row)^T = basis of right kernel
+            std::ignore = transpose().gauss(nullptr, &R);
+            R.erase(R.begin(), R.begin() + (n - 1));
+            R = R.transpose();
+            // A adj(A) = adj(A) A = 0 => adj(A) = alpha R L
+            Matrix RL = R * L;
+            for (int i = 0; i < n; ++i)
+                for (int j = 0; j < n; ++j)
+                    // find alpha by finding any non-zero entry of RL
+                    if (RL[i][j] != 0) {
+                        Matrix A = *this;
+                        for (int k = 0; k < n; ++k) A[k].erase(A[k].begin() + i);
+                        A.erase(A.begin() + j);
+                        RL *= A.det() / RL[i][j];
+                        if ((i + j) & 1) RL = -RL;
+                        break;
+                    }
+            return RL;
+        }
+        return Matrix(n, std::vector<Tp>(n));
+    }
+
     // randomized algorithm based on Elegia's trick
     // defined in basis.hpp
     inline std::vector<Tp> minpoly() const;
