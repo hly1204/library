@@ -199,19 +199,18 @@ std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
         assert((int)size(P) == d * n * 2);
         assert((int)size(Q) == d * n * 2);
         P.insert(begin(P), d * n * 2, 0u);
+        uint *const nP = data(P) + d * n * 2;
         Q.resize(d * n * 4);
-        std::vector<uint> nextP(d * n * 4);
         for (; n > 1; d *= 2, n /= 2) {
             Q[d * n * 2] = 1;
             FFT(data(P), d * n * 4, data(inv_root));
             FFT(data(Q), d * n * 4, data(root));
-            uint *const nP = data(nextP) + d * n * 2;
-            for (int i = 0; i < d * n * 4; i += 2) {
+            for (int i = d * n * 4 - 2; i >= 0; i -= 2) {
                 if ((nP[i / 2] = ((ull)P[i] * Q[i + 1] + (ull)P[i + 1] * Q[i]) % MOD) & 1)
                     nP[i / 2] += MOD;
                 nP[i / 2] /= 2;
-                Q[i / 2] = (ull)Q[i] * Q[i + 1] % MOD;
             }
+            for (int i = 0; i < d * n * 4; i += 2) Q[i / 2] = (ull)Q[i] * Q[i + 1] % MOD;
             InvFFT(nP, d * n * 2, data(root));
             InvFFT(data(Q), d * n * 2, data(inv_root));
             assert(Q[0] == 1);
@@ -220,7 +219,6 @@ std::vector<uint> PowProj(std::vector<uint> f, std::vector<uint> g, int n) {
                 std::memset(nP + i * n, 0, sizeof(uint) * (n / 2));
                 std::memset(data(Q) + i * n + n / 2, 0, sizeof(uint) * (n / 2));
             }
-            P.swap(nextP);
             std::memset(data(P), 0, sizeof(uint) * (d * n * 2));
             std::memset(data(Q) + d * n * 2, 0, sizeof(uint) * (d * n * 2));
         }
