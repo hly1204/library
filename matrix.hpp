@@ -247,16 +247,16 @@ public:
         assert(is_square());
         const int n = height();
         std::vector<int> p;
-        Matrix L; // last row = basis of left kernel
-        std::ignore = gauss(&p, &L);
+        Matrix L /* inv or basis of left kernel */, B = gauss(&p, &L);
         // A adj(A) = adj(A) A = det(A) I
         if ((int)p.size() == n) return L * det();
         if ((int)p.size() == n - 1) {
             L.erase(L.begin(), L.begin() + (n - 1));
-            Matrix R; // (last row)^T = basis of right kernel
-            std::ignore = transpose().gauss(nullptr, &R);
-            R.erase(R.begin(), R.begin() + (n - 1));
-            R = R.transpose();
+            Matrix R(n, std::vector<Tp>(1)); // basis of right kernel
+            int free = 0; // free column (column without pivot)
+            while (free < (int)p.size() /* in case A = [0] */ && p[free] == free) ++free;
+            // Read from rref
+            for (int i = 0; i < n; ++i) R[i][0] = i != free ? -B[i][free] : Tp(1);
             // A adj(A) = adj(A) A = 0 => adj(A) = alpha R L
             Matrix RL = R * L;
             for (int i = 0; i < n; ++i)
