@@ -36,6 +36,12 @@ public:
     int height() const { return this->size(); }
     bool is_square() const { return width() == height(); }
 
+    static Matrix identity(int n) {
+        Matrix A(n, std::vector<Tp>(n));
+        for (int i = 0; i < n; ++i) A[i][i] = 1;
+        return A;
+    }
+
     Matrix transpose() const {
         const int w = width();
         const int h = height();
@@ -86,6 +92,7 @@ public:
 
     Matrix operator+(const Matrix<Tp> &B) { return Matrix(*this) += B; }
     Matrix operator-(const Matrix<Tp> &B) { return Matrix(*this) -= B; }
+    Matrix operator*(const Tp &b) { return Matrix(*this) *= b; }
 
     Matrix &operator*=(const Tp &b) {
         const int w = width();
@@ -114,10 +121,7 @@ public:
         Matrix B    = *this;
         const int m = B.height();
         const int n = B.width();
-        if (X) {
-            *X = Matrix(m, std::vector<Tp>(m));
-            for (int i = 0; i < m; ++i) (*X)[i][i] = 1;
-        }
+        if (X) *X = identity(n);
         for (int i = 0, r = -1 /* r = rank-1 */; i < n; ++i) {
             int pivot = r + 1;
             for (; pivot < m; ++pivot)
