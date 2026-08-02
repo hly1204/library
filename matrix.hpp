@@ -121,7 +121,7 @@ public:
         Matrix B    = *this;
         const int m = B.height();
         const int n = B.width();
-        if (X) *X = identity(n);
+        if (X) *X = identity(m);
         for (int i = 0, r = -1 /* r = rank-1 */; i < n; ++i) {
             int pivot = r + 1;
             for (; pivot < m; ++pivot)
@@ -148,6 +148,13 @@ public:
                 }
         }
         return B;
+    }
+
+    Tp tr() const {
+        assert(is_square());
+        Tp s;
+        for (int i = 0; i < height(); ++i) s += (*this)[i][i];
+        return s;
     }
 
     Tp det() const {
