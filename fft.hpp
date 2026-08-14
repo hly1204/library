@@ -231,3 +231,23 @@ inline std::vector<Tp> convolution(const std::vector<Tp> &a, const std::vector<T
     if (std::addressof(a) == std::addressof(b)) return square_fft(a);
     return convolution_fft(a, b);
 }
+
+template<typename Tp> inline std::vector<Tp>
+convolution_naive_trunc(const std::vector<Tp> &a, const std::vector<Tp> &b, int k) {
+    if (a.empty() || b.empty()) return std::vector<Tp>(k);
+    const int n = a.size();
+    const int m = b.size();
+    std::vector<Tp> res(k);
+    for (int i = 0; i < std::min(n, k); ++i)
+        for (int j = 0; j < std::min(m, k) && i + j < k; ++j) res[i + j] += a[i] * b[j];
+    return res;
+}
+
+template<typename Tp> inline std::vector<Tp> convolution_trunc(const std::vector<Tp> &a,
+                                                               const std::vector<Tp> &b, int k) {
+    if (k < 60) return convolution_naive_trunc(a, b, k);
+    auto ab = convolution(std::vector(a.begin(), std::min(a.end(), a.begin() + k)),
+                          std::vector(b.begin(), std::min(b.end(), b.begin() + k)));
+    ab.resize(k);
+    return ab;
+}
