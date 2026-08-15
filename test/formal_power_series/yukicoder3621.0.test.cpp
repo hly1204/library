@@ -1,3 +1,4 @@
+// competitive-verifier: IGNORE (worse time complexity than std)
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/3621
 
 #include "fft.hpp"
@@ -23,12 +24,13 @@ template<typename Tp> std::vector<Tp> schroeder_function(const std::vector<Tp> &
             return {S0 / (1 - W0)};
         }
         auto V  = brent_traub(brent_traub, U, W, S, n / 2);
-        auto VU = composition(V, U, n);
+        auto VU = composition(std::vector(V.begin(), std::min(V.end(), V.begin() + n)),
+                              std::vector(U.begin(), std::min(U.end(), U.begin() + n)), n);
         auto WV = convolution_trunc(W, V, n);
         std::vector<Tp> R(n / 2);
         for (int i = n / 2; i < n; ++i)
             R[i - n / 2] = WV[i] + (i < (int)S.size() ? S[i] : Tp(0)) - VU[i];
-        std::vector U_hat = U;
+        auto U_hat = U;
         U_hat.erase(U_hat.begin());
         U_hat      = fps_pow(fps_inv(U_hat, n / 2), n / 2, n / 2);
         auto W_hat = convolution_trunc(W, U_hat, n / 2);
