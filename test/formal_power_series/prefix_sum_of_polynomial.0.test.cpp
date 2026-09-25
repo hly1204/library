@@ -1,7 +1,7 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/prefix_sum_of_polynomial
 
-#include "prefix_sum_of_polynomial.hpp"
 #include "modint.hpp"
+#include "poly_prefix_sum.hpp"
 #include <iostream>
 #include <vector>
 
