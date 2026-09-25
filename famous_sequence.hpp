@@ -130,11 +130,11 @@ template<typename Tp> inline std::vector<Tp> eulerian_numbers_column(int k, int 
         xe_neg_x[i] = bin.inv_factorial(i - 1);
         if ((i - 1) & 1) xe_neg_x[i] = -xe_neg_x[i];
     }
-    auto AA = convolution(composition(A, xe_neg_x, m), fps_exp(std::vector{Tp(0), Tp(k + 1)}, m));
-    auto BB = convolution(composition(B, xe_neg_x, m), fps_exp(std::vector{Tp(0), Tp(k)}, m));
-    for (int i = 0; i < m; ++i) AA[i] = (AA[i] - BB[i]) * bin.factorial(i);
-    AA.resize(m);
-    return AA;
+    A = convolution_trunc(composition(A, xe_neg_x, m), fps_exp(std::vector{Tp(0), Tp(k + 1)}, m),
+                          m);
+    B = convolution_trunc(composition(B, xe_neg_x, m), fps_exp(std::vector{Tp(0), Tp(k)}, m), m);
+    for (int i = 0; i < m; ++i) A[i] = (A[i] - B[i]) * bin.factorial(i);
+    return A;
 }
 
 template<typename Tp> inline std::vector<Tp> bell_numbers(int n) {
@@ -144,4 +144,14 @@ template<typename Tp> inline std::vector<Tp> bell_numbers(int n) {
     auto res = fps_exp(ex, n);
     for (int i = 0; i < n; ++i) res[i] *= bin.factorial(i);
     return res;
+}
+
+// E.g.f. of Bernoulli numbers = x/(e^x - 1)
+template<typename Tp> inline std::vector<Tp> bernoulli_numbers(int n) {
+    auto &&bin = Binomial<Tp>::get(n + 1);
+    std::vector<Tp> B(n);
+    for (int i = 0; i < n; ++i) B[i] = bin.inv_factorial(i + 1);
+    B = fps_inv(B, n);
+    for (int i = 0; i < n; ++i) B[i] *= bin.factorial(i);
+    return B;
 }
