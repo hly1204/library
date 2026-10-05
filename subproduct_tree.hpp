@@ -64,31 +64,29 @@ public:
         // find coefficients of x^(-1),...,x^(-N) of F/P in R((x^(-1)))
         auto res = fps_div(std::vector(F.rend() - (degF + 1), F.rend()),
                            std::vector(P.rbegin(), P.rend()), degF + 1);
+        // now we have [x^((deg(F) - N) .. -N)] F/P
         if (degF >= N) res.erase(res.begin(), res.begin() + (degF - N + 1));
-        std::reverse(res.begin(), res.end());
-        res.resize(N);
-        res.insert(res.begin(), S - N, Tp(0)); // res[S-1]=[x^(-1)]F/P, res[S-2]=[x^(-2)]F/P, ...
-        fft(res);
+        // now we have [x^(<0 .. -N)] F/P
+        res.insert(res.begin(), N - (int)res.size(), Tp(0));
+        res.resize(S);
+        transposed_inv_fft(res);
         for (int lv = 0, len = S; (1 << lv) < S; ++lv, len /= 2) {
-            const auto t = FftInfo<Tp>::get().inv_root(len / 2).at(len / 4);
+            const auto t = FftInfo<Tp>::get().root(len / 2).at(len / 4);
             std::vector<Tp> LL(len);
             for (int i = 0; i < (1 << lv); ++i) {
                 auto C = res.begin() + i * len;                        // current
                 auto L = T.begin() + ((lv + 1) * S * 2 + i * len * 2); // left child
                 for (int j = 0; j < len; ++j) LL[j] = C[j] * L[len + j], C[j] *= L[j];
-                // extract the higher part of DFT array
-                inv_fft_n(LL.begin() + len / 2, len / 2);
-                inv_fft_n(C + len / 2, len / 2);
+                // extract the lower part of DFT array
+                transposed_fft_n(LL.begin() + len / 2, len / 2);
+                transposed_fft_n(C + len / 2, len / 2);
                 Tp k = 1;
+                for (int j = 0; j < len / 2; ++j, k *= t) LL[j + len / 2] *= k, C[j + len / 2] *= k;
+                transposed_inv_fft_n(LL.begin() + len / 2, len / 2);
+                transposed_inv_fft_n(C + len / 2, len / 2);
                 for (int j = 0; j < len / 2; ++j) {
-                    LL[j + len / 2] *= k, C[j + len / 2] *= k;
-                    k *= t;
-                }
-                fft_n(LL.begin() + len / 2, len / 2);
-                fft_n(C + len / 2, len / 2);
-                for (int j = 0; j < len / 2; ++j) {
-                    C[j + len / 2] = (C[j] - C[j + len / 2]).div_by_2();
-                    C[j]           = (LL[j] - LL[j + len / 2]).div_by_2();
+                    C[j + len / 2] = C[j] + C[j + len / 2];
+                    C[j]           = LL[j] + LL[j + len / 2];
                 }
             }
         }
