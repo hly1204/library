@@ -137,7 +137,7 @@ slice_coeff_rational(const std::vector<Tp> &P, const std::vector<Tp> &Q, long lo
     std::reverse(P0.begin(), P0.end());
     Q0.resize(N + 1);
     std::reverse(Q0.begin(), Q0.end());
-    auto [q, r] = euclidean_div(convolution(xk_mod(L, Q0), P0), Q0);
+    auto r = std::get<1>(euclidean_div(convolution(xk_mod(L, Q0), P0), Q0));
     r.resize(N);
     std::reverse(r.begin(), r.end());
     return fps_div(r, Q, R - L);
@@ -148,5 +148,5 @@ slice_coeff_rational(const std::vector<Tp> &P, const std::vector<Tp> &Q, long lo
 // Q: non-zero polynomial, ord(Q)=0
 template<typename Tp>
 inline Tp div_at(const std::vector<Tp> &P, const std::vector<Tp> &Q, long long k) {
-    return slice_coeff_rational(P, Q, k, k + 1).at(0);
+    return slice_coeff_rational(P, Q, k, k + 1).front();
 }
