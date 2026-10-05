@@ -84,10 +84,8 @@ public:
                 for (int j = 0; j < len / 2; ++j, k *= t) LL[j + len / 2] *= k, C[j + len / 2] *= k;
                 transposed_inv_fft_n(LL.begin() + len / 2, len / 2);
                 transposed_inv_fft_n(C + len / 2, len / 2);
-                for (int j = 0; j < len / 2; ++j) {
-                    C[j + len / 2] = C[j] + C[j + len / 2];
-                    C[j]           = LL[j] + LL[j + len / 2];
-                }
+                for (int j = 0; j < len / 2; ++j)
+                    C[j + len / 2] += C[j], C[j] = LL[j] + LL[j + len / 2];
             }
         }
         res.resize(N);
