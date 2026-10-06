@@ -21,7 +21,9 @@ Just compute $h = fg \bmod{\left(x^{m} - 1\right)}$ and extract the coefficients
 
 Use the trick that described in FFT.
 
-Note: If we are given $f(x) = \sum _ {j = 0}^{m - 1} f_j x^{-j - 1}$ and $g(x) = \sum _ {j = 0}^{n - 1} g_j x^j$, we want to compute something like $\left\lbrack x^{\lt 0}\right\rbrack fg$, the **Transposed Convolution** just give us the correct result.
+Note: If we are given $f(x) = \sum _ {j = 0}^{m - 1} f_j x^{-j - 1}$ and $g(x) = \sum _ {j = 0}^{n - 1} g_j x^j$, we want to compute something like $\left\lbrack x^{\lt 0}\right\rbrack fg$, the **transposed convolution** just give us the correct result.
+
+Middle product style:
 
 ```c++
 template<typename Tp>
@@ -40,6 +42,8 @@ inline std::vector<Tp> transposed_convolution(std::vector<Tp> f, std::vector<Tp>
     return f;
 }
 ```
+
+~~Or normal style (just do the truncation)~~.
 
 ## References
 
