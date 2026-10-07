@@ -114,7 +114,7 @@ inline std::vector<Tp> power_projection(std::vector<Tp> f, std::vector<Tp> g, in
 
     const int N = fft_len(n);
     f.insert(f.begin(), N - n, Tp(0));
-    f.reserve(N);
+    f.resize(N);
     std::reverse(f.begin(), f.end());
     f.insert(f.begin(), N, Tp(0));
     g.resize(N * 2);
