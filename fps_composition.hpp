@@ -3,6 +3,7 @@
 #include "binomial.hpp"
 #include "fft.hpp"
 #include "fps_basic.hpp"
+#include "poly_basic.hpp"
 #include <algorithm>
 #include <cassert>
 #include <utility>
@@ -13,74 +14,52 @@
 // [1]: Yasunori Kinoshita, Baitian Li. Power Series Composition in Near-Linear Time.
 //      https://arxiv.org/abs/2404.05177
 template<typename Tp>
-inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<Tp> &g, int n) {
+inline std::vector<Tp> composition(std::vector<Tp> f, std::vector<Tp> g, int n) {
     if (n <= 0) return {};
     if (g.empty()) {
         std::vector<Tp> res(n);
         if (!f.empty()) res[0] = f[0];
         return res;
     }
+    if (g[0] != 0) {
+        auto c = g[0];
+        g[0]   = 0;
+        return composition(taylor_shift(std::move(f), c), std::move(g), n);
+    }
 
     // [y^(-1)] (f(y) / (-g(x) + y)) mod x^n in R[x]((y^(-1)))
-    auto kinoshita_li = [g0 = g[0]](auto &&kinoshita_li, const std::vector<Tp> &P,
-                                    const std::vector<Tp> &Q, int d, int n) {
-        if (n == 1) {
-            std::vector<Tp> invQ(d + 1);
-            auto &&bin = Binomial<Tp>::get(d * 2);
-            Tp gg      = 1;
-            for (int i = 0; i <= d; ++i) invQ[d - i] = bin.binom(d + i - 1, d - 1) * gg, gg *= g0;
-            // invQ[i] = [y^(-2d + i)]Q^(-1)
-            // P[0,d-1] * invQ[-2d,-d] => [0,d-1] * [0,d]
-            // take [-d,-1] => take [d,2d-1]
-            auto PinvQ = convolution(P, invQ);
-            PinvQ.erase(PinvQ.begin(), PinvQ.begin() + d);
-            PinvQ.resize(d);
-            return PinvQ;
+    auto kinoshita_li = [](auto &&kinoshita_li, std::vector<Tp> &P, std::vector<Tp> Q, int d,
+                           int n) {
+        if (n == 1) return;
+        Q.resize(d * n * 4);
+        Q[d * n * 2] = 1;
+        fft(Q);
+        if (n > 2) {
+            std::vector<Tp> V(d * n * 2);
+            for (int i = 0; i < d * n * 4; i += 2) V[i / 2] = Q[i] * Q[i + 1];
+            inv_fft(V);
+            assert(V[0] == 1);
+            V[0] = 0;
+            for (int i = 0; i < d * 2; ++i) std::fill_n(V.begin() + (i * n + n / 2), n / 2, Tp(0));
+            kinoshita_li(kinoshita_li, P, std::move(V), d * 2, n / 2);
         }
-
-        std::vector<Tp> dftQ(d * n * 4);
+        fft(P);
+        for (int i = 0; i < d * n * 4; i += 2) std::swap(Q[i] *= P[i / 2], Q[i + 1] *= P[i / 2]);
+        inv_fft(Q);
         for (int i = 0; i < d; ++i)
-            for (int j = 0; j < n; ++j) dftQ[i * (n * 2) + j] = Q[i * n + j];
-        dftQ[d * n * 2] = 1;
-        fft(dftQ);
-        std::vector<Tp> V(d * n * 2);
-        for (int i = 0; i < d * n * 4; i += 2) V[i / 2] = dftQ[i] * dftQ[i + 1];
-        inv_fft(V);
-        V[0] -= 1;
-
-        for (int i = 1; i < d * 2; ++i)
-            for (int j = 0; j < n / 2; ++j) V[i * (n / 2) + j] = V[i * n + j];
-        V.resize(d * n);
-
-        const auto T = kinoshita_li(kinoshita_li, P, std::move(V), d * 2, n / 2);
-
-        std::vector<Tp> dftT(d * n * 2);
-        for (int i = 0; i < d * 2; ++i)
-            for (int j = 0; j < n / 2; ++j) dftT[i * n + j] = T[i * (n / 2) + j];
-        fft(dftT);
-
-        std::vector<Tp> U(d * n * 4);
-        for (int i = 0; i < d * n * 4; i += 2) {
-            U[i]     = dftT[i / 2] * dftQ[i + 1];
-            U[i + 1] = dftT[i / 2] * dftQ[i];
-        }
-        inv_fft(U);
-
-        // [-2d,d-1] => [0,3d-1]
-        // take [-d,-1] => take [d,2d-1]
-        for (int i = 0; i < d; ++i)
-            for (int j = 0; j < n; ++j) U[i * n + j] = U[(i + d) * (n * 2) + j];
-        U.resize(d * n);
-        return U;
+            std::fill_n(std::copy_n(Q.begin() + (i + d) * n * 2, n, P.begin() + i * n * 2), n,
+                        Tp(0));
     };
 
-    const int k = fft_len(std::max<int>(n, f.size()));
-    std::vector<Tp> Q(k);
-    for (int i = 0; i < std::min<int>(k, g.size()); ++i) Q[i] = -g[i];
-
-    auto res = kinoshita_li(kinoshita_li, f, Q, 1, k);
-    res.resize(n);
-    return res;
+    const int N = fft_len(n);
+    f.resize(N * 2);
+    g.resize(N * 2);
+    for (int i = N - 1; i >= 0; --i) f[i * 2] = f[i], f[i * 2 + 1] = 0;
+    for (int i = 0; i < N; ++i) g[i] = (g[i] != 0 ? -g[i] : 0);
+    std::fill_n(g.begin() + N, N, Tp(0));
+    kinoshita_li(kinoshita_li, f, std::move(g), 1, N);
+    f.resize(n);
+    return f;
 }
 
 // returns [x^k]gf^0, [x^k]gf, ..., [x^k]gf^(n-1)
