@@ -14,7 +14,7 @@ int main() {
     std::vector<mint> f(n), p(m);
     for (int i = 0; i < n; ++i) std::cin >> f[i];
     for (int i = 0; i < m; ++i) std::cin >> p[i];
-    SubproductTree<mint> T(p);
+    const SubproductTree<mint> T(p);
     const auto res = T.evaluation(f);
     for (int i = 0; i < m; ++i) std::cout << res[i] << ' ';
     return 0;

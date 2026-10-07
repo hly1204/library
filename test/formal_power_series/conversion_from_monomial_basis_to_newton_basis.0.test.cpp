@@ -14,7 +14,7 @@ int main() {
     std::vector<mint> F(n), X(n);
     for (int i = 0; i < n; ++i) std::cin >> F[i];
     for (int i = 0; i < n; ++i) std::cin >> X[i];
-    SubproductTree<mint> T(X);
+    const SubproductTree<mint> T(X);
     const auto res = T.monomial_to_newton(F);
     for (int i = 0; i < n; ++i) std::cout << res[i] << ' ';
     return 0;

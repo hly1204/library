@@ -14,7 +14,7 @@ int main() {
     std::vector<mint> X(n), Y(n);
     for (int i = 0; i < n; ++i) std::cin >> X[i];
     for (int i = 0; i < n; ++i) std::cin >> Y[i];
-    SubproductTree<mint> T(X);
+    const SubproductTree<mint> T(X);
     const auto res = T.interpolation(Y);
     for (int i = 0; i < n; ++i) std::cout << res[i] << ' ';
     return 0;
