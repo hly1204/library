@@ -22,8 +22,8 @@ inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<T
     }
 
     // [y^(-1)] (f(y) / (-g(x) + y)) mod x^n in R[x]((y^(-1)))
-    auto rec = [g0 = g[0]](auto &&rec, const std::vector<Tp> &P, const std::vector<Tp> &Q, int d,
-                           int n) {
+    auto kinoshita_li = [g0 = g[0]](auto &&kinoshita_li, const std::vector<Tp> &P,
+                                    const std::vector<Tp> &Q, int d, int n) {
         if (n == 1) {
             std::vector<Tp> invQ(d + 1);
             auto &&bin = Binomial<Tp>::get(d * 2);
@@ -52,7 +52,7 @@ inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<T
             for (int j = 0; j < n / 2; ++j) V[i * (n / 2) + j] = V[i * n + j];
         V.resize(d * n);
 
-        const auto T = rec(rec, P, std::move(V), d * 2, n / 2);
+        const auto T = kinoshita_li(kinoshita_li, P, std::move(V), d * 2, n / 2);
 
         std::vector<Tp> dftT(d * n * 2);
         for (int i = 0; i < d * 2; ++i)
@@ -78,7 +78,7 @@ inline std::vector<Tp> composition(const std::vector<Tp> &f, const std::vector<T
     std::vector<Tp> Q(k);
     for (int i = 0; i < std::min<int>(k, g.size()); ++i) Q[i] = -g[i];
 
-    auto res = rec(rec, f, Q, 1, k);
+    auto res = kinoshita_li(kinoshita_li, f, Q, 1, k);
     res.resize(n);
     return res;
 }
