@@ -96,7 +96,7 @@ template<typename Tp> inline std::vector<Tp> xk_mod(long long k, const std::vect
     fft(dftQ);
     std::vector<Tp> dftV(len / 2);
     for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];
-    const auto dftT = bostan_mori(dftV, k / 2);
+    const auto dftT = bostan_mori(std::move(dftV), k / 2);
     std::vector<Tp> dftU(len);
     if (k & 1) {
         auto &&root = FftInfo<Tp>::get().root(len / 2);
@@ -132,12 +132,12 @@ slice_coeff_rational(const std::vector<Tp> &P, const std::vector<Tp> &Q, long lo
     if (degP < 0) return std::vector<Tp>(R - L);
     const int degQ = degree(Q);
     const int N    = std::max(degP + 1, degQ);
-    auto P0 = P, Q0 = Q;
-    P0.resize(N);
-    std::reverse(P0.begin(), P0.end());
-    Q0.resize(N + 1);
-    std::reverse(Q0.begin(), Q0.end());
-    auto r = std::get<1>(euclidean_div(convolution(xk_mod(L, Q0), P0), Q0));
+    auto P_hat = P, Q_hat = Q;
+    P_hat.resize(N);
+    std::reverse(P_hat.begin(), P_hat.end());
+    Q_hat.resize(N + 1);
+    std::reverse(Q_hat.begin(), Q_hat.end());
+    auto r = std::get<1>(euclidean_div(convolution(xk_mod(L, Q_hat), P_hat), Q_hat));
     r.resize(N);
     std::reverse(r.begin(), r.end());
     return fps_div(r, Q, R - L);
