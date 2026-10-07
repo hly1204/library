@@ -83,14 +83,15 @@ inline std::vector<Tp> power_projection(std::vector<Tp> f, std::vector<Tp> g, in
         P.insert(P.begin(), d * n * 2, Tp(0));
         auto nP = P.begin() + d * n * 2;
         Q.resize(d * n * 4);
-        for (; n > 2; d *= 2, n /= 2) {
+        for (; n > 1; d *= 2, n /= 2) {
             Q[d * n * 2] = 1;
             transposed_inv_fft(P);
             fft(Q);
             for (int i = d * n * 4 - 2; i >= 0; i -= 2)
                 nP[i / 2] = P[i] * Q[i + 1] + P[i + 1] * Q[i];
-            for (int i = 0; i < d * n * 4; i += 2) Q[i / 2] = Q[i] * Q[i + 1];
             transposed_fft_n(nP, d * n * 2);
+            if (n == 2) break;
+            for (int i = 0; i < d * n * 4; i += 2) Q[i / 2] = Q[i] * Q[i + 1];
             inv_fft_n(Q.begin(), d * n * 2);
             assert(Q[0] == 1);
             Q[0] = 0;
@@ -100,14 +101,6 @@ inline std::vector<Tp> power_projection(std::vector<Tp> f, std::vector<Tp> g, in
             }
             std::fill_n(P.begin(), d * n * 2, Tp(0));
             std::fill_n(Q.begin() + d * n * 2, d * n * 2, Tp(0));
-        }
-        if (n > 1) {
-            Q[d * n * 2] = 1;
-            transposed_inv_fft(P);
-            fft(Q);
-            for (int i = d * n * 4 - 2; i >= 0; i -= 2)
-                nP[i / 2] = P[i] * Q[i + 1] + P[i + 1] * Q[i];
-            transposed_fft_n(nP, d * n * 2);
         }
         P.erase(P.begin(), P.begin() + d * n * 2);
     };
