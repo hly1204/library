@@ -79,7 +79,7 @@ inline std::vector<Tp> power_projection(std::vector<Tp> f, std::vector<Tp> g, in
     g[0]         = 0;
 
     // [x^(n-1)] (f(x) / (-g(x) + y)) in R[x]((y^(-1)))
-    auto kinoshita_li = [&](std::vector<Tp> &P, std::vector<Tp> &Q, int d, int n) {
+    auto kinoshita_li = [](std::vector<Tp> &P, std::vector<Tp> &Q, int d, int n) {
         P.insert(P.begin(), d * n * 2, Tp(0));
         auto nP = P.begin() + d * n * 2;
         Q.resize(d * n * 4);
@@ -102,7 +102,7 @@ inline std::vector<Tp> power_projection(std::vector<Tp> f, std::vector<Tp> g, in
             std::fill_n(P.begin(), d * n * 2, Tp(0));
             std::fill_n(Q.begin() + d * n * 2, d * n * 2, Tp(0));
         }
-        P.erase(P.begin(), P.begin() + d * n * 2);
+        P.erase(P.begin(), nP);
     };
 
     const int N = fft_len(n);
