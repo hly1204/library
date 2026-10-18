@@ -20,8 +20,8 @@ int main() {
         int v;
         std::cin >> v;
         const AVLTreeNode t(v);
-        AVLTreeNode *found = AVLTreeNode::find(root, &t);
-        if (!found) root = AVLTreeNode::insert(root, pool.make(v));
+        AVLTreeNode *found = find(root, &t);
+        if (!found) root = insert(root, pool.make(v));
     }
     while (q--) {
         int cmd, x;
@@ -29,18 +29,18 @@ int main() {
         const AVLTreeNode t(x);
         switch (cmd) {
         case 0: {
-            AVLTreeNode *found = AVLTreeNode::find(root, &t);
-            if (!found) root = AVLTreeNode::insert(root, pool.make(t.Val));
+            AVLTreeNode *found = find(root, &t);
+            if (!found) root = insert(root, pool.make(t.Val));
             break;
         }
         case 1: {
-            AVLTreeNode *found = AVLTreeNode::find(root, &t);
+            AVLTreeNode *found = find(root, &t);
             if (found) {
-                auto [a, b, c] = AVLTreeNode::split3(root, &t);
+                auto [a, b, c] = split3(root, &t);
                 AVLTreeNode *d = b;
-                b              = AVLTreeNode::join(b->left(), b->right());
+                b              = join(b->left(), b->right());
                 pool.retrieve(d);
-                root = AVLTreeNode::join(a, b, c);
+                root = join(a, b, c);
             }
             break;
         }
@@ -53,13 +53,13 @@ int main() {
             break;
         }
         case 3: {
-            std::cout << AVLTreeNode::count_less_equal(root, &t) << '\n';
+            std::cout << count_less_equal(root, &t) << '\n';
             break;
         }
         case 4: {
-            if (AVLTreeNode *found = AVLTreeNode::find(root, &t)) {
+            if (AVLTreeNode *found = find(root, &t)) {
                 std::cout << found->Val << '\n';
-            } else if (AVLTreeNode *pred = AVLTreeNode::predecessor(root, &t)) {
+            } else if (AVLTreeNode *pred = predecessor(root, &t)) {
                 std::cout << pred->Val << '\n';
             } else {
                 std::cout << "-1\n";
@@ -67,9 +67,9 @@ int main() {
             break;
         }
         case 5: {
-            if (AVLTreeNode *found = AVLTreeNode::find(root, &t)) {
+            if (AVLTreeNode *found = find(root, &t)) {
                 std::cout << found->Val << '\n';
-            } else if (AVLTreeNode *succ = AVLTreeNode::successor(root, &t)) {
+            } else if (AVLTreeNode *succ = successor(root, &t)) {
                 std::cout << succ->Val << '\n';
             } else {
                 std::cout << "-1\n";

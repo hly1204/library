@@ -20,8 +20,8 @@ int main() {
         int v;
         std::cin >> v;
         const TreapNode t(v);
-        TreapNode *found = TreapNode::find(root, &t);
-        if (!found) root = TreapNode::insert(root, pool.make(v));
+        TreapNode *found = find(root, &t);
+        if (!found) root = insert(root, pool.make(v));
     }
     while (q--) {
         int cmd, x;
@@ -29,18 +29,18 @@ int main() {
         const TreapNode t(x);
         switch (cmd) {
         case 0: {
-            TreapNode *found = TreapNode::find(root, &t);
-            if (!found) root = TreapNode::insert(root, pool.make(t.Val));
+            TreapNode *found = find(root, &t);
+            if (!found) root = insert(root, pool.make(t.Val));
             break;
         }
         case 1: {
-            TreapNode *found = TreapNode::find(root, &t);
+            TreapNode *found = find(root, &t);
             if (found) {
-                auto [a, b, c] = TreapNode::split3(root, &t);
+                auto [a, b, c] = split3(root, &t);
                 TreapNode *d   = b;
-                b              = TreapNode::join(b->left(), b->right());
+                b              = join(b->left(), b->right());
                 pool.retrieve(d);
-                root = TreapNode::join(a, b, c);
+                root = join(a, b, c);
             }
             break;
         }
@@ -53,13 +53,13 @@ int main() {
             break;
         }
         case 3: {
-            std::cout << TreapNode::count_less_equal(root, &t) << '\n';
+            std::cout << count_less_equal(root, &t) << '\n';
             break;
         }
         case 4: {
-            if (TreapNode *found = TreapNode::find(root, &t)) {
+            if (TreapNode *found = find(root, &t)) {
                 std::cout << found->Val << '\n';
-            } else if (TreapNode *pred = TreapNode::predecessor(root, &t)) {
+            } else if (TreapNode *pred = predecessor(root, &t)) {
                 std::cout << pred->Val << '\n';
             } else {
                 std::cout << "-1\n";
@@ -67,9 +67,9 @@ int main() {
             break;
         }
         case 5: {
-            if (TreapNode *found = TreapNode::find(root, &t)) {
+            if (TreapNode *found = find(root, &t)) {
                 std::cout << found->Val << '\n';
-            } else if (TreapNode *succ = TreapNode::successor(root, &t)) {
+            } else if (TreapNode *succ = successor(root, &t)) {
                 std::cout << succ->Val << '\n';
             } else {
                 std::cout << "-1\n";

@@ -30,7 +30,7 @@ int main() {
     for (int i = 0; i < n; ++i) {
         std::cin >> node(i)->Val[1] >> node(i)->Val[0];
         node(i)->update();
-        root = TreapNode::join(root, node(i));
+        root = join(root, node(i));
     }
     while (q--) {
         int cmd;
@@ -38,17 +38,17 @@ int main() {
         if (cmd == 0) {
             int p;
             std::cin >> p;
-            auto [R0, R1, R2] = TreapNode::split(root, p, 1);
+            auto [R0, R1, R2] = split(root, p, 1);
             std::cin >> R1->Val[1] >> R1->Val[0];
             R1->update();
-            root = TreapNode::join(R0, R1, R2);
+            root = join(R0, R1, R2);
         } else {
             int l, r;
             mint x;
             std::cin >> l >> r >> x;
-            auto [R0, R1, R2] = TreapNode::split(root, l, r - l);
+            auto [R0, R1, R2] = split(root, l, r - l);
             std::cout << TreapNode::composition(R1->Sum, {x, 0}).at(0) << '\n';
-            root = TreapNode::join(R0, R1, R2);
+            root = join(R0, R1, R2);
         }
     }
     return 0;

@@ -97,7 +97,7 @@ public:
     TreapNodeT *right() const { return (TreapNodeT *)R; }
     void update() { base_update(); }
     void propagate() { underlying().base_propagate(); }
-    static TreapNodeT *insert(TreapNodeT *root, TreapNodeT *t) {
+    friend TreapNodeT *insert(TreapNodeT *root, TreapNodeT *t) {
         if (root == nullptr) return t;
         root->propagate();
         if (std::as_const(*t) < std::as_const(*root)) {
@@ -109,7 +109,7 @@ public:
         }
         return root;
     }
-    static int count_less_than(TreapNodeT *root, const TreapNodeT *t) {
+    friend int count_less_than(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return 0;
         root->propagate();
         if (std::as_const(*root) < *t)
@@ -117,14 +117,14 @@ public:
                    count_less_than(root->right(), t);
         return count_less_than(root->left(), t);
     }
-    static int count_less_equal(TreapNodeT *root, const TreapNodeT *t) {
+    friend int count_less_equal(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return 0;
         root->propagate();
         if (*t < std::as_const(*root)) return count_less_equal(root->left(), t);
         return (root->left() ? root->left()->size() : 0) + 1 + count_less_equal(root->right(), t);
     }
     // [<, >=]
-    static std::array<TreapNodeT *, 2> split_less_than(TreapNodeT *root, const TreapNodeT *t) {
+    friend std::array<TreapNodeT *, 2> split_less_than(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return {nullptr, nullptr};
         root->propagate();
         if (std::as_const(*root) < *t) {
@@ -136,7 +136,7 @@ public:
         root->L     = b, root->update();
         return {a, root};
     }
-    static int count_greater_than(TreapNodeT *root, const TreapNodeT *t) {
+    friend int count_greater_than(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return 0;
         root->propagate();
         if (*t < std::as_const(*root))
@@ -144,7 +144,7 @@ public:
                    count_greater_than(root->left(), t);
         return count_greater_than(root->right(), t);
     }
-    static int count_greater_equal(TreapNodeT *root, const TreapNodeT *t) {
+    friend int count_greater_equal(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return 0;
         root->propagate();
         if (std::as_const(*root) < *t) return count_greater_equal(root->right(), t);
@@ -152,7 +152,7 @@ public:
                count_greater_equal(root->left(), t);
     }
     // [<=, >]
-    static std::array<TreapNodeT *, 2> split_less_equal(TreapNodeT *root, const TreapNodeT *t) {
+    friend std::array<TreapNodeT *, 2> split_less_equal(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return {nullptr, nullptr};
         root->propagate();
         if (*t < std::as_const(*root)) {
@@ -164,7 +164,7 @@ public:
         root->R     = a, root->update();
         return {root, b};
     }
-    static int count(TreapNodeT *root, const TreapNodeT *t) {
+    friend int count(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return 0;
         root->propagate();
         if (*t < std::as_const(*root)) return count(root->left(), t);
@@ -174,14 +174,14 @@ public:
         if (root->right()) res += root->right()->size() - count_greater_than(root->right(), t);
         return res;
     }
-    static bool contains(TreapNodeT *root, const TreapNodeT *t) {
+    friend bool contains(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return false;
         root->propagate();
         if (*t < std::as_const(*root)) return contains(root->left(), t);
         if (std::as_const(*root) < *t) return contains(root->right(), t);
         return true;
     }
-    static std::array<int, 3> count3(TreapNodeT *root, const TreapNodeT *t) {
+    friend std::array<int, 3> count3(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return {0, 0, 0};
         root->propagate();
         if (*t < std::as_const(*root)) {
@@ -196,7 +196,7 @@ public:
         const int c = count_greater_than(root->right(), t);
         return {a, root->size() - a - c, c};
     }
-    static std::array<TreapNodeT *, 3> split3(TreapNodeT *root, const TreapNodeT *t) {
+    friend std::array<TreapNodeT *, 3> split3(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return {nullptr, nullptr, nullptr};
         root->propagate();
         if (*t < std::as_const(*root)) {
@@ -214,7 +214,7 @@ public:
         root->L = b, root->R = c, root->update();
         return {a, root, d};
     }
-    static TreapNodeT *predecessor(TreapNodeT *root, const TreapNodeT *t) {
+    friend TreapNodeT *predecessor(TreapNodeT *root, const TreapNodeT *t) {
         TreapNodeT *res = nullptr;
         while (root) {
             root->propagate();
@@ -226,7 +226,7 @@ public:
         }
         return res;
     }
-    static TreapNodeT *successor(TreapNodeT *root, const TreapNodeT *t) {
+    friend TreapNodeT *successor(TreapNodeT *root, const TreapNodeT *t) {
         TreapNodeT *res = nullptr;
         while (root) {
             root->propagate();
@@ -239,7 +239,7 @@ public:
         return res;
     }
 
-    template<typename... Nodes> static TreapNodeT *join(Nodes... root) {
+    template<typename... Nodes> friend TreapNodeT *join(Nodes... root) {
         struct Helper {
             TreapNodeBase *Val;
             Helper &operator|(TreapNodeBase *A) {
@@ -250,7 +250,7 @@ public:
         return (TreapNodeT *)(nil | ... | root).Val;
     }
     template<typename... Parts>
-    static std::array<TreapNodeT *, sizeof...(Parts) + 1> split(TreapNodeT *root, Parts... part) {
+    friend std::array<TreapNodeT *, sizeof...(Parts) + 1> split(TreapNodeT *root, Parts... part) {
         std::array<TreapNodeT *, sizeof...(Parts) + 1> res;
         res[0]    = root;
         int index = 0;
@@ -264,7 +264,7 @@ public:
         return res;
     }
 
-    static TreapNodeT *find(TreapNodeT *root, const TreapNodeT *t) {
+    friend TreapNodeT *find(TreapNodeT *root, const TreapNodeT *t) {
         if (root == nullptr) return nullptr;
         root->propagate();
         if (std::as_const(*root) < *t) return find(root->right(), t);

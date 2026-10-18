@@ -1,4 +1,5 @@
-// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum
+// competitive-verifier: PROBLEM
+// https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum
 
 #include "avl_tree_node_base.hpp"
 #include "modint.hpp"
@@ -40,7 +41,7 @@ int main() {
         auto node = pool.make();
         std::cin >> node->Val;
         node->update();
-        root = AVLTreeNode::join(root, node);
+        root = join(root, node);
     }
     for (int i = 0; i < q; ++i) {
         int cmd;
@@ -51,42 +52,42 @@ int main() {
             auto node = pool.make();
             std::cin >> pos >> node->Val;
             node->update();
-            auto [R0, R1] = AVLTreeNode::split(root, pos);
-            root          = AVLTreeNode::join(R0, node, R1);
+            auto [R0, R1] = split(root, pos);
+            root          = join(R0, node, R1);
             break;
         }
         case 1: {
             int pos;
             std::cin >> pos;
-            auto [R0, R1, R2] = AVLTreeNode::split(root, pos, 1);
+            auto [R0, R1, R2] = split(root, pos, 1);
             pool.retrieve(R1);
-            root = AVLTreeNode::join(R0, R2);
+            root = join(R0, R2);
             break;
         }
         case 2: {
             int l, r;
             std::cin >> l >> r;
-            auto [R0, R1, R2] = AVLTreeNode::split(root, l, r - l);
+            auto [R0, R1, R2] = split(root, l, r - l);
             R1->flip();
-            root = AVLTreeNode::join(R0, R1, R2);
+            root = join(R0, R1, R2);
             break;
         }
         case 3: {
             int l, r;
             std::cin >> l >> r;
-            auto [R0, R1, R2] = AVLTreeNode::split(root, l, r - l);
+            auto [R0, R1, R2] = split(root, l, r - l);
             std::cin >> R1->Mul >> R1->Add;
             R1->propagate();
             R1->update();
-            root = AVLTreeNode::join(R0, R1, R2);
+            root = join(R0, R1, R2);
             break;
         }
         case 4: {
             int l, r;
             std::cin >> l >> r;
-            auto [R0, R1, R2] = AVLTreeNode::split(root, l, r - l);
+            auto [R0, R1, R2] = split(root, l, r - l);
             std::cout << R1->Sum << '\n';
-            root = AVLTreeNode::join(R0, R1, R2);
+            root = join(R0, R1, R2);
             break;
         }
         default: break;

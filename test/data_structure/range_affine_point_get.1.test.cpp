@@ -33,7 +33,7 @@ int main() {
     for (int i = 0; i < n; ++i) {
         std::cin >> node(i)->Val;
         node(i)->update();
-        root = AVLTreeNode::join(root, node(i));
+        root = join(root, node(i));
     }
     while (q--) {
         int cmd;
@@ -41,9 +41,9 @@ int main() {
         if (cmd == 0) {
             int l, r;
             std::cin >> l >> r;
-            auto [R0, R1, R2] = AVLTreeNode::split(root, l, r - l);
+            auto [R0, R1, R2] = split(root, l, r - l);
             std::cin >> R1->Mul >> R1->Add;
-            root = AVLTreeNode::join(R0, R1, R2);
+            root = join(R0, R1, R2);
         } else {
             int pos;
             std::cin >> pos;

@@ -40,12 +40,12 @@ int main() {
     for (int i = 0; i < n; ++i) {
         std::cin >> node(i)->Val;
         node(i)->update();
-        root = AVLTreeNode::join(root, node(i));
+        root = join(root, node(i));
     }
     while (q--) {
         int cmd, l, r;
         std::cin >> cmd >> l >> r;
-        auto [R0, R1, R2] = AVLTreeNode::split(root, l, r - l);
+        auto [R0, R1, R2] = split(root, l, r - l);
         if (cmd == 0) {
             std::cin >> R1->Mul >> R1->Add;
             R1->propagate();
@@ -53,7 +53,7 @@ int main() {
         } else {
             std::cout << R1->Sum << '\n';
         }
-        root = AVLTreeNode::join(R0, R1, R2);
+        root = join(R0, R1, R2);
     }
     return 0;
 }

@@ -24,18 +24,18 @@ int main() {
     for (int i = 0; i < n; ++i) {
         std::cin >> node(i)->Val;
         node(i)->Sum = node(i)->Val;
-        root         = AVLTreeNode::join(root, node(i));
+        root         = join(root, node(i));
     }
     while (q--) {
         int t, l, r;
         std::cin >> t >> l >> r;
-        auto [a, b, c] = AVLTreeNode::split(root, l, r - l);
+        auto [a, b, c] = split(root, l, r - l);
         if (t == 0) {
             if (b) b->flip();
         } else {
             std::cout << (b ? b->Sum : 0LL) << '\n';
         }
-        root = AVLTreeNode::join(a, b, c);
+        root = join(a, b, c);
     }
     return 0;
 }
