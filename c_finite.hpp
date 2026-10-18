@@ -14,6 +14,8 @@
 //      A Simple and Fast Algorithm for Computing the N-th Term of a Linearly Recurrent Sequence.
 //      https://arxiv.org/abs/2008.08822
 
+namespace detail {
+
 template<typename Tp> inline void fft_high(std::vector<Tp> &a) {
     const int n = a.size();
     inv_fft_n(a.begin() + n / 2, n / 2);
@@ -51,22 +53,18 @@ template<typename Tp> inline std::vector<Tp> bostan_mori(std::vector<Tp> dftQ, l
 
     if (k & 1) {
         auto &&root = FftInfo<Tp>::get().root(len / 2);
-        for (int i = 0; i < len; i += 2) {
-            const auto u = dftQ[i], v = dftQ[i + 1];
-            dftQ[i]     = dftT[i / 2] * v * root[i / 2];
-            dftQ[i + 1] = dftT[i / 2] * u * -root[i / 2];
-        }
-    } else {
-        for (int i = 0; i < len; i += 2) {
-            const auto u = dftQ[i], v = dftQ[i + 1];
-            dftQ[i]     = dftT[i / 2] * v;
-            dftQ[i + 1] = dftT[i / 2] * u;
-        }
-    }
+        for (int i = 0; i < len; i += 2)
+            std::swap(dftQ[i] *= dftT[i / 2] * -root[i / 2],
+                      dftQ[i + 1] *= dftT[i / 2] * root[i / 2]);
+    } else
+        for (int i = 0; i < len; i += 2)
+            std::swap(dftQ[i] *= dftT[i / 2], dftQ[i + 1] *= dftT[i / 2]);
 
     fft_high(dftQ);
     return dftQ;
 }
+
+} // namespace detail
 
 // returns x^k mod Q
 template<typename Tp> inline std::vector<Tp> xk_mod(long long k, const std::vector<Tp> &Q) {
@@ -96,7 +94,7 @@ template<typename Tp> inline std::vector<Tp> xk_mod(long long k, const std::vect
     fft(dftQ);
     std::vector<Tp> dftV(len / 2);
     for (int i = 0; i < len; i += 2) dftV[i / 2] = dftQ[i] * dftQ[i + 1];
-    const auto dftT = bostan_mori(std::move(dftV), k / 2);
+    const auto dftT = detail::bostan_mori(std::move(dftV), k / 2);
     std::vector<Tp> dftU(len);
     if (k & 1) {
         auto &&root = FftInfo<Tp>::get().root(len / 2);
