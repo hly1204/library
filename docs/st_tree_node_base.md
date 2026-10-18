@@ -9,7 +9,7 @@ The code of my ST-Trees is a modified version of the original ST-Trees.
 
 ST-Trees is vertex based.
 
-The trick of using CRTP is learned from someone's beautiful Top Tree implementation, but I no longer remember who I have learned from.
+The trick of using CRTP is learned from ecnerwala's beautiful Top Tree implementation (url: <https://github.com/ecnerwala/cp-book/blob/master/src/tree/top_tree.hpp>).
 
 **WARNINGS**: The order is somehow **reversed**, I store the root of the path as the left most node of the auxiliary tree. In Tarjan and Werneck's paper it should be stored as the right most node.
 
