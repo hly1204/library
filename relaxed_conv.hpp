@@ -2,6 +2,7 @@
 
 #include "fft.hpp"
 #include <algorithm>
+#include <cassert>
 #include <tuple>
 #include <vector>
 
@@ -19,7 +20,7 @@ public:
     int count() const { return N_; }
 
     // returns [x^N] L*R, assume [x^N] L = [x^N] R = 0, count unchanged
-    Tp peek() const {
+    [[nodiscard]] Tp peek() const {
         if ((int)P_.size() < fft_len(N_ * 2 + 1)) P_.resize(fft_len(N_ * 2 + 1));
         if (!peeked_ && (peeked_ = true) && N_ > 2 && (N_ & (N_ - 1)) == 0) {
             auto &&LL = dftL_.emplace_back(N_);
@@ -62,5 +63,85 @@ public:
             P_[1] = l * R_[0] + L_[0] * r, P_[2] = L_[1] * R_[1];
         else { P_[0] = l * r; }
         return P_[N_++];
+    }
+};
+
+template<typename Tp> class RelaxedFPSInv {
+    // f * 1/f = 1
+    // [x^N] f * 1/f = R.peek() + f(0) * [x^N] (1/f) + ([x^N] f) * f(0)^-1
+    //               = delta(N=0)
+public:
+    RelaxedConvolution<Tp> R;
+    Tp Inv0;
+
+    Tp push(const Tp &c) {
+        if (__builtin_expect(R.count() > 0, 1)) {
+            const Tp res = -(R.peek() + c * Inv0) * Inv0;
+            R.push(c, res);
+            return res;
+        }
+        assert(c != 0);
+        R.push(c, Inv0 = c.inv());
+        return Inv0;
+    }
+};
+
+template<typename Tp> class RelaxedFPSDiv {
+    // f/g * g = f
+    // [x^N] f/g * g = R.peek() + (f/g)(0) * [x^N] g + ([x^N] f/g) * g(0)
+    //               = [x^N] f
+public:
+    RelaxedConvolution<Tp> R;
+    Tp Inv0;
+
+    Tp push(const Tp &p, const Tp &q) {
+        if (__builtin_expect(R.count() > 0, 1)) {
+            const Tp res = (p - R.peek() - R.lhs().front() * q) * Inv0;
+            R.push(res, q);
+            return res;
+        }
+        assert(q != 0);
+        const Tp res = p * (Inv0 = q.inv());
+        R.push(res, q);
+        return res;
+    }
+};
+
+template<typename Tp> class RelaxedFPSLog {
+public:
+    RelaxedFPSDiv<Tp> R;
+    Tp LastCoeff = Tp(1);
+    bool First   = true;
+
+    Tp push(const Tp &c) {
+        if (__builtin_expect(!First, 1)) {
+            const int ind = R.R.count() + 1;
+            const Tp res  = R.push(c * ind, LastCoeff) / ind;
+            LastCoeff     = c;
+            return res;
+        }
+        assert(c == 1);
+        First = false;
+        return Tp(0);
+    }
+};
+
+template<typename Tp> class RelaxedFPSExp {
+    // D(exp(f)) = exp(f) * D(f)
+public:
+    RelaxedConvolution<Tp> R;
+    Tp LastCoeff = Tp(1);
+    bool First   = true;
+
+    Tp push(const Tp &c) {
+        if (__builtin_expect(!First, 1)) {
+            const int ind = R.count() + 1;
+            const Tp res  = R.push(LastCoeff, c * ind) / ind;
+            LastCoeff     = res;
+            return res;
+        }
+        assert(c == 0);
+        First = false;
+        return Tp(1);
     }
 };
