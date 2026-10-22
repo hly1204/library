@@ -3,39 +3,22 @@
 #include "fft.hpp"
 #include <algorithm>
 #include <cassert>
-#include <tuple>
 #include <vector>
 
 template<typename Tp> class RelaxedConvolution {
-    std::vector<Tp> L_, R_;
-    mutable std::vector<Tp> P_ = {Tp(0), Tp(0), Tp(0), Tp(0)};
-    mutable std::vector<std::vector<Tp>> dftL_, dftR_;
-    int N_               = 0;
-    mutable bool peeked_ = false;
+    std::vector<Tp> L_, R_, P_ = {Tp(0), Tp(0), Tp(0), Tp(0)};
+    std::vector<std::vector<Tp>> dftL_, dftR_;
+    int N_ = 0;
 
 public:
     const std::vector<Tp> &lhs() const { return L_; }
     const std::vector<Tp> &rhs() const { return R_; }
     const std::vector<Tp> &prod() const { return P_; }
     int count() const { return N_; }
-
-    // returns [x^N] L*R, assume [x^N] L = [x^N] R = 0, count unchanged
-    [[nodiscard]] Tp peek() const {
-        if ((int)P_.size() < fft_len(N_ * 2 + 1)) P_.resize(fft_len(N_ * 2 + 1));
-        if (!peeked_ && (peeked_ = true) && N_ > 2 && (N_ & (N_ - 1)) == 0) {
-            auto &&LL = dftL_.emplace_back(N_);
-            auto &&RR = dftR_.emplace_back(N_);
-            std::copy_n(L_.begin() + N_ / 2, N_ / 2, LL.begin());
-            std::copy_n(R_.begin() + N_ / 2, N_ / 2, RR.begin());
-            fft(LL);
-            fft(RR);
-            auto PP = LL;
-            for (int i = 0; i < N_; ++i) PP[i] *= RR[i];
-            inv_fft(PP);
-            for (int i = 0; i < N_ - 1; ++i) P_[N_ + i] += PP[i];
-        }
-        return P_[N_];
-    }
+    // returns [x^n] L*R
+    // call operator[](n) when count=n to get [x^n] L*R - L(0) * [x^n] R - [x^n] L * R(0)
+    Tp operator[](int n) const { return P_[n]; }
+    Tp peek() const { return P_[N_]; }
 
     // set [x^N] L = l and [x^N] R = r
     // returns [x^N] L*R
@@ -43,8 +26,8 @@ public:
         L_.emplace_back(l);
         R_.emplace_back(r);
         if (__builtin_expect(N_ > 1, 1)) {
-            std::ignore = peek();
-            peeked_     = false;
+            P_.emplace_back();
+            P_.emplace_back();
             P_[N_] += l * R_[0] + L_[0] * r;
             P_[N_ + 1] += L_[1] * R_[N_] + L_[N_] * R_[1];
             for (int sft = 1, os = fft_len(N_ + 1) / 2, t = N_ + 1 - os;
@@ -59,9 +42,22 @@ public:
                 inv_fft(P0);
                 for (int i = 0; i < (2 << sft) - 1; ++i) P_[N_ + 1 + i] += P0[i];
             }
-        } else if (N_ == 1)
-            P_[1] = l * R_[0] + L_[0] * r, P_[2] = L_[1] * R_[1];
-        else { P_[0] = l * r; }
+            if (((N_ + 1) & N_) == 0) {
+                auto &&LL = dftL_.emplace_back(N_ + 1);
+                auto &&RR = dftR_.emplace_back(N_ + 1);
+                std::copy_n(L_.begin() + (N_ + 1) / 2, (N_ + 1) / 2, LL.begin());
+                std::copy_n(R_.begin() + (N_ + 1) / 2, (N_ + 1) / 2, RR.begin());
+                fft(LL);
+                fft(RR);
+                auto PP = LL;
+                for (int i = 0; i < N_ + 1; ++i) PP[i] *= RR[i];
+                inv_fft(PP);
+                for (int i = 0; i < N_; ++i) P_[N_ + 1 + i] += PP[i];
+            }
+        } else {
+            if (N_ == 0) P_[0] = l * r;
+            if (N_ == 1) P_[1] = l * R_[0] + L_[0] * r, P_[2] = L_[1] * R_[1];
+        }
         return P_[N_++];
     }
 };
